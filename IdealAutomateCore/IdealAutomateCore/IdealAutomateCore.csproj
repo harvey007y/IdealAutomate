@@ -48,7 +48,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArrayExtensions.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="ImageEntity.cs" />
     <Compile Include="KeyboardSend.cs" />
     <Compile Include="Methods.cs" />
