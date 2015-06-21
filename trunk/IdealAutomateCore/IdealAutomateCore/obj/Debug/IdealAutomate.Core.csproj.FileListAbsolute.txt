@@ -1,0 +1,5 @@
+C:\TFS\WadeHome\Applications\TreeView\IdealAutomate.Core\bin\Debug\IdealAutomate.Core.dll
+C:\TFS\WadeHome\Applications\TreeView\IdealAutomate.Core\bin\Debug\IdealAutomate.Core.pdb
+C:\TFS\WadeHome\Applications\TreeView\IdealAutomate.Core\obj\Debug\IdealAutomate.Core.csprojResolveAssemblyReference.cache
+C:\TFS\WadeHome\Applications\TreeView\IdealAutomate.Core\obj\Debug\IdealAutomate.Core.dll
+C:\TFS\WadeHome\Applications\TreeView\IdealAutomate.Core\obj\Debug\IdealAutomate.Core.pdb
