@@ -1,0 +1,5 @@
+C:\SVNIA\trunk\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore.csprojResolveAssemblyReference.cache
+C:\SVNIA\trunk\IdealAutomateCore\IdealAutomateCore\bin\Debug\IdealAutomateCore.dll
+C:\SVNIA\trunk\IdealAutomateCore\IdealAutomateCore\bin\Debug\IdealAutomateCore.pdb
+C:\SVNIA\trunk\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore.dll
+C:\SVNIA\trunk\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore.pdb
