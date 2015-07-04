@@ -238,14 +238,14 @@ namespace IdealAutomate.Core
           if (fbDebugMode) {
             Console.WriteLine("PutCursorPosition");
           }
-            int[,] myArray = new int[1, 1];
+            int[,] myArray = new int[1, 2];
             myArray[0, 0] = System.Windows.Forms.Cursor.Position.X;
             myArray[0, 1] = System.Windows.Forms.Cursor.Position.Y;
             return myArray;
         }
         public int[,] PutCaretPositionInArray()
         {
-            int[,] myArray = new int[1, 1];
+            int[,] myArray = new int[1, 2];
             string activeProcess = GetActiveProcess();
             if (activeProcess == string.Empty)
             {
@@ -468,6 +468,14 @@ namespace IdealAutomate.Core
           if (fbDebugMode) {
             Console.WriteLine("TypeText: myEntity=" + myEntity + " intSleep=" + intSleep.ToString());
           }
+          //if (myEntity == "{LWin}") {
+          //  KeyboardSend.KeyDown(System.Windows.Forms.Keys.ControlKey);
+          //  KeyboardSend.KeyDown(System.Windows.Forms.Keys.Alt);
+          //  KeyboardSend.KeyDown(System.Windows.Forms.Keys.L);
+          //  KeyboardSend.KeyUp(System.Windows.Forms.Keys.L);
+          //  KeyboardSend.KeyUp(System.Windows.Forms.Keys.Alt);
+          //  KeyboardSend.KeyUp(System.Windows.Forms.Keys.ControlKey);
+          //}
             if (intSleep > 0)
             {
                 System.Threading.Thread.Sleep(intSleep);
@@ -657,7 +665,7 @@ namespace IdealAutomate.Core
         /// <summary>
         /// Get the caret position
         /// </summary>
-        public void GetCaretPosition()
+        private void GetCaretPosition()
         {
           if (fbDebugMode) {
             Console.WriteLine("GetCaretPosition");
