@@ -245,6 +245,9 @@ namespace IdealAutomate.Core
         }
         public int[,] PutCaretPositionInArray()
         {
+          if (fbDebugMode) {
+            Console.WriteLine("PutCaretPositionInArray");
+          }
             int[,] myArray = new int[1, 2];
             string activeProcess = GetActiveProcess();
             if (activeProcess == string.Empty)
