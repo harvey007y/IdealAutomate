@@ -47,6 +47,48 @@ namespace IdealAutomate.Core
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         private static extern int GetWindowTextLength(int hwnd);
 
+        //Import the FindWindow API to find our window
+        [DllImportAttribute("User32.dll")]
+        private static extern int FindWindow(String ClassName, String WindowName);
+
+        //Import the SetForeground API to activate it
+        [DllImportAttribute("User32.dll")]
+        private static extern IntPtr SetForegroundWindow(int hWnd);
+
+        [DllImport("user32.dll")]
+        private static extern
+          bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
+        [DllImport("user32.dll")]
+        private static extern
+          bool IsIconic(IntPtr hWnd);
+
+        private const int SW_HIDE = 0;
+        private const int SW_SHOWNORMAL = 1;
+        private const int SW_SHOWMINIMIZED = 2;
+        private const int SW_SHOWMAXIMIZED = 3;
+        private const int SW_SHOWNOACTIVATE = 4;
+        private const int SW_RESTORE = 9;
+        private const int SW_SHOWDEFAULT = 10;
+
+      public static bool ActivateWindowByTitle(string myTitle) {
+
+                  //Find the window, using the CORRECT Window Title, for example, Notepad
+            int hWnd = FindWindow(null, myTitle);
+            if (hWnd > 0) //If found
+            {
+              {
+                ShowWindowAsync((IntPtr)hWnd, SW_RESTORE);
+              }
+                SetForegroundWindow(hWnd); //Activate it              
+                return true;
+            }
+            else
+            {
+                MessageBox.Show("Window Not Found!");
+                return false;
+            }
+
+}
         private static string GetOpenClipboardWindowText()
         {
          
@@ -62,7 +104,7 @@ namespace IdealAutomate.Core
             return sb.ToString();
         }
         public DateTime dtStartDateTime = System.DateTime.Now;
-        private const int SW_SHOWNOACTIVATE = 4;
+        
         private const int SW_SHOWMINNOACTIVE = 6;
         private const uint SWP_NOACTIVATE = 0X10;
 
