@@ -30,6 +30,14 @@ namespace IdealAutomate.Core
 {
     public class Methods
     {
+      
+      private bool fbDebugMode = false;
+
+      public bool DebugMode {
+        get { return fbDebugMode; }
+        set { fbDebugMode = value; }
+      }
+      
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         static extern IntPtr GetOpenClipboardWindow();
 
@@ -41,6 +49,7 @@ namespace IdealAutomate.Core
 
         private static string GetOpenClipboardWindowText()
         {
+         
             var hwnd = GetOpenClipboardWindow();
             if (hwnd == IntPtr.Zero)
             {
@@ -135,7 +144,14 @@ namespace IdealAutomate.Core
         /// <returns></returns>
         public int[,] PutAll(ImageEntity myImage)
         {
-
+          if (fbDebugMode) {
+            Console.WriteLine("PutAll:");
+            foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(myImage)) {
+              string name = descriptor.Name;
+              object value = descriptor.GetValue(myImage);
+              Console.WriteLine("{0}={1}", name, value);
+            }
+          }
             // If ParentImage != null, we need to get the parent image and 
             // do everything that we normally to for an image 
             // to the parent image. If the parent image is found,
@@ -177,6 +193,9 @@ namespace IdealAutomate.Core
         }
         public int[,] PutCursorPosition()
         {
+          if (fbDebugMode) {
+            Console.WriteLine("PutCursorPosition");
+          }
             int[,] myArray = new int[1, 1];
             myArray[0, 0] = System.Windows.Forms.Cursor.Position.X;
             myArray[0, 1] = System.Windows.Forms.Cursor.Position.Y;
@@ -205,6 +224,14 @@ namespace IdealAutomate.Core
         }
         public void ClickImageIfExists(ImageEntity myImage)
         {
+          if (fbDebugMode) {
+            Console.WriteLine("ClickImageIfExists:");
+            foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(myImage)) {
+              string name = descriptor.Name;
+              object value = descriptor.GetValue(myImage);
+              Console.WriteLine("{0}={1}", name, value);
+            }
+          }
             // If ParentImage != null, we need to get the parent image and 
             // do everything that we normally to for an image 
             // to the parent image. If the parent image is found,
@@ -232,15 +259,22 @@ namespace IdealAutomate.Core
                 intAttempts += 1;
             }
         }
-        public void LeftClick(int RelX, int RelY)
-        {
-            Position_Cursor.MoveMouse(RelX, RelY);
-            UInt32 myX1 = Convert.ToUInt32(RelX);
-            UInt32 myY1 = Convert.ToUInt32(RelY);
-            Position_Cursor.DoMouseClick(myX1, myY1);
-        }
+      
         public void LeftClick(int[,] myArray)
         {
+          if (fbDebugMode) {
+            Console.WriteLine("LeftClick:");
+            int bound0 = myArray.GetUpperBound(0);
+            int bound1 = myArray.GetUpperBound(1);
+            // ... Loop over bounds.
+            for (int i = 0; i <= bound0; i++) {
+              for (int x = 0; x <= bound1; x++) {
+                // Display the element at these indexes.
+                Console.WriteLine(myArray[i, x].ToString());
+              }
+              Console.WriteLine();
+            }
+          }
             int RelX = myArray[0, 0];
             int RelY = myArray[0, 1];
             Position_Cursor.MoveMouse(RelX, RelY);
@@ -250,6 +284,19 @@ namespace IdealAutomate.Core
         }
         public void ShiftClick(int[,] myArray)
         {
+          if (fbDebugMode) {
+            Console.WriteLine("ShiftClick:");
+            int bound0 = myArray.GetUpperBound(0);
+            int bound1 = myArray.GetUpperBound(1);
+            // ... Loop over bounds.
+            for (int i = 0; i <= bound0; i++) {
+              for (int x = 0; x <= bound1; x++) {
+                // Display the element at these indexes.
+                Console.WriteLine(myArray[i, x].ToString());
+              }
+              Console.WriteLine();
+            }
+          }
             int RelX = myArray[0, 0];
             int RelY = myArray[0, 1];
             Position_Cursor.MoveMouse(RelX, RelY);
@@ -259,6 +306,19 @@ namespace IdealAutomate.Core
         }
         public void RightClick(int[,] myArray)
         {
+          if (fbDebugMode) {
+            Console.WriteLine("RightClick:");
+            int bound0 = myArray.GetUpperBound(0);
+            int bound1 = myArray.GetUpperBound(1);
+            // ... Loop over bounds.
+            for (int i = 0; i <= bound0; i++) {
+              for (int x = 0; x <= bound1; x++) {
+                // Display the element at these indexes.
+                Console.WriteLine(myArray[i, x].ToString());
+              }
+              Console.WriteLine();
+            }
+          }
             int RelX = myArray[0, 0];
             int RelY = myArray[0, 1];
             Position_Cursor.MoveMouse(RelX, RelY);
@@ -268,10 +328,26 @@ namespace IdealAutomate.Core
         }
         public void PositionCursor(int[,] myArray)
         {
+          if (fbDebugMode) {
+            Console.WriteLine("PositionCursor:");
+            int bound0 = myArray.GetUpperBound(0);
+            int bound1 = myArray.GetUpperBound(1);
+            // ... Loop over bounds.
+            for (int i = 0; i <= bound0; i++) {
+              for (int x = 0; x <= bound1; x++) {
+                // Display the element at these indexes.
+                Console.WriteLine(myArray[i, x].ToString());
+              }
+              Console.WriteLine();
+            }
+          }
             Position_Cursor.MoveMouse(myArray[0, 0], myArray[0, 1]);
         }
         public string PutClipboardInEntity()
         {
+          if (fbDebugMode) {
+            Console.WriteLine("PutClipboardInEntity");            
+          }
             string myEntity = "";
             try
             {
@@ -298,6 +374,9 @@ namespace IdealAutomate.Core
         }
         public string PutWindowTitleInEntity()
         {
+          if (fbDebugMode) {
+            Console.WriteLine("PutWindowTitleInEntity");
+          }
             string myEntity = "";
             try
             {
@@ -314,6 +393,9 @@ namespace IdealAutomate.Core
         }
         public void PutEntityInClipboard(string myEntity)
         {
+          if (fbDebugMode) {
+            Console.WriteLine("PutEntityInClipboard: myEntity=" + myEntity);
+          }
             try
             {
 
@@ -341,6 +423,9 @@ namespace IdealAutomate.Core
         }
         public void TypeText(string myEntity, int intSleep)
         {
+          if (fbDebugMode) {
+            Console.WriteLine("TypeText: myEntity=" + myEntity + " intSleep=" + intSleep.ToString());
+          }
             if (intSleep > 0)
             {
                 System.Threading.Thread.Sleep(intSleep);
@@ -363,6 +448,9 @@ namespace IdealAutomate.Core
         }
         public void Run(string myEntityForExecutable, string myEntityForContent)
         {
+          if (fbDebugMode) {
+            Console.WriteLine("Run: myEntityForExecutable=" + myEntityForExecutable + " myEntityForContent=" + myEntityForContent);
+          }
           
             if (myEntityForExecutable == null)
             {
@@ -396,10 +484,21 @@ namespace IdealAutomate.Core
         }
         public void Sleep(int intSleep)
         {
+          if (fbDebugMode) {
+            Console.WriteLine("Sleep:  intSleep=" + intSleep.ToString());
+          }
             System.Threading.Thread.Sleep(intSleep);
         }
         private List<SubPositionInfo> Click_PNG(ImageEntity myImage)
         {
+          if (fbDebugMode) {
+            Console.WriteLine("Click_PNG:");
+            foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(myImage)) {
+              string name = descriptor.Name;
+              object value = descriptor.GetValue(myImage);
+              Console.WriteLine("{0}={1}", name, value);
+            }
+          }
             System.Threading.Thread.Sleep(100);
 
 
@@ -518,6 +617,9 @@ namespace IdealAutomate.Core
         /// </summary>
         public void GetCaretPosition()
         {
+          if (fbDebugMode) {
+            Console.WriteLine("GetCaretPosition");
+          }
             guiInfo = new GUITHREADINFO();
             guiInfo.cbSize = (uint)Marshal.SizeOf(guiInfo);
 
