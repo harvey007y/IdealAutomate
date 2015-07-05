@@ -439,7 +439,11 @@ namespace IdealAutomate.Core
         public void PutEntityInClipboard(string myEntity)
         {
           if (fbDebugMode) {
-            Console.WriteLine("PutEntityInClipboard: myEntity=" + myEntity);
+            if (myEntity.Length > 5000) {
+              Console.WriteLine("PutEntityInClipboard: myEntity more than 5000 in length");
+            } else {
+              Console.WriteLine("PutEntityInClipboard: myEntity=" + myEntity);
+            }
           }
             try
             {
@@ -656,9 +660,9 @@ namespace IdealAutomate.Core
 
             caretPosition.X = (int)guiInfo.rcCaret.Left;
             caretPosition.Y = (int)guiInfo.rcCaret.Top;
-            //    MessageBox.Show(caretPosition.X.ToString() + "," + caretPosition.Y.ToString());
+         //       MessageBox.Show(caretPosition.X.ToString() + "," + caretPosition.Y.ToString());
             ClientToScreen(guiInfo.hwndCaret, out caretPosition);
-            //      MessageBox.Show(caretPosition.X.ToString() + "," + caretPosition.Y.ToString());
+         //        MessageBox.Show(caretPosition.X.ToString() + "," + caretPosition.Y.ToString());
 
             //txtCaretX.Text = (caretPosition.X).ToString();
             //txtCaretY.Text = caretPosition.Y.ToString();
@@ -715,6 +719,7 @@ namespace IdealAutomate.Core
                 uint lpdwProcessId;
                 uint dwCaretID = GetWindowThreadProcessId(handle, out lpdwProcessId);
                 uint dwCurrentID = (uint)Thread.CurrentThread.ManagedThreadId;
+             //   MessageBox.Show(Process.GetProcessById((int)lpdwProcessId).MainWindowTitle);
                 return Process.GetProcessById((int)lpdwProcessId).MainWindowTitle;
             }
             // Otherwise either error or non client region
