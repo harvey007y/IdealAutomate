@@ -503,6 +503,15 @@ namespace IdealAutomate.Core
 
             }
         }
+        public void MessageBoxShow(string myEntity)
+        {
+            if (fbDebugMode)
+            {
+                Console.WriteLine("MessageBoxShow: myEntity=" + myEntity);
+            }
+            System.Windows.Forms.MessageBox.Show(myEntity, "Header", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.None,
+          System.Windows.Forms.MessageBoxDefaultButton.Button1, (System.Windows.Forms.MessageBoxOptions)0x40000);  // MB_TOPMOST
+        }
         public void Run(string myEntityForExecutable, string myEntityForContent)
         {
           if (fbDebugMode) {
