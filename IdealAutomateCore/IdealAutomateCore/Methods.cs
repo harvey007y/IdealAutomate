@@ -720,8 +720,7 @@ namespace IdealAutomate.Core
             const int nChars = 256;
             int handle = 0;
             StringBuilder Buff = new StringBuilder(nChars);
-            handle = (int)GetForegroundWindow();
-
+            handle = (int)GetForegroundWindow();            
             // If Active window has some title info
             if (GetWindowText(handle, Buff, nChars) > 0)
             {
