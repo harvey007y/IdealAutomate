@@ -25,6 +25,8 @@ using System.Management;
 //using WindowsInput;
 using System.Data;
 using System.Data.SqlClient;
+using WindowsInput;
+using WindowsInput.Native;
 
 namespace IdealAutomate.Core
 {
@@ -398,8 +400,13 @@ namespace IdealAutomate.Core
             {
                 Thread thread = new Thread(new ThreadStart(() =>
                 {
-
+                  try {
                     myEntity = Clipboard.GetData(DataFormats.Text).ToString();
+                  } catch (Exception) {
+                    Console.WriteLine("Exception occurred in PutClipboardInEntity!!!!");  
+                    myEntity = "";
+                  }
+                    
                     // or call logic here
 
 
@@ -475,6 +482,7 @@ namespace IdealAutomate.Core
           if (fbDebugMode) {
             Console.WriteLine("TypeText: myEntity=" + myEntity + " intSleep=" + intSleep.ToString());
           }
+          InputSimulator InputSimulator = new InputSimulator();
           //if (myEntity == "{LWin}") {
           //  KeyboardSend.KeyDown(System.Windows.Forms.Keys.ControlKey);
           //  KeyboardSend.KeyDown(System.Windows.Forms.Keys.Alt);
@@ -486,6 +494,68 @@ namespace IdealAutomate.Core
             if (intSleep > 0)
             {
                 System.Threading.Thread.Sleep(intSleep);
+            }
+//          public void SimulateSomeModifiedKeystrokes()
+//{
+//  // CTRL-C (effectively a copy command in many situations)
+//  InputSimulator.SimulateModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_C);
+
+//  // You can simulate chords with multiple modifiers
+//  // For example CTRL-K-C whic is simulated as
+//  // CTRL-down, K, C, CTRL-up
+//  InputSimulator.SimulateModifiedKeyStroke(VirtualKeyCode.CONTROL, new [] {VirtualKeyCode.VK_K, VirtualKeyCode.VK_C});
+
+//  // You can simulate complex chords with multiple modifiers and key presses
+//  // For example CTRL-ALT-SHIFT-ESC-K which is simulated as
+//  // CTRL-down, ALT-down, SHIFT-down, press ESC, press K, SHIFT-up, ALT-up, CTRL-up
+//  InputSimulator.SimulateModifiedKeyStroke(
+//    new[] { VirtualKeyCode.CONTROL, VirtualKeyCode.MENU, VirtualKeyCode.SHIFT },
+//    new[] { VirtualKeyCode.ESCAPE, VirtualKeyCode.VK_K });
+//}
+            if (myEntity == "%(\" \")x") {
+              InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.MENU, VirtualKeyCode.SPACE); //System.Windows.Forms.Keys.Alt);
+              InputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_N);
+              return;
+            }
+            if (myEntity == "%({F8})") {
+              InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.MENU, VirtualKeyCode.F8); //System.Windows.Forms.Keys.Alt);
+              return;
+            }
+            if (myEntity == "{ENTER}") {
+              InputSimulator.Keyboard.KeyPress(VirtualKeyCode.RETURN);
+              return;
+            }
+            if (myEntity == "^(n)") {
+              InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_N); 
+              return;
+            }
+            if (myEntity == "^(v)") {
+              InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_V); 
+              return;
+            }
+            if (myEntity == "^(c)") {
+              InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_C);
+              return;
+            }
+            if (myEntity == "{F5}") {
+              InputSimulator.Keyboard.KeyPress(VirtualKeyCode.F5);
+              return;
+            }
+            if (myEntity == "{F6}") {
+              InputSimulator.Keyboard.KeyPress(VirtualKeyCode.F6);
+              return;
+            }
+            if (myEntity == "^({END})") {
+              InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.END);
+              return;
+            }
+            if (myEntity == "^({HOME})") {
+              InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.HOME);
+              return;
+            }
+            if (myEntity == "+({F10})") {
+              InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.SHIFT, VirtualKeyCode.F10);
+              return;
             }
             if (myEntity == "{LWin}")
             {
