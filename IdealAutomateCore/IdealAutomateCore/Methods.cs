@@ -545,6 +545,14 @@ namespace IdealAutomate.Core
               InputSimulator.Keyboard.KeyPress(VirtualKeyCode.F6);
               return;
             }
+            if (myEntity == "{DOWN}") {
+              InputSimulator.Keyboard.KeyPress(VirtualKeyCode.DOWN);
+              return;
+            }
+            if (myEntity == "{UP}") {
+              InputSimulator.Keyboard.KeyPress(VirtualKeyCode.UP);
+              return;
+            }
             if (myEntity == "^({END})") {
               InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.END);
               return;
