@@ -517,6 +517,11 @@ namespace IdealAutomate.Core
 //    new[] { VirtualKeyCode.CONTROL, VirtualKeyCode.MENU, VirtualKeyCode.SHIFT },
 //    new[] { VirtualKeyCode.ESCAPE, VirtualKeyCode.VK_K });
 //}
+            if (myEntity == "%(f)e") {
+              InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.MENU, VirtualKeyCode.VK_F); //System.Windows.Forms.Keys.Alt);
+              InputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_E);
+              return;
+            }
             if (myEntity == "%(\" \")x") {
               InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.MENU, VirtualKeyCode.SPACE); //System.Windows.Forms.Keys.Alt);
               InputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_N);
@@ -524,6 +529,10 @@ namespace IdealAutomate.Core
             }
             if (myEntity == "%({F8})") {
               InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.MENU, VirtualKeyCode.F8); //System.Windows.Forms.Keys.Alt);
+              return;
+            }
+            if (myEntity == "{NUMPADMULT}") {
+              InputSimulator.Keyboard.KeyPress(VirtualKeyCode.MULTIPLY);
               return;
             }
             if (myEntity == "{ENTER}") {
