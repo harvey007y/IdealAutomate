@@ -393,7 +393,7 @@ namespace IdealAutomate.Core
         public string PutClipboardInEntity()
         {
           if (fbDebugMode) {
-            Console.WriteLine("PutClipboardInEntity");            
+            Console.WriteLine("PutClipboardInEntity: ");            
           }
             string myEntity = "";
             try
@@ -421,6 +421,11 @@ namespace IdealAutomate.Core
             catch (Exception ex)
             { 
                 MessageBox.Show(ex.Message);
+            }
+            if (myEntity.Length > 5000) {
+              Console.Write("PutEntityInClipboard: myEntity more than 5000 in length");
+            } else {
+              Console.Write("myEntity=" + myEntity);
             }
             return myEntity;
         }
