@@ -522,13 +522,26 @@ namespace IdealAutomate.Core
               InputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_E);
               return;
             }
-            if (myEntity == "%(\" \")x") {
+            if (myEntity == "%(\" \")n") {
               InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.MENU, VirtualKeyCode.SPACE); //System.Windows.Forms.Keys.Alt);
               InputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_N);
               return;
             }
+            if (myEntity == "%(\" \")") {
+              InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.MENU, VirtualKeyCode.SPACE); //System.Windows.Forms.Keys.Alt);              
+              return;
+            }
+            if (myEntity == "%(\" \")x") {
+              InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.MENU, VirtualKeyCode.SPACE); //System.Windows.Forms.Keys.Alt);
+              InputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_X);
+              return;
+            }
             if (myEntity == "%({F8})") {
               InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.MENU, VirtualKeyCode.F8); //System.Windows.Forms.Keys.Alt);
+              return;
+            }
+            if (myEntity == "{NUMPADADD}") {
+              InputSimulator.Keyboard.KeyPress(VirtualKeyCode.ADD);
               return;
             }
             if (myEntity == "{NUMPADMULT}") {
