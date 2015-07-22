@@ -713,6 +713,7 @@ namespace IdealAutomate.Core
           RegisterHotKey(_windowHandle, HOTKEY_ID, MOD_CONTROL, VK_CAPITAL); //CTRL + CAPS_LOCK
         }
         public void CloseApp() {
+          //System.Diagnostics.Debugger.Break();
           _source.RemoveHook(HwndHook);
           UnregisterHotKey(_windowHandle, HOTKEY_ID);
           Application.Current.Shutdown();
