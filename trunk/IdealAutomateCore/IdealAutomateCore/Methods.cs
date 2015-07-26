@@ -137,9 +137,21 @@ namespace IdealAutomate.Core {
     private const int SW_SHOWNOACTIVATE = 4;
     private const int SW_RESTORE = 9;
     private const int SW_SHOWDEFAULT = 10;
-
+    Window window;
+    public Methods() {
+      window = new Window() //make sure the window is invisible
+ {
+   Width = 0,
+   Height = 0,
+   Left = -2000,
+   WindowStyle = WindowStyle.None,
+   ShowInTaskbar = false,
+   ShowActivated = false,
+ };
+      window.Show();
+    }
     public static bool ActivateWindowByTitle(string myTitle) {
-
+      
       //Find the window, using the CORRECT Window Title, for example, Notepad
       int hWnd = FindWindow(null, myTitle);
       if (hWnd > 0) //If found
@@ -247,6 +259,7 @@ namespace IdealAutomate.Core {
     /// <param name="myImage"></param>
     /// <returns></returns>
     public int[,] PutAll(ImageEntity myImage) {
+      RegisterHotKey(window);
       if (fbDebugMode) {
         Console.WriteLine("PutAll:");
         foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(myImage)) {
@@ -292,6 +305,7 @@ namespace IdealAutomate.Core {
 
     }
     public int[,] PutCursorPosition() {
+      RegisterHotKey(window);
       if (fbDebugMode) {
         Console.WriteLine("PutCursorPosition");
       }
@@ -301,6 +315,7 @@ namespace IdealAutomate.Core {
       return myArray;
     }
     public int[,] PutCaretPositionInArray() {
+      RegisterHotKey(window);
       if (fbDebugMode) {
         Console.WriteLine("PutCaretPositionInArray");
       }
@@ -323,6 +338,7 @@ namespace IdealAutomate.Core {
 
     }
     public void ClickImageIfExists(ImageEntity myImage) {
+      RegisterHotKey(window);
       if (fbDebugMode) {
         Console.WriteLine("ClickImageIfExists:");
         foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(myImage)) {
@@ -358,6 +374,7 @@ namespace IdealAutomate.Core {
     }
 
     public void LeftClick(int[,] myArray) {
+      RegisterHotKey(window);
       if (fbDebugMode) {
         Console.WriteLine("LeftClick:");
         int bound0 = myArray.GetUpperBound(0);
@@ -379,6 +396,7 @@ namespace IdealAutomate.Core {
       Position_Cursor.DoMouseClick(myX1, myY1);
     }
     public void ShiftClick(int[,] myArray) {
+      RegisterHotKey(window);
       if (fbDebugMode) {
         Console.WriteLine("ShiftClick:");
         int bound0 = myArray.GetUpperBound(0);
@@ -400,6 +418,7 @@ namespace IdealAutomate.Core {
       Position_Cursor.DoMouseShiftClick(myX1, myY1);
     }
     public void RightClick(int[,] myArray) {
+      RegisterHotKey(window);
       if (fbDebugMode) {
         Console.WriteLine("RightClick:");
         int bound0 = myArray.GetUpperBound(0);
@@ -421,6 +440,7 @@ namespace IdealAutomate.Core {
       Position_Cursor.DoMouseRightClick(myX1, myY1);
     }
     public void PositionCursor(int[,] myArray) {
+      RegisterHotKey(window);
       if (fbDebugMode) {
         Console.WriteLine("PositionCursor:");
         int bound0 = myArray.GetUpperBound(0);
@@ -437,6 +457,7 @@ namespace IdealAutomate.Core {
       Position_Cursor.MoveMouse(myArray[0, 0], myArray[0, 1]);
     }
     public string PutClipboardInEntity() {
+      RegisterHotKey(window);
       if (fbDebugMode) {
         Console.WriteLine("PutClipboardInEntity: ");
       }
@@ -471,6 +492,7 @@ namespace IdealAutomate.Core {
       return myEntity;
     }
     public string PutWindowTitleInEntity() {
+      RegisterHotKey(window);
       if (fbDebugMode) {
         Console.WriteLine("PutWindowTitleInEntity");
       }
@@ -486,6 +508,7 @@ namespace IdealAutomate.Core {
       return myEntity;
     }
     public void PutEntityInClipboard(string myEntity) {
+      RegisterHotKey(window);
       if (fbDebugMode) {
         if (myEntity.Length > 5000) {
           Console.WriteLine("PutEntityInClipboard: myEntity more than 5000 in length");
@@ -515,6 +538,7 @@ namespace IdealAutomate.Core {
 
     }
     public void TypeText(string myEntity, int intSleep) {
+      RegisterHotKey(window);
       if (fbDebugMode) {
         Console.WriteLine("TypeText: myEntity=" + myEntity + " intSleep=" + intSleep.ToString());
       }
@@ -636,6 +660,7 @@ namespace IdealAutomate.Core {
       }
     }
     public void MessageBoxShow(string myEntity) {
+      RegisterHotKey(window);
       if (fbDebugMode) {
         Console.WriteLine("MessageBoxShow: myEntity=" + myEntity);
       }
@@ -643,6 +668,7 @@ namespace IdealAutomate.Core {
     System.Windows.Forms.MessageBoxDefaultButton.Button1, (System.Windows.Forms.MessageBoxOptions)0x40000);  // MB_TOPMOST
     }
     public void Run(string myEntityForExecutable, string myEntityForContent) {
+      RegisterHotKey(window);
       if (fbDebugMode) {
         Console.WriteLine("Run: myEntityForExecutable=" + myEntityForExecutable + " myEntityForContent=" + myEntityForContent);
       }
@@ -670,6 +696,7 @@ namespace IdealAutomate.Core {
       }
     }
     public void Sleep(int intSleep) {
+      RegisterHotKey(window);
       if (fbDebugMode) {
         Console.WriteLine("Sleep:  intSleep=" + intSleep.ToString());
       }
@@ -679,7 +706,7 @@ namespace IdealAutomate.Core {
       _windowHandle = new WindowInteropHelper(window).Handle;
       _source = HwndSource.FromHwnd(_windowHandle);
       _source.AddHook(HwndHook);
-
+      //System.Diagnostics.Debugger.Break();
 
       RegisterHotKey(_windowHandle, HOTKEY_ID, MOD_NONE, VK_PAUSE); //CTRL + CAPS_LOCK
     }
