@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestAgentRansack", "TestAgentRansack\TestAgentRansack.csproj", "{93E926E7-1934-49CC-8675-269BE61BE3C0}"
 EndProject
 Global
