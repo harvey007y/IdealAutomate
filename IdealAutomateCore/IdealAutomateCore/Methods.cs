@@ -823,7 +823,7 @@ namespace IdealAutomate.Core {
       int handle = 0;
       StringBuilder Buff = new StringBuilder(nChars);
       handle = (int)GetForegroundWindow();
-      // If Active window has some title info.
+      // If Active window has some title info..
       if (GetWindowText(handle, Buff, nChars) > 0) {
         uint lpdwProcessId;
         uint dwCaretID = GetWindowThreadProcessId(handle, out lpdwProcessId);
