@@ -1,106 +1,22 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media.Imaging;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Windows.Media;
-using System.Threading;
-using System.Text;
 using System.Diagnostics;
-using System.Data.SqlClient;
-using System.Configuration;
-using System.Data;
+using System.Drawing;
 using System.Runtime.InteropServices;
-using System.Management;
+using System.Text;
+using System.Threading;
+using System.Windows;
+using System.Windows.Documents;
 //using WindowsInput;
-using System.Data;
-using System.Data.SqlClient;
 using WindowsInput;
 using WindowsInput.Native;
-using System.Windows.Interop;
 
 
 namespace IdealAutomate.Core {
   public class Methods {
-    [DllImport("user32.dll")]
-    private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
-
-    [DllImport("user32.dll")]
-    private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
-
-    private const int HOTKEY_ID = 9000;
-
-    //Modifiers:
-    private const uint MOD_NONE = 0x0000; //(none)
-    private const uint MOD_ALT = 0x0001; //ALT
-    private const uint MOD_CONTROL = 0x0002; //CTRL
-    private const uint MOD_SHIFT = 0x0004; //SHIFT
-    private const uint MOD_WIN = 0x0008; //WINDOWS
-    //CAPS LOCK:
-    private const uint VK_PAUSE = 0x13;
-    private  IntPtr _windowHandle;
-    private HwndSource _source;
-    private volatile bool boolPausePressed = false;
-
-
-    private  IntPtr HwndHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled) {
-      const int WM_HOTKEY = 0x0312;
-      switch (msg) {
-        case WM_HOTKEY:
-          switch (wParam.ToInt32()) {
-            case HOTKEY_ID:
-              int vkey = (((int)lParam >> 16) & 0xFFFF);
-           //   System.Diagnostics.Debugger.Break();
-              if (vkey == VK_PAUSE) {
-                boolPausePressed = true;
-                string FileDes = "IdealAutomateScript"; //FileDescription
-                var myCurrentProcess = Process.GetCurrentProcess();
-                foreach (Process x in Process.GetProcesses()) {
-                  try {
-                    if (FileDes == x.MainModule.FileVersionInfo.Comments && x.ProcessName != myCurrentProcess.ProcessName) {
-                    //  System.Diagnostics.Debugger.Break();
-                      x.Kill();
-                    }
-                  } catch (Exception) {
-
-                    continue;
-                  }
-
-                }
-            //    System.Diagnostics.Debugger.Break();
-                Console.WriteLine("Application Cancelled");
-                System.Windows.Forms.MessageBox.Show("IdealAutomateScript Cancelled - " + myCurrentProcess.ProcessName, "Header", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.None,
-    System.Windows.Forms.MessageBoxDefaultButton.Button1, (System.Windows.Forms.MessageBoxOptions)0x40000);  // MB_TOPMOST
-             
-                  _source.RemoveHook(HwndHook);
-                  UnregisterHotKey(_windowHandle, HOTKEY_ID);
-                  Environment.Exit(0);
-
-
-                handled = true;
-                //     throw new Exception("Application was cancelled!!!");
-                break;
-                //   System.Diagnostics.Debugger.Break();
-
-                //tblock.Text += "CapsLock was pressed" + Environment.NewLine;
-              }
-              handled = true;
-              break;
-          }
-          break;
-      }
-      return IntPtr.Zero;
-    }
+   
 
     private bool fbDebugMode = false;
 
@@ -139,21 +55,12 @@ namespace IdealAutomate.Core {
     private const int SW_SHOWMAXIMIZED = 3;
     private const int SW_SHOWNOACTIVATE = 4;
     private const int SW_RESTORE = 9;
-    private const int SW_SHOWDEFAULT = 10;
-    Window window;
+    private const int SW_SHOWDEFAULT = 10;   
     Process oProcess;
     public Methods() {
-      window = new Window() //make sure the window is invisible
- {
-   Width = 0,
-   Height = 0,
-   Left = -2000,
-   WindowStyle = WindowStyle.None,
-   ShowInTaskbar = false,
-   ShowActivated = false,
- };
-      window.Show();
+ 
       oProcess = Process.GetCurrentProcess();
+      BreakOnPauseKeyPress();
     }
    
     public static bool ActivateWindowByTitle(string myTitle) {
@@ -196,22 +103,8 @@ namespace IdealAutomate.Core {
 
     private const Int32 WM_GETTEXT = 0XD;
     private const Int32 WM_GETTEXTLENGTH = 0XE;
-    [System.Runtime.InteropServices.DllImport("user32.dll", EntryPoint = "SendMessageA", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Ansi, SetLastError = true)]
-    public static extern Int32 SendMessage(IntPtr hwnd, Int32 wMsg, Int32 wParam, Int32 lParam);
-    [System.Runtime.InteropServices.DllImport("user32.dll", EntryPoint = "SendMessageA", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Ansi, SetLastError = true)]
-    public static extern Int32 SendMessage(IntPtr hwnd, Int32 wMsg, Int32 wParam, string lParam);
-    [System.Runtime.InteropServices.DllImport("user32.dll", EntryPoint = "GetForegroundWindow", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Ansi, SetLastError = true)]
-    private static extern IntPtr GetForegroundWindow();
-    [System.Runtime.InteropServices.DllImport("user32.dll", EntryPoint = "GetWindowThreadProcessId", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Ansi, SetLastError = true)]
-    public static extern int GetWindowThreadProcessId(IntPtr hwnd, ref int lpdwProcessID);
-    [System.Runtime.InteropServices.DllImport("user32.dll", EntryPoint = "GetWindowTextA", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Ansi, SetLastError = true)]
-    private static extern int GetWindowText(IntPtr hWnd, string WinTitle, int MaxLength);
-    [System.Runtime.InteropServices.DllImport("user32.dll", EntryPoint = "GetWindowTextLengthA", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Ansi, SetLastError = true)]
-    private static extern int GetWindowTextLengthx(int hwnd);
-    [DllImport("user32.dll")]
-    private extern static bool ShowWindow(IntPtr hWnd, int nCmdShow);
-    bool boolContentHasFocus = true;
-    bool boolExecutablesHasFocus = false;
+
+
     # region DllImports
 
     /*- Retrieves Id of the thread that created the specified window -*/
@@ -227,7 +120,20 @@ namespace IdealAutomate.Core {
     [DllImport("user32.dll")]
     public static extern bool ClientToScreen(IntPtr hWnd, out System.Drawing.Point position);
 
-
+    [System.Runtime.InteropServices.DllImport("user32.dll", EntryPoint = "SendMessageA", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Ansi, SetLastError = true)]
+    public static extern Int32 SendMessage(IntPtr hwnd, Int32 wMsg, Int32 wParam, Int32 lParam);
+    [System.Runtime.InteropServices.DllImport("user32.dll", EntryPoint = "SendMessageA", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Ansi, SetLastError = true)]
+    public static extern Int32 SendMessage(IntPtr hwnd, Int32 wMsg, Int32 wParam, string lParam);
+    [System.Runtime.InteropServices.DllImport("user32.dll", EntryPoint = "GetForegroundWindow", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Ansi, SetLastError = true)]
+    private static extern IntPtr GetForegroundWindow();
+    [System.Runtime.InteropServices.DllImport("user32.dll", EntryPoint = "GetWindowThreadProcessId", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Ansi, SetLastError = true)]
+    public static extern int GetWindowThreadProcessId(IntPtr hwnd, ref int lpdwProcessID);
+    [System.Runtime.InteropServices.DllImport("user32.dll", EntryPoint = "GetWindowTextA", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Ansi, SetLastError = true)]
+    private static extern int GetWindowText(IntPtr hWnd, string WinTitle, int MaxLength);
+    [System.Runtime.InteropServices.DllImport("user32.dll", EntryPoint = "GetWindowTextLengthA", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Ansi, SetLastError = true)]
+    private static extern int GetWindowTextLengthx(int hwnd);
+    [DllImport("user32.dll")]
+    private extern static bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
     # endregion
     System.Drawing.Point caretPosition;
@@ -257,16 +163,87 @@ namespace IdealAutomate.Core {
     public long prevElapsedTicks = 0;
     public long ticks;
     public long tempTicks;
-    TimeSpan duration;
 
-    double seconds;
+    [System.Runtime.InteropServices.DllImport("user32", EntryPoint = "GetAsyncKeyState", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Ansi, SetLastError = true)]
+    private static extern int GetAsyncKeyState(uint vkey);
+
+    private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e) {
+      uint VK_PAUSE = 0x13;
+      int intPauseKeyState = GetAsyncKeyState(VK_PAUSE);
+      if (intPauseKeyState != 0) {
+        string FileDes = "IdealAutomateScript"; //FileDescription
+        var myCurrentProcess = Process.GetCurrentProcess();
+        foreach (Process x in Process.GetProcesses()) {
+          try {
+            if (FileDes == x.MainModule.FileVersionInfo.Comments && x.ProcessName != myCurrentProcess.ProcessName) {
+              //  System.Diagnostics.Debugger.Break();
+              x.Kill();
+            }
+          } catch (Exception) {
+
+            continue;
+          }
+
+        }
+                                try
+                        {
+                            Thread thread = new Thread(new ThreadStart(() =>
+                            {
+        var window = new Window() //make sure the window is invisible
+        {
+          Width = 300,
+          Height = 300,
+          Title = "Application Cancelled",
+          Content = "Application Cancelled",
+          WindowStyle = WindowStyle.ToolWindow,
+          Visibility = System.Windows.Visibility.Visible,
+          Topmost = true,
+          FontSize = 24,
+          ShowInTaskbar = true,
+          ShowActivated = true,
+        };
+        window.Show();
+        Sleep(5000);
+                            }));
+
+                            thread.SetApartmentState(ApartmentState.STA);
+
+                            thread.Start();
+                            thread.Join();
+                                } catch (Exception ex) {
+
+                                }
+                                Sleep(500);
+        Environment.Exit(0);
+        //Here is the code that runs when the hotkey is pressed'
+      }
+    }
+    private void BreakOnPauseKeyPress() {
+      // Create a timer and set a two millisecond interval.
+      System.Timers.Timer aTimer = new System.Timers.Timer();
+      aTimer.Interval = 2;
+
+      // Alternate method: create a Timer with an interval argument to the constructor. 
+      //aTimer = new System.Timers.Timer(2000); 
+
+      // Create a timer with a two millisecond interval.
+      aTimer = new System.Timers.Timer(2);
+
+      // Hook up the Elapsed event for the timer. 
+      aTimer.Elapsed += OnTimedEvent;
+
+      // Have the timer fire repeated events (true is the default)
+      aTimer.AutoReset = true;
+
+      // Start the timer
+      aTimer.Enabled = true;
+    }
     /// <summary>
     /// 
     /// </summary>
     /// <param name="myImage"></param>
     /// <returns></returns>
     public int[,] PutAll(ImageEntity myImage) {
-      RegisterHotKey(window);
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "PutAll:");
         foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(myImage)) {
@@ -286,7 +263,7 @@ namespace IdealAutomate.Core {
       bool boolImageFound = false;
       int intAttempts = 0;
       List<SubPositionInfo> ls = new List<SubPositionInfo>();
-      while (boolImageFound == false && intAttempts < myImage.ImageAttempts && boolPausePressed == false) {
+      while (boolImageFound == false && intAttempts < myImage.ImageAttempts) {
         ls = Click_PNG(myImage);
         if (ls.Count > 0) {
           boolImageFound = true;
@@ -306,26 +283,18 @@ namespace IdealAutomate.Core {
         intRowIndex++;
 
       }
-
-      _source.RemoveHook(HwndHook);
-      UnregisterHotKey(_windowHandle, HOTKEY_ID);
       return myArray;
-
     }
     public int[,] PutCursorPosition() {
-      RegisterHotKey(window);
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "PutCursorPosition");
       }
       int[,] myArray = new int[1, 2];
       myArray[0, 0] = System.Windows.Forms.Cursor.Position.X;
       myArray[0, 1] = System.Windows.Forms.Cursor.Position.Y;
-      _source.RemoveHook(HwndHook);
-      UnregisterHotKey(_windowHandle, HOTKEY_ID);
       return myArray;
     }
     public int[,] PutCaretPositionInArray() {
-      RegisterHotKey(window);
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "PutCaretPositionInArray");
       }
@@ -343,14 +312,11 @@ namespace IdealAutomate.Core {
 
       myArray[0, 0] = caretPosition.X;
       myArray[0, 1] = caretPosition.Y;
-      _source.RemoveHook(HwndHook);
-      UnregisterHotKey(_windowHandle, HOTKEY_ID);
       return myArray;
 
 
     }
     public void ClickImageIfExists(ImageEntity myImage) {
-      RegisterHotKey(window);
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "ClickImageIfExists:");
         foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(myImage)) {
@@ -383,12 +349,9 @@ namespace IdealAutomate.Core {
         }
         intAttempts += 1;
       }
-      _source.RemoveHook(HwndHook);
-      UnregisterHotKey(_windowHandle, HOTKEY_ID);
     }
 
     public void LeftClick(int[,] myArray) {
-      RegisterHotKey(window);
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "LeftClick:");
         int bound0 = myArray.GetUpperBound(0);
@@ -408,11 +371,8 @@ namespace IdealAutomate.Core {
       UInt32 myX1 = Convert.ToUInt32(RelX);
       UInt32 myY1 = Convert.ToUInt32(RelY);
       Position_Cursor.DoMouseClick(myX1, myY1);
-      _source.RemoveHook(HwndHook);
-      UnregisterHotKey(_windowHandle, HOTKEY_ID);
     }
     public void ShiftClick(int[,] myArray) {
-      RegisterHotKey(window);
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "ShiftClick:");
         int bound0 = myArray.GetUpperBound(0);
@@ -432,11 +392,8 @@ namespace IdealAutomate.Core {
       UInt32 myX1 = Convert.ToUInt32(RelX);
       UInt32 myY1 = Convert.ToUInt32(RelY);
       Position_Cursor.DoMouseShiftClick(myX1, myY1);
-      _source.RemoveHook(HwndHook);
-      UnregisterHotKey(_windowHandle, HOTKEY_ID);
     }
     public void RightClick(int[,] myArray) {
-      RegisterHotKey(window);
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "RightClick:");
         int bound0 = myArray.GetUpperBound(0);
@@ -456,11 +413,8 @@ namespace IdealAutomate.Core {
       UInt32 myX1 = Convert.ToUInt32(RelX);
       UInt32 myY1 = Convert.ToUInt32(RelY);
       Position_Cursor.DoMouseRightClick(myX1, myY1);
-      _source.RemoveHook(HwndHook);
-      UnregisterHotKey(_windowHandle, HOTKEY_ID);
     }
     public void PositionCursor(int[,] myArray) {
-      RegisterHotKey(window);
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "PositionCursor:");
         int bound0 = myArray.GetUpperBound(0);
@@ -475,11 +429,8 @@ namespace IdealAutomate.Core {
         }
       }
       Position_Cursor.MoveMouse(myArray[0, 0], myArray[0, 1]);
-      _source.RemoveHook(HwndHook);
-      UnregisterHotKey(_windowHandle, HOTKEY_ID);
     }
     public string PutClipboardInEntity() {
-      RegisterHotKey(window);
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "PutClipboardInEntity: ");
       }
@@ -511,12 +462,9 @@ namespace IdealAutomate.Core {
       } else {
         Console.Write("myEntity=" + myEntity);
       }
-      _source.RemoveHook(HwndHook);
-      UnregisterHotKey(_windowHandle, HOTKEY_ID);
       return myEntity;
     }
     public string PutWindowTitleInEntity() {
-      RegisterHotKey(window);
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "PutWindowTitleInEntity");
       }
@@ -528,13 +476,10 @@ namespace IdealAutomate.Core {
 
         MessageBox.Show(ex.Message);
       }
-      _source.RemoveHook(HwndHook);
-      UnregisterHotKey(_windowHandle, HOTKEY_ID);
       return myEntity;
     }
    
     public void PutEntityInClipboard(string myEntity) {
-      RegisterHotKey(window);
       if (fbDebugMode) {
         if (myEntity.Length > 5000) {
           Console.WriteLine("PutEntityInClipboard: myEntity more than 5000 in length");
@@ -560,12 +505,8 @@ namespace IdealAutomate.Core {
       } catch (Exception ex) {
         MessageBox.Show(ex.Message);
       }
-
-      _source.RemoveHook(HwndHook);
-      UnregisterHotKey(_windowHandle, HOTKEY_ID);
     }
     public void TypeText(string myEntity, int intSleep) {
-      RegisterHotKey(window);
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "TypeText: myEntity=" + myEntity + " intSleep=" + intSleep.ToString());
       }
@@ -601,112 +542,76 @@ namespace IdealAutomate.Core {
       if (myEntity == "%(f)e") {
         InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.MENU, VirtualKeyCode.VK_F); //System.Windows.Forms.Keys.Alt);
         InputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_E);
-        _source.RemoveHook(HwndHook);
-        UnregisterHotKey(_windowHandle, HOTKEY_ID);
         return;
       }
       if (myEntity == "%(\" \")n") {
         InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.MENU, VirtualKeyCode.SPACE); //System.Windows.Forms.Keys.Alt);
         InputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_N);
-        _source.RemoveHook(HwndHook);
-        UnregisterHotKey(_windowHandle, HOTKEY_ID);
         return;
       }
       if (myEntity == "%(\" \")") {
         InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.MENU, VirtualKeyCode.SPACE); //System.Windows.Forms.Keys.Alt);              
-        _source.RemoveHook(HwndHook);
-        UnregisterHotKey(_windowHandle, HOTKEY_ID);
         return;
       }
       if (myEntity == "%(\" \")x") {
         InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.MENU, VirtualKeyCode.SPACE); //System.Windows.Forms.Keys.Alt);
         InputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_X);
-        _source.RemoveHook(HwndHook);
-        UnregisterHotKey(_windowHandle, HOTKEY_ID);
         return;
       }
       if (myEntity == "%({F8})") {
         InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.MENU, VirtualKeyCode.F8); //System.Windows.Forms.Keys.Alt);
-        _source.RemoveHook(HwndHook);
-        UnregisterHotKey(_windowHandle, HOTKEY_ID);
         return;
       }
       if (myEntity == "{NUMPADADD}") {
         InputSimulator.Keyboard.KeyPress(VirtualKeyCode.ADD);
-        _source.RemoveHook(HwndHook);
-        UnregisterHotKey(_windowHandle, HOTKEY_ID);
         return;
       }
       if (myEntity == "{NUMPADMULT}") {
         InputSimulator.Keyboard.KeyPress(VirtualKeyCode.MULTIPLY);
-        _source.RemoveHook(HwndHook);
-        UnregisterHotKey(_windowHandle, HOTKEY_ID);
         return;
       }
       if (myEntity == "{ENTER}") {
         InputSimulator.Keyboard.KeyPress(VirtualKeyCode.RETURN);
-        _source.RemoveHook(HwndHook);
-        UnregisterHotKey(_windowHandle, HOTKEY_ID);
         return;
       }
       if (myEntity == "^(n)") {
         InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_N);
-        _source.RemoveHook(HwndHook);
-        UnregisterHotKey(_windowHandle, HOTKEY_ID);
         return;
       }
       if (myEntity == "^(v)") {
         InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_V);
-        _source.RemoveHook(HwndHook);
-        UnregisterHotKey(_windowHandle, HOTKEY_ID);
         return;
       }
       if (myEntity == "^(c)") {
         InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_C);
-        _source.RemoveHook(HwndHook);
-        UnregisterHotKey(_windowHandle, HOTKEY_ID);
         return;
       }
       if (myEntity == "{F5}") {
         InputSimulator.Keyboard.KeyPress(VirtualKeyCode.F5);
-        _source.RemoveHook(HwndHook);
-        UnregisterHotKey(_windowHandle, HOTKEY_ID);
         return;
       }
       if (myEntity == "{F6}") {
         InputSimulator.Keyboard.KeyPress(VirtualKeyCode.F6);
-        _source.RemoveHook(HwndHook);
-        UnregisterHotKey(_windowHandle, HOTKEY_ID);
         return;
       }
       if (myEntity == "{DOWN}") {
         InputSimulator.Keyboard.KeyPress(VirtualKeyCode.DOWN);
-        _source.RemoveHook(HwndHook);
-        UnregisterHotKey(_windowHandle, HOTKEY_ID);
         return;
       }
       if (myEntity == "{UP}") {
         InputSimulator.Keyboard.KeyPress(VirtualKeyCode.UP);
-        _source.RemoveHook(HwndHook);
-        UnregisterHotKey(_windowHandle, HOTKEY_ID);
         return;
       }
       if (myEntity == "^({END})") {
         InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.END);
-        _source.RemoveHook(HwndHook);
-        UnregisterHotKey(_windowHandle, HOTKEY_ID); 
         return;
       }
       if (myEntity == "^({HOME})") {
         InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.HOME);
-        _source.RemoveHook(HwndHook);
-        UnregisterHotKey(_windowHandle, HOTKEY_ID);
         return;
       }
       if (myEntity == "+({F10})") {
         InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.SHIFT, VirtualKeyCode.F10);
-        _source.RemoveHook(HwndHook);
-        UnregisterHotKey(_windowHandle, HOTKEY_ID);
         return;
       }
       if (myEntity == "{LWin}") {
@@ -716,28 +621,19 @@ namespace IdealAutomate.Core {
         KeyboardSend.KeyUp(System.Windows.Forms.Keys.LWin);
         KeyboardSend.KeyUp(System.Windows.Forms.Keys.D4);
         KeyboardSend.KeyUp(System.Windows.Forms.Keys.Right);
-        _source.RemoveHook(HwndHook);
-        UnregisterHotKey(_windowHandle, HOTKEY_ID);
       } else {
 
         System.Windows.Forms.SendKeys.SendWait(myEntity);
-        _source.RemoveHook(HwndHook);
-        UnregisterHotKey(_windowHandle, HOTKEY_ID);
-
       }
     }
     public void MessageBoxShow(string myEntity) {
-      RegisterHotKey(window);
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "MessageBoxShow: myEntity=" + myEntity);
       }
       System.Windows.Forms.MessageBox.Show(myEntity, "Header", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.None,
     System.Windows.Forms.MessageBoxDefaultButton.Button1, (System.Windows.Forms.MessageBoxOptions)0x40000);  // MB_TOPMOST
-      _source.RemoveHook(HwndHook);
-      UnregisterHotKey(_windowHandle, HOTKEY_ID);
     }
     public void Run(string myEntityForExecutable, string myEntityForContent) {
-      RegisterHotKey(window);
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "Run: myEntityForExecutable=" + myEntityForExecutable + " myEntityForContent=" + myEntityForContent);
       }
@@ -745,8 +641,6 @@ namespace IdealAutomate.Core {
       if (myEntityForExecutable == null) {
         string message = "Error - You need to specify executable primitive  "; // +"; EntityName is: " + myEntityForExecutable.EntityName;
         MessageBoxResult result = MessageBox.Show(message, "Run-time Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        _source.RemoveHook(HwndHook);
-        UnregisterHotKey(_windowHandle, HOTKEY_ID);
         return;
       }
       string strExecutable = myEntityForExecutable;
@@ -765,33 +659,14 @@ namespace IdealAutomate.Core {
           MessageBox.Show(ex.ToString());
         }
       }
-      _source.RemoveHook(HwndHook);
-      UnregisterHotKey(_windowHandle, HOTKEY_ID);
     }
     public void Sleep(int intSleep) {
-      RegisterHotKey(window);
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "Sleep:  intSleep=" + intSleep.ToString());
       }
       System.Threading.Thread.Sleep(intSleep);
-      _source.RemoveHook(HwndHook);
-      UnregisterHotKey(_windowHandle, HOTKEY_ID);
     }
-    public void RegisterHotKey(Window window) {
-      _windowHandle = new WindowInteropHelper(window).Handle;
-      _source = HwndSource.FromHwnd(_windowHandle);
-      _source.AddHook(HwndHook);
-      //System.Diagnostics.Debugger.Break();
-
-      RegisterHotKey(_windowHandle, HOTKEY_ID, MOD_NONE, VK_PAUSE); //CTRL + CAPS_LOCK
-    }
-    public static void CloseApp() {
-      //       System.Diagnostics.Debugger.Break();
-      //_source.RemoveHook(HwndHook);
-      //UnregisterHotKey(_windowHandle, HOTKEY_ID);
-      Application.Current.Shutdown();
-    }
-
+ 
     private List<SubPositionInfo> Click_PNG(ImageEntity myImage) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "Click_PNG:");
