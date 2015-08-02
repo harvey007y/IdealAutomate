@@ -12,6 +12,9 @@ using System.Windows.Documents;
 //using WindowsInput;
 using WindowsInput;
 using WindowsInput.Native;
+using System;
+using System.Data;
+using System.Data.SqlClient;
 
 
 namespace IdealAutomate.Core {
@@ -237,6 +240,30 @@ namespace IdealAutomate.Core {
 
       // Start the timer
       aTimer.Enabled = true;
+    }
+    public string GetValueByKey(string pKey, string pInitialCatalog) {
+
+      string myValue = "";
+      // InitialCatalog is the database name where keyvalue pairs are stored
+        SqlConnection con = new SqlConnection("Server=(local)\\SQLEXPRESS;Initial Catalog=" + pInitialCatalog + ";Integrated Security=SSPI");
+        SqlCommand cmd = new SqlCommand("SelectValueByKey", con);
+        cmd.CommandType = CommandType.StoredProcedure;
+ 
+        // Add Parameters to Command Parameters collection
+        cmd.Parameters.Add("@myKey", SqlDbType.VarChar);
+        cmd.Parameters["@myKey"].Value = pKey;
+    
+ 
+        try
+        {
+            con.Open();
+            myValue = (string)cmd.ExecuteScalar();           
+        }
+        finally
+        {
+            con.Close();
+        }
+        return myValue;
     }
     /// <summary>
     /// 
