@@ -9,7 +9,6 @@ using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Documents;
-//using WindowsInput;
 using WindowsInput;
 using WindowsInput.Native;
 using System;
