@@ -2,22 +2,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows;
-using System.Windows.Documents;
 using WindowsInput;
 using WindowsInput.Native;
-using System;
-using System.Data;
-using System.Data.SqlClient;
 
 
-namespace IdealAutomate.Core {
-  public class Methods {
+
+namespace IdealAutomate.Core
+{
+    public class Methods {
    
 
     private bool fbDebugMode = false;
