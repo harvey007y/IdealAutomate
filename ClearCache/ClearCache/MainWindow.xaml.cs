@@ -26,6 +26,11 @@ namespace ClearCache {
       IdealAutomate.Core.Methods myActions = new Methods();
 
       myActions.DebugMode = true;
+      int intOperInc = 2300;
+      // Alternatives are: SqlServer2008, SqlServer2014
+      string strServer = myActions.GetValueByKey("SqlServer2008", "IdealAutomateDB");
+      // Alternatives are: ChristysDB, QA6DB
+      string strDatabaseName = myActions.GetValueByKey("ChristysDB", "IdealAutomateDB");
       ImageEntity myImage = new ImageEntity();
 
       string strWindowTitle = myActions.PutWindowTitleInEntity();
@@ -55,7 +60,41 @@ namespace ClearCache {
       myActions.TypeText("%(d)", 1000);  // delete
       myActions.TypeText("%(d)", 1000);  // delete
       myActions.TypeText("{ESC}", 1000);  // escape
-      myActions.TypeText("%(fx)", 1000);  // close internet explorer
+      myActions.TypeText("%(f)", 1000);  // close internet explorer
+      myActions.TypeText("x", 1000);  // close internet explorer
+      string myBigSqlString = "DELETE FROM [dbo].[CLIENTSESSION] WHERE OPERINC = " + intOperInc.ToString();
+
+      bool boolWindowFound = IdealAutomate.Core.Methods.ActivateWindowByTitle("Microsoft SQL Server Management Studio");
+      // If Sql Server Profiler not running, we have a problem
+      if (boolWindowFound == false) {
+        myActions.Run(@"C:\Program Files (x86)\Microsoft SQL Server\100\Tools\Binn\VSShell\Common7\IDE\SSMS.exe", "-S " + strServer + " -D " + strDatabaseName);
+        myActions.Sleep(15000);
+      }
+      for (int i = 0; i < 10; i++) {
+        if (myActions.PutWindowTitleInEntity() == "Microsoft SQL Server Management Studio") {
+          // close notepad alt f x
+          break;
+        }
+        myActions.Sleep(500);
+      }
+      myActions.Sleep(2000);
+      myActions.TypeText("%(\" \")x", 1000); // maximize SSMS
+      myActions.TypeText("%(f)e", 1000); // file connection explorer
+      myActions.TypeText("{DEL}", 500); // file connection explorer
+      myActions.TypeText(strServer, 500); // file connection explorer
+      myActions.TypeText("{ENTER}", 1000); // select the server
+      myActions.TypeText("{DOWN}", 500); // select databases
+      // {NUMPADMULT}
+      myActions.TypeText("{NUMPADADD}", 1000); // expand databases
+      myActions.TypeText("%({F8})", 1000); // open server in object explorer
+      myActions.TypeText(strDatabaseName, 1000); // select the database
+      myActions.TypeText("{ENTER}", 1000); // open new query window
+      myActions.TypeText("^(n)", 1000); // open new query window
+      myActions.PutEntityInClipboard(myBigSqlString);
+      myActions.TypeText("^(v)", 1000); // put query in window
+      //  myActions.TypeText("{F5}", 1000); // run the query
+      myActions.TypeText("^(k)", 1000); // put query in window
+      myActions.TypeText("^(f)", 1000); // put query in window
 
 
       goto myExit;
