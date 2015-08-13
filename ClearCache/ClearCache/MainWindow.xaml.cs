@@ -1,15 +1,35 @@
 ﻿using System.Windows;
 using IdealAutomate.Core;
+using System;
+using System.Collections;
 
 namespace ClearCache {
   /// <summary>
-  /// Interaction logic for MainWindow.xaml
+  /// Clear Cache
+  /// You have to clear it from 4 places:
+  ///It depends on what you have setup in GwOptionsSetup for the company that you are logging in under, but for demo for me it is located at: C:\GTreasury\WebCache\Clients\DEMO
+  ///1.	Then, I just delete everything in that folder to clear the cache for the website.
+  ///2.	You may also need to delete your clientsession record from the clientsession table.
+  ///DELETE FROM [CLB_10_17_5].[dbo].[CLIENTSESSION]
+  ///      WHERE OPERINC = 2300 -- this is my operinc - you would use yours
+  ///GO
+  ///3.	You may also need to clear your cookies. Mine are located at:
+  ///C:\Users\wharvey\AppData\Roaming\Microsoft\Windows\Cookies
+  ///4.	Delete temporary files, etc. from internet explorer/options
   /// </summary>
   public partial class MainWindow : Window {
 
     public MainWindow() {
 
-
+      string[] args = Environment.GetCommandLineArgs();
+      ResourceDictionary dictionary = new ResourceDictionary();
+      for (int index = 1; index < args.Length - 1; index += 2) {
+        dictionary.Add(args[index], args[index + 1]);
+      }
+      //  dictionary.Add("myParm", "Hello World");
+      if (dictionary.Contains("myParm")) {
+        MessageBox.Show(dictionary["myParm"].ToString());
+      }
 
       var window = new Window() //make sure the window is invisible
 {
@@ -126,7 +146,7 @@ namespace ClearCache {
       if (myArray3.Length == 0) {
         myActions.MessageBoxShow("I could not find Script_Completed_OK_Button.PNG");
       }
-      myExit:
+    myExit:
       Application.Current.Shutdown();
 
     }

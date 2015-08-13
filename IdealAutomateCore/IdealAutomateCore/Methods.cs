@@ -12,13 +12,13 @@ using System.Threading;
 using System.Windows;
 using WindowsInput;
 using WindowsInput.Native;
+using System.IO;
 
 
 
-namespace IdealAutomate.Core
-{
-    public class Methods {
-   
+namespace IdealAutomate.Core {
+  public class Methods {
+
 
     private bool fbDebugMode = false;
 
@@ -57,16 +57,24 @@ namespace IdealAutomate.Core
     private const int SW_SHOWMAXIMIZED = 3;
     private const int SW_SHOWNOACTIVATE = 4;
     private const int SW_RESTORE = 9;
-    private const int SW_SHOWDEFAULT = 10;   
+    private const int SW_SHOWDEFAULT = 10;
     Process oProcess;
     public Methods() {
- 
+
       oProcess = Process.GetCurrentProcess();
       BreakOnPauseKeyPress();
+      string directory = AppDomain.CurrentDomain.BaseDirectory;
+      DirectoryInfo dir = new DirectoryInfo(directory);
+
+      foreach (FileInfo fi in dir.GetFiles()) {
+        if (fi.Extension.ToUpper() == ".BMP" && fi.Name.StartsWith("temp")) {
+          fi.Delete();
+        }
+      }
     }
-   
+
     public static bool ActivateWindowByTitle(string myTitle) {
-      
+
       //Find the window, using the CORRECT Window Title, for example, Notepad
       int hWnd = FindWindow(null, myTitle);
       if (hWnd > 0) //If found
@@ -187,35 +195,33 @@ namespace IdealAutomate.Core
           }
 
         }
-                                try
-                        {
-                            Thread thread = new Thread(new ThreadStart(() =>
-                            {
-        var window = new Window() //make sure the window is invisible
-        {
-          Width = 300,
-          Height = 300,
-          Title = "Application Cancelled",
-          Content = "Application Cancelled",
-          WindowStyle = WindowStyle.ToolWindow,
-          Visibility = System.Windows.Visibility.Visible,
-          Topmost = true,
-          FontSize = 24,
-          ShowInTaskbar = true,
-          ShowActivated = true,
-        };
-        window.Show();
-        Sleep(5000);
-                            }));
+        try {
+          Thread thread = new Thread(new ThreadStart(() => {
+            var window = new Window() //make sure the window is invisible
+            {
+              Width = 300,
+              Height = 300,
+              Title = "Application Cancelled",
+              Content = "Application Cancelled",
+              WindowStyle = WindowStyle.ToolWindow,
+              Visibility = System.Windows.Visibility.Visible,
+              Topmost = true,
+              FontSize = 24,
+              ShowInTaskbar = true,
+              ShowActivated = true,
+            };
+            window.Show();
+            Sleep(5000);
+          }));
 
-                            thread.SetApartmentState(ApartmentState.STA);
+          thread.SetApartmentState(ApartmentState.STA);
 
-                            thread.Start();
-                            thread.Join();
-                                } catch (Exception ex) {
+          thread.Start();
+          thread.Join();
+        } catch (Exception ex) {
 
-                                }
-                                Sleep(500);
+        }
+        Sleep(500);
         Environment.Exit(0);
         //Here is the code that runs when the hotkey is pressed'
       }
@@ -244,25 +250,22 @@ namespace IdealAutomate.Core
 
       string myValue = "";
       // InitialCatalog is the database name where keyvalue pairs are stored
-        SqlConnection con = new SqlConnection("Server=(local)\\SQLEXPRESS;Initial Catalog=" + pInitialCatalog + ";Integrated Security=SSPI");
-        SqlCommand cmd = new SqlCommand("SelectValueByKey", con);
-        cmd.CommandType = CommandType.StoredProcedure;
- 
-        // Add Parameters to Command Parameters collection
-        cmd.Parameters.Add("@myKey", SqlDbType.VarChar);
-        cmd.Parameters["@myKey"].Value = pKey;
-    
- 
-        try
-        {
-            con.Open();
-            myValue = (string)cmd.ExecuteScalar();           
-        }
-        finally
-        {
-            con.Close();
-        }
-        return myValue;
+      SqlConnection con = new SqlConnection("Server=(local)\\SQLEXPRESS;Initial Catalog=" + pInitialCatalog + ";Integrated Security=SSPI");
+      SqlCommand cmd = new SqlCommand("SelectValueByKey", con);
+      cmd.CommandType = CommandType.StoredProcedure;
+
+      // Add Parameters to Command Parameters collection
+      cmd.Parameters.Add("@myKey", SqlDbType.VarChar);
+      cmd.Parameters["@myKey"].Value = pKey;
+
+
+      try {
+        con.Open();
+        myValue = (string)cmd.ExecuteScalar();
+      } finally {
+        con.Close();
+      }
+      return myValue;
     }
     /// <summary>
     /// 
@@ -504,7 +507,7 @@ namespace IdealAutomate.Core
       }
       return myEntity;
     }
-   
+
     public void PutEntityInClipboard(string myEntity) {
       if (fbDebugMode) {
         if (myEntity.Length > 5000) {
@@ -652,6 +655,67 @@ namespace IdealAutomate.Core
         System.Windows.Forms.SendKeys.SendWait(myEntity);
       }
     }
+
+   public void CloseApplicationAltFx(int intSleep) {
+      if (fbDebugMode) {
+        Console.WriteLine(oProcess.ProcessName + "==> " + "CloseInternetExplorer: intSleep=" + intSleep.ToString());
+      }
+      InputSimulator InputSimulator = new InputSimulator();
+      if (intSleep > 0) {
+        System.Threading.Thread.Sleep(intSleep);
+      }
+       InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.MENU, VirtualKeyCode.VK_F); //System.Windows.Forms.Keys.Alt);
+      System.Threading.Thread.Sleep(200);
+      InputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_X);
+    }
+   public void CloseApplicationAltFc(int intSleep) {
+     if (fbDebugMode) {
+       Console.WriteLine(oProcess.ProcessName + "==> " + "CloseInternetExplorer: intSleep=" + intSleep.ToString());
+     }
+     InputSimulator InputSimulator = new InputSimulator();
+     if (intSleep > 0) {
+       System.Threading.Thread.Sleep(intSleep);
+     }
+     InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.MENU, VirtualKeyCode.VK_F); //System.Windows.Forms.Keys.Alt);
+     System.Threading.Thread.Sleep(200);
+     InputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_C);
+   }
+    public void SelectAllCopy(int intSleep) {
+      if (fbDebugMode) {
+        Console.WriteLine(oProcess.ProcessName + "==> " + "SelectAllCopy: intSleep=" + intSleep.ToString());
+      }
+      InputSimulator InputSimulator = new InputSimulator();
+      if (intSleep > 0) {
+        System.Threading.Thread.Sleep(intSleep);
+      }
+      InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_A);
+      System.Threading.Thread.Sleep(200);
+      InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_C);
+    }
+    public void SelectAllPaste(int intSleep) {
+      if (fbDebugMode) {
+        Console.WriteLine(oProcess.ProcessName + "==> " + "SelectAllPaste: intSleep=" + intSleep.ToString());
+      }
+      InputSimulator InputSimulator = new InputSimulator();
+      if (intSleep > 0) {
+        System.Threading.Thread.Sleep(intSleep);
+      }
+      InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_A);
+      System.Threading.Thread.Sleep(200);
+      InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_V);
+    }
+    public void SelectAllDelete(int intSleep) {
+      if (fbDebugMode) {
+        Console.WriteLine(oProcess.ProcessName + "==> " + "SelectAllDelete: intSleep=" + intSleep.ToString());
+      }
+      InputSimulator InputSimulator = new InputSimulator();
+      if (intSleep > 0) {
+        System.Threading.Thread.Sleep(intSleep);
+      }
+      InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_A);
+      System.Threading.Thread.Sleep(200);
+      InputSimulator.Keyboard.KeyPress(VirtualKeyCode.DELETE);
+    }
     public void MessageBoxShow(string myEntity) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "MessageBoxShow: myEntity=" + myEntity);
@@ -692,7 +756,7 @@ namespace IdealAutomate.Core
       }
       System.Threading.Thread.Sleep(intSleep);
     }
- 
+
     private List<SubPositionInfo> Click_PNG(ImageEntity myImage) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "Click_PNG:");
@@ -848,7 +912,7 @@ namespace IdealAutomate.Core
       const int nChars = 256;
       int handle = 0;
       StringBuilder Buff = new StringBuilder(nChars);
-      handle = (int)GetForegroundWindow();
+      handle = (int)GetForegroundWindow(); 
       // If Active window has some title info..
       if (GetWindowText(handle, Buff, nChars) > 0) {
         uint lpdwProcessId;
