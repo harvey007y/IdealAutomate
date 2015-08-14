@@ -67,6 +67,7 @@ namespace CopyVSExecutableToIdealAutomate {
       myImage.ImageAttempts = 3;
       myImage.ImageRelativeX = 10;
       myImage.ImageRelativeY = 10;
+      myImage.ImageTolerance = 99;
 
      
       int[,] myArray3 = myActions.PutAll(myImage);
