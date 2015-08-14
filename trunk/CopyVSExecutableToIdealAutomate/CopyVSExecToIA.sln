@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopyVSExecutableToIdealAutomate", "CopyVSExecutableToIdealAutomate\CopyVSExecutableToIdealAutomate.csproj", "{D95D594E-BB53-4549-BAFD-BB0AB96EF13A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CopyVSExecToIA", "CopyVSExecutableToIdealAutomate\CopyVSExecToIA.csproj", "{D95D594E-BB53-4549-BAFD-BB0AB96EF13A}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
