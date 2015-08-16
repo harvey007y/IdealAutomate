@@ -13,6 +13,7 @@ using System.Windows;
 using WindowsInput;
 using WindowsInput.Native;
 using System.IO;
+using System.Linq;
 
 
 
@@ -73,7 +74,7 @@ namespace IdealAutomate.Core {
       }
     }
 
-    public static bool ActivateWindowByTitle(string myTitle) {
+    public bool ActivateWindowByTitle(string myTitle) {
 
       //Find the window, using the CORRECT Window Title, for example, Notepad
       int hWnd = FindWindow(null, myTitle);
@@ -519,8 +520,8 @@ namespace IdealAutomate.Core {
       try {
 
         Thread thread = new Thread(new ThreadStart(() => {
-
-          Clipboard.SetData(DataFormats.Text, (Object)myEntity);
+          Clipboard.Clear();
+          Clipboard.SetDataObject((Object)myEntity, true);
           // or call logic here
 
 
@@ -749,6 +750,47 @@ namespace IdealAutomate.Core {
           MessageBox.Show(ex.ToString());
         }
       }
+    }
+    public void RunSync(string myEntityForExecutable, string myEntityForContent) {
+      if (fbDebugMode) {
+        Console.WriteLine(oProcess.ProcessName + "==> " + "RunSync: myEntityForExecutable=" + myEntityForExecutable + " myEntityForContent=" + myEntityForContent);
+      }
+
+      if (myEntityForExecutable == null) {
+        string message = "Error - You need to specify executable primitive  "; // +"; EntityName is: " + myEntityForExecutable.EntityName;
+        MessageBoxResult result = MessageBox.Show(message, "Run-time Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        return;
+      }
+      string strExecutable = myEntityForExecutable;
+
+      string strContent = "";
+      if (myEntityForContent != null) {
+        strContent = myEntityForContent;
+      }
+      var p = new Process();
+      p.StartInfo.FileName = strExecutable;
+      if (strContent != "") {
+        p.StartInfo.Arguments = string.Concat("", strContent, "");
+      }
+      bool started = true;
+      p.Start();
+      int procId = 0;
+      try {
+        procId = p.Id;
+        Console.WriteLine("ID: " + procId);
+      } catch (InvalidOperationException) {
+        started = false;
+      } catch (Exception ex) {
+        started = false;
+      }
+      while (started == true && GetProcByID(procId) != null) {
+        System.Threading.Thread.Sleep(1000);
+      }
+    
+    }
+    private Process GetProcByID(int id) {
+      Process[] processlist = Process.GetProcesses();
+      return processlist.FirstOrDefault(pr => pr.Id == id);
     }
     public void Sleep(int intSleep) {
       if (fbDebugMode) {

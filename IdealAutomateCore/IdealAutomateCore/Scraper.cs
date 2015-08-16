@@ -22,9 +22,15 @@ using System.Windows.Input;
 /*
  * Steps for pattern recognition:
 1. CreateSmallBoolArray - Walk thru small image and create boolArray that indicates if next pixel is same as current pixel.
-2. FindLeastCommonPatternInSmallBoolArray - Walk thru boolArray and find least common pattern of 10 pixels - the pattern will need to indicate patternpixelpos for xwrap and ywrap.
+2. FindLeastCommonPatternInSmallBoolArray - Walk thru boolArray and find least common pattern of 10 pixels - 
+ * the pattern will need to indicate patternpixelpos for xwrap and ywrap.
 3. LookForLeastCommonPatternInBigImage - Walk thru big image comparing each pixel to least common pattern
-4. ImagePatternThere - When you find a match in the big image for the least common pattern,  you have to find orig x and orig y by subtracting x and y offset for least common pattern from current pixel in big image.  Starting with orig x and orig y, you have to see if big image contains the pattern for the small image.  You have to wrap within big image at same width and height as what the small image is. If you exceed bounds of big image for x or y, you say that the small image is not found there.
+4. ImagePatternThere - When you find a match in the big image for the least common pattern,  you have to 
+ * find orig x and orig y by subtracting x and y offset for least common pattern from current pixel in big image.  
+ * Starting with orig x and orig y, you have to see if big image contains the
+ * pattern for the small image.  You have to wrap within big image at same width 
+ * and height as what the small image is. If you exceed bounds of big image for 
+ * x or y, you say that the small image is not found there.
 */
 namespace IdealAutomate.Core
 {
