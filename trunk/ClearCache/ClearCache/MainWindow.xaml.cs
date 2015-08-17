@@ -84,7 +84,7 @@ namespace ClearCache {
       myActions.TypeText("x", 1000);  // close internet explorer
       string myBigSqlString = "DELETE FROM [dbo].[CLIENTSESSION] WHERE OPERINC = " + intOperInc.ToString();
 
-      bool boolWindowFound = IdealAutomate.Core.Methods.ActivateWindowByTitle("Microsoft SQL Server Management Studio");
+      bool boolWindowFound = myActions.ActivateWindowByTitle("Microsoft SQL Server Management Studio");
       // If Sql Server Profiler not running, we have a problem
       if (boolWindowFound == false) {
         myActions.Run(@"C:\Program Files (x86)\Microsoft SQL Server\100\Tools\Binn\VSShell\Common7\IDE\SSMS.exe", "-S " + strServer + " -D " + strDatabaseName);

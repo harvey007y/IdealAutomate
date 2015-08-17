@@ -22,7 +22,8 @@ namespace IdealAutomate.Core {
 
 
     private bool fbDebugMode = false;
-
+    private int intFileCtr = 0;
+    bool boolUseGrayScaleDB = false;
     public bool DebugMode {
       get { return fbDebugMode; }
       set { fbDebugMode = value; }
@@ -282,6 +283,10 @@ namespace IdealAutomate.Core {
           Console.WriteLine("{0}={1}", name, value);
         }
       }
+      int[,] intArray = new int[,]{ {-50, -50}};
+
+      PositionCursor(intArray);
+ 
       // If ParentImage != null, we need to get the parent image and 
       // do everything that we normally to for an image 
       // to the parent image. If the parent image is found,
@@ -293,18 +298,23 @@ namespace IdealAutomate.Core {
       bool boolImageFound = false;
       int intAttempts = 0;
       List<SubPositionInfo> ls = new List<SubPositionInfo>();
+      
       while (boolImageFound == false && intAttempts < myImage.ImageAttempts) {
-        ls = Click_PNG(myImage);
+        ls = Click_PNG(myImage, boolUseGrayScaleDB);
         if (ls.Count > 0) {
           boolImageFound = true;
         }
         intAttempts += 1;
+      //  boolUseGrayScaleDB = !boolUseGrayScaleDB;
       }
       int intRowIndex = 0;
       int[,] myArray = new int[0, 0];
-
-      foreach (var myRow in ls) {
+      List<SubPositionInfo> SortedList = ls.OrderByDescending(o => o.percentcorrect).ToList();
+      foreach (var myRow in SortedList) {
         int[] NewSizes = new int[] { intRowIndex + 1, 2 };
+        if (myRow.percentcorrect < myImage.ImageTolerance) {
+          break;
+        }
         myArray = (int[,])myArray.ResizeArray(NewSizes);
         myArray[intRowIndex, 0] = myRow.myPoint.X;
         myArray[intRowIndex, 1] = myRow.myPoint.Y;
@@ -355,6 +365,10 @@ namespace IdealAutomate.Core {
           Console.WriteLine("{0}={1}", name, value);
         }
       }
+      int[,] intArray = new int[,] { { -50, -50 } };
+
+      PositionCursor(intArray);
+
       // If ParentImage != null, we need to get the parent image and 
       // do everything that we normally to for an image 
       // to the parent image. If the parent image is found,
@@ -367,10 +381,11 @@ namespace IdealAutomate.Core {
       int intAttempts = 0;
       List<SubPositionInfo> ls = new List<SubPositionInfo>();
       while (boolImageFound == false && intAttempts < myImage.ImageAttempts) {
-        ls = Click_PNG(myImage);
+        ls = Click_PNG(myImage, boolUseGrayScaleDB);
         if (ls.Count > 0) {
+          List<SubPositionInfo> SortedList = ls.OrderByDescending(o => o.percentcorrect).ToList();
           boolImageFound = true;
-          System.Drawing.Point p = ls[0].myPoint;
+          System.Drawing.Point p = SortedList[0].myPoint;
           Position_Cursor.MoveMouse(p.X, p.Y);
           UInt32 myX = Convert.ToUInt32(p.X);
           UInt32 myY = Convert.ToUInt32(p.Y);
@@ -378,6 +393,7 @@ namespace IdealAutomate.Core {
           break;
         }
         intAttempts += 1;
+    //    boolUseGrayScaleDB = !boolUseGrayScaleDB;
       }
     }
 
@@ -693,7 +709,36 @@ namespace IdealAutomate.Core {
       System.Threading.Thread.Sleep(200);
       InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_C);
     }
+    public string SelectAllCopyIntoEntity(int intSleep) {
+      if (fbDebugMode) {
+        Console.WriteLine(oProcess.ProcessName + "==> " + "SelectAllCopy: intSleep=" + intSleep.ToString());
+      }
+      InputSimulator InputSimulator = new InputSimulator();
+      if (intSleep > 0) {
+        System.Threading.Thread.Sleep(intSleep);
+      }
+      InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_A);
+      System.Threading.Thread.Sleep(200);
+      InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_C);
+      return PutClipboardInEntity();
+    }
     public void SelectAllPaste(int intSleep) {
+      if (fbDebugMode) {
+        Console.WriteLine(oProcess.ProcessName + "==> " + "SelectAllPaste: intSleep=" + intSleep.ToString());
+      }
+      InputSimulator InputSimulator = new InputSimulator();
+      if (intSleep > 0) {
+        System.Threading.Thread.Sleep(intSleep);
+      }
+      InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_A);
+      System.Threading.Thread.Sleep(200);
+      if (intSleep > 0) {
+        System.Threading.Thread.Sleep(intSleep);
+      }
+      InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_V);
+    }
+    public void SelectAllPasteFromEntity(string myEntity, int intSleep) {
+      PutEntityInClipboard(myEntity);
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "SelectAllPaste: intSleep=" + intSleep.ToString());
       }
@@ -799,7 +844,7 @@ namespace IdealAutomate.Core {
       System.Threading.Thread.Sleep(intSleep);
     }
 
-    private List<SubPositionInfo> Click_PNG(ImageEntity myImage) {
+    private List<SubPositionInfo> Click_PNG(ImageEntity myImage, bool boolUseGrayScaleDB) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "Click_PNG:");
         foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(myImage)) {
@@ -824,12 +869,29 @@ namespace IdealAutomate.Core {
       //bm;
       // find the least popular color in sub image and find the relative position in
       // subimage
+      if (boolUseGrayScaleDB) {
+        intFileCtr += 1;
+        string myfile = "temp" + intFileCtr + ".bmp";
+        System.IO.File.Delete(directory + myfile);
+        bm.Save(directory + myfile, System.Drawing.Imaging.ImageFormat.Bmp);
+        System.Drawing.Image myImageD = System.Drawing.Image.FromFile(directory + myfile);
+        // myImage = System.Drawing.Image.FromFile(@"C:\TFS\WadeHome\Applications\TreeView\Sample Application\Images\Small.png");
+
+        myImageD = Scraper.ConvertToGrayscale(myImageD);
+        bm = new Bitmap(myImageD);
+        intFileCtr += 1;
+        myfile = "temp" + intFileCtr + ".bmp";
+        System.IO.File.Delete(directory + myfile);
+        bm.Save(directory + myfile, System.Drawing.Imaging.ImageFormat.Bmp);
+
+        myImageD.Dispose();
+      }
       Hashtable pixels = new Hashtable();
 
       //resultsTextBox.Text += "Searching..." + scriptStep.Seq1.ToString() + Environment.NewLine;
       Console.WriteLine(oProcess.ProcessName + "==> " + "Searching..." + myImage.ImageFile + Environment.NewLine);
 
-      bool boolUseGrayScaleDB = false;
+    
       // Find subimages
       Bitmap bmx;
 
