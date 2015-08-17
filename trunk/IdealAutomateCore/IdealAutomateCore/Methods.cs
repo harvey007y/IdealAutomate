@@ -283,7 +283,7 @@ namespace IdealAutomate.Core {
           Console.WriteLine("{0}={1}", name, value);
         }
       }
-      int[,] intArray = new int[,]{ {-50, -50}};
+      int[,] intArray = new int[,]{ {2000, 2000}};
 
       PositionCursor(intArray);
  
@@ -365,7 +365,7 @@ namespace IdealAutomate.Core {
           Console.WriteLine("{0}={1}", name, value);
         }
       }
-      int[,] intArray = new int[,] { { -50, -50 } };
+      int[,] intArray = new int[,] { { 2000, 2000 } };
 
       PositionCursor(intArray);
 
