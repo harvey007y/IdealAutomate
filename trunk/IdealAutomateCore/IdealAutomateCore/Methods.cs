@@ -23,7 +23,7 @@ namespace IdealAutomate.Core {
 
     private bool fbDebugMode = false;
     private int intFileCtr = 0;
-    bool boolUseGrayScaleDB = false;
+    bool boolUseGrayScaleDB = true;
     public bool DebugMode {
       get { return fbDebugMode; }
       set { fbDebugMode = value; }
@@ -305,7 +305,7 @@ namespace IdealAutomate.Core {
           boolImageFound = true;
         }
         intAttempts += 1;
-      //  boolUseGrayScaleDB = !boolUseGrayScaleDB;
+        boolUseGrayScaleDB = true; //!boolUseGrayScaleDB;
       }
       int intRowIndex = 0;
       int[,] myArray = new int[0, 0];
@@ -393,7 +393,7 @@ namespace IdealAutomate.Core {
           break;
         }
         intAttempts += 1;
-    //    boolUseGrayScaleDB = !boolUseGrayScaleDB;
+        boolUseGrayScaleDB = true; // !boolUseGrayScaleDB;
       }
     }
 
@@ -870,23 +870,23 @@ namespace IdealAutomate.Core {
       // find the least popular color in sub image and find the relative position in
       // subimage
       if (boolUseGrayScaleDB) {
-        intFileCtr += 1;
-        string myfile = "temp" + intFileCtr + ".bmp";
-        System.IO.File.Delete(directory + myfile);
-        bm.Save(directory + myfile, System.Drawing.Imaging.ImageFormat.Bmp);
-        System.Drawing.Image myImageD = System.Drawing.Image.FromFile(directory + myfile);
-        // myImage = System.Drawing.Image.FromFile(@"C:\TFS\WadeHome\Applications\TreeView\Sample Application\Images\Small.png");
+        //intFileCtr += 1;
+        //string myfile = "temp" + intFileCtr + ".bmp";
+        //System.IO.File.Delete(directory + myfile);
+        //bm.Save(directory + myfile, System.Drawing.Imaging.ImageFormat.Bmp);
+        //System.Drawing.Image myImageD = System.Drawing.Image.FromFile(directory + myfile);
+        //// myImage = System.Drawing.Image.FromFile(@"C:\TFS\WadeHome\Applications\TreeView\Sample Application\Images\Small.png");
 
-        myImageD = Scraper.ConvertToGrayscale(myImageD);
-        bm = new Bitmap(myImageD);
-        intFileCtr += 1;
-        myfile = "temp" + intFileCtr + ".bmp";
-        System.IO.File.Delete(directory + myfile);
-        bm.Save(directory + myfile, System.Drawing.Imaging.ImageFormat.Bmp);
+        //myImageD = Scraper.ConvertToGrayscale(myImageD);
+        //bm = new Bitmap(myImageD);
+        //intFileCtr += 1;
+        //myfile = "temp" + intFileCtr + ".bmp";
+        //System.IO.File.Delete(directory + myfile);
+        //bm.Save(directory + myfile, System.Drawing.Imaging.ImageFormat.Bmp);
 
-        myImageD.Dispose();
+        //myImageD.Dispose();
       }
-      Hashtable pixels = new Hashtable();
+      Hashtable pixels = new Hashtable(); // looks like this is no longer used and can be deleted
 
       //resultsTextBox.Text += "Searching..." + scriptStep.Seq1.ToString() + Environment.NewLine;
       Console.WriteLine(oProcess.ProcessName + "==> " + "Searching..." + myImage.ImageFile + Environment.NewLine);
