@@ -883,7 +883,7 @@ namespace IdealAutomate.Core {
       System.Threading.Thread.Sleep(intSleep);
     }
 
-    protected void WriteLogSimple(string pMsg) {
+    public void WriteLogSimple(string pMsg) {
 
       if (Directory.Exists("C:\\Data") == false) {
         Directory.CreateDirectory("C:\\Data");
