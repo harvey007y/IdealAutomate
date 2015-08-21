@@ -277,10 +277,12 @@ namespace IdealAutomate.Core {
     public int[,] PutAll(ImageEntity myImage) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "PutAll:");
+        WriteLogSimple(oProcess.ProcessName + "==> " + "PutAll:");
         foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(myImage)) {
           string name = descriptor.Name;
           object value = descriptor.GetValue(myImage);
           Console.WriteLine("{0}={1}", name, value);
+          WriteLogSimple(String.Format("{0}={1}", name, value));
         }
       }
       int[,] intArray = new int[,]{ {2000, 2000}};
@@ -328,6 +330,7 @@ namespace IdealAutomate.Core {
     public int[,] PutCursorPosition() {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "PutCursorPosition");
+        WriteLogSimple(oProcess.ProcessName + "==> " + "PutCursorPosition");
       }
       int[,] myArray = new int[1, 2];
       myArray[0, 0] = System.Windows.Forms.Cursor.Position.X;
@@ -337,10 +340,12 @@ namespace IdealAutomate.Core {
     public int[,] PutCaretPositionInArray() {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "PutCaretPositionInArray");
+        WriteLogSimple(oProcess.ProcessName + "==> " + "PutCaretPositionInArray");
       }
       int[,] myArray = new int[1, 2];
       string activeProcess = GetActiveProcess();
       if (activeProcess == string.Empty) {
+        WriteLogSimple("No active window found");
         MessageBox.Show("No active window found");
       }
 
@@ -359,10 +364,12 @@ namespace IdealAutomate.Core {
     public void ClickImageIfExists(ImageEntity myImage) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "ClickImageIfExists:");
+        WriteLogSimple(oProcess.ProcessName + "==> " + "ClickImageIfExists:");
         foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(myImage)) {
           string name = descriptor.Name;
           object value = descriptor.GetValue(myImage);
           Console.WriteLine("{0}={1}", name, value);
+          WriteLogSimple(String.Format("{0}={1}", name, value));
         }
       }
       int[,] intArray = new int[,] { { 2000, 2000 } };
@@ -400,6 +407,7 @@ namespace IdealAutomate.Core {
     public void LeftClick(int[,] myArray) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "LeftClick:");
+        WriteLogSimple(oProcess.ProcessName + "==> " + "LeftClick:");
         int bound0 = myArray.GetUpperBound(0);
         int bound1 = myArray.GetUpperBound(1);
         // ... Loop over bounds.
@@ -407,8 +415,10 @@ namespace IdealAutomate.Core {
           for (int x = 0; x <= bound1; x++) {
             // Display the element at these indexes.
             Console.WriteLine(myArray[i, x].ToString());
+            WriteLogSimple(myArray[i, x].ToString());
           }
           Console.WriteLine();
+          WriteLogSimple("");
         }
       }
       int RelX = myArray[0, 0];
@@ -421,6 +431,7 @@ namespace IdealAutomate.Core {
     public void ShiftClick(int[,] myArray) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "ShiftClick:");
+        WriteLogSimple(oProcess.ProcessName + "==> " + "ShiftClick:");
         int bound0 = myArray.GetUpperBound(0);
         int bound1 = myArray.GetUpperBound(1);
         // ... Loop over bounds.
@@ -428,8 +439,10 @@ namespace IdealAutomate.Core {
           for (int x = 0; x <= bound1; x++) {
             // Display the element at these indexes.
             Console.WriteLine(myArray[i, x].ToString());
+            WriteLogSimple(myArray[i, x].ToString());
           }
           Console.WriteLine();
+          WriteLogSimple(" ");
         }
       }
       int RelX = myArray[0, 0];
@@ -442,6 +455,7 @@ namespace IdealAutomate.Core {
     public void RightClick(int[,] myArray) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "RightClick:");
+        WriteLogSimple(oProcess.ProcessName + "==> " + "RightClick:");
         int bound0 = myArray.GetUpperBound(0);
         int bound1 = myArray.GetUpperBound(1);
         // ... Loop over bounds.
@@ -449,8 +463,10 @@ namespace IdealAutomate.Core {
           for (int x = 0; x <= bound1; x++) {
             // Display the element at these indexes.
             Console.WriteLine(myArray[i, x].ToString());
+            WriteLogSimple(myArray[i, x].ToString());
           }
           Console.WriteLine();
+          WriteLogSimple(" ");
         }
       }
       int RelX = myArray[0, 0];
@@ -463,6 +479,7 @@ namespace IdealAutomate.Core {
     public void PositionCursor(int[,] myArray) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "PositionCursor:");
+        WriteLogSimple(oProcess.ProcessName + "==> " + "PositionCursor:");
         int bound0 = myArray.GetUpperBound(0);
         int bound1 = myArray.GetUpperBound(1);
         // ... Loop over bounds.
@@ -470,8 +487,10 @@ namespace IdealAutomate.Core {
           for (int x = 0; x <= bound1; x++) {
             // Display the element at these indexes.
             Console.WriteLine(myArray[i, x].ToString());
+            WriteLogSimple(myArray[i, x].ToString());
           }
           Console.WriteLine();
+          WriteLogSimple(" ");
         }
       }
       Position_Cursor.MoveMouse(myArray[0, 0], myArray[0, 1]);
@@ -479,6 +498,7 @@ namespace IdealAutomate.Core {
     public string PutClipboardInEntity() {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "PutClipboardInEntity: ");
+        WriteLogSimple(oProcess.ProcessName + "==> " + "PutClipboardInEntity: ");
       }
       string myEntity = "";
       try {
@@ -487,6 +507,7 @@ namespace IdealAutomate.Core {
             myEntity = Clipboard.GetData(DataFormats.Text).ToString();
           } catch (Exception) {
             Console.WriteLine("Exception occurred in PutClipboardInEntity!!!!");
+            WriteLogSimple("Exception occurred in PutClipboardInEntity!!!!");
             myEntity = "";
           }
 
@@ -505,14 +526,17 @@ namespace IdealAutomate.Core {
       }
       if (myEntity.Length > 5000) {
         Console.Write("PutEntityInClipboard: myEntity more than 5000 in length");
+        WriteLogSimple("PutEntityInClipboard: myEntity more than 5000 in length");
       } else {
         Console.Write("myEntity=" + myEntity);
+        WriteLogSimple("myEntity=" + myEntity);
       }
       return myEntity;
     }
     public string PutWindowTitleInEntity() {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "PutWindowTitleInEntity");
+        WriteLogSimple(oProcess.ProcessName + "==> " + "PutWindowTitleInEntity");
       }
       string myEntity = "";
       try {
@@ -529,8 +553,10 @@ namespace IdealAutomate.Core {
       if (fbDebugMode) {
         if (myEntity.Length > 5000) {
           Console.WriteLine("PutEntityInClipboard: myEntity more than 5000 in length");
+          WriteLogSimple("PutEntityInClipboard: myEntity more than 5000 in length");
         } else {
           Console.WriteLine("PutEntityInClipboard: myEntity=" + myEntity);
+          WriteLogSimple("PutEntityInClipboard: myEntity=" + myEntity);
         }
       }
       try {
@@ -555,6 +581,7 @@ namespace IdealAutomate.Core {
     public void TypeText(string myEntity, int intSleep) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "TypeText: myEntity=" + myEntity + " intSleep=" + intSleep.ToString());
+        WriteLogSimple(oProcess.ProcessName + "==> " + "TypeText: myEntity=" + myEntity + " intSleep=" + intSleep.ToString());
       }
       InputSimulator InputSimulator = new InputSimulator();
       //if (myEntity == "{LWin}") {
@@ -676,6 +703,7 @@ namespace IdealAutomate.Core {
    public void CloseApplicationAltFx(int intSleep) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "CloseInternetExplorer: intSleep=" + intSleep.ToString());
+        WriteLogSimple(oProcess.ProcessName + "==> " + "CloseInternetExplorer: intSleep=" + intSleep.ToString());
       }
       InputSimulator InputSimulator = new InputSimulator();
       if (intSleep > 0) {
@@ -688,6 +716,7 @@ namespace IdealAutomate.Core {
    public void CloseApplicationAltFc(int intSleep) {
      if (fbDebugMode) {
        Console.WriteLine(oProcess.ProcessName + "==> " + "CloseInternetExplorer: intSleep=" + intSleep.ToString());
+       WriteLogSimple(oProcess.ProcessName + "==> " + "CloseInternetExplorer: intSleep=" + intSleep.ToString());
      }
      InputSimulator InputSimulator = new InputSimulator();
      if (intSleep > 0) {
@@ -712,6 +741,7 @@ namespace IdealAutomate.Core {
     public string SelectAllCopyIntoEntity(int intSleep) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "SelectAllCopy: intSleep=" + intSleep.ToString());
+        WriteLogSimple(oProcess.ProcessName + "==> " + "SelectAllCopy: intSleep=" + intSleep.ToString());
       }
       InputSimulator InputSimulator = new InputSimulator();
       if (intSleep > 0) {
@@ -725,6 +755,7 @@ namespace IdealAutomate.Core {
     public void SelectAllPaste(int intSleep) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "SelectAllPaste: intSleep=" + intSleep.ToString());
+        WriteLogSimple(oProcess.ProcessName + "==> " + "SelectAllPaste: intSleep=" + intSleep.ToString());
       }
       InputSimulator InputSimulator = new InputSimulator();
       if (intSleep > 0) {
@@ -741,6 +772,7 @@ namespace IdealAutomate.Core {
       PutEntityInClipboard(myEntity);
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "SelectAllPaste: intSleep=" + intSleep.ToString());
+        WriteLogSimple(oProcess.ProcessName + "==> " + "SelectAllPaste: intSleep=" + intSleep.ToString());
       }
       InputSimulator InputSimulator = new InputSimulator();
       if (intSleep > 0) {
@@ -753,6 +785,7 @@ namespace IdealAutomate.Core {
     public void SelectAllDelete(int intSleep) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "SelectAllDelete: intSleep=" + intSleep.ToString());
+        WriteLogSimple(oProcess.ProcessName + "==> " + "SelectAllDelete: intSleep=" + intSleep.ToString());
       }
       InputSimulator InputSimulator = new InputSimulator();
       if (intSleep > 0) {
@@ -765,6 +798,7 @@ namespace IdealAutomate.Core {
     public void MessageBoxShow(string myEntity) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "MessageBoxShow: myEntity=" + myEntity);
+        WriteLogSimple(oProcess.ProcessName + "==> " + "MessageBoxShow: myEntity=" + myEntity);
       }
       System.Windows.Forms.MessageBox.Show(myEntity, "Header", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.None,
     System.Windows.Forms.MessageBoxDefaultButton.Button1, (System.Windows.Forms.MessageBoxOptions)0x40000);  // MB_TOPMOST
@@ -772,10 +806,12 @@ namespace IdealAutomate.Core {
     public void Run(string myEntityForExecutable, string myEntityForContent) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "Run: myEntityForExecutable=" + myEntityForExecutable + " myEntityForContent=" + myEntityForContent);
+        WriteLogSimple(oProcess.ProcessName + "==> " + "Run: myEntityForExecutable=" + myEntityForExecutable + " myEntityForContent=" + myEntityForContent);
       }
 
       if (myEntityForExecutable == null) {
         string message = "Error - You need to specify executable primitive  "; // +"; EntityName is: " + myEntityForExecutable.EntityName;
+        WriteLogSimple("Error - You need to specify executable primitive  ");
         MessageBoxResult result = MessageBox.Show(message, "Run-time Error", MessageBoxButton.OK, MessageBoxImage.Error);
         return;
       }
@@ -799,6 +835,7 @@ namespace IdealAutomate.Core {
     public void RunSync(string myEntityForExecutable, string myEntityForContent) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "RunSync: myEntityForExecutable=" + myEntityForExecutable + " myEntityForContent=" + myEntityForContent);
+        WriteLogSimple(oProcess.ProcessName + "==> " + "RunSync: myEntityForExecutable=" + myEntityForExecutable + " myEntityForContent=" + myEntityForContent);
       }
 
       if (myEntityForExecutable == null) {
@@ -823,6 +860,7 @@ namespace IdealAutomate.Core {
       try {
         procId = p.Id;
         Console.WriteLine("ID: " + procId);
+        WriteLogSimple("ID: " + procId);
       } catch (InvalidOperationException) {
         started = false;
       } catch (Exception ex) {
@@ -840,17 +878,50 @@ namespace IdealAutomate.Core {
     public void Sleep(int intSleep) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "Sleep:  intSleep=" + intSleep.ToString());
+        WriteLogSimple(oProcess.ProcessName + "==> " + "Sleep:  intSleep=" + intSleep.ToString());
       }
       System.Threading.Thread.Sleep(intSleep);
+    }
+
+    protected void WriteLogSimple(string pMsg) {
+
+      if (Directory.Exists("C:\\Data") == false) {
+        Directory.CreateDirectory("C:\\Data");
+      }
+
+      string filePath = "C:\\Data\\IdealAutomateLog.txt";
+      //System.Web.HttpContext.Current.Server.MapPath("~//Trace.html")
+      StreamWriter sw = null;
+
+      if (File.Exists(filePath) == false) {
+        // Create a file to write to.
+        sw = File.CreateText(filePath);
+
+        sw.WriteLine(" ");
+
+        sw.Flush();
+        sw.Close();
+      }
+
+      try {
+        sw = File.AppendText(filePath);
+        sw.WriteLine(pMsg);
+        sw.Flush();
+
+        sw.Close();
+      } catch (Exception Ex) {
+      }
     }
 
     private List<SubPositionInfo> Click_PNG(ImageEntity myImage, bool boolUseGrayScaleDB) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "Click_PNG:");
+        WriteLogSimple(oProcess.ProcessName + "==> " + "Click_PNG:");
         foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(myImage)) {
           string name = descriptor.Name;
           object value = descriptor.GetValue(myImage);
           Console.WriteLine("{0}={1}", name, value);
+          WriteLogSimple(String.Format("{0}={1}", name, value));
         }
       }
       System.Threading.Thread.Sleep(100);
@@ -890,6 +961,7 @@ namespace IdealAutomate.Core {
 
       //resultsTextBox.Text += "Searching..." + scriptStep.Seq1.ToString() + Environment.NewLine;
       Console.WriteLine(oProcess.ProcessName + "==> " + "Searching..." + myImage.ImageFile + Environment.NewLine);
+      WriteLogSimple(oProcess.ProcessName + "==> " + "Searching..." + myImage.ImageFile + Environment.NewLine);
 
     
       // Find subimages
@@ -920,8 +992,8 @@ namespace IdealAutomate.Core {
           System.IO.File.Delete(directory + myfile);
           bmx.Save(directory + myfile, System.Drawing.Imaging.ImageFormat.Bmp);
 
-          Console.WriteLine(oProcess.ProcessName + "==> " + "Image found at: " + p.ToString() + strfilename + i.ToString() + " highestPercentCorrect=" + ls[i].percentcorrect.ToString() +
-                           Environment.NewLine);
+          Console.WriteLine(oProcess.ProcessName + "==> " + "Image found at: " + p.ToString() + strfilename + i.ToString() + " highestPercentCorrect=" + ls[i].percentcorrect.ToString() + Environment.NewLine);
+          WriteLogSimple(oProcess.ProcessName + "==> " + "Image found at: " + p.ToString() + strfilename + i.ToString() + " highestPercentCorrect=" + ls[i].percentcorrect.ToString() + Environment.NewLine);
           int intOffX = p.X + myImage.ImageRelativeX;
           int intOffY = p.Y + myImage.ImageRelativeY;
 
@@ -952,7 +1024,7 @@ namespace IdealAutomate.Core {
         myfile = "tempbig" + strfilename + ".bmp";
 
         Console.WriteLine(oProcess.ProcessName + "==> " + "Image not found" + strfilename + " highestPercentCorrect=" + highestPercentCorrect.ToString() + Environment.NewLine);
-
+        WriteLogSimple(oProcess.ProcessName + "==> " + "Image not found" + strfilename + " highestPercentCorrect=" + highestPercentCorrect.ToString() + Environment.NewLine);
         return ls;
       }
     }
@@ -984,6 +1056,7 @@ namespace IdealAutomate.Core {
     private void GetCaretPosition() {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "GetCaretPosition");
+        WriteLogSimple(oProcess.ProcessName + "==> " + "GetCaretPosition");
       }
       guiInfo = new GUITHREADINFO();
       guiInfo.cbSize = (uint)Marshal.SizeOf(guiInfo);
