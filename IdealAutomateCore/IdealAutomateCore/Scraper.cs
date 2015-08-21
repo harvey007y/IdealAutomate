@@ -321,7 +321,16 @@ namespace IdealAutomate.Core {
       }
    //   System.Diagnostics.Debugger.Break();
     //  Console.WriteLine("Most popular background colors for small image: x=" + pMostPopularColorSmallImage.thePosition.X +   "; y=" + pMostPopularColorSmallImage.thePosition.Y + "; theColor=R=" + pMostPopularColorSmallImage.theColor.R + " G=" + pMostPopularColorSmallImage.theColor.G + " B=" + pMostPopularColorSmallImage.theColor.B);
-      dictMostPopularColorSmallImage.Add(pMostPopularColorSmallImage.theColor, pMostPopularColorSmallImage);
+      bool boolContains9 = false;
+      foreach (var item9 in dictMostPopularColorSmallImage) {
+        MyColor keycolor = item9.Key;
+        if (pMostPopularColorSmallImage.theColor.Equals(keycolor)) {
+          boolContains9 = true;
+        }
+      }
+      if (boolContains9 == false) {
+        dictMostPopularColorSmallImage.Add(pMostPopularColorSmallImage.theColor, pMostPopularColorSmallImage);
+      }
       return pMostPopularColorSmallImage;
     }
 
