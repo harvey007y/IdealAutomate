@@ -36,9 +36,9 @@ namespace CopyVSExecutableToIdealAutomate {
       }
     
       myImage.ImageFile = "Images\\Ready.PNG";
-      myImage.ImageSleep = 3500;
-      myImage.ImageAttempts = 2;
-      myImage.ImageRelativeX = 10;
+      myImage.Sleep = 3500;
+      myImage.Attempts = 2;
+      myImage.RelativeX = 10;
       myActions.ClickImageIfExists(myImage);
 
       string strScriptName = myActions.PutWindowTitleInEntity();
@@ -48,35 +48,35 @@ namespace CopyVSExecutableToIdealAutomate {
       }
       strScriptName = strScriptName.Substring(0, intIndex);
       //myImage.ImageFile = "Images\\Solution_Explorer.PNG";
-      //myImage.ImageSleep = 500;
-      //myImage.ImageAttempts = 1;
-      //myImage.ImageRelativeX = 10;
+      //myImage.Sleep = 500;
+      //myImage.Attempts = 1;
+      //myImage.RelativeX = 10;
       //myActions.ClickImageIfExists(myImage);
       myActions.TypeText("^%(l)", 500);
       myActions.TypeText("{UP 20}", 500);
       myImage = new ImageEntity();
       myImage.ImageFile = "Images\\Show_All_Files.PNG";
-      myImage.ImageSleep = 500;
-      myImage.ImageAttempts = 1;
-      myImage.ImageRelativeX = 10;
+      myImage.Sleep = 500;
+      myImage.Attempts = 1;
+      myImage.RelativeX = 10;
       myActions.ClickImageIfExists(myImage);
 
       myImage = new ImageEntity();
       myImage.ImageFile = "Images\\BinHome.PNG";
-      myImage.ImageSleep = 500;
-      myImage.ImageAttempts = 3;
-      myImage.ImageRelativeX = 10;
-      myImage.ImageRelativeY = 10;
-      myImage.ImageTolerance = 99;
+      myImage.Sleep = 500;
+      myImage.Attempts = 3;
+      myImage.RelativeX = 10;
+      myImage.RelativeY = 10;
+      myImage.Tolerance = 99;
 
      
       int[,] myArray3 = myActions.PutAll(myImage);
       if (myArray3.Length == 0) {
         myImage = new ImageEntity();
         myImage.ImageFile = "Images\\Bin2.PNG";
-        myImage.ImageSleep = 500;
-        myImage.ImageAttempts = 1;
-        myImage.ImageRelativeX = 10;
+        myImage.Sleep = 500;
+        myImage.Attempts = 1;
+        myImage.RelativeX = 10;
 
          myArray3 = myActions.PutAll(myImage);
         if (myArray3.Length == 0) {
@@ -96,10 +96,10 @@ namespace CopyVSExecutableToIdealAutomate {
 
       myImage = new ImageEntity();
       myImage.ImageFile = "Images\\ScriptNameHome.PNG";
-      myImage.ImageSleep = 500;
-      myImage.ImageAttempts = 500;
-      myImage.ImageRelativeX = 10;
-      myImage.ImageRelativeY = 40;   
+      myImage.Sleep = 500;
+      myImage.Attempts = 500;
+      myImage.RelativeX = 10;
+      myImage.RelativeY = 40;   
   
       myArray3 = myActions.PutAll(myImage);
       if (myArray3.Length == 0) {
@@ -115,10 +115,10 @@ namespace CopyVSExecutableToIdealAutomate {
 
       myImage = new ImageEntity();
       myImage.ImageFile = "Images\\IdealAutomateSave.PNG";
-      myImage.ImageSleep = 500;
-      myImage.ImageAttempts = 5;
-      myImage.ImageRelativeX = 10;
-      myImage.ImageRelativeY = 10;
+      myImage.Sleep = 500;
+      myImage.Attempts = 5;
+      myImage.RelativeX = 10;
+      myImage.RelativeY = 10;
       myArray3 = myActions.PutAll(myImage);
       if (myArray3.Length == 0) {
         myActions.MessageBoxShow("I could not find IdealAutomateSave.PNG");
@@ -127,10 +127,10 @@ namespace CopyVSExecutableToIdealAutomate {
   
       myImage = new ImageEntity();
       myImage.ImageFile = "Images\\IdealAutomateOkay.PNG";
-      myImage.ImageSleep = 500;
-      myImage.ImageAttempts = 5;
-      myImage.ImageRelativeX = 10;
-      myImage.ImageRelativeY = 10;
+      myImage.Sleep = 500;
+      myImage.Attempts = 5;
+      myImage.RelativeX = 10;
+      myImage.RelativeY = 10;
       myArray3 = myActions.PutAll(myImage);
       if (myArray3.Length == 0) {
         myActions.MessageBoxShow("I could not find IdealAutomateOkay.PNG");
@@ -139,10 +139,10 @@ namespace CopyVSExecutableToIdealAutomate {
 
       myImage = new ImageEntity();
       myImage.ImageFile = "Images\\IdealAutomatePrimitivesHome.PNG";
-      myImage.ImageSleep = 500;
-      myImage.ImageAttempts = 5;
-      myImage.ImageRelativeX = 10;
-      myImage.ImageRelativeY = 10;
+      myImage.Sleep = 500;
+      myImage.Attempts = 5;
+      myImage.RelativeX = 10;
+      myImage.RelativeY = 10;
       myArray3 = myActions.PutAll(myImage);
       if (myArray3.Length == 0) {
         myActions.MessageBoxShow("I could not find IdealAutomatePrimitives.PNG");
@@ -175,11 +175,11 @@ namespace CopyVSExecutableToIdealAutomate {
 
       myImage = new ImageEntity();
       myImage.ImageFile = "Images\\IdealAutomateSave.PNG";
-      myImage.ImageSleep = 500;
-      myImage.ImageAttempts = 5;
-      myImage.ImageRelativeX = 10;
-      myImage.ImageRelativeY = 10;
-      myImage.ImageTolerance = 55;
+      myImage.Sleep = 500;
+      myImage.Attempts = 5;
+      myImage.RelativeX = 10;
+      myImage.RelativeY = 10;
+      myImage.Tolerance = 55;
       myArray3 = myActions.PutAll(myImage);
       if (myArray3.Length == 0) {
         myActions.MessageBoxShow("I could not find IdealAutomateSave.PNG");
@@ -188,10 +188,10 @@ namespace CopyVSExecutableToIdealAutomate {
 
       myImage = new ImageEntity();
       myImage.ImageFile = "Images\\IdealAutomateOkay.PNG";
-      myImage.ImageSleep = 500;
-      myImage.ImageAttempts = 5;
-      myImage.ImageRelativeX = 10;
-      myImage.ImageRelativeY = 10;
+      myImage.Sleep = 500;
+      myImage.Attempts = 5;
+      myImage.RelativeX = 10;
+      myImage.RelativeY = 10;
       myArray3 = myActions.PutAll(myImage);
       if (myArray3.Length == 0) {
         myActions.MessageBoxShow("I could not find IdealAutomateOkay.PNG");
@@ -200,10 +200,10 @@ namespace CopyVSExecutableToIdealAutomate {
 
       myImage = new ImageEntity();
       myImage.ImageFile = "Images\\IdealAutomateLogicHome.PNG";
-      myImage.ImageSleep = 500;
-      myImage.ImageAttempts = 5;
-      myImage.ImageRelativeX = 10;
-      myImage.ImageRelativeY = 10;
+      myImage.Sleep = 500;
+      myImage.Attempts = 5;
+      myImage.RelativeX = 10;
+      myImage.RelativeY = 10;
       myArray3 = myActions.PutAll(myImage);
       if (myArray3.Length == 0) {
         myActions.MessageBoxShow("I could not find IdealAutomateLogic.PNG");
@@ -235,11 +235,11 @@ namespace CopyVSExecutableToIdealAutomate {
 
       myImage = new ImageEntity();
       myImage.ImageFile = "Images\\IdealAutomateSave.PNG";
-      myImage.ImageSleep = 500;
-      myImage.ImageAttempts = 5;
-      myImage.ImageRelativeX = 10;
-      myImage.ImageRelativeY = 10;
-      myImage.ImageTolerance = 55;
+      myImage.Sleep = 500;
+      myImage.Attempts = 5;
+      myImage.RelativeX = 10;
+      myImage.RelativeY = 10;
+      myImage.Tolerance = 55;
       myArray3 = myActions.PutAll(myImage);
       if (myArray3.Length == 0) {
         myActions.MessageBoxShow("I could not find IdealAutomateSave.PNG");
@@ -248,10 +248,10 @@ namespace CopyVSExecutableToIdealAutomate {
 
       myImage = new ImageEntity();
       myImage.ImageFile = "Images\\IdealAutomateOkay.PNG";
-      myImage.ImageSleep = 500;
-      myImage.ImageAttempts = 5;
-      myImage.ImageRelativeX = 10;
-      myImage.ImageRelativeY = 10;
+      myImage.Sleep = 500;
+      myImage.Attempts = 5;
+      myImage.RelativeX = 10;
+      myImage.RelativeY = 10;
       myArray3 = myActions.PutAll(myImage);
       if (myArray3.Length == 0) {
         myActions.MessageBoxShow("I could not find IdealAutomateOkay.PNG");

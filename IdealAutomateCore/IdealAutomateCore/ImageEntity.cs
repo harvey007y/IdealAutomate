@@ -9,20 +9,20 @@ namespace IdealAutomate.Core
     public class ImageEntity
     {
         public string ImageFile { get; set; }
-        public int ImageAttempts { get; set; }
-        public int ImageOccurrence { get; set; }
-        public int ImageSleep { get; set; }
-        public int ImageRelativeX { get; set; }
-        public int ImageRelativeY { get; set; }       
-        public int ImageTolerance { get; set; }
+        public int Attempts { get; set; }
+        public int Occurrence { get; set; }
+        public int Sleep { get; set; }
+        public int RelativeX { get; set; }
+        public int RelativeY { get; set; }       
+        public int Tolerance { get; set; }
         public ImageEntity()
         {
-            ImageAttempts = 1;
-            ImageOccurrence = 1;
-            ImageSleep = 100;
-            ImageRelativeX = 10;
-            ImageRelativeY = 10;
-            ImageTolerance = 90;
+            Attempts = 1;
+            Occurrence = 1;
+            Sleep = 100;
+            RelativeX = 10;
+            RelativeY = 10;
+            Tolerance = 90;
         }
     }
 }

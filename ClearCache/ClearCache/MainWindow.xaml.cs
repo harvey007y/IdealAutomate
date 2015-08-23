@@ -121,9 +121,9 @@ namespace ClearCache {
       myActions.Run(@"C:\SVNIA\trunk\10175Login\10175Login\bin\Debug\10175Login.exe", "");
 
       myImage.ImageFile = "Images\\Home.PNG";
-      myImage.ImageSleep = 500;
-      myImage.ImageAttempts = 10;
-      myImage.ImageRelativeX = 10;
+      myImage.Sleep = 500;
+      myImage.Attempts = 10;
+      myImage.RelativeX = 10;
       int[,] myArray2 = myActions.PutAll(myImage);
       if (myArray2.Length == 0) {
         myActions.MessageBoxShow("I could not find Home hyperlink (FindUntranslatedAll)");
@@ -139,9 +139,9 @@ namespace ClearCache {
       // todo look for picture script completed and click on it before opening next screen
       myImage = new ImageEntity();
       myImage.ImageFile = "Images\\Script_Completed_OK_Button.PNG";
-      myImage.ImageSleep = 5000;
-      myImage.ImageAttempts = 500;
-      myImage.ImageRelativeX = 10;
+      myImage.Sleep = 5000;
+      myImage.Attempts = 500;
+      myImage.RelativeX = 10;
       int[,] myArray3 = myActions.PutAll(myImage);
       if (myArray3.Length == 0) {
         myActions.MessageBoxShow("I could not find Script_Completed_OK_Button.PNG");
