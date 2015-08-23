@@ -56,6 +56,9 @@
     <Compile Include="ArrayExtensions.cs" />
     <Compile Include="ImageEntity.cs" />
     <Compile Include="KeyboardSend.cs" />
+    <Compile Include="Logging.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Methods.cs" />
     <Compile Include="Position_Cursor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

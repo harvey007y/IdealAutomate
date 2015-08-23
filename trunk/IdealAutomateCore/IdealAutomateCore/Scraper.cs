@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Windows.Input;
+using IdealAutomateCore;
 
 
 /// <summary>Class for finding the locations of a subimage within the screen</summary>
@@ -123,6 +124,17 @@ namespace IdealAutomate.Core {
         FindLeastPopularColorInSmallImage(sub, subwidth, subheight, strideSub, dataSub, ref oLeastPopularColor, repeats);
         LoopthruEachPixelInBigImageToFindMatchesOnSmallImageLeastPopularColor(main, sub, possiblepos, foundRects, mainwidth, mainheight, dataMain, strideMain, strideSub, dataSub, oLeastPopularColor, ref highestPercentCorrect, intTolerance);
       } else {
+        bool[,] boolArySmallImage = new bool[subwidth, subheight];
+        FindLeastPopularPatternInSmallImage(sub, subwidth, subheight, strideSub, dataSub, ref oLeastPopularPattern, ref oLeastPopularPattern2, repeatsPattern, ref boolArySmallImage);
+    //   System.Diagnostics.Debugger.Break();
+        Logging.WriteLogSimple(Logging.DumpObject(oLeastPopularPattern.thePattern));
+        Logging.WriteLogSimple(Logging.DumpObject(oLeastPopularPattern.thePosition));
+        Logging.WriteLogSimple(Logging.DumpObject(oLeastPopularPattern2.thePattern));
+        Logging.WriteLogSimple(Logging.DumpObject(oLeastPopularPattern2.thePosition));
+        LoopthruEachPixelInBigImageToFindMatchesOnSmallImageLeastPopularPattern(main, sub, possiblepos, foundRects, mainwidth, mainheight, dataMain, strideMain, strideSub, dataSub, oLeastPopularPattern, boolArySmallImage, ref highestPercentCorrect, intTolerance);
+        if (foundRects.Count == 0) {
+          LoopthruEachPixelInBigImageToFindMatchesOnSmallImageLeastPopularPattern(main, sub, possiblepos, foundRects, mainwidth, mainheight, dataMain, strideMain, strideSub, dataSub, oLeastPopularPattern2, boolArySmallImage, ref highestPercentCorrect, intTolerance);
+        }
         /*
          * x1. In the small image, get the most popular color, which will be the background color for small picture.
          * x2.  In the small image, find 3 background pixels in a row and select the location of the middle one as a safe place to get the background color for big image.
@@ -132,9 +144,9 @@ namespace IdealAutomate.Core {
          * x6. Do complete check in big picture if big picture passes preliminary check.
          */
         // System.Diagnostics.Debugger.Break();
-        bool[,] boolArySmallImage = new bool[subwidth, subheight];
-        FindMostPopularColorInSmallImage(sub, subwidth, subheight, strideSub, dataSub, ref oMostPopularColorSmallImage, repeatsMostPopular, ref lstPrelimBackground, ref lstPrelimForeground, ref dictMostPopularColorSmallImage);
-        LoopthruEachPixelInBigImageToFindMatchesOnSmallImageBackgroundPattern(main, sub, possiblepos, foundRects, mainwidth, mainheight, dataMain, strideMain, strideSub, dataSub, oMostPopularColorSmallImage, boolArySmallImage, ref highestPercentCorrect, intTolerance, lstPrelimBackground, lstPrelimForeground, ref dictMostPopularColorSmallImage);
+        //bool[,] boolArySmallImage = new bool[subwidth, subheight];
+        //FindMostPopularColorInSmallImage(sub, subwidth, subheight, strideSub, dataSub, ref oMostPopularColorSmallImage, repeatsMostPopular, ref lstPrelimBackground, ref lstPrelimForeground, ref dictMostPopularColorSmallImage);
+        //LoopthruEachPixelInBigImageToFindMatchesOnSmallImageBackgroundPattern(main, sub, possiblepos, foundRects, mainwidth, mainheight, dataMain, strideMain, strideSub, dataSub, oMostPopularColorSmallImage, boolArySmallImage, ref highestPercentCorrect, intTolerance, lstPrelimBackground, lstPrelimForeground, ref dictMostPopularColorSmallImage);
       }
 
       // Here is the boolUseGrayScale stuff I deleted
@@ -853,7 +865,8 @@ namespace IdealAutomate.Core {
       for (int y = 0; y < mainheight; y++) {
         // x for big image
         for (int x = 0; x < mainwidth; x++) {
-          if (y == 735 && x == 101) {
+          if (y == 589 && x == 434) {
+           // System.Diagnostics.Debugger.Break();
             string abc = "abd";
           }
           MyPattern _myBigPattern = MyPattern.GetPatternInBigImage(x, y, pLeastPopularPattern, sub.Width, sub.Height, strideMain, dataMain, mainwidth, mainheight);
@@ -992,7 +1005,7 @@ namespace IdealAutomate.Core {
           MyColor curcolor = GetColor(x, y, strideSub, dataSub);
           MyColor curcolor2 = GetColor(xtemp, ytemp, strideSub, dataSub);
 
-          if (curcolor.Equals(curcolor2)) {
+          if (curcolor.HighContrast(curcolor2)) {
             boolArySmallImage[x, y] = true;
             continue;
           } else {
@@ -1147,6 +1160,21 @@ namespace IdealAutomate.Core {
           intColorDiff = intColorDiff * -1;
         }
         if (intColorDiff < 11)
+          return true;
+        return false;
+      }
+      public bool HighContrast(object obj) {
+        // this is big image color and obj is small image color
+        if (!(obj is MyColor))
+          return false;
+        MyColor color = (MyColor)obj;
+        int intColorDiff = (color.R - this.R) +
+            (color.G - this.G) +
+             (color.B - this.B);
+        if (intColorDiff < 0) {
+          intColorDiff = intColorDiff * -1;
+        }
+        if (intColorDiff > 225)
           return true;
         return false;
       }
@@ -1312,7 +1340,7 @@ namespace IdealAutomate.Core {
         MyColor curcolor = GetColor(x, y, strideMain, dataMain);
         MyColor curcolor2 = GetColor(xtemp, ytemp, strideMain, dataMain);
 
-        if (curcolor.Equals(curcolor2)) {
+        if (curcolor.HighContrast(curcolor2)) {
           x = x + 1;
           return true;
         } else {
@@ -1464,13 +1492,13 @@ namespace IdealAutomate.Core {
       Image myImage = image;
       // myImage = Image.FromFile(@"C:\TFS\WadeHome\Applications\TreeView\Sample Application\Images\Big.png");
       if (UseGrayScale) {
-        //myImage = ConvertToGrayscale(myImage);
-        //int intFileCtr = 0;
-        //intFileCtr += 200;
-        //string directory = AppDomain.CurrentDomain.BaseDirectory;
-        //string myfile = "temp" + intFileCtr + ".bmp";
-        //System.IO.File.Delete(directory + myfile);
-        //myImage.Save(directory + myfile, System.Drawing.Imaging.ImageFormat.Bmp);
+        myImage = ConvertToGrayscale(myImage);
+        int intFileCtr = 0;
+        intFileCtr += 200;
+        string directory = AppDomain.CurrentDomain.BaseDirectory;
+        string myfile = "temp" + intFileCtr + ".bmp";
+        System.IO.File.Delete(directory + myfile);
+        myImage.Save(directory + myfile, System.Drawing.Imaging.ImageFormat.Bmp);
       }
       Bitmap bm = new Bitmap(myImage);
       myImage.Dispose();
@@ -1625,7 +1653,7 @@ namespace IdealAutomate.Core {
           MyColor curcolor = GetColor(xMain, yMain, strideMain, dataMain);
           MyColor curcolor2 = GetColor(xtemp, ytemp, strideMain, dataMain);
 
-          if (curcolor.Equals(curcolor2)) {
+          if (curcolor.HighContrast(curcolor2)) {
             boolArrayForRectangleInBigImage[xSub, ySub] = true;
             continue;
           } else {
