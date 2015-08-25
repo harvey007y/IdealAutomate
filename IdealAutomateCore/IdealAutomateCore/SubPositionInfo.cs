@@ -10,6 +10,7 @@ namespace IdealAutomate.Core
     {        
             public System.Drawing.Point myPoint;
             public decimal percentcorrect;
+            public string strSearchMethod;
         
     }
 }

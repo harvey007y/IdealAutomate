@@ -966,8 +966,8 @@ namespace IdealAutomate.Core {
           System.IO.File.Delete(directory + myfile);
           bmx.Save(directory + myfile, System.Drawing.Imaging.ImageFormat.Bmp);
 
-          Console.WriteLine(oProcess.ProcessName + "==> " + "Image found at: " + p.ToString() + strfilename + i.ToString() + " highestPercentCorrect=" + ls[i].percentcorrect.ToString() + Environment.NewLine);
-          Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "Image found at: " + p.ToString() + strfilename + i.ToString() + " highestPercentCorrect=" + ls[i].percentcorrect.ToString() + Environment.NewLine);
+          Console.WriteLine(oProcess.ProcessName + "==> " + "Image found at: " + p.ToString() + strfilename + i.ToString() + " highestPercentCorrect=" + ls[i].percentcorrect.ToString() + ";Search Method: " + ls[i].strSearchMethod + Environment.NewLine);
+          Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "Image found at: " + p.ToString() + strfilename + i.ToString() + " highestPercentCorrect=" + ls[i].percentcorrect.ToString() + ";Search Method: " + ls[i].strSearchMethod + Environment.NewLine);
           int intOffX = p.X + myImage.RelativeX;
           int intOffY = p.Y + myImage.RelativeY;
 
