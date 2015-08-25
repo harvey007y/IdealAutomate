@@ -25,7 +25,7 @@ namespace IdealAutomate.Core {
 
     private bool fbDebugMode = false;
     private int intFileCtr = 0;
-    bool boolUseGrayScaleDB = true;
+    bool boolUseGrayScaleDB = false;
     public bool DebugMode {
       get { return fbDebugMode; }
       set { fbDebugMode = value; }
@@ -309,7 +309,7 @@ namespace IdealAutomate.Core {
           boolImageFound = true;
         }
         intAttempts += 1;
-        boolUseGrayScaleDB = true; //!boolUseGrayScaleDB;
+        boolUseGrayScaleDB = false; //!boolUseGrayScaleDB;
       }
       int intRowIndex = 0;
       int[,] myArray = new int[0, 0];
@@ -402,7 +402,7 @@ namespace IdealAutomate.Core {
           break;
         }
         intAttempts += 1;
-        boolUseGrayScaleDB = true; // !boolUseGrayScaleDB;
+        boolUseGrayScaleDB = false; // !boolUseGrayScaleDB;
       }
     }
 
