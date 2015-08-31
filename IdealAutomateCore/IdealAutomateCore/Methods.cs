@@ -302,14 +302,14 @@ namespace IdealAutomate.Core {
       bool boolImageFound = false;
       int intAttempts = 0;
       List<SubPositionInfo> ls = new List<SubPositionInfo>();
-      
+      boolUseGrayScaleDB = myImage.UseGrayScale;
       while (boolImageFound == false && intAttempts < myImage.Attempts) {
         ls = Click_PNG(myImage, boolUseGrayScaleDB);
         if (ls.Count > 0) {
           boolImageFound = true;
         }
         intAttempts += 1;
-        boolUseGrayScaleDB = false; //!boolUseGrayScaleDB;
+       // boolUseGrayScaleDB = false; //!boolUseGrayScaleDB;
       }
       int intRowIndex = 0;
       int[,] myArray = new int[0, 0];
@@ -402,7 +402,7 @@ namespace IdealAutomate.Core {
           break;
         }
         intAttempts += 1;
-        boolUseGrayScaleDB = false; // !boolUseGrayScaleDB;
+      //  boolUseGrayScaleDB = false; // !boolUseGrayScaleDB;
       }
     }
 
@@ -804,6 +804,16 @@ namespace IdealAutomate.Core {
       }
       System.Windows.Forms.MessageBox.Show(myEntity, "Header", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.None,
     System.Windows.Forms.MessageBoxDefaultButton.Button1, (System.Windows.Forms.MessageBoxOptions)0x40000);  // MB_TOPMOST
+    }
+    public System.Windows.Forms.DialogResult MessageBoxShowWithYesNo(string myEntity) {
+      if (fbDebugMode) {
+        Console.WriteLine(oProcess.ProcessName + "==> " + "MessageBoxShow: myEntity=" + myEntity);
+        Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "MessageBoxShow: myEntity=" + myEntity);
+      }
+      System.Windows.Forms.DialogResult _dialogResult =
+      System.Windows.Forms.MessageBox.Show(myEntity, "Header", System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.None,
+    System.Windows.Forms.MessageBoxDefaultButton.Button1, (System.Windows.Forms.MessageBoxOptions)0x40000);  // MB_TOPMOST
+      return _dialogResult;
     }
     public void Run(string myEntityForExecutable, string myEntityForContent) {
       if (fbDebugMode) {

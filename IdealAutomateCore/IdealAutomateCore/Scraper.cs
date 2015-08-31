@@ -44,6 +44,7 @@ namespace IdealAutomate.Core {
       public int intEndLineWrong;
       public int intNumberIgnored;
 
+
     }
     /// <summary>
     /// GetSubPositions takes a bitmap of a larger image (usually, the desktop) and a 
@@ -114,6 +115,7 @@ namespace IdealAutomate.Core {
 
       List<Point> lstPrelimBackground = new List<Point>();
       List<Point> lstPrelimForeground = new List<Point>();
+      List<Point> lstHighContrast = new List<Point>();
 
       Dictionary<MyColor, MostPopularColorSmallImage> dictMostPopularColorSmallImage = new Dictionary<MyColor, MostPopularColorSmallImage>();
 
@@ -125,28 +127,37 @@ namespace IdealAutomate.Core {
         LoopthruEachPixelInBigImageToFindMatchesOnSmallImageLeastPopularColor(main, sub, possiblepos, foundRects, mainwidth, mainheight, dataMain, strideMain, strideSub, dataSub, oLeastPopularColor, ref highestPercentCorrect, intTolerance);
       } else {
         bool[,] boolArySmallImage = new bool[subwidth, subheight];
-        FindLeastPopularPatternInSmallImage(sub, subwidth, subheight, strideSub, dataSub, ref oLeastPopularPattern, ref oLeastPopularPattern2, repeatsPattern, ref boolArySmallImage);
-    //   System.Diagnostics.Debugger.Break();
-        Logging.WriteLogSimple(Logging.DumpObject(oLeastPopularPattern.thePattern));
-        Logging.WriteLogSimple(Logging.DumpObject(oLeastPopularPattern.thePosition));
-        Logging.WriteLogSimple(Logging.DumpObject(oLeastPopularPattern2.thePattern));
-        Logging.WriteLogSimple(Logging.DumpObject(oLeastPopularPattern2.thePosition));
-        LoopthruEachPixelInBigImageToFindMatchesOnSmallImageLeastPopularPattern(main, sub, possiblepos, foundRects, mainwidth, mainheight, dataMain, strideMain, strideSub, dataSub, oLeastPopularPattern, boolArySmallImage, ref highestPercentCorrect, intTolerance);
-        if (foundRects.Count == 0) {
-          LoopthruEachPixelInBigImageToFindMatchesOnSmallImageLeastPopularPattern(main, sub, possiblepos, foundRects, mainwidth, mainheight, dataMain, strideMain, strideSub, dataSub, oLeastPopularPattern2, boolArySmallImage, ref highestPercentCorrect, intTolerance);
-        }
+        //FindLeastPopularHighContrastPatternInSmallImage(sub, subwidth, subheight, strideSub, dataSub, ref oLeastPopularPattern, ref oLeastPopularPattern2, repeatsPattern, ref boolArySmallImage);
+        ////   System.Diagnostics.Debugger.Break();
+        //Logging.WriteLogSimple(Logging.DumpObject(oLeastPopularPattern.thePattern));
+        //Logging.WriteLogSimple(Logging.DumpObject(oLeastPopularPattern.thePosition));
+        //Logging.WriteLogSimple(Logging.DumpObject(oLeastPopularPattern2.thePattern));
+        //Logging.WriteLogSimple(Logging.DumpObject(oLeastPopularPattern2.thePosition));
+        //LoopthruEachPixelInBigImageToFindMatchesOnSmallImageLeastPopularPattern(main, sub, possiblepos, foundRects, mainwidth, mainheight, dataMain, strideMain, strideSub, dataSub, oLeastPopularPattern, boolArySmallImage, ref highestPercentCorrect, intTolerance);
+        //if (foundRects.Count == 0) {
+        //  LoopthruEachPixelInBigImageToFindMatchesOnSmallImageLeastPopularPattern(main, sub, possiblepos, foundRects, mainwidth, mainheight, dataMain, strideMain, strideSub, dataSub, oLeastPopularPattern2, boolArySmallImage, ref highestPercentCorrect, intTolerance);
+        //}
         /*
          * x1. In the small image, get the most popular color, which will be the background color for small picture.
-         * x2.  In the small image, find 3 background pixels in a row and select the location of the middle one as a safe place to get the background color for big image.
-         * x3. In the small image, everytime the foreground/background change and there are at least 3 of the new kind in a row, add the location of the middle one to one of two lists (Background/Foreground)of safe preliminary points to check. 
+         * x2. In the small image, find 3 background pixels in a row and select the location of the middle one as 
+         *     a safe place to get the background color for big image.
+         * x3. In the small image, everytime the foreground/background change 
+         *     and there are at least 3 of the new kind in a row, add the location of the middle 
+         *     one to one of two lists (Background/Foreground)of safe preliminary points to check. 
          * x4. Get background for big picture.
-         * x5. Do preliminary check in big picture that tests at least 5 background pixels and 5 foreground pixels and quits when error rate rises above a certain percentage. If there are not 5 background or 5 foreground pixels in small image, just proceed to complete check.
+         * x5. Do preliminary check in big picture that tests at least 5 background pixels and 5 foreground pixels
+         *     and quits when error rate rises above a certain percentage. If there are not 5 background or
+         *     5 foreground pixels in small image, just proceed to complete check.
          * x6. Do complete check in big picture if big picture passes preliminary check.
          */
         // System.Diagnostics.Debugger.Break();
-        //bool[,] boolArySmallImage = new bool[subwidth, subheight];
-        //FindMostPopularColorInSmallImage(sub, subwidth, subheight, strideSub, dataSub, ref oMostPopularColorSmallImage, repeatsMostPopular, ref lstPrelimBackground, ref lstPrelimForeground, ref dictMostPopularColorSmallImage);
-        //LoopthruEachPixelInBigImageToFindMatchesOnSmallImageBackgroundPattern(main, sub, possiblepos, foundRects, mainwidth, mainheight, dataMain, strideMain, strideSub, dataSub, oMostPopularColorSmallImage, boolArySmallImage, ref highestPercentCorrect, intTolerance, lstPrelimBackground, lstPrelimForeground, ref dictMostPopularColorSmallImage);
+        boolArySmallImage = new bool[subwidth, subheight];
+        // FindMostPopularColorInSmallImage is going to find the most popular colors in the small image
+        // and put the location of at least five of them in lstPrelimBackground
+        // It will also put the location of at least five foreground pixels in lstPrelimForeground
+        // If it cannot find 5, it will show popup message saying we cannot use this strategy on this image
+        FindMostPopularColorInSmallImage(sub, subwidth, subheight, strideSub, dataSub, ref oMostPopularColorSmallImage, repeatsMostPopular, ref lstPrelimBackground, ref lstPrelimForeground, ref dictMostPopularColorSmallImage, ref lstHighContrast);
+        LoopthruEachPixelInBigImageToFindMatchesOnSmallImageBackgroundPattern(main, sub, possiblepos, foundRects, mainwidth, mainheight, dataMain, strideMain, strideSub, dataSub, oMostPopularColorSmallImage, boolArySmallImage, ref highestPercentCorrect, intTolerance, lstPrelimBackground, lstPrelimForeground, ref dictMostPopularColorSmallImage, lstHighContrast);
       }
 
       // Here is the boolUseGrayScale stuff I deleted
@@ -179,14 +190,20 @@ namespace IdealAutomate.Core {
     /// <param name="repeatsMostPopular"></param>
     /// <param name="lstPrelimBackground"></param>
     /// <param name="lstPrelimForeground"></param>
-    private static void FindMostPopularColorInSmallImage(Bitmap sub, int subwidth, int subheight, int strideSub, byte[] dataSub, ref MostPopularColorSmallImage pMostPopularColorSmallImage, Dictionary<MyColor, int[]> repeatsMostPopular, ref List<Point> lstPrelimBackground, ref List<Point> lstPrelimForeground, ref Dictionary<MyColor, MostPopularColorSmallImage> dictMostPopularColorSmallImage) {
+    private static void FindMostPopularColorInSmallImage(Bitmap sub, int subwidth, int subheight, int strideSub, byte[] dataSub, ref MostPopularColorSmallImage pMostPopularColorSmallImage, Dictionary<MyColor, int[]> repeatsMostPopular, ref List<Point> lstPrelimBackground, ref List<Point> lstPrelimForeground, ref Dictionary<MyColor, MostPopularColorSmallImage> dictMostPopularColorSmallImage, ref List<Point> lstHighContrast) {
 
       int intPrevX;
       int intPrevY;
       int intBackgroundsCtr = 0;
+      repeatsMostPopular.Clear();
       dictMostPopularColorSmallImage.Clear();
+      int intMaxPrelimBackgrounds = 0;
+      int intSaveBackgroundCtr = 0;
       do {
         intBackgroundsCtr++;
+        repeatsMostPopular.Clear();
+        lstPrelimBackground.Clear();
+        lstPrelimForeground.Clear();
         pMostPopularColorSmallImage = AddAColorToSmallImageBackgrounds(sub, strideSub, dataSub, pMostPopularColorSmallImage, repeatsMostPopular, ref dictMostPopularColorSmallImage, out intPrevX, out intPrevY);
         // now we want fo find all of the locations for the middle pixel of the first set of three-in-a-row for
         // the background and foreground everytime the background changes to foreground and vice versa.
@@ -195,18 +212,94 @@ namespace IdealAutomate.Core {
         Point myPoint = new Point();
         int intThreeInARowCtrBackground = 0;
         int intThreeInARowCtrForeground = 0;
-    //    System.Diagnostics.Debugger.Break();
+        //    System.Diagnostics.Debugger.Break();
         bool boolWantToFindBackground = true;
         bool boolWantToFindForeground = true;
+        bool boolCurrentColorBackground = false;
+        bool boolCurrentAboveColorBackground = false;
+        bool boolCurrentBelowColorBackground = false;
         for (int y = 0; y < sub.Height; y++) {
           for (int x = 0; x < sub.Width; x++) {
-
+            boolCurrentColorBackground = false;
+            boolCurrentAboveColorBackground = false;
+            boolCurrentBelowColorBackground = false;
             MyColor curcolor = GetColor(x, y, strideSub, dataSub);
+            if (intBackgroundsCtr == 1) {
+              int intXNextPixel = x + 1;
+              if (intXNextPixel <= sub.Width) {
+                MyColor myNextPixel = GetColor(intXNextPixel, y, strideSub, dataSub);
+                if (curcolor.HighContrast(myNextPixel)) {
+                  lstHighContrast.Add(new Point(x, y));
+                }
+              }
+            }
+            bool boolContains = false;
+            foreach (var item in dictMostPopularColorSmallImage) {
+              MyColor keycolor = item.Key;
+              if (curcolor.Equals(keycolor)) {
+                boolContains = true;
+                break;
+              }
+            }
+            if (boolContains) {
+              boolCurrentColorBackground = true;
+            }
+            int intYAbove = y - 1;
+            int intYBelow = y + 1;
+            // if above or below are out of bounds, reset counters and skip it;
+            if (intYAbove < 0 || intYBelow > sub.Height) {
+              intThreeInARowCtrBackground = 0;
+              intThreeInARowCtrForeground = 0;
+              continue;
+            }
 
-            if (curcolor.Equals(pMostPopularColorSmallImage.theColor)) {
+            MyColor curcolorAbove = GetColor(x, intYAbove, strideSub, dataSub);
+            boolContains = false;
+            foreach (var item in dictMostPopularColorSmallImage) {
+              MyColor keycolor = item.Key;
+              if (curcolorAbove.Equals(keycolor)) {
+                boolContains = true;
+                break;
+              }
+            }
+            if (boolContains) {
+              boolCurrentAboveColorBackground = true;
+            }
+            MyColor curcolorBelow = GetColor(x, intYBelow, strideSub, dataSub);
+            boolContains = false;
+            foreach (var item in dictMostPopularColorSmallImage) {
+              MyColor keycolor = item.Key;
+              if (curcolorBelow.Equals(keycolor)) {
+                boolContains = true;
+                break;
+              }
+            }
+            if (boolContains) {
+              boolCurrentBelowColorBackground = true;
+            }
+            if (boolWantToFindForeground == false) {
+              if (boolCurrentAboveColorBackground == false || boolCurrentColorBackground == false || boolCurrentBelowColorBackground == false) {
+                intThreeInARowCtrBackground = 0;
+                intThreeInARowCtrForeground = 0;
+                continue;
+              }
+            }
+            //if (boolWantToFindBackground == false) {
+            //  if (boolCurrentAboveColorBackground == true || boolCurrentColorBackground == true || boolCurrentBelowColorBackground == true) {
+            //    intThreeInARowCtrBackground = 0;
+            //    intThreeInARowCtrForeground = 0;
+            //    continue;
+            //  }
+            //}
+
+            // if it equals the most popular color, increment the background counter and reset foreground counter to 0
+            // if it does not equal the most popular color, increment the foreground counter and reset background counter to 0
+            if (boolCurrentAboveColorBackground == true && boolCurrentColorBackground == true && boolCurrentBelowColorBackground == true) {
               intThreeInARowCtrBackground++;
               intThreeInARowCtrForeground = 0;
-            } else {
+            } 
+            if (boolCurrentColorBackground == false) {
+           //   System.Diagnostics.Debugger.Break();
               intThreeInARowCtrForeground++;
               intThreeInARowCtrBackground = 0;
             }
@@ -215,7 +308,7 @@ namespace IdealAutomate.Core {
               boolWantToFindBackground = false;
               myPoint.X = intPrevX;
               myPoint.Y = intPrevY;
-            //  Console.WriteLine("Background color for small image: x=" + intPrevX + "; y=" + intPrevY + "; curcolor R=" + curcolor.R + " G=" + curcolor.G + " B=" + curcolor.B);
+              //  Console.WriteLine("Background color for small image: x=" + intPrevX + "; y=" + intPrevY + "; curcolor R=" + curcolor.R + " G=" + curcolor.G + " B=" + curcolor.B);
               lstPrelimBackground.Add(myPoint);
             }
             if (intThreeInARowCtrForeground == 3 && boolWantToFindForeground) {
@@ -223,23 +316,164 @@ namespace IdealAutomate.Core {
               boolWantToFindBackground = true;
               myPoint.X = intPrevX;
               myPoint.Y = intPrevY;
-           //   Console.WriteLine("Foreground color for small image: x=" + intPrevX + "; y=" + intPrevY + "; curcolor R=" + curcolor.R + " G=" + curcolor.G + " B=" + curcolor.B);
+              //   Console.WriteLine("Foreground color for small image: x=" + intPrevX + "; y=" + intPrevY + "; curcolor R=" + curcolor.R + " G=" + curcolor.G + " B=" + curcolor.B);
               lstPrelimForeground.Add(myPoint);
             }
             intPrevX = x;
             intPrevY = y;
           }
         }
-      //  System.Diagnostics.Debugger.Break();
-      } while (lstPrelimBackground.Count < 5 || intBackgroundsCtr > 5);
-      if (intBackgroundsCtr > 5) {
-        MessageBox.Show("Could not use background strategy on this image: intBackgroundsCtr > 5");
+         // System.Diagnostics.Debugger.Break();
+        if (intMaxPrelimBackgrounds < lstPrelimBackground.Count) {
+          intMaxPrelimBackgrounds = lstPrelimBackground.Count;
+          intSaveBackgroundCtr = intBackgroundsCtr;
+        }
+
+      } while (lstPrelimBackground.Count < 10 && intBackgroundsCtr < 7);
+
+      //=====
+      repeatsMostPopular.Clear();
+      dictMostPopularColorSmallImage.Clear();      
+      intBackgroundsCtr = 0;
+      do {
+        intBackgroundsCtr++;
+        repeatsMostPopular.Clear();
+        lstPrelimBackground.Clear();
+        lstPrelimForeground.Clear();
+        pMostPopularColorSmallImage = AddAColorToSmallImageBackgrounds(sub, strideSub, dataSub, pMostPopularColorSmallImage, repeatsMostPopular, ref dictMostPopularColorSmallImage, out intPrevX, out intPrevY);
+        // now we want fo find all of the locations for the middle pixel of the first set of three-in-a-row for
+        // the background and foreground everytime the background changes to foreground and vice versa.
+        // We want to use the safe pixels to do a preliminary check of at least 10 pixels before we do a full
+        // blown check of all the pixels related to the small image at a given pixel in the big image.
+        Point myPoint = new Point();
+        int intThreeInARowCtrBackground = 0;
+        int intThreeInARowCtrForeground = 0;
+        //    System.Diagnostics.Debugger.Break();
+        bool boolWantToFindBackground = true;
+        bool boolWantToFindForeground = true;
+        bool boolCurrentColorBackground = false;
+        bool boolCurrentAboveColorBackground = false;
+        bool boolCurrentBelowColorBackground = false;
+        for (int y = 0; y < sub.Height; y++) {
+          for (int x = 0; x < sub.Width; x++) {
+            boolCurrentColorBackground = false;
+            boolCurrentAboveColorBackground = false;
+            boolCurrentBelowColorBackground = false;
+            MyColor curcolor = GetColor(x, y, strideSub, dataSub);
+            bool boolContains = false;
+            foreach (var item in dictMostPopularColorSmallImage) {
+              MyColor keycolor = item.Key;
+              if (curcolor.Equals(keycolor)) {
+                boolContains = true;
+                break;
+              }
+            }
+            if (boolContains) {
+              boolCurrentColorBackground = true;
+            }
+            int intYAbove = y - 1;
+            int intYBelow = y + 1;
+            // if above or below are out of bounds, reset counters and skip it;
+            if (intYAbove < 0 || intYBelow > sub.Height) {
+              intThreeInARowCtrBackground = 0;
+              intThreeInARowCtrForeground = 0;
+              continue;
+            }
+
+            MyColor curcolorAbove = GetColor(x, intYAbove, strideSub, dataSub);
+            boolContains = false;
+            foreach (var item in dictMostPopularColorSmallImage) {
+              MyColor keycolor = item.Key;
+              if (curcolorAbove.Equals(keycolor)) {
+                boolContains = true;
+                break;
+              }
+            }
+            if (boolContains) {
+              boolCurrentAboveColorBackground = true;
+            }
+            MyColor curcolorBelow = GetColor(x, intYBelow, strideSub, dataSub);
+            boolContains = false;
+            foreach (var item in dictMostPopularColorSmallImage) {
+              MyColor keycolor = item.Key;
+              if (curcolorBelow.Equals(keycolor)) {
+                boolContains = true;
+                break;
+              }
+            }
+            if (boolContains) {
+              boolCurrentBelowColorBackground = true;
+            }
+            if (boolWantToFindForeground == false) {
+              if (boolCurrentAboveColorBackground == false || boolCurrentColorBackground == false || boolCurrentBelowColorBackground == false) {
+                intThreeInARowCtrBackground = 0;
+                intThreeInARowCtrForeground = 0;
+                continue;
+              }
+            }
+            //if (boolWantToFindBackground == false) {
+            //  if (boolCurrentAboveColorBackground == true || boolCurrentColorBackground == true || boolCurrentBelowColorBackground == true) {
+            //    intThreeInARowCtrBackground = 0;
+            //    intThreeInARowCtrForeground = 0;
+            //    continue;
+            //  }
+            //}
+
+            // if it equals the most popular color, increment the background counter and reset foreground counter to 0
+            // if it does not equal the most popular color, increment the foreground counter and reset background counter to 0
+            if (boolCurrentAboveColorBackground == true && boolCurrentColorBackground == true && boolCurrentBelowColorBackground == true) {
+              intThreeInARowCtrBackground++;
+              intThreeInARowCtrForeground = 0;
+            }
+            if (boolCurrentColorBackground == false) {
+              //   System.Diagnostics.Debugger.Break();
+              intThreeInARowCtrForeground++;
+              intThreeInARowCtrBackground = 0;
+            }
+            if (intThreeInARowCtrBackground == 3 && boolWantToFindBackground) {
+              boolWantToFindForeground = true;
+              boolWantToFindBackground = false;
+              myPoint.X = intPrevX;
+              myPoint.Y = intPrevY;
+              //  Console.WriteLine("Background color for small image: x=" + intPrevX + "; y=" + intPrevY + "; curcolor R=" + curcolor.R + " G=" + curcolor.G + " B=" + curcolor.B);
+              lstPrelimBackground.Add(myPoint);
+            }
+            if (intThreeInARowCtrForeground == 3 && boolWantToFindForeground) {
+              boolWantToFindForeground = false;
+              boolWantToFindBackground = true;
+              myPoint.X = intPrevX;
+              myPoint.Y = intPrevY;
+              //   Console.WriteLine("Foreground color for small image: x=" + intPrevX + "; y=" + intPrevY + "; curcolor R=" + curcolor.R + " G=" + curcolor.G + " B=" + curcolor.B);
+              lstPrelimForeground.Add(myPoint);
+            }
+            intPrevX = x;
+            intPrevY = y;
+          }
+        }
+        // System.Diagnostics.Debugger.Break();
+
+
+      } while (intBackgroundsCtr < intSaveBackgroundCtr);
+      foreach (var item in lstPrelimBackground) {
+        Logging.WriteLogSimple("background x=" + item.X + ";y=" + item.Y);
       }
+      foreach (var item in lstPrelimForeground) {
+        Logging.WriteLogSimple("foreground x=" + item.X + ";y=" + item.Y);
+      }
+      foreach (var item in dictMostPopularColorSmallImage) {
+        Logging.WriteLogSimple("dictMostPopularColorSmall=" + (MyColor)item.Key + ";value=" + (MostPopularColorSmallImage)item.Value);
+      }
+    //  Logging.WriteLogSimple(Logging.DumpObject(dictMostPopularColorSmallImage));
+     // System.Diagnostics.Debugger.Break();
+      //if (intBackgroundsCtr > 5) {
+      //  MessageBox.Show("Could not use background strategy on this image: intBackgroundsCtr > 5");
+      //}
     }
 
     private static MostPopularColorSmallImage AddAColorToSmallImageBackgrounds(Bitmap sub, int strideSub, byte[] dataSub, MostPopularColorSmallImage pMostPopularColorSmallImage, Dictionary<MyColor, int[]> repeatsMostPopular, ref Dictionary<MyColor, MostPopularColorSmallImage> dictMostPopularColorSmallImage, out int intPrevX, out int intPrevY) {
       // add the color of each pixel to a dictionary that contains the color, the x and y coordinates, and 
       // a counter of the number of times found
+
       for (int y = 0; y < sub.Height; y++) {
         for (int x = 0; x < sub.Width; x++) {
 
@@ -249,22 +483,52 @@ namespace IdealAutomate.Core {
             MyColor keycolor = item.Key;
             if (curcolor.Equals(keycolor)) {
               boolContains = true;
+              break;
             }
           }
+          // if color is already in dictionary of most popular colors, ignoe it
           if (boolContains) {
+            continue;
+          }
+          int intYAbove = y - 1;
+          int intYBelow = y + 1;
+          int intXLeft = x - 1;
+          int intXRight = x + 1;
+          // if above or below are out of bounds, skip it;
+          if (intYAbove < 0 || intYBelow > sub.Height) {
+            continue;
+          }
+          if (intXLeft < 0 || intXRight > sub.Width) {
+            continue;
+          }
+          MyColor curcolorAbove = GetColor(x, intYAbove, strideSub, dataSub);
+          if (curcolorAbove.Equals(curcolor) == false) {
+              continue;            
+          }
+          MyColor curcolorBelow = GetColor(x, intYBelow, strideSub, dataSub);
+          if (curcolorBelow.Equals(curcolor) == false) {
+            continue;
+          }
+          MyColor curcolorLeft = GetColor(intXLeft, y, strideSub, dataSub);
+          if (curcolorLeft.Equals(curcolor) == false) {
+            continue;
+          }
+          MyColor curcolorRight = GetColor(intXRight, y, strideSub, dataSub);
+          if (curcolorRight.Equals(curcolor) == false) {
             continue;
           }
 
           // The pixel value has been found before
-           bool boolContains1 = false;
-           MyColor KeyFound1 = new MyColor();
+          bool boolContains1 = false;
+          MyColor KeyFound1 = new MyColor();
           foreach (var item1 in repeatsMostPopular) {
             MyColor keycolor = item1.Key;
             if (curcolor.Equals(keycolor)) {
               boolContains1 = true;
-              KeyFound1 = keycolor;
+              KeyFound1 = keycolor; 
+              break;
             }
-          }         
+          }
           if (!boolContains1) {
             // a = {number times found, x location, y location}
             int[] a = { 1, x, y };
@@ -331,13 +595,14 @@ namespace IdealAutomate.Core {
       if (intPrevX > -1) {
         pMostPopularColorSmallImage.thePosition = new Point(intPrevX, intPrevY);
       }
-   //   System.Diagnostics.Debugger.Break();
-    //  Console.WriteLine("Most popular background colors for small image: x=" + pMostPopularColorSmallImage.thePosition.X +   "; y=" + pMostPopularColorSmallImage.thePosition.Y + "; theColor=R=" + pMostPopularColorSmallImage.theColor.R + " G=" + pMostPopularColorSmallImage.theColor.G + " B=" + pMostPopularColorSmallImage.theColor.B);
+      //   System.Diagnostics.Debugger.Break();
+      //  Console.WriteLine("Most popular background colors for small image: x=" + pMostPopularColorSmallImage.thePosition.X +   "; y=" + pMostPopularColorSmallImage.thePosition.Y + "; theColor=R=" + pMostPopularColorSmallImage.theColor.R + " G=" + pMostPopularColorSmallImage.theColor.G + " B=" + pMostPopularColorSmallImage.theColor.B);
       bool boolContains9 = false;
       foreach (var item9 in dictMostPopularColorSmallImage) {
         MyColor keycolor = item9.Key;
         if (pMostPopularColorSmallImage.theColor.Equals(keycolor)) {
           boolContains9 = true;
+          break;
         }
       }
       if (boolContains9 == false) {
@@ -422,6 +687,7 @@ namespace IdealAutomate.Core {
                 SubPositionInfo mySubPositionInfo = new SubPositionInfo();
                 mySubPositionInfo.myPoint = new Point(x - loc.X, y - loc.Y);
                 mySubPositionInfo.percentcorrect = highestPercentCorrect;
+                mySubPositionInfo.strSearchMethod = "UseColorWithLeastPopularColorSearch";
                 possiblepos.Add(mySubPositionInfo);
                 highestPercentCorrect = 0;
                 foundRects.Add(new Rectangle(x, y, sub.Width, sub.Height));
@@ -456,7 +722,6 @@ namespace IdealAutomate.Core {
     private static void LoopthruEachPixelInBigImageToFindMatchesOnSmallImageBackgroundPattern(
         Bitmap main,
         Bitmap sub,
-
         List<SubPositionInfo> possiblepos,
         List<Rectangle> foundRects,
         int mainwidth,
@@ -471,7 +736,8 @@ namespace IdealAutomate.Core {
         int intTolerance,
       List<Point> lstPrelimBackground,
       List<Point> lstPrelimForeground,
-      ref Dictionary<MyColor, MostPopularColorSmallImage> dictMostPopularColorSmallImage) {      
+      ref Dictionary<MyColor, MostPopularColorSmallImage> dictMostPopularColorSmallImage,
+      List<Point> lstHighContrast) {
       int xtemp = -1;
       int ytemp = -1;
       bool boolDoPrelimCheck = true;
@@ -488,184 +754,234 @@ namespace IdealAutomate.Core {
       decimal intPercentCorrect = 0;
       bool boolSkipThisPixelInBigImage = false;
       bool booldebuggingmode = false;
-      if (intPrelimCheckTotal < 10) {
+      if (intPrelimCheckTotal + lstHighContrast.Count < 10) {
         boolDoPrelimCheck = false;
       }
-        // we have saved the relative position of the safe background pixel for the small image
-        // and now we want to add that offset to the current pixel in the big image. If adding
-        // the offset to the current pixel in the big image throws us out of the bounds of the
-        // big image, we are not interested in the current pixel for the big image.
+      // we have saved the relative position of the safe background pixel for the small image
+      // and now we want to add that offset to the current pixel in the big image. If adding
+      // the offset to the current pixel in the big image throws us out of the bounds of the
+      // big image, we are not interested in the current pixel for the big image.
 
-        // this forloop is for each row in the big image - when we go outside the Y boundary of rows,
+      // this forloop is for each row in the big image - when we go outside the Y boundary of rows,
       // we are done with the big image
-        for (int y = 0; y < mainheight; y++) {
-          boolNeedNewRowInBigImage = false; // we just got a new row so we need to initialize this
-          if (boolWeAreDoneWithBigImage) {
-         //   System.Diagnostics.Debugger.Break();
+      for (int y = 0; y < mainheight; y++) {
+        boolNeedNewRowInBigImage = false; // we just got a new row so we need to initialize this
+        if (boolWeAreDoneWithBigImage) {
+          //   System.Diagnostics.Debugger.Break();
+          break;
+        }
+        dictMostPopularColorSmallImageWithTemps.Clear();
+        foreach (var item in dictMostPopularColorSmallImage) {
+          pMostPopularColorSmallImage = item.Value;
+          ytemp = y + pMostPopularColorSmallImage.thePosition.Y;
+          if (ytemp > mainheight) {
+            boolWeAreDoneWithBigImage = true;
             break;
           }
-          dictMostPopularColorSmallImageWithTemps.Clear();
-          foreach (var item in dictMostPopularColorSmallImage) {           
-            pMostPopularColorSmallImage = item.Value;
-            ytemp = y + pMostPopularColorSmallImage.thePosition.Y;
-            if (ytemp > mainheight) {
-              boolWeAreDoneWithBigImage = true;
+          Point oPoint = new Point();
+          oPoint.X = -1;
+          oPoint.Y = ytemp;
+          bool boolContains2 = false;
+          foreach (var item2 in dictMostPopularColorSmallImageWithTemps) {
+            MyColor keycolor = item2.Key;
+            if (pMostPopularColorSmallImage.theColor.Equals(keycolor)) {
+              boolContains2 = true;
               break;
             }
-            Point oPoint = new Point();
-            oPoint.X = -1;
-            oPoint.Y = ytemp;
-            bool boolContains2 = false;
-            foreach (var item2 in dictMostPopularColorSmallImageWithTemps) {
-              MyColor keycolor = item2.Key;
-              if (pMostPopularColorSmallImage.theColor.Equals(keycolor)) {
-                boolContains2 = true;
-              }
-            }
-            if (boolContains2 == false) {              
-              dictMostPopularColorSmallImageWithTemps.Add(pMostPopularColorSmallImage.theColor, oPoint);
-            }
           }
+          if (boolContains2 == false) {
+            dictMostPopularColorSmallImageWithTemps.Add(pMostPopularColorSmallImage.theColor, oPoint);
+          }
+        }
 
-          // if adding the offset for the rows throws it outside of the big image, we are done
-          if (boolWeAreDoneWithBigImage) {
-       //     System.Diagnostics.Debugger.Break();
+        // if adding the offset for the rows throws it outside of the big image, we are done
+        if (boolWeAreDoneWithBigImage) {
+          //     System.Diagnostics.Debugger.Break();
+          break;
+        }
+        // x for big image represents the columns in the big image
+        for (int x = 0; x < mainwidth; x++) {
+          //if (y == 418 && x == 1239) {
+          //  System.Diagnostics.Debugger.Break();
+          //  string abc = "abd";
+          //  booldebuggingmode = true;
+          //} else {
+          //  booldebuggingmode = false;
+          //}
+          if (boolNeedNewRowInBigImage) {
+            boolNeedNewRowInBigImage = false;
             break;
           }
-          // x for big image represents the columns in the big image
-          for (int x = 0; x < mainwidth; x++) {
-            //if (y == 419 && x == 1801) {
-            //  //     System.Diagnostics.Debugger.Break();
-            //  string abc = "abd";
-            //  booldebuggingmode = true;
-            //} else {
-            //  booldebuggingmode = false;
-            //}
-            if (boolNeedNewRowInBigImage) {
-              boolNeedNewRowInBigImage = false;
+          // everytime we get a new pixel, we need to initialize everything for that pixel
+          boolSkipThisPixelInBigImage = false;
+          intCorrect = 0;
+          intWrong = 0;
+          // we normally do prelim check unless there are fewer than
+          // 10 pixels involved in prelim check - in that case, percentages might be skewed
+          // just because we hit a couple of mismatches right at the start. When there are 
+          // less than 10 preliminary pixels to check, we go skip prelim check and just do complete check
+          boolDoPrelimCheck = true;
+          xtemp = x + pMostPopularColorSmallImage.thePosition.X;
+          Point oPoint = new Point();
+          foreach (var item in dictMostPopularColorSmallImage) {
+            pMostPopularColorSmallImage = item.Value;
+            xtemp = x + pMostPopularColorSmallImage.thePosition.X;
+            if (xtemp > mainwidth) {
+              boolNeedNewRowInBigImage = true;
               break;
             }
-            // everytime we get a new pixel, we need to initialize everything for that pixel
-            boolSkipThisPixelInBigImage = false;
-            intCorrect = 0;
-            intWrong = 0;
-            // we normally do prelim check unless there are fewer than
-            // 10 pixels involved in prelim check - in that case, percentages might be skewed
-            // just because we hit a couple of mismatches right at the start. When there are 
-            // less than 10 preliminary pixels to check, we go skip prelim check and just do complete check
-            boolDoPrelimCheck = true;
-            xtemp = x + pMostPopularColorSmallImage.thePosition.X;
-            Point oPoint = new Point();
-            foreach (var item in dictMostPopularColorSmallImage) {
-              pMostPopularColorSmallImage = item.Value;              
-              xtemp = x + pMostPopularColorSmallImage.thePosition.X;
-              if (xtemp > mainwidth) {
-                boolNeedNewRowInBigImage = true;
+            bool boolContains3 = false;
+            foreach (var item3 in dictMostPopularColorSmallImageWithTemps) {
+              MyColor keycolor = item3.Key;
+              if (pMostPopularColorSmallImage.theColor.Equals(keycolor)) {
+                boolContains3 = true;
+                pMostPopularColorSmallImage.theColor = keycolor;
                 break;
               }
-              bool boolContains3 = false;              
-              foreach (var item3 in dictMostPopularColorSmallImageWithTemps) {
-                MyColor keycolor = item3.Key;
-                if (pMostPopularColorSmallImage.theColor.Equals(keycolor)) {
-                  boolContains3 = true;
-                  pMostPopularColorSmallImage.theColor = keycolor;
-                }
-              }
-              if (boolContains3) {
-                oPoint.X = xtemp;
-                oPoint.Y = dictMostPopularColorSmallImageWithTemps[pMostPopularColorSmallImage.theColor].Y;
-                dictMostPopularColorSmallImageWithTemps[pMostPopularColorSmallImage.theColor] = oPoint;
-              }
-
             }
-            // if adding offset to column in big image causes it to go outside of columns for big
-            // picture, we are not interested in in the rest of the pixels on that line for the big image
-            if (boolNeedNewRowInBigImage) {
-              break;
+            if (boolContains3) {
+              oPoint.X = xtemp;
+              oPoint.Y = dictMostPopularColorSmallImageWithTemps[pMostPopularColorSmallImage.theColor].Y;
+              dictMostPopularColorSmallImageWithTemps[pMostPopularColorSmallImage.theColor] = oPoint;
             }
 
+          }
+          // if adding offset to column in big image causes it to go outside of columns for big
+          // picture, we are not interested in in the rest of the pixels on that line for the big image
+          if (boolNeedNewRowInBigImage) {
+            break;
+          }
 
-            // Adding the offsets did not cause us to go out of bounds so we can now
-            // get what we think is the background color for the relative position of the
-            // small image within the big one
-       //     System.Diagnostics.Debugger.Break();
-            Point myPoint = new Point();
-            MyColor curcolor = new MyColor();
-            //if (y > 420 && y < 430) {
-            //  curcolor = GetColor(x, y, strideMain, dataMain);
-            //  Console.WriteLine("Big Image Loop: x=" + x + "; y=" + y + "; curcolor R=" + curcolor.R + " G=" + curcolor.G + " B=" + curcolor.B);
-            //}
-            dictMostPopularColorBigImage.Clear();
-            foreach (var item0 in dictMostPopularColorSmallImageWithTemps) {
-              myPoint = item0.Value;
-              xtemp = myPoint.X;
-              ytemp = myPoint.Y;
+
+          // Adding the offsets did not cause us to go out of bounds so we can now
+          // get what we think is the background color for the relative position of the
+          // small image within the big one
+          
+          Point myPoint = new Point();
+          MyColor curcolor = new MyColor();
+          //if (y > 420 && y < 430) {
+          //  curcolor = GetColor(x, y, strideMain, dataMain);
+          //  Console.WriteLine("Big Image Loop: x=" + x + "; y=" + y + "; curcolor R=" + curcolor.R + " G=" + curcolor.G + " B=" + curcolor.B);
+          //}
+          dictMostPopularColorBigImage.Clear();
+          foreach (var item0 in dictMostPopularColorSmallImageWithTemps) {
+            myPoint = item0.Value;
+            xtemp = myPoint.X;
+            ytemp = myPoint.Y;
+            curcolor = GetColor(xtemp, ytemp, strideMain, dataMain);
+            MostPopularColorBigImage oMostPopularColorBigImage = new MostPopularColorBigImage();
+            oMostPopularColorBigImage.theColor = curcolor;
+            oMostPopularColorBigImage.thePosition.X = xtemp;
+            oMostPopularColorBigImage.thePosition.Y = ytemp;
+            bool boolContains4 = false;
+            foreach (var item4 in dictMostPopularColorBigImage) {
+              MyColor keycolor = item4.Key;
+              if (curcolor.Equals(keycolor)) {
+                boolContains4 = true;
+                break;
+              }
+            }
+            if (boolContains4 == false) {
+              //if (booldebuggingmode) {
+              //  Console.WriteLine("Background color for big image: x=" + xtemp + "; y=" + ytemp + "; curcolor R=" + curcolor.R + " G=" + curcolor.G + " B=" + curcolor.B);
+              //}
+              dictMostPopularColorBigImage.Add(oMostPopularColorBigImage.theColor, oMostPopularColorBigImage.thePosition);
+            }
+          }
+          // we need to do preliminary check by going thru the offsets saved in the list for
+          // safe background pixels
+
+          // maximum number of prelim background checks is 10
+          if (intPrelimCheckBackground > 10) {
+            intPrelimCheckBackground = 10;
+          }
+          // maximum number of prelim foreground checks is 10
+          if (intPrelimCheckForeground > 10) {
+            intPrelimCheckForeground = 10;
+          }
+          if (boolDoPrelimCheck) {
+            for (int i = 0; i < intPrelimCheckBackground; i++) {
+              xtemp = x + lstPrelimBackground[i].X;
+              // if adding the offset to the current column in the big picture
+              // causes us to go outside of the bounds of the big picture, we
+              // know we do not want this pixel for the big image and we no 
+              // longer need to do any more preliminary checks for this pixel in the big image
+              if (xtemp > mainwidth) {
+                boolSkipThisPixelInBigImage = true;
+                break;
+              }
+              ytemp = y + lstPrelimBackground[i].Y;
+              // if adding the offset to the current row in the big picture
+              // causes us to go outside of the bounds of the big picture, we
+              // know we do not want this pixel for the big image and we no 
+              // longer need to do any more preliminary checks for this pixel in the big image
+              if (ytemp > mainheight) {
+                boolSkipThisPixelInBigImage = true;
+                break;
+              }
+              // the position of the preliminary check for background color was within
+              // the big image so we know want to know if the relative pixel within the
+              // big image is a background color like it should be.
               curcolor = GetColor(xtemp, ytemp, strideMain, dataMain);
-              MostPopularColorBigImage oMostPopularColorBigImage = new MostPopularColorBigImage();
-              oMostPopularColorBigImage.theColor = curcolor;
-              oMostPopularColorBigImage.thePosition.X = xtemp;
-              oMostPopularColorBigImage.thePosition.Y = ytemp;
-              bool boolContains4 = false;
-              foreach (var item4 in dictMostPopularColorBigImage) {
-                MyColor keycolor = item4.Key;
-                if (curcolor.Equals(keycolor)) {
-                  boolContains4 = true;
-                }
-              }
-              if (boolContains4 == false) {
-                //if (booldebuggingmode) {
-                //  Console.WriteLine("Background color for big image: x=" + xtemp + "; y=" + ytemp + "; curcolor R=" + curcolor.R + " G=" + curcolor.G + " B=" + curcolor.B);
-                //}
-                dictMostPopularColorBigImage.Add(oMostPopularColorBigImage.theColor, oMostPopularColorBigImage.thePosition);
-              }
-            }
-            // we need to do preliminary check by going thru the offsets saved in the list for
-            // safe background pixels
+              //if (booldebuggingmode) {
+              //  Console.WriteLine("Prelim Background check: x=" + x + "; y=" + y + "xtemp=" + xtemp + "; ytemp=" + ytemp + "; curcolor R=" + curcolor.R + " G=" + curcolor.G + " B=" + curcolor.B);
+              //}
 
-            // maximum number of prelim background checks is 10
-            if (intPrelimCheckBackground > 10) {
-              intPrelimCheckBackground = 10;
+              bool boolContains5 = false;
+              foreach (var item5 in dictMostPopularColorBigImage) {
+                MyColor keycolor = item5.Key;
+                if (curcolor.Equals(keycolor)) {
+                  boolContains5 = true;
+                  break;
+                }
+              }
+              if (boolContains5) {
+                //if (booldebuggingmode) {
+                //  Console.WriteLine("Correct");
+                //}
+                intCorrect++;
+                intCorrect++;
+                intCorrect++;
+              } else {
+                //if (booldebuggingmode) {
+                //  Console.WriteLine("InCorrect");
+                //}
+                intWrong++;
+                intWrong++;
+                intWrong++;
+              }
             }
-            // maximum number of prelim foreground checks is 10
-            if (intPrelimCheckForeground > 10) {
-              intPrelimCheckForeground = 10;
-            }
-            if (boolDoPrelimCheck) {
-              for (int i = 0; i < intPrelimCheckBackground; i++) {
-                xtemp = x + lstPrelimBackground[i].X;
-                // if adding the offset to the current column in the big picture
-                // causes us to go outside of the bounds of the big picture, we
-                // know we do not want this pixel for the big image and we no 
-                // longer need to do any more preliminary checks for this pixel in the big image
+
+            // if we did not run into problems with the relative position for the preliminary background
+            // color being outside of the bounds of the big image, then we can proceed to do the preliminary
+            // checks for the foreground color
+            if (boolSkipThisPixelInBigImage == false) {
+              for (int i = 0; i < intPrelimCheckForeground; i++) {
+                xtemp = x + lstPrelimForeground[i].X;
                 if (xtemp > mainwidth) {
+                  boolNeedNewRowInBigImage = true;
                   boolSkipThisPixelInBigImage = true;
                   break;
                 }
-                ytemp = y + lstPrelimBackground[i].Y;
-                // if adding the offset to the current row in the big picture
-                // causes us to go outside of the bounds of the big picture, we
-                // know we do not want this pixel for the big image and we no 
-                // longer need to do any more preliminary checks for this pixel in the big image
+                ytemp = y + lstPrelimForeground[i].Y;
                 if (ytemp > mainheight) {
+                  boolWeAreDoneWithBigImage = true;
                   boolSkipThisPixelInBigImage = true;
                   break;
                 }
-                // the position of the preliminary check for background color was within
-                // the big image so we know want to know if the relative pixel within the
-                // big image is a background color like it should be.
                 curcolor = GetColor(xtemp, ytemp, strideMain, dataMain);
                 //if (booldebuggingmode) {
-                //  Console.WriteLine("Prelim Background check: x=" + x + "; y=" + y + "xtemp=" + xtemp + "; ytemp=" + ytemp + "; curcolor R=" + curcolor.R + " G=" + curcolor.G + " B=" + curcolor.B);
+                //  Console.WriteLine("Prelim Foreground check: x=" + xtemp + "; y=" + ytemp + "; curcolor R=" + curcolor.R + " G=" + curcolor.G + " B=" + curcolor.B);
                 //}
-
-                bool boolContains5 = false;
-                foreach (var item5 in dictMostPopularColorBigImage) {
-                  MyColor keycolor = item5.Key;
+                bool boolContains6 = false;
+                foreach (var item6 in dictMostPopularColorBigImage) {
+                  MyColor keycolor = item6.Key;
                   if (curcolor.Equals(keycolor)) {
-                    boolContains5 = true;
+                    boolContains6 = true;
+                    break;
                   }
                 }
-                if (boolContains5) {
+                if (boolContains6 == false) {
                   //if (booldebuggingmode) {
                   //  Console.WriteLine("Correct");
                   //}
@@ -677,172 +993,200 @@ namespace IdealAutomate.Core {
                   intWrong++;
                 }
               }
+            }
+          }
+          // if any problems were encountered with the preliminary checks, we just want to get
+          // the next pixel in the big image
+          if (boolSkipThisPixelInBigImage) {
+            continue;
+          }
+          int intXBig = 0;
+          int intXBigNext = 0;
+          int intYBig = 0;
+          foreach (var item in lstHighContrast) {
+            intXBig = item.X + x;
+            intYBig = item.Y + y;
+            if (intXBig + 2 > mainwidth || intYBig > mainheight) {
+              continue;
+            }
+            intXBigNext = intXBig + 1;
+            MyColor bigCurColor = GetColor(intXBig, intYBig, strideMain, dataMain);
+            MyColor bigCurColorNext = GetColor(intXBigNext, intYBig, strideMain, dataMain);
+            MyColor bigCurColorNextNext = GetColor(intXBigNext, intYBig, strideMain, dataMain);
+            if (bigCurColor.HighContrast(bigCurColorNext) || bigCurColor.HighContrast(bigCurColorNextNext)) {
+              intCorrect++;
+            } else {
+              intWrong++;
+            }
+          }
 
-              // if we did not run into problems with the relative position for the preliminary background
-              // color being outside of the bounds of the big image, then we can proceed to do the preliminary
-              // checks for the foreground color
-              if (boolSkipThisPixelInBigImage == false) {
-                for (int i = 0; i < intPrelimCheckForeground; i++) {
-                  xtemp = x + lstPrelimForeground[i].X;
-                  if (xtemp > mainwidth) {
-                    boolNeedNewRowInBigImage = true;
-                    boolSkipThisPixelInBigImage = true;
-                    break;
-                  }
-                  ytemp = y + lstPrelimForeground[i].Y;
-                  if (ytemp > mainheight) {
-                    boolWeAreDoneWithBigImage = true;
-                    boolSkipThisPixelInBigImage = true;
-                    break;
-                  }
-                  curcolor = GetColor(xtemp, ytemp, strideMain, dataMain);
-                  //if (booldebuggingmode) {
-                  //  Console.WriteLine("Prelim Foreground check: x=" + xtemp + "; y=" + ytemp + "; curcolor R=" + curcolor.R + " G=" + curcolor.G + " B=" + curcolor.B);
-                  //}
-                  bool boolContains6 = false;
-                  foreach (var item6 in dictMostPopularColorBigImage) {
-                    MyColor keycolor = item6.Key;
-                    if (curcolor.Equals(keycolor)) {
-                      boolContains6 = true;
-                    }
-                  }
-                  if (boolContains6 == false) {
-                    //if (booldebuggingmode) {
-                    //  Console.WriteLine("Correct");
-                    //}
-                    intCorrect++;
-                  } else {
-                    //if (booldebuggingmode) {
-                    //  Console.WriteLine("InCorrect");
-                    //}
-                    intWrong++;
-                  }
+          // we did at least 10 preliminary checks or the boolean flag for doing preliminary checks
+          // was set to false. We can now see if the percentage correct for the preliminary checks is 
+          // good enough for us to continue on to the full blown complete check
+          intTotalCorrectWrong = intCorrect + intWrong;
+          intPercentCorrect = ((intCorrect * 100) / intTotalCorrectWrong);
+          //if (booldebuggingmode) {
+          //  Console.WriteLine("Percent Correct% " + intPercentCorrect.ToString());
+          //}
+
+          if (boolDoPrelimCheck == true && intTolerance > intPercentCorrect) {
+            continue;
+          }
+          // do complete check - x and y still have the value of the current pixel in the big image.
+          // We want to loop through every pixel of the small image and add that offset to the current
+          // pixel in the big image. We will compare each pixel in the small image to the relative
+          // position of the small image within the big image to see if there is a match with regard
+          // to background/foreground.  
+          // System.Diagnostics.Debugger.Break();
+          Logging.WriteLogSimple("we are doing a complete check at x=" + x + ";y=" +y);
+          intCorrect = 0;
+          intWrong = 0;
+          for (int sy = 0; sy < sub.Height; sy++) {
+            // if we ever go out of the bounds of the big picture, we are no longer interested in this
+            // pixel in the big image
+            ytemp = y + sy;
+            if (ytemp > mainheight) {
+              boolWeAreDoneWithBigImage = true;
+              boolSkipThisPixelInBigImage = true;
+              break;
+            }
+            bool boolPixelInSubIsBackground = false;
+            bool boolNextPixelInSubIsHighContrast = false;
+            MyColor myNextPixel;
+            int intXNextPixel = -1;
+            for (int sx = 0; sx < sub.Width; sx++) {
+              // first we find out if the pixel in the sub is background             
+              curcolor = GetColor(sx, sy, strideSub, dataSub);
+              intXNextPixel = sx + 1;
+              boolNextPixelInSubIsHighContrast = false;
+              if (intXNextPixel <= sub.Width) {
+                myNextPixel = GetColor(intXNextPixel, sy, strideSub, dataSub);
+                if (curcolor.HighContrast(myNextPixel)) {
+                  boolNextPixelInSubIsHighContrast = true;
                 }
               }
-            }
-            // if any problems were encountered with the preliminary checks, we just want to get
-            // the next pixel in the big image
-            if (boolSkipThisPixelInBigImage) {
-              continue;
-            }
+              //if (booldebuggingmode) {
+              //  Console.WriteLine("Complete check - get pixel in sub: sx=" + sx + " sy=" + sy + " xtemp=" + xtemp + "; ytemp=" + ytemp + "; curcolor R=" + curcolor.R + " G=" + curcolor.G + " B=" + curcolor.B);
+              //}
+              bool boolContains7 = false;
+              foreach (var item7 in dictMostPopularColorSmallImage) {
+                MyColor keycolor = item7.Key;
+                if (curcolor.Equals(keycolor)) {
+                  boolContains7 = true;
+                  break;
+                }
+              }
+              if (boolContains7) {
+                boolPixelInSubIsBackground = true;
+              } else {
+                boolPixelInSubIsBackground = false;
+              }
 
-            // we did at least 10 preliminary checks or the boolean flag for doing preliminary checks
-            // was set to false. We can now see if the percentage correct for the preliminary checks is 
-            // good enough for us to continue on to the full blown complete check
-            intTotalCorrectWrong = intCorrect + intWrong;
-            intPercentCorrect = ((intCorrect * 100) / intTotalCorrectWrong);
-            //if (booldebuggingmode) {
-            //  Console.WriteLine("Percent Correct% " + intPercentCorrect.ToString());
-            //}
-
-            if (boolDoPrelimCheck == true && intTolerance > intPercentCorrect) {
-              continue;
-            }
-            // do complete check - x and y still have the value of the current pixel in the big image.
-            // We want to loop through every pixel of the small image and add that offset to the current
-            // pixel in the big image. We will compare each pixel in the small image to the relative
-            // position of the small image within the big image to see if there is a match with regard
-            // to background/foreground.  
-           // System.Diagnostics.Debugger.Break();
-            intCorrect = 0;
-            intWrong = 0;
-            for (int sy = 0; sy < sub.Height; sy++) {
-              // if we ever go out of the bounds of the big picture, we are no longer interested in this
-              // pixel in the big image
-              ytemp = y + sy;
-              if (ytemp > mainheight) {
-                boolWeAreDoneWithBigImage = true;
+              // then we find if pixel in big image is the same type(background or foreground)
+              // as the one in the subimage; if it is the same, we add one to intCorrect; else add 1 to intWrong
+              xtemp = x + sx;
+              if (xtemp > mainwidth) {
+                boolNeedNewRowInBigImage = true;
                 boolSkipThisPixelInBigImage = true;
                 break;
               }
-              for (int sx = 0; sx < sub.Width; sx++) {
-                // first we find out if the pixel in the sub is background
-                bool boolPixelInSubIsBackground;
-                curcolor = GetColor(sx, sy, strideSub, dataSub);
-                //if (booldebuggingmode) {
-                //  Console.WriteLine("Complete check - get pixel in sub: sx=" + sx + " sy=" + sy + " xtemp=" + xtemp + "; ytemp=" + ytemp + "; curcolor R=" + curcolor.R + " G=" + curcolor.G + " B=" + curcolor.B);
-                //}
-                bool boolContains7 = false;
-                foreach (var item7 in dictMostPopularColorSmallImage) {
-                  MyColor keycolor = item7.Key;
-                  if (curcolor.Equals(keycolor)) {
-                    boolContains7 = true;
-                  }
+              bool boolNextPixelInBigIsHighContrast = false;
+              bool boolPixelInBigIsBackground;
+              curcolor = GetColor(xtemp, ytemp, strideMain, dataMain);
+              intXNextPixel = xtemp + 1;
+              if (intXNextPixel <= mainwidth) {
+                myNextPixel = GetColor(intXNextPixel, ytemp, strideMain, dataMain);
+                if (curcolor.HighContrast(myNextPixel)) {
+                  boolNextPixelInBigIsHighContrast = true;
                 }
-                if (boolContains7) {
-                  boolPixelInSubIsBackground = true;
-                } else {
-                  boolPixelInSubIsBackground = false;
-                }
-
-                // then we find if pixel in big image is the same type(background or foreground)
-                // as the one in the subimage; if it is the same, we add one to intCorrect; else add 1 to intWrong
-                xtemp = x + sx;
-                if (xtemp > mainwidth) {
-                  boolNeedNewRowInBigImage = true;
-                  boolSkipThisPixelInBigImage = true;
+              }
+              //if (booldebuggingmode) {
+              //  Console.WriteLine("Complete check: sx=" + sx + " sy=" + sy + " xtemp=" + xtemp + "; ytemp=" + ytemp + "; curcolor R=" + curcolor.R + " G=" + curcolor.G + " B=" + curcolor.B);
+              //}
+              bool boolContains8 = false;
+              foreach (var item8 in dictMostPopularColorBigImage) {
+                MyColor keycolor = item8.Key;
+                if (curcolor.Equals(keycolor)) {
+                  boolContains8 = true;
                   break;
                 }
-
-                bool boolPixelInBigIsBackground;
-                curcolor = GetColor(xtemp, ytemp, strideMain, dataMain);
-                //if (booldebuggingmode) {
-                //  Console.WriteLine("Complete check: sx=" + sx + " sy=" + sy + " xtemp=" + xtemp + "; ytemp=" + ytemp + "; curcolor R=" + curcolor.R + " G=" + curcolor.G + " B=" + curcolor.B);
-                //}
-                bool boolContains8 = false;
-                foreach (var item8 in dictMostPopularColorBigImage) {
-                  MyColor keycolor = item8.Key;
-                  if (curcolor.Equals(keycolor)) {
-                    boolContains8 = true;
-                  }
-                }
-                if (boolContains8) {
-                  boolPixelInBigIsBackground = true;
-                } else {
-                  boolPixelInBigIsBackground = false;
-                }
-                if ((boolPixelInBigIsBackground && boolPixelInSubIsBackground) ||
-                (boolPixelInBigIsBackground == false && boolPixelInSubIsBackground == false)) {
-                  //if (booldebuggingmode) {
-                  //  Console.WriteLine("Correct Complete check");
-                  //}
-                  intCorrect++;
-                } else {
-                  //if (booldebuggingmode) {
-                  //  Console.WriteLine("InCorrect Complete check: boolPixelInBigIsBackground=" + boolPixelInBigIsBackground + " boolPixelInSubIsBackground=" + boolPixelInSubIsBackground);
-                  //}
-                  intWrong++;
-                }
-
               }
+              if (boolContains8) {
+                boolPixelInBigIsBackground = true;
+              } else {
+                boolPixelInBigIsBackground = false;
+              }
+              if ((boolPixelInBigIsBackground && boolPixelInSubIsBackground) ||
+              (boolPixelInBigIsBackground == false && boolPixelInSubIsBackground == false) && boolNextPixelInSubIsHighContrast == boolNextPixelInBigIsHighContrast) {
+                //if (booldebuggingmode) {
+                //  Console.WriteLine("Correct Complete check");
+                //}
+                intCorrect++;
+              } else {
+                //if (booldebuggingmode) {
+                //  Console.WriteLine("InCorrect Complete check: boolPixelInBigIsBackground=" + boolPixelInBigIsBackground + " boolPixelInSubIsBackground=" + boolPixelInSubIsBackground);
+                //}
+                intWrong++;
+              }
+              if (boolNextPixelInSubIsHighContrast == true && boolNextPixelInBigIsHighContrast == true) {
+                //if (booldebuggingmode) {
+                //  Console.WriteLine("Correct Complete check");
+                //}
+                intCorrect = intCorrect + 10;
+              }
+              if (boolNextPixelInSubIsHighContrast != boolNextPixelInBigIsHighContrast) {
+                //if (booldebuggingmode) {
+                //  Console.WriteLine("Correct Complete check");
+                //}
+                intWrong = intWrong + 10;
+              } 
 
             }
-            if (boolSkipThisPixelInBigImage) {
-              //    System.Diagnostics.Debugger.Break();
-              continue;
-            }
-            // if percent correct is less than tolerance, we can skip this pixel in big image
-            intTotalCorrectWrong = intCorrect + intWrong;
-            intPercentCorrect = ((intCorrect * 100) / intTotalCorrectWrong);
-            //if (booldebuggingmode) {
-            //  Console.WriteLine("Percent Correct Complete check" +  intPercentCorrect.ToString());
-            //}
-            if (intTolerance > intPercentCorrect) {
-              continue;
-            }
-
-            //we found a match
-            SubPositionInfo mySubPositionInfo = new SubPositionInfo();
-            mySubPositionInfo.myPoint = new Point(x, y);
-            mySubPositionInfo.percentcorrect = intPercentCorrect;
-            possiblepos.Add(mySubPositionInfo);
-            highestPercentCorrect = 0;
-            foundRects.Add(new Rectangle(x, y, sub.Width, sub.Height));
 
           }
+          if (boolSkipThisPixelInBigImage) {
+            //    System.Diagnostics.Debugger.Break();
+            continue;
+          }
+          foreach (var item in lstHighContrast) {
+            intXBig = item.X + x;
+            intYBig = item.Y + y;
+            if (intXBig + 2 > mainwidth || intYBig > mainheight) {
+              continue;
+            }
+            intXBigNext = intXBig + 1;
+            MyColor bigCurColor = GetColor(intXBig, intYBig, strideMain, dataMain);
+            MyColor bigCurColorNext = GetColor(intXBigNext, intYBig, strideMain, dataMain);
+            MyColor bigCurColorNextNext = GetColor(intXBigNext, intYBig, strideMain, dataMain);
+            if (bigCurColor.HighContrast(bigCurColorNext) || bigCurColor.HighContrast(bigCurColorNextNext) ) {
+              intCorrect++;
+            } else {
+              intWrong++;
+            }
+          }
+          // if percent correct is less than tolerance, we can skip this pixel in big image
+          intTotalCorrectWrong = intCorrect + intWrong;
+          intPercentCorrect = ((intCorrect * 100) / intTotalCorrectWrong);
+          //if (booldebuggingmode) {
+          //  Console.WriteLine("Percent Correct Complete check" +  intPercentCorrect.ToString());
+          //}
+          if (intTolerance > intPercentCorrect) {
+            continue;
+          }
+
+          //we found a match
+          SubPositionInfo mySubPositionInfo = new SubPositionInfo();
+          mySubPositionInfo.myPoint = new Point(x, y);
+          mySubPositionInfo.percentcorrect = intPercentCorrect;
+          possiblepos.Add(mySubPositionInfo);
+          highestPercentCorrect = 0;
+          mySubPositionInfo.strSearchMethod = "UsePatternBasedBackgroundForegroundPlusHighContrast";
+          foundRects.Add(new Rectangle(x, y, sub.Width, sub.Height));
 
         }
-      
+
+      }
+
     }
 
     private static void LoopthruEachPixelInBigImageToFindMatchesOnSmallImageLeastPopularPattern(
@@ -866,10 +1210,10 @@ namespace IdealAutomate.Core {
         // x for big image
         for (int x = 0; x < mainwidth; x++) {
           if (y == 589 && x == 434) {
-           // System.Diagnostics.Debugger.Break();
+            // System.Diagnostics.Debugger.Break();
             string abc = "abd";
           }
-          MyPattern _myBigPattern = MyPattern.GetPatternInBigImage(x, y, pLeastPopularPattern, sub.Width, sub.Height, strideMain, dataMain, mainwidth, mainheight);
+          MyPattern _myBigPattern = MyPattern.GetHighContrastPatternInBigImage(x, y, pLeastPopularPattern, sub.Width, sub.Height, strideMain, dataMain, mainwidth, mainheight);
 
           // Pixle value from subimage in desktop image
           if (_myBigPattern.discard == false
@@ -887,6 +1231,7 @@ namespace IdealAutomate.Core {
                 SubPositionInfo mySubPositionInfo = new SubPositionInfo();
                 mySubPositionInfo.myPoint = new Point(x - loc.X, y - loc.Y);
                 mySubPositionInfo.percentcorrect = highestPercentCorrect;
+                mySubPositionInfo.strSearchMethod = "UsePatternBasedOnHighContrast";
                 possiblepos.Add(mySubPositionInfo);
                 highestPercentCorrect = 0;
                 foundRects.Add(new Rectangle(x, y, sub.Width, sub.Height));
@@ -977,7 +1322,7 @@ namespace IdealAutomate.Core {
     }
 
 
-    private static void FindLeastPopularPatternInSmallImage(
+    private static void FindLeastPopularHighContrastPatternInSmallImage(
         Bitmap sub,
         int subwidth,
         int subheight,
@@ -1018,7 +1363,7 @@ namespace IdealAutomate.Core {
       for (int y1 = 0; y1 < sub.Height; y1++) {
         for (int x1 = 0; x1 < sub.Width; x1++) {
 
-          MyPattern _myPattern = MyPattern.GetPatternInBoolArySmallImage(x1, y1, boolArySmallImage, sub.Width, sub.Height);
+          MyPattern _myPattern = MyPattern.GetHighContrastPatternInBoolArySmallImage(x1, y1, boolArySmallImage, sub.Width, sub.Height);
 
           // The pixel value has been found before
           if (!repeatsPattern.ContainsKey(_myPattern)) {
@@ -1196,7 +1541,7 @@ namespace IdealAutomate.Core {
       public int ColorWrapY;
       public bool discard;
 
-      public static MyPattern GetPatternInBoolArySmallImage(int x, int y, bool[,] myBoolArySmallImage, int smallWidth, int smallHeight) {
+      public static MyPattern GetHighContrastPatternInBoolArySmallImage(int x, int y, bool[,] myBoolArySmallImage, int smallWidth, int smallHeight) {
         MyPattern mp = new MyPattern();
         mp.ColorWrapX = -1;
         mp.ColorWrapY = -1;
@@ -1227,7 +1572,73 @@ namespace IdealAutomate.Core {
         return mp;
       }
 
-      public static MyPattern GetPatternInBigImage(
+      public static MyPattern GetBackgroundPatternInBigImage(
+      int x,
+      int y,
+      LeastPopularPattern pLeastPopularPattern,
+      int smallWidth,
+      int smallHeight,
+      int strideMain,
+      byte[] dataMain,
+      int bigWidth,
+      int bigHeight
+      ) {
+        // First get two colors for the current pixel
+        // and the next one; if they are the same,
+        // the bool result for that pixel is true; otherwise,
+        // it is false. This is very similar to what I did when
+        // creating boolarray for small image
+        MyPattern mp = new MyPattern();
+        mp.ColorWrapX = -1;
+        mp.ColorWrapY = -1;
+        mp.discard = false;
+        int intOrigX = x;
+        int intOrigY = y;
+        mp.IndexWrapX = -1;
+        mp.IndexWrapY = -1;
+        int patternpixelposition;
+        patternpixelposition = 1;
+        mp.bool1 = GetBoolForPixelinBigImageForPixelBackgroundPatternPosition(ref x, ref y, ref pLeastPopularPattern, smallWidth, smallHeight, strideMain, dataMain, bigWidth, bigHeight, ref mp, patternpixelposition);
+        patternpixelposition = 2;
+        if (mp.discard == false) {
+          mp.bool2 = GetBoolForPixelinBigImageForPixelBackgroundPatternPosition(ref x, ref y, ref pLeastPopularPattern, smallWidth, smallHeight, strideMain, dataMain, bigWidth, bigHeight, ref mp, patternpixelposition);
+        }
+        patternpixelposition = 3;
+        if (mp.discard == false) {
+          mp.bool3 = GetBoolForPixelinBigImageForPixelBackgroundPatternPosition(ref x, ref y, ref pLeastPopularPattern, smallWidth, smallHeight, strideMain, dataMain, bigWidth, bigHeight, ref mp, patternpixelposition);
+        }
+        patternpixelposition = 4;
+        if (mp.discard == false) {
+          mp.bool4 = GetBoolForPixelinBigImageForPixelBackgroundPatternPosition(ref x, ref y, ref pLeastPopularPattern, smallWidth, smallHeight, strideMain, dataMain, bigWidth, bigHeight, ref mp, patternpixelposition);
+        }
+        patternpixelposition = 5;
+        if (mp.discard == false) {
+          mp.bool5 = GetBoolForPixelinBigImageForPixelBackgroundPatternPosition(ref x, ref y, ref pLeastPopularPattern, smallWidth, smallHeight, strideMain, dataMain, bigWidth, bigHeight, ref mp, patternpixelposition);
+        }
+        patternpixelposition = 6;
+        if (mp.discard == false) {
+          mp.bool6 = GetBoolForPixelinBigImageForPixelBackgroundPatternPosition(ref x, ref y, ref pLeastPopularPattern, smallWidth, smallHeight, strideMain, dataMain, bigWidth, bigHeight, ref mp, patternpixelposition);
+        }
+        patternpixelposition = 7;
+        if (mp.discard == false) {
+          mp.bool7 = GetBoolForPixelinBigImageForPixelBackgroundPatternPosition(ref x, ref y, ref pLeastPopularPattern, smallWidth, smallHeight, strideMain, dataMain, bigWidth, bigHeight, ref mp, patternpixelposition);
+        }
+        patternpixelposition = 8;
+        if (mp.discard == false) {
+          mp.bool8 = GetBoolForPixelinBigImageForPixelBackgroundPatternPosition(ref x, ref y, ref pLeastPopularPattern, smallWidth, smallHeight, strideMain, dataMain, bigWidth, bigHeight, ref mp, patternpixelposition);
+        }
+        patternpixelposition = 9;
+        if (mp.discard == false) {
+          mp.bool9 = GetBoolForPixelinBigImageForPixelBackgroundPatternPosition(ref x, ref y, ref pLeastPopularPattern, smallWidth, smallHeight, strideMain, dataMain, bigWidth, bigHeight, ref mp, patternpixelposition);
+        }
+        patternpixelposition = 10;
+        if (mp.discard == false) {
+          mp.bool10 = GetBoolForPixelinBigImageForPixelBackgroundPatternPosition(ref x, ref y, ref pLeastPopularPattern, smallWidth, smallHeight, strideMain, dataMain, bigWidth, bigHeight, ref mp, patternpixelposition);
+        }
+
+        return mp;
+      }
+      public static MyPattern GetHighContrastPatternInBigImage(
           int x,
           int y,
           LeastPopularPattern pLeastPopularPattern,
@@ -1253,48 +1664,102 @@ namespace IdealAutomate.Core {
         mp.IndexWrapY = -1;
         int patternpixelposition;
         patternpixelposition = 1;
-        mp.bool1 = GetBoolForPixelinBigImageForPixelPatternPosition(ref x, ref y, ref pLeastPopularPattern, smallWidth, smallHeight, strideMain, dataMain, bigWidth, bigHeight, ref mp, patternpixelposition);
+        mp.bool1 = GetBoolForPixelinBigImageForPixelHighContrastPatternPosition(ref x, ref y, ref pLeastPopularPattern, smallWidth, smallHeight, strideMain, dataMain, bigWidth, bigHeight, ref mp, patternpixelposition);
         patternpixelposition = 2;
         if (mp.discard == false) {
-          mp.bool2 = GetBoolForPixelinBigImageForPixelPatternPosition(ref x, ref y, ref pLeastPopularPattern, smallWidth, smallHeight, strideMain, dataMain, bigWidth, bigHeight, ref mp, patternpixelposition);
+          mp.bool2 = GetBoolForPixelinBigImageForPixelHighContrastPatternPosition(ref x, ref y, ref pLeastPopularPattern, smallWidth, smallHeight, strideMain, dataMain, bigWidth, bigHeight, ref mp, patternpixelposition);
         }
         patternpixelposition = 3;
         if (mp.discard == false) {
-          mp.bool3 = GetBoolForPixelinBigImageForPixelPatternPosition(ref x, ref y, ref pLeastPopularPattern, smallWidth, smallHeight, strideMain, dataMain, bigWidth, bigHeight, ref mp, patternpixelposition);
+          mp.bool3 = GetBoolForPixelinBigImageForPixelHighContrastPatternPosition(ref x, ref y, ref pLeastPopularPattern, smallWidth, smallHeight, strideMain, dataMain, bigWidth, bigHeight, ref mp, patternpixelposition);
         }
         patternpixelposition = 4;
         if (mp.discard == false) {
-          mp.bool4 = GetBoolForPixelinBigImageForPixelPatternPosition(ref x, ref y, ref pLeastPopularPattern, smallWidth, smallHeight, strideMain, dataMain, bigWidth, bigHeight, ref mp, patternpixelposition);
+          mp.bool4 = GetBoolForPixelinBigImageForPixelHighContrastPatternPosition(ref x, ref y, ref pLeastPopularPattern, smallWidth, smallHeight, strideMain, dataMain, bigWidth, bigHeight, ref mp, patternpixelposition);
         }
         patternpixelposition = 5;
         if (mp.discard == false) {
-          mp.bool5 = GetBoolForPixelinBigImageForPixelPatternPosition(ref x, ref y, ref pLeastPopularPattern, smallWidth, smallHeight, strideMain, dataMain, bigWidth, bigHeight, ref mp, patternpixelposition);
+          mp.bool5 = GetBoolForPixelinBigImageForPixelHighContrastPatternPosition(ref x, ref y, ref pLeastPopularPattern, smallWidth, smallHeight, strideMain, dataMain, bigWidth, bigHeight, ref mp, patternpixelposition);
         }
         patternpixelposition = 6;
         if (mp.discard == false) {
-          mp.bool6 = GetBoolForPixelinBigImageForPixelPatternPosition(ref x, ref y, ref pLeastPopularPattern, smallWidth, smallHeight, strideMain, dataMain, bigWidth, bigHeight, ref mp, patternpixelposition);
+          mp.bool6 = GetBoolForPixelinBigImageForPixelHighContrastPatternPosition(ref x, ref y, ref pLeastPopularPattern, smallWidth, smallHeight, strideMain, dataMain, bigWidth, bigHeight, ref mp, patternpixelposition);
         }
         patternpixelposition = 7;
         if (mp.discard == false) {
-          mp.bool7 = GetBoolForPixelinBigImageForPixelPatternPosition(ref x, ref y, ref pLeastPopularPattern, smallWidth, smallHeight, strideMain, dataMain, bigWidth, bigHeight, ref mp, patternpixelposition);
+          mp.bool7 = GetBoolForPixelinBigImageForPixelHighContrastPatternPosition(ref x, ref y, ref pLeastPopularPattern, smallWidth, smallHeight, strideMain, dataMain, bigWidth, bigHeight, ref mp, patternpixelposition);
         }
         patternpixelposition = 8;
         if (mp.discard == false) {
-          mp.bool8 = GetBoolForPixelinBigImageForPixelPatternPosition(ref x, ref y, ref pLeastPopularPattern, smallWidth, smallHeight, strideMain, dataMain, bigWidth, bigHeight, ref mp, patternpixelposition);
+          mp.bool8 = GetBoolForPixelinBigImageForPixelHighContrastPatternPosition(ref x, ref y, ref pLeastPopularPattern, smallWidth, smallHeight, strideMain, dataMain, bigWidth, bigHeight, ref mp, patternpixelposition);
         }
         patternpixelposition = 9;
         if (mp.discard == false) {
-          mp.bool9 = GetBoolForPixelinBigImageForPixelPatternPosition(ref x, ref y, ref pLeastPopularPattern, smallWidth, smallHeight, strideMain, dataMain, bigWidth, bigHeight, ref mp, patternpixelposition);
+          mp.bool9 = GetBoolForPixelinBigImageForPixelHighContrastPatternPosition(ref x, ref y, ref pLeastPopularPattern, smallWidth, smallHeight, strideMain, dataMain, bigWidth, bigHeight, ref mp, patternpixelposition);
         }
         patternpixelposition = 10;
         if (mp.discard == false) {
-          mp.bool10 = GetBoolForPixelinBigImageForPixelPatternPosition(ref x, ref y, ref pLeastPopularPattern, smallWidth, smallHeight, strideMain, dataMain, bigWidth, bigHeight, ref mp, patternpixelposition);
+          mp.bool10 = GetBoolForPixelinBigImageForPixelHighContrastPatternPosition(ref x, ref y, ref pLeastPopularPattern, smallWidth, smallHeight, strideMain, dataMain, bigWidth, bigHeight, ref mp, patternpixelposition);
         }
 
         return mp;
       }
 
-      private static bool GetBoolForPixelinBigImageForPixelPatternPosition(ref int x, ref int y, ref LeastPopularPattern pLeastPopularPattern, int smallWidth, int smallHeight, int strideMain, byte[] dataMain, int bigWidth, int bigHeight, ref MyPattern mp, int patternpixelposition) {
+      private static bool GetBoolForPixelinBigImageForPixelBackgroundPatternPosition(ref int x, ref int y, ref LeastPopularPattern pLeastPopularPattern, int smallWidth, int smallHeight, int strideMain, byte[] dataMain, int bigWidth, int bigHeight, ref MyPattern mp, int patternpixelposition) {
+        if (pLeastPopularPattern.thePattern.IndexWrapX == patternpixelposition) {
+          mp.IndexWrapX = patternpixelposition;
+          x = x - smallWidth;
+          y = y + 1;
+        }
+        if (pLeastPopularPattern.thePattern.IndexWrapY == patternpixelposition) {
+          mp.IndexWrapY = patternpixelposition;
+          x = x - smallWidth;
+          y = y - smallHeight;
+        }
+        // if the indexes are outside the bounds of 
+        // the big image, we say there is no match                     
+        if (x > bigWidth - 1 || x < 0) {
+          mp.discard = true;
+          return false;
+        }
+
+        if (y > bigHeight - 1 || y < 0) {
+          mp.discard = true;
+          return false;
+        }
+        int xtemp = x + 1;
+        int ytemp = y;
+        if (pLeastPopularPattern.thePattern.ColorWrapX == patternpixelposition) {
+          xtemp = xtemp - smallWidth;
+          ytemp = ytemp + 1;
+        }
+        if (pLeastPopularPattern.thePattern.ColorWrapY == patternpixelposition) {
+          xtemp = (x + 1) - smallWidth;
+          ytemp = (y + 1) - smallHeight;
+        }
+
+        if (xtemp > bigWidth - 1 || xtemp < 0) {
+          mp.discard = true;
+          return false;
+        }
+
+        if (ytemp > bigHeight - 1 || ytemp < 0) {
+          mp.discard = true;
+          return false;
+        }
+
+        MyColor curcolor = GetColor(x, y, strideMain, dataMain);
+        MyColor curcolor2 = GetColor(xtemp, ytemp, strideMain, dataMain);
+
+        if (curcolor.Equals(curcolor2)) {
+          x = x + 1;
+          return true;
+        } else {
+          x = x + 1;
+          return false;
+        }
+      }
+      private static bool GetBoolForPixelinBigImageForPixelHighContrastPatternPosition(ref int x, ref int y, ref LeastPopularPattern pLeastPopularPattern, int smallWidth, int smallHeight, int strideMain, byte[] dataMain, int bigWidth, int bigHeight, ref MyPattern mp, int patternpixelposition) {
         if (pLeastPopularPattern.thePattern.IndexWrapX == patternpixelposition) {
           mp.IndexWrapX = patternpixelposition;
           x = x - smallWidth;

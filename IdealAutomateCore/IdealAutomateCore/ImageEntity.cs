@@ -15,6 +15,7 @@ namespace IdealAutomate.Core
         public int RelativeX { get; set; }
         public int RelativeY { get; set; }       
         public int Tolerance { get; set; }
+        public bool UseGrayScale { get; set; }
         public ImageEntity()
         {
             Attempts = 1;
@@ -23,6 +24,7 @@ namespace IdealAutomate.Core
             RelativeX = 10;
             RelativeY = 10;
             Tolerance = 90;
+            UseGrayScale = false;
         }
     }
 }
