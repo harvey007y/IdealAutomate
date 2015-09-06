@@ -151,13 +151,47 @@ namespace IdealAutomate.Core {
          * x6. Do complete check in big picture if big picture passes preliminary check.
          */
         // System.Diagnostics.Debugger.Break();
+        MyColor oDarkestColorSmallImage = new MyColor();
+        List<Point> olstDarkestColorSmallImage = new List<Point>();
         boolArySmallImage = new bool[subwidth, subheight];
         // FindMostPopularColorInSmallImage is going to find the most popular colors in the small image
         // and put the location of at least five of them in lstPrelimBackground
         // It will also put the location of at least five foreground pixels in lstPrelimForeground
         // If it cannot find 5, it will show popup message saying we cannot use this strategy on this image
-        FindMostPopularColorInSmallImage(sub, subwidth, subheight, strideSub, dataSub, ref oMostPopularColorSmallImage, repeatsMostPopular, ref lstPrelimBackground, ref lstPrelimForeground, ref dictMostPopularColorSmallImage, ref lstHighContrast);
-        LoopthruEachPixelInBigImageToFindMatchesOnSmallImageBackgroundPattern(main, sub, possiblepos, foundRects, mainwidth, mainheight, dataMain, strideMain, strideSub, dataSub, oMostPopularColorSmallImage, boolArySmallImage, ref highestPercentCorrect, intTolerance, lstPrelimBackground, lstPrelimForeground, ref dictMostPopularColorSmallImage, lstHighContrast);
+        FindMostPopularColorInSmallImage(sub, 
+          subwidth, 
+          subheight, 
+          strideSub, 
+          dataSub, 
+          ref oMostPopularColorSmallImage, 
+          repeatsMostPopular, 
+          ref lstPrelimBackground, 
+          ref lstPrelimForeground, 
+          ref dictMostPopularColorSmallImage, 
+          ref lstHighContrast,
+          ref oDarkestColorSmallImage,
+          ref olstDarkestColorSmallImage);
+
+        LoopthruEachPixelInBigImageToFindMatchesOnSmallImageBackgroundPattern(main, 
+          sub, 
+          possiblepos, 
+          foundRects, 
+          mainwidth, 
+          mainheight, 
+          dataMain, 
+          strideMain, 
+          strideSub, 
+          dataSub, 
+          oMostPopularColorSmallImage, 
+          boolArySmallImage, 
+          ref highestPercentCorrect, 
+          intTolerance, 
+          lstPrelimBackground, 
+          lstPrelimForeground, 
+          ref dictMostPopularColorSmallImage, 
+          lstHighContrast,
+          ref oDarkestColorSmallImage,
+          ref olstDarkestColorSmallImage);
       }
 
       // Here is the boolUseGrayScale stuff I deleted
@@ -190,7 +224,19 @@ namespace IdealAutomate.Core {
     /// <param name="repeatsMostPopular"></param>
     /// <param name="lstPrelimBackground"></param>
     /// <param name="lstPrelimForeground"></param>
-    private static void FindMostPopularColorInSmallImage(Bitmap sub, int subwidth, int subheight, int strideSub, byte[] dataSub, ref MostPopularColorSmallImage pMostPopularColorSmallImage, Dictionary<MyColor, int[]> repeatsMostPopular, ref List<Point> lstPrelimBackground, ref List<Point> lstPrelimForeground, ref Dictionary<MyColor, MostPopularColorSmallImage> dictMostPopularColorSmallImage, ref List<Point> lstHighContrast) {
+    private static void FindMostPopularColorInSmallImage(Bitmap sub, 
+      int subwidth, 
+      int subheight, 
+      int strideSub, 
+      byte[] dataSub, 
+      ref MostPopularColorSmallImage pMostPopularColorSmallImage, 
+      Dictionary<MyColor, int[]> repeatsMostPopular, 
+      ref List<Point> lstPrelimBackground, 
+      ref List<Point> lstPrelimForeground, 
+      ref Dictionary<MyColor, MostPopularColorSmallImage> dictMostPopularColorSmallImage, 
+      ref List<Point> lstHighContrast,
+      ref MyColor oDarkestColorSmallImage,
+      ref List<Point> olstDarkestColorSmallImage) {
 
       int intPrevX;
       int intPrevY;
@@ -199,6 +245,11 @@ namespace IdealAutomate.Core {
       dictMostPopularColorSmallImage.Clear();
       int intMaxPrelimBackgrounds = 0;
       int intSaveBackgroundCtr = 0;
+      oDarkestColorSmallImage.A = 255;
+      oDarkestColorSmallImage.R= 255;
+      oDarkestColorSmallImage.G = 255;
+      oDarkestColorSmallImage.B = 255;
+ 
       do {
         intBackgroundsCtr++;
         repeatsMostPopular.Clear();
@@ -224,6 +275,9 @@ namespace IdealAutomate.Core {
             boolCurrentAboveColorBackground = false;
             boolCurrentBelowColorBackground = false;
             MyColor curcolor = GetColor(x, y, strideSub, dataSub);
+            if (curcolor.LessThan(oDarkestColorSmallImage)) {
+              oDarkestColorSmallImage = curcolor;
+            }
             if (intBackgroundsCtr == 1) {
               int intXNextPixel = x + 1;
               if (intXNextPixel <= sub.Width) {
@@ -360,6 +414,12 @@ namespace IdealAutomate.Core {
             boolCurrentAboveColorBackground = false;
             boolCurrentBelowColorBackground = false;
             MyColor curcolor = GetColor(x, y, strideSub, dataSub);
+            if (curcolor.Equals(oDarkestColorSmallImage)) {
+              Point oPoint = new Point();
+              oPoint.X = x;
+              oPoint.Y = y;
+              olstDarkestColorSmallImage.Add(oPoint);
+            }
             bool boolContains = false;
             foreach (var item in dictMostPopularColorSmallImage) {
               MyColor keycolor = item.Key;
@@ -455,13 +515,13 @@ namespace IdealAutomate.Core {
 
       } while (intBackgroundsCtr < intSaveBackgroundCtr);
       foreach (var item in lstPrelimBackground) {
-        Logging.WriteLogSimple("background x=" + item.X + ";y=" + item.Y);
+    //    Logging.WriteLogSimple("background x=" + item.X + ";y=" + item.Y);
       }
       foreach (var item in lstPrelimForeground) {
-        Logging.WriteLogSimple("foreground x=" + item.X + ";y=" + item.Y);
+    //    Logging.WriteLogSimple("foreground x=" + item.X + ";y=" + item.Y);
       }
       foreach (var item in dictMostPopularColorSmallImage) {
-        Logging.WriteLogSimple("dictMostPopularColorSmall=" + (MyColor)item.Key + ";value=" + (MostPopularColorSmallImage)item.Value);
+    //    Logging.WriteLogSimple("dictMostPopularColorSmall=" + (MyColor)item.Key + ";value=" + (MostPopularColorSmallImage)item.Value);
       }
     //  Logging.WriteLogSimple(Logging.DumpObject(dictMostPopularColorSmallImage));
      // System.Diagnostics.Debugger.Break();
@@ -737,7 +797,9 @@ namespace IdealAutomate.Core {
       List<Point> lstPrelimBackground,
       List<Point> lstPrelimForeground,
       ref Dictionary<MyColor, MostPopularColorSmallImage> dictMostPopularColorSmallImage,
-      List<Point> lstHighContrast) {
+      List<Point> lstHighContrast,
+      ref MyColor oDarkestColorSmallImage,
+      ref List<Point> olstDarkestColorSmallImage) {
       int xtemp = -1;
       int ytemp = -1;
       bool boolDoPrelimCheck = true;
@@ -746,14 +808,33 @@ namespace IdealAutomate.Core {
       int intPrelimCheckBackground = lstPrelimBackground.Count;
       int intPrelimCheckForeground = lstPrelimForeground.Count;
       int intPrelimCheckTotal = intPrelimCheckBackground + intPrelimCheckForeground;
-      int intCorrect = 0;
-      int intWrong = 0;
-      int intTotalCorrectWrong = 0;
+      decimal intCorrect = 0;
+      decimal intWrong = 0;
+      decimal intTotalCorrectWrong = 0;
+      decimal decHighContrastCount = lstHighContrast.Count;
+      decimal decDarkestColorCount = olstDarkestColorSmallImage.Count;
+      decimal decCorrectnessWeightBackground = (decimal).87;
+      decimal decCorrectnessWeightHighContrast = (decimal).94;
+      if (decHighContrastCount == 0) {
+        decHighContrastCount = 1;
+      }
+      if (decDarkestColorCount == 0) {
+        decDarkestColorCount = 1;
+      }
+      int intTotalPixelsInSmallImage = sub.Width * sub.Height;
+      decimal decWeightForHighContrast = (intTotalPixelsInSmallImage / (lstHighContrast.Count)) * decCorrectnessWeightHighContrast;
+      decimal decWeightForDarkestColor = intTotalPixelsInSmallImage / olstDarkestColorSmallImage.Count;
+     
+
       Dictionary<MyColor, Point> dictMostPopularColorSmallImageWithTemps = new Dictionary<MyColor, Point>();
       Dictionary<MyColor, Point> dictMostPopularColorBigImage = new Dictionary<MyColor, Point>();
       decimal intPercentCorrect = 0;
       bool boolSkipThisPixelInBigImage = false;
       bool booldebuggingmode = false;
+      MyColor oDarkestColorBigImage = new MyColor();
+      oDarkestColorBigImage.R = 255;
+      oDarkestColorBigImage.G = 255;
+      oDarkestColorBigImage.B = 255;
       if (intPrelimCheckTotal + lstHighContrast.Count < 10) {
         boolDoPrelimCheck = false;
       }
@@ -938,7 +1019,7 @@ namespace IdealAutomate.Core {
               if (boolContains5) {
                 //if (booldebuggingmode) {
                 //  Console.WriteLine("Correct");
-                //}
+                //}                
                 intCorrect++;
                 intCorrect++;
                 intCorrect++;
@@ -1014,9 +1095,9 @@ namespace IdealAutomate.Core {
             MyColor bigCurColorNext = GetColor(intXBigNext, intYBig, strideMain, dataMain);
             MyColor bigCurColorNextNext = GetColor(intXBigNext, intYBig, strideMain, dataMain);
             if (bigCurColor.HighContrast(bigCurColorNext) || bigCurColor.HighContrast(bigCurColorNextNext)) {
-              intCorrect++;
+              intCorrect += decWeightForHighContrast;
             } else {
-              intWrong++;
+              intWrong += decWeightForHighContrast;
             }
           }
 
@@ -1029,7 +1110,7 @@ namespace IdealAutomate.Core {
           //  Console.WriteLine("Percent Correct% " + intPercentCorrect.ToString());
           //}
 
-          if (boolDoPrelimCheck == true && intTolerance > intPercentCorrect) {
+          if (boolDoPrelimCheck == true && intTolerance - 10 > intPercentCorrect) {
             continue;
           }
           // do complete check - x and y still have the value of the current pixel in the big image.
@@ -1038,9 +1119,16 @@ namespace IdealAutomate.Core {
           // position of the small image within the big image to see if there is a match with regard
           // to background/foreground.  
           // System.Diagnostics.Debugger.Break();
-          Logging.WriteLogSimple("we are doing a complete check at x=" + x + ";y=" +y);
+      //    Logging.WriteLogSimple("we are doing a complete check at x=" + x + ";y=" +y);
           intCorrect = 0;
           intWrong = 0;
+          int intCorrectBackground = 0;
+          int intWrongBackground = 0;
+          int intCorrectHighContrast = 0;
+          int intWrongHighContrast = 0;
+          int intCorrectDarkestColor = 0;
+          int intWrongDarkestColor = 0;
+
           for (int sy = 0; sy < sub.Height; sy++) {
             // if we ever go out of the bounds of the big picture, we are no longer interested in this
             // pixel in the big image
@@ -1055,8 +1143,12 @@ namespace IdealAutomate.Core {
             MyColor myNextPixel;
             int intXNextPixel = -1;
             for (int sx = 0; sx < sub.Width; sx++) {
+
               // first we find out if the pixel in the sub is background             
               curcolor = GetColor(sx, sy, strideSub, dataSub);
+              if (curcolor.LessThan(oDarkestColorBigImage)) {
+                oDarkestColorBigImage = curcolor;
+              }
               intXNextPixel = sx + 1;
               boolNextPixelInSubIsHighContrast = false;
               if (intXNextPixel <= sub.Width) {
@@ -1121,25 +1213,38 @@ namespace IdealAutomate.Core {
                 //if (booldebuggingmode) {
                 //  Console.WriteLine("Correct Complete check");
                 //}
-                intCorrect++;
+                intCorrectBackground++;
+                intCorrect += decCorrectnessWeightBackground;
               } else {
                 //if (booldebuggingmode) {
                 //  Console.WriteLine("InCorrect Complete check: boolPixelInBigIsBackground=" + boolPixelInBigIsBackground + " boolPixelInSubIsBackground=" + boolPixelInSubIsBackground);
                 //}
-                intWrong++;
+                intWrongBackground++;
+                intWrong += decCorrectnessWeightBackground;
               }
               if (boolNextPixelInSubIsHighContrast == true && boolNextPixelInBigIsHighContrast == true) {
                 //if (booldebuggingmode) {
                 //  Console.WriteLine("Correct Complete check");
                 //}
-                intCorrect = intCorrect + 10;
+                intCorrectHighContrast++;
+                intCorrect = intCorrect + decWeightForHighContrast;
               }
               if (boolNextPixelInSubIsHighContrast != boolNextPixelInBigIsHighContrast) {
                 //if (booldebuggingmode) {
                 //  Console.WriteLine("Correct Complete check");
                 //}
-                intWrong = intWrong + 10;
-              } 
+                intWrongHighContrast++;
+                intWrong = intWrong + decWeightForHighContrast;
+              }
+              intTotalCorrectWrong = intCorrect + intWrong;
+              intPercentCorrect = ((intCorrect * 100) / intTotalCorrectWrong);
+              //if (booldebuggingmode) {
+              //  Console.WriteLine("Percent Correct Complete check" +  intPercentCorrect.ToString());
+              //}
+              if (intTolerance - 20 > intPercentCorrect && intTotalCorrectWrong > 25) {
+                boolSkipThisPixelInBigImage = true;
+                break;
+              }
 
             }
 
@@ -1159,9 +1264,26 @@ namespace IdealAutomate.Core {
             MyColor bigCurColorNext = GetColor(intXBigNext, intYBig, strideMain, dataMain);
             MyColor bigCurColorNextNext = GetColor(intXBigNext, intYBig, strideMain, dataMain);
             if (bigCurColor.HighContrast(bigCurColorNext) || bigCurColor.HighContrast(bigCurColorNextNext) ) {
-              intCorrect++;
+              intCorrectHighContrast++;
+              intCorrect += decWeightForHighContrast;
             } else {
-              intWrong++;
+              intWrongHighContrast++;
+              intWrong += decWeightForHighContrast;
+            }
+          }
+          foreach (var item in olstDarkestColorSmallImage) {
+            intXBig = item.X + x;
+            intYBig = item.Y + y;
+            if (intXBig + 2 > mainwidth || intYBig > mainheight) {
+              continue;
+            }           
+            MyColor bigCurColor = GetColor(intXBig, intYBig, strideMain, dataMain);            
+            if (bigCurColor.Equals(oDarkestColorBigImage)) {
+              intCorrectDarkestColor++;
+              intCorrect += decWeightForDarkestColor;
+            } else {
+              intWrongDarkestColor++;
+              intWrong += decWeightForDarkestColor;
             }
           }
           // if percent correct is less than tolerance, we can skip this pixel in big image
@@ -1173,6 +1295,12 @@ namespace IdealAutomate.Core {
           if (intTolerance > intPercentCorrect) {
             continue;
           }
+          Logging.WriteLogSimple("x=" + x + " y=" + y + "intCorrectBackground=" + intCorrectBackground.ToString() +
+          " intWrongBackground=" + intWrongBackground.ToString() +
+          " intCorrectHighContrast=" + intCorrectHighContrast.ToString() +
+          " intWrongHighContrast=" + intWrongHighContrast.ToString() +
+          " intCorrectDarkestColor=" + intCorrectDarkestColor.ToString() +
+         " intWrongDarkestColor=" + intWrongDarkestColor.ToString());
 
           //we found a match
           SubPositionInfo mySubPositionInfo = new SubPositionInfo();
@@ -1491,6 +1619,20 @@ namespace IdealAutomate.Core {
         mc.G = g;
         mc.B = b;
         return mc;
+      }
+
+      public  bool LessThan(object obj) {
+        // this is big image color and obj is small image color
+        if (!(obj is MyColor))
+          return false;
+        MyColor color = (MyColor)obj;
+        int intColorDiff = (this.R - color.R) +
+            (this.G - color.G) +
+             (this.B - color.B);
+        if (intColorDiff < 0) {
+          return true;
+        }
+        return false;
       }
 
       public override bool Equals(object obj) {
@@ -2049,7 +2191,14 @@ namespace IdealAutomate.Core {
           } else {
             intRight += 1;
           }
-
+          int intTotalCorrectWrong = intRight + intWrong;
+          int intPercentCorrect = ((intRight * 100) / intTotalCorrectWrong);
+          //if (booldebuggingmode) {
+          //  Console.WriteLine("Percent Correct Complete check" +  intPercentCorrect.ToString());
+          //}
+          if (intTolerance - 20 > intPercentCorrect && intTotalCorrectWrong > 25) {           
+            break;
+          }
         }
         xSub = 0;
       }
