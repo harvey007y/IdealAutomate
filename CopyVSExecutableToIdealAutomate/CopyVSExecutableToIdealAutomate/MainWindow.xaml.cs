@@ -10,7 +10,7 @@ namespace CopyVSExecutableToIdealAutomate {
     public MainWindow() {
 
 
-
+      bool boolRunningFromHome = true;
       var window = new Window() //make sure the window is invisible
 {
   Width = 0,
@@ -52,13 +52,17 @@ namespace CopyVSExecutableToIdealAutomate {
       //myImage.Attempts = 1;
       //myImage.RelativeX = 10;
       //myActions.ClickImageIfExists(myImage);
-      myActions.TypeText("^%(l)", 500);
+      // activate solution explorer
+      myActions.TypeText("^%(l)", 1500);
+      // go to top of solution explorer so that bin is not highlighted
       myActions.TypeText("{UP 20}", 500);
+      myActions.TypeText("{DOWN 2}", 500);
       myImage = new ImageEntity();
       myImage.ImageFile = "Images\\Show_All_Files.PNG";
       myImage.Sleep = 500;
-      myImage.Attempts = 1;
+      myImage.Attempts = 2;
       myImage.RelativeX = 10;
+      // click show all files to make sure bin folder is visible
       myActions.ClickImageIfExists(myImage);
 
       myImage = new ImageEntity();
@@ -114,7 +118,10 @@ namespace CopyVSExecutableToIdealAutomate {
       myActions.TypeText("IdealAutomateScript",500);
 
       myImage = new ImageEntity();
-      myImage.ImageFile = "Images\\IdealAutomateSave.PNG";
+
+        myImage.ImageFile = "Images\\IdealAutomateSave.PNG";
+     
+      
       myImage.Sleep = 500;
       myImage.Attempts = 5;
       myImage.RelativeX = 10;
@@ -126,7 +133,11 @@ namespace CopyVSExecutableToIdealAutomate {
       myActions.LeftClick(myArray3);
   
       myImage = new ImageEntity();
-      myImage.ImageFile = "Images\\IdealAutomateOkay.PNG";
+      if (boolRunningFromHome) {
+        myImage.ImageFile = "Images\\IdealAutomateOkay_Home.PNG";
+      } else {
+        myImage.ImageFile = "Images\\IdealAutomateOkay.PNG";
+      }
       myImage.Sleep = 500;
       myImage.Attempts = 5;
       myImage.RelativeX = 10;
@@ -174,7 +185,11 @@ namespace CopyVSExecutableToIdealAutomate {
       myActions.TypeText("^(v)", 500);
 
       myImage = new ImageEntity();
-      myImage.ImageFile = "Images\\IdealAutomateSave.PNG";
+      if (boolRunningFromHome) {
+        myImage.ImageFile = "Images\\IdealAutomateSave_Home.PNG";
+      } else {
+        myImage.ImageFile = "Images\\IdealAutomateSave.PNG";
+      }
       myImage.Sleep = 500;
       myImage.Attempts = 5;
       myImage.RelativeX = 10;
@@ -234,7 +249,11 @@ namespace CopyVSExecutableToIdealAutomate {
       myActions.TypeText("t", 500);
 
       myImage = new ImageEntity();
-      myImage.ImageFile = "Images\\IdealAutomateSave.PNG";
+      if (boolRunningFromHome) {
+        myImage.ImageFile = "Images\\IdealAutomateSave_Home.PNG";
+      } else {
+        myImage.ImageFile = "Images\\IdealAutomateSave.PNG";
+      }
       myImage.Sleep = 500;
       myImage.Attempts = 5;
       myImage.RelativeX = 10;
