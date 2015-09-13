@@ -94,6 +94,25 @@ namespace IdealAutomate.Core {
       }
 
     }
+    /// <summary>
+    /// GetWindowTitlesByProcessName allows you to get a list of all the WindowTitles
+    /// for a process name. ProcessNames are called image names in task manager.
+    /// You can find all of the iexplore or devenv and activate each one to see if it 
+    /// is the one you want
+    /// </summary>
+    /// <param name="myProcessName"></param>
+    /// <returns></returns>
+    public List<string> GetWindowTitlesByProcessName(string myProcessName) {
+      List<string> lstWindowTitles = new List<string>();
+      var processes = from proc in System.Diagnostics.Process.GetProcesses() orderby proc.ProcessName ascending select proc;
+      foreach (var item in processes) {
+        if (item.ProcessName == myProcessName) {
+          lstWindowTitles.Add(item.MainWindowTitle);
+        }        
+      }
+      return lstWindowTitles;
+
+    }
 
     private static string GetOpenClipboardWindowText() {
 
