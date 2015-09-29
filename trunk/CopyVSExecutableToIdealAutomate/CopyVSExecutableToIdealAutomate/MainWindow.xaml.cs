@@ -10,7 +10,7 @@ namespace CopyVSExecutableToIdealAutomate {
     public MainWindow() {
 
 
-      bool boolRunningFromHome = true;
+      bool boolRunningFromHome = false;
       var window = new Window() //make sure the window is invisible
 {
   Width = 0,
@@ -66,7 +66,11 @@ namespace CopyVSExecutableToIdealAutomate {
       myActions.ClickImageIfExists(myImage);
 
       myImage = new ImageEntity();
-      myImage.ImageFile = "Images\\BinHome.PNG";
+      if (boolRunningFromHome) {
+        myImage.ImageFile = "Images\\BinHome.PNG";
+      } else {
+        myImage.ImageFile = "Images\\Bin.PNG";
+      }
       myImage.Sleep = 500;
       myImage.Attempts = 3;
       myImage.RelativeX = 10;
@@ -77,14 +81,18 @@ namespace CopyVSExecutableToIdealAutomate {
       int[,] myArray3 = myActions.PutAll(myImage);
       if (myArray3.Length == 0) {
         myImage = new ImageEntity();
-        myImage.ImageFile = "Images\\Bin2.PNG";
+        if (boolRunningFromHome) {
+          myImage.ImageFile = "Images\\Bin2Home.PNG";
+        } else {
+          myImage.ImageFile = "Images\\Bin2.PNG";
+        }
         myImage.Sleep = 500;
         myImage.Attempts = 1;
         myImage.RelativeX = 10;
 
          myArray3 = myActions.PutAll(myImage);
         if (myArray3.Length == 0) {
-          myActions.MessageBoxShow("I could not find Bin2Home.PNG");
+          myActions.MessageBoxShow("I could not find " + myImage.ImageFile);
         }
       }
       myActions.RightClick(myArray3);
@@ -99,7 +107,12 @@ namespace CopyVSExecutableToIdealAutomate {
       myActions.Run(@"C:\Users\wharvey\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\IdealAutomate.com\Ideal Automate.appref-ms","");
 
       myImage = new ImageEntity();
-      myImage.ImageFile = "Images\\ScriptNameHome.PNG";
+      if (boolRunningFromHome) {
+        myImage.ImageFile = "Images\\ScriptNameHome.PNG";
+      } else {
+        myImage.ImageFile = "Images\\ScriptName.PNG";
+      }
+
       myImage.Sleep = 500;
       myImage.Attempts = 500;
       myImage.RelativeX = 10;
@@ -149,14 +162,19 @@ namespace CopyVSExecutableToIdealAutomate {
       myActions.LeftClick(myArray3);
 
       myImage = new ImageEntity();
-      myImage.ImageFile = "Images\\IdealAutomatePrimitivesHome.PNG";
+      if (boolRunningFromHome) {
+        myImage.ImageFile = "Images\\IdealAutomatePrimitivesHome.PNG";
+      } else {
+        myImage.ImageFile = "Images\\IdealAutomatePrimitives.PNG";
+      }
+
       myImage.Sleep = 500;
       myImage.Attempts = 5;
       myImage.RelativeX = 10;
       myImage.RelativeY = 10;
       myArray3 = myActions.PutAll(myImage);
       if (myArray3.Length == 0) {
-        myActions.MessageBoxShow("I could not find IdealAutomatePrimitives.PNG");
+        myActions.MessageBoxShow("I could not find " + myImage.ImageFile);
       }
       myActions.LeftClick(myArray3);
       myActions.Sleep(1000);
@@ -197,56 +215,65 @@ namespace CopyVSExecutableToIdealAutomate {
       myImage.Tolerance = 55;
       myArray3 = myActions.PutAll(myImage);
       if (myArray3.Length == 0) {
-        myActions.MessageBoxShow("I could not find IdealAutomateSave.PNG");
+        myActions.MessageBoxShow("I could not find " + myImage.ImageFile);
       }
       myActions.LeftClick(myArray3);
 
       myImage = new ImageEntity();
-      myImage.ImageFile = "Images\\IdealAutomateOkay.PNG";
+      if (boolRunningFromHome) {
+        myImage.ImageFile = "Images\\IdealAutomateOkay_Home.PNG";
+      } else {
+        myImage.ImageFile = "Images\\IdealAutomateOkay.PNG";
+      }
+
       myImage.Sleep = 500;
       myImage.Attempts = 5;
       myImage.RelativeX = 10;
       myImage.RelativeY = 10;
       myArray3 = myActions.PutAll(myImage);
       if (myArray3.Length == 0) {
-        myActions.MessageBoxShow("I could not find IdealAutomateOkay.PNG");
+        myActions.MessageBoxShow("I could not find " + myImage.ImageFile);
       }
       myActions.LeftClick(myArray3);
 
       myImage = new ImageEntity();
-      myImage.ImageFile = "Images\\IdealAutomateLogicHome.PNG";
+      if (boolRunningFromHome) {
+        myImage.ImageFile = "Images\\IdealAutomateLogicHome.PNG";
+      } else {
+        myImage.ImageFile = "Images\\IdealAutomateLogic.PNG";
+      }
       myImage.Sleep = 500;
       myImage.Attempts = 5;
       myImage.RelativeX = 10;
       myImage.RelativeY = 10;
       myArray3 = myActions.PutAll(myImage);
       if (myArray3.Length == 0) {
-        myActions.MessageBoxShow("I could not find IdealAutomateLogic.PNG");
+        myActions.MessageBoxShow("I could not find " + myImage.ImageFile);
       }
       myActions.LeftClick(myArray3);
 
-      myActions.TypeText("1", 500);
-      myActions.TypeText("{TAB}", 500);
-      myActions.TypeText("{TAB}", 500);
-      myActions.TypeText("{TAB}", 500);
-      myActions.TypeText("t", 500);
-      myActions.TypeText("{TAB}", 500);
-      myActions.TypeText("{TAB}", 500);
-      myActions.TypeText("a", 500);
-      myActions.TypeText("{TAB}", 500);
-      myActions.TypeText("{TAB}", 500);
-      myActions.TypeText("{TAB}", 500);
-      myActions.TypeText("{TAB}", 500);
-      myActions.TypeText("{TAB}", 500);
-      myActions.TypeText("{UP}", 500);
-      myActions.TypeText("2", 500);
-      myActions.TypeText("{TAB}", 500);
-      myActions.TypeText("{TAB}", 500);
-      myActions.TypeText("{TAB}", 500);
-      myActions.TypeText("ru", 500);
-      myActions.TypeText("{TAB}", 500);
-      myActions.TypeText("{TAB}", 500);
-      myActions.TypeText("t", 500);
+      myActions.TypeText("1", 1000);
+      myActions.TypeText("{TAB}", 1000);
+      myActions.TypeText("{TAB}", 1000);
+      myActions.TypeText("{TAB}", 1000);
+      myActions.TypeText("t", 1000);
+      myActions.TypeText("{TAB}", 1000);
+      myActions.TypeText("{TAB}", 1000);
+      myActions.TypeText("a", 1000);
+      myActions.TypeText("{TAB}", 1000);
+      myActions.TypeText("{TAB}", 1000);
+      myActions.TypeText("{TAB}", 1000);
+      myActions.TypeText("{TAB}", 1000);
+      myActions.TypeText("{TAB}", 1000);
+      myActions.TypeText("{UP}", 1000);
+      myActions.TypeText("2", 1000);
+      myActions.TypeText("{TAB}", 1000);
+      myActions.TypeText("{TAB}", 1000);
+      myActions.TypeText("{TAB}", 1000);
+      myActions.TypeText("ru", 1000);
+      myActions.TypeText("{TAB}", 1000);
+      myActions.TypeText("{TAB}", 1000);
+      myActions.TypeText("t", 1000);
 
       myImage = new ImageEntity();
       if (boolRunningFromHome) {
@@ -261,19 +288,24 @@ namespace CopyVSExecutableToIdealAutomate {
       myImage.Tolerance = 55;
       myArray3 = myActions.PutAll(myImage);
       if (myArray3.Length == 0) {
-        myActions.MessageBoxShow("I could not find IdealAutomateSave.PNG");
+        myActions.MessageBoxShow("I could not find " + myImage.ImageFile);
       }
       myActions.LeftClick(myArray3);
 
       myImage = new ImageEntity();
-      myImage.ImageFile = "Images\\IdealAutomateOkay.PNG";
+      if (boolRunningFromHome) {
+        myImage.ImageFile = "Images\\IdealAutomateOkay_Home.PNG";
+      } else {
+        myImage.ImageFile = "Images\\IdealAutomateOkay.PNG";
+      }
+
       myImage.Sleep = 500;
       myImage.Attempts = 5;
       myImage.RelativeX = 10;
       myImage.RelativeY = 10;
       myArray3 = myActions.PutAll(myImage);
       if (myArray3.Length == 0) {
-        myActions.MessageBoxShow("I could not find IdealAutomateOkay.PNG");
+        myActions.MessageBoxShow("I could not find " + myImage.ImageFile);
       }
       myActions.LeftClick(myArray3);
 
