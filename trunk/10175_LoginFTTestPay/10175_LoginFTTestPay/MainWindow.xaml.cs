@@ -134,7 +134,7 @@ namespace _10175_LoginFTTestPay {
 
 
 
-      myActions.MessageBoxShow("Script completed");
+     // myActions.MessageBoxShow("Script completed");
       myActions.Sleep(3000);
       Application.Current.Shutdown();
     }
@@ -173,6 +173,12 @@ namespace _10175_LoginFTTestPay {
       myActions.TypeText("01/01/2014", 200);
       myActions.TypeText("{TAB 6}", 200);
       myActions.TypeText("{ENTER}", 200);
+      myActions.Sleep(3000);
+      myActions.MessageBoxShow("Please select a record and action and make a note of it so you can use the same record on the classic side");
+      //myActions.TypeText("{TAB 8}", 200);
+      //myActions.TypeText("%({DOWN})", 1000);     
+      //myActions.TypeText("{DOWN 2}", 700);
+      //myActions.TypeText("{ENTER}", 700);
       // myActions.MessageBoxShow("Script completed");
     //  strCurrentWindowTitle = myActions.PutWindowTitleInEntity();
       //  myActions.RunSync(@"C:\SVNIA\trunk\FindUntranslated\FindUntranslated\bin\Debug\FindUntranslated.exe", "");

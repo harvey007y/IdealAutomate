@@ -652,6 +652,11 @@ namespace IdealAutomate.Core {
         InputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_X);
         return;
       }
+      if (myEntity == "%({DOWN})") {
+        InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.MENU, VirtualKeyCode.DOWN); //System.Windows.Forms.Keys.Alt);
+       
+        return;
+      }
       if (myEntity == "%({F8})") {
         InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.MENU, VirtualKeyCode.F8); //System.Windows.Forms.Keys.Alt);
         return;
