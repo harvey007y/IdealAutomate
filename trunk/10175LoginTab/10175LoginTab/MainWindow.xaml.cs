@@ -38,7 +38,7 @@ namespace _10175LoginTab {
 
       ImageEntity myImage = new ImageEntity();
       myImage.ImageFile = "Images\\imgLoadedGTreasury.PNG";
-      myImage.Sleep = 200;
+      myImage.Sleep = 700;
       myImage.Attempts = 10;
       myImage.RelativeX = 10;
 
