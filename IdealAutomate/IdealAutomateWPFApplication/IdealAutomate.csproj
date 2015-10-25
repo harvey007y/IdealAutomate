@@ -40,7 +40,7 @@
     <ProductName>Ideal Automate</ProductName>
     <PublisherName>IdealAutomate.com</PublisherName>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>203</ApplicationRevision>
+    <ApplicationRevision>204</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>true</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -87,7 +87,8 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>IdealAutomate_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -678,7 +679,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="ClassDiagram1.cd" />
-    <None Include="IdealAutomate_TemporaryKey.pfx" />
     <None Include="Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Model1.Context.cs</LastGenOutput>
