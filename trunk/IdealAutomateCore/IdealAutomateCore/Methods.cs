@@ -526,6 +526,7 @@ namespace IdealAutomate.Core {
         Thread thread = new Thread(new ThreadStart(() => {
           try {
             myEntity = Clipboard.GetData(DataFormats.Text).ToString();
+           // myEntity = Clipboard.GetText(System.Windows.TextDataFormat.Html);
           } catch (Exception) {
             Console.WriteLine("Exception occurred in PutClipboardInEntity!!!!");
             Logging.WriteLogSimple("Exception occurred in PutClipboardInEntity!!!!");
@@ -581,9 +582,10 @@ namespace IdealAutomate.Core {
         }
       }
       try {
-
+        
         Thread thread = new Thread(new ThreadStart(() => {
           Clipboard.Clear();
+         // Clipboard.SetText(myEntity);
           Clipboard.SetDataObject((Object)myEntity, true);
           // or call logic here
 

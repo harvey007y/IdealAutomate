@@ -10,7 +10,7 @@ namespace _10175LoginTab {
 
 
     public MainWindow() {
-      bool boolRunningFromHome = true;
+      bool boolRunningFromHome = false;
       var window = new Window() //make sure the window is invisible
       {
         Width = 0,
@@ -31,6 +31,7 @@ namespace _10175LoginTab {
         myActions.TypeText("%(\" \"n)", 1000); // minimize visual studio
       }
       myActions.Sleep(1000);
+      myActions.RunSync(@"C:\SVNIA\trunk\DeleteLockedRecords\DeleteLockedRecords\bin\Debug\DeleteLockedRecords.exe", "");
       myActions.TypeText("^(t)", 2500);
       myActions.TypeText("{F6}", 2500);
       myActions.TypeText("http://localhost/gt/aspx/main/login.aspx", 2500);

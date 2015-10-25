@@ -132,7 +132,11 @@ namespace CopyVSExecutableToIdealAutomate {
 
       myImage = new ImageEntity();
 
+      if (boolRunningFromHome) {
+        myImage.ImageFile = "Images\\IdealAutomateSave_Home.PNG";
+      } else {
         myImage.ImageFile = "Images\\IdealAutomateSave.PNG";
+      }
      
       
       myImage.Sleep = 500;
