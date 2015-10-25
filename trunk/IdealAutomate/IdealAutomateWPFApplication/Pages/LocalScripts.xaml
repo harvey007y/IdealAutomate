@@ -1,0 +1,236 @@
+﻿<UserControl x:Name="instance"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:col="clr-namespace:System.Collections;assembly=mscorlib"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local="clr-namespace:Hardcodet.Wpf.Samples" mc:Ignorable="d" x:Class="Hardcodet.Wpf.Samples.Pages.LocalScripts"
+        xmlns:core="clr-namespace:System;assembly=mscorlib" 
+             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+         xmlns:pages="clr-namespace:Hardcodet.Wpf.Samples.Pages"
+ Background="{StaticResource WindowBrush}" 
+        Loaded="Window_Loaded">
+    <UserControl.Resources>
+        <Style  TargetType="{x:Type ListBoxItem}">
+
+            <Style.Triggers>
+
+                <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+
+                    <Setter Property="Background" Value="#19f39611"></Setter>
+
+                </Trigger>
+
+                <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+
+                    <Setter Property="Background" Value="#19000000"></Setter>
+
+                </Trigger>
+
+            </Style.Triggers>
+
+        </Style>
+        <ObjectDataProvider x:Key="lookup"/>
+        <ObjectDataProvider x:Key="lookupType"/>
+        <ObjectDataProvider x:Key="category1"/>
+        <ObjectDataProvider x:Key="category2"/>
+        <ObjectDataProvider x:Key="category3"/>
+        <ObjectDataProvider x:Key="category4"/>
+        <ObjectDataProvider x:Key="category5"/>
+
+        <CollectionViewSource x:Key="scriptViewSource" d:DesignSource="{d:DesignInstance {x:Type local:Script}, CreateList=True}">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="ScriptName"/>
+            </CollectionViewSource.SortDescriptions>
+
+        </CollectionViewSource>
+        
+
+
+    </UserControl.Resources>
+    <StackPanel>
+        <pages:SwitcherMenu />
+        <!-- Scripts Data Grid -->
+
+        <StackPanel>
+            <TextBlock x:Name="Header"
+               Foreground="#FF2D3539"
+               FontStyle="Italic"
+               FontSize="18pt"
+               FontFamily="Verdana"
+             
+               Margin="10,10,100,0">
+                <TextBlock.Effect>
+                    <DropShadowEffect BlurRadius="15" Color="White"  ShadowDepth="0" />
+                </TextBlock.Effect>
+      <TextBlock Text="Selected Local Script: " />
+      <TextBlock Name="txtSelectedScript" Text="" />
+    </TextBlock>
+
+
+            <Grid      DataContext="{StaticResource scriptViewSource}"  VerticalAlignment="Top" >
+                <TabControl HorizontalAlignment="Left" Margin="10,10,0,0"     VerticalAlignment="Top" >
+                    <TabItem Header="Scripts" >
+                        <StackPanel>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="33"></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="60" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="60" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Category Filters: "  Grid.Column="0" 
+                                  Grid.Row="0" TextWrapping="Wrap" Width="60"/>
+                                <ComboBox x:Name="comboCategory1"   
+                             Grid.Column="1" 
+                                  Grid.Row="0"
+                                          Margin="2,0,0,0"
+                              Width="150"    
+                                  Height="23"
+            		    	   IsReadOnly="False" 
+                                  SelectionChanged="comboCategory1_SelectionChanged"
+            		      	Background="White"            						 
+            				ItemsSource="{Binding Source={StaticResource category1}}"        
+            						 />
+                                <ComboBox x:Name="comboCategory2"   
+                              Grid.Column="2" 
+                                  Grid.Row="0"
+                                          Margin="2,0,0,0"
+                              Width="150"     
+                                  SelectionChanged="comboCategory2_SelectionChanged"
+                                  Height="23"
+            		    	   IsReadOnly="False" 
+            		      	Background="White"            						 
+            				ItemsSource="{Binding Source={StaticResource category2}}"        
+            						 />
+                                <ComboBox x:Name="comboCategory3"   
+                               Grid.Column="3" 
+                                  Grid.Row="0"
+                                          Margin="2,0,0,0"
+                              Width="150"    
+                                  Height="23"
+                                  SelectionChanged="comboCategory3_SelectionChanged"
+            		    	   IsReadOnly="False" 
+            		      	Background="White"            						 
+            				ItemsSource="{Binding Source={StaticResource category3}}"        
+            						 />
+                                <ComboBox x:Name="comboCategory4"   
+                               Grid.Column="4" 
+                                  Grid.Row="0"
+                                           Margin="2,0,0,0"
+                              Width="150"    
+                                  Height="23"
+                                  SelectionChanged="comboCategory4_SelectionChanged"
+            		    	   IsReadOnly="False" 
+            		      	Background="White"            						 
+            				ItemsSource="{Binding Source={StaticResource category4}}"        
+            						 />
+                                <ComboBox x:Name="comboCategory5"   
+                               Grid.Column="5" 
+                                  Grid.Row="0"
+                                          Margin="2,0,0,0"
+                              Width="150"    
+                                  Height="23"
+                                  SelectionChanged="comboCategory5_SelectionChanged"
+            		    	   IsReadOnly="False" 
+            		      	Background="White"            						 
+            				ItemsSource="{Binding Source={StaticResource category5}}"        
+            						 />
+                                <TextBlock Text="  Keyword: "  Grid.Column="6" VerticalAlignment="Center"
+                                  Grid.Row="0" TextWrapping="Wrap" Width="60"  />
+                                <TextBox Height="23" HorizontalAlignment="Left" Grid.Column="7"  Grid.Row="0" Name="txtTextSearch"  Width="90" TextChanged="txtTextSearch_TextChanged"  />
+                                <Button Content="Reset" Height="23"  Margin="5,0,0,0" HorizontalAlignment="Left" Grid.Column="8"  Grid.Row="0" Name="btnReset"  Width="70" Click="btnReset_Clicked" />
+                            </Grid>
+                            <DataGrid x:Name="scriptDataGrid" 
+                  RowDetailsVisibilityMode="VisibleWhenSelected" 
+                 CanUserReorderColumns="True" 
+                  ItemsSource="{Binding}" 
+                  EnableRowVirtualization="True" 
+                  AutoGenerateColumns="False" 
+                  HorizontalAlignment="Left" 
+                 FrozenColumnCount="2"
+                         Margin="10,10,0,0"             
+                              ScrollViewer.CanContentScroll="True"
+                   Height="450"
+                  VerticalAlignment="Top"   
+                  SelectionChanged="scriptDataGrid_SelectionChanged"                
+                  >
+                                <DataGrid.Resources>
+                                    <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="DarkGray"/>
+                                </DataGrid.Resources>
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn x:Name="scriptIDColumn" Width="SizeToHeader" Header="Script ID" Binding="{Binding ScriptID}" Visibility="Hidden"/>
+                                    <DataGridTextColumn x:Name="scriptNameColumn" Width="130" Header="Script Name" Binding="{Binding ScriptName}" />
+                                    <DataGridTextColumn x:Name="category1Column" Width="130" Header="Category1" Binding="{Binding Category1}"/>
+                                    <DataGridTextColumn x:Name="category2Column" Width="130" Header="Category2" Binding="{Binding Category2}"/>
+                                    <DataGridTextColumn x:Name="category3Column" Width="130" Header="Category3" Binding="{Binding Category3}"/>
+                                    <DataGridTextColumn x:Name="category4Column" Width="130" Header="Category4" Binding="{Binding Category4}"/>
+                                    <DataGridTextColumn x:Name="category5Column" Width="130" Header="Category5" Binding="{Binding Category5}"/>
+                                    <DataGridTextColumn x:Name="scriptCreateDateColumn" Width="130" Header="Created" Binding="{Binding CreateDate}"/>
+                                    <DataGridTextColumn x:Name="scriptLastModifiedDateColumn" Width="130" Header="LastModified" Binding="{Binding LastModifiedDate}"/>
+                                    <DataGridTextColumn x:Name="scriptLastExecutedDateColumn" Width="130" Header="LastExecuted" Binding="{Binding LastExecutedDate}"/>
+                                    <DataGridTextColumn x:Name="scriptNumberTimesExecutedColumn" Width="130" Header="TimesExecuted" Binding="{Binding NumberTimesExecuted}"/>
+                                    <DataGridTextColumn x:Name="scriptNumberActionsSavedColumn" Width="130" Header="ActionsSaved" Binding="{Binding NumberActionsSaved}"/>
+                                    <DataGridTextColumn x:Name="scriptNumberTimesExecutedCorrectlyColumn" Width="130" Header="TimesExecutedCorrectly" Binding="{Binding NumberTimesExecutedCorrectly}"/>
+                                    <DataGridTextColumn x:Name="scriptNumberTimesExecutedIncorrectlyColumn" Width="130" Header="TimesExecutedIncorrectly" Binding="{Binding NumberTimesExecutedIncorrectly}"/>
+                                    <DataGridTextColumn x:Name="scriptPercentCorrectColumn" Width="130" Header="PercentCorrect" Binding="{Binding PercentCorrect}"/>
+                                    <DataGridTextColumn x:Name="scriptCancelledColumn" Width="130" Header="TimesCancelled" Binding="{Binding NumberTimesCancelled}"/>
+
+
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                    </TabItem>
+                    <!-- Primitives Data Grid -->
+                    <!-- Script Steps Data Grid -->
+
+                    <TabItem Header="Description" >
+                        <StackPanel>
+                            <Label Name="lblTitle" Content="Title:" />
+                            <TextBox Name="txtTitle" Text="{Binding Title}" TextWrapping="Wrap"  VerticalContentAlignment="Stretch" AcceptsReturn="True" Height="50" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Auto" MaxLength="500"/>
+                            <Label Name="lblExecutable" Content="Executable:" />
+                            <TextBox Name="txtExecutable" Text="{Binding Executable}" TextWrapping="Wrap"  VerticalContentAlignment="Stretch" AcceptsReturn="True" Height="20" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Auto" MaxLength="500"/>
+                            <Label Name="lblExecuteContent" Content="Execute Content:" />
+                            <TextBox Name="txtExecuteContent" Text="{Binding ExecuteContent}" TextWrapping="Wrap"  VerticalContentAlignment="Stretch" AcceptsReturn="True" Height="20" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Auto" MaxLength="500"/>
+                            <Label Name="lblSummary" Content="Summary:" />
+                            <TextBox Name="txtSummary" Text="{Binding Summary}" TextWrapping="Wrap"  VerticalContentAlignment="Stretch" AcceptsReturn="True" Height="150" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Auto" />
+                            <Label Name="lblSetupInstructions" Content="Setup Instructions:" />
+                            <TextBox Name="txtSetupInstructions" Text="{Binding SetupInstructions}" TextWrapping="Wrap"  VerticalContentAlignment="Stretch" AcceptsReturn="True" Height="150" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Auto" />
+                            <Button Content="Copy Executable Path Into Executable Textbox By Clicking on a Running Application" Click="btnAddClicking_Click" />
+                        </StackPanel>
+                    </TabItem>
+                </TabControl>
+
+            </Grid>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="160" />
+                    <ColumnDefinition Width="160" />
+                </Grid.ColumnDefinitions>
+                <Button x:Name="btnSave" Grid.Column="0" Margin="5,5,5,5" Content="Save" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="75" Click="btnSave_Click"/>
+                <Button x:Name="btnRunScript" Grid.Column="1" Margin="5,5,5,5" Content="Run Script" HorizontalAlignment="Left"  Width="75" Click="btnRunScript_Click_1" Height="20" VerticalAlignment="Top"/>
+               
+            </Grid>
+
+        </StackPanel>
+        <TabControl HorizontalAlignment="Left"  Margin="5,5,0,0" VerticalAlignment="Top" Visibility="Hidden" >
+            <TabItem Header="Local Scripts" Visibility="Hidden">
+            </TabItem>
+        
+        </TabControl>
+    </StackPanel>
+</UserControl>

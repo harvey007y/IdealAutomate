@@ -1,0 +1,120 @@
+﻿<Page x:Class="Hardcodet.Wpf.Samples.Help.Tips"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	Title="Quick Start/Tips and Tricks"
+	>
+    <FlowDocumentReader ViewingMode="Scroll">
+        <FlowDocument FontSize="20">
+            <Paragraph>
+                <Image Source="/Images/Tips.jpg" Width="190" Height="190" Margin="0,0,30,0" />
+                <Run FontSize="30" BaselineAlignment="Center">Tips and Tricks</Run>
+            </Paragraph>
+            <List MarkerOffset="25" MarkerStyle="Decimal" StartIndex="1" >
+                <ListItem>
+                    <Paragraph>
+                        Do not give up. Scripts are not easy to write, and they are very "brittle" in that they break easily whenever anything changes; but they can also be a very powerful tool. When a script is first written it will often have problems at first due to unanticipated steps needed during execution. However, as the script is executed over and over again, you eventually remove all of the bugs in the script so that it almost becomes bullet proof.
+                    </Paragraph>
+                </ListItem>
+               
+                <ListItem>
+                    <Paragraph>
+                        If using dual monitors, IdealAutomate only uses your primary screen for taking images of the screen so you need to have drag any windows you will be using over to the primary monitor and either close or minimize them so that when they reopen, they will reopen on the primary monitor.
+                    </Paragraph>
+                </ListItem>
+                <ListItem>
+                    <Paragraph>
+                        You can only create,edit, and execute scripts on your local machine, but you can clone your local scripts to personal and public scripts. Also, you can  download personal an public scripts to local scripts on your own machine. After downloading a public or personal script, you may have to update the images involved in the local script by replacing the images in the images tab with new images that you cut-n-paste from your local machine. This is because the resolution, background, etc. on your local machine may be different from the machine that the images were originally created from.
+                    </Paragraph>
+                </ListItem>
+                <ListItem>
+                    <Paragraph>
+                        The sequence numbers in the logic tab allow you to insert actions in between other actions. For example, to insert an action between sequence number 1 and 2, you just add a new line at the bottom that has a sequence number of 1.5.  The "Renum and Save" button in the logic tab allows you to easily renumber the sequence numbers.
+                    </Paragraph>
+                </ListItem>
+                <ListItem>
+                    <Paragraph>
+                        When you are in the logic tab, you can get context help for a given verb by selecting that verb from the dropdownlist and then pressing the ? button to the left of selected verb.
+                    </Paragraph>
+                </ListItem>
+                <ListItem>
+                    <Paragraph>
+                        Everything must be defined before it can be used in the logic tab - even numbers - I usually make the name for the number the same as the number to make it obvious that is a number.
+                    </Paragraph>
+                </ListItem>
+                <ListItem>
+                    <Paragraph>
+                        When pasting an image into the images tab, there is a bug in the interface that is causing the image to not appear until the the tab key or the save button is pressed. You do not have to keep trying to paste it over and over - just hit save and the pasted image will appear.
+                    </Paragraph>
+                </ListItem>
+                <ListItem>
+                    <Paragraph>
+                        When attempting to identify when a page has loaded, a quick and dirty approach is to just use the sleep verb, but a much more accurate method to determine when the page has loaded is to try to find an image on the newly loaded page. If you are just going to use the script a few times, using the sleep verb to wait for the page works fine; however, if the script is going to be executed over and over, identifying the page loaded event by finding an image on the page is best.
+                    </Paragraph>
+                </ListItem>
+                <ListItem>
+                    <Paragraph>
+                        When launching an application, it is much easier and 100% more reliable to use the Run verb as opposed to trying to launch it by clicking on images.
+                    </Paragraph>
+                </ListItem>
+                <ListItem>
+                    <Paragraph>
+                        The visual basic SendKeys function is used to mimic pressing special keys (like the enter or alt keys). This means you need to use the help file or google in order to learn what characters can be used to represent special keys.  For example, the ^ character is used to represent the control key and here is how you indicate the enter key is pressed: {ENTER}.  You will also need to learn how to "escape" special characters (like the bracket character).  If you are trying to type a lot of special characters, it may be easier to create a string primitive with the text you want to type and use the PutEntityInClipboard verb to copy the string into the clipboard. After the string is in the clipboard, you can use the TypeText verb with control v to paste what is in the clipboard to where you want it.
+                    </Paragraph>
+                </ListItem>
+                <ListItem>
+                    <Paragraph>
+                        Alt-Space-n is shortcut for minimizing active window - you almost always do this at the beginning of every script in order to minimize the Ideal Automate window.
+                    </Paragraph>
+                </ListItem>
+                <ListItem>
+                    <Paragraph>
+                        Before writing a complicated script, you can use the MessageBox verb for each step to create a wizard that outlines the general steps that you want to automate. You can replace each MessageBox with the logic needed to perform that step when you feel comfortable getting to that level of detail.
+                    </Paragraph>
+                </ListItem>
+                <ListItem>
+                    <Paragraph>
+                        Finding images in the taskbar and the active window border can be problematic because of transparency settings for those areas.  It helps to use the control panel to turn off transparency (Control Panel\Appearance and Personalization\Personalization\Window Color and Appearance - uncheck enable transparency) and to set the background for your desktop to a solid color.
+                    </Paragraph>
+                </ListItem>
+                <ListItem>
+                    <Paragraph>
+                        Use hungarian notation when naming your entities so that all of the arrays (aryXXXX), images (imgXXXX), integers (intXXXXX), strings (txtXXXXX), etc will sort together in the drop down lists. Also, follow the naming convention of using a pattern of a verb followed by a noun for actions to make it easier for you to remember what you called something. You just have to remember the general pattern of VerbNoun, instead of trying to remember whether you put the verb first in this particular instance.  This pattern is also easy to remember because it makes logical sense: we do perform actions on nouns.
+                    </Paragraph>
+                </ListItem>
+                <ListItem>
+                    <Paragraph>
+                        When sending text to the screen, you always need to allow some time for the text to be sent so it is a good practice to specify 500 milliseconds of wait time in entity2 when using the TypeText verb.
+                    </Paragraph>
+                </ListItem>
+                <ListItem>
+                    <Paragraph>
+                        You can create todolist for yourself by creating a local script and cloning that script to personal.  Then, you can use the summary section of the description tab for your todolist. Cloning to personal makes the script available on multiple machines when you use the same userid and password to login.
+                    </Paragraph>
+                </ListItem>
+                <ListItem>
+                    <Paragraph>
+                        If you cannot figure out why an image is not being found, go to the Results tab and click on the button "Click this button to view images directly in folder" When you are in the folder, click on the name of the big image. The name of the big image is provided at the far right in the result step where the image was not found.  Viewing the full-size image will allow you to see what the screen looked like at the time the search for the small image was occurring.
+                    </Paragraph>
+                </ListItem>
+                <ListItem>
+                    <Paragraph>
+                        There is a trick to using Windows Snipping Tool to take snapshots of dropdownlists and popup windows. The trick involves clicking on the new option in the snipping tool to cause it to make the entire screen go out of focus. Then, you hit the escape key to remove opacity cloud that prevents you from accessing your screen. At this point, you can activate your popup or dropdown window. Next, you press the control key plus the print key to cause the opacity cloud to appear without removing the popup or dropdown window. You can now drag the Windows Snipping Tool around the window to get a snapshot of it without it disappearing.
+                    </Paragraph>
+                </ListItem>
+                <ListItem>
+                    <Paragraph>
+                        The Run verb requires the path to the executable as the first entity. You can easily copy the path to any executable running on your computer by following these steps: First, go to Primitives tab and select the row for the primitive that you want to copy the path to. Second, click the button at the bottom of the primitives tab called "Copy Executable Path Into Selected Primitive Value By Clicking on a Running Application". Third, click anywhere on the application running on your computer for which you want to get the path. 
+                    </Paragraph>
+                </ListItem>
+                <ListItem>
+                    <Paragraph>
+                        If your script is not executing correctly, you can cancel it by hitting the cancel button.
+                    </Paragraph>
+                </ListItem>
+               
+                       
+            </List>
+
+        </FlowDocument>
+    </FlowDocumentReader>
+</Page>

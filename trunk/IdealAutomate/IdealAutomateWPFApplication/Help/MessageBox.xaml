@@ -1,0 +1,147 @@
+﻿<Page x:Class="Hardcodet.Wpf.Samples.Help.MessageBox"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	Title="MessageBox" 
+	>
+    <FlowDocumentReader ViewingMode="Scroll">
+        <FlowDocument FontSize="20">
+            <Paragraph>
+                <Image Source="/Images/help1.png" Width="190" Height="190" Margin="0,0,30,0" />
+                <Run FontSize="30" BaselineAlignment="Center">MessageBox</Run>
+            </Paragraph>
+            <Paragraph>
+                 <Bold FontSize="24">Examples:</Bold>
+            </Paragraph>
+            <List>
+                <ListItem>
+                    <Paragraph>
+                        <Bold>MessageBox</Bold>
+                    </Paragraph>
+                    <Table CellSpacing="5" BorderThickness="1" BorderBrush="Black">
+                        <TableRowGroup>
+                            <TableRow>
+                                <TableCell>
+                                    <Paragraph>
+                                        <Image Source="/Images/PrimitivesMessageBox.PNG"  Margin="5,5,5,5"  HorizontalAlignment="Center" />
+                                    </Paragraph>
+                                </TableCell>
+                            </TableRow>
+                        </TableRowGroup>
+                    </Table>
+                    <Table  CellSpacing="0" BorderThickness="1" BorderBrush="Black">
+                        <TableRowGroup>
+                            <TableRow Background="Gainsboro" FontWeight="Bold">
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph TextAlignment="Center">Verb</Paragraph>
+                                </TableCell>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph TextAlignment="Center">Entity1</Paragraph>
+                                </TableCell>
+                                <TableCell  BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph TextAlignment="Center">Relationship</Paragraph>
+                                </TableCell>
+                                <TableCell  BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph TextAlignment="Center">Entity2</Paragraph>
+                                </TableCell>
+
+
+
+                            </TableRow>
+                        </TableRowGroup>
+
+                        <TableRowGroup>
+                            <TableRow>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph>MessageBox</Paragraph>
+                                </TableCell>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph>txtStep1</Paragraph>
+                                </TableCell>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph></Paragraph>
+                                </TableCell>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph></Paragraph>
+                                </TableCell>
+
+                            </TableRow>
+                        </TableRowGroup>
+                    </Table>
+
+                    <Paragraph>
+                        <Italic>Explanation of example</Italic> - Display a dialog box with the contents of Entity1. 
+                        <LineBreak/>
+                    </Paragraph>
+                </ListItem>            
+        
+
+            </List>
+            <Paragraph>
+                <Line Stretch="Fill" Stroke="Black" X2="1"/>
+            </Paragraph>
+            <Paragraph>
+                <Bold FontSize="24">Columns:</Bold>
+            </Paragraph>
+            <Paragraph>
+                <Bold>MessageBox</Bold> - MessageBox is used to display a dialog box with the contents specified in the value of Entity1. Here are the columns:
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        1. Sequence
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                Sequence is a decimal number with 4 digits after the decimal. It can be modified to allow you to insert rows anywhere in your script. Rows are executed in sequence number order.
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        2. Verb
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                MessageBox
+            </Paragraph>
+
+
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        3. Entity1
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                Entity1 is the name of a primitive that has been defined in the primitives tab. The value of the Entity1 is what will be displayed in the dialog box.
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        4. Relationship
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                Relationship is not used.
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        5. Entity2
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                Entity2 is not used.
+            </Paragraph>
+            
+
+
+ 
+
+        </FlowDocument>
+    </FlowDocumentReader>
+</Page>
