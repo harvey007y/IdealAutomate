@@ -1,0 +1,130 @@
+﻿<Page x:Class="Hardcodet.Wpf.Samples.Help.PutCaretPosition"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	Title="PutCaretPosition" 
+	>
+    <FlowDocumentReader ViewingMode="Scroll">
+        <FlowDocument FontSize="20">
+            <Paragraph>
+                <Image Source="/Images/help1.png" Width="190" Height="190" Margin="0,0,30,0" />
+                <Run FontSize="30" BaselineAlignment="Center">PutCaretPositionInArray</Run>
+            </Paragraph>
+            <Paragraph>
+                <Bold FontSize="24">Examples:</Bold>
+            </Paragraph>
+            <List>
+                <ListItem>
+                    <Paragraph>
+                        <Bold>PutCaretPositionInArray</Bold>
+                    </Paragraph>
+                    <Table CellSpacing="5" BorderThickness="1" BorderBrush="Black">
+                        <TableRowGroup>
+                            <TableRow>
+                                <TableCell>
+                                    <Paragraph>
+                                        <Image Source="/Images/PrimitivesPutCaretPosition.PNG"  Margin="5,5,5,5"  HorizontalAlignment="Center" />
+                                    </Paragraph>
+                                </TableCell>
+                            </TableRow>
+                        </TableRowGroup>
+                    </Table>
+                    <Table CellSpacing="5" BorderThickness="1" BorderBrush="Black">
+                        <TableRowGroup>
+                            <TableRow>
+                                <TableCell>
+                                    <Paragraph>
+                                        <Image Source="/Images/ArraysPutCaretPosition.PNG"  Margin="5,5,5,5"  HorizontalAlignment="Center" />
+                                    </Paragraph>
+                                </TableCell>
+                            </TableRow>
+                        </TableRowGroup>
+                    </Table>                    
+                    <Table CellSpacing="5" BorderThickness="1" BorderBrush="Black">
+                        <TableRowGroup>
+                            <TableRow>
+                                <TableCell>
+                                    <Paragraph>
+                                        <Image Source="/Images/LogicPutCaretPosition.PNG"  Margin="5,5,5,5"  HorizontalAlignment="Center" />
+                                    </Paragraph>
+                                </TableCell>
+                            </TableRow>
+                        </TableRowGroup>
+                    </Table>
+
+                    <Paragraph>
+                        <Italic>Explanation of example</Italic> - 1. Minimize IdealAutomate. 2. Launch notepad. 3. Wait 3 seconds. 4. PutCaretPositionInArray. 5. Type text Hello World. 6. Wait 3 seconds. 7. Click where caret originally was.
+                        <LineBreak/>
+                    </Paragraph>
+                </ListItem>
+
+
+            </List>
+            <Paragraph>
+                <Line Stretch="Fill" Stroke="Black" X2="1"/>
+            </Paragraph>
+            <Paragraph>
+                <Bold FontSize="24">Columns:</Bold>
+            </Paragraph>
+            <Paragraph>
+                <Bold>PutCaretPositionInArray</Bold> - PutCaretPositionInArray provides a way to save the caret position in an array so you can come back to it later without having to find the original position again. Here are the columns:
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        1. Sequence
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                Sequence is a decimal number with 4 digits after the decimal. It can be modified to allow you to insert rows anywhere in your script. Rows are executed in sequence number order.
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        2. Verb
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                PutCaretPositionInArray
+            </Paragraph>
+
+
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        3. Entity1
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                Entity1 is the name of a array that has been defined in the Arrays tab. PutCaretPosition puts the X and Y coordinates of the cursor into the array.
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        4. Relationship
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                Relationship is not used
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        5. Entity2
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                Entity2 is not used.
+            </Paragraph>
+
+
+
+
+
+        </FlowDocument>
+    </FlowDocumentReader>
+</Page>

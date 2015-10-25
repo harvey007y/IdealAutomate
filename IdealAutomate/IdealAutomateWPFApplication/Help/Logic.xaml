@@ -1,0 +1,82 @@
+﻿<Page x:Class="Hardcodet.Wpf.Samples.Help.Logic"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	Title="Logic" 
+	>
+    <FlowDocumentReader ViewingMode="Scroll">
+        <FlowDocument FontSize="20">
+            <Paragraph>
+                <Image Source="/Images/help1.png" Width="190" Height="190" Margin="0,0,30,0" />
+                <Run FontSize="30" BaselineAlignment="Center">Logic</Run>
+            </Paragraph>
+            <Table CellSpacing="5" BorderThickness="1" BorderBrush="Black">
+                <TableRowGroup>
+                    <TableRow>
+                        <TableCell>
+                            <Paragraph>
+                                <Image Source="/Images/Logic.PNG"  Margin="5,5,5,5"  HorizontalAlignment="Center" />
+                            </Paragraph>
+                        </TableCell>
+                    </TableRow>
+                </TableRowGroup>
+            </Table>
+
+            <Paragraph>
+                Logic specifies the actions that the script should perform. Here are the columns:
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        1. Sequence
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                Sequence is a decimal number with 4 digits after the decimal. It can be modified to allow you to insert rows anywhere in your script. Rows are executed in sequence number order.
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                2. Verb
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                 Verb describes the type of action to be performed. 
+            </Paragraph>
+            
+
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        3. Entity1
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                Entity1 is the name of a primitive that has been defined in the primitives tab.
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        4. Relationship
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                Relationship is an optional field that specifies a relationship between Entity1 and Entity2.
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        5. Entity2
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                Entity2 is the name of a primitive that has been defined in the primitives tab.
+            </Paragraph>
+
+        </FlowDocument>
+    </FlowDocumentReader>
+</Page>

@@ -1,0 +1,157 @@
+﻿<Page x:Class="Hardcodet.Wpf.Samples.Help.ClearSQLParameters"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	Title="ClearSQLParameters" 
+	>
+    <FlowDocumentReader ViewingMode="Scroll">
+        <FlowDocument FontSize="20">
+            <Paragraph>
+                <Image Source="/Images/help1.png" Width="190" Height="190" Margin="0,0,30,0" />
+                <Run FontSize="30" BaselineAlignment="Center">ClearSQLParameters</Run>
+            </Paragraph>
+            <Paragraph>
+                 <Bold FontSize="24">Examples:</Bold>
+            </Paragraph>
+            <List>
+                <ListItem>
+                    <Paragraph>
+                        <Bold>ClearSQLParameters</Bold>
+                    </Paragraph>
+                    <Table CellSpacing="5" BorderThickness="1" BorderBrush="Black">
+                        <TableRowGroup>
+                            <TableRow>
+                                <TableCell>
+                                    <Paragraph>
+                                        <Image Source="/Images/AddSQLParameter.PNG"  Margin="5,5,5,5"  HorizontalAlignment="Center" />
+                                    </Paragraph>
+                                </TableCell>
+                            </TableRow>
+                        </TableRowGroup>
+                    </Table>
+                    <Table  CellSpacing="0" BorderThickness="1" BorderBrush="Black">
+                        <TableRowGroup>
+                            <TableRow Background="Gainsboro" FontWeight="Bold">
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph TextAlignment="Center">Verb</Paragraph>
+                                </TableCell>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph TextAlignment="Center">Entity1</Paragraph>
+                                </TableCell>
+                                <TableCell  BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph TextAlignment="Center">Relationship</Paragraph>
+                                </TableCell>
+                                <TableCell  BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph TextAlignment="Center">Entity2</Paragraph>
+                                </TableCell>
+
+
+
+                            </TableRow>
+                        </TableRowGroup>
+
+                        <TableRowGroup>
+                            <TableRow>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph>ClearSQLParameters</Paragraph>
+                                </TableCell>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph></Paragraph>
+                                </TableCell>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph></Paragraph>
+                                </TableCell>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph></Paragraph>
+                                </TableCell>
+
+                            </TableRow>
+                        </TableRowGroup>
+                    </Table>
+
+                    <Paragraph>
+                        <Italic>Explanation of example</Italic> -
+                        <LineBreak/> Statement 1: clears all of the sql parameters for the next sql command to execute.
+                        <LineBreak/> Statement 2: adds the sqlParmFirstName parameter that is defined in SQL Parms tab.
+                        <LineBreak/> Statement 3: executes sqlCmdUpdate that is defined in SQL Cmds tab.
+                        <LineBreak/> Statement 4: displays the ReturnCode, which indicates the number of rows affected, if there are no errors; otherwise, it displays a negative error code.
+                        <LineBreak/> Statement 5: clears all of the sql parameters for the next sql command to execute.
+                        <LineBreak/> Statement 6: executes the sqlCmdSelect that is defined in the SQL Cmds tab.
+                        <LineBreak/> Statement 7: sets the row index for arySqlResult.
+                        <LineBreak/> Statement 8: sets the column index to -1, which causes all columns to be used.
+                        <LineBreak/> Statement 9: sets all of the children elements under the parent object myColumns to the third row of arySqlResult.
+                        <LineBreak/> Statement 10: displays the child element name whose parent is myColumns. This displays the column that we updated in Statement 3. 
+                        <LineBreak/>
+                    </Paragraph>
+                </ListItem>            
+        
+
+            </List>
+            <Paragraph>
+                <Line Stretch="Fill" Stroke="Black" X2="1"/>
+            </Paragraph>
+            <Paragraph>
+                <Bold FontSize="24">Columns:</Bold>
+            </Paragraph>
+            <Paragraph>
+                <Bold>ClearSQLParameters</Bold> - ClearSQLParameters is used to clear all of SQL parms for the next SQL command that is executed in the script. Here are the columns:
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        1. Sequence
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                Sequence is a decimal number with 4 digits after the decimal. It can be modified to allow you to insert rows anywhere in your script. Rows are executed in sequence number order.
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        2. Verb
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                ClearSQLParameters
+            </Paragraph>
+
+
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        3. Entity1
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                Entity1 is not used.
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        4. Relationship
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                Relationship is not used.
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        5. Entity2
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                Entity2 is not used.
+            </Paragraph>
+            
+
+
+ 
+
+        </FlowDocument>
+    </FlowDocumentReader>
+</Page>

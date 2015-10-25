@@ -1,0 +1,117 @@
+﻿<Page x:Class="Hardcodet.Wpf.Samples.Help.TypeText"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	Title="TypeText" 
+	>
+    <FlowDocumentReader ViewingMode="Scroll">
+        <FlowDocument FontSize="20">
+            <Paragraph>
+                <Image Source="/Images/help1.png" Width="190" Height="190" Margin="0,0,30,0" />
+                <Run FontSize="30" BaselineAlignment="Center">TypeText</Run>
+            </Paragraph>
+            <Paragraph>
+                <Bold FontSize="24">Examples:</Bold>
+            </Paragraph>
+            <List>
+                <ListItem>
+                    <Paragraph>
+                        <Bold>TypeText</Bold>
+                    </Paragraph>
+                    <Table CellSpacing="5" BorderThickness="1" BorderBrush="Black">
+                        <TableRowGroup>
+                            <TableRow>
+                                <TableCell>
+                                    <Paragraph>
+                                        <Image Source="/Images/PrimitivesTypeText.PNG"  Margin="5,5,5,5"  HorizontalAlignment="Center" />
+                                    </Paragraph>
+                                </TableCell>
+                            </TableRow>
+                        </TableRowGroup>
+                    </Table>
+
+                    <Table CellSpacing="5" BorderThickness="1" BorderBrush="Black">
+                        <TableRowGroup>
+                            <TableRow>
+                                <TableCell>
+                                    <Paragraph>
+                                        <Image Source="/Images/LogicTypeText.PNG"  Margin="5,5,5,5"  HorizontalAlignment="Center" />
+                                    </Paragraph>
+                                </TableCell>
+                            </TableRow>
+                        </TableRowGroup>
+                    </Table>
+
+
+                    <Paragraph>
+                        <Italic>Explanation of example</Italic> -  Minimize Ideal Automate. Launch Notepad. Type "This is a test". 
+                    </Paragraph>
+                </ListItem>
+            </List>
+            <Paragraph>
+                <Line Stretch="Fill" Stroke="Black" X2="1"/>
+            </Paragraph>
+            <Paragraph>
+                <Bold FontSize="24">Columns:</Bold>
+            </Paragraph>
+            <Paragraph>
+                <Bold>TypeText</Bold> -  The visual basic SendKeys function is used to mimic pressing special keys (like the enter or alt keys). This means you need to use the Shortcut Keys help file in this application or google in order to learn what characters can be used to represent special keys.  For example, the ^ character is used to represent the control key and here is how you indicate the enter key is pressed: {ENTER}.  You will also need to learn how to "escape" special characters (like the bracket character).  If you are trying to type a lot of special characters, it may be easier to create a string primitive with the text you want to type and use the PutEntityInClipboard verb to copy the string into the clipboard. After the string is in the clipboard, you can use the TypeText verb with control v to paste what is in the clipboard to where you want it. Here are the columns:
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        1. Sequence
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                Sequence is a decimal number with 4 digits after the decimal. It can be modified to allow you to insert rows anywhere in your script. Rows are executed in sequence number order.
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        2. Verb
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                TypeText
+            </Paragraph>
+
+
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        3. Entity1
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                Entity1 is the name of string defined in the Primitives tab.  The value of Entity1 is what is typed to the screen.
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        4. Relationship
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                Relationship is not used.
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        5. Entity2
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                Entity2 is optional. Entity2 is an integer defined in the primitives tab that specifies how long to wait before trying to type the text. It is generally a good idea to at least wait a 500 milliseconds before trying to type something because if you try to type before the computer is ready, the text you type will not be received by the screen.
+            </Paragraph>
+
+
+
+
+        </FlowDocument>
+    </FlowDocumentReader>
+</Page>

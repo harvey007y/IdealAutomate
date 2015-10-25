@@ -1,0 +1,167 @@
+﻿<Page x:Class="Hardcodet.Wpf.Samples.Help.Label"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	Title="Label" 
+	>
+    <FlowDocumentReader ViewingMode="Scroll">
+        <FlowDocument FontSize="20">
+            <Paragraph>
+                <Image Source="/Images/help1.png" Width="190" Height="190" Margin="0,0,30,0" />
+                <Run FontSize="30" BaselineAlignment="Center">Label</Run>
+            </Paragraph>
+            <Paragraph>
+                 <Bold FontSize="24">Examples:</Bold>
+            </Paragraph>
+            <List>
+                <ListItem>
+                    <Paragraph>
+                        <Bold>Label</Bold>
+                    </Paragraph>
+                    <Table  CellSpacing="0" BorderThickness="1" BorderBrush="Black">
+                        <TableRowGroup>
+                            <TableRow Background="Gainsboro" FontWeight="Bold">
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph TextAlignment="Center">Verb</Paragraph>
+                                </TableCell>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph TextAlignment="Center">Entity1</Paragraph>
+                                </TableCell>
+                                <TableCell  BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph TextAlignment="Center">Relationship</Paragraph>
+                                </TableCell>
+                                <TableCell  BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph TextAlignment="Center">Entity2</Paragraph>
+                                </TableCell>
+
+
+
+                            </TableRow>
+                        </TableRowGroup>
+
+                        <TableRowGroup>
+                            <TableRow>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph>GoToLabel</Paragraph>
+                                </TableCell>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph>txtExit</Paragraph>
+                                </TableCell>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph></Paragraph>
+                                </TableCell>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph></Paragraph>
+                                </TableCell>
+
+                            </TableRow>
+                        </TableRowGroup>
+                        <TableRowGroup>
+                            <TableRow>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph>MessageBox</Paragraph>
+                                </TableCell>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph>txtThisMessageWillNotShow</Paragraph>
+                                </TableCell>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph></Paragraph>
+                                </TableCell>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph></Paragraph>
+                                </TableCell>
+
+                            </TableRow>
+                        </TableRowGroup>
+                        <TableRowGroup>
+                            <TableRow>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph>Label</Paragraph>
+                                </TableCell>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph>txtExit</Paragraph>
+                                </TableCell>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph></Paragraph>
+                                </TableCell>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph></Paragraph>
+                                </TableCell>
+
+                            </TableRow>
+                        </TableRowGroup>
+                    </Table>
+                    <Paragraph>
+                        <Italic>Explanation of example</Italic> -  This sequence of statements will cause the MessageBox to be skipped because the GoToLabel verb will cause the normal sequential execution to "jump over" the MessageBox statement and go directly to the Label line that has the entity1, txtExit, that matches what was specified in the GoToLabel statement.  txtExit is string primitive that was defined in the primitives tab as the string Exit in this example, but it could have been defined as any primitive string as long as what is specified in the GoToLabel matches what is specified in the statement that contains the Label verb.
+                        <LineBreak/>
+                    </Paragraph>
+                </ListItem>  
+            </List>
+            <Paragraph>
+                <Line Stretch="Fill" Stroke="Black" X2="1"/>
+            </Paragraph>
+            <Paragraph>
+                <Bold FontSize="24">Columns:</Bold>
+            </Paragraph>
+            <Paragraph>
+                <Bold>Label</Bold> - Label is used as pointer for a place that GoToLabel can branch to. Here are the columns:
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        1. Sequence
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                Sequence is a decimal number with 4 digits after the decimal. It can be modified to allow you to insert rows anywhere in your script. Rows are executed in sequence number order.
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        2. Verb
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                Label
+            </Paragraph>
+
+
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        3. Entity1
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                Entity1 is the name of a primitive that has been defined in the primitives tab. Label is a string that the GoToLabel Entity1 must match in order for the jump to label to occur.
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        4. Relationship
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                Relationship is not used.
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        5. Entity2
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                Entity2 is not used.
+            </Paragraph>
+            
+
+
+ 
+
+        </FlowDocument>
+    </FlowDocumentReader>
+</Page>

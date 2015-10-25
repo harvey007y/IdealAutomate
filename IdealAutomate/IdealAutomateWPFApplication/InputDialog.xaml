@@ -1,0 +1,57 @@
+﻿<Window x:Class="Hardcodet.Wpf.Samples.InputDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="InputDialog"
+        Height="120"
+        Width="300"
+        WindowStartupLocation="CenterOwner"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        ShowInTaskbar="False"
+        Background="#00000000">
+  
+  <Border CornerRadius="4"
+          Width="200"
+          Height="100"
+          BorderThickness="2"
+          Background="#FFFFB027">
+    <StackPanel>
+      <TextBlock Text="Please enter a category name:"
+                 Margin="10,2,10,4" />
+      <TextBox x:Name="txtCategory"
+               Margin="10,2,10,4" />
+            <Grid Visibility="Visible"
+                  x:Name="Grid2">
+                <Grid.RowDefinitions>
+
+                    <RowDefinition Height="Auto" />
+                    
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Button x:Name="btnCancel"
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Click="btnCancel_Click"
+                        HorizontalAlignment="Left"
+                        Margin="10,10,10,4"
+                        IsDefault="True"
+                        Width="80"
+                        Content="Cancel" />
+                <Button x:Name="btnOk"
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        IsEnabled="{Binding ElementName=txtCategory, Path=Text.Length}"
+                        Click="btnOk_Click"
+                        HorizontalAlignment="Right"
+                        Margin="10,10,10,4"
+                        IsDefault="True"
+                        Width="80"
+                        Content="OK" />
+            </Grid>
+        </StackPanel>
+  </Border>
+</Window>
