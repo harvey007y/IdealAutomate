@@ -209,7 +209,7 @@ namespace IdealAutomateCore {
         }
 
         var sb = new StringBuilder();
-        // if you want to dump a dropdownlist,
+        // if you want to dump a WindowComboBox,
         // add a using to System.Web 
         // add a reference to System.Web.UI.Controls
         // System.Linq

@@ -963,14 +963,7 @@ namespace Hardcodet.Wpf.Samples.Pages
                 return (T)formatter.Deserialize(ms);
             }
         }
-        private void ShowAboutDialog(object sender, RoutedEventArgs e)
-        {
-            IdealAutomaterDialog dlg = new IdealAutomaterDialog();
-            //  dlg.Owner = this;
-            // Shadow.Visibility = Visibility.Visible;
-            //    dlg.ShowDialog();
-            //  Shadow.Visibility = Visibility.Collapsed;
-        }
+
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {

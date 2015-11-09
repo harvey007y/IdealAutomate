@@ -69,7 +69,7 @@
 
             <Grid      DataContext="{StaticResource scriptViewSource}"  VerticalAlignment="Top" >
                 <TabControl HorizontalAlignment="Left" Margin="10,10,0,0"     VerticalAlignment="Top" >
-                    <TabItem Header="Scripts" >
+                    <TabItem Header="S_cripts" >
                         <StackPanel>
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -193,18 +193,18 @@
                     <!-- Primitives Data Grid -->
                     <!-- Script Steps Data Grid -->
 
-                    <TabItem Header="Description" >
+                    <TabItem Header="_Description" >
                         <StackPanel>
                             <Label Name="lblTitle" Content="Title:" />
                             <TextBox Name="txtTitle" Text="{Binding Title}" TextWrapping="Wrap"  VerticalContentAlignment="Stretch" AcceptsReturn="True" Height="50" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Auto" MaxLength="500"/>
                             <Label Name="lblExecutable" Content="Executable:" />
-                            <TextBox Name="txtExecutable" Text="{Binding Executable}" TextWrapping="Wrap"  VerticalContentAlignment="Stretch" AcceptsReturn="True" Height="20" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Auto" MaxLength="500"/>
+                            <TextBox Name="txtExecutable" Text="{Binding Executable}" TextWrapping="Wrap"  VerticalContentAlignment="Stretch" AcceptsReturn="True" Height="40" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Auto" MaxLength="500"/>
                             <Label Name="lblExecuteContent" Content="Execute Content:" />
                             <TextBox Name="txtExecuteContent" Text="{Binding ExecuteContent}" TextWrapping="Wrap"  VerticalContentAlignment="Stretch" AcceptsReturn="True" Height="20" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Auto" MaxLength="500"/>
                             <Label Name="lblSummary" Content="Summary:" />
-                            <TextBox Name="txtSummary" Text="{Binding Summary}" TextWrapping="Wrap"  VerticalContentAlignment="Stretch" AcceptsReturn="True" Height="150" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Auto" />
+                            <TextBox Name="txtSummary" Text="{Binding Summary}" TextWrapping="Wrap"  VerticalContentAlignment="Stretch" AcceptsReturn="True" Height="125" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Auto" />
                             <Label Name="lblSetupInstructions" Content="Setup Instructions:" />
-                            <TextBox Name="txtSetupInstructions" Text="{Binding SetupInstructions}" TextWrapping="Wrap"  VerticalContentAlignment="Stretch" AcceptsReturn="True" Height="150" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Auto" />
+                            <TextBox Name="txtSetupInstructions" Text="{Binding SetupInstructions}" TextWrapping="Wrap"  VerticalContentAlignment="Stretch" AcceptsReturn="True" Height="125" ScrollViewer.CanContentScroll="True" VerticalScrollBarVisibility="Auto" />
                             <Button Content="Copy Executable Path Into Executable Textbox By Clicking on a Running Application" Click="btnAddClicking_Click" />
                         </StackPanel>
                     </TabItem>
@@ -221,8 +221,8 @@
                     <ColumnDefinition Width="160" />
                     <ColumnDefinition Width="160" />
                 </Grid.ColumnDefinitions>
-                <Button x:Name="btnSave" Grid.Column="0" Margin="5,5,5,5" Content="Save" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="75" Click="btnSave_Click"/>
-                <Button x:Name="btnRunScript" Grid.Column="1" Margin="5,5,5,5" Content="Run Script" HorizontalAlignment="Left"  Width="75" Click="btnRunScript_Click_1" Height="20" VerticalAlignment="Top"/>
+                <Button x:Name="btnSave" Grid.Column="0" Margin="5,5,5,5" Content="Sav_e" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="75" Click="btnSave_Click"/>
+                <Button x:Name="btnRunScript" Grid.Column="1" Margin="5,5,5,5" Content="_Run Script" HorizontalAlignment="Left"  Width="75" Click="btnRunScript_Click_1" Height="20" VerticalAlignment="Top"/>
                
             </Grid>
 

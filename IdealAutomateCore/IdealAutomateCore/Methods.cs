@@ -16,6 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using IdealAutomateCore;
+using System.Windows.Controls;
 
 
 
@@ -85,7 +86,7 @@ namespace IdealAutomate.Core {
             {
         {
           ShowWindowAsync((IntPtr)hWnd, SW_RESTORE);
-        }
+        }        
         SetForegroundWindow(hWnd); //Activate it              
         return true;
       } else {
@@ -280,6 +281,29 @@ namespace IdealAutomate.Core {
       // Add Parameters to Command Parameters collection
       cmd.Parameters.Add("@myKey", SqlDbType.VarChar);
       cmd.Parameters["@myKey"].Value = pKey;
+
+
+      try {
+        con.Open();
+        myValue = (string)cmd.ExecuteScalar();
+      } finally {
+        con.Close();
+      }
+      return myValue;
+    }
+    public string SetValueByKey(string pKey, string pValue, string pInitialCatalog) {
+
+      string myValue = "";
+      // InitialCatalog is the database name where keyvalue pairs are stored
+      SqlConnection con = new SqlConnection("Server=(local)\\SQLEXPRESS;Initial Catalog=" + pInitialCatalog + ";Integrated Security=SSPI");
+      SqlCommand cmd = new SqlCommand("SetValueByKey", con);
+      cmd.CommandType = CommandType.StoredProcedure;
+
+      // Add Parameters to Command Parameters collection
+      cmd.Parameters.Add("@myKey", SqlDbType.VarChar,500);
+      cmd.Parameters["@myKey"].Value = pKey;
+      cmd.Parameters.Add("@myValue", SqlDbType.VarChar,500);
+      cmd.Parameters["@myValue"].Value = pValue;
 
 
       try {
@@ -570,6 +594,79 @@ namespace IdealAutomate.Core {
       }
       return myEntity;
     }
+    public string PutInternetExplorerTabTitleInEntity() {
+      if (fbDebugMode) {
+        Console.WriteLine(oProcess.ProcessName + "==> " + "PutInternetExplorerTabTitleInEntity");
+        Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "PutInternetExplorerTabTitleInEntity");
+      }
+   
+      TypeText("{UP}", 1000);
+      TypeText("%(v)", 1000);
+      TypeText("c", 1000);
+
+      string strPageTitle = PutWindowTitleInEntity();
+      strPageTitle = strPageTitle.Replace(" - Original Source", "");
+      CloseApplicationAltFc(500);
+      return strPageTitle;
+    
+    }
+    public string PutInternetExplorerTabURLContainingStringInEntity(string myEntity) {
+      if (fbDebugMode) {
+        Console.WriteLine(oProcess.ProcessName + "==> " + "PutInternetExplorerTabURLContainingStringInEntity: myEntity=" + myEntity);
+        Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "PutInternetExplorerTabURLContainingStringInEntity: myEntity=" + myEntity);
+      }
+
+      List<string> myWindowTitles = GetWindowTitlesByProcessName("iexplore");
+      myWindowTitles.RemoveAll(item => item == "");
+
+      string strCurrentTabURL = "";
+      bool boolTargetURLFound = false;
+      bool boolInternetExplorerFound = false;
+      foreach (var myWindowTitle in myWindowTitles) {
+        boolInternetExplorerFound = true;
+        if (myWindowTitle != "") {
+          ActivateWindowByTitle(myWindowTitle);
+          // go to last tab;
+          // myActions.TypeText("^(9)",2500);
+          Sleep(500);
+          TypeText("%(d)", 500); // select address bar
+          string strFirstTabURL = SelectAllCopyIntoEntity(500);
+          TypeText("{ESC}", 500);
+          if (strFirstTabURL.ToLower().Contains(myEntity)) {
+            strCurrentTabURL = strFirstTabURL;
+            boolTargetURLFound = true;
+            break;
+          }
+          
+          // go to next tab
+          while (strCurrentTabURL != strFirstTabURL) {
+            TypeText("^({TAB})", 2500);
+            TypeText("%(d)", 500); // select address bar
+            strCurrentTabURL = SelectAllCopyIntoEntity(500);
+            TypeText("{ESC}", 500);
+            if (strCurrentTabURL.ToLower().Contains(myEntity)) {
+              boolTargetURLFound = true;
+              break;
+            }
+          }
+          if (boolTargetURLFound) {
+
+            break;
+          }
+
+        }
+      }
+      if (boolInternetExplorerFound == false) {
+        strCurrentTabURL = "IE not found";
+        return strCurrentTabURL;
+      }
+      if (boolTargetURLFound == false) {
+        return "";
+      }
+      return strCurrentTabURL;
+
+    }
+
 
     public void PutEntityInClipboard(string myEntity) {
       if (fbDebugMode) {
@@ -822,6 +919,30 @@ namespace IdealAutomate.Core {
       InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_A);
       System.Threading.Thread.Sleep(200);
       InputSimulator.Keyboard.KeyPress(VirtualKeyCode.DELETE);
+    }
+    public ComboBoxPair WindowComboBox(IEnumerable<object> myEntity, string myEntity2) {
+      if (fbDebugMode) {
+        Console.WriteLine(oProcess.ProcessName + "==> " + "WindowComboBox: myEntity=" + myEntity);
+        Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "WindowComboBox: myEntity=" + myEntity);
+      }
+      WindowComboBox dlg = new WindowComboBox(myEntity, myEntity2);
+    
+     // dlg.Owner = (Window)Window.GetWindow(this);
+      // Shadow.Visibility = Visibility.Visible;
+      dlg.ShowDialog();
+      return dlg.SelectedComboBoxPair;
+    }
+    public string WindowTextBox(string myEntity) {
+      if (fbDebugMode) {
+        Console.WriteLine(oProcess.ProcessName + "==> " + "WindowTextBox: myEntity=" + myEntity);
+        Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "WindowTextBox: myEntity=" + myEntity);
+      }
+      WindowTextBox dlg = new WindowTextBox(myEntity);
+
+      // dlg.Owner = (Window)Window.GetWindow(this);
+      // Shadow.Visibility = Visibility.Visible;
+      dlg.ShowDialog();
+      return dlg.TextBoxValue;
     }
     public void MessageBoxShow(string myEntity) {
       if (fbDebugMode) {
