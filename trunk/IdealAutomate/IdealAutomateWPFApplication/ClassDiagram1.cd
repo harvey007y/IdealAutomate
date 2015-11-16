@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="Hardcodet.Wpf.Samples.CategoryTree" Collapsed="true">
+    <Position X="0.75" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAhAAEAAAERAAQAAAAAAAAAAiAIAAEAgAAAAAAQAAAA=</HashCode>
+      <FileName>CategoryTree.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SampleShop.Products.ShopCategory" Collapsed="true">
+    <Position X="3.5" Y="1.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAAEAAAAIAAgACAAAAAAAAAAAAAwAAA=</HashCode>
+      <FileName>ViewModel\ShopCategory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Hardcodet.Wpf.GenericTreeView.TreeViewBase&lt;T&gt;" Collapsed="true">
+    <Position X="0.75" Y="0.5" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -1,0 +1,28 @@
+﻿
+ <Page x:Class="Hardcodet.Wpf.Samples.Help.OverviewFindColumns"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	Title="SQL To Grid Overview"
+	  >
+
+    <FlowDocumentReader ViewingMode="Scroll">
+        <FlowDocument FontSize="20">
+            <Paragraph TextAlignment="Center"
+					   FontSize="16pt">
+                <Bold>Find Columns in SQL DB Overview</Bold>
+            </Paragraph>
+            <Paragraph>
+                The purpose of the Find Columns Tool is to allow one to quickly find columns in a large SQL Database.
+
+            </Paragraph>
+            <Paragraph>
+                The main task that you have to do in order to use Find Columns is to select a connection string and a filter. When specifying the filter, it is important to use the percent sign as as the wildcard.
+            </Paragraph>
+           
+            
+            
+        </FlowDocument>
+    </FlowDocumentReader>
+
+</Page>
+

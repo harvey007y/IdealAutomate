@@ -1,0 +1,119 @@
+﻿<Window x:Class="Hardcodet.Wpf.Samples.ExpireDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Expire"
+        Height="391"
+        Width="487"
+        WindowStartupLocation="CenterOwner"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        ShowInTaskbar="False"
+        Background="#00000000">
+
+  <Window.Resources>
+
+  </Window.Resources>
+  
+  <!-- main border -->
+  <Border x:Name="MainBorder"
+          Hyperlink.RequestNavigate="OnNavigationRequest"
+          Width="450"
+          Height="300"
+          BorderThickness="0"
+          CornerRadius="12,12,12,12">
+    <Border.Background>
+      <LinearGradientBrush StartPoint="0.126,-0.197"
+                           EndPoint="0.874,1.197">
+        <GradientStop Offset="0"
+                      Color="#FF615E5A" />
+        <GradientStop Offset="1"
+                      Color="#FF535353" />
+        <GradientStop Offset="0.284"
+                      Color="#FFE0E0E0" />
+        <GradientStop Offset="0.365"
+                      Color="#FFFFFFFF" />
+      </LinearGradientBrush>
+    </Border.Background>
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="50" />
+        <RowDefinition Height="100" />
+        <RowDefinition Height="*" />
+        <RowDefinition Height="80" />
+      </Grid.RowDefinitions>
+      <Border x:Name="HeaderBorder"
+              Grid.Row="0"
+              Background="#384F4F4F"
+              BorderThickness="0"
+              CornerRadius="12,12,0,0" />
+      <StackPanel Grid.Row="0"
+                  Orientation="Horizontal">
+        <Image Source="/Images/FolderLogo.png"
+               Width="48"
+               Height="48"
+               Margin="20,0,0,0" />
+        <TextBlock x:Name="HeaderText"
+                   Margin="8,0,0,0"
+                   VerticalAlignment="Center"
+                   FontSize="30"
+                   Foreground="#FFDB0E0E"
+                   Text="Expiration Warning">
+               <TextBlock.BitmapEffect>
+                  <OuterGlowBitmapEffect GlowColor="#FFFFFFFF"
+                                         Opacity="0.24" />
+               </TextBlock.BitmapEffect>
+            </TextBlock>
+      </StackPanel>
+
+
+      <!-- version information etc -->
+      <StackPanel Grid.Row="1"
+                  Margin="10,10,10,47" Grid.RowSpan="2">
+                <TextBlock  Width="390" >This free version of Ideal Automate is about to expire. You can obtain a registration key that will allow you to continue using the software by becoming a Lifetime Member of IdealAutomate.com. If you become a Lifetime member today, you will save 90% off the regular price by clicking this link:  <Hyperlink NavigateUri="http://idealautomate.com/Secure/PurchaseCompare5z.aspx" Background="Red" Foreground="White" FontWeight="SemiBold">Become Lifetime Member for only $5 Today</Hyperlink>.</TextBlock>
+        
+        <TextBlock>
+          
+        </TextBlock>
+      </StackPanel>
+
+      <Border Grid.Row="2"
+              BorderThickness="0,1,0,0"
+              BorderBrush="#FFB6B3B3">
+        
+        <!-- license information etc -->
+        <StackPanel Grid.Row="1"
+                    Margin="30,20,0,0">
+          <TextBlock Height="39">
+             Once you become a lifetime member of IdealAutomate.com, you can obtain your registration key at <Hyperlink NavigateUri="http://www.idealautomate.com/LifetimeMembership/IdealToolsOrganizerKey.aspx" Background="Red" Foreground="White" FontWeight="SemiBold">Get My Registration Key</Hyperlink>.
+          </TextBlock>
+                </StackPanel>
+      </Border>
+
+
+      <Border x:Name="FooterBorder"
+              Grid.Row="3"
+              Background="#384F4F4F"
+              BorderThickness="0"
+              CornerRadius="0,0,12,12" Margin="0,6,0,0"></Border>
+
+      <Button x:Name="btnOk"
+              Click="btnOk_Click"
+              Width="80"
+              Height="24"
+              Grid.Row="3"
+              Margin="0,0,10,10"
+              HorizontalAlignment="Right"
+              VerticalAlignment="Bottom"
+              IsDefault="True"
+              Content="OK" />
+            <TextBlock TextWrapping="Wrap" Margin="30,15,90,7" Grid.Row="3">
+          To register your software, please enter the registration key:<LineBreak></LineBreak>
+        
+            
+            
+          
+          </TextBlock>
+            <TextBox Grid.Row="3" Height="23" HorizontalAlignment="Left" Margin="40,43,0,0" Name="txtRegistration" VerticalAlignment="Top" Width="196" />
+        </Grid>
+  </Border>
+</Window>
