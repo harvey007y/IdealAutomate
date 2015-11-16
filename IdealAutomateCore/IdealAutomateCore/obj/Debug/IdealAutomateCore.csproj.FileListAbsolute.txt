@@ -2,7 +2,6 @@ C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\bi
 C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\bin\Debug\IdealAutomateCore.pdb
 C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\bin\Debug\WindowsInput.dll
 C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\bin\Debug\WindowsInput.xml
-C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore.csprojResolveAssemblyReference.cache
 C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore.dll
 C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore.pdb
 C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore_MarkupCompile.cache
@@ -12,3 +11,8 @@ C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\ob
 C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowTextBox.baml
 C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowTextBox.g.cs
 C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\bin\Debug\Images\FolderLogo.png
+C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowShape.baml
+C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowShape.g.cs
+C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore.Properties.Resources.resources
+C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore.csproj.GenerateResource.Cache
+C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore.csprojResolveAssemblyReference.cache

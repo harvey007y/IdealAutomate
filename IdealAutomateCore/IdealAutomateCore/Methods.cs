@@ -545,15 +545,40 @@ namespace IdealAutomate.Core {
         Console.WriteLine(oProcess.ProcessName + "==> " + "PutClipboardInEntity: ");
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "PutClipboardInEntity: ");
       }
+      int intTryAgainCtr = 0;
+      TryAgain:
       string myEntity = "";
       try {
-        Thread thread = new Thread(new ThreadStart(() => {
+        //Thread thread = new Thread(new ThreadStart(() => {
           try {
+
+            for (int i = 0; i < 45; i++) {
+              if (Clipboard.GetData(DataFormats.Text) == null) {
+                Sleep(100);
+              } else {
+                break;
+              }
+              if (i == 10 || i == 20 || i == 30 || i == 40) {
+                TypeText("^(c)",500);
+                Sleep(1001);
+               // System.Diagnostics.Debugger.Break();
+              }
+            }
+
             myEntity = Clipboard.GetData(DataFormats.Text).ToString();
+            if (myEntity.Contains("Failed to copy selection to the clipboard")) {
+              TypeText("^(c)", 500);
+              Sleep(1002);
+              intTryAgainCtr++;
+              if (intTryAgainCtr < 10) {
+                goto TryAgain;
+              }
+              
+            }
            // myEntity = Clipboard.GetText(System.Windows.TextDataFormat.Html);
-          } catch (Exception) {
-            Console.WriteLine("Exception occurred in PutClipboardInEntity!!!!");
-            Logging.WriteLogSimple("Exception occurred in PutClipboardInEntity!!!!");
+          } catch (Exception e) {
+            Console.WriteLine("Exception occurred in PutClipboardInEntity!!!! " + e.Message);
+            Logging.WriteLogSimple("Exception occurred in PutClipboardInEntity!!!! " + e.Message);
             myEntity = "";
           }
 
@@ -561,14 +586,51 @@ namespace IdealAutomate.Core {
 
 
 
-        }));
+        //}));
 
-        thread.SetApartmentState(ApartmentState.STA);
+        //thread.SetApartmentState(ApartmentState.STA);
 
-        thread.Start();
-        thread.Join();
+        //thread.Start();
+        //thread.Join();
       } catch (Exception ex) {
-        MessageBox.Show(ex.Message);
+        try {
+          TypeText("^(c)", 500);
+          //Thread thread = new Thread(new ThreadStart(() => {
+            try {
+
+              for (int i = 0; i < 45; i++) {
+                if (Clipboard.GetData(DataFormats.Text) == null) {
+                  Sleep(100);
+                } else {
+                  break;
+                }
+                if (i == 10 || i == 20 || i == 30 || i == 40) {
+                  TypeText("^(c)", 500);
+                  Sleep(1003);
+                }
+              }
+
+              myEntity = Clipboard.GetData(DataFormats.Text).ToString();
+              // myEntity = Clipboard.GetText(System.Windows.TextDataFormat.Html);
+            } catch (Exception e) {
+              Console.WriteLine("Exception occurred in PutClipboardInEntity!!!! " + e.Message);
+              Logging.WriteLogSimple("Exception occurred in PutClipboardInEntity!!!! " + e.Message);
+              myEntity = "";
+            }
+
+            // or call logic here
+
+
+
+          //}));
+
+          //thread.SetApartmentState(ApartmentState.STA);
+
+          //thread.Start();
+          //thread.Join();
+        } catch (Exception ex1) {
+          MessageBox.Show(ex1.Message);
+        }
       }
       if (myEntity.Length > 5000) {
         Console.Write("PutEntityInClipboard: myEntity more than 5000 in length");
@@ -681,7 +743,7 @@ namespace IdealAutomate.Core {
       try {
         
         Thread thread = new Thread(new ThreadStart(() => {
-          Clipboard.Clear();
+          Clipboard.Clear();          
          // Clipboard.SetText(myEntity);
           Clipboard.SetDataObject((Object)myEntity, true);
           // or call logic here
@@ -781,6 +843,24 @@ namespace IdealAutomate.Core {
         return;
       }
       if (myEntity == "^(c)") {
+        try {
+
+          Thread thread = new Thread(new ThreadStart(() => {
+            Clipboard.Clear();           
+            // Clipboard.SetText(myEntity);            
+            // or call logic here
+
+
+
+          }));
+
+          thread.SetApartmentState(ApartmentState.STA);
+
+          thread.Start();
+          thread.Join();
+        } catch (Exception ex) {
+          MessageBox.Show(ex.Message);
+        }
         InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_C);
         return;
       }
@@ -854,6 +934,7 @@ namespace IdealAutomate.Core {
     public void SelectAllCopy(int intSleep) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "SelectAllCopy: intSleep=" + intSleep.ToString());
+        Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "SelectAllCopy: intSleep=" + intSleep.ToString());
       }
       InputSimulator InputSimulator = new InputSimulator();
       if (intSleep > 0) {
@@ -943,6 +1024,18 @@ namespace IdealAutomate.Core {
       // Shadow.Visibility = Visibility.Visible;
       dlg.ShowDialog();
       return dlg.TextBoxValue;
+    }
+    public void WindowShape(string myShape, string myOrientation,string myTitle, string myContent, int intTop, int intLeft) {
+      if (fbDebugMode) {
+        Console.WriteLine(oProcess.ProcessName + "==> " + "WindowShape: myEntity=" + myTitle);
+        Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "WindowShape: myEntity=" + myTitle);
+      }
+      WindowShape dlg = new WindowShape(myShape,myOrientation, myTitle, myContent, intTop, intLeft);
+
+      // dlg.Owner = (Window)Window.GetWindow(this);
+      // Shadow.Visibility = Visibility.Visible;
+      dlg.ShowDialog();
+      return;
     }
     public void MessageBoxShow(string myEntity) {
       if (fbDebugMode) {
