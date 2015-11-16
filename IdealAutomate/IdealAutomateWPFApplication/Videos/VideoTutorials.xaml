@@ -1,0 +1,51 @@
+﻿<NavigationWindow x:Class="VideoTutorials"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	Title="Ideal Automate Video Tutorials"				  
+	ShowInTaskbar="False"
+	WindowStartupLocation="CenterScreen"
+                  
+	>
+
+    <NavigationWindow.Content >
+        <Grid >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="25*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="75*" />
+            </Grid.ColumnDefinitions>
+
+            <TreeView Name="tree" FontSize="10pt" 
+					  
+					  >
+               
+                <TreeViewItem Header="Basics" IsExpanded="True">
+                    <TreeViewItem Header="Install" PreviewMouseLeftButtonDown="Install_MouseLeftButtonDown"
+						  Tag="Videos/Install.xaml" />
+                    <TreeViewItem Header="Launch Executable with Content" PreviewMouseLeftButtonDown="LaunchExecutable_MouseLeftButtonDown"
+						  Tag="Videos/LaunchExecutable.xaml" 
+						  />
+                    <TreeViewItem Header="Find Image" PreviewMouseLeftButtonDown="FindImage_MouseLeftButtonDown"
+						  Tag="Videos/FindImage.xaml" 
+						  />
+                    <TreeViewItem Header="Automate Login" PreviewMouseLeftButtonDown="AutomateLogin_MouseLeftButtonDown"
+						  Tag="Videos/AutomateLogin.xaml" 
+						  />
+                </TreeViewItem>
+                <TreeViewItem Header="Affiliate Program" PreviewMouseLeftButtonDown="AffiliateProgram_MouseLeftButtonDown"
+						  Tag="Videos/AffiliateProgram.xaml" 
+						  />
+                
+               
+            </TreeView>
+
+            <GridSplitter Grid.Column="1" Width="6" 
+						  HorizontalAlignment="Center" 
+						  VerticalAlignment="Stretch" />
+
+            <Frame Name="frame" Grid.Column="2" DataContext="{Binding}" />
+        </Grid>
+    </NavigationWindow.Content>
+</NavigationWindow>
+
+
