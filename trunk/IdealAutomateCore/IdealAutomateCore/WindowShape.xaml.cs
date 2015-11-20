@@ -45,26 +45,46 @@ namespace IdealAutomate.Core {
           uri = new Uri("/IdealAutomateCore;component/Resources/RedArrowRight.png", UriKind.Relative);
           mySource = new BitmapImage(uri);
           imgBackground.Source = mySource;
+          lblTitle.Margin = new System.Windows.Thickness(20, 10, 129, 0);
+          lblContent.Margin = new System.Windows.Thickness(10, 36, 109, 0);
+          lblContent.Height = 125;
+          btnLogin.Margin = new System.Windows.Thickness(40, 0, 0, 23.209);
           break;
         case "RedArrowLeft":
           uri = new Uri("/IdealAutomateCore;component/Resources/RedArrowLeft.png", UriKind.Relative);
            mySource = new BitmapImage(uri);
-          imgBackground.Source = mySource;          
+          imgBackground.Source = mySource;
+          lblTitle.Margin = new System.Windows.Thickness(118, 10, 31, 0);
+          lblContent.Margin = new System.Windows.Thickness(118, 36, 1, 0);
+          lblContent.Height = 125;
+          btnLogin.Margin = new System.Windows.Thickness(118, 0, 0, 27);
           break;
         case "RedArrowDown":
           uri = new Uri("/IdealAutomateCore;component/Resources/RedArrowDown.png", UriKind.Relative);
           mySource = new BitmapImage(uri);
           imgBackground.Source = mySource;
+          lblTitle.Margin = new System.Windows.Thickness(20, 10, 129, 0);
+          lblContent.Margin = new System.Windows.Thickness(10, 36, 20, 0);
+          lblContent.Height = 94;
+          btnLogin.Margin = new System.Windows.Thickness(10, 0, 0, 98);
           break;
         case "RedArrowUp":
           uri = new Uri("/IdealAutomateCore;component/Resources/RedArrowUp.png", UriKind.Relative);
           mySource = new BitmapImage(uri);
           imgBackground.Source = mySource;
+          lblTitle.Margin = new System.Windows.Thickness(10, 102, 139, 0);
+          lblContent.Margin = new System.Windows.Thickness(10, 133, 20, 0);
+          lblContent.Height = 94;
+          btnLogin.Margin = new System.Windows.Thickness(10, 0, 0, 10);
           break;
         case "RedBox":
           uri = new Uri("/IdealAutomateCore;component/Resources/RedBox.png", UriKind.Relative);
           mySource = new BitmapImage(uri);
           imgBackground.Source = mySource;
+          lblTitle.Margin = new System.Windows.Thickness(10, 102, 139, 0);
+          lblContent.Margin = new System.Windows.Thickness(10, 133, 20, 0);
+          lblContent.Height = 94;
+          btnLogin.Margin = new System.Windows.Thickness(10, 0, 0, 10);
           break;
         default:
           break;
