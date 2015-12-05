@@ -60,7 +60,6 @@ namespace Hardcodet.Wpf.Samples {
       string updCmd =
 
 "USE [master] " +
-"GO " +
 " " +
 "IF NOT EXISTS ( " +
 "		SELECT * " +
