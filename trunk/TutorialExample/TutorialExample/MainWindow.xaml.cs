@@ -30,8 +30,8 @@ namespace TutorialExample {
       myActions.WindowShape("RedArrow", "Right", "Step 1", "Click here to open a new item", 30, 30);
       myActions.WindowShape("RedArrow", "Left", "Step 2", "This is used to do a lot of different things", 200, 200);
       myActions.WindowShape("RedArrow", "Up", "Step 3", "This is used to do a lot of different things", 400, 400);
-      myActions.WindowShape("RedArrow", "Down", "Step 4", "This is used to do a lot of different things", 500, 500);
-      myActions.WindowShape("RedBox", "", "Step 5", "This is used to do a lot of different things", 500, 500);
+      myActions.WindowShape("RedArrow", "Down", "Step 4", "This is used to do a lot of different things", 200, 200);
+      myActions.WindowShape("RedBox", "", "Step 5", "This is used to do a lot of different things", 200, 200);
       goto myExit;
       myActions.RunSync(@"C:\Windows\Explorer.EXE", @"C:\SVN");
       myActions.TypeText("%(e)", 500);
