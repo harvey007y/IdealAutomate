@@ -58,6 +58,149 @@ namespace Hardcodet.Wpf.Samples {
       SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["myConnectionString"].ConnectionString);
       con.Open();
       string updCmd =
+
+"USE [master] " +
+"GO " +
+" " +
+"IF NOT EXISTS ( " +
+"		SELECT * " +
+"		FROM sys.databases " +
+"		WHERE NAME = 'IdealAutomateDB' " +
+"		) " +
+"BEGIN " +
+"	/****** Object:  Database [IdealAutomateDB]    Script Date: 12/5/2015 3:18:21 PM ******/ " +
+"	CREATE DATABASE [IdealAutomateDB] ON PRIMARY ( " +
+"		NAME = N'IdealAutomate_Data' " +
+@"		,FILENAME = N'c:\Program Files\Microsoft SQL Server\MSSQL10_50.SQLEXPRESS\MSSQL\DATA\IdealAutomate_Data.mdf' " +
+"		,SIZE = 12288 KB " +
+"		,MAXSIZE = UNLIMITED " +
+"		,FILEGROWTH = 10 % " +
+"		) LOG ON ( " +
+"		NAME = N'IdealAutomate_Log' " +
+@"		,FILENAME = N'c:\Program Files\Microsoft SQL Server\MSSQL10_50.SQLEXPRESS\MSSQL\DATA\IdealAutomate_Log.ldf' " +
+"		,SIZE = 28672 KB " +
+"		,MAXSIZE = 2048 GB " +
+"		,FILEGROWTH = 1024 KB " +
+"		); " +
+" " +
+"	ALTER DATABASE [IdealAutomateDB] " +
+" " +
+"	SET COMPATIBILITY_LEVEL = 100 " +
+" " +
+"	IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled')) " +
+"	BEGIN " +
+"		EXEC [IdealAutomateDB].[dbo].[sp_fulltext_database] @action = 'enable' " +
+"	END " +
+" " +
+"	ALTER DATABASE [IdealAutomateDB] " +
+" " +
+"	SET ANSI_NULL_DEFAULT OFF " +
+" " +
+"	ALTER DATABASE [IdealAutomateDB] " +
+" " +
+"	SET ANSI_NULLS OFF " +
+" " +
+"	ALTER DATABASE [IdealAutomateDB] " +
+" " +
+"	SET ANSI_PADDING OFF " +
+" " +
+"	ALTER DATABASE [IdealAutomateDB] " +
+" " +
+"	SET ANSI_WARNINGS OFF " +
+" " +
+"	ALTER DATABASE [IdealAutomateDB] " +
+" " +
+"	SET ARITHABORT OFF " +
+" " +
+"	ALTER DATABASE [IdealAutomateDB] " +
+" " +
+"	SET AUTO_CLOSE ON " +
+" " +
+"	ALTER DATABASE [IdealAutomateDB] " +
+" " +
+"	SET AUTO_SHRINK OFF " +
+" " +
+"	ALTER DATABASE [IdealAutomateDB] " +
+" " +
+"	SET AUTO_UPDATE_STATISTICS ON " +
+" " +
+"	ALTER DATABASE [IdealAutomateDB] " +
+" " +
+"	SET CURSOR_CLOSE_ON_COMMIT OFF " +
+" " +
+"	ALTER DATABASE [IdealAutomateDB] " +
+" " +
+"	SET CURSOR_DEFAULT GLOBAL " +
+" " +
+"	ALTER DATABASE [IdealAutomateDB] " +
+" " +
+"	SET CONCAT_NULL_YIELDS_NULL OFF " +
+" " +
+"	ALTER DATABASE [IdealAutomateDB] " +
+" " +
+"	SET NUMERIC_ROUNDABORT OFF " +
+" " +
+"	ALTER DATABASE [IdealAutomateDB] " +
+" " +
+"	SET QUOTED_IDENTIFIER OFF " +
+" " +
+"	ALTER DATABASE [IdealAutomateDB] " +
+" " +
+"	SET RECURSIVE_TRIGGERS OFF " +
+" " +
+"	ALTER DATABASE [IdealAutomateDB] " +
+" " +
+"	SET ENABLE_BROKER " +
+" " +
+"	ALTER DATABASE [IdealAutomateDB] " +
+" " +
+"	SET AUTO_UPDATE_STATISTICS_ASYNC OFF " +
+" " +
+"	ALTER DATABASE [IdealAutomateDB] " +
+" " +
+"	SET DATE_CORRELATION_OPTIMIZATION OFF " +
+" " +
+"	ALTER DATABASE [IdealAutomateDB] " +
+" " +
+"	SET TRUSTWORTHY OFF " +
+" " +
+"	ALTER DATABASE [IdealAutomateDB] " +
+" " +
+"	SET ALLOW_SNAPSHOT_ISOLATION OFF " +
+" " +
+"	ALTER DATABASE [IdealAutomateDB] " +
+" " +
+"	SET PARAMETERIZATION SIMPLE " +
+" " +
+"	ALTER DATABASE [IdealAutomateDB] " +
+" " +
+"	SET READ_COMMITTED_SNAPSHOT OFF " +
+" " +
+"	ALTER DATABASE [IdealAutomateDB] " +
+" " +
+"	SET HONOR_BROKER_PRIORITY OFF " +
+" " +
+"	ALTER DATABASE [IdealAutomateDB] " +
+" " +
+"	SET RECOVERY SIMPLE " +
+" " +
+"	ALTER DATABASE [IdealAutomateDB] " +
+" " +
+"	SET MULTI_USER " +
+" " +
+"	ALTER DATABASE [IdealAutomateDB] " +
+" " +
+"	SET PAGE_VERIFY CHECKSUM " +
+" " +
+"	ALTER DATABASE [IdealAutomateDB] " +
+" " +
+"	SET DB_CHAINING OFF " +
+" " +
+"	ALTER DATABASE [IdealAutomateDB] " +
+" " +
+"	SET READ_WRITE " +
+"END " +
+
              " IF  NOT EXISTS (SELECT * FROM sys.objects " +
 " WHERE object_id = OBJECT_ID(N'[dbo].[UserInfo]') AND type in (N'U')) " +
 " BEGIN  " +
