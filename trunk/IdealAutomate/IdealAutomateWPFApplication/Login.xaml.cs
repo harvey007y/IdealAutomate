@@ -225,8 +225,78 @@ namespace Hardcodet.Wpf.Samples
 "	[ColumnOrdinal] ASC " +
 ")WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY] " +
 ") ON [PRIMARY] " +
-"END " + 
-"  ";
+"END " +
+"  " +
+"IF NOT EXISTS ( " +
+"		SELECT * " +
+"		FROM sys.objects " +
+"		WHERE type = 'P' " +
+"			AND OBJECT_ID = OBJECT_ID('dbo.SelectValueByKey') " +
+"		) " +
+"BEGIN " +
+"	EXEC ( " +
+"			'CREATE PROCEDURE [dbo].[SelectValueByKey] ( " +
+"	@myKey  VARCHAR(500) " +
+") " +
+"AS " +
+"BEGIN " +
+"	-- SET NOCOUNT ON added to prevent extra result sets from " +
+"	-- interfering with SELECT statements. " +
+"	SET NOCOUNT ON; " +
+" " +
+"    -- Insert statements for procedure here " +
+"	select top 1 myValue " +
+"from   dbo.KeyValueTable " +
+"where  myKey  = @myKey; " +
+"END' " +
+"			) " +
+"END " +
+"GO " +
+"IF NOT EXISTS ( " +
+"		SELECT * " +
+"		FROM sys.objects " +
+"		WHERE type = 'P' " +
+"			AND OBJECT_ID = OBJECT_ID('dbo.SetValueByKey') " +
+"		) " +
+"BEGIN " +
+"	EXEC ( " +
+"			'CREATE PROCEDURE [dbo].[SetValueByKey] ( " +
+"	@myKey  VARCHAR(500) " +
+"	,@myValue  VARCHAR(500) " +
+") " +
+"AS " +
+"BEGIN " +
+"	-- SET NOCOUNT ON added to prevent extra result sets from " +
+"	-- interfering with SELECT statements. " +
+"	SET NOCOUNT ON; " +
+"	IF  EXISTS (select * " +
+"from   dbo.KeyValueTable " +
+"where  myKey  = @myKey) " +
+"BEGIN " +
+"UPDATE [dbo].[KeyValueTable] " +
+"   SET [myValue] = @myValue   " +
+" WHERE myKey = @myKey " +
+" END " +
+" ELSE " +
+" BEGIN " +
+" INSERT INTO [dbo].[KeyValueTable] " +
+"           ([myKey] " +
+"           ,[myValue] " +
+"           ,[Description]) " +
+"     VALUES " +
+"           (@myKey " +
+"           ,@myValue " +
+"           ,null) " +
+"		   END " +
+" " +
+"END' " +
+"			) " +
+"END " +
+"GO ";
+
+
+
+
             SqlCommand cmd1 = new SqlCommand(updCmd, con);
             cmd1.CommandType = CommandType.Text;
             cmd1.ExecuteNonQuery();
