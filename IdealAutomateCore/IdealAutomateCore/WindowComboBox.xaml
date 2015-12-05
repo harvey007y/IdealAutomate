@@ -8,7 +8,7 @@
         WindowStyle="None"
         AllowsTransparency="True"
         ShowInTaskbar="False"
-        Background="#00000000">
+        Background="#00000000" Topmost="True">
     <!-- main border -->
     <Border x:Name="MainBorder"
                   Width="450"
@@ -41,7 +41,7 @@
               CornerRadius="12,12,0,0" />
             <StackPanel Grid.Row="0"
                   Orientation="Horizontal">
-                <Image Source="/Images/FolderLogo.png"
+                <Image Source="/IdealAutomateCore;component/Resources/FolderLogo.png"
                Width="48"
                Height="48"
                Margin="20,0,0,0" />
