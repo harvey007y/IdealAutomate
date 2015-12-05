@@ -55,10 +55,15 @@
   <ItemGroup>
     <Compile Include="ArrayExtensions.cs" />
     <Compile Include="ComboBoxPair.cs" />
+    <Compile Include="ControlEntity.cs" />
+    <Compile Include="ControlType.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="WindowMultipleControls.xaml.cs">
+      <DependentUpon>WindowMultipleControls.xaml</DependentUpon>
     </Compile>
     <Compile Include="WindowShape.xaml.cs">
       <DependentUpon>WindowShape.xaml</DependentUpon>
@@ -85,6 +90,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="WindowMultipleControls.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="WindowShape.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -104,15 +113,16 @@
     <Resource Include="Resources\RedArrowRight.png" />
     <Resource Include="Resources\RedArrowUp.png" />
     <Resource Include="Resources\RedBox.png" />
-    <Content Include="Images\FolderLogo.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Resource Include="Resources\FolderLogo.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Images\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -31,10 +31,11 @@ namespace IdealAutomate.Core {
       _Label = myContent;
       _Top = intTop;
       _Left = intLeft;
-      this.Top = _Top;
-      this.Left = _Left;
+
 
       InitializeComponent();
+      this.Top = _Top;
+      this.Left = _Left;
       lblContent.Text = myContent;
       lblTitle.Text = myTitle;
       string strShapeOrientation = myShape + myOrientation;

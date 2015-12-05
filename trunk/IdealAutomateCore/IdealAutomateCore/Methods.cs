@@ -1001,6 +1001,18 @@ namespace IdealAutomate.Core {
       System.Threading.Thread.Sleep(200);
       InputSimulator.Keyboard.KeyPress(VirtualKeyCode.DELETE);
     }
+    public void WindowMultipleControls(ref List<ControlEntity> myListControlEntity, int intWindowHeight, int intWindowWidth) {
+      if (fbDebugMode) {
+        Console.WriteLine(oProcess.ProcessName + "==> " + "WindowMultipleControls");
+        Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "WindowMultipleControls");
+      }
+      WindowMultipleControls dlg = new WindowMultipleControls(ref myListControlEntity, intWindowHeight, intWindowWidth);
+
+      // dlg.Owner = (Window)Window.GetWindow(this);
+      // Shadow.Visibility = Visibility.Visible;
+      dlg.ShowDialog();
+      
+    }
     public ComboBoxPair WindowComboBox(IEnumerable<object> myEntity, string myEntity2) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "WindowComboBox: myEntity=" + myEntity);
