@@ -19,54 +19,46 @@ using System.Configuration;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
-namespace Hardcodet.Wpf.Samples
-{
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+namespace Hardcodet.Wpf.Samples {
+  /// <summary>
+  /// Interaction logic for MainWindow.xaml
+  /// </summary>
 
 
-    public partial class Login : Window
-    {
-        public Login()
-        {
-            try
-            {
-                InitializeComponent();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                MessageBox.Show(ex.InnerException.ToString());
-                // Log error (including InnerExceptions!)
-                // Handle exception
-            }
+  public partial class Login : Window {
+    public Login() {
+      try {
+        InitializeComponent();
+      } catch (Exception ex) {
+        MessageBox.Show(ex.Message);
+        MessageBox.Show(ex.InnerException.ToString());
+        // Log error (including InnerExceptions!)
+        // Handle exception
+      }
 
-        }
-     
-        MainWindow _MainWindow = new MainWindow();
+    }
 
-        
-        private byte[] ObjectToByteArray(Object obj)
-        {
-            if (obj == null)
-                return null;
-            BinaryFormatter bf = new BinaryFormatter();
-            MemoryStream ms = new MemoryStream();
-            bf.Serialize(ms, obj);
-            return ms.ToArray();
-        }
+    MainWindow _MainWindow = new MainWindow();
 
 
-        private void Window_Initialized(object sender, EventArgs e)
-        {
-           
+    private byte[] ObjectToByteArray(Object obj) {
+      if (obj == null)
+        return null;
+      BinaryFormatter bf = new BinaryFormatter();
+      MemoryStream ms = new MemoryStream();
+      bf.Serialize(ms, obj);
+      return ms.ToArray();
+    }
 
-         
-            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["myConnectionString"].ConnectionString);
-            con.Open();
-            string updCmd =
-                   " IF  NOT EXISTS (SELECT * FROM sys.objects " +
+
+    private void Window_Initialized(object sender, EventArgs e) {
+
+
+
+      SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["myConnectionString"].ConnectionString);
+      con.Open();
+      string updCmd =
+             " IF  NOT EXISTS (SELECT * FROM sys.objects " +
 " WHERE object_id = OBJECT_ID(N'[dbo].[UserInfo]') AND type in (N'U')) " +
 " BEGIN  " +
 " CREATE TABLE [dbo].[UserInfo](  " +
@@ -96,7 +88,7 @@ namespace Hardcodet.Wpf.Samples
 "        SELECT * " +
 "        FROM sys.objects " +
 "        WHERE object_id = OBJECT_ID(N'[dbo].[Scripts]') " +
- "           AND type IN(N'U') " +
+"           AND type IN(N'U') " +
 "		) " +
 " begin  " +
 "CREATE TABLE [dbo].[Scripts]( " +
@@ -293,115 +285,87 @@ namespace Hardcodet.Wpf.Samples
 
 
 
-            SqlCommand cmd1 = new SqlCommand(updCmd, con);
-            cmd1.CommandType = CommandType.Text;
-            cmd1.ExecuteNonQuery();
-            SqlCommand cmd = new SqlCommand("Select * from UserInfo", con);
-            cmd.CommandType = CommandType.Text;
-            SqlDataAdapter adapter = new SqlDataAdapter();
-            adapter.SelectCommand = cmd;
-            DataSet dataSet = new DataSet();
-            adapter.Fill(dataSet);
-            bool boolLocalUserInfoExists = false;
-            if (dataSet.Tables[0].Rows.Count > 0)
-            {
-                boolLocalUserInfoExists = true;
-                string username = dataSet.Tables[0].Rows[0]["FirstName"].ToString() + " " + dataSet.Tables[0].Rows[0]["LastName"].ToString();
-                IAUserInfo.ID = Convert.ToInt32(dataSet.Tables[0].Rows[0]["ID"]);
-                IAUserInfo.UserName = dataSet.Tables[0].Rows[0]["UserName"].ToString();
-                IAUserInfo.FirstName = dataSet.Tables[0].Rows[0]["FirstName"].ToString();
-                IAUserInfo.LastName = dataSet.Tables[0].Rows[0]["LastName"].ToString();
-                IAUserInfo.Password = dataSet.Tables[0].Rows[0]["Password"].ToString();
-                IAUserInfo.Email = dataSet.Tables[0].Rows[0]["Email"].ToString();
-                IAUserInfo.Bio = dataSet.Tables[0].Rows[0]["Bio"].ToString();
-                IAUserInfo.Photo = dataSet.Tables[0].Rows[0]["Photo"] as byte[];
-                if (dataSet.Tables[0].Rows[0]["Category1"] == null)
-                {
-                    IAUserInfo.Category1 = "";
-                }
-                else
-                {
-                    IAUserInfo.Category1 = dataSet.Tables[0].Rows[0]["Category1"].ToString();
-                }
-                if (dataSet.Tables[0].Rows[0]["Category2"] == null)
-                {
-                    IAUserInfo.Category2 = "";
-                }
-                else
-                {
-                    IAUserInfo.Category2 = dataSet.Tables[0].Rows[0]["Category2"].ToString();
-                }
-                if (dataSet.Tables[0].Rows[0]["Category3"] == null)
-                {
-                    IAUserInfo.Category3 = "";
-                }
-                else
-                {
-                    IAUserInfo.Category3 = dataSet.Tables[0].Rows[0]["Category3"].ToString();
-                }
-                if (dataSet.Tables[0].Rows[0]["Category4"] == null)
-                {
-                    IAUserInfo.Category4 = "";
-                }
-                else
-                {
-                    IAUserInfo.Category4 = dataSet.Tables[0].Rows[0]["Category4"].ToString();
-                }
-                if (dataSet.Tables[0].Rows[0]["Category5"] == null)
-                {
-                    IAUserInfo.Category5 = "";
-                }
-                else
-                {
-                    IAUserInfo.Category5 = dataSet.Tables[0].Rows[0]["Category5"].ToString();
-                }
-                if (dataSet.Tables[0].Rows[0]["TextSearch"] == null)
-                {
-                    IAUserInfo.TextSearch = "";
-                }
-                else
-                {
-                    IAUserInfo.TextSearch = dataSet.Tables[0].Rows[0]["TextSearch"].ToString();
-                }
-             
-                if (dataSet.Tables[0].Rows[0]["PurchaseDate"] == null || dataSet.Tables[0].Rows[0]["PurchaseDate"].ToString() == "")
-                {
-                    IAUserInfo.PurchaseDate = null;
-                }
-                else
-                {
-                    IAUserInfo.PurchaseDate = Convert.ToDateTime(dataSet.Tables[0].Rows[0]["PurchaseDate"].ToString());
-                }
-                if (dataSet.Tables[0].Rows[0]["PurchaseDuration"] == null)
-                {
-                    IAUserInfo.PurchaseDuration = "";
-                }
-                else
-                {
-                    IAUserInfo.PurchaseDuration = dataSet.Tables[0].Rows[0]["PurchaseDuration"].ToString();
-                }
-                if (dataSet.Tables[0].Rows[0]["RequireLogin"].ToString() == "True")
-                {
-                    IAUserInfo.RequireLogin = true;
-                }
-                else
-                {
-                    IAUserInfo.RequireLogin = false;
-                }
-               
-
-            }
-           
-               
-            
-            con.Close();
-
-                _MainWindow.Show();
-                Close();
-
+      SqlCommand cmd1 = new SqlCommand(updCmd, con);
+      cmd1.CommandType = CommandType.Text;
+      cmd1.ExecuteNonQuery();
+      SqlCommand cmd = new SqlCommand("Select * from UserInfo", con);
+      cmd.CommandType = CommandType.Text;
+      SqlDataAdapter adapter = new SqlDataAdapter();
+      adapter.SelectCommand = cmd;
+      DataSet dataSet = new DataSet();
+      adapter.Fill(dataSet);
+      bool boolLocalUserInfoExists = false;
+      if (dataSet.Tables[0].Rows.Count > 0) {
+        boolLocalUserInfoExists = true;
+        string username = dataSet.Tables[0].Rows[0]["FirstName"].ToString() + " " + dataSet.Tables[0].Rows[0]["LastName"].ToString();
+        IAUserInfo.ID = Convert.ToInt32(dataSet.Tables[0].Rows[0]["ID"]);
+        IAUserInfo.UserName = dataSet.Tables[0].Rows[0]["UserName"].ToString();
+        IAUserInfo.FirstName = dataSet.Tables[0].Rows[0]["FirstName"].ToString();
+        IAUserInfo.LastName = dataSet.Tables[0].Rows[0]["LastName"].ToString();
+        IAUserInfo.Password = dataSet.Tables[0].Rows[0]["Password"].ToString();
+        IAUserInfo.Email = dataSet.Tables[0].Rows[0]["Email"].ToString();
+        IAUserInfo.Bio = dataSet.Tables[0].Rows[0]["Bio"].ToString();
+        IAUserInfo.Photo = dataSet.Tables[0].Rows[0]["Photo"] as byte[];
+        if (dataSet.Tables[0].Rows[0]["Category1"] == null) {
+          IAUserInfo.Category1 = "";
+        } else {
+          IAUserInfo.Category1 = dataSet.Tables[0].Rows[0]["Category1"].ToString();
+        }
+        if (dataSet.Tables[0].Rows[0]["Category2"] == null) {
+          IAUserInfo.Category2 = "";
+        } else {
+          IAUserInfo.Category2 = dataSet.Tables[0].Rows[0]["Category2"].ToString();
+        }
+        if (dataSet.Tables[0].Rows[0]["Category3"] == null) {
+          IAUserInfo.Category3 = "";
+        } else {
+          IAUserInfo.Category3 = dataSet.Tables[0].Rows[0]["Category3"].ToString();
+        }
+        if (dataSet.Tables[0].Rows[0]["Category4"] == null) {
+          IAUserInfo.Category4 = "";
+        } else {
+          IAUserInfo.Category4 = dataSet.Tables[0].Rows[0]["Category4"].ToString();
+        }
+        if (dataSet.Tables[0].Rows[0]["Category5"] == null) {
+          IAUserInfo.Category5 = "";
+        } else {
+          IAUserInfo.Category5 = dataSet.Tables[0].Rows[0]["Category5"].ToString();
+        }
+        if (dataSet.Tables[0].Rows[0]["TextSearch"] == null) {
+          IAUserInfo.TextSearch = "";
+        } else {
+          IAUserInfo.TextSearch = dataSet.Tables[0].Rows[0]["TextSearch"].ToString();
         }
 
-        
+        if (dataSet.Tables[0].Rows[0]["PurchaseDate"] == null || dataSet.Tables[0].Rows[0]["PurchaseDate"].ToString() == "") {
+          IAUserInfo.PurchaseDate = null;
+        } else {
+          IAUserInfo.PurchaseDate = Convert.ToDateTime(dataSet.Tables[0].Rows[0]["PurchaseDate"].ToString());
+        }
+        if (dataSet.Tables[0].Rows[0]["PurchaseDuration"] == null) {
+          IAUserInfo.PurchaseDuration = "";
+        } else {
+          IAUserInfo.PurchaseDuration = dataSet.Tables[0].Rows[0]["PurchaseDuration"].ToString();
+        }
+        if (dataSet.Tables[0].Rows[0]["RequireLogin"].ToString() == "True") {
+          IAUserInfo.RequireLogin = true;
+        } else {
+          IAUserInfo.RequireLogin = false;
+        }
+
+
+      }
+
+
+
+      con.Close();
+
+      _MainWindow.Show();
+      Close();
 
     }
+
+
+
+  }
 }
