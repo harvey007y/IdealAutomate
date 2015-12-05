@@ -240,11 +240,9 @@ namespace Hardcodet.Wpf.Samples
 ") " +
 "AS " +
 "BEGIN " +
-"	-- SET NOCOUNT ON added to prevent extra result sets from " +
-"	-- interfering with SELECT statements. " +
+
 "	SET NOCOUNT ON; " +
-" " +
-"    -- Insert statements for procedure here " +
+
 "	select top 1 myValue " +
 "from   dbo.KeyValueTable " +
 "where  myKey  = @myKey; " +
@@ -266,8 +264,6 @@ namespace Hardcodet.Wpf.Samples
 ") " +
 "AS " +
 "BEGIN " +
-"	-- SET NOCOUNT ON added to prevent extra result sets from " +
-"	-- interfering with SELECT statements. " +
 "	SET NOCOUNT ON; " +
 "	IF  EXISTS (select * " +
 "from   dbo.KeyValueTable " +
