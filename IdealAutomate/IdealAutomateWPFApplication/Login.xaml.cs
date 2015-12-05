@@ -251,7 +251,7 @@ namespace Hardcodet.Wpf.Samples
 "END' " +
 "			) " +
 "END " +
-"GO " +
+" " +
 "IF NOT EXISTS ( " +
 "		SELECT * " +
 "		FROM sys.objects " +
@@ -292,7 +292,7 @@ namespace Hardcodet.Wpf.Samples
 "END' " +
 "			) " +
 "END " +
-"GO ";
+" ";
 
 
 
