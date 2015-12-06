@@ -54,10 +54,10 @@ namespace Hardcodet.Wpf.Samples {
     private void Window_Initialized(object sender, EventArgs e) {
 
 
-
+      SqlConnection conMaster = new SqlConnection(ConfigurationManager.ConnectionStrings["myConnectionString"].ConnectionString);
       SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["myConnectionString"].ConnectionString);
-      con.Open();
-      string updCmd =
+      conMaster.Open();
+      string updCmdMaster =
 
 "USE [master] " +
 " " +
@@ -198,7 +198,14 @@ namespace Hardcodet.Wpf.Samples {
 "	ALTER DATABASE [IdealAutomateDB] " +
 " " +
 "	SET READ_WRITE " +
-"END " +
+"END ";
+      SqlCommand cmd1Master = new SqlCommand(updCmdMaster, conMaster);
+      cmd1Master.CommandType = CommandType.Text;
+      cmd1Master.ExecuteNonQuery();
+      conMaster.Close();
+      con.Open();
+
+      string updCmd =
 
              " IF  NOT EXISTS (SELECT * FROM sys.objects " +
 " WHERE object_id = OBJECT_ID(N'[dbo].[UserInfo]') AND type in (N'U')) " +
