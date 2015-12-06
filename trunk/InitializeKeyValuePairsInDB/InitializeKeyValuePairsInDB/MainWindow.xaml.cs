@@ -32,57 +32,17 @@ namespace InitializeKeyValuePairsInDB {
       SqlCommand cmd = new SqlCommand();
       string strMyKey = "";
       string strMyValue = "";
-      strMyKey = "RunningFromHome";
-      strMyValue = "True";
-      cmd.CommandText = " IF EXISTS ( " +
-"		SELECT * " +
-"		FROM KeyValueTable " +
-"		WHERE myKey = '" + strMyKey +"' " +
-"		) " +
-" BEGIN " +
-"	UPDATE [dbo].[KeyValueTable] " +
-"	SET [myValue] = '" + strMyValue + "' " +
-"	WHERE myKey = '" + strMyKey + "' " +
-" END; " +
-" ELSE " +
-" BEGIN " +
-"	INSERT INTO [dbo].[KeyValueTable] ( " +
-"		[myKey] " +
-"		,[myValue] " +
-"		) " +
-"	VALUES ( " +
-"		'" + strMyKey + "' " +
-"		,'" + strMyValue + "' " +
-"		) " +
-"END; ";
+      
       cmd.Connection = con;
       try {
         con.Open();
-        cmd.ExecuteNonQuery();
+        strMyKey = "RunningFromHome";
+        strMyValue = "True";
+        ExecuteSQLToInsertUpdateKeyValuePair(cmd, strMyKey, strMyValue);
+
         strMyKey = "SsmsPath";
         strMyValue = @"C:\Program Files (x86)\Microsoft SQL Server\130\Tools\Binn\ManagementStudio\Ssms.exe";
-        cmd.CommandText = " IF EXISTS ( " +
-  "		SELECT * " +
-  "		FROM KeyValueTable " +
-  "		WHERE myKey = '" + strMyKey + "' " +
-  "		) " +
-  " BEGIN " +
-  "	UPDATE [dbo].[KeyValueTable] " +
-  "	SET [myValue] = '" + strMyValue + "' " +
-  "	WHERE myKey = '" + strMyKey + "' " +
-  " END; " +
-  " ELSE " +
-  " BEGIN " +
-  "	INSERT INTO [dbo].[KeyValueTable] ( " +
-  "		[myKey] " +
-  "		,[myValue] " +
-  "		) " +
-  "	VALUES ( " +
-  "		'" + strMyKey + "' " +
-  "		,'" + strMyValue + "' " +
-  "		) " +
-  "END; ";
-        cmd.ExecuteNonQuery();
+        ExecuteSQLToInsertUpdateKeyValuePair(cmd, strMyKey, strMyValue);
       } finally {
         con.Close();
        
@@ -210,6 +170,30 @@ namespace InitializeKeyValuePairsInDB {
     myExit:
       myActions.MessageBoxShow("Script Completed");
       Application.Current.Shutdown();
+    }
+    private static void ExecuteSQLToInsertUpdateKeyValuePair(SqlCommand cmd, string strMyKey, string strMyValue) {
+      cmd.CommandText = " IF EXISTS ( " +
+"		SELECT * " +
+"		FROM KeyValueTable " +
+"		WHERE myKey = '" + strMyKey + "' " +
+"		) " +
+" BEGIN " +
+"	UPDATE [dbo].[KeyValueTable] " +
+"	SET [myValue] = '" + strMyValue + "' " +
+"	WHERE myKey = '" + strMyKey + "' " +
+" END; " +
+" ELSE " +
+" BEGIN " +
+"	INSERT INTO [dbo].[KeyValueTable] ( " +
+"		[myKey] " +
+"		,[myValue] " +
+"		) " +
+"	VALUES ( " +
+"		'" + strMyKey + "' " +
+"		,'" + strMyValue + "' " +
+"		) " +
+"END; ";
+      cmd.ExecuteNonQuery();
     }
   }
 }
