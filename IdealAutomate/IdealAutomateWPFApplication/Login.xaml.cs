@@ -54,7 +54,7 @@ namespace Hardcodet.Wpf.Samples {
     private void Window_Initialized(object sender, EventArgs e) {
 
 
-      SqlConnection conMaster = new SqlConnection(ConfigurationManager.ConnectionStrings["myConnectionString"].ConnectionString);
+      SqlConnection conMaster = new SqlConnection(ConfigurationManager.ConnectionStrings["myConnectionStringMaster"].ConnectionString);
       SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["myConnectionString"].ConnectionString);
       conMaster.Open();
       string updCmdMaster =
