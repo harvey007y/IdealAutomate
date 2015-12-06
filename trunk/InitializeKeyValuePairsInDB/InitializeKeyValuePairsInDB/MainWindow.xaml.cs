@@ -43,6 +43,15 @@ namespace InitializeKeyValuePairsInDB {
         strMyKey = "SsmsPath";
         strMyValue = @"C:\Program Files (x86)\Microsoft SQL Server\130\Tools\Binn\ManagementStudio\Ssms.exe";
         ExecuteSQLToInsertUpdateKeyValuePair(cmd, strMyKey, strMyValue);
+
+        strMyKey = "VS2013Path";
+        strMyValue = @"C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\devenv.exe";
+        ExecuteSQLToInsertUpdateKeyValuePair(cmd, strMyKey, strMyValue);
+
+
+        strMyKey = "SVNPath";
+        strMyValue = @"C:\SVN\ReleaseIndependent\Developers\Wade\";
+        ExecuteSQLToInsertUpdateKeyValuePair(cmd, strMyKey, strMyValue);
       } finally {
         con.Close();
        
