@@ -209,6 +209,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Videos\FindImage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Videos\LaunchExecutable.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -444,6 +448,9 @@
     </Compile>
     <Compile Include="Videos\AffiliateProgram.xaml.cs">
       <DependentUpon>AffiliateProgram.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Videos\FindImage.xaml.cs">
+      <DependentUpon>FindImage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Videos\LaunchExecutable.xaml.cs">
       <DependentUpon>LaunchExecutable.xaml</DependentUpon>
