@@ -32,6 +32,7 @@
           <Property Name="Category5" Type="varchar" MaxLength="50" />
           <Property Name="Executable" Type="varchar" MaxLength="500" />
           <Property Name="ExecuteContent" Type="varchar" MaxLength="500" />
+          <Property Name="HotKey" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityContainer Name="IdealLauncherModelStoreContainer">
           <EntitySet Name="Scripts" EntityType="Self.Scripts" Schema="dbo" store:Type="Tables" />
@@ -70,6 +71,7 @@
           <Property Name="Category5" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Executable" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="ExecuteContent" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="HotKey" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -80,6 +82,7 @@
           <EntitySetMapping Name="Scripts">
             <EntityTypeMapping TypeName="IdealLauncherModel.Script">
               <MappingFragment StoreEntitySet="Scripts">
+                <ScalarProperty Name="HotKey" ColumnName="HotKey" />
                 <ScalarProperty Name="ExecuteContent" ColumnName="ExecuteContent" />
                 <ScalarProperty Name="Executable" ColumnName="Executable" />
                 <ScalarProperty Name="Category5" ColumnName="Category5" />
