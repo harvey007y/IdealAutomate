@@ -18,6 +18,11 @@ using Hardcodet.Wpf.Samples;
 using System.Configuration;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using System.Diagnostics;
+using System.Threading;
+using WindowsInput;
+using WindowsInput.Native;
+
 
 namespace Hardcodet.Wpf.Samples {
   /// <summary>
@@ -26,6 +31,10 @@ namespace Hardcodet.Wpf.Samples {
 
 
   public partial class Login : Window {
+    bool boolStopEvent = false;
+    List<HotKeyRecord> listHotKeyRecords;
+    Dictionary<string, VirtualKeyCode> dictVirtualKeyCodes = new Dictionary<string, VirtualKeyCode>();
+    //    IdealAutomate.Core.Methods myActions = new Methods();
     public Login() {
       try {
         InitializeComponent();
@@ -53,7 +62,7 @@ namespace Hardcodet.Wpf.Samples {
 
     private void Window_Initialized(object sender, EventArgs e) {
 
-
+      AddGlobalHotKeys();
       SqlConnection conMaster = new SqlConnection(ConfigurationManager.ConnectionStrings["myConnectionStringMaster"].ConnectionString);
       SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["myConnectionString"].ConnectionString);
       conMaster.Open();
@@ -264,13 +273,23 @@ namespace Hardcodet.Wpf.Samples {
 "	[Category5] [varchar](50) NULL, " +
 "	[Executable] [varchar](500) NULL, " +
 "	[ExecuteContent] [varchar](500) NULL, " +
+"	[HotKey] [varchar](500) NULL, " +
 " CONSTRAINT [PK_Script_ScriptID] PRIMARY KEY CLUSTERED " +
 "( " +
 "	[ScriptID] ASC " +
 ")WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY] " +
 ") ON [PRIMARY] TEXTIMAGE_ON [PRIMARY] " +
 " " +
-
+" IF NOT EXISTS ( " +
+"   SELECT *  " +
+"   FROM   sys.columns  " +
+"   WHERE  object_id = OBJECT_ID(N'[dbo].[Scripts]')   " +
+"         AND name = 'HotKey' " +
+" ) " +
+" begin  " +
+"   alter table Scripts  " +
+"   add HotKey [varchar](500)   null  " +
+" end" +
 " " +
 "SET ANSI_PADDING OFF " +
 
@@ -514,7 +533,249 @@ namespace Hardcodet.Wpf.Samples {
 
     }
 
+    private void AddGlobalHotKeys() {
+      // TODO: Create a global list<HotKeyFields> of all the scripts that have a hotkey
+      // HotKeyFields include HotKey, Executeable, and ExecuteContent
+      Hardcodet.Wpf.Samples.IdealLauncherEntities _context = new Hardcodet.Wpf.Samples.IdealLauncherEntities();
+      List<Script> listHotKeyScripts;
+      listHotKeyRecords = new List<HotKeyRecord>();
+      listHotKeyScripts = _context.Scripts.Where(x => x.HotKey != null && x.HotKey != "" && x.Executable != "").ToList<Script>();
+      foreach (var item in listHotKeyScripts) {
+        HotKeyRecord myHotKeyRecord = new HotKeyRecord();
+        myHotKeyRecord.HotKeys = item.HotKey.Split('+');
+        myHotKeyRecord.Executable = item.Executable;
+        myHotKeyRecord.ExecuteContent = item.ExecuteContent;
+        bool boolHotKeysGood = true;
+        foreach (string myHotKey in myHotKeyRecord.HotKeys) {
+          if (dictVirtualKeyCodes.ContainsKey(myHotKey)) {
+            MessageBox.Show("Invalid hotkey: " + myHotKey + " on script: " + item.ScriptName);
+            boolHotKeysGood = false;
+          }
+        }
+        if (boolHotKeysGood) {
+          listHotKeyRecords.Add(myHotKeyRecord);
+        }
+      }
+      dictVirtualKeyCodes.Add("Ctrl", VirtualKeyCode.CONTROL);
+      dictVirtualKeyCodes.Add("Alt", VirtualKeyCode.MENU);
+      dictVirtualKeyCodes.Add("Shift", VirtualKeyCode.SHIFT);
+      dictVirtualKeyCodes.Add("Space", VirtualKeyCode.SPACE);
+      dictVirtualKeyCodes.Add("Up", VirtualKeyCode.UP);
+      dictVirtualKeyCodes.Add("Down", VirtualKeyCode.DOWN);
+      dictVirtualKeyCodes.Add("Left", VirtualKeyCode.LEFT);
+      dictVirtualKeyCodes.Add("Right", VirtualKeyCode.RIGHT);
+      dictVirtualKeyCodes.Add("A", VirtualKeyCode.VK_A);
+      dictVirtualKeyCodes.Add("B", VirtualKeyCode.VK_B);
+      dictVirtualKeyCodes.Add("C", VirtualKeyCode.VK_C);
+      dictVirtualKeyCodes.Add("D", VirtualKeyCode.VK_D);
+      dictVirtualKeyCodes.Add("E", VirtualKeyCode.VK_E);
+      dictVirtualKeyCodes.Add("F", VirtualKeyCode.VK_F);
+      dictVirtualKeyCodes.Add("G", VirtualKeyCode.VK_G);
+      dictVirtualKeyCodes.Add("H", VirtualKeyCode.VK_H);
+      dictVirtualKeyCodes.Add("I", VirtualKeyCode.VK_I);
+      dictVirtualKeyCodes.Add("J", VirtualKeyCode.VK_J);
+      dictVirtualKeyCodes.Add("K", VirtualKeyCode.VK_K);
+      dictVirtualKeyCodes.Add("L", VirtualKeyCode.VK_L);
+      dictVirtualKeyCodes.Add("M", VirtualKeyCode.VK_M);
+      dictVirtualKeyCodes.Add("N", VirtualKeyCode.VK_N);
+      dictVirtualKeyCodes.Add("O", VirtualKeyCode.VK_O);
+      dictVirtualKeyCodes.Add("P", VirtualKeyCode.VK_P);
+      dictVirtualKeyCodes.Add("Q", VirtualKeyCode.VK_Q);
+      dictVirtualKeyCodes.Add("R", VirtualKeyCode.VK_R);
+      dictVirtualKeyCodes.Add("S", VirtualKeyCode.VK_S);
+      dictVirtualKeyCodes.Add("T", VirtualKeyCode.VK_T);
+      dictVirtualKeyCodes.Add("U", VirtualKeyCode.VK_U);
+      dictVirtualKeyCodes.Add("V", VirtualKeyCode.VK_V);
+      dictVirtualKeyCodes.Add("W", VirtualKeyCode.VK_W);
+      dictVirtualKeyCodes.Add("X", VirtualKeyCode.VK_X);
+      dictVirtualKeyCodes.Add("Y", VirtualKeyCode.VK_Y);
+      dictVirtualKeyCodes.Add("Z", VirtualKeyCode.VK_Z);
+      // Create a timer and set a two millisecond interval.
+      System.Timers.Timer aTimer = new System.Timers.Timer();
+      aTimer.Interval = 2;
 
+      // Alternate method: create a Timer with an interval argument to the constructor. 
+      //aTimer = new System.Timers.Timer(2000); 
+
+      // Create a timer with a two millisecond interval.
+      aTimer = new System.Timers.Timer(2);
+
+      // Hook up the Elapsed event for the timer. 
+      aTimer.Elapsed += OnTimedEvent;
+
+      // Have the timer fire repeated events (true is the default)
+      aTimer.AutoReset = true;
+
+      // Start the timer
+      aTimer.Enabled = true;
+    }
+
+
+    private void OnTimedEvent(object sender, System.Timers.ElapsedEventArgs e) {
+      InputSimulator myInputSimulator = new InputSimulator();
+      // TODO: Loop thru all items in public list<HotKeyFields> and run any that 
+      // have been pressed
+      if (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.CONTROL) || myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.MENU)) {
+        foreach (HotKeyRecord myHotKeyRecord in listHotKeyRecords) {
+          bool boolAllHotKeysPressed = true;
+          foreach (string myHotKey in myHotKeyRecord.HotKeys) {
+            VirtualKeyCode myVirtualKeyCode;
+            dictVirtualKeyCodes.TryGetValue(myHotKey, out myVirtualKeyCode);
+            if (!myInputSimulator.InputDeviceState.IsKeyDown(myVirtualKeyCode)) {
+              boolAllHotKeysPressed = false;
+            }
+          }
+            
+            
+            if (boolAllHotKeysPressed && boolStopEvent == false) {
+              boolStopEvent = true;
+              RunWaitTillStart(myHotKeyRecord.Executable, myHotKeyRecord.ExecuteContent ?? "");
+
+             
+            }       
+
+          //switch (item.HotKey.ToUpper()) {
+              
+          //  case "P":
+          //    if (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.VK_P)  && boolStopEvent == false) {
+          //      boolStopEvent = true;
+          //      RunWaitTillStart(item.Executable, item.ExecuteContent ?? "");
+                
+          //      while (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.VK_P)) {
+          //        System.Threading.Thread.Sleep(1000);
+          //      }
+          //    }
+          //    break;
+
+          //  case "R":
+          //    if (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.VK_R)) {                
+          //      Run(item.Executable, item.ExecuteContent ?? "");
+          //      while (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.CONTROL)) {
+          //        System.Threading.Thread.Sleep(200);
+          //      }
+          //    }
+          //    break;
+          //  case "S":
+          //    if (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.VK_S)) {
+          //      Run(item.Executable, item.ExecuteContent ?? "");
+          //      while (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.CONTROL)) {
+          //        System.Threading.Thread.Sleep(200);
+          //      }
+          //   }
+          //    break;
+          //  default:
+          //    break;
+          //}
+        }
+      }
+
+
+
+
+
+      //if (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.CONTROL) && myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.MENU) && myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.VK_S)) {
+
+
+      //  Run(@"C:\SVN\ReleaseIndependent\Developers\Wade\ClipboardSaveToDB\ClipboardSaveToDB\bin\Debug\ClipboardSaveToDB.exe", "");
+      //  while (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.CONTROL) && myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.MENU) && myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.VK_S)) {
+      //    System.Threading.Thread.Sleep(200);
+      //  }
+
+
+      //  //Here is the code that runs when the hotkey is pressed'
+      //}
+      //if (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.CONTROL) && myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.MENU) && myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.VK_R)) {
+
+      //  //Here is the code that runs when the hotkey is pressed'
+
+
+      //  Run(@"C:\SVN\ReleaseIndependent\Developers\Wade\ClipboardRestoreFromDB\ClipboardRestoreFromDB\bin\Debug\ClipboardRestoreFromDB.exe", "");
+      //  while (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.CONTROL) && myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.MENU) && myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.VK_R)) {
+      //    System.Threading.Thread.Sleep(200);
+      //  }
+
+
+
+      //}
+    }
+
+    public void RunWaitTillStart(string myEntityForExecutable, string myEntityForContent) {
+
+
+      if (myEntityForExecutable == null) {
+        string message = "Error - You need to specify executable primitive  "; // +"; EntityName is: " + myEntityForExecutable.EntityName;
+        MessageBoxResult result = MessageBox.Show(message, "Run-time Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        return;
+      }
+      string strExecutable = myEntityForExecutable;
+
+      string strContent = "";
+      if (myEntityForContent != null) {
+        strContent = myEntityForContent;
+      }
+      var p = new Process();
+      p.StartInfo.FileName = strExecutable;
+      if (strContent != "") {
+        p.StartInfo.Arguments = string.Concat("", strContent, "");
+      }
+      bool started = true;
+      try {
+        p.Start();
+      } catch (Exception) {
+        MessageBox.Show("Could not start process; Executable = " + strExecutable);
+        boolStopEvent = false;
+        
+      }
+      
+      int procId = 0;
+      try {
+        procId = p.Id;
+        Console.WriteLine("ID: " + procId);
+      } catch (InvalidOperationException) {
+        started = false;
+        boolStopEvent = false;
+      } catch (Exception ex) {
+        started = false;
+        boolStopEvent = false;
+      }
+      while (started == true && GetProcByID(procId) != null) {
+        System.Threading.Thread.Sleep(1000);
+        boolStopEvent = false;
+        started = false;
+      }
+
+    }
+
+    public void Run(string myEntityForExecutable, string myEntityForContent) {
+
+
+      if (myEntityForExecutable == null) {
+        string message = "Error - You need to specify executable primitive  "; // +"; EntityName is: " + myEntityForExecutable.EntityName;
+        MessageBoxResult result = MessageBox.Show(message, "Run-time Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        return;
+      }
+      string strExecutable = myEntityForExecutable;
+
+      string strContent = "";
+      if (myEntityForContent != null) {
+        strContent = myEntityForContent;
+      }
+      if (strContent == "") {
+        Process.Start(strExecutable);
+      } else {
+        try {
+          Process.Start(strExecutable, string.Concat("", strContent, ""));
+        } catch (Exception ex) {
+
+          MessageBox.Show(ex.ToString());
+        }
+      }
+      
+    }
+    private Process GetProcByID(int id) {
+      Process[] processlist = Process.GetProcesses();
+      return processlist.FirstOrDefault(pr => pr.Id == id);
+    }
 
   }
 }

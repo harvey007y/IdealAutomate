@@ -37,5 +37,6 @@ namespace Hardcodet.Wpf.Samples
         public string Category5 { get; set; }
         public string Executable { get; set; }
         public string ExecuteContent { get; set; }
+        public string HotKey { get; set; }
     }
 }

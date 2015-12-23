@@ -170,6 +170,7 @@
                                 <DataGrid.Columns>
                                     <DataGridTextColumn x:Name="scriptIDColumn" Width="SizeToHeader" Header="Script ID" Binding="{Binding ScriptID}" Visibility="Hidden"/>
                                     <DataGridTextColumn x:Name="scriptNameColumn" Width="130" Header="Script Name" Binding="{Binding ScriptName}" />
+                                    <DataGridTextColumn x:Name="HotKeyColumn" Width="130" Header="HotKey" Binding="{Binding HotKey}"/>
                                     <DataGridTextColumn x:Name="category1Column" Width="130" Header="Category1" Binding="{Binding Category1}"/>
                                     <DataGridTextColumn x:Name="category2Column" Width="130" Header="Category2" Binding="{Binding Category2}"/>
                                     <DataGridTextColumn x:Name="category3Column" Width="130" Header="Category3" Binding="{Binding Category3}"/>
