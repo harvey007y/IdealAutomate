@@ -62,7 +62,7 @@ namespace Hardcodet.Wpf.Samples {
 
     private void Window_Initialized(object sender, EventArgs e) {
 
-      AddGlobalHotKeys();
+      
       SqlConnection conMaster = new SqlConnection(ConfigurationManager.ConnectionStrings["myConnectionStringMaster"].ConnectionString);
       SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["myConnectionString"].ConnectionString);
       conMaster.Open();
@@ -280,17 +280,7 @@ namespace Hardcodet.Wpf.Samples {
 ")WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY] " +
 ") ON [PRIMARY] TEXTIMAGE_ON [PRIMARY] " +
 " " +
-" IF NOT EXISTS ( " +
-"   SELECT *  " +
-"   FROM   sys.columns  " +
-"   WHERE  object_id = OBJECT_ID(N'[dbo].[Scripts]')   " +
-"         AND name = 'HotKey' " +
-" ) " +
-" begin  " +
-"   alter table Scripts  " +
-"   add HotKey [varchar](500)   null  " +
-" end" +
-" " +
+
 "SET ANSI_PADDING OFF " +
 
 " " +
@@ -325,6 +315,17 @@ namespace Hardcodet.Wpf.Samples {
 
 " end " +
 "  " +
+" IF NOT EXISTS ( " +
+"   SELECT *  " +
+"   FROM   sys.columns  " +
+"   WHERE  object_id = OBJECT_ID(N'[dbo].[Scripts]')   " +
+"         AND name = 'HotKey' " +
+" ) " +
+" begin  " +
+"   alter table Scripts  " +
+"   add HotKey [varchar](500)   null  " +
+" end" +
+" " +
 "declare @myCount int  " +
 "set @mycount = (select COUNT(*) from[IdealAutomateDB].[dbo].[Scripts])  " +
 "            if @myCount = 0  " +
@@ -527,8 +528,8 @@ namespace Hardcodet.Wpf.Samples {
 
 
       con.Close();
-
-      _MainWindow.Show();
+            AddGlobalHotKeys();
+            _MainWindow.Show();
       Close();
 
     }
