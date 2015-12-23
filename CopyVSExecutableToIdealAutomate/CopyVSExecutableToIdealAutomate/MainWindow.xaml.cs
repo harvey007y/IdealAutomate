@@ -136,7 +136,7 @@ namespace CopyVSExecutableToIdealAutomate {
       myActions.TypeText("^{END}", 500);
       myActions.TypeText("{HOME}", 500);
       myActions.TypeText(strScriptName, 500);
-      myActions.TypeText("{TAB}", 500);
+      myActions.TypeText("{TAB 2}", 500);
       myActions.TypeText("IdealAutomateScript",500);
 
       myImage = new ImageEntity();
