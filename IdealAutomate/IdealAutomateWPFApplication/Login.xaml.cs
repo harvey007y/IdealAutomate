@@ -332,9 +332,11 @@ namespace Hardcodet.Wpf.Samples {
 "            begin  " +
 "            INSERT INTO[IdealAutomateDB].[dbo].[Scripts]  " +
 "                       ([ScriptName]  " +
+"           ,[HotKey]    " +
 "           ,[Executable] )  " +
 "     VALUES  " +
 "           ('testnotepad'  " +
+"           ,'Ctrl+Alt+T'  " +
 "           ,'c:\\windows\\system32\\notepad.exe')  " +
 "  end  " +
 
