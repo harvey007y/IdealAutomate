@@ -143,7 +143,10 @@ using System.Windows.Shapes;
         {
             frame.Source = new Uri("Tips.xaml", UriKind.RelativeOrAbsolute);
         }
-        private void Description_MouseLeftButtonDown(object sender, RoutedEventArgs e)
+        private void Scripts_MouseLeftButtonDown(object sender, RoutedEventArgs e) {
+          frame.Source = new Uri("ScriptsTab.xaml", UriKind.RelativeOrAbsolute);
+        }
+      private void Description_MouseLeftButtonDown(object sender, RoutedEventArgs e)
         {
             frame.Source = new Uri("Description.xaml", UriKind.RelativeOrAbsolute);
         }

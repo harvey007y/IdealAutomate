@@ -10,14 +10,10 @@
                 <Run FontSize="30" BaselineAlignment="Center">Benefits</Run>
             </Paragraph>
             <List MarkerOffset="25" MarkerStyle="Decimal" StartIndex="1" >
+               
                 <ListItem>
                     <Paragraph>
-                        There are two tiers of privileges for the product: a free privileges tier and a professional privileges tier. The free privileges tier provides you with the fully functioning application, and this means you have no excuse for not trying it out. The free privileges tier allows you to automate up to 5,000 action steps in a month, which is a ton of free automation steps for the normal user (an average of 166 automated action steps per day is a lot of free automation). Only heavy-duty users will want to upgrade to the professional privileges tier, which uses the same application as the free tier, but the professional tier allows you to automate over 5,000 action steps in a month. The upgrade to the professional privileges tier is only $15/mo or $100/yr.
-                    </Paragraph>
-                </ListItem>
-                <ListItem>
-                    <Paragraph>
-                        Ideal Automate is based on the reuse of scripts that others have built. The ideal is that one person solves a problem and many can benefit from that solution when it published. If you publish a useful script that other people use, the number of action steps that they use of your script will be deducted from the number of steps you have used for the month so you can potentially use an unlimited number of steps for free each month.
+                        Ideal Automate is based on the reuse of scripts that others have built. The ideal is that one person solves a problem and many can benefit from that solution when it published. 
                     </Paragraph>
                 </ListItem>
                 <ListItem>
@@ -27,7 +23,7 @@
                 </ListItem>
                 <ListItem>
                     <Paragraph>
-                        Create login scripts easily (typically, only five lines of code).
+                        Create login scripts, tutorials, and wizards easily.
                     </Paragraph>
                 </ListItem>
                 <ListItem>
@@ -37,12 +33,12 @@
                 </ListItem>
                 <ListItem>
                     <Paragraph>
-                        Use Windows Snipping Tool to take a snapshot of a part of the screen where you want to click your mouse or type text and paste that snapshot into your scripts. One of the powerful features of your scripts is that they allow you to find a subimage within a larger one or within the screen as a whole.
+                        Use Windows Snipping Tool to take a snapshot of a part of the screen where you want to click your mouse or type text and save that snapshot into the images folder of your scripts. One of the powerful features of your scripts is that they allow you to find a subimage within the screen as a whole.
                     </Paragraph>
                 </ListItem>
                 <ListItem>
                     <Paragraph>
-                        Write "building block" scripts that you can include in other scripts; for example, you can write one basic script that logs you into a web site, and include that "building block" script inside other scripts that are focused on going to different sections of the website.
+                        Write "building block" scripts that you can include in other scripts. You can (synchronously or asychchronously) run any building block script from within a parent script. For example, you can write one basic script that logs you into a web site, and include that "building block" script inside other scripts that are focused on going to different sections of the website.
                     </Paragraph>
                 </ListItem>
                 <ListItem>
@@ -51,7 +47,7 @@
                 </ListItem>
                 <ListItem>
                     <Paragraph>
-                        Stats are generated on how accurately scripts work and how many actions have been saved by using scripts
+                        Stats are generated on how  many times each script has been used
                     </Paragraph>
                 </ListItem>
                 <ListItem>

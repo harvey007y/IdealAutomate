@@ -11,121 +11,78 @@
                 <Image Source="/Images/help1.png" Width="190" Height="190" Margin="0,0,30,0" />
                 <Run FontSize="30" BaselineAlignment="Center">Ideal Automate Overview</Run>
             </Paragraph>
+
+            <Paragraph>
+                <Run FontSize="20" FontWeight="Bold" BaselineAlignment="Center">
+                    Open Source C# Development Platform for Automating Computer Tasks</Run>
+            </Paragraph>
             
             <Paragraph>
-                Ideal Automate allows one to automate almost any task. It does this by allowing you to write scripts that can find images on the screen.  By finding an image on the screen, you are able to locate where you want to read or write something, regardless of which application the image resides within.  The fact that you can read and write to virtually any location makes it possible to create a degree of artificial intelligence where the script is able to perform real-time, problem-solving activities. For example, the script can read a piece of information, interpret what it has read, and then make decisions in real time about what to do based on that interpretation.
+                Ideal Automate is an open source development platform that allows C# developers to automate any repetitive task and to share what they have automated with other developers.
             </Paragraph>
             <Paragraph>
-                The Windows Snipping Tool
-                <Image Source="/Images/SnippingTool.PNG"  Height="45" VerticalAlignment="Bottom" /> can be very useful in allowing you to cut-n-paste images into your scripts. If you are unfamiliar with the Windows Snipping Tool, it is a free tool that is automatically included in the Windows Accessories folder. If you are having trouble figuring out how to use the snipping tool, you should google it in order to learn more about it.
-            </Paragraph>            
-            <Table CellSpacing="5" BorderThickness="1" BorderBrush="Black">
-                <TableRowGroup>
-                    <TableRow Background="Gainsboro" FontWeight="Bold">                        
-                        <TableCell ColumnSpan="5">
-                            <Paragraph TextAlignment="Center">Three Levels of Scripts</Paragraph>
-                        </TableCell>
-                        
-                    </TableRow>
-                </TableRowGroup>
-
-                <TableRowGroup>
-                    <TableRow>
-                        <TableCell Background="Gainsboro" FontWeight="Bold" ColumnSpan="2" >
-                            <Paragraph>1. Local Scripts</Paragraph>
-                        </TableCell>
-                        <TableCell ColumnSpan="3" >
-                            <Paragraph>If you only want your script to be available on your local computer, it is called a local script. Local scripts are the only scripts that you can execute directly and modify. All of the content of a local script is kept on your local computer, so it is the most secure type of script.</Paragraph>
-                        </TableCell>
-                        
-                    </TableRow>
-                    <TableRow>
-                        <TableCell Background="Gainsboro" FontWeight="Bold"  ColumnSpan="2" >
-                            <Paragraph>2. Personal Scripts</Paragraph>
-                        </TableCell>
-                        <TableCell ColumnSpan="3">
-                            <Paragraph>If you want to be able to execute a script you have written on your local computer on another computer, you can clone that script to a personal script.  A personal script can only be viewed by someone that logs in to Ideal Automate with your userid and password.  This allows you (or you can allow a group of people to login with a specific userid and password) to see your personal scripts on multiple computers by using the same userid and password on those computers.  You cannot directly execute or modify a personal script. However, you can download a copy of a personal script to a local script, and you can modify or execute the local script.</Paragraph>
-                        </TableCell>
-
-                    </TableRow>
-                </TableRowGroup>
-                <TableRowGroup>
-                    <TableRow>
-                        <TableCell Background="Gainsboro" FontWeight="Bold"  ColumnSpan="2" >
-                            <Paragraph>3. Public Script</Paragraph>
-                        </TableCell>
-                        <TableCell ColumnSpan="3">
-                            <Paragraph >If you want to share a script with everyone, you can clone it to a public script.  Public scripts can be downloaded by anyone in order to create local scripts on their computer, which they can modify or execute locally.</Paragraph>
-                        </TableCell>
-                        
-                    </TableRow>
-                </TableRowGroup>
-            </Table>
-           
-            <Paragraph>
-               Scripts can include other scripts within themselves. The fact that you can include a single script within multiple scripts means that you can reuse basic building blocks that you have created.
-              
-            </Paragraph>
-            <Table CellSpacing="5" BorderThickness="1" BorderBrush="Black">
-                <TableRowGroup>
-                    <TableRow>
-                        <TableCell>
-                            <Paragraph>
-                                <Image Source="/Images/IncludeScript.PNG"  Margin="5,5,5,5" Height="250" HorizontalAlignment="Center" />
-                            </Paragraph>
-                        </TableCell>
-                    </TableRow>
-                </TableRowGroup>
-            </Table>
-            <Paragraph>
-                Scripts consist of a sequence of actions.  These actions contain a verb and one or two nouns called entities that are used by the verb. The entities that you use in your actions must be defined as a primitive, an array, an image, or an expression. Expressions are primarily used to perform calculations with entities.
-                
-            
-            </Paragraph>
-            <Table CellSpacing="5" BorderThickness="1" BorderBrush="Black">
-                <TableRowGroup>
-                    <TableRow>
-                        <TableCell>
-                            <Paragraph>
-                                <Image Source="/Images/Logic.PNG"  Margin="5,5,5,5" HorizontalAlignment="Center" />
-                            </Paragraph>
-                        </TableCell>
-                    </TableRow>
-                </TableRowGroup>
-            </Table>
-            <Paragraph>
-                When you run a script, you can cancel it at anytime by pressing the cancel button.
+                Ideal Automate allows one to automate almost any task. It does this by making it possible for you to write scripts that can find images on the screen. By finding an image on the screen, you are able to locate where you want to read or write something, regardless of which application the image resides within. The fact that you can read and write to virtually any location makes it possible to create a degree of artificial intelligence where the script is able to perform real-time, problem-solving activities. For example, the script can read a piece of information, interpret what it has read, and then make decisions in real time about what to do based on that interpretation.
             </Paragraph>
             <Paragraph>
-                Once the script has run, statistics on the number of actions performed will be added to the local script. When a script completes executing, you are presented with a dialog box that allows you to indicate whether the script executed successfully. These statistics on the percent of successful executions are also kept on the script. If the script has been cloned to personal or public, the statistics at those levels will be updated as well. This allows you and other people (if you clone your script to public) to see which scripts are being used the most and also how accurately they have been executing.
+            Ideal Automate is based on the reuse of scripts that others have built. The ideal is that one person solves a problem and many can benefit from that solution when it published.
             </Paragraph>
-            <Table CellSpacing="5" BorderThickness="1" BorderBrush="Black">
-                <TableRowGroup>
-                    <TableRow>
-                        <TableCell>
-                            <Paragraph>
-                                <Image Source="/Images/Stats.PNG"  Margin="5,5,5,5" HorizontalAlignment="Center" />
-                            </Paragraph>
-                        </TableCell>
-                    </TableRow>
-                </TableRowGroup>
-            </Table>
             <Paragraph>
-                Another thing that happens after a script runs is that the steps that were executed are written to the Results tab.  The Results tab can be very useful in helping you to debug your scripts and in helping you to figure out why a particular image may not have been found.
-
+                <Run FontSize="20" FontWeight="Bold" BaselineAlignment="Center">Three Components of IdealAutomate</Run>
             </Paragraph>
-            <Table CellSpacing="5" BorderThickness="1" BorderBrush="Black">
-                <TableRowGroup>
-                    <TableRow>
-                        <TableCell>
-                            <Paragraph>
-                            <Image Source="/Images/Results.PNG"  Margin="5,5,5,5" HorizontalAlignment="Center" />
-                            </Paragraph>
-                        </TableCell>
-                    </TableRow>
-                </TableRowGroup>
-            </Table>
-
+            <Paragraph>
+                Ideal Automate consists of three basic components:
+            </Paragraph>
+            <Paragraph>
+                <Bold>1.  IdealAutomate</Bold>  - This is a simple WPF C# application that allows you to easily execute the DOS command to start any application with the content you specify. This allows you to create a central repository of all the C# applications that you have created to automate various repetitive tasks.  The WPF Application provides the central repository with a menu that allows you to assign hotkeys to the applications so that you can cause them to execute just by pressing a combination of keys. Here is a screenshot of the IdealAutomate component:
+            </Paragraph>
+            <Paragraph>                
+                <Image Source="/Images/IdealAutomateMenu.png"   VerticalAlignment="Bottom" />
+            </Paragraph>
+            <Paragraph>
+                <Bold>2. IdealAutomateCore</Bold> - This is a class library that contains most of the methods that are commonly used to automate any task on the computer.  For example, there are methods that allow you to easily  do the following things:
+                <LineBreak></LineBreak>
+                <LineBreak></LineBreak>
+                A. Find an image on the screen and click on it
+                <LineBreak></LineBreak>
+                B. Display a window that will allow users to provide input using most of the standard controls (textbox, dropdownlist, etc.)
+                <LineBreak></LineBreak>
+                C. Automatically type text on the screen at any location
+                <LineBreak></LineBreak>
+                D. Get and Put information into the clipboard
+                <LineBreak></LineBreak>
+                E. Run another application as a process thread. The thread can run asynchronously (the parent application does not wait for completion of the child application) or synchronously (where the parent application does wait for the child).
+            </Paragraph>
+            <Paragraph>
+                <Bold>3.  Action Scripts</Bold> - Each application that you write that uses the IdealAutomateCore class library is referred to as an "automation script," or "script" for short.  A script is created by using Visual Studio to create a new C# WPF application that is based on the IdealAutomateCore project template.  This template makes sure that your project includes a reference to the IdealAutomateCore Class Library, which contains all of the functions that you will need to automate any task.  Scripts do not involve learning a special scripting language. This allows you to leverage  your existing C# knowledge.
+            </Paragraph>
+            <Paragraph>
+                <Run FontSize="20" FontWeight="Bold" BaselineAlignment="Center">General Workflow</Run>
+            </Paragraph>
+            <Paragraph>
+                Here is the general workflow process for solving problems with IdealAutomate. Whenever we solve a problem, we start out by comparing the Actual to an Ideal.  The "actual" is what the computer is currently doing and the "ideal" is what we want the computer to do.  In order to transform the actual into the ideal, we need to find the differences between the actual and the ideal and translate those differences into actions that we can perform on the "actual" to make it become the "ideal." I use two types of libraries to help me in this process of transforming the actual into the ideal.
+            </Paragraph>
+            <Paragraph>
+                <Run FontSize="20" FontWeight="Bold" BaselineAlignment="Center">Knowledge Base Library</Run>
+            </Paragraph>
+            <Paragraph>
+                <Image Source="/Images/AbstractSpoon.png"   VerticalAlignment="Bottom" />
+            </Paragraph>
+            <Paragraph>
+                The first type of library is my "knowledgebase."  I use Abstract Spoon's open source ToDoList as my knowledgebase, but you can use any type of knowledgebase that you want. The knowledgebase is just a dictionary that defines "unknown things" in terms of "known things."  In order for a knowledgebase to work, we must start out with some basic things that we "innately know" and build up from those basic building blocks.  The types of things that we innately know include such things as being able to read and write information and recognize shapes and patterns on the computer screen and so on. These basic building blocks are meaningful to us because we know what they represent or what they can be used to accomplish.  When we define other things in terms of these basic building blocks, we are transforming what was previously meaningless to us into what is meaningful. It is in this way that we expand our world of meaning.  We can only solve problems when we are dealing with things that are meaningful to us.  When we can not translate something complex into something more simple that we already understand what it means, we are blocked in our problem solving process.  This is why a knowledgebase is one of the important libraries that we need in the problem solving process. The knowledgebase contains a repository of everything we understand and of everything that is meaningful to us. Once we translate the differences that exist between the actual and the ideal into items that are contained in our knowledgebase, we can begin the process of solving the problem.  Once  the differences between the actual and the ideal are meaningful to us, we have the tools at our disposal to start figuring out the steps that we need to take to remove the differences one step at a time. If we know all of the simple components that go into making up one of the differences between the actual and the ideal, we can work from the level of those simple components that we understand to remove that larger difference that we did not at first appear to understand. For example, suppose that when we compare the actual to the ideal, we find that we need to add a textbox to the actual in order to transform it into the ideal.  If we did not know all of the details about what makes a textbox different from a label, we would not be able to identify whether a textbox or label was what was causing the actual to be different from the ideal. Similarly, if we did not know all the detail steps involved in adding a textbox to a web page, we would be at a loss.  However, if the knowledgebase provides us with all of that information, we can proceed to identify the difference between the actual and the ideal as being a textbox and then we can take each of the steps cataloged in the knowledgebase in order to change the actual into the ideal.
+            </Paragraph>
+            <Paragraph>
+                The knowledgebase that I build with Abstract Spoon's software is not something rigid and formal. It is basically a set of notes that I take everytime I learn something new.  I do not formally tie everything back to the ultimate basic building blocks of things that I innately know. I just try to keep my knowledgebase simple and structure it the best I can as I proceed.
+            </Paragraph>
+            <Paragraph>
+                <Run FontSize="20" FontWeight="Bold" BaselineAlignment="Center">Action Script Library</Run>
+            </Paragraph>
+            <Paragraph>
+                The knowledgebase just provides me with the information that I need in order to accomplish the task manually.  However, if I notice that I am performing the same task over and over again, I may want to automate that process. When I want to automate an item in my knowledgebase, I set a flag on that item to remind me that I would like to automate this someday. This is where the second type of library that is involved in the problem-solving process comes into play.  This second type of library is called the action script library.  The action script library consists of the three components described above as the three components of IdealAutomate.
+            </Paragraph>
+            <Paragraph>
+                Let us look at the example of adding a textbox to a webpage. In this example, we can write a C# application that has a reference to the IdealAutomateCore library that can perform all of the steps needed in order to add any textbox to any webpage.  The application will take some initial parameters from the user that specify some of the specifics regarding the textbox and the webpage, and then it will perform all the required steps without requiring our intervention of decision-making skills. Everytime we have to make a decision manually, it takes energy and time on our part, but when we automate that, the energy and time are no longer required from us.
+            </Paragraph>
+  
         </FlowDocument>
     </FlowDocumentReader>
 

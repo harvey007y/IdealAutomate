@@ -26,7 +26,7 @@
                 <MenuItem Header="_SqlToGrid" Click="Button_SqlToGrid_Click"  Name="MenuItemSqlToGrid"  />
             </MenuItem>
             <MenuItem Header="_Help" Click="Button_Help_Click"  Name="MenuItemHelp"  />
-            <MenuItem Header="_Video Tutorials" Click="Button_Video_Tutorials_Click"  Name="MenuItemVideoTutorials"  />
+            
             <MenuItem Header="_About" Click="Button_About_Click"  Name="MenuItemAbout"  />
 
         </Menu>

@@ -40,7 +40,7 @@
     <ProductName>Ideal Automate</ProductName>
     <PublisherName>IdealAutomate.com</PublisherName>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>225</ApplicationRevision>
+    <ApplicationRevision>227</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>true</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -149,9 +149,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Help\ScriptsTab.xaml.cs">
+      <DependentUpon>ScriptsTab.xaml</DependentUpon>
+    </Compile>
     <Compile Include="HotKeyRecord.cs" />
     <Compile Include="WindowsVirtualKeyEnum.cs" />
     <Page Include="AboutDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\ScriptsTab.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -739,6 +746,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\IdealAutomateMenu.png" />
+    <Resource Include="Images\AbstractSpoon.png" />
+    <Resource Include="Images\IdealAutomateDescription.png" />
     <Content Include="WPFToolkit.dll" />
     <Resource Include="Images\Big.png" />
     <Resource Include="Images\small.png" />
