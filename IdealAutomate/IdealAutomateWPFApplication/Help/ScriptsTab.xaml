@@ -43,7 +43,7 @@
                 </Italic>
             </Paragraph>
             <Paragraph>
-                 HotKey is a combination of keys that you can press together in order to quickly cause the script to run.  The HotKey must include at least the Ctrl key or the Alt key.
+                 HotKey is a combination of keys that you can press together in order to quickly cause the script to run.  The HotKey must include at least the Ctrl key or the Alt key. After adding a HotKey for a script, you need to close IdealAutomate and reopen it in order to "register" the HotKey.  The HotKeys will only be active when the IdealAutomate application is running.  IdealAutomate does not need to be running in the foreground for the HotKeys to work so you can just have it running in the background. Hotkeys can cause unexpected behavior if you define a hotkey in IdealAutomate that is also being used by another application that is in the foreground.
             </Paragraph>
             <Paragraph FontSize="14pt" >
                 <Italic>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,6 +22,10 @@ namespace Hardcodet.Wpf.Samples.Help
         public OverviewAutomater()
         {
             InitializeComponent();
+        }
+        private void OnNavigationRequest(object sender, System.Windows.Navigation.RequestNavigateEventArgs e) {
+          Process.Start(e.Uri.ToString());
+          e.Handled = true;
         }
     }
 }
