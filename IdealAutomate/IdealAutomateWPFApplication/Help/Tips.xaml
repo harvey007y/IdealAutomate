@@ -71,10 +71,15 @@
                     <Paragraph>
                         When sending text to the screen, you always need to allow some time for the text to be sent so it is a good practice to specify 500 milliseconds of wait time in entity2 when using the TypeText verb.
                     </Paragraph>
-                </ListItem>               
+                </ListItem>
                 <ListItem>
                     <Paragraph>
-                        If you cannot figure out why an image is not being found, go to the bin\debug\images folder in Windows Explorer and you can see the big image and small image that are being used in the search.
+                        If you cannot figure out why a script is not working, you can just use the debugger in visual studio. Alternatively, you can view a log file at c:\Data\IdealAutomateLog.txt to see what IdealAutomateCore methods executed. 
+                    </Paragraph>
+                </ListItem>
+                <ListItem>
+                    <Paragraph>
+                        If you cannot figure out why an image is not being found, go to the bin\debug\images folder in Windows Explorer and you can see the big image and small image that are being used in the search. 
                     </Paragraph>
                 </ListItem>
                 <ListItem>
