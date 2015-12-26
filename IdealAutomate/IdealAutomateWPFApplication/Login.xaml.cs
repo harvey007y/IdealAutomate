@@ -537,9 +537,7 @@ namespace Hardcodet.Wpf.Samples {
     }
 
     private void AddGlobalHotKeys() {
-      // TODO: Create a global list<HotKeyFields> of all the scripts that have a hotkey
-      // HotKeyFields include HotKey, Executeable, and ExecuteContent
-      Hardcodet.Wpf.Samples.IdealLauncherEntities _context = new Hardcodet.Wpf.Samples.IdealLauncherEntities();
+       Hardcodet.Wpf.Samples.IdealLauncherEntities _context = new Hardcodet.Wpf.Samples.IdealLauncherEntities();
       List<Script> listHotKeyScripts;
       listHotKeyRecords = new List<HotKeyRecord>();
       listHotKeyScripts = _context.Scripts.Where(x => x.HotKey != null && x.HotKey != "" && x.Executable != "").ToList<Script>();
@@ -616,8 +614,7 @@ namespace Hardcodet.Wpf.Samples {
 
     private void OnTimedEvent(object sender, System.Timers.ElapsedEventArgs e) {
       InputSimulator myInputSimulator = new InputSimulator();
-      // TODO: Loop thru all items in public list<HotKeyFields> and run any that 
-      // have been pressed
+
       if (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.CONTROL) || myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.MENU)) {
         foreach (HotKeyRecord myHotKeyRecord in listHotKeyRecords) {
           bool boolAllHotKeysPressed = true;

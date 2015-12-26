@@ -180,11 +180,7 @@
                                     <DataGridTextColumn x:Name="scriptLastModifiedDateColumn" Width="130" Header="LastModified" Binding="{Binding LastModifiedDate}"/>
                                     <DataGridTextColumn x:Name="scriptLastExecutedDateColumn" Width="130" Header="LastExecuted" Binding="{Binding LastExecutedDate}"/>
                                     <DataGridTextColumn x:Name="scriptNumberTimesExecutedColumn" Width="130" Header="TimesExecuted" Binding="{Binding NumberTimesExecuted}"/>
-                                    <DataGridTextColumn x:Name="scriptNumberActionsSavedColumn" Width="130" Header="ActionsSaved" Binding="{Binding NumberActionsSaved}"/>
-                                    <DataGridTextColumn x:Name="scriptNumberTimesExecutedCorrectlyColumn" Width="130" Header="TimesExecutedCorrectly" Binding="{Binding NumberTimesExecutedCorrectly}"/>
-                                    <DataGridTextColumn x:Name="scriptNumberTimesExecutedIncorrectlyColumn" Width="130" Header="TimesExecutedIncorrectly" Binding="{Binding NumberTimesExecutedIncorrectly}"/>
-                                    <DataGridTextColumn x:Name="scriptPercentCorrectColumn" Width="130" Header="PercentCorrect" Binding="{Binding PercentCorrect}"/>
-                                    <DataGridTextColumn x:Name="scriptCancelledColumn" Width="130" Header="TimesCancelled" Binding="{Binding NumberTimesCancelled}"/>
+                                  
 
 
                                 </DataGrid.Columns>
