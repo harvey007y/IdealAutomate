@@ -22,17 +22,29 @@ namespace IdealAutomate.Core {
     
     private List<ControlEntity> _ListControlEntity;
     public ComboBoxPair SelectedComboBoxPair { get; set; }
-    
+    int _Top;
+    int _Left;
     public string SelectedValue { get; set; }
-    public WindowMultipleControls(ref List<ControlEntity> myListControlEntity, int intWindowHeight, int intWindowWidth) {
+    public WindowMultipleControls(ref List<ControlEntity> myListControlEntity, int intWindowHeight, int intWindowWidth, int intTop, int intLeft) {
+      _Top = intTop;
+      _Left = intLeft;
+      this.Top = _Top;
+      this.Left = _Left;
+
+
       InitializeComponent();
-     
+
       if (intWindowHeight > 0) {
         myWindow.Height = intWindowHeight;
+      } else {
+        myWindow.Height = 391;
       }
       if (intWindowWidth > 0) {
         myWindow.Width = intWindowWidth;
+      } else {
+        myWindow.Width = 487;
       }
+
 
       
       _ListControlEntity = myListControlEntity;
@@ -176,6 +188,14 @@ namespace IdealAutomate.Core {
     private void btnCancel_Click(object sender, RoutedEventArgs e) {
      
       this.Close();
+    }
+    protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e) {
+      base.OnMouseLeftButtonDown(e);
+      DragMove();
+    }
+
+    protected override void OnMouseRightButtonDown(MouseButtonEventArgs e) {
+      base.OnMouseRightButtonDown(e);
     }
 
   }

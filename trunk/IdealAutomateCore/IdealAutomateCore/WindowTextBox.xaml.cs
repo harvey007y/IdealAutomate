@@ -41,8 +41,15 @@ namespace IdealAutomate.Core {
       TextBoxValue = "";
       this.Close();
     }
-    
 
+    protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e) {
+      base.OnMouseLeftButtonDown(e);
+      DragMove();
+    }
+
+    protected override void OnMouseRightButtonDown(MouseButtonEventArgs e) {
+      base.OnMouseRightButtonDown(e);
+    }
 
   }
 }

@@ -74,6 +74,14 @@ namespace IdealAutomate.Core {
     private void btnCancel_Click(object sender, RoutedEventArgs e) {
       this.Close();
     }
+    protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e) {
+      base.OnMouseLeftButtonDown(e);
+      DragMove();
+    }
+
+    protected override void OnMouseRightButtonDown(MouseButtonEventArgs e) {
+      base.OnMouseRightButtonDown(e);
+    }
 
   }
 }

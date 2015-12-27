@@ -86,11 +86,28 @@ namespace IdealAutomate.Core {
             {
         {
           ShowWindowAsync((IntPtr)hWnd, SW_RESTORE);
-        }        
+        }
         SetForegroundWindow(hWnd); //Activate it              
         return true;
       } else {
-        MessageBox.Show("Window Not Found! - ActivateWindowByTitle:" + myTitle + " You can try to manually activate it and then click okay on this popup" );
+        MessageBox.Show("Window Not Found! - ActivateWindowByTitle:" + myTitle + " You can try to manually activate it and then click okay on this popup");
+        return false;
+      }
+
+    }
+    public bool ActivateWindowByTitle(string myTitle, int myShowOption) {
+
+      //Find the window, using the CORRECT Window Title, for example, Notepad
+      int hWnd = FindWindow(null, myTitle);
+      if (hWnd > 0) //If found
+            {
+        {
+          ShowWindowAsync((IntPtr)hWnd, myShowOption);
+        }
+        SetForegroundWindow(hWnd); //Activate it              
+        return true;
+      } else {
+        MessageBox.Show("Window Not Found! - ActivateWindowByTitle:" + myTitle + " You can try to manually activate it and then click okay on this popup");
         return false;
       }
 
@@ -109,9 +126,19 @@ namespace IdealAutomate.Core {
       foreach (var item in processes) {
         if (item.ProcessName == myProcessName) {
           lstWindowTitles.Add(item.MainWindowTitle);
-        }        
+        }
       }
       return lstWindowTitles;
+
+    }
+    public void KillAllProcessesByProcessName(string myProcessName) {
+      try {
+        foreach (Process proc in Process.GetProcessesByName(myProcessName)) {
+          proc.Kill();
+        }
+      } catch (Exception ex) {
+        MessageBox.Show(ex.Message);
+      }
 
     }
 
@@ -270,6 +297,15 @@ namespace IdealAutomate.Core {
       // Start the timer
       aTimer.Enabled = true;
     }
+  /// <summary>
+  /// <para>GetValueByKey returns the value for the specified key from KeyValueTable.</para>
+    /// <para>The KeyValueTable allows you to store personal settings and</para>
+    /// <para>information that you want to keep private (like passwords) in a location</para>
+    /// <para>outside of your script on SQLExpress</para>
+  /// </summary>
+  /// <param name="pKey">The Key for the KeyValuePair</param>
+  /// <param name="pInitialCatalog">usually IdealProgrammerDB</param>
+  /// <returns>String that is the Value for the KeyValuePair</returns>
     public string GetValueByKey(string pKey, string pInitialCatalog) {
 
       string myValue = "";
@@ -291,6 +327,17 @@ namespace IdealAutomate.Core {
       }
       return myValue;
     }
+    /// <summary>
+    /// <para>SetValueByKey allows you to create or update the specified key</para>
+    /// <para>in the KeyValueTable.</para>
+    /// <para>The KeyValueTable allows you to store personal settings and</para>
+    /// <para>information that you want to keep private (like passwords) in a location</para>
+    /// <para>outside of your script on SQLExpress</para>
+    /// </summary>
+    /// <param name="pKey">The Key for the KeyValue pair</param>
+    /// <param name="pValue">The Value for the KeyValue pair</param>
+    /// <param name="pInitialCatalog">usually IdealProgrammerDB</param>
+    /// <returns>The Value for the KeyValue Pair</returns>
     public string SetValueByKey(string pKey, string pValue, string pInitialCatalog) {
 
       string myValue = "";
@@ -300,9 +347,9 @@ namespace IdealAutomate.Core {
       cmd.CommandType = CommandType.StoredProcedure;
 
       // Add Parameters to Command Parameters collection
-      cmd.Parameters.Add("@myKey", SqlDbType.VarChar,500);
+      cmd.Parameters.Add("@myKey", SqlDbType.VarChar, 500);
       cmd.Parameters["@myKey"].Value = pKey;
-      cmd.Parameters.Add("@myValue", SqlDbType.VarChar,500);
+      cmd.Parameters.Add("@myValue", SqlDbType.VarChar, 500);
       cmd.Parameters["@myValue"].Value = pValue;
 
 
@@ -315,10 +362,29 @@ namespace IdealAutomate.Core {
       return myValue;
     }
     /// <summary>
-    /// 
+    /// <para>PutAll receives an ImageEntity object and returns</para>
+    /// <para>an integer array of all of x,y coordinates of where the</para>
+    /// <para>image was found</para>
+    /// <para>Images are used to locate a specific area of the screen. The Windows Snipping Tool is very useful for saving image files to your images folder. If you are not familiar with the Windows Snipping Tool, you should google it to learn about it as it is very helpful. There is a trick to taking snapshots of popup windows. The trick involves clicking on the new option in the snipping tool to cause it to make the entire screen go out of focus. Then, you hit the escape key to remove opacity cloud that prevent you from accessing your screen. At this point, you can activate your popup or dropdown window. Next, you press the control key plus the print key to cause the opacity cloud to appear without removing the popup or dropdown window. You can now drag the Windows Snipping Tool around the window to get a snapshot of it without it disappearing. The Image Tabs has these columns:</para>
+    /// <para>1. ImageFile</para>
+    /// <para>The imageFile is the file path where the image resides.</para>
+    /// <para>2. Attempts</para>
+    /// <para>If Attempts is specified, it must be defined as an integer (int). The default value is 1. Sometimes an image will not be found on the first attempt because your computer may be running slowly, and the window may not be fully loaded when the script is looking for it. By specifying an Attempts value of 10, for example, the script will try to find the image up to 10 times before moving on to the next action. In this example, if the image was found on the third attempt, it would not continue looking for the other 7 times since the image was already found.</para>
+    /// <para>3. Occurrence</para>
+    /// <para>If Occurrence is specified, it must be defined  as an integer (int). If you are only interested in locating a specific occurrence of an image, for example - the second occurrence, you can specify that number as the value of the primitive that is specified in this column.</para>
+    /// <para>4. Sleep</para>
+    /// <para>If Sleep is specified, it must be defined as an integer (int). If you are only interested in locating a specific occurrence of an image, for example - the second occurrence, you can specify that number as the value of the primitive that is specified in this column.</para>
+    /// <para>5. RelativeX</para>
+    /// <para>If RelativeX is specified, it must be defined  as an integer (int). The default value for RelativeX is 0. When an image is found, the position of the upper-left corner is returned. You can specify a RelativeX value of pixels to be added to the original X value returned to realign the pixel that you want to click on to the left or to the right.</para>
+    /// <para>6. RelativeY</para>
+    /// <para>If RelativeY is specified, it must be defined as an integer (int). The default value for RelativeY is 0. When an image is found, the position of the upper-left corner is returned. You can specify a RelativeY value of pixels to be added to the original Y value returned to realign the pixel that you want to click on to be higher or lower.</para>
+    /// <para>7. UseGrayScale</para>
+    /// <para>If UseGrayScale is true, it attempts to ignore color when looking for the image. GreyScale is created by add the RGB values for a pixel together and dividing that sum by three so color is still a factor, but it is just not as sensitive.</para>
+    /// <para>8. Tolerance</para>
+    /// <para>The default value for Tolerance is 90. Tolerance specifies the percent of pixels that must match in order for an image to be considered found. When searching for images, the application starts by comparing the least frequent occurrence of a pattern of 10 pixels to every location on the screen in order speed up the process. If there is no match on the least frequent pattern of 10 pixels in the smaller image, it will try to match the second to least most popular pattern of 10 pixels. If there is no match on that second-least frequently occurring pattern, the image will not be found even though there may be more than a 90 percent match between the smaller image and an area on the screen. Sometimes, it helps to try to cut and paste a different image if you are having trouble finding a particular image.</para>
     /// </summary>
-    /// <param name="myImage"></param>
-    /// <returns></returns>
+    /// <param name="myImage">ImageEntity object</param>
+    /// <returns>an integer array of all of x,y coordinates of where the image was found</returns>
     public int[,] PutAll(ImageEntity myImage) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "PutAll:");
@@ -330,10 +396,10 @@ namespace IdealAutomate.Core {
           Logging.WriteLogSimple(String.Format("{0}={1}", name, value));
         }
       }
-      int[,] intArray = new int[,]{ {2000, 2000}};
+      int[,] intArray = new int[,] { { 2000, 2000 } };
 
       PositionCursor(intArray);
- 
+
       // If ParentImage != null, we need to get the parent image and 
       // do everything that we normally to for an image 
       // to the parent image. If the parent image is found,
@@ -352,7 +418,7 @@ namespace IdealAutomate.Core {
           boolImageFound = true;
         }
         intAttempts += 1;
-       // boolUseGrayScaleDB = false; //!boolUseGrayScaleDB;
+        // boolUseGrayScaleDB = false; //!boolUseGrayScaleDB;
       }
       int intRowIndex = 0;
       int[,] myArray = new int[0, 0];
@@ -372,6 +438,12 @@ namespace IdealAutomate.Core {
       }
       return myArray;
     }
+    /// <summary>
+    /// <para>PutCursorPosition provides a way to save the cursor position in</para>
+    /// <para>an array so you can come back to it later without having to find</para>
+    /// <para>the original image again.</para>
+    /// </summary>
+    /// <returns></returns>
     public int[,] PutCursorPosition() {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "PutCursorPosition");
@@ -382,6 +454,12 @@ namespace IdealAutomate.Core {
       myArray[0, 1] = System.Windows.Forms.Cursor.Position.Y;
       return myArray;
     }
+    /// <summary>
+    /// <para>PutCaretPositionInArray provides a way to save the caret position</para>
+    /// <para>in an array so you can come back to it later without having to find </para>
+    /// the original position again.
+    /// </summary>
+    /// <returns></returns>
     public int[,] PutCaretPositionInArray() {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "PutCaretPositionInArray");
@@ -406,6 +484,29 @@ namespace IdealAutomate.Core {
 
 
     }
+    /// <summary>
+    /// <para>ClickImageIfExists is similar to PutAll, but it left clicks on the </para>
+    /// <para>best match for the image and does not return an array containing the position. </para>
+    /// <para>Images are used to locate a specific area of the screen. The Windows Snipping Tool is very useful for saving image files to your images folder. If you are not familiar with the Windows Snipping Tool, you should google it to learn about it as it is very helpful. There is a trick to taking snapshots of popup windows. The trick involves clicking on the new option in the snipping tool to cause it to make the entire screen go out of focus. Then, you hit the escape key to remove opacity cloud that prevent you from accessing your screen. At this point, you can activate your popup or dropdown window. Next, you press the control key plus the print key to cause the opacity cloud to appear without removing the popup or dropdown window. You can now drag the Windows Snipping Tool around the window to get a snapshot of it without it disappearing. The Image Tabs has these columns:</para>
+    /// <para>1. ImageFile</para>
+    /// <para>The imageFile is the file path where the image resides.</para>
+    /// <para>2. Attempts</para>
+    /// <para>If Attempts is specified, it must be defined as an integer (int). The default value is 1. Sometimes an image will not be found on the first attempt because your computer may be running slowly, and the window may not be fully loaded when the script is looking for it. By specifying an Attempts value of 10, for example, the script will try to find the image up to 10 times before moving on to the next action. In this example, if the image was found on the third attempt, it would not continue looking for the other 7 times since the image was already found.</para>
+    /// <para>3. Occurrence</para>
+    /// <para>If Occurrence is specified, it must be defined  as an integer (int). If you are only interested in locating a specific occurrence of an image, for example - the second occurrence, you can specify that number as the value of the primitive that is specified in this column.</para>
+    /// <para>4. Sleep</para>
+    /// <para>If Sleep is specified, it must be defined as an integer (int). If you are only interested in locating a specific occurrence of an image, for example - the second occurrence, you can specify that number as the value of the primitive that is specified in this column.</para>
+    /// <para>5. RelativeX</para>
+    /// <para>If RelativeX is specified, it must be defined  as an integer (int). The default value for RelativeX is 0. When an image is found, the position of the upper-left corner is returned. You can specify a RelativeX value of pixels to be added to the original X value returned to realign the pixel that you want to click on to the left or to the right.</para>
+    /// <para>6. RelativeY</para>
+    /// <para>If RelativeY is specified, it must be defined as an integer (int). The default value for RelativeY is 0. When an image is found, the position of the upper-left corner is returned. You can specify a RelativeY value of pixels to be added to the original Y value returned to realign the pixel that you want to click on to be higher or lower.</para>
+    /// <para>7. UseGrayScale</para>
+    /// <para>If UseGrayScale is true, it attempts to ignore color when looking for the image. GreyScale is created by add the RGB values for a pixel together and dividing that sum by three so color is still a factor, but it is just not as sensitive.</para>
+    /// <para>8. Tolerance</para>
+    /// <para>The default value for Tolerance is 90. Tolerance specifies the percent of pixels that must match in order for an image to be considered found. When searching for images, the application starts by comparing the least frequent occurrence of a pattern of 10 pixels to every location on the screen in order speed up the process. If there is no match on the least frequent pattern of 10 pixels in the smaller image, it will try to match the second to least most popular pattern of 10 pixels. If there is no match on that second-least frequently occurring pattern, the image will not be found even though there may be more than a 90 percent match between the smaller image and an area on the screen. Sometimes, it helps to try to cut and paste a different image if you are having trouble finding a particular image.</para>
+ 
+    /// </summary>
+    /// <param name="myImage"></param>
     public void ClickImageIfExists(ImageEntity myImage) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "ClickImageIfExists:");
@@ -445,10 +546,13 @@ namespace IdealAutomate.Core {
           break;
         }
         intAttempts += 1;
-      //  boolUseGrayScaleDB = false; // !boolUseGrayScaleDB;
+        //  boolUseGrayScaleDB = false; // !boolUseGrayScaleDB;
       }
     }
-
+    /// <summary>
+    /// LeftClick allows you to left-click on the X and Y coordinates of an int array passed into the method.
+    /// </summary>
+    /// <param name="myArray">int array containing X and Y coordinates of position on screen to click</param>
     public void LeftClick(int[,] myArray) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "LeftClick:");
@@ -473,6 +577,11 @@ namespace IdealAutomate.Core {
       UInt32 myY1 = Convert.ToUInt32(RelY);
       Position_Cursor.DoMouseClick(myX1, myY1);
     }
+    /// <summary>
+    /// ShiftClick allows you to shift-click on the X and Y coordinates of an int array passed into the method.
+    /// </summary>
+    /// <param name="myArray">int array containing X and Y coordinates of position on screen to click</param>
+
     public void ShiftClick(int[,] myArray) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "ShiftClick:");
@@ -497,6 +606,11 @@ namespace IdealAutomate.Core {
       UInt32 myY1 = Convert.ToUInt32(RelY);
       Position_Cursor.DoMouseShiftClick(myX1, myY1);
     }
+    /// <summary>
+    /// RightClick allows you to right-click on the X and Y coordinates of an int array passed into the method.
+    /// </summary>
+    /// <param name="myArray">int array containing X and Y coordinates of position on screen to click</param>
+
     public void RightClick(int[,] myArray) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "RightClick:");
@@ -521,6 +635,11 @@ namespace IdealAutomate.Core {
       UInt32 myY1 = Convert.ToUInt32(RelY);
       Position_Cursor.DoMouseRightClick(myX1, myY1);
     }
+    /// <summary>
+    /// PositionCursor allows you to move the cursor to the X and Y coordinates of an int array passed into the method.
+    /// </summary>
+    /// <param name="myArray">int array containing X and Y coordinates of position on screen to click</param>
+
     public void PositionCursor(int[,] myArray) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "PositionCursor:");
@@ -540,49 +659,53 @@ namespace IdealAutomate.Core {
       }
       Position_Cursor.MoveMouse(myArray[0, 0], myArray[0, 1]);
     }
+    /// <summary>
+    /// PutClipboardInEntity returns a string that contains the text in the clipboard.
+    /// </summary>
+    /// <returns>string that contains the text in the clipboard</returns>
     public string PutClipboardInEntity() {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "PutClipboardInEntity: ");
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "PutClipboardInEntity: ");
       }
       int intTryAgainCtr = 0;
-      TryAgain:
+    TryAgain:
       string myEntity = "";
       try {
         //Thread thread = new Thread(new ThreadStart(() => {
-          try {
+        try {
 
-            for (int i = 0; i < 45; i++) {
-              if (Clipboard.GetData(DataFormats.Text) == null) {
-                Sleep(100);
-              } else {
-                break;
-              }
-              if (i == 10 || i == 20 || i == 30 || i == 40) {
-                TypeText("^(c)",500);
-                Sleep(1001);
-               // System.Diagnostics.Debugger.Break();
-              }
+          for (int i = 0; i < 45; i++) {
+            if (Clipboard.GetData(DataFormats.Text) == null) {
+              Sleep(100);
+            } else {
+              break;
             }
-
-            myEntity = Clipboard.GetData(DataFormats.Text).ToString();
-            if (myEntity.Contains("Failed to copy selection to the clipboard")) {
+            if (i == 10 || i == 20 || i == 30 || i == 40) {
               TypeText("^(c)", 500);
-              Sleep(1002);
-              intTryAgainCtr++;
-              if (intTryAgainCtr < 10) {
-                goto TryAgain;
-              }
-              
+              Sleep(1001);
+              // System.Diagnostics.Debugger.Break();
             }
-           // myEntity = Clipboard.GetText(System.Windows.TextDataFormat.Html);
-          } catch (Exception e) {
-            Console.WriteLine("Exception occurred in PutClipboardInEntity!!!! " + e.Message);
-            Logging.WriteLogSimple("Exception occurred in PutClipboardInEntity!!!! " + e.Message);
-            myEntity = "";
           }
 
-          // or call logic here
+          myEntity = Clipboard.GetData(DataFormats.Text).ToString();
+          if (myEntity.Contains("Failed to copy selection to the clipboard")) {
+            TypeText("^(c)", 500);
+            Sleep(1002);
+            intTryAgainCtr++;
+            if (intTryAgainCtr < 10) {
+              goto TryAgain;
+            }
+
+          }
+          // myEntity = Clipboard.GetText(System.Windows.TextDataFormat.Html);
+        } catch (Exception e) {
+          Console.WriteLine("Exception occurred in PutClipboardInEntity!!!! " + e.Message);
+          Logging.WriteLogSimple("Exception occurred in PutClipboardInEntity!!!! " + e.Message);
+          myEntity = "";
+        }
+
+        // or call logic here
 
 
 
@@ -596,29 +719,29 @@ namespace IdealAutomate.Core {
         try {
           TypeText("^(c)", 500);
           //Thread thread = new Thread(new ThreadStart(() => {
-            try {
+          try {
 
-              for (int i = 0; i < 45; i++) {
-                if (Clipboard.GetData(DataFormats.Text) == null) {
-                  Sleep(100);
-                } else {
-                  break;
-                }
-                if (i == 10 || i == 20 || i == 30 || i == 40) {
-                  TypeText("^(c)", 500);
-                  Sleep(1003);
-                }
+            for (int i = 0; i < 45; i++) {
+              if (Clipboard.GetData(DataFormats.Text) == null) {
+                Sleep(100);
+              } else {
+                break;
               }
-
-              myEntity = Clipboard.GetData(DataFormats.Text).ToString();
-              // myEntity = Clipboard.GetText(System.Windows.TextDataFormat.Html);
-            } catch (Exception e) {
-              Console.WriteLine("Exception occurred in PutClipboardInEntity!!!! " + e.Message);
-              Logging.WriteLogSimple("Exception occurred in PutClipboardInEntity!!!! " + e.Message);
-              myEntity = "";
+              if (i == 10 || i == 20 || i == 30 || i == 40) {
+                TypeText("^(c)", 500);
+                Sleep(1003);
+              }
             }
 
-            // or call logic here
+            myEntity = Clipboard.GetData(DataFormats.Text).ToString();
+            // myEntity = Clipboard.GetText(System.Windows.TextDataFormat.Html);
+          } catch (Exception e) {
+            Console.WriteLine("Exception occurred in PutClipboardInEntity!!!! " + e.Message);
+            Logging.WriteLogSimple("Exception occurred in PutClipboardInEntity!!!! " + e.Message);
+            myEntity = "";
+          }
+
+          // or call logic here
 
 
 
@@ -641,6 +764,10 @@ namespace IdealAutomate.Core {
       }
       return myEntity;
     }
+    /// <summary>
+    /// PutWindowTitleInEntity returns a string that contains the title of the Active Window
+    /// </summary>
+    /// <returns>string that contains the title of the Active Window</returns>
     public string PutWindowTitleInEntity() {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "PutWindowTitleInEntity");
@@ -656,12 +783,16 @@ namespace IdealAutomate.Core {
       }
       return myEntity;
     }
+    /// <summary>
+    /// PutInternetExplorerTabTitleInEntity returns a string that contains the Title for the active tab in internet explorer
+    /// </summary>
+    /// <returns>string that contains the Title for the active tab in internet explorer</returns>
     public string PutInternetExplorerTabTitleInEntity() {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "PutInternetExplorerTabTitleInEntity");
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "PutInternetExplorerTabTitleInEntity");
       }
-   
+
       TypeText("{UP}", 1000);
       TypeText("%(v)", 1000);
       TypeText("c", 1000);
@@ -670,8 +801,13 @@ namespace IdealAutomate.Core {
       strPageTitle = strPageTitle.Replace(" - Original Source", "");
       CloseApplicationAltFc(500);
       return strPageTitle;
-    
+
     }
+    /// <summary>
+    /// PutInternetExplorerTabTitleInEntity returns a string that contains the url in the address bar for the active tab in internet explorer
+    /// </summary>
+    /// <returns>string that contains the url for the address bar for the active tab in internet explorer</returns>
+
     public string PutInternetExplorerTabURLContainingStringInEntity(string myEntity) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "PutInternetExplorerTabURLContainingStringInEntity: myEntity=" + myEntity);
@@ -699,7 +835,7 @@ namespace IdealAutomate.Core {
             boolTargetURLFound = true;
             break;
           }
-          
+
           // go to next tab
           while (strCurrentTabURL != strFirstTabURL) {
             TypeText("^({TAB})", 2500);
@@ -728,7 +864,10 @@ namespace IdealAutomate.Core {
       return strCurrentTabURL;
 
     }
-
+    /// <summary>
+    /// PutEntityInClipboard takes the input parameter string and puts it in the clipboard
+    /// </summary>
+    /// <param name="myEntity">string that you want to put into the clipboard</param>
 
     public void PutEntityInClipboard(string myEntity) {
       if (fbDebugMode) {
@@ -741,11 +880,19 @@ namespace IdealAutomate.Core {
         }
       }
       try {
-        
+
         Thread thread = new Thread(new ThreadStart(() => {
-          Clipboard.Clear();          
-         // Clipboard.SetText(myEntity);
-          Clipboard.SetDataObject((Object)myEntity, true);
+          int intTries = 0;
+          TryAgain:
+          bool boolClipboardWorks = ClipboardNative.CopyTextToClipboard(myEntity);
+          //  Clipboard.Clear();
+
+          if (intTries < 20) {
+            intTries++;
+            goto TryAgain;
+          }
+          //// Clipboard.SetText(myEntity);
+          //Clipboard.SetDataObject((Object)myEntity, true);
           // or call logic here
 
 
@@ -760,6 +907,23 @@ namespace IdealAutomate.Core {
         MessageBox.Show(ex.Message);
       }
     }
+    /// <summary>
+    /// <para>TypeText - The visual basic SendKeys function is used to mimic </para>
+    /// <para>pressing special keys (like the enter or alt keys). This means you </para>
+    /// <para>need to use the Shortcut Keys help file in the IdealAutomate application </para>
+    /// <para>or google in order to learn what characters can be used to represent</para>
+    /// <para>special keys. For example, the ^ character is used to represent the </para>
+    /// <para>control key and here is how you indicate the enter key is pressed: </para>
+    /// <para>{ENTER}. You will also need to learn how to "escape" special characters</para>
+    /// <para>(like the bracket character). If you are trying to type a lot of special</para>
+    /// <para>characters, it may be easier to create a string primitive with the </para>
+    /// <para>text you want to type and use the PutEntityInClipboard verb to copy </para>
+    /// <para>the string into the clipboard. After the string is in the clipboard,</para>
+    /// <para>you can use the TypeText verb with control v to paste what is in the</para>
+    /// clipboard to where you want it.
+    /// </summary>
+    /// <param name="myEntity">string representing the keys you want to press</param>
+    /// <param name="intSleep">integer representing the number of milliseconds to wait before sending the text</param>
     public void TypeText(string myEntity, int intSleep) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "TypeText: myEntity=" + myEntity + " intSleep=" + intSleep.ToString());
@@ -799,6 +963,10 @@ namespace IdealAutomate.Core {
         InputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_E);
         return;
       }
+      if (myEntity == "%(d)") {
+        InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.MENU, VirtualKeyCode.VK_D); //System.Windows.Forms.Keys.Alt);        
+        return;
+      }
       if (myEntity == "%(\" \")n") {
         InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.MENU, VirtualKeyCode.SPACE); //System.Windows.Forms.Keys.Alt);
         InputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_N);
@@ -815,7 +983,7 @@ namespace IdealAutomate.Core {
       }
       if (myEntity == "%({DOWN})") {
         InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.MENU, VirtualKeyCode.DOWN); //System.Windows.Forms.Keys.Alt);
-       
+
         return;
       }
       if (myEntity == "%({F8})") {
@@ -846,7 +1014,7 @@ namespace IdealAutomate.Core {
         try {
 
           Thread thread = new Thread(new ThreadStart(() => {
-            Clipboard.Clear();           
+            Clipboard.Clear();
             // Clipboard.SetText(myEntity);            
             // or call logic here
 
@@ -904,8 +1072,12 @@ namespace IdealAutomate.Core {
         System.Windows.Forms.SendKeys.SendWait(myEntity);
       }
     }
-
-   public void CloseApplicationAltFx(int intSleep) {
+    /// <summary>
+    /// <para>CloseApplicationAltFx accepts an input integer to indicate how long</para>
+    /// <para>to wait before sending text Alt(F)x to close an application</para>
+    /// </summary>
+    /// <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
+    public void CloseApplicationAltFx(int intSleep) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "CloseInternetExplorer: intSleep=" + intSleep.ToString());
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "CloseInternetExplorer: intSleep=" + intSleep.ToString());
@@ -914,23 +1086,35 @@ namespace IdealAutomate.Core {
       if (intSleep > 0) {
         System.Threading.Thread.Sleep(intSleep);
       }
-       InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.MENU, VirtualKeyCode.VK_F); //System.Windows.Forms.Keys.Alt);
+      InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.MENU, VirtualKeyCode.VK_F); //System.Windows.Forms.Keys.Alt);
       System.Threading.Thread.Sleep(200);
       InputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_X);
     }
-   public void CloseApplicationAltFc(int intSleep) {
-     if (fbDebugMode) {
-       Console.WriteLine(oProcess.ProcessName + "==> " + "CloseInternetExplorer: intSleep=" + intSleep.ToString());
-       Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "CloseInternetExplorer: intSleep=" + intSleep.ToString());
-     }
-     InputSimulator InputSimulator = new InputSimulator();
-     if (intSleep > 0) {
-       System.Threading.Thread.Sleep(intSleep);
-     }
-     InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.MENU, VirtualKeyCode.VK_F); //System.Windows.Forms.Keys.Alt);
-     System.Threading.Thread.Sleep(200);
-     InputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_C);
-   }
+    /// <summary>
+    /// <para>CloseApplicationAltFc accepts an input integer to indicate how many milliseconds</para>
+    /// <para>to wait before sending text Alt(F)c to close an application</para>
+    /// </summary>
+    /// <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
+
+    public void CloseApplicationAltFc(int intSleep) {
+      if (fbDebugMode) {
+        Console.WriteLine(oProcess.ProcessName + "==> " + "CloseInternetExplorer: intSleep=" + intSleep.ToString());
+        Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "CloseInternetExplorer: intSleep=" + intSleep.ToString());
+      }
+      InputSimulator InputSimulator = new InputSimulator();
+      if (intSleep > 0) {
+        System.Threading.Thread.Sleep(intSleep);
+      }
+      InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.MENU, VirtualKeyCode.VK_F); //System.Windows.Forms.Keys.Alt);
+      System.Threading.Thread.Sleep(200);
+      InputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_C);
+    }
+    /// <summary>
+    /// <para>SelectAllCopy accepts an input integer to indicate how many milliseconds</para>
+    /// <para>to wait before sending text Ctrl(a) and Ctrl(c). This will put</para>
+    /// <para>all of the input into the clipboard</para>
+    /// </summary>
+    /// <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
     public void SelectAllCopy(int intSleep) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "SelectAllCopy: intSleep=" + intSleep.ToString());
@@ -944,11 +1128,20 @@ namespace IdealAutomate.Core {
       System.Threading.Thread.Sleep(200);
       InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_C);
     }
+    /// <summary>
+    /// <para>SelectAllCopyIntoEntity accepts an input integer to indicate how many milliseconds</para>
+    /// <para>to wait before sending text Ctrl(a) and Ctrl(c). This will put</para>
+    /// <para>all of the input into the clipboard and then it will return</para>
+    /// <para>what is in the clipboard as a string</para>
+    /// </summary>
+    /// <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
+
     public string SelectAllCopyIntoEntity(int intSleep) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "SelectAllCopy: intSleep=" + intSleep.ToString());
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "SelectAllCopy: intSleep=" + intSleep.ToString());
       }
+      Clipboard.Clear();
       InputSimulator InputSimulator = new InputSimulator();
       if (intSleep > 0) {
         System.Threading.Thread.Sleep(intSleep);
@@ -958,6 +1151,13 @@ namespace IdealAutomate.Core {
       InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_C);
       return PutClipboardInEntity();
     }
+    /// <summary>
+    /// <para>SelectAllPaste accepts an input integer to indicate how many milliseconds</para>
+    /// <para>to wait before sending text Ctrl(a) and Ctrl(v). This will select</para>
+    /// <para>all of the input on the screen and replace it with what is in the clipboard</para>
+    /// </summary>
+    /// <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
+
     public void SelectAllPaste(int intSleep) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "SelectAllPaste: intSleep=" + intSleep.ToString());
@@ -974,6 +1174,15 @@ namespace IdealAutomate.Core {
       }
       InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_V);
     }
+    /// <summary>
+    /// <para>SelectAllPasteFromEntity accepts a string to paste and an </para>
+    /// <para>input integer to indicate how many milliseconds</para>
+    /// <para>to wait before sending text Ctrl(a) and Ctrl(v). This will select</para>
+    /// <para>all of the input on the screen and replace it with what is in input string</para>
+    /// </summary>
+    /// <param name="myEntity">string that you want to paste</param>
+    /// <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
+
     public void SelectAllPasteFromEntity(string myEntity, int intSleep) {
       PutEntityInClipboard(myEntity);
       if (fbDebugMode) {
@@ -988,6 +1197,12 @@ namespace IdealAutomate.Core {
       System.Threading.Thread.Sleep(200);
       InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_V);
     }
+    /// <summary>
+    /// <para>SelectAllDelete accepts an input integer to indicate how many milliseconds</para>
+    /// <para>to wait before sending text Ctrl(a) and {DELETE}. This will delete</para>
+    /// <para>what is in the input field on the screen</para>    
+    /// </summary>
+    /// <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
     public void SelectAllDelete(int intSleep) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "SelectAllDelete: intSleep=" + intSleep.ToString());
@@ -1001,30 +1216,56 @@ namespace IdealAutomate.Core {
       System.Threading.Thread.Sleep(200);
       InputSimulator.Keyboard.KeyPress(VirtualKeyCode.DELETE);
     }
-    public void WindowMultipleControls(ref List<ControlEntity> myListControlEntity, int intWindowHeight, int intWindowWidth) {
+    /// <summary>
+    /// <para>WindowMultipleControls takes a list of ControlEntity objects</para>
+    /// <para>and positions them in a window. When the user presses the </para>
+    /// <para>okay button on the screen, the list of ControlEntity objects</para>
+    /// <para>are updated with the values the user entered.  This provides</para>
+    /// <para>an easy way to receive mupltiple values from the user</para>
+    /// </summary>
+    /// <param name="myListControlEntity">list of ControlEntity objects</param>
+    /// <param name="intWindowHeight">integer indicating height of window</param>
+    /// <param name="intWindowWidth">integer indicating width of window</param>
+    /// <param name="intWindowTop">integer indicating number of pixels from top of screen to display window</param>
+    /// <param name="intWindowLeft">integer indicating number of pixels from left side of screen to display window</param>
+    public void WindowMultipleControls(ref List<ControlEntity> myListControlEntity, int intWindowHeight, int intWindowWidth,  int intWindowTop, int intWindowLeft) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "WindowMultipleControls");
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "WindowMultipleControls");
       }
-      WindowMultipleControls dlg = new WindowMultipleControls(ref myListControlEntity, intWindowHeight, intWindowWidth);
+      WindowMultipleControls dlg = new WindowMultipleControls(ref myListControlEntity, intWindowHeight, intWindowWidth, intWindowTop, intWindowLeft);
 
       // dlg.Owner = (Window)Window.GetWindow(this);
       // Shadow.Visibility = Visibility.Visible;
       dlg.ShowDialog();
-      
+
     }
+   /// <summary>
+   /// <para>WindowComboBox receives an IEnumerable of objects (ComboBoxPair) </para>
+   /// <para>and a string for the label for the combobox. It returns the</para>
+   /// <para>selected ComboBoxPair</para>
+   /// </summary>
+   /// <param name="myEntity">IEnumerable of objects</param>
+   /// <param name="myEntity2">String for the label for the combobox</param>
+   /// <returns>Selected ComboBoxPair</returns>
     public ComboBoxPair WindowComboBox(IEnumerable<object> myEntity, string myEntity2) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "WindowComboBox: myEntity=" + myEntity);
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "WindowComboBox: myEntity=" + myEntity);
       }
       WindowComboBox dlg = new WindowComboBox(myEntity, myEntity2);
-    
-     // dlg.Owner = (Window)Window.GetWindow(this);
+
+      // dlg.Owner = (Window)Window.GetWindow(this);
       // Shadow.Visibility = Visibility.Visible;
       dlg.ShowDialog();
       return dlg.SelectedComboBoxPair;
     }
+    /// <summary>
+    /// <para>WindowTextBox receives a string for the label for the textbox</para>
+    /// <para>and returns a string containing the value the user entered</para>
+    /// </summary>
+    /// <param name="myEntity">string that is label for textbox</param>
+    /// <returns>string that is the value the user entered into textbox</returns>
     public string WindowTextBox(string myEntity) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "WindowTextBox: myEntity=" + myEntity);
@@ -1037,18 +1278,32 @@ namespace IdealAutomate.Core {
       dlg.ShowDialog();
       return dlg.TextBoxValue;
     }
-    public void WindowShape(string myShape, string myOrientation,string myTitle, string myContent, int intTop, int intLeft) {
+    /// <summary>
+    /// <para>WindowShape allows you to display info to the user and to position that </para>
+    /// <para>the window on the screen</para>
+    /// </summary>
+    /// <param name="myShape">string "Box" or "Arrow"</param>
+    /// <param name="myOrientation">string "Left","Right","Up","Down",""</param>
+    /// <param name="myTitle">string title for window</param>
+    /// <param name="myContent">string content for window</param>
+    /// <param name="intTop">integer indicating number of pixels from top of screen to display window</param>
+    /// <param name="intLeft">integer indicating number of pixels from left of screen to display window</param>
+    public void WindowShape(string myShape, string myOrientation, string myTitle, string myContent, int intTop, int intLeft) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "WindowShape: myEntity=" + myTitle);
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "WindowShape: myEntity=" + myTitle);
       }
-      WindowShape dlg = new WindowShape(myShape,myOrientation, myTitle, myContent, intTop, intLeft);
+      WindowShape dlg = new WindowShape(myShape, myOrientation, myTitle, myContent, intTop, intLeft);
 
       // dlg.Owner = (Window)Window.GetWindow(this);
       // Shadow.Visibility = Visibility.Visible;
       dlg.ShowDialog();
       return;
     }
+    /// <summary>
+    /// MessageBoxShow receives an input string and displays it in a messagebox
+    /// </summary>
+    /// <param name="myEntity">string that you want to display in messagebox</param>
     public void MessageBoxShow(string myEntity) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "MessageBoxShow: myEntity=" + myEntity);
@@ -1057,6 +1312,12 @@ namespace IdealAutomate.Core {
       System.Windows.Forms.MessageBox.Show(myEntity, "Header", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.None,
     System.Windows.Forms.MessageBoxDefaultButton.Button1, (System.Windows.Forms.MessageBoxOptions)0x40000);  // MB_TOPMOST
     }
+    /// <summary>
+    /// MessageBoxShowWithYesNo receives an input string and displays it in a messagebox with Yes and No Buttons
+    /// </summary>
+    /// <param name="myEntity">string that you want to display in messagebox</param>
+
+    /// <returns>System.Windows.Forms.DialogResult</returns>
     public System.Windows.Forms.DialogResult MessageBoxShowWithYesNo(string myEntity) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "MessageBoxShow: myEntity=" + myEntity);
@@ -1067,6 +1328,14 @@ namespace IdealAutomate.Core {
     System.Windows.Forms.MessageBoxDefaultButton.Button1, (System.Windows.Forms.MessageBoxOptions)0x40000);  // MB_TOPMOST
       return _dialogResult;
     }
+    /// <summary>
+    /// <para>Run receives two input strings. The first is the path to the executable.</para>
+    /// <para>The second is optional and it is the content you want to open with the executable.</para>
+    /// <para>Run starts the executable as a thread and continues to the next statement</para>
+    /// <para>without waiting the the thread to complete.</para>
+    /// </summary>
+    /// <param name="myEntityForExecutable">string for the path of the executable</param>
+    /// <param name="myEntityForContent">string for the content for the executable to open</param>
     public void Run(string myEntityForExecutable, string myEntityForContent) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "Run: myEntityForExecutable=" + myEntityForExecutable + " myEntityForContent=" + myEntityForContent);
@@ -1096,6 +1365,15 @@ namespace IdealAutomate.Core {
         }
       }
     }
+    /// <summary>
+    /// <para>RunSync receives two input strings. The first is the path to the executable.</para>
+    /// <para>The second is optional and it is the content you want to open with the executable.</para>
+    /// <para>Run starts the executable as a thread and continues to the next statement</para>
+    /// <para>AFTER the thread completes</para>
+    /// </summary>
+    /// <param name="myEntityForExecutable">string for the path of the executable</param>
+    /// <param name="myEntityForContent">string for the content for the executable to open</param>
+
     public void RunSync(string myEntityForExecutable, string myEntityForContent) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "RunSync: myEntityForExecutable=" + myEntityForExecutable + " myEntityForContent=" + myEntityForContent);
@@ -1133,12 +1411,16 @@ namespace IdealAutomate.Core {
       while (started == true && GetProcByID(procId) != null) {
         System.Threading.Thread.Sleep(1000);
       }
-    
+
     }
     private Process GetProcByID(int id) {
       Process[] processlist = Process.GetProcesses();
       return processlist.FirstOrDefault(pr => pr.Id == id);
     }
+    /// <summary>
+    /// Sleep receives an integer that indicates the number of milliseconds that you want the program to wait.
+    /// </summary>
+    /// <param name="intSleep">integer that indicates the number of milliseconds that you want the program to wait.</param>
     public void Sleep(int intSleep) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "Sleep:  intSleep=" + intSleep.ToString());
@@ -1147,7 +1429,7 @@ namespace IdealAutomate.Core {
       System.Threading.Thread.Sleep(intSleep);
     }
 
-  
+
 
     private List<SubPositionInfo> Click_PNG(ImageEntity myImage, bool boolUseGrayScaleDB) {
       if (fbDebugMode) {
@@ -1199,7 +1481,7 @@ namespace IdealAutomate.Core {
       Console.WriteLine(oProcess.ProcessName + "==> " + "Searching..." + myImage.ImageFile + Environment.NewLine);
       Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "Searching..." + myImage.ImageFile + Environment.NewLine);
 
-    
+
       // Find subimages
       Bitmap bmx;
 
@@ -1325,7 +1607,7 @@ namespace IdealAutomate.Core {
       const int nChars = 256;
       int handle = 0;
       StringBuilder Buff = new StringBuilder(nChars);
-      handle = (int)GetForegroundWindow(); 
+      handle = (int)GetForegroundWindow();
       // If Active window has some title info..
       if (GetWindowText(handle, Buff, nChars) > 0) {
         uint lpdwProcessId;

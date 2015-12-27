@@ -3,10 +3,9 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Name="myWindow"
 	Title="WindowMultipleControls" 
-                Height="391"
-        Width="487"
-        WindowStartupLocation="CenterOwner"
-        WindowStyle="None"
+                
+        
+        WindowStyle="None" 
         AllowsTransparency="True"
         ShowInTaskbar="False"
         Background="#00000000" Topmost="True">
