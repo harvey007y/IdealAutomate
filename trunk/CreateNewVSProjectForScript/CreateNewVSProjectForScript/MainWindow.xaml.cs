@@ -30,7 +30,7 @@ namespace CreateNewVSProjectForScript {
       if (strWindowTitle.StartsWith("CreateNewVSProjectForScript")) {
         myActions.TypeText("%(\" \"n)", 1000); // minimize visual studio
       }
-      myActions.Run(@"C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\devenv.exe", "");
+      myActions.Run(myActions.GetValueByKey("VS2013Path","IdealAutomateDB"), "");
       ImageEntity myImage = new ImageEntity();
 
       if (boolRunningFromHome) {
@@ -82,7 +82,7 @@ namespace CreateNewVSProjectForScript {
       myActions.PutEntityInClipboard(strProjectName);
       myActions.TypeText("^(v)", 500);
       myActions.TypeText("{TAB}", 500);
-      myActions.PutEntityInClipboard(@"C:\SVN\ReleaseIndependent\Developers\Wade\");
+      myActions.PutEntityInClipboard(myActions.GetValueByKey("SVNPath","IdealAutomateDB"));
       myActions.TypeText("^(v)", 500);
       myActions.TypeText("{TAB 5}", 500);
 
