@@ -1,0 +1,517 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>IdealAutomateCore</name>
+    </assembly>
+    <members>
+        <member name="T:IdealAutomateCore.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:IdealAutomateCore.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:IdealAutomateCore.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:IdealAutomateCore.Properties.Resources.RedArrowDown">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:IdealAutomateCore.Properties.Resources.RedArrowLeft">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:IdealAutomateCore.Properties.Resources.RedArrowRight">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:IdealAutomateCore.Properties.Resources.RedArrowUp">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:IdealAutomateCore.Properties.Resources.RedBox">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="T:IdealAutomate.Core.WindowMultipleControls">
+            <summary>
+            Interaction logic for WindowComboBox.xaml
+            </summary>
+            <summary>
+            WindowMultipleControls
+            </summary>
+        </member>
+        <member name="M:IdealAutomate.Core.WindowMultipleControls.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:IdealAutomate.Core.WindowShape">
+            <summary>
+            Interaction logic for WindowComboBox.xaml
+            </summary>
+            <summary>
+            WindowShape
+            </summary>
+        </member>
+        <member name="M:IdealAutomate.Core.WindowShape.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:IdealAutomate.Core.WindowTextBox">
+            <summary>
+            Interaction logic for WindowComboBox.xaml
+            </summary>
+            <summary>
+            WindowTextBox
+            </summary>
+        </member>
+        <member name="M:IdealAutomate.Core.WindowTextBox.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:IdealAutomate.Core.WindowComboBox">
+            <summary>
+            Interaction logic for WindowComboBox.xaml
+            </summary>
+            <summary>
+            WindowComboBox
+            </summary>
+        </member>
+        <member name="M:IdealAutomate.Core.WindowComboBox.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.GetWindowTitlesByProcessName(System.String)">
+            <summary>
+            GetWindowTitlesByProcessName allows you to get a list of all the WindowTitles
+            for a process name. ProcessNames are called image names in task manager.
+            You can find all of the iexplore or devenv and activate each one to see if it 
+            is the one you want
+            </summary>
+            <param name="myProcessName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.GetValueByKey(System.String,System.String)">
+            <summary>
+            <para>GetValueByKey returns the value for the specified key from KeyValueTable.</para>
+            <para>The KeyValueTable allows you to store personal settings and</para>
+            <para>information that you want to keep private (like passwords) in a location</para>
+            <para>outside of your script on SQLExpress</para>
+            </summary>
+            <param name="pKey">The Key for the KeyValuePair</param>
+            <param name="pInitialCatalog">usually IdealProgrammerDB</param>
+            <returns>String that is the Value for the KeyValuePair</returns>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.SetValueByKey(System.String,System.String,System.String)">
+            <summary>
+            <para>SetValueByKey allows you to create or update the specified key</para>
+            <para>in the KeyValueTable.</para>
+            <para>The KeyValueTable allows you to store personal settings and</para>
+            <para>information that you want to keep private (like passwords) in a location</para>
+            <para>outside of your script on SQLExpress</para>
+            </summary>
+            <param name="pKey">The Key for the KeyValue pair</param>
+            <param name="pValue">The Value for the KeyValue pair</param>
+            <param name="pInitialCatalog">usually IdealProgrammerDB</param>
+            <returns>The Value for the KeyValue Pair</returns>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.PutAll(IdealAutomate.Core.ImageEntity)">
+            <summary>
+            <para>PutAll receives an ImageEntity object and returns</para>
+            <para>an integer array of all of x,y coordinates of where the</para>
+            <para>image was found</para>
+            <para>Images are used to locate a specific area of the screen. The Windows Snipping Tool is very useful for saving image files to your images folder. If you are not familiar with the Windows Snipping Tool, you should google it to learn about it as it is very helpful. There is a trick to taking snapshots of popup windows. The trick involves clicking on the new option in the snipping tool to cause it to make the entire screen go out of focus. Then, you hit the escape key to remove opacity cloud that prevent you from accessing your screen. At this point, you can activate your popup or dropdown window. Next, you press the control key plus the print key to cause the opacity cloud to appear without removing the popup or dropdown window. You can now drag the Windows Snipping Tool around the window to get a snapshot of it without it disappearing. The Image Tabs has these columns:</para>
+            <para>1. ImageFile</para>
+            <para>The imageFile is the file path where the image resides.</para>
+            <para>2. Attempts</para>
+            <para>If Attempts is specified, it must be defined as an integer (int). The default value is 1. Sometimes an image will not be found on the first attempt because your computer may be running slowly, and the window may not be fully loaded when the script is looking for it. By specifying an Attempts value of 10, for example, the script will try to find the image up to 10 times before moving on to the next action. In this example, if the image was found on the third attempt, it would not continue looking for the other 7 times since the image was already found.</para>
+            <para>3. Occurrence</para>
+            <para>If Occurrence is specified, it must be defined  as an integer (int). If you are only interested in locating a specific occurrence of an image, for example - the second occurrence, you can specify that number as the value of the primitive that is specified in this column.</para>
+            <para>4. Sleep</para>
+            <para>If Sleep is specified, it must be defined as an integer (int). If you are only interested in locating a specific occurrence of an image, for example - the second occurrence, you can specify that number as the value of the primitive that is specified in this column.</para>
+            <para>5. RelativeX</para>
+            <para>If RelativeX is specified, it must be defined  as an integer (int). The default value for RelativeX is 0. When an image is found, the position of the upper-left corner is returned. You can specify a RelativeX value of pixels to be added to the original X value returned to realign the pixel that you want to click on to the left or to the right.</para>
+            <para>6. RelativeY</para>
+            <para>If RelativeY is specified, it must be defined as an integer (int). The default value for RelativeY is 0. When an image is found, the position of the upper-left corner is returned. You can specify a RelativeY value of pixels to be added to the original Y value returned to realign the pixel that you want to click on to be higher or lower.</para>
+            <para>7. UseGrayScale</para>
+            <para>If UseGrayScale is true, it attempts to ignore color when looking for the image. GreyScale is created by add the RGB values for a pixel together and dividing that sum by three so color is still a factor, but it is just not as sensitive.</para>
+            <para>8. Tolerance</para>
+            <para>The default value for Tolerance is 90. Tolerance specifies the percent of pixels that must match in order for an image to be considered found. When searching for images, the application starts by comparing the least frequent occurrence of a pattern of 10 pixels to every location on the screen in order speed up the process. If there is no match on the least frequent pattern of 10 pixels in the smaller image, it will try to match the second to least most popular pattern of 10 pixels. If there is no match on that second-least frequently occurring pattern, the image will not be found even though there may be more than a 90 percent match between the smaller image and an area on the screen. Sometimes, it helps to try to cut and paste a different image if you are having trouble finding a particular image.</para>
+            </summary>
+            <param name="myImage">ImageEntity object</param>
+            <returns>an integer array of all of x,y coordinates of where the image was found</returns>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.PutCursorPosition">
+            <summary>
+            <para>PutCursorPosition provides a way to save the cursor position in</para>
+            <para>an array so you can come back to it later without having to find</para>
+            <para>the original image again.</para>
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.PutCaretPositionInArray">
+            <summary>
+            <para>PutCaretPositionInArray provides a way to save the caret position</para>
+            <para>in an array so you can come back to it later without having to find </para>
+            the original position again.
+            </summary>
+            <returns></returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:IdealAutomate.Core.Methods.ClickImageIfExists(IdealAutomate.Core.ImageEntity)" -->
+        <member name="M:IdealAutomate.Core.Methods.LeftClick(System.Int32[0:,0:])">
+            <summary>
+            LeftClick allows you to left-click on the X and Y coordinates of an int array passed into the method.
+            </summary>
+            <param name="myArray">int array containing X and Y coordinates of position on screen to click</param>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.ShiftClick(System.Int32[0:,0:])">
+            <summary>
+            ShiftClick allows you to shift-click on the X and Y coordinates of an int array passed into the method.
+            </summary>
+            <param name="myArray">int array containing X and Y coordinates of position on screen to click</param>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.RightClick(System.Int32[0:,0:])">
+            <summary>
+            RightClick allows you to right-click on the X and Y coordinates of an int array passed into the method.
+            </summary>
+            <param name="myArray">int array containing X and Y coordinates of position on screen to click</param>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.PositionCursor(System.Int32[0:,0:])">
+            <summary>
+            PositionCursor allows you to move the cursor to the X and Y coordinates of an int array passed into the method.
+            </summary>
+            <param name="myArray">int array containing X and Y coordinates of position on screen to click</param>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.PutClipboardInEntity">
+            <summary>
+            PutClipboardInEntity returns a string that contains the text in the clipboard.
+            </summary>
+            <returns>string that contains the text in the clipboard</returns>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.PutWindowTitleInEntity">
+            <summary>
+            PutWindowTitleInEntity returns a string that contains the title of the Active Window
+            </summary>
+            <returns>string that contains the title of the Active Window</returns>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.PutInternetExplorerTabTitleInEntity">
+            <summary>
+            PutInternetExplorerTabTitleInEntity returns a string that contains the Title for the active tab in internet explorer
+            </summary>
+            <returns>string that contains the Title for the active tab in internet explorer</returns>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.PutInternetExplorerTabURLContainingStringInEntity(System.String)">
+            <summary>
+            PutInternetExplorerTabTitleInEntity returns a string that contains the url in the address bar for the active tab in internet explorer
+            </summary>
+            <returns>string that contains the url for the address bar for the active tab in internet explorer</returns>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.PutEntityInClipboard(System.String)">
+            <summary>
+            PutEntityInClipboard takes the input parameter string and puts it in the clipboard
+            </summary>
+            <param name="myEntity">string that you want to put into the clipboard</param>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.TypeText(System.String,System.Int32)">
+            <summary>
+            <para>TypeText - The visual basic SendKeys function is used to mimic </para>
+            <para>pressing special keys (like the enter or alt keys). This means you </para>
+            <para>need to use the Shortcut Keys help file in the IdealAutomate application </para>
+            <para>or google in order to learn what characters can be used to represent</para>
+            <para>special keys. For example, the ^ character is used to represent the </para>
+            <para>control key and here is how you indicate the enter key is pressed: </para>
+            <para>{ENTER}. You will also need to learn how to "escape" special characters</para>
+            <para>(like the bracket character). If you are trying to type a lot of special</para>
+            <para>characters, it may be easier to create a string primitive with the </para>
+            <para>text you want to type and use the PutEntityInClipboard verb to copy </para>
+            <para>the string into the clipboard. After the string is in the clipboard,</para>
+            <para>you can use the TypeText verb with control v to paste what is in the</para>
+            clipboard to where you want it.
+            </summary>
+            <param name="myEntity">string representing the keys you want to press</param>
+            <param name="intSleep">integer representing the number of milliseconds to wait before sending the text</param>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.CloseApplicationAltFx(System.Int32)">
+            <summary>
+            <para>CloseApplicationAltFx accepts an input integer to indicate how long</para>
+            <para>to wait before sending text Alt(F)x to close an application</para>
+            </summary>
+            <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.CloseApplicationAltFc(System.Int32)">
+            <summary>
+            <para>CloseApplicationAltFc accepts an input integer to indicate how many milliseconds</para>
+            <para>to wait before sending text Alt(F)c to close an application</para>
+            </summary>
+            <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.SelectAllCopy(System.Int32)">
+            <summary>
+            <para>SelectAllCopy accepts an input integer to indicate how many milliseconds</para>
+            <para>to wait before sending text Ctrl(a) and Ctrl(c). This will put</para>
+            <para>all of the input into the clipboard</para>
+            </summary>
+            <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.SelectAllCopyIntoEntity(System.Int32)">
+            <summary>
+            <para>SelectAllCopyIntoEntity accepts an input integer to indicate how many milliseconds</para>
+            <para>to wait before sending text Ctrl(a) and Ctrl(c). This will put</para>
+            <para>all of the input into the clipboard and then it will return</para>
+            <para>what is in the clipboard as a string</para>
+            </summary>
+            <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.SelectAllPaste(System.Int32)">
+            <summary>
+            <para>SelectAllPaste accepts an input integer to indicate how many milliseconds</para>
+            <para>to wait before sending text Ctrl(a) and Ctrl(v). This will select</para>
+            <para>all of the input on the screen and replace it with what is in the clipboard</para>
+            </summary>
+            <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.SelectAllPasteFromEntity(System.String,System.Int32)">
+            <summary>
+            <para>SelectAllPasteFromEntity accepts a string to paste and an </para>
+            <para>input integer to indicate how many milliseconds</para>
+            <para>to wait before sending text Ctrl(a) and Ctrl(v). This will select</para>
+            <para>all of the input on the screen and replace it with what is in input string</para>
+            </summary>
+            <param name="myEntity">string that you want to paste</param>
+            <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.SelectAllDelete(System.Int32)">
+            <summary>
+            <para>SelectAllDelete accepts an input integer to indicate how many milliseconds</para>
+            <para>to wait before sending text Ctrl(a) and {DELETE}. This will delete</para>
+            <para>what is in the input field on the screen</para>    
+            </summary>
+            <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.WindowMultipleControls(System.Collections.Generic.List{IdealAutomate.Core.ControlEntity}@,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            <para>WindowMultipleControls takes a list of ControlEntity objects</para>
+            <para>and positions them in a window. When the user presses the </para>
+            <para>okay button on the screen, the list of ControlEntity objects</para>
+            <para>are updated with the values the user entered.  This provides</para>
+            <para>an easy way to receive mupltiple values from the user</para>
+            </summary>
+            <param name="myListControlEntity">list of ControlEntity objects</param>
+            <param name="intWindowHeight">integer indicating height of window</param>
+            <param name="intWindowWidth">integer indicating width of window</param>
+            <param name="intWindowTop">integer indicating number of pixels from top of screen to display window</param>
+            <param name="intWindowLeft">integer indicating number of pixels from left side of screen to display window</param>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.WindowComboBox(System.Collections.Generic.IEnumerable{System.Object},System.String)">
+            <summary>
+            <para>WindowComboBox receives an IEnumerable of objects (ComboBoxPair) </para>
+            <para>and a string for the label for the combobox. It returns the</para>
+            <para>selected ComboBoxPair</para>
+            </summary>
+            <param name="myEntity">IEnumerable of objects</param>
+            <param name="myEntity2">String for the label for the combobox</param>
+            <returns>Selected ComboBoxPair</returns>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.WindowTextBox(System.String)">
+            <summary>
+            <para>WindowTextBox receives a string for the label for the textbox</para>
+            <para>and returns a string containing the value the user entered</para>
+            </summary>
+            <param name="myEntity">string that is label for textbox</param>
+            <returns>string that is the value the user entered into textbox</returns>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.WindowShape(System.String,System.String,System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            <para>WindowShape allows you to display info to the user and to position that </para>
+            <para>the window on the screen</para>
+            </summary>
+            <param name="myShape">string "Box" or "Arrow"</param>
+            <param name="myOrientation">string "Left","Right","Up","Down",""</param>
+            <param name="myTitle">string title for window</param>
+            <param name="myContent">string content for window</param>
+            <param name="intTop">integer indicating number of pixels from top of screen to display window</param>
+            <param name="intLeft">integer indicating number of pixels from left of screen to display window</param>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.MessageBoxShow(System.String)">
+            <summary>
+            MessageBoxShow receives an input string and displays it in a messagebox
+            </summary>
+            <param name="myEntity">string that you want to display in messagebox</param>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.MessageBoxShowWithYesNo(System.String)">
+            <returns>System.Windows.Forms.DialogResult</returns>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.Run(System.String,System.String)">
+            <summary>
+            <para>Run receives two input strings. The first is the path to the executable.</para>
+            <para>The second is optional and it is the content you want to open with the executable.</para>
+            <para>Run starts the executable as a thread and continues to the next statement</para>
+            <para>without waiting the the thread to complete.</para>
+            </summary>
+            <param name="myEntityForExecutable">string for the path of the executable</param>
+            <param name="myEntityForContent">string for the content for the executable to open</param>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.RunSync(System.String,System.String)">
+            <summary>
+            <para>RunSync receives two input strings. The first is the path to the executable.</para>
+            <para>The second is optional and it is the content you want to open with the executable.</para>
+            <para>Run starts the executable as a thread and continues to the next statement</para>
+            <para>AFTER the thread completes</para>
+            </summary>
+            <param name="myEntityForExecutable">string for the path of the executable</param>
+            <param name="myEntityForContent">string for the content for the executable to open</param>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.Sleep(System.Int32)">
+            <summary>
+            Sleep receives an integer that indicates the number of milliseconds that you want the program to wait.
+            </summary>
+            <param name="intSleep">integer that indicates the number of milliseconds that you want the program to wait.</param>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.EvaluateCaretPosition">
+            <summary>
+            Evaluates Cursor Position with respect to client screen.
+            </summary>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.GetCaretPosition">
+            <summary>
+            Get the caret position
+            </summary>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.GetActiveProcess">
+            <summary>
+            Retrieves name of active Process.
+            </summary>
+            <returns>Active Process Name</returns>
+        </member>
+        <member name="T:IdealAutomate.Core.Position_Cursor.Point">
+            <summary>
+            Not sure if we're just supposed to create our own point class.
+            </summary>
+        </member>
+        <member name="M:IdealAutomate.Core.Scraper.GetSubPositions(System.Drawing.Bitmap,System.Drawing.Bitmap,System.Boolean,System.Decimal@,System.Int32)">
+            <summary>
+            GetSubPositions takes a bitmap of a larger image (usually, the desktop) and a 
+            bitmap of a smaller image. It returns a list of subpositions
+            within the larger image where the smaller image was found.
+            You can specify grayscale matching to match images based
+            on grayscale. If you specify a tolerance percentage, it
+            allows you to still consider an image matched even if
+            only a certain percentage of the pixels match. 
+            </summary>
+            <param name="main">Larger Image - usually desktop</param>
+            <param name="sub">Smaller Image that you want to find in the larger one</param>
+            <param name="strSubImageFileName">I do not think this is used</param>
+            <param name="boolUseGrayScale"></param>
+            <param name="highestPercentCorrect"></param>
+            <param name="intTolerance"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdealAutomate.Core.Scraper.FindMostPopularColorInSmallImage(System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32,System.Byte[],IdealAutomate.Core.Scraper.MostPopularColorSmallImage@,System.Collections.Generic.Dictionary{IdealAutomate.Core.Scraper.MyColor,System.Int32[]},System.Collections.Generic.List{System.Drawing.Point}@,System.Collections.Generic.List{System.Drawing.Point}@,System.Collections.Generic.Dictionary{IdealAutomate.Core.Scraper.MyColor,IdealAutomate.Core.Scraper.MostPopularColorSmallImage}@,System.Collections.Generic.List{System.Drawing.Point}@,IdealAutomate.Core.Scraper.MyColor@,System.Collections.Generic.List{System.Drawing.Point}@)">
+            <summary>
+            x1. In the small image, get the most popular color, which will be the background color for small picture.
+            x2. In the small image, find 3 background pixels in a row and select the location of the middle one as a safe place to get the background color for big image.
+            x3. In the small image, everytime the foreground/background change and there are at least 3 of the new kind in a row, add the location of the middle one to one of two lists (Background/Foreground)of safe preliminary points to check. 
+            </summary>
+            <param name="sub"></param>
+            <param name="subwidth"></param>
+            <param name="subheight"></param>
+            <param name="strideSub"></param>
+            <param name="dataSub"></param>
+            <param name="pMostPopularColorSmallImage"></param>
+            <param name="repeatsMostPopular"></param>
+            <param name="lstPrelimBackground"></param>
+            <param name="lstPrelimForeground"></param>
+        </member>
+        <member name="M:IdealAutomate.Core.Scraper.LoopthruEachPixelInBigImageToFindMatchesOnSmallImageBackgroundPattern(System.Drawing.Bitmap,System.Drawing.Bitmap,System.Collections.Generic.List{IdealAutomate.Core.SubPositionInfo},System.Collections.Generic.List{System.Drawing.Rectangle},System.Int32,System.Int32,System.Byte[],System.Int32,System.Int32,System.Byte[],IdealAutomate.Core.Scraper.MostPopularColorSmallImage,System.Boolean[0:,0:],System.Decimal@,System.Int32,System.Collections.Generic.List{System.Drawing.Point},System.Collections.Generic.List{System.Drawing.Point},System.Collections.Generic.Dictionary{IdealAutomate.Core.Scraper.MyColor,IdealAutomate.Core.Scraper.MostPopularColorSmallImage}@,System.Collections.Generic.List{System.Drawing.Point},IdealAutomate.Core.Scraper.MyColor@,System.Collections.Generic.List{System.Drawing.Point}@)">
+            <summary>
+            x4. Get background for big picture.
+            x5. Do preliminary check in big picture that tests at least 5 background pixels and 5 foreground pixels and quits when error rate rises above a certain percentage. If there are not 5 background or 5 foreground pixels in small image, just proceed to complete check.
+            x6. Do complete check in big picture if big picture passes preliminary check.
+            </summary>
+            <param name="main"></param>
+            <param name="sub"></param>
+            <param name="possiblepos"></param>
+            <param name="foundRects"></param>
+            <param name="mainwidth"></param>
+            <param name="mainheight"></param>
+            <param name="dataMain"></param>
+            <param name="strideMain"></param>
+            <param name="strideSub"></param>
+            <param name="dataSub"></param>
+            <param name="pMostPopularColorSmallImage"></param>
+            <param name="boolArySmallImage"></param>
+            <param name="highestPercentCorrect"></param>
+            <param name="intTolerance"></param>
+            <param name="lstPrelimBackground"></param>
+            <param name="lstPrelimForeground"></param>
+        </member>
+        <member name="M:IdealAutomate.Core.Scraper.getDesktopBitmap(System.Boolean)">
+            <summary>
+            Initialize global data structures
+            </summary>
+            <remarks>
+            The bitmap returned is in PixelFormat.Format24bppRgb.
+            </remarks>
+            <returns>Current screen image</returns>
+        </member>
+        <member name="M:IdealAutomate.Core.Scraper.imageThere(System.Byte[],System.Int32,System.Int32,System.Byte[],System.Drawing.Bitmap,System.Int32,System.Int32,System.Decimal@,System.Int32)">
+            <summary>
+            Finds if the image occurs at location loc 
+            </summary>
+            <remarks>
+            Does a simple pixle by pixle comparison of the image 
+            and the area starting at sx, sy in the desktop image bmd. 
+            </remarks>
+            <param name="bmd">Bitmap data object</param>
+            <param name="sx">Search start location (x component)</param>
+            <param name="sy">Search start location (y component)</param>
+            <returns>True if there is an occurence of the image at sx, sy</returns>
+        </member>
+        <member name="M:IdealAutomate.Core.Scraper.notFound(System.Int32,System.Int32,System.Collections.Generic.List{System.Drawing.Rectangle})">
+            <summary>
+            Determines if point x, y is in any of the found rectangles
+            </summary>
+            <param name="x">X coordinate</param>
+            <param name="y">Y coordinate</param>
+            <returns>True if point x, y is not contained in any rectangle in foundRects</returns>
+        </member>
+        <member name="M:IdealAutomate.Core.StringExtensionMethods.ReplaceFirst(System.String,System.String,System.String)">
+            <summary>
+            ReplaceFirst provides an easy way to only replace the first occurrence of a string
+            Example: myOriginalString = myOriginalString.ReplaceFirst(mySearchString,myReplacementString)
+            </summary>
+            <param name="text"></param>
+            <param name="search"></param>
+            <param name="replace"></param>
+            <returns></returns>
+        </member>
+        <member name="M:IdealAutomate.Core.StringExtensionMethods.GetNthIndex(System.String,System.String,System.String,System.Int32)">
+            <summary>
+            GetNthIndex allows you to specify a reference starting point within a string and then find the
+            index of the nth occurrence of a search string.  If no reference starting point is supplied,
+            you start at the beginning.
+            </summary>
+            <param name="pOriginalString"></param>
+            <param name="pReferencePlaceString"></param>
+            <param name="pOccurrenceString"></param>
+            <param name="pOccurrence"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
