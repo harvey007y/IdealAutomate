@@ -100,7 +100,7 @@ namespace TutorialCreateIdealAutomateTemplate {
       myControlEntity.ColumnNumber = 0;
       myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
-      myActions.WindowMultipleControls(ref myListControlEntity, 700, 900);
+      myActions.WindowMultipleControls(ref myListControlEntity, 700, 900,0,0);
 
       string mySearchTerm = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
       string myWebSite = myListControlEntity.Find(x => x.ID == "myComboBox").SelectedValue;
