@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using IdealAutomate.Core;
+using System.Collections.Generic;
 
 namespace CreateNewVSProjectForScript {
   /// <summary>
@@ -9,20 +10,20 @@ namespace CreateNewVSProjectForScript {
     public MainWindow() {
       bool boolRunningFromHome = false;
       var window = new Window() //make sure the window is invisible
-{
-  Width = 0,
-  Height = 0,
-  Left = -2000,
-  WindowStyle = WindowStyle.None,
-  ShowInTaskbar = false,
-  ShowActivated = false,
-};
+      {
+        Width = 0,
+        Height = 0,
+        Left = -2000,
+        WindowStyle = WindowStyle.None,
+        ShowInTaskbar = false,
+        ShowActivated = false,
+      };
       window.Show();
       IdealAutomate.Core.Methods myActions = new Methods();
       string strRunningFromHome = myActions.GetValueByKey("RunningFromHome", "IdealAutomateDB");
       if (strRunningFromHome == "True") {
         boolRunningFromHome = true;
-      } 
+      }
       InitializeComponent();
       this.Hide();
 
@@ -30,7 +31,7 @@ namespace CreateNewVSProjectForScript {
       if (strWindowTitle.StartsWith("CreateNewVSProjectForScript")) {
         myActions.TypeText("%(\" \"n)", 1000); // minimize visual studio
       }
-      myActions.Run(myActions.GetValueByKey("VS2013Path","IdealAutomateDB"), "");
+      myActions.Run(myActions.GetValueByKey("VS2013Path", "IdealAutomateDB"), "");
       ImageEntity myImage = new ImageEntity();
 
       if (boolRunningFromHome) {
@@ -47,9 +48,25 @@ namespace CreateNewVSProjectForScript {
       if (myArray.Length == 0) {
         myActions.MessageBoxShow("I could not find image of " + myImage.ImageFile);
       }
-      myActions.TypeText("%(f)", 500);
-      myActions.TypeText("n", 500);
-      myActions.TypeText("p", 500);
+      bool boolStartPageFound = false;
+      int intCtr = 0;
+      while (boolStartPageFound == false && intCtr < 20) {
+        List<string> myVisualStudioTitles = myActions.GetWindowTitlesByProcessName("devenv");
+        foreach (var item in myVisualStudioTitles) {
+          if (item.StartsWith("Start Page")) {
+            boolStartPageFound = true;
+            myActions.ActivateWindowByTitle(item,3);
+
+
+          }
+        }
+        myActions.Sleep(1000);
+      }
+
+      myActions.TypeText("^(+(n))", 2500);
+      myActions.Sleep(2000);
+
+
       myImage = new ImageEntity();
 
       if (boolRunningFromHome) {
@@ -66,13 +83,17 @@ namespace CreateNewVSProjectForScript {
       if (myArray.Length == 0) {
         myActions.MessageBoxShow("I could not find image of " + myImage.ImageFile);
       }
-      myActions.TypeText("^(e)", 500);
-      myActions.PutEntityInClipboard("IdealAutomateCore");
+
+
+      myActions.TypeText("^(e)", 2500);
+      string myEntityx = "IdealAutomateCore";
+      myActions.PutEntityInClipboard(myEntityx);
+
       myActions.TypeText("^(v)", 1500);
-    //  myActions.TypeText("{ENTER}", 500);
+      //  myActions.TypeText("{ENTER}", 500);
       myActions.TypeText("%(n)", 1500);
       myActions.Sleep(1000);
-      
+
       string strProjectName = myActions.WindowTextBox("Please Enter Project Name");
       if (strProjectName == "") {
         myActions.MessageBoxShow("Script Cancelled");
@@ -82,7 +103,7 @@ namespace CreateNewVSProjectForScript {
       myActions.PutEntityInClipboard(strProjectName);
       myActions.TypeText("^(v)", 500);
       myActions.TypeText("{TAB}", 500);
-      myActions.PutEntityInClipboard(myActions.GetValueByKey("SVNPath","IdealAutomateDB"));
+      myActions.PutEntityInClipboard(myActions.GetValueByKey("SVNPath", "IdealAutomateDB"));
       myActions.TypeText("^(v)", 500);
       myActions.TypeText("{TAB 5}", 500);
 
@@ -113,7 +134,7 @@ namespace CreateNewVSProjectForScript {
       goto myExit;
       myActions.TypeText("^(\" \")", 500);
       myActions.TypeText("+({F10})", 500);
-     
+
       // We found output completed and now want to copy the results
       // to notepad
 
@@ -210,7 +231,7 @@ namespace CreateNewVSProjectForScript {
       myActions.Sleep(1000);
       myActions.Run(@"C:\SVNStats.bat", "");
       myActions.Run(@"C:\Program Files\Microsoft Office\Office15\EXCEL.EXE", @"C:\SVNStats\SVNStats.xlsx");
-     myExit:
+    myExit:
       Application.Current.Shutdown();
     }
   }
