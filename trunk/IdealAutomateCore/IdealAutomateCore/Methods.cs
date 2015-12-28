@@ -95,6 +95,18 @@ namespace IdealAutomate.Core {
       }
 
     }
+    /// <summary>
+    /// SW_HIDE = 0;
+    /// SW_SHOWNORMAL = 1;
+    /// SW_SHOWMINIMIZED = 2;
+    /// SW_SHOWMAXIMIZED = 3;
+    /// SW_SHOWNOACTIVATE = 4;
+    /// SW_RESTORE = 9;
+    /// SW_SHOWDEFAULT = 10;
+    /// </summary>
+    /// <param name="myTitle"></param>
+    /// <param name="myShowOption"></param>
+    /// <returns></returns>
     public bool ActivateWindowByTitle(string myTitle, int myShowOption) {
 
       //Find the window, using the CORRECT Window Title, for example, Notepad
@@ -396,7 +408,8 @@ namespace IdealAutomate.Core {
           Logging.WriteLogSimple(String.Format("{0}={1}", name, value));
         }
       }
-      int[,] intArray = new int[,] { { 2000, 2000 } };
+      // move cursor off screen so it will not interfer with finding image
+      int[,] intArray = new int[,] { { 0, 2000 } };
 
       PositionCursor(intArray);
 
