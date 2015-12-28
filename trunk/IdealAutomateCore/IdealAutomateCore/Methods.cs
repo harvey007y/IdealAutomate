@@ -894,7 +894,7 @@ namespace IdealAutomate.Core {
       }
       try {
 
-        Thread thread = new Thread(new ThreadStart(() => {
+      //  Thread thread = new Thread(new ThreadStart(() => {
           int intTries = 0;
           TryAgain:
           bool boolClipboardWorks = ClipboardNative.CopyTextToClipboard(myEntity);
@@ -910,12 +910,12 @@ namespace IdealAutomate.Core {
 
 
 
-        }));
+        //}));
 
-        thread.SetApartmentState(ApartmentState.STA);
+        //thread.SetApartmentState(ApartmentState.STA);
 
-        thread.Start();
-        thread.Join();
+        //thread.Start();
+        //thread.Join();
       } catch (Exception ex) {
         MessageBox.Show(ex.Message);
       }
