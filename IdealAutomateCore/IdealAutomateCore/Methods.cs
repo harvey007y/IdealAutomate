@@ -900,7 +900,7 @@ namespace IdealAutomate.Core {
           bool boolClipboardWorks = ClipboardNative.CopyTextToClipboard(myEntity);
           //  Clipboard.Clear();
 
-          if (intTries < 20) {
+          if (boolClipboardWorks == false && intTries < 20) {
             intTries++;
             goto TryAgain;
           }
