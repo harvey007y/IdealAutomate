@@ -450,8 +450,16 @@ namespace Hardcodet.Wpf.Samples {
 " " +
 "END' " +
 "			) " +
-"END " +
-"declare @myCount2 int  " +
+"END ";
+
+
+
+
+
+      SqlCommand cmd1 = new SqlCommand(updCmd, con);
+      cmd1.CommandType = CommandType.Text;
+      cmd1.ExecuteNonQuery();
+      updCmd = "declare @myCount2 int  " +
 "set @mycount2 = (select COUNT(*) from[IdealAutomateDB].[dbo].[KeyValueTable])  " +
 "            if @myCount2 = 0  " +
 "            begin  " +
@@ -459,7 +467,7 @@ namespace Hardcodet.Wpf.Samples {
 "                       ([myKey]  " +
 "           ,[myValue] )  " +
 "     VALUES  " +
-"           ('RunningFromHome'  " +          
+"           ('RunningFromHome'  " +
 "           ,'True')  " +
 "            INSERT INTO[IdealAutomateDB].[dbo].[KeyValueTable]  " +
 "                       ([myKey]  " +
@@ -481,11 +489,7 @@ namespace Hardcodet.Wpf.Samples {
 @"           ,'C:\SVNIA\trunk\')  " +
 "  end  " +
 " ";
-
-
-
-
-      SqlCommand cmd1 = new SqlCommand(updCmd, con);
+      cmd1 = new SqlCommand(updCmd, con);
       cmd1.CommandType = CommandType.Text;
       cmd1.ExecuteNonQuery();
       SqlCommand cmd = new SqlCommand("Select * from UserInfo", con);
