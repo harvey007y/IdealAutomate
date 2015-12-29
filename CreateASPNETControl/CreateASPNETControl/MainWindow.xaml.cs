@@ -162,7 +162,7 @@ namespace CreateASPNETControl {
           myControlEntity.ColumnNumber = 0;
           myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
-          myActions.WindowMultipleControls(ref myListControlEntity, 700, 900);
+          myActions.WindowMultipleControls(ref myListControlEntity, 700, 900,0,0);
 
           myID = myListControlEntity.Find(x => x.ID == "txtID").Text;
           myAssociatedControlID = myListControlEntity.Find(x => x.ID == "txtAssociatedID").Text;
@@ -319,7 +319,7 @@ namespace CreateASPNETControl {
           myControlEntity.ColumnNumber = 1;
           myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
-          myActions.WindowMultipleControls(ref myListControlEntity, 700, 900);
+          myActions.WindowMultipleControls(ref myListControlEntity, 700, 900,0,0);
           myID = myListControlEntity.Find(x => x.ID == "txtID").Text;
           myWidth = myListControlEntity.Find(x => x.ID == "txtWidth").Text;
           myMaxLength = myListControlEntity.Find(x => x.ID == "txtMaxLength").Text;
@@ -552,7 +552,7 @@ namespace CreateASPNETControl {
           myControlEntity.ColumnNumber = 1;
           myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
-          myActions.WindowMultipleControls(ref myListControlEntity, 700, 900);
+          myActions.WindowMultipleControls(ref myListControlEntity, 700, 900,0,0);
 
           myID = myListControlEntity.Find(x => x.ID == "txtID").Text;
           myWidth = myListControlEntity.Find(x => x.ID == "txtWidth").Text;
@@ -684,125 +684,7 @@ namespace CreateASPNETControl {
           break;
       }
       goto myExit;
-      myActions.RunSync(@"C:\Windows\Explorer.EXE", @"C:\SVN");
-      myActions.TypeText("%(e)", 500);
-      myActions.TypeText("a", 500);
-      myActions.TypeText("^({UP 10})", 500);
-      myActions.TypeText("^(\" \")", 500);
-      myActions.TypeText("+({F10})", 500);
-      ImageEntity myImage = new ImageEntity();
-
-      if (boolRunningFromHome) {
-        myImage.ImageFile = "Images\\imgSVNUpdate_Home.PNG";
-      } else {
-        myImage.ImageFile = "Images\\imgSVNUpdate.PNG";
-      }
-      myImage.Sleep = 200;
-      myImage.Attempts = 5;
-      myImage.RelativeX = 10;
-      myImage.RelativeY = 10;
-
-      int[,] myArray = myActions.PutAll(myImage);
-      if (myArray.Length == 0) {
-        myActions.MessageBoxShow("I could not find image of SVN Update");
-      }
-      // We found output completed and now want to copy the results
-      // to notepad
-
-      // Highlight the output completed line
-      myActions.Sleep(1000);
-      myActions.LeftClick(myArray);
-      myImage = new ImageEntity();
-      if (boolRunningFromHome) {
-        myImage.ImageFile = "Images\\imgUpdateLogOK_Home.PNG";
-      } else {
-        myImage.ImageFile = "Images\\imgUpdateLogOK.PNG";
-      }
-      myImage.Sleep = 200;
-      myImage.Attempts = 200;
-      myImage.RelativeX = 10;
-      myImage.RelativeY = 10;
-      myArray = myActions.PutAll(myImage);
-      if (myArray.Length == 0) {
-        myActions.MessageBoxShow("I could not find image of OK button for update log");
-      }
-      myActions.Sleep(1000);
-      myActions.LeftClick(myArray);
-      myActions.TypeText("%(f)", 200);
-      myActions.TypeText("{UP}", 500);
-      myActions.TypeText("{ENTER}", 500);
-      myActions.Sleep(1000);
-      myActions.RunSync(@"C:\Windows\Explorer.EXE", @"C:\SVN\GTreasury\branches");
-      myImage = new ImageEntity();
-      if (boolRunningFromHome) {
-        myImage.ImageFile = "Images\\imgPatch2015_08_Home.PNG";
-      } else {
-        myImage.ImageFile = "Images\\imgPatch2015_08.PNG";
-      }
-      myImage.Sleep = 200;
-      myImage.Attempts = 200;
-      myImage.RelativeX = 30;
-      myImage.RelativeY = 10;
-
-
-      myArray = myActions.PutAll(myImage);
-      if (myArray.Length == 0) {
-        myActions.MessageBoxShow("I could not find image of " + myImage.ImageFile);
-      }
-      // We found output completed and now want to copy the results
-      // to notepad
-
-      // Highlight the output completed line
-      myActions.RightClick(myArray);
-
-      myImage = new ImageEntity();
-
-      if (boolRunningFromHome) {
-        myImage.ImageFile = "Images\\imgSVNUpdate_Home.PNG";
-      } else {
-        myImage.ImageFile = "Images\\imgSVNUpdate.PNG";
-      }
-      myImage.Sleep = 200;
-      myImage.Attempts = 5;
-      myImage.RelativeX = 10;
-      myImage.RelativeY = 10;
-
-      myArray = myActions.PutAll(myImage);
-      if (myArray.Length == 0) {
-        myActions.MessageBoxShow("I could not find image of SVN Update");
-      }
-      // We found output completed and now want to copy the results
-      // to notepad
-
-      // Highlight the output completed line
-      myActions.Sleep(1000);
-      myActions.LeftClick(myArray);
-      myImage = new ImageEntity();
-      if (boolRunningFromHome) {
-        myImage.ImageFile = "Images\\imgUpdateLogOK_Home.PNG";
-      } else {
-        myImage.ImageFile = "Images\\imgUpdateLogOK.PNG";
-      }
-      myImage.Sleep = 200;
-      myImage.Attempts = 200;
-      myImage.RelativeX = 10;
-      myImage.RelativeY = 10;
-      myArray = myActions.PutAll(myImage);
-      if (myArray.Length == 0) {
-        myActions.MessageBoxShow("I could not find image of OK button for update log");
-      }
-      // We found output completed and now want to copy the results
-      // to notepad
-
-      // Highlight the output completed line
-      myActions.Sleep(1000);
-      myActions.LeftClick(myArray);
-      myActions.TypeText("%(f)", 200);
-      myActions.TypeText("{UP}", 500);
-      myActions.TypeText("{ENTER}", 500);
-      myActions.Sleep(1000);
-      myActions.Run(@"C:\SVNStats.bat", "");
-      myActions.Run(@"C:\Program Files\Microsoft Office\Office15\EXCEL.EXE", @"C:\SVNStats\SVNStats.xlsx");
+      
     myExit:
       Application.Current.Shutdown();
     }

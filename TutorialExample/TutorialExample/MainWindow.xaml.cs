@@ -81,7 +81,7 @@ namespace TutorialExample {
       myActions.TypeText("{UP}", 500);
       myActions.TypeText("{ENTER}", 500);
       myActions.Sleep(1000);
-      myActions.RunSync(@"C:\Windows\Explorer.EXE", @"C:\SVN\GTreasury\branches");
+      myActions.RunSync(@"C:\Windows\Explorer.EXE", @"");
       myImage = new ImageEntity();
       if (boolRunningFromHome) {
         myImage.ImageFile = "Images\\imgPatch2015_08_Home.PNG";
