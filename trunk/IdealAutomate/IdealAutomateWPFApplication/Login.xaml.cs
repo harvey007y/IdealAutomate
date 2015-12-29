@@ -489,9 +489,9 @@ namespace Hardcodet.Wpf.Samples {
 @"           ,'C:\SVNIA\trunk\')  " +
 "  end  " +
 " ";
-      cmd1 = new SqlCommand(updCmd, con);
-      cmd1.CommandType = CommandType.Text;
-      cmd1.ExecuteNonQuery();
+      SqlCommand cmd2 = new SqlCommand(updCmd, con);
+      cmd2.CommandType = CommandType.Text;
+      cmd2.ExecuteNonQuery();
       SqlCommand cmd = new SqlCommand("Select * from UserInfo", con);
       cmd.CommandType = CommandType.Text;
       SqlDataAdapter adapter = new SqlDataAdapter();
