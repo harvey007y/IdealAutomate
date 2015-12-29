@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using IdealAutomate.Core;
 using System.Collections.Generic;
+using System.IO;
 
 namespace CreateNewVSProjectForScript {
   /// <summary>
@@ -31,7 +32,20 @@ namespace CreateNewVSProjectForScript {
       if (strWindowTitle.StartsWith("CreateNewVSProjectForScript")) {
         myActions.TypeText("%(\" \"n)", 1000); // minimize visual studio
       }
-      myActions.Run(myActions.GetValueByKey("VS2013Path", "IdealAutomateDB"), "");
+      string strFileName = myActions.GetValueByKey("VS2013Path", "IdealAutomateDB");
+      TryToFindFile:
+      if (!File.Exists(strFileName)) {
+        string strNewFile = myActions.WindowTextBox(strFileName + " does not exist \n Please enter filename for VS devenv.exe:");
+        if (strNewFile == "") {
+          myActions.MessageBoxShow("Script cancelled");
+          goto myExit;
+        } else {
+          myActions.SetValueByKey("VS2013Path", strNewFile, "IdealAutomateDB");
+          strFileName = strNewFile;
+          goto TryToFindFile;
+        }
+      }
+      myActions.Run(strFileName, "");
       ImageEntity myImage = new ImageEntity();
 
       if (boolRunningFromHome) {
