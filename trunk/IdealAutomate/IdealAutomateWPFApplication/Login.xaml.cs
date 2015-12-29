@@ -453,7 +453,7 @@ namespace Hardcodet.Wpf.Samples {
 "END " +
 "declare @myCount2 int  " +
 "set @mycount2 = (select COUNT(*) from[IdealAutomateDB].[dbo].[KeyValueTable])  " +
-"            if @myCount = 0  " +
+"            if @myCount2 = 0  " +
 "            begin  " +
 "            INSERT INTO[IdealAutomateDB].[dbo].[KeyValueTable]  " +
 "                       ([myKey]  " +
