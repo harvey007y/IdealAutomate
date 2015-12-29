@@ -459,6 +459,8 @@ namespace Hardcodet.Wpf.Samples {
       SqlCommand cmd1 = new SqlCommand(updCmd, con);
       cmd1.CommandType = CommandType.Text;
       cmd1.ExecuteNonQuery();
+      con.Close();
+      con.Open();
       updCmd = "declare @myCount2 int  " +
 "set @mycount2 = (select COUNT(*) from[IdealAutomateDB].[dbo].[KeyValueTable])  " +
 "            if @myCount2 = 0  " +
