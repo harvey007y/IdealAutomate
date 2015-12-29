@@ -459,31 +459,30 @@ namespace Hardcodet.Wpf.Samples {
       SqlCommand cmd1 = new SqlCommand(updCmd, con);
       cmd1.CommandType = CommandType.Text;
       cmd1.ExecuteNonQuery();
-      con.Close();
-      con.Open();
+
       updCmd = "declare @myCount2 int  " +
-"set @mycount2 = (select COUNT(*) from[IdealAutomateDB].[dbo].[KeyValueTable])  " +
+"set @mycount2 = (select COUNT(*) from [KeyValueTable])  " +
 "            if @myCount2 = 0  " +
 "            begin  " +
-"            INSERT INTO[IdealAutomateDB].[dbo].[KeyValueTable]  " +
+"            INSERT INTO [KeyValueTable]  " +
 "                       ([myKey]  " +
 "           ,[myValue] )  " +
 "     VALUES  " +
 "           ('RunningFromHome'  " +
 "           ,'True')  " +
-"            INSERT INTO[IdealAutomateDB].[dbo].[KeyValueTable]  " +
+"            INSERT INTO [KeyValueTable]  " +
 "                       ([myKey]  " +
 "           ,[myValue] )  " +
 "     VALUES  " +
 "           ('SsmsPath'  " +
 @"           ,'C:\Program Files (x86)\Microsoft SQL Server\130\Tools\Binn\ManagementStudio\Ssms.exe')  " +
-"            INSERT INTO[IdealAutomateDB].[dbo].[KeyValueTable]  " +
+"            INSERT INTO [KeyValueTable]  " +
 "                       ([myKey]  " +
 "           ,[myValue] )  " +
 "     VALUES  " +
 "           ('VS2013Path'  " +
 @"           ,'C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\devenv.exe')  " +
-"            INSERT INTO[IdealAutomateDB].[dbo].[KeyValueTable]  " +
+"            INSERT INTO [KeyValueTable]  " +
 "                       ([myKey]  " +
 "           ,[myValue] )  " +
 "     VALUES  " +
