@@ -451,6 +451,35 @@ namespace Hardcodet.Wpf.Samples {
 "END' " +
 "			) " +
 "END " +
+"declare @myCount2 int  " +
+"set @mycount2 = (select COUNT(*) from[IdealAutomateDB].[dbo].[KeyValueTable])  " +
+"            if @myCount = 0  " +
+"            begin  " +
+"            INSERT INTO[IdealAutomateDB].[dbo].[KeyValueTable]  " +
+"                       ([myKey]  " +
+"           ,[myValue] )  " +
+"     VALUES  " +
+"           ('RunningFromHome'  " +          
+"           ,'True')  " +
+"            INSERT INTO[IdealAutomateDB].[dbo].[KeyValueTable]  " +
+"                       ([myKey]  " +
+"           ,[myValue] )  " +
+"     VALUES  " +
+"           ('SsmsPath'  " +
+@"           ,'C:\Program Files (x86)\Microsoft SQL Server\130\Tools\Binn\ManagementStudio\Ssms.exe')  " +
+"            INSERT INTO[IdealAutomateDB].[dbo].[KeyValueTable]  " +
+"                       ([myKey]  " +
+"           ,[myValue] )  " +
+"     VALUES  " +
+"           ('VS2013Path'  " +
+@"           ,'C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\devenv.exe')  " +
+"            INSERT INTO[IdealAutomateDB].[dbo].[KeyValueTable]  " +
+"                       ([myKey]  " +
+"           ,[myValue] )  " +
+"     VALUES  " +
+"           ('SVNPath'  " +
+@"           ,'C:\SVNIA\trunk\')  " +
+"  end  " +
 " ";
 
 
