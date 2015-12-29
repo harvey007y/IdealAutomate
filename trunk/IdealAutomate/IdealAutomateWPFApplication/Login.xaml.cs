@@ -461,7 +461,7 @@ namespace Hardcodet.Wpf.Samples {
       cmd1.ExecuteNonQuery();
 
       updCmd = "declare @myCount2 int  " +
-"set @mycount2 = (select COUNT(*) from [KeyValueTable])  " +
+"set @myCount2 = (select COUNT(*) from [KeyValueTable])  " +
 "            if @myCount2 = 0  " +
 "            begin  " +
 "            INSERT INTO [KeyValueTable]  " +
