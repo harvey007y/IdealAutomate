@@ -34,7 +34,7 @@ namespace TutorialCreateIdealAutomateTemplate {
       myActions.WindowShape("RedBox", "", "Step 3", "In this instance of Visual Studio in the menu bar, Click File/Export Template... ", 200,200);
       myActions.WindowShape("RedBox", "", "Step 4", "In the pop-up dialog from Visual Studio, make sure radio button for project template is selected ", 0,0);
       myActions.WindowShape("RedBox", "", "Step 5", "Click the Next button ", 0, 0);
-      myActions.WindowShape("RedBox", "", "Step 6", "In the textbox for Template Name, type IdealAutomateCore \n(Do not click the Finish button yet)", 0,0);
+      myActions.WindowShape("RedBox", "", "Step 6", "In the textbox for Template Name, type IdealAutomateCoreTemplate \n(Do not click the Finish button yet)", 0,0);
       myActions.WindowShape("RedBox", "", "Step 7", "In the textbox for Description, put whatever you want. \n(Do not click the Finish button yet)", 0,0);
       myActions.WindowShape("RedBox", "", "Step 8", "In the icon image box, browse to the images folder for this project and select the up green arrow. \n(Do not click the Finish button yet)", 0,0);
       myActions.WindowShape("RedBox", "", "Step 9", "In the preview image box, browse to the images folder for this project and select the up green arrow.\n(Do not click the Finish button yet) ", 0,0);
