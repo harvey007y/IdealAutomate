@@ -86,7 +86,7 @@ namespace CreateNewVSProjectForScript {
 
 
       myActions.TypeText("^(e)", 2500);
-      string myEntityx = "IdealAutomateCore";
+      string myEntityx = "IdealAutomateCoreTemplate";
       myActions.PutEntityInClipboard(myEntityx);
 
       myActions.TypeText("^(v)", 1500);
