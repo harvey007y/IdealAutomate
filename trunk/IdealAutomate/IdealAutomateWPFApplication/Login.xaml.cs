@@ -461,28 +461,28 @@ namespace Hardcodet.Wpf.Samples {
       cmd1.ExecuteNonQuery();
 
       updCmd = "declare @myCount2 int  " +
-"set @myCount2 = (select COUNT(*) from [KeyValueTable])  " +
+"set @myCount2 = (select COUNT(*) from [dbo].[KeyValueTable])  " +
 "            if @myCount2 = 0  " +
 "            begin  " +
-"            INSERT INTO [KeyValueTable]  " +
+"            INSERT INTO [dbo].[KeyValueTable]  " +
 "                       ([myKey]  " +
 "           ,[myValue] )  " +
 "     VALUES  " +
 "           ('RunningFromHome'  " +
 "           ,'True')  " +
-"            INSERT INTO [KeyValueTable]  " +
+"            INSERT INTO [dbo].[KeyValueTable]  " +
 "                       ([myKey]  " +
 "           ,[myValue] )  " +
 "     VALUES  " +
 "           ('SsmsPath'  " +
 @"           ,'C:\Program Files (x86)\Microsoft SQL Server\130\Tools\Binn\ManagementStudio\Ssms.exe')  " +
-"            INSERT INTO [KeyValueTable]  " +
+"            INSERT INTO [dbo].[KeyValueTable]  " +
 "                       ([myKey]  " +
 "           ,[myValue] )  " +
 "     VALUES  " +
 "           ('VS2013Path'  " +
 @"           ,'C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\devenv.exe')  " +
-"            INSERT INTO [KeyValueTable]  " +
+"            INSERT INTO [dbo].[KeyValueTable]  " +
 "                       ([myKey]  " +
 "           ,[myValue] )  " +
 "     VALUES  " +
