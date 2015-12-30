@@ -316,7 +316,7 @@ namespace IdealAutomate.Core {
     /// <para>outside of your script on SQLExpress</para>
   /// </summary>
   /// <param name="pKey">The Key for the KeyValuePair</param>
-  /// <param name="pInitialCatalog">usually IdealProgrammerDB</param>
+  /// <param name="pInitialCatalog">usually IdealAutomateDB</param>
   /// <returns>String that is the Value for the KeyValuePair</returns>
     public string GetValueByKey(string pKey, string pInitialCatalog) {
 

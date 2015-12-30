@@ -129,7 +129,7 @@
             <para>outside of your script on SQLExpress</para>
             </summary>
             <param name="pKey">The Key for the KeyValuePair</param>
-            <param name="pInitialCatalog">usually IdealProgrammerDB</param>
+            <param name="pInitialCatalog">usually IdealAutomateDB</param>
             <returns>String that is the Value for the KeyValuePair</returns>
         </member>
         <member name="M:IdealAutomate.Core.Methods.SetValueByKey(System.String,System.String,System.String)">
