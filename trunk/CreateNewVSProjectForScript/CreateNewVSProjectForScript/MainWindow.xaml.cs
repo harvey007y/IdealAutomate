@@ -35,7 +35,33 @@ namespace CreateNewVSProjectForScript {
       string strFileName = myActions.GetValueByKey("VS2013Path", "IdealAutomateDB");
       TryToFindFile:
       if (!File.Exists(strFileName)) {
-        string strNewFile = myActions.WindowTextBox(strFileName + " does not exist \n Please enter filename for VS devenv.exe:");
+        List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+
+        ControlEntity myControlEntity = new ControlEntity();
+        myControlEntity.ControlEntitySetDefaults();
+        myControlEntity.ControlType = ControlType.Heading;
+        myControlEntity.Text = "Wrong File Name";
+        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+        myControlEntity.ControlEntitySetDefaults();
+        myControlEntity.ControlType = ControlType.Label;
+        myControlEntity.ID = "myLabel";
+        myControlEntity.Text = "Enter Correct File for Visual Studio devenv.exe ";
+        myControlEntity.RowNumber = 0;
+        myControlEntity.ColumnNumber = 0;
+        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+        myControlEntity.ControlEntitySetDefaults();
+        myControlEntity.ControlType = ControlType.TextBox;
+        myControlEntity.ID = "myTextBox";
+        myControlEntity.Text = strFileName;
+        myControlEntity.RowNumber = 0;
+        myControlEntity.ColumnNumber = 1;
+        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+        myActions.WindowMultipleControls(ref myListControlEntity, 700, 900, 0, 0);
+        string strNewFile = myListControlEntity.Find(x => x.ID == "myTextBox").Text;     
         if (strNewFile == "") {
           myActions.MessageBoxShow("Script cancelled");
           goto myExit;
