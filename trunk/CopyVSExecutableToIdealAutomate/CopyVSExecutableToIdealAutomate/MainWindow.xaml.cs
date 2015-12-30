@@ -63,51 +63,14 @@ namespace CopyVSExecutableToIdealAutomate {
       // go to top of solution explorer so that bin is not highlighted
       myActions.TypeText("{UP 20}", 500);
       myActions.TypeText("{DOWN 2}", 500);
-      myImage = new ImageEntity();
-      myImage.ImageFile = "Images\\Show_All_Files.PNG";
-      myImage.Sleep = 500;
-      myImage.Attempts = 2;
-      myImage.RelativeX = 10;
-      // click show all files to make sure bin folder is visible
-      myActions.ClickImageIfExists(myImage);
-
-      myImage = new ImageEntity();
-      if (boolRunningFromHome) {
-        myImage.ImageFile = "Images\\BinHome.PNG";
-      } else {
-        myImage.ImageFile = "Images\\Bin.PNG";
-      }
-      myImage.Sleep = 500;
-      myImage.Attempts = 3;
-      myImage.RelativeX = 10;
-      myImage.RelativeY = 10;
-      myImage.Tolerance = 99;
-
-     
-      int[,] myArray3 = myActions.PutAll(myImage);
-      if (myArray3.Length == 0) {
-        myImage = new ImageEntity();
-        if (boolRunningFromHome) {
-          myImage.ImageFile = "Images\\Bin2Home.PNG";
-        } else {
-          myImage.ImageFile = "Images\\Bin2.PNG";
-        }
-        myImage.Sleep = 500;
-        myImage.Attempts = 1;
-        myImage.RelativeX = 10;
-
-         myArray3 = myActions.PutAll(myImage);
-        if (myArray3.Length == 0) {
-          myActions.MessageBoxShow("I could not find " + myImage.ImageFile);
-        }
-      }
-      myActions.RightClick(myArray3);
+      myActions.TypeText("+({F10})", 500);      
       myActions.TypeText("x", 200);
       myActions.TypeText("{DOWN}", 1000);
-      myActions.TypeText("{ENTER}", 1000);
+     // myActions.TypeText("{ENTER}", 1000);
       myActions.TypeText("{F4}", 1000);
-      myActions.SelectAllCopy(1000);
-      string strPathForBin = myActions.PutClipboardInEntity();
+      myActions.TypeText("{ESC}", 200);
+      myActions.SelectAllCopy(500);
+      string strPathForBin = myActions.PutClipboardInEntity() + @"\bin\debug"; 
       myActions.CloseApplicationAltFc(200);
     TryToFindFile:
       string strWindowsLoginName = myActions.GetValueByKey("WindowsLoginName", "IdealAutomateDB");
@@ -164,16 +127,18 @@ namespace CopyVSExecutableToIdealAutomate {
       myImage.RelativeX = 10;
       myImage.RelativeY = 40;   
   
-      myArray3 = myActions.PutAll(myImage);
-      if (myArray3.Length == 0) {
-        System.Windows.Forms.DialogResult myResult = myActions.MessageBoxShowWithYesNo("I could not find " + myImage.ImageFile + "Do you want me to try again?");
-        if (myResult == System.Windows.Forms.DialogResult.Yes) {
-          goto TryAgain;
-        } else {
-          goto myExit;
-        }
-      }
-      myActions.LeftClick(myArray3);
+      int[,]myArray3 = myActions.PutAll(myImage);
+            if (myArray3.Length == 0)
+            {
+                System.Windows.Forms.DialogResult myResult = myActions.MessageBoxShowWithYesNo("I could not find " + myImage.ImageFile + " You can manually left-click first script name and click yes button or click no button to cancel");
+                if (myResult == System.Windows.Forms.DialogResult.No)
+                {
+                    goto myExit;
+                }
+            }
+            else {
+                myActions.LeftClick(myArray3);
+            }
 
       myActions.TypeText("^{END}", 500);
       myActions.TypeText("{HOME}", 500);
@@ -195,10 +160,13 @@ namespace CopyVSExecutableToIdealAutomate {
       myImage.RelativeX = 10;
       myImage.RelativeY = 10;
       myArray3 = myActions.PutAll(myImage);
-      if (myArray3.Length == 0) {
-        myActions.MessageBoxShow("I could not find IdealAutomateSave.PNG");
-      }
-      myActions.LeftClick(myArray3);
+            if (myArray3.Length == 0)
+            {
+                myActions.MessageBoxShow("I could not find IdealAutomateSave.PNG - Please manually click save button");
+            }
+            else {
+                myActions.LeftClick(myArray3);
+            }
   
       myImage = new ImageEntity();
       if (boolRunningFromHome) {
@@ -211,10 +179,13 @@ namespace CopyVSExecutableToIdealAutomate {
       myImage.RelativeX = 10;
       myImage.RelativeY = 10;
       myArray3 = myActions.PutAll(myImage);
-      if (myArray3.Length == 0) {
-        myActions.MessageBoxShow("I could not find IdealAutomateOkay.PNG");
-      }
-      myActions.LeftClick(myArray3);
+            if (myArray3.Length == 0)
+            {
+                myActions.MessageBoxShow("I could not find IdealAutomateOkay.PNG - Please manually click okay button");
+            }
+            else {
+                myActions.LeftClick(myArray3);
+            }
 
       myActions.TypeText("%(d)", 500);
       myActions.Sleep(1000);
@@ -239,10 +210,13 @@ namespace CopyVSExecutableToIdealAutomate {
       myImage.RelativeX = 10;
       myImage.RelativeY = 10;
       myArray3 = myActions.PutAll(myImage);
-      if (myArray3.Length == 0) {
-        myActions.MessageBoxShow("I could not find " + myImage.ImageFile);
-      }
-      myActions.LeftClick(myArray3);
+            if (myArray3.Length == 0)
+            {
+                myActions.MessageBoxShow("I could not find " + myImage.ImageFile + "Please manually click it");
+            }
+            else {
+                myActions.LeftClick(myArray3);
+            }
 
      
       myExit:
