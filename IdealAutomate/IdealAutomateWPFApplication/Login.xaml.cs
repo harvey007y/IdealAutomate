@@ -468,6 +468,12 @@ namespace Hardcodet.Wpf.Samples {
 "                       ([myKey]  " +
 "           ,[myValue] )  " +
 "     VALUES  " +
+"           ('WindowsLoginName'  " +
+"           ,'wharvey')  " +
+"            INSERT INTO [dbo].[KeyValueTable]  " +
+"                       ([myKey]  " +
+"           ,[myValue] )  " +
+"     VALUES  " +
 "           ('RunningFromHome'  " +
 "           ,'True')  " +
 "            INSERT INTO [dbo].[KeyValueTable]  " +
