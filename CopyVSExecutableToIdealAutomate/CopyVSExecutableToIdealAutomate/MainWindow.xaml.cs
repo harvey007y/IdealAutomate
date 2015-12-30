@@ -1,5 +1,7 @@
 ﻿using System.Windows;
 using IdealAutomate.Core;
+using System.IO;
+using System.Collections.Generic;
 
 namespace CopyVSExecutableToIdealAutomate {
   /// <summary>
@@ -107,8 +109,48 @@ namespace CopyVSExecutableToIdealAutomate {
       myActions.SelectAllCopy(1000);
       string strPathForBin = myActions.PutClipboardInEntity();
       myActions.CloseApplicationAltFc(200);
+    TryToFindFile:
+      string strWindowsLoginName = myActions.GetValueByKey("WindowsLoginName", "IdealAutomateDB");
+ 
+      string strFileName = @"C:\Users\" + strWindowsLoginName + @"\Desktop\Ideal Automate - 1 .appref-ms";
+   
+      if (!File.Exists(strFileName)) {
+        List<ControlEntity> myListControlEntity = new List<ControlEntity>();
 
-      myActions.Run(@"C:\Users\wharvey\Desktop\Ideal Automate - 1 .appref-ms", "");
+        ControlEntity myControlEntity = new ControlEntity();
+        myControlEntity.ControlEntitySetDefaults();
+        myControlEntity.ControlType = ControlType.Heading;
+        myControlEntity.Text = "Wrong WindowsLoginName";
+        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+        myControlEntity.ControlEntitySetDefaults();
+        myControlEntity.ControlType = ControlType.Label;
+        myControlEntity.ID = "myLabel";
+        myControlEntity.Text = "Enter Correct WindowsLoginName ";
+        myControlEntity.RowNumber = 0;
+        myControlEntity.ColumnNumber = 0;
+        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+        myControlEntity.ControlEntitySetDefaults();
+        myControlEntity.ControlType = ControlType.TextBox;
+        myControlEntity.ID = "myTextBox";
+        myControlEntity.Text = strWindowsLoginName;
+        myControlEntity.RowNumber = 0;
+        myControlEntity.ColumnNumber = 1;
+        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+        myActions.WindowMultipleControls(ref myListControlEntity, 700, 900, 0, 0);
+        string strNewWindowsLoginName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
+        if (strNewWindowsLoginName == "") {
+          myActions.MessageBoxShow("Script cancelled");
+          goto myExit;
+        } else {
+          myActions.SetValueByKey("WindowsLoginName", strNewWindowsLoginName, "IdealAutomateDB");
+          goto TryToFindFile;
+        }
+      }
+      myActions.Run(strFileName, "");
 
       myImage = new ImageEntity();
       if (boolRunningFromHome) {
