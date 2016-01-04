@@ -35,7 +35,7 @@ namespace CopyVSExecutableToIdealAutomate {
       ImageEntity myImage = new ImageEntity();
 
       string strWindowTitle = myActions.PutWindowTitleInEntity();
-      if (strWindowTitle.StartsWith("CopyVSExecutableToIdealAutomate")) {
+      if (strWindowTitle.StartsWith("CopyVSExecToIA") || strWindowTitle.StartsWith("Ideal Automate")) {
         myActions.TypeText("%(\" \"n)", 1000); // minimize visual studio
       } else {
         myActions.MessageBoxShow("I could not find VS - please minimize it if you are running in debug mode");
@@ -46,11 +46,60 @@ namespace CopyVSExecutableToIdealAutomate {
       myImage.Attempts = 2;
       myImage.RelativeX = 10;
       myActions.ClickImageIfExists(myImage);
+      List<string> myWindowTitles = myActions.GetWindowTitlesByProcessName("devenv");
+      myWindowTitles.RemoveAll(item => item == "");
+      if (myWindowTitles.Count > 0) {
+        List<ControlEntity> myListControlEntity = new List<ControlEntity>();
 
+        ControlEntity myControlEntity = new ControlEntity();
+        myControlEntity.ControlEntitySetDefaults();
+        myControlEntity.ControlType = ControlType.Heading;
+        myControlEntity.Text = "Select Project";
+        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+      
+
+        myControlEntity.ControlEntitySetDefaults();
+        myControlEntity.ControlType = ControlType.Label;
+        myControlEntity.ID = "myLabel2";
+        myControlEntity.Text = "Select Website";
+        myControlEntity.RowNumber = 0;
+        myControlEntity.ColumnNumber = 0;
+        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+        myControlEntity.ControlEntitySetDefaults();
+        myControlEntity.ControlType = ControlType.ComboBox;
+        myControlEntity.ID = "myComboBox";
+        myControlEntity.Text = "Select Project";
+        List<ComboBoxPair> cbp = new List<ComboBoxPair>();
+        foreach (var item in myWindowTitles) {
+          cbp.Add(new ComboBoxPair(item, item));
+        }
+
+        myControlEntity.ListOfKeyValuePairs = cbp;
+        myControlEntity.RowNumber = 0;
+        myControlEntity.ColumnNumber = 1;
+        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+
+        myActions.WindowMultipleControls(ref myListControlEntity, 700, 1300, 0, 0);
+
+       
+        string myWebSite = myListControlEntity.Find(x => x.ID == "myComboBox").SelectedValue;
+
+
+        myActions.ActivateWindowByTitle(myWebSite);
+      } else {
+        myActions.MessageBoxShow("Could not find visual studio for project to be copied to Ideal Automate");
+      }
+      
       string strScriptName = myActions.PutWindowTitleInEntity();
       int intIndex = strScriptName.IndexOf(" - Microsoft");
       if (intIndex < 0) {
-        myActions.MessageBoxShow("Could not find - Microsoft in window title for VS");
+        myActions.MessageBoxShow("Could not find - Microsoft in window title for VS; \nPlease click on visual studio for the project you want to copy and click okay");
+        
       }
       strScriptName = strScriptName.Substring(0, intIndex);
       //myImage.ImageFile = "Images\\Solution_Explorer.PNG";
@@ -63,15 +112,15 @@ namespace CopyVSExecutableToIdealAutomate {
       // go to top of solution explorer so that bin is not highlighted
       myActions.TypeText("{UP 20}", 500);
       myActions.TypeText("{DOWN 2}", 500);
-      myActions.TypeText("+({F10})", 500);      
-      myActions.TypeText("x", 200);
-      myActions.TypeText("{DOWN}", 1000);
+      myActions.TypeText("+({F10})", 500);      // open context menu
+      myActions.TypeText("x", 200);             // open folder in windows explorer
+     // myActions.TypeText("{DOWN}", 1000);
      // myActions.TypeText("{ENTER}", 1000);
-      myActions.TypeText("{F4}", 1000);
-      myActions.TypeText("{ESC}", 200);
-      myActions.SelectAllCopy(500);
+      myActions.TypeText("{F4}", 1000);         // goto address bar in windows explorer
+      myActions.TypeText("{ESC}", 200);         // clear the dropdown for the address bar   
+      myActions.SelectAllCopy(500);             // copy the path to the clipboard
       string strPathForBin = myActions.PutClipboardInEntity() + @"\bin\debug"; 
-      myActions.CloseApplicationAltFc(200);
+      myActions.CloseApplicationAltFc(200);     // close Windows Explorer
     TryToFindFile:
       string strWindowsLoginName = myActions.GetValueByKey("WindowsLoginName", "IdealAutomateDB");
  
@@ -113,7 +162,14 @@ namespace CopyVSExecutableToIdealAutomate {
           goto TryToFindFile;
         }
       }
-      myActions.Run(strFileName, "");
+      List<string> myWindowTitlesx = myActions.GetWindowTitlesByProcessName("Ideal Automate");
+      myWindowTitlesx.RemoveAll(item => item == "");
+      if (myWindowTitles.Count > 0) {
+        myActions.ActivateWindowByTitle(myWindowTitlesx[0]);
+      } else {
+        myActions.Run(strFileName, "");
+      }
+      
 
       myImage = new ImageEntity();
       if (boolRunningFromHome) {
@@ -137,6 +193,7 @@ namespace CopyVSExecutableToIdealAutomate {
                 }
             }
             else {
+                myActions.LeftClick(myArray3);
                 myActions.LeftClick(myArray3);
             }
 
