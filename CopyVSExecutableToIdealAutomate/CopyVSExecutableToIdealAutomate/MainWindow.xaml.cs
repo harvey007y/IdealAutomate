@@ -84,17 +84,22 @@ namespace CopyVSExecutableToIdealAutomate {
 
 
 
-        myActions.WindowMultipleControls(ref myListControlEntity, 700, 1300, 0, 0);
+        bool boolOkayPressed = myActions.WindowMultipleControls(ref myListControlEntity, 300, 500, -1, 0);
+
+        if (boolOkayPressed == false) {
+          myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+          goto myExit;
+        }
 
        
         string myWebSite = myListControlEntity.Find(x => x.ID == "myComboBox").SelectedValue;
 
 
-        myActions.ActivateWindowByTitle(myWebSite);
+        myActions.ActivateWindowByTitle(myWebSite,3);
       } else {
         myActions.MessageBoxShow("Could not find visual studio for project to be copied to Ideal Automate");
       }
-      
+      myActions.Sleep(2000);
       string strScriptName = myActions.PutWindowTitleInEntity();
       int intIndex = strScriptName.IndexOf(" - Microsoft");
       if (intIndex < 0) {
@@ -152,7 +157,12 @@ namespace CopyVSExecutableToIdealAutomate {
         myControlEntity.RowNumber = 0;
         myControlEntity.ColumnNumber = 1;
         myListControlEntity.Add(myControlEntity.CreateControlEntity());
-        myActions.WindowMultipleControls(ref myListControlEntity, 700, 900, 0, 0);
+        bool boolOkayPressed = myActions.WindowMultipleControls(ref myListControlEntity, 300, 500, -1, 0);
+
+        if (boolOkayPressed == false) {
+          myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+          goto myExit;
+        }
         string strNewWindowsLoginName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
         if (strNewWindowsLoginName == "") {
           myActions.MessageBoxShow("Script cancelled");

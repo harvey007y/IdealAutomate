@@ -20,6 +20,7 @@ using System.Windows.Controls;
 
 
 
+
 namespace IdealAutomate.Core {
   public class Methods {
 
@@ -896,7 +897,8 @@ namespace IdealAutomate.Core {
 
       //  Thread thread = new Thread(new ThreadStart(() => {
           int intTries = 0;
-          TryAgain:
+        TryAgain:
+         
           bool boolClipboardWorks = ClipboardNative.CopyTextToClipboard(myEntity);
           //  Clipboard.Clear();
 
@@ -1234,14 +1236,15 @@ namespace IdealAutomate.Core {
     /// <para>and positions them in a window. When the user presses the </para>
     /// <para>okay button on the screen, the list of ControlEntity objects</para>
     /// <para>are updated with the values the user entered.  This provides</para>
-    /// <para>an easy way to receive mupltiple values from the user</para>
-    /// </summary>
+    /// <para>an easy way to receive multiple values from the user</para>
+     /// </summary>
     /// <param name="myListControlEntity">list of ControlEntity objects</param>
     /// <param name="intWindowHeight">integer indicating height of window</param>
     /// <param name="intWindowWidth">integer indicating width of window</param>
     /// <param name="intWindowTop">integer indicating number of pixels from top of screen to display window</param>
     /// <param name="intWindowLeft">integer indicating number of pixels from left side of screen to display window</param>
-    public void WindowMultipleControls(ref List<ControlEntity> myListControlEntity, int intWindowHeight, int intWindowWidth,  int intWindowTop, int intWindowLeft) {
+    /// <returns>System.Windows.Forms.DialogResult to indicate if okay button was pressed</returns>
+    public bool WindowMultipleControls(ref List<ControlEntity> myListControlEntity, int intWindowHeight, int intWindowWidth,  int intWindowTop, int intWindowLeft) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "WindowMultipleControls");
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "WindowMultipleControls");
@@ -1251,6 +1254,12 @@ namespace IdealAutomate.Core {
       // dlg.Owner = (Window)Window.GetWindow(this);
       // Shadow.Visibility = Visibility.Visible;
       dlg.ShowDialog();
+      if (dlg.boolOkayPressed) {
+        return true;
+      } else {
+        return false;
+      } 
+
 
     }
    /// <summary>
