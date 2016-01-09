@@ -2,6 +2,7 @@
 using IdealAutomate.Core;
 using System.Collections.Generic;
 
+
 namespace TestWindowMultipleControls {
   /// <summary>
   /// Interaction logic for MainWindow.xaml
@@ -51,7 +52,8 @@ namespace TestWindowMultipleControls {
       myControlEntity.ControlType = ControlType.TextBox;
       myControlEntity.ID = "myTextBox";
       myControlEntity.Text = "Hello World";
-      myControlEntity.RowNumber = 0;
+     // myControlEntity.Width = 100;
+      myControlEntity.RowNumber = 0;      
       myControlEntity.ColumnNumber = 1;
       myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
@@ -84,8 +86,12 @@ namespace TestWindowMultipleControls {
       myControlEntity.ColumnNumber = 0;
       myListControlEntity.Add(myControlEntity.CreateControlEntity());  
 
-      myActions.WindowMultipleControls(ref myListControlEntity, 700,900,0,0);
+      bool boolOkayPressed = myActions.WindowMultipleControls(ref myListControlEntity, 300,500,-1,0);
 
+      if (boolOkayPressed == false) {
+        myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+        goto myExit;
+      }
       string mySearchTerm = myListControlEntity.Find(x => x.ID == "myTextBox").Text;     
       string myWebSite = myListControlEntity.Find(x => x.ID == "myComboBox").SelectedValue;
       

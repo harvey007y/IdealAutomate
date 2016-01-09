@@ -22,6 +22,7 @@ namespace IdealAutomate.Core {
     
     private List<ControlEntity> _ListControlEntity;
     public ComboBoxPair SelectedComboBoxPair { get; set; }
+    public bool boolOkayPressed = false;
     int _Top;
     int _Left;
     public string SelectedValue { get; set; }
@@ -30,19 +31,25 @@ namespace IdealAutomate.Core {
       _Left = intLeft;
       this.Top = _Top;
       this.Left = _Left;
+      if (intTop < 0 || intLeft < 0) {
+        this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+      }
 
 
       InitializeComponent();
 
       if (intWindowHeight > 0) {
         myWindow.Height = intWindowHeight;
+        MainBorder.Height = intWindowHeight;
       } else {
         myWindow.Height = 391;
       }
       if (intWindowWidth > 0) {
         myWindow.Width = intWindowWidth;
+        MainBorder.Width = intWindowWidth;
       } else {
         myWindow.Width = 487;
+        
       }
 
 
@@ -75,6 +82,9 @@ namespace IdealAutomate.Core {
         switch (item.ControlType) {
           case ControlType.Heading:
             Label1.Text = item.Text;
+            if (item.Width > 0) {
+              Label1.Width = item.Width;
+            }
             break;
           case ControlType.Label:
             Label myLabel = new Label();
@@ -82,12 +92,18 @@ namespace IdealAutomate.Core {
             myLabel.Content = item.Text;
             Grid.SetRow(myLabel, item.RowNumber);
             Grid.SetColumn(myLabel, item.ColumnNumber);
+            if (item.Width > 0) {
+              myLabel.Width = item.Width;
+            }
             myGrid.Children.Add(myLabel);
             break;
           case ControlType.TextBox:
             TextBox myTextBox = new TextBox();
             myTextBox.Text = item.Text;
             myTextBox.Name = item.ID;
+            if (item.Width > 0) {
+              myTextBox.Width = item.Width;
+            }
             Grid.SetRow(myTextBox, item.RowNumber);
             Grid.SetColumn(myTextBox, item.ColumnNumber);
             myGrid.Children.Add(myTextBox);
@@ -101,6 +117,9 @@ namespace IdealAutomate.Core {
             myComboBox.SelectedValue = item.SelectedValue;
             myComboBox.DisplayMemberPath = "_Key";
             myComboBox.SelectedValuePath = "_Value";
+            if (item.Width > 0) {
+              myComboBox.Width = item.Width;
+            }
             myGrid.Children.Add(myComboBox);
             break;
           case ControlType.CheckBox:
@@ -110,6 +129,9 @@ namespace IdealAutomate.Core {
             myCheckBox.IsChecked = item.Checked;
             Grid.SetRow(myCheckBox, item.RowNumber);
             Grid.SetColumn(myCheckBox, item.ColumnNumber);
+            if (item.Width > 0) {
+              myCheckBox.Width = item.Width;
+            }
             myGrid.Children.Add(myCheckBox);
             break;
           default:
@@ -150,7 +172,7 @@ namespace IdealAutomate.Core {
           case ControlType.TextBox:
             TextBox myTextBox = new TextBox();
             myTextBox = (TextBox)LogicalTreeHelper.FindLogicalNode(this, item.ID);
-            item.Text = myTextBox.Text;
+            item.Text = myTextBox.Text;            
             break;
           case ControlType.ComboBox:
             ComboBox myComboBox = new ComboBox();
@@ -171,7 +193,7 @@ namespace IdealAutomate.Core {
             break;
         }
       }
-      
+      boolOkayPressed = true;
       this.Close();
     }
    

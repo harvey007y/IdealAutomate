@@ -14,7 +14,10 @@ namespace IdealAutomateCore {
 
     [DllImport("user32.dll")]
     private static extern bool SetClipboardData(uint uFormat, IntPtr data);
-
+    
+     [DllImport("user32.dll")]
+    private static extern bool EmptyClipboard();
+    private const uint CF_TEXT = 1;
     private const uint CF_UNICODETEXT = 13;
 
     public static bool CopyTextToClipboard(string text) {
@@ -22,8 +25,9 @@ namespace IdealAutomateCore {
         return false;
       }
 
-      var global = Marshal.StringToHGlobalUni(text);
-
+      object myText = text;
+      var global = Marshal.StringToHGlobalUni(myText.ToString());
+      EmptyClipboard();
       SetClipboardData(CF_UNICODETEXT, global);
       CloseClipboard();
 

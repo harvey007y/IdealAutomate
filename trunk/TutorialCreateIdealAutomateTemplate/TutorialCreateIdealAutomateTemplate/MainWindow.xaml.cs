@@ -67,7 +67,7 @@ namespace TutorialCreateIdealAutomateTemplate {
       myControlEntity.ControlType = ControlType.TextBox;
       myControlEntity.ID = "myTextBox";
       myControlEntity.Text = "Hello World";
-      myControlEntity.RowNumber = 0;
+      myControlEntity.RowNumber = 0;      
       myControlEntity.ColumnNumber = 1;
       myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
@@ -100,17 +100,22 @@ namespace TutorialCreateIdealAutomateTemplate {
       myControlEntity.ColumnNumber = 0;
       myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
-      myActions.WindowMultipleControls(ref myListControlEntity, 700, 900,0,0);
+      bool boolOkayPressed = myActions.WindowMultipleControls(ref myListControlEntity, 300, 500, -1, 0);
 
-      string mySearchTerm = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
+      if (boolOkayPressed == false) {
+        myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+        goto myExit;
+      }
+
+      string mySearchTerm = myListControlEntity.Find(x => x.ID == "myTextBox").Text;     
       string myWebSite = myListControlEntity.Find(x => x.ID == "myComboBox").SelectedValue;
-
+      
       bool boolUseNewTab = myListControlEntity.Find(x => x.ID == "myCheckBox").Checked;
       if (boolUseNewTab == true) {
         List<string> myWindowTitles = myActions.GetWindowTitlesByProcessName("iexplore");
         myWindowTitles.RemoveAll(item => item == "");
         if (myWindowTitles.Count > 0) {
-          myActions.ActivateWindowByTitle(myWindowTitles[0]);
+          myActions.ActivateWindowByTitle(myWindowTitles[0], (int)WindowShowEnum.SW_SHOWMAXIMIZED);
           myActions.TypeText("%(d)", 1500); // select address bar
           myActions.TypeText("{ESC}", 1500);
           myActions.TypeText("%({ENTER})", 1500); // Alt enter while in address bar opens new tab
@@ -118,18 +123,19 @@ namespace TutorialCreateIdealAutomateTemplate {
           myActions.TypeText(myWebSite, 1500);
           myActions.TypeText("{ENTER}", 1500);
           myActions.TypeText("{ESC}", 1500);
-
+          
         } else {
           myActions.Run("iexplore", myWebSite);
-
+          
         }
       } else {
         myActions.Run("iexplore", myWebSite);
       }
-
+     
       myActions.Sleep(1000);
       myActions.TypeText(mySearchTerm, 500);
-      myActions.TypeText("{ENTER}", 500);
+      myActions.TypeText("{ENTER}", 500);       
+
 
       goto myExit;
       myActions.RunSync(@"C:\Windows\Explorer.EXE", @"C:\SVN");

@@ -60,7 +60,12 @@ namespace CreateNewVSProjectForScript {
         myControlEntity.RowNumber = 0;
         myControlEntity.ColumnNumber = 1;
         myListControlEntity.Add(myControlEntity.CreateControlEntity());
-        myActions.WindowMultipleControls(ref myListControlEntity, 700, 900, 0, 0);
+        bool boolOkayPressed = myActions.WindowMultipleControls(ref myListControlEntity, 300, 500, -1, 0);
+
+        if (boolOkayPressed == false) {
+          myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+          goto myExit;
+        }
         string strNewFile = myListControlEntity.Find(x => x.ID == "myTextBox").Text;     
         if (strNewFile == "") {
           myActions.MessageBoxShow("Script cancelled");
