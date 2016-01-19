@@ -392,6 +392,30 @@
             <param name="myEntityForExecutable">string for the path of the executable</param>
             <param name="myEntityForContent">string for the content for the executable to open</param>
         </member>
+        <member name="M:IdealAutomate.Core.Methods.StartService(System.String,System.Int32)">
+            <summary>
+            <para>The following method tries to start a service specified by a service name. Then it waits until the service </para>
+            <para>is running or a timeout occurs.</para>
+            </summary>
+            <param name="serviceName"></param>
+            <param name="timeoutMilliseconds"></param>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.StopService(System.String,System.Int32)">
+            <summary>
+            <para>The following method tries to stop the specified service and it waits until the service is stopped or a timeout occurs.</para>
+            </summary>
+            <param name="serviceName"></param>
+            <param name="timeoutMilliseconds"></param>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.RestartService(System.String,System.Int32)">
+            <summary>
+            <para>This method combinates both previous methods. It tries to stop the service (and waits until it's stopped) </para>
+            <para>then it begins to start the service (and waits until the service is running). The specified timeout is used </para>
+            for both operations together.
+            </summary>
+            <param name="serviceName"></param>
+            <param name="timeoutMilliseconds"></param>
+        </member>
         <member name="M:IdealAutomate.Core.Methods.Sleep(System.Int32)">
             <summary>
             Sleep receives an integer that indicates the number of milliseconds that you want the program to wait.
