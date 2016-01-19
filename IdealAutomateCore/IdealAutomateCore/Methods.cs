@@ -17,6 +17,7 @@ using System.Linq;
 using System.Reflection;
 using IdealAutomateCore;
 using System.Windows.Controls;
+using System.ServiceProcess;
 
 
 
@@ -1435,6 +1436,73 @@ namespace IdealAutomate.Core {
       }
 
     }
+    /// <summary>
+    /// <para>The following method tries to start a service specified by a service name. Then it waits until the service </para>
+    /// <para>is running or a timeout occurs.</para>
+    /// </summary>
+    /// <param name="serviceName"></param>
+    /// <param name="timeoutMilliseconds"></param>
+    public void StartService(string serviceName, int timeoutMilliseconds) {
+      ServiceController service = new ServiceController(serviceName);
+      try {
+        TimeSpan timeout = TimeSpan.FromMilliseconds(timeoutMilliseconds);
+
+        service.Start();
+        service.WaitForStatus(ServiceControllerStatus.Running, timeout);
+      } catch {
+        string message = "Error - Problem starting service  " + serviceName; // +"; EntityName is: " + myEntityForExecutable.EntityName;
+        MessageBoxResult result = MessageBox.Show(message, "Run-time Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        return;
+      }
+    }
+    /// <summary>
+    /// <para>The following method tries to stop the specified service and it waits until the service is stopped or a timeout occurs.</para>
+    /// </summary>
+    /// <param name="serviceName"></param>
+    /// <param name="timeoutMilliseconds"></param>
+    public void StopService(string serviceName, int timeoutMilliseconds) {
+      ServiceController service = new ServiceController(serviceName);
+      try {
+        TimeSpan timeout = TimeSpan.FromMilliseconds(timeoutMilliseconds);
+
+        service.Stop();
+        service.WaitForStatus(ServiceControllerStatus.Stopped, timeout);
+      } catch {
+        string message = "Error - Problem stopping service  " + serviceName; // +"; EntityName is: " + myEntityForExecutable.EntityName;
+        MessageBoxResult result = MessageBox.Show(message, "Run-time Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        return;
+      }
+    }
+    /// <summary>
+    /// <para>This method combinates both previous methods. It tries to stop the service (and waits until it's stopped) </para>
+    /// <para>then it begins to start the service (and waits until the service is running). The specified timeout is used </para>
+    /// for both operations together.
+    /// </summary>
+    /// <param name="serviceName"></param>
+    /// <param name="timeoutMilliseconds"></param>
+    public void RestartService(string serviceName, int timeoutMilliseconds) {
+      ServiceController service = new ServiceController(serviceName);
+      try {
+        int millisec1 = Environment.TickCount;
+        TimeSpan timeout = TimeSpan.FromMilliseconds(timeoutMilliseconds);
+
+        service.Stop();
+        service.WaitForStatus(ServiceControllerStatus.Stopped, timeout);
+
+        // count the rest of the timeout
+        int millisec2 = Environment.TickCount;
+        timeout = TimeSpan.FromMilliseconds(timeoutMilliseconds - (millisec2 - millisec1));
+
+        service.Start();
+        service.WaitForStatus(ServiceControllerStatus.Running, timeout);
+      } catch {
+        string message = "Error - Problem restarting service  " + serviceName; // +"; EntityName is: " + myEntityForExecutable.EntityName;
+        MessageBoxResult result = MessageBox.Show(message, "Run-time Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        return;
+      }
+    }
+
+
     private Process GetProcByID(int id) {
       Process[] processlist = Process.GetProcesses();
       return processlist.FirstOrDefault(pr => pr.Id == id);
