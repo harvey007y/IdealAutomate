@@ -63,6 +63,7 @@
     <Compile Include="ClipboardNative.cs" />
     <Compile Include="ComboBoxPair.cs" />
     <Compile Include="ControlEntity.cs" />
+    <Compile Include="FindDelimitedTextParms.cs" />
     <Compile Include="WindowShowEnum.cs" />
     <Compile Include="ControlType.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

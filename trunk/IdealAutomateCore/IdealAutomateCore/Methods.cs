@@ -1163,7 +1163,10 @@ namespace IdealAutomate.Core {
         System.Threading.Thread.Sleep(intSleep);
       }
       InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_A);
-      System.Threading.Thread.Sleep(200);
+      System.Threading.Thread.Sleep(500);
+      if (intSleep > 0) {
+        System.Threading.Thread.Sleep(intSleep);
+      }
       InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_C);
       return PutClipboardInEntity();
     }
@@ -1519,6 +1522,110 @@ namespace IdealAutomate.Core {
       System.Threading.Thread.Sleep(intSleep);
     }
 
+
+    public void FindDelimitedText(FindDelimitedTextParms myParms) {
+      // set defaults of not found and empty string
+      myParms.intDelimFound = -1;
+      myParms.strDelimitedTextFound = "";
+      int intStartingLine = myParms.intLineCtr;
+
+    ExamineALine:
+      // if we reach the end of the lines array,
+      // we could not find delimited text and we are done
+      if (myParms.intLineCtr > myParms.lines.Count()) {
+        myParms.strResultTypeFound = "Not Found";
+        return;
+      }
+      // move the current line that we want to examine
+      // to myLine
+
+      string myLine = myParms.lines[myParms.intLineCtr];
+      if (myParms.intLineCtr == intStartingLine) {
+        myLine = myLine.Substring(myParms.intStartingCol);
+      }
+
+      // we are going to loop the the begin and end 
+      // delim pairs looking for a match for any pair
+      // in the entire lines array starting at the initial
+      // intLinesCtr.
+      // this will exit on the first one that it finds
+
+      for (int i = 0; i < myParms.lsBeginDelim.Count; i++) {
+        string strBeginDelim = myParms.lsBeginDelim[i];
+        string strEndDelim = myParms.lsEndDelim[i];
+        // Find location of beginning delim
+        int intBeginDelimLength = strBeginDelim.Length;
+
+      LookForBeginDelim:
+        int indexBeginDelim = myLine.ToUpper().IndexOf(strBeginDelim);
+        // Get the rest of the line after Begin Delim
+        if (indexBeginDelim == -1) {
+          if (myParms.intLineCtr < myParms.lines.Count()) {
+            myParms.intLineCtr++;
+            myLine = myParms.lines[myParms.intLineCtr];
+            goto LookForBeginDelim;
+          }
+        }
+
+        // if we went thru the entire lines array
+        // and did not find BeginDelim, we need to
+        // go get the next begin and end delim pair
+        // and start over
+
+        if (indexBeginDelim == -1) {
+          myParms.intLineCtr = intStartingLine;
+          myLine = myParms.lines[myParms.intLineCtr];
+          myLine = myLine.Substring(myParms.intStartingCol);
+          continue;
+        }
+
+        // we have found the begin delim so we want to save
+        // it as strResultType to tell us which begin and end
+        // delim pair we found. We still need to look for the 
+        // end delim in order to have a successful find
+
+        strBeginDelim = myLine.Substring(indexBeginDelim, intBeginDelimLength);
+        if (myParms.lsBeginDelim.Count > 1) {
+          myParms.strResultTypeFound = strBeginDelim;
+        }
+        myParms.intDelimFound = i;
+        string d = myLine.Substring(indexBeginDelim + intBeginDelimLength);
+        // Find location of EndDelim
+
+        LookForEndDelim:
+
+        int indexEndDelim = d.IndexOf(strEndDelim);
+        if (indexEndDelim == -1) {
+          if (myParms.intLineCtr < myParms.lines.Count()) {
+            myParms.intLineCtr++;
+            myLine = myParms.lines[myParms.intLineCtr];
+            goto LookForEndDelim;
+          }
+        }
+
+        // if we went thru the entire lines array
+        // and did not find EndDelim, we need to
+        // go get the next begin and end delim pair
+        // and start over
+
+        if (indexEndDelim == -1) {
+          myParms.intLineCtr = intStartingLine;
+          myLine = myParms.lines[myParms.intLineCtr];
+          myLine = myLine.Substring(myParms.intStartingCol);
+          continue;
+        }
+
+        d = d.Substring(0, indexEndDelim);
+        myParms.strDelimitedTextFound = d;
+        myParms.intEndDelimColPosFound = indexEndDelim + strEndDelim.Length;
+        return;
+      }
+            
+      if (myParms.lsBeginDelim.Count > 1) {
+        myParms.intLineCtr++;
+        goto ExamineALine;
+      }
+    }
 
 
     private List<SubPositionInfo> Click_PNG(ImageEntity myImage, bool boolUseGrayScaleDB) {
