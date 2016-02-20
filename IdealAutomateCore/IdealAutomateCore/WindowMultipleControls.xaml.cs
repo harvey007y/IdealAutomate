@@ -17,9 +17,9 @@ namespace IdealAutomate.Core {
   /// Interaction logic for WindowComboBox.xaml
   /// </summary>
   public partial class WindowMultipleControls : Window {
-   
+
     string _Label;
-    
+
     private List<ControlEntity> _ListControlEntity;
     public ComboBoxPair SelectedComboBoxPair { get; set; }
     public bool boolOkayPressed = false;
@@ -49,11 +49,11 @@ namespace IdealAutomate.Core {
         MainBorder.Width = intWindowWidth;
       } else {
         myWindow.Width = 487;
-        
+
       }
 
 
-      
+
       _ListControlEntity = myListControlEntity;
       //// Create a button.
       //Button myButton = new Button();
@@ -104,6 +104,17 @@ namespace IdealAutomate.Core {
             if (item.Width > 0) {
               myTextBox.Width = item.Width;
             }
+            if (item.Multiline == true) {
+              // AcceptsReturn = "True" TextWrapping = "Wrap" VerticalScrollBarVisibility="Auto"
+              myTextBox.AcceptsReturn = true;
+              myTextBox.TextWrapping = System.Windows.TextWrapping.Wrap;
+              myTextBox.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+              myTextBox.Height = 50;
+
+            }
+            if (item.Height > 0) {
+              myTextBox.Height = item.Height;
+            }
             Grid.SetRow(myTextBox, item.RowNumber);
             Grid.SetColumn(myTextBox, item.ColumnNumber);
             myGrid.Children.Add(myTextBox);
@@ -151,8 +162,8 @@ namespace IdealAutomate.Core {
       comboBox.DisplayMemberPath = "_Key";
       comboBox.SelectedValuePath = "_Value";
 
-      
-      
+
+
     }
 
     private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
@@ -168,11 +179,11 @@ namespace IdealAutomate.Core {
     private void btnOkay_Click(object sender, RoutedEventArgs e) {
       //boolOkayPressed = true;
       foreach (ControlEntity item in _ListControlEntity) {
-        switch (item.ControlType) {          
+        switch (item.ControlType) {
           case ControlType.TextBox:
             TextBox myTextBox = new TextBox();
             myTextBox = (TextBox)LogicalTreeHelper.FindLogicalNode(this, item.ID);
-            item.Text = myTextBox.Text;            
+            item.Text = myTextBox.Text;
             break;
           case ControlType.ComboBox:
             ComboBox myComboBox = new ComboBox();
@@ -196,19 +207,18 @@ namespace IdealAutomate.Core {
       boolOkayPressed = true;
       this.Close();
     }
-   
-    protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
-{
-  //if (boolOkayPressed == false) {
-  //  ComboBoxPair cbp = new ComboBoxPair("","");
-  //  SelectedComboBoxPair = cbp;
-  //}
 
- 	 base.OnClosing(e);
-}
+    protected override void OnClosing(System.ComponentModel.CancelEventArgs e) {
+      //if (boolOkayPressed == false) {
+      //  ComboBoxPair cbp = new ComboBoxPair("","");
+      //  SelectedComboBoxPair = cbp;
+      //}
+
+      base.OnClosing(e);
+    }
 
     private void btnCancel_Click(object sender, RoutedEventArgs e) {
-     
+
       this.Close();
     }
     protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e) {

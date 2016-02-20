@@ -20,6 +20,7 @@ namespace IdealAutomate.Core
         public int RowNumber { get; set; }
         public int ColumnNumber { get; set; }
         public int Width { get; set; }
+        public int Height { get; set; }
         public bool TextWrap { get; set; }
         public bool Multiline { get; set; }
         public bool ShowTextBox { get; set; }
@@ -39,6 +40,7 @@ namespace IdealAutomate.Core
             RowNumber = 0;
             ColumnNumber = 0;
             Width = 0;
+            Height = 0;
             TextWrap = true;
             Multiline = false;
             ShowTextBox = true;
@@ -59,6 +61,7 @@ namespace IdealAutomate.Core
           RowNumber = 0;
           ColumnNumber = 0;
           Width = 0;
+          Height = 0;
           TextWrap = true;
           Multiline = false;
           ShowTextBox = true;
@@ -80,6 +83,7 @@ namespace IdealAutomate.Core
           myControlEntity.RowNumber = RowNumber;
           myControlEntity.ColumnNumber = ColumnNumber;
           myControlEntity.Width = Width;
+          myControlEntity.Height = Height;
           myControlEntity.TextWrap = TextWrap;
           myControlEntity.Multiline = Multiline;
           myControlEntity.ShowTextBox = ShowTextBox;
