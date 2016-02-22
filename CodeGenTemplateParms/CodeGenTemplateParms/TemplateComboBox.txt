@@ -1,0 +1,24 @@
+﻿			myControlEntity.ControlEntitySetDefaults();
+			myControlEntity.ControlType = ControlType.Label;
+			myControlEntity.ID = "lbl&&ID";
+			myControlEntity.Text = "&&ID";
+			myControlEntity.RowNumber = &&ROW;			
+			myControlEntity.ColumnNumber = 0;
+			myListControlEntity.Add(myControlEntity.CreateControlEntity());
+			
+			myControlEntity.ControlEntitySetDefaults();
+			myControlEntity.ControlType = ControlType.ComboBox;
+			cbp.Clear();
+			cbp.Add(new ComboBoxPair("&&KEY1", "&&VALUE1"));
+			cbp.Add(new ComboBoxPair("&&KEY2", "&&VALUE2"));
+			cbp.Add(new ComboBoxPair("&&KEY3", "&&VALUE3"));
+			cbp.Add(new ComboBoxPair("&&KEY4", "&&VALUE4"));
+			cbp.Add(new ComboBoxPair("&&KEY5", "&&VALUE5"));
+			myControlEntity.ListOfKeyValuePairs = cbp;	
+			myControlEntity.SelectedValue = "&&SELECTEDVALUE";		
+			myControlEntity.ID = "cbx&&ID";			
+			myControlEntity.RowNumber = &&ROW;
+			myControlEntity.Width = &&WIDTH;					
+			myControlEntity.ColumnNumber = 1;
+			myListControlEntity.Add(myControlEntity.CreateControlEntity());
+

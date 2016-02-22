@@ -1,0 +1,18 @@
+﻿			myControlEntity.ControlEntitySetDefaults();
+			myControlEntity.ControlType = ControlType.Label;
+			myControlEntity.ID = "lbl&&ID";
+			myControlEntity.Text = "&&ID";
+			myControlEntity.RowNumber = &&ROW;			
+			myControlEntity.ColumnNumber = 0;
+			myListControlEntity.Add(myControlEntity.CreateControlEntity());
+			
+			myControlEntity.ControlEntitySetDefaults();
+			myControlEntity.ControlType = ControlType.TextBox;
+			myControlEntity.ID = "txt&&ID";
+			myControlEntity.Text = "&&TEXT";
+			myControlEntity.RowNumber = &&ROW;
+			myControlEntity.Width = &&WIDTH;
+			myControlEntity.Height = &&HEIGHT;
+			myControlEntity.Multiline = &&MULTILINE;
+			myControlEntity.ColumnNumber = 1;
+			myListControlEntity.Add(myControlEntity.CreateControlEntity());
