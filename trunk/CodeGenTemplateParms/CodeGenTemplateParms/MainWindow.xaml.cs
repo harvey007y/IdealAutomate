@@ -36,6 +36,7 @@ namespace CodeGenTemplateParms
                 myActions.TypeText("%(\" \"n)", 1000); // minimize visual studio
             }
             myActions.Sleep(1000);
+            string strApplicationPath = System.AppDomain.CurrentDomain.BaseDirectory;
             int intRowCtr = -1;
             string strOutFile = @"C:\Data\BlogPost.txt";
             StringBuilder sb = new StringBuilder();
@@ -154,7 +155,7 @@ namespace CodeGenTemplateParms
                 string strText = myListControlEntity.Find(x => x.ID == "txtText").Text;
                 string strWidth = myListControlEntity.Find(x => x.ID == "txtWidth").Text;
                 string strID = myListControlEntity.Find(x => x.ID == "txtID").Text;
-                string strInFile = "TemplateLabel.txt";
+                string strInFile = strApplicationPath + "TemplateLabel.txt";
                 // private string strInFile = @"C:\Data\LanguageXMLInput3.txt";
                
                 List<string> listOfSolvedProblems = new List<string>();
@@ -275,7 +276,7 @@ namespace CodeGenTemplateParms
                 string strID = myListControlEntity.Find(x => x.ID == "txtID").Text;
                 string strHeight = myListControlEntity.Find(x => x.ID == "txtHeight").Text;
                 bool boolMultiline = myListControlEntity.Find(x => x.ID == "chkMultiline").Checked;
-                string strInFile = "TemplateTextBox.txt";
+                string strInFile = strApplicationPath + "TemplateTextBox.txt";
                 // private string strInFile = @"C:\Data\LanguageXMLInput3.txt";
                
                 List<string> listOfSolvedProblems = new List<string>();
@@ -487,7 +488,7 @@ namespace CodeGenTemplateParms
                 string strKey5 = myListControlEntity.Find(x => x.ID == "txtKey5").Text;
                 string strValue5 = myListControlEntity.Find(x => x.ID == "txtValue5").Text;
 
-                string strInFile = "TemplateComboBox.txt";
+                string strInFile = strApplicationPath + "TemplateComboBox.txt";
                 // private string strInFile = @"C:\Data\LanguageXMLInput3.txt";                
                 List<string> listOfSolvedProblems = new List<string>();
                 List<string> listofRecs = new List<string>();
@@ -622,7 +623,7 @@ namespace CodeGenTemplateParms
               string strText = myListControlEntity.Find(x => x.ID == "txtText").Text;
               string strWidth = myListControlEntity.Find(x => x.ID == "txtWidth").Text;
               string strID = myListControlEntity.Find(x => x.ID == "txtID").Text;
-              string strInFile = "TemplateLabel.txt";
+              string strInFile = strApplicationPath + "TemplateLabel.txt";
               // private string strInFile = @"C:\Data\LanguageXMLInput3.txt";
 
               List<string> listOfSolvedProblems = new List<string>();
@@ -718,7 +719,7 @@ namespace CodeGenTemplateParms
                 string strStart = myListControlEntity.Find(x => x.ID == "txtStart").Text;
                 string strIncrementBy = myListControlEntity.Find(x => x.ID == "txtIncrementBy").Text;
                 string strID = myListControlEntity.Find(x => x.ID == "txtID").Text;
-                string strInFile = "TemplateIterator.txt";
+                string strInFile = strApplicationPath + "TemplateIterator.txt";
             
                 
 
@@ -791,7 +792,7 @@ namespace CodeGenTemplateParms
 
                 string strIterations = myListControlEntity.Find(x => x.ID == "txtIterations").Text;
                 string strID = myListControlEntity.Find(x => x.ID == "txtID").Text;
-                string strInFile = "TemplateNumIterations.txt";
+                string strInFile = strApplicationPath + "TemplateNumIterations.txt";
                 // private string strInFile = @"C:\Data\LanguageXMLInput3.txt";
                
                 List<string> listOfSolvedProblems = new List<string>();
@@ -876,7 +877,7 @@ namespace CodeGenTemplateParms
 
                 string strIterations = myListControlEntity.Find(x => x.ID == "txtTemplate").Text;
                 string strID = myListControlEntity.Find(x => x.ID == "txtID").Text;
-                string strInFile = @"TemplateTemplate.txt";
+                string strInFile = strApplicationPath + "TemplateTemplate.txt";
 
                 string[] lineszz = System.IO.File.ReadAllLines(strInFile);
 
