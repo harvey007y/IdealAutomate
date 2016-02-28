@@ -278,12 +278,8 @@ namespace CodeGenTemplateParms
                 bool boolMultiline = myListControlEntity.Find(x => x.ID == "chkMultiline").Checked;
                 string strInFile = strApplicationPath + "TemplateTextBox.txt";
                 // private string strInFile = @"C:\Data\LanguageXMLInput3.txt";
-               
-                List<string> listOfSolvedProblems = new List<string>();
-                List<string> listofRecs = new List<string>();
+
                 string[] lineszz = System.IO.File.ReadAllLines(strInFile);
-
-
 
                     int intLineCount = lineszz.Count();
                     int intCtr = 0;
@@ -490,12 +486,7 @@ namespace CodeGenTemplateParms
 
                 string strInFile = strApplicationPath + "TemplateComboBox.txt";
                 // private string strInFile = @"C:\Data\LanguageXMLInput3.txt";                
-                List<string> listOfSolvedProblems = new List<string>();
-                List<string> listofRecs = new List<string>();
                 string[] lineszz = System.IO.File.ReadAllLines(strInFile);
-
-
-
                     int intLineCount = lineszz.Count();
                     int intCtr = 0;
                     for (int i = 0; i < intLineCount; i++)
@@ -567,7 +558,7 @@ namespace CodeGenTemplateParms
               myControlEntity = new ControlEntity();
               myControlEntity.ControlEntitySetDefaults();
               myControlEntity.ControlType = ControlType.Heading;
-              myControlEntity.Text = "Add Label Control";
+              myControlEntity.Text = "Add Heading Control";
               myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
               myControlEntity.ControlEntitySetDefaults();
@@ -625,13 +616,7 @@ namespace CodeGenTemplateParms
               string strID = myListControlEntity.Find(x => x.ID == "txtID").Text;
               string strInFile = strApplicationPath + "TemplateLabel.txt";
               // private string strInFile = @"C:\Data\LanguageXMLInput3.txt";
-
-              List<string> listOfSolvedProblems = new List<string>();
-              List<string> listofRecs = new List<string>();
               string[] lineszz = System.IO.File.ReadAllLines(strInFile);
-
-
-
               int intLineCount = lineszz.Count();
               int intCtr = 0;
               for (int i = 0; i < intLineCount; i++) {
@@ -732,9 +717,28 @@ namespace CodeGenTemplateParms
                     for (int i = 0; i < intLineCount; i++)
                     {
                         string line = lineszz[i];
-                        sb.AppendLine(line);
+                    if (line.Contains("&&STARTROW"))
+                    {
+                        line = line.Replace("&&STARTROW", intRowCtr.ToString());
+                        intRowCtr++;
+                    }
+                    if (line.Contains("&&INCREMENTBYROW"))
+                    {
+                        line = line.Replace("&&INCREMENTBYROW", intRowCtr.ToString());
+                        intRowCtr++;
+                    }
+                    line = line.Replace("&&ROW", intRowCtr.ToString());
+                    line = line.Replace("&&ID", strID.Trim());
+                    line = line.Replace("&&START", strStart.Trim());
+                    line = line.Replace("&&INCREMENTBY", strIncrementBy.Trim());
+                    line = line.Replace("&&TEXT", strStart.Trim());
+
+                    sb.AppendLine(line);
                     }
 
+                sb2.AppendLine("string strStart" + strID.Trim() + " = myListControlEntity.Find(x => x.ID == \"txtStart" + strID.Trim() + "\").Text;");
+                sb2.AppendLine("string strIncrementBy"  + strID.Trim() + " = myListControlEntity.Find(x => x.ID == \"txtIncrementBy" + strID.Trim() + "\").Text;");
+                sb2.AppendLine("string strIterator" + strID.Trim() + " = myListControlEntity.Find(x => x.ID == \"txtIterator" + strID.Trim() + "\").Text;");
 
                 goto AddControl;
             }
@@ -792,11 +796,9 @@ namespace CodeGenTemplateParms
 
                 string strIterations = myListControlEntity.Find(x => x.ID == "txtIterations").Text;
                 string strID = myListControlEntity.Find(x => x.ID == "txtID").Text;
-                string strInFile = strApplicationPath + "TemplateNumIterations.txt";
+                string strInFile = strApplicationPath + "TemplateIterations.txt";
                 // private string strInFile = @"C:\Data\LanguageXMLInput3.txt";
                
-                List<string> listOfSolvedProblems = new List<string>();
-                List<string> listofRecs = new List<string>();
                 string[] lineszz = System.IO.File.ReadAllLines(strInFile);
 
 
@@ -806,19 +808,13 @@ namespace CodeGenTemplateParms
                     for (int i = 0; i < intLineCount; i++)
                     {
                         string line = lineszz[i];
-                        //line = line.Replace("&&HOURS", strHours.Trim());
-                        //line = line.Replace("&&KEYWORDUNDERSCORES", strKeywordUnderscores.Trim());
-                        //line = line.Replace("&&KEYWORDNOUNDERSCORES", strKeyword.Trim());
-                        //line = line.Replace("&&IMAGEFILENAME", strImageFileName.Trim());
-                        //line = line.Replace("&&IMAGEDESCRIPTION", strImageDescription.Trim());
-                        //line = line.Replace("&&IMAGEHEIGHT", strImageHeight.Trim());
-                        //line = line.Replace("&&IMAGEWIDTH", strImageWidth.Trim());
-                        //line = line.Replace("&&IMAGECREDIT", strImageCredit.Trim());
-                        //line = line.Replace("&&WIKIPEDIAINFO", strWikipediaInfo.Trim());
-                        //line = line.Replace("&&TABLE", strTable.Trim());
-                        sb.AppendLine(line);
+                    line = line.Replace("&&ROW", intRowCtr.ToString());
+                    line = line.Replace("&&ID", strID.Trim());                    
+                    line = line.Replace("&&ITERATIONS", strIterations.Trim());
+                    sb.AppendLine(line);
                     }
 
+                sb2.AppendLine("string strIterations" + strID.Trim() + " = myListControlEntity.Find(x => x.ID == \"txtIterations" + strID.Trim() + "\").Text;");
 
                 goto AddControl;
             }
@@ -875,7 +871,7 @@ namespace CodeGenTemplateParms
 
                 myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
 
-                string strIterations = myListControlEntity.Find(x => x.ID == "txtTemplate").Text;
+                string strTemplate = myListControlEntity.Find(x => x.ID == "txtTemplate").Text;
                 string strID = myListControlEntity.Find(x => x.ID == "txtID").Text;
                 string strInFile = strApplicationPath + "TemplateTemplate.txt";
 
@@ -887,20 +883,23 @@ namespace CodeGenTemplateParms
                     for (int i = 0; i < intLineCount; i++)
                     {
                         string line = lineszz[i];
-
-                        sb.AppendLine(line);
+                    line = line.Replace("&&ROW", intRowCtr.ToString());
+                    line = line.Replace("&&ID", strID.Trim());
+                    line = line.Replace("&&TEMPLATE", strTemplate.Trim());
+                    sb.AppendLine(line);
                     }
 
- 
+                sb2.AppendLine("string strTemplate" + strID.Trim() + " = myListControlEntity.Find(x => x.ID == \"txtTemplate" + strID.Trim() + "\").Text;");
+
                 goto AddControl;
             }
 
           // Done --------------------
         
             using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutFile)) {
-              file.Write(" ControlEntity myControlEntity = new ControlEntity();");
+              file.WriteLine(" ControlEntity myControlEntity = new ControlEntity();");
               file.Write(sb.ToString());
-              file.Write("myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);");
+              file.WriteLine("myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);");
               file.Write(sb2.ToString());
             }
              string strExecutable = @"C:\Windows\system32\notepad.exe";
