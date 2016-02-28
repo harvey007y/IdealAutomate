@@ -287,7 +287,7 @@ namespace CodeGenTemplateParms
                     {
                       string line = lineszz[i];
                       line = line.Replace("&&ID", strID.Trim());
-                      line = line.Replace("&&TEXT", strText.Trim());
+                      line = line.Replace("&&TEXT", strText.Trim().Replace("\\r\\n","\" + System.Environment.NewLine + \""));
                       line = line.Replace("&&ROW", intRowCtr.ToString());
                       if (strWidth != "") {
                         line = line.Replace("&&WIDTH", strWidth);
@@ -614,7 +614,7 @@ namespace CodeGenTemplateParms
               string strText = myListControlEntity.Find(x => x.ID == "txtText").Text;
               string strWidth = myListControlEntity.Find(x => x.ID == "txtWidth").Text;
               string strID = myListControlEntity.Find(x => x.ID == "txtID").Text;
-              string strInFile = strApplicationPath + "TemplateLabel.txt";
+              string strInFile = strApplicationPath + "TemplateHeading.txt";
               // private string strInFile = @"C:\Data\LanguageXMLInput3.txt";
               string[] lineszz = System.IO.File.ReadAllLines(strInFile);
               int intLineCount = lineszz.Count();
