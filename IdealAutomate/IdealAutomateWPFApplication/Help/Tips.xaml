@@ -22,7 +22,7 @@
                 </ListItem>
                 <ListItem>
                     <Paragraph>
-                        Finding an image is much more brittle than using keyboard shortcuts so always use the find image approach as the last resort.
+                        Finding an image is much more brittle than using keyboard shortcuts so always use the find image approach as the last resort. When making a script public for others to use on their computer, you can pretty much count on finding images not working on their computer unless they use their snipping tool to replace the images in your script with new ones that they create on their computer.  The best approach for public scripts is to use keyboard shortcuts whenever possible.
                     </Paragraph>
                 </ListItem>
 
