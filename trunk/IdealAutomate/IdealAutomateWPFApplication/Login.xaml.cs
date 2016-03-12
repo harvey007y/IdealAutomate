@@ -65,7 +65,13 @@ namespace Hardcodet.Wpf.Samples {
       
       SqlConnection conMaster = new SqlConnection(ConfigurationManager.ConnectionStrings["myConnectionStringMaster"].ConnectionString);
       SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["myConnectionString"].ConnectionString);
-      conMaster.Open();
+      try {
+        conMaster.Open();
+      } catch (Exception) {
+        MessageBox.Show(" There was a problem connecting to SQLEXPRESS. This means that you do not have sqlexpress  installed or it is stopped in Start>Control Panel>Administrative Tools>Services>SQL Server(SQLEXPRESS). Please install or start SQLEXPESS and try again. Application will now shut down gracefully. ");
+        Application.Current.Shutdown();
+        return;
+      }
       string updCmdMaster =
 
 "USE [master] " +
