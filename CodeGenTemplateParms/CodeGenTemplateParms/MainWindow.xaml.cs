@@ -36,6 +36,9 @@ namespace CodeGenTemplateParms
                 myActions.TypeText("%(\" \"n)", 1000); // minimize visual studio
             }
             myActions.Sleep(1000);
+            string strIterations = "";
+            string strIterationsID = "";
+            string strIteratorID = "";
             string strApplicationPath = System.AppDomain.CurrentDomain.BaseDirectory;
             int intRowCtr = -1;
             string strOutFile = @"C:\Data\BlogPost.txt";
@@ -306,7 +309,7 @@ namespace CodeGenTemplateParms
                       }
                     }
                     sb2.AppendLine("string str" + strID + " = myListControlEntity.Find(x => x.ID == \"txt"+ strID +"\").Text;");
-                    sb4.AppendLine("txtTemplateOut = txtTemplateOut.Replace(&&" + strID + ",txt" + strID + "\").Text)");
+                    sb4.AppendLine("txtTemplateOut = txtTemplateOut.Replace(\"&&" + strID + "\",str" + strID + ");");
 
                 goto AddControl;
             }
@@ -549,7 +552,7 @@ namespace CodeGenTemplateParms
                     }
 
                 sb2.AppendLine("string str" + strID + " = myListControlEntity.Find(x => x.ID == \"cbx" + strID + "\").SelectedValue;");
-                sb4.AppendLine("txtTemplateOut = txtTemplateOut.Replace(&&" + strID + ",cbx" + strID + "\").SelectedValue)");
+                sb4.AppendLine("txtTemplateOut = txtTemplateOut.Replace(\"&&" + strID + "\",str" + strID + ");");
 
                 goto AddControl;
             }
@@ -708,7 +711,7 @@ namespace CodeGenTemplateParms
 
                 string strStart = myListControlEntity.Find(x => x.ID == "txtStart").Text;
                 string strIncrementBy = myListControlEntity.Find(x => x.ID == "txtIncrementBy").Text;
-                string strID = myListControlEntity.Find(x => x.ID == "txtID").Text;
+                strIteratorID = myListControlEntity.Find(x => x.ID == "txtID").Text;
                 string strInFile = strApplicationPath + "TemplateIterator.txt";
             
                 
@@ -733,7 +736,7 @@ namespace CodeGenTemplateParms
                         intRowCtr++;
                     }
                     line = line.Replace("&&ROW", intRowCtr.ToString());
-                    line = line.Replace("&&ID", strID.Trim());
+                    line = line.Replace("&&ID", strIteratorID.Trim());
                     line = line.Replace("&&START", strStart.Trim());
                     line = line.Replace("&&INCREMENTBY", strIncrementBy.Trim());
                     line = line.Replace("&&TEXT", strStart.Trim());
@@ -741,10 +744,14 @@ namespace CodeGenTemplateParms
                     sb.AppendLine(line);
                     }
 
-                sb2.AppendLine("string strStart" + strID.Trim() + " = myListControlEntity.Find(x => x.ID == \"txtStart" + strID.Trim() + "\").Text;");
-                sb2.AppendLine("string strIncrementBy"  + strID.Trim() + " = myListControlEntity.Find(x => x.ID == \"txtIncrementBy" + strID.Trim() + "\").Text;");
-                sb2.AppendLine("string strIterator" + strID.Trim() + " = myListControlEntity.Find(x => x.ID == \"txtIterator" + strID.Trim() + "\").Text;");
-                sb4.AppendLine("txtTemplateOut = txtTemplateOut.Replace(&&" + strID + ",strIterator" + strID + "\").Text)");
+                sb2.AppendLine("string strStart" + strIteratorID.Trim() + " = myListControlEntity.Find(x => x.ID == \"txtStart" + strIteratorID.Trim() + "\").Text;");
+                sb2.AppendLine("int intStart" + strIteratorID.Trim() + " = 0;");
+                sb2.AppendLine("Int32.TryParse(strStart" + strIteratorID.Trim() + ",out intStart" + strIteratorID.Trim() + ");");
+                sb2.AppendLine("string strIncrementBy"  + strIteratorID.Trim() + " = myListControlEntity.Find(x => x.ID == \"txtIncrementBy" + strIteratorID.Trim() + "\").Text;");
+                sb2.AppendLine("int intIncrementBy" + strIteratorID.Trim() + " = 0;");
+                sb2.AppendLine("Int32.TryParse(strIncrementBy" + strIteratorID.Trim() + ",out intIncrementBy" + strIteratorID.Trim() + ");");
+                sb2.AppendLine("string strIterator" + strIteratorID.Trim() + " = myListControlEntity.Find(x => x.ID == \"txtIterator" + strIteratorID.Trim() + "\").Text;");
+                sb4.AppendLine("txtTemplateOut = txtTemplateOut.Replace(\"&&" + strIteratorID + "\",intIterator.ToString());");
                 goto AddControl;
             }
 
@@ -799,8 +806,8 @@ namespace CodeGenTemplateParms
 
                 myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
 
-                string strIterations = myListControlEntity.Find(x => x.ID == "txtIterations").Text;
-                string strIterationsID = myListControlEntity.Find(x => x.ID == "txtID").Text;
+                strIterations = myListControlEntity.Find(x => x.ID == "txtIterations").Text;
+                strIterationsID = myListControlEntity.Find(x => x.ID == "txtID").Text;
                 string strInFile = strApplicationPath + "TemplateIterations.txt";
                 // private string strInFile = @"C:\Data\LanguageXMLInput3.txt";
                
@@ -820,7 +827,8 @@ namespace CodeGenTemplateParms
                     }
 
                 sb2.AppendLine("string strIterations" + strIterationsID.Trim() + " = myListControlEntity.Find(x => x.ID == \"txtIterations" + strIterationsID.Trim() + "\").Text;");
-
+                sb2.AppendLine("int intIterations" + strIterationsID.Trim() + " = 0;");
+                sb2.AppendLine("Int32.TryParse(strIterations" + strIterationsID.Trim() + ",out intIterations" + strIterationsID.Trim() + ");");
                 goto AddControl;
             }
 
@@ -895,7 +903,7 @@ namespace CodeGenTemplateParms
                     }
 
                 sb2.AppendLine("string strTemplate" + strID.Trim() + " = myListControlEntity.Find(x => x.ID == \"txtTemplate" + strID.Trim() + "\").Text;");
-                sb3.AppendLine("string txtTemplateOut =  strTemplate" + strID.Trim());
+                sb3.AppendLine("string txtTemplateOut =  strTemplate" + strID.Trim() + ";");
                 goto AddControl;
             }
 
@@ -906,15 +914,25 @@ namespace CodeGenTemplateParms
               file.Write(sb.ToString());
               file.WriteLine("myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);");
               file.Write(sb2.ToString());
-              file.Write(sb3.ToString());
+   
                 // TODO: I have the template in txtTemplateOut and I need to
                 // loop iteration times over the template starting at start iterator
                 // incrementing iterator incrementby 
-
-                file.WriteLine(" for (int i = 0; i < length; i++)");
+              file.WriteLine("int intIterator = intStart" + strIteratorID.Trim() + ";");
+              file.WriteLine(" string strOutFile = @\"C:\\Data\\TemplateOut.txt\";");
+              file.WriteLine("using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutFile)) {");
+                file.WriteLine(" for (int i = 0; i < intIterations" + strIterationsID.Trim() + "; i++)");
                 file.WriteLine("{");
+                file.Write(sb3.ToString());
               file.Write(sb4.ToString());
+              file.WriteLine("intIterator += intIncrementBy" + strIteratorID.Trim() + ";");
+              file.WriteLine("file.WriteLine(\"\");");
+              file.WriteLine("file.Write(txtTemplateOut);");
                 file.WriteLine("}");
+                file.WriteLine("}");
+                file.WriteLine("string strExecutable = @\"C:\\Windows\\system32\\notepad.exe\";");
+              file.WriteLine("string strContent = strOutFile;");
+              file.WriteLine("Process.Start(strExecutable, string.Concat(\"\", strContent, \"\"));");
             }
              string strExecutable = @"C:\Windows\system32\notepad.exe";
             string strContent = strOutFile;
