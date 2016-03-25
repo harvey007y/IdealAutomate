@@ -5,6 +5,9 @@ using System.Collections.Generic;
 namespace WindowsExplorerGetFullFileName {
   /// <summary>
   /// Interaction logic for MainWindow.xaml
+  /// To use this script, you add the script to Ideal Automate and add a hotkey for it
+  /// Then, when you are in windows explorer and you have a file name highlighted,
+  /// you can hit the hotkey and it will copy the full path of the file to your clipboard
   /// </summary>
   public partial class MainWindow : Window {
     public MainWindow() {
