@@ -42,7 +42,12 @@ namespace WindowsExplorerGetFullFileName {
       myImage.Attempts = 2;
       myImage.RelativeX = 300;
       myImage.RelativeY = -25;
-      myActions.ClickImageIfExists(myImage);
+      int[,] myArray = myActions.PutAll(myImage);
+      if (myArray.Length == 0) {
+        myActions.MessageBoxShow("Could not find imgName - click here to continue");
+      } else {
+        myActions.LeftClick(myArray);
+      }
       myActions.TypeText("%(d)", 500); // highlight windows explorer address bar
       myActions.TypeText("{END}", 500); // close properties window
       myActions.TypeText("\\", 500); // type slash
