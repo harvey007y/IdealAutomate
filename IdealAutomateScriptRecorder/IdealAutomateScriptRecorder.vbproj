@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{6DE737FF-5624-4E71-9622-AE202B0036C5}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>IdealAutomateScriptRecorder.My.MyApplication</StartupObject>
+    <RootNamespace>IdealAutomateScriptRecorder</RootNamespace>
+    <AssemblyName>IdealAutomateScriptRecorder</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>WindowsForms</MyType>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Text</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\Stopwatch.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="app1.config" />
+    <None Include="HealthyWorkMate_1_TemporaryKey.pfx" />
+    <None Include="HealthyWorkMate_3_TemporaryKey.pfx" />
+    <None Include="HealthyWorkMate_TemporaryKey.pfx" />
+    <None Include="publish\Application Files\HealthyWorkMate_1_0_0_11\HealthyWorkMate.application" />
+    <None Include="publish\Application Files\HealthyWorkMate_1_0_0_11\HealthyWorkMate.exe.deploy" />
+    <None Include="publish\Application Files\HealthyWorkMate_1_0_0_11\HealthyWorkMate.exe.manifest" />
+    <None Include="publish\Application Files\HealthyWorkMate_1_0_0_11\Resources\Stopwatch.ico.deploy" />
+    <None Include="publish\Application Files\HealthyWorkMate_1_0_0_1\HealthyWorkMate.application" />
+    <None Include="publish\Application Files\HealthyWorkMate_1_0_0_1\HealthyWorkMate.exe.deploy" />
+    <None Include="publish\Application Files\HealthyWorkMate_1_0_0_1\HealthyWorkMate.exe.manifest" />
+    <None Include="publish\Application Files\HealthyWorkMate_1_0_0_2\HealthyWorkMate.application" />
+    <None Include="publish\Application Files\HealthyWorkMate_1_0_0_2\HealthyWorkMate.exe.deploy" />
+    <None Include="publish\Application Files\HealthyWorkMate_1_0_0_2\HealthyWorkMate.exe.manifest" />
+    <None Include="publish\Application Files\HealthyWorkMate_1_0_0_3\HealthyWorkMate.application" />
+    <None Include="publish\Application Files\HealthyWorkMate_1_0_0_3\HealthyWorkMate.exe.deploy" />
+    <None Include="publish\Application Files\HealthyWorkMate_1_0_0_3\HealthyWorkMate.exe.manifest" />
+    <None Include="publish\Application Files\HealthyWorkMate_1_0_0_4\HealthyWorkMate.application" />
+    <None Include="publish\Application Files\HealthyWorkMate_1_0_0_4\HealthyWorkMate.exe.deploy" />
+    <None Include="publish\Application Files\HealthyWorkMate_1_0_0_4\HealthyWorkMate.exe.manifest" />
+    <None Include="publish\Application Files\HealthyWorkMate_1_0_0_4\Resources\Stopwatch.ico.deploy" />
+    <None Include="publish\Application Files\HealthyWorkMate_1_0_0_5\HealthyWorkMate.application" />
+    <None Include="publish\Application Files\HealthyWorkMate_1_0_0_5\HealthyWorkMate.exe.deploy" />
+    <None Include="publish\Application Files\HealthyWorkMate_1_0_0_5\HealthyWorkMate.exe.manifest" />
+    <None Include="publish\Application Files\HealthyWorkMate_1_0_0_5\Resources\Stopwatch.ico.deploy" />
+    <None Include="publish\Application Files\TestGetActiveWindow_1_0_0_0\TestGetActiveWindow.application" />
+    <None Include="publish\Application Files\TestGetActiveWindow_1_0_0_0\TestGetActiveWindow.exe.deploy" />
+    <None Include="publish\Application Files\TestGetActiveWindow_1_0_0_0\TestGetActiveWindow.exe.manifest" />
+    <None Include="publish\HealthyWorkMate.application" />
+    <None Include="publish\TestGetActiveWindow.application" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="clsProcess.vb" />
+    <Compile Include="Form1.Designer.vb">
+      <DependentUpon>Form1.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form1.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTestGetChildWindows.Designer.vb">
+      <DependentUpon>frmTestGetChildWindows.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmTestGetChildWindows.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTestGetText.Designer.vb">
+      <DependentUpon>frmTestGetText.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmTestGetText.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="TestMove.Designer.vb">
+      <DependentUpon>TestMove.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TestMove.vb">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmTestGetText.resx">
+      <DependentUpon>frmTestGetText.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestMove.resx">
+      <DependentUpon>TestMove.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <Content Include="publish\setup.exe" />
+    <Content Include="Resources\Stopwatch.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include=".vs\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.Targets" />
+  <ProjectExtensions>
+    <VisualStudio AllowExistingFolder="true" />
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
