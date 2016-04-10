@@ -15,6 +15,8 @@ Public Class Form1
     Public boolKeepCounting As Boolean = True
     Public boolReminderDisplayed As Boolean = True
     Public boolFirstTime As Boolean = True
+    Public boolKeyPressHandled As Boolean = False
+    Public boolCapsOn As Boolean = False
 
     Public list As New ArrayList()
     Public sbg As New StringBuilder
@@ -448,21 +450,46 @@ Module Keyboard
     Public Function IsHooked(
       ByRef Hookstruct As KBDLLHOOKSTRUCT) As Boolean
         Debug.WriteLine("Hookstruct.vkCode: " & ChrW(Hookstruct.vkCode))
+        Form1.boolKeyPressHandled = False
         If Form1.boolKeepCounting Then
+            If CBool(GetAsyncKeyState(VK_SHIFT) _
+And LLKHF_UP) Then
+                Form1.boolCapsOn = False
+                Form1.boolKeyPressHandled = True
+            End If
+            If CBool(GetAsyncKeyState(VK_DELETE) _
+          And LLKHF_UP) Then
+                Form1.boolKeyPressHandled = True
+            End If
             If CBool(Hookstruct.flags And LLKHF_DOWN) Then
                 Form1.intKeyCtr = Form1.intKeyCtr + 1
                 If Form1.boolStart And Form1.boolPause = False And Form1.boolStop = False Then
-                    If Hookstruct.vkCode < 160 Then
-                        If GetAsyncKeyState(VK_SHIFT) Then
+                    If CBool(GetAsyncKeyState(VK_DELETE) _
+          And LLKHF_DOWN) Then
+                        Form1.sbg.Append("{DELETE}")
+                        Form1.boolKeyPressHandled = True
+                    End If
+
+
+                    If CBool(GetAsyncKeyState(VK_SHIFT) _
+              And LLKHF_DOWN) Then
+                        Form1.boolCapsOn = True
+                        Form1.boolKeyPressHandled = True
+                    End If
+
+                    If Form1.boolKeyPressHandled = False Then
+                        If Form1.boolCapsOn Then
                             Form1.sbg.Append(ChrW(Hookstruct.vkCode))
                         Else
                             Form1.sbg.Append(ChrW(Hookstruct.vkCode).ToString().ToLower())
                         End If
+
                     End If
+
 
                 End If
 
-                    Dim i As Integer
+                Dim i As Integer
                 Dim myProcess As clsProcess
                 For i = 0 To Form1.list.Count - 1
                     myProcess = Form1.list.Item(i)
