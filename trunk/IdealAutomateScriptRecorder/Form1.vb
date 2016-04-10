@@ -1,10 +1,7 @@
 Imports System.Runtime.InteropServices
-Imports System.Reflection
-Imports System.Drawing
-Imports System.Threading
 Imports System.Text
 Imports System.Management
-
+Imports System.IO
 
 Public Class Form1
 
@@ -21,6 +18,11 @@ Public Class Form1
 
     Public list As New ArrayList()
     Public sbg As New StringBuilder
+    Public boolStart = False
+    Public boolStop = False
+    Public boolResume = False
+    Public boolPause = False
+    Public listActions As List(Of String) = New List(Of String)
 
 
 
@@ -35,9 +37,9 @@ Public Class Form1
 
     Const WM_GETTEXT As Int32 = &HD
     Const WM_GETTEXTLENGTH As Int32 = &HE
-    Declare Function SendMessage Lib "user32.dll" Alias "SendMessageA" ( _
+    Declare Function SendMessage Lib "user32.dll" Alias "SendMessageA" (
         ByVal hwnd As IntPtr, ByVal wMsg As Int32, ByVal wParam As Int32, ByVal lParam As Int32) As Int32
-    Declare Function SendMessage Lib "user32.dll" Alias "SendMessageA" ( _
+    Declare Function SendMessage Lib "user32.dll" Alias "SendMessageA" (
         ByVal hwnd As IntPtr, ByVal wMsg As Int32, ByVal wParam As Int32, ByVal lParam As String) As Int32
     Private Declare Function GetForegroundWindow Lib "user32.dll" () As IntPtr
     Private Declare Function GetWindowThreadProcessId Lib "user32.dll" (ByVal hwnd As IntPtr, ByRef lpdwProcessID As Integer) As Integer
@@ -86,8 +88,8 @@ Public Class Form1
         Dim boolKeepCountingLocal As Boolean = False
         Dim boolNewProcess As Boolean = False
 
-        If txtProcessName.Text <> proc.ProcessName Or _
-            txtProcessTitle.Text <> proc.MainWindowTitle Or _
+        If txtProcessName.Text <> proc.ProcessName Or
+            txtProcessTitle.Text <> proc.MainWindowTitle Or
             txtProcessID.Text <> pid.ToString() Then
             boolNewProcess = True
         Else
@@ -103,8 +105,8 @@ Public Class Form1
             For i = 0 To list.Count - 1
                 myProcess = list.Item(i)
                 'close out old process
-                If myProcess.ProcessName = txtProcessName.Text And _
-                    myProcess.ProcessTitle = txtProcessTitle.Text And _
+                If myProcess.ProcessName = txtProcessName.Text And
+                    myProcess.ProcessTitle = txtProcessTitle.Text And
                     myProcess.ProcessID = txtProcessID.Text Then
 
                     ' This next statement must come before the update of EndDateTime because we are using EndDateTime
@@ -112,7 +114,7 @@ Public Class Form1
                     myProcess.TotalSeconds = myProcess.TotalSeconds + DateDiff(DateInterval.Second, myProcess.EndDateTime, System.DateTime.Now)
                     myProcess.EndDateTime = System.DateTime.Now
                     myProcess.TextContent = myProcess.TextContent + sbg.ToString()
-                    sbg.Length = 0
+                    'sbg.Length = 0
 
                     list.Item(i) = myProcess
                     Dim bs As New BindingSource(list, "")
@@ -121,8 +123,8 @@ Public Class Form1
                     DataGridView1.AutoResizeColumns()
                 End If
                 'open new process
-                If myProcess.ProcessName = proc.ProcessName And _
-                    myProcess.ProcessTitle = proc.MainWindowTitle And _
+                If myProcess.ProcessName = proc.ProcessName And
+                    myProcess.ProcessTitle = proc.MainWindowTitle And
                     myProcess.ProcessID = pid.ToString() Then
                     boolFoundApp = True
                     boolKeepCountingLocal = True
@@ -257,7 +259,7 @@ Public Class Form1
             sb.Append(vbCrLf + System.DateTime.Now)
             txtReminder.Text = sb.ToString()
             ShowWindow(myhWnd, SW_SHOWNOACTIVATE)
-            SetWindowPos(myhWnd.ToInt32(), HWND_TOPMOST, Me.Left, Me.Top, Me.Width, Me.Height, _
+            SetWindowPos(myhWnd.ToInt32(), HWND_TOPMOST, Me.Left, Me.Top, Me.Width, Me.Height,
             SWP_NOACTIVATE)
             intStartShowElapsedSeconds = intElapsedSeconds
             boolNeedToDisplay = False
@@ -274,12 +276,12 @@ Public Class Form1
 
 
     End Sub
-    <DllImport("user32.dll", EntryPoint:="SetWindowPos")> _
-    Private Shared Function SetWindowPos(ByVal hWnd As Integer, ByVal hWndInsertAfter As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal cx As Integer, ByVal cy As Integer, _
+    <DllImport("user32.dll", EntryPoint:="SetWindowPos")>
+    Private Shared Function SetWindowPos(ByVal hWnd As Integer, ByVal hWndInsertAfter As Integer, ByVal X As Integer, ByVal Y As Integer, ByVal cx As Integer, ByVal cy As Integer,
  ByVal uFlags As UInteger) As Boolean
     End Function
 
-    <DllImport("user32.dll")> _
+    <DllImport("user32.dll")>
     Private Shared Function ShowWindow(ByVal hWnd As IntPtr, ByVal nCmdShow As Integer) As Boolean
 
     End Function
@@ -370,23 +372,53 @@ Public Class Form1
 
 
     End Sub
+
+    Private Sub btnStop_Click(sender As Object, e As EventArgs) Handles btnStop.Click
+        boolStop = True
+        Using writer As StreamWriter =
+    New StreamWriter("myfile.txt")
+            For Each line In listActions
+                writer.WriteLine(line)
+            Next
+        End Using
+    End Sub
+
+    Private Sub btnPause_Click(sender As Object, e As EventArgs) Handles btnPause.Click
+        boolPause = True
+        boolResume = False
+    End Sub
+
+    Private Sub btnResume_Click(sender As Object, e As EventArgs) Handles btnResume.Click
+        boolResume = True
+        boolPause = False
+    End Sub
+
+    Private Sub btnStart_Click(sender As Object, e As EventArgs) Handles btnStart.Click
+        sbg.Length = 0
+        boolStart = True
+    End Sub
+
+    Private Sub btnBreakText_Click(sender As Object, e As EventArgs) Handles btnBreakText.Click
+        listActions.Add("myActions.TypeText(""" & sbg.ToString() & """);")
+        sbg.Length = 0
+    End Sub
 End Class
 Module Keyboard
-    <DllImport("kernel32.dll", CharSet:=CharSet.Auto)> _
+    <DllImport("kernel32.dll", CharSet:=CharSet.Auto)>
     Public Function GetModuleHandle(ByVal lpModuleName As String) As IntPtr
     End Function
     Public Declare Function UnhookWindowsHookEx Lib "user32" _
       (ByVal hHook As Integer) As Integer
     Public Declare Function SetWindowsHookEx Lib "user32" _
-      Alias "SetWindowsHookExA" (ByVal idHook As Integer, _
-      ByVal lpfn As KeyboardHookDelegate, ByVal hmod As IntPtr, _
+      Alias "SetWindowsHookExA" (ByVal idHook As Integer,
+      ByVal lpfn As KeyboardHookDelegate, ByVal hmod As IntPtr,
       ByVal dwThreadId As Integer) As Integer
     Private Declare Function GetAsyncKeyState Lib "user32" _
       (ByVal vKey As Integer) As Integer
     Private Declare Function CallNextHookEx Lib "user32" _
-      (ByVal hHook As Integer, _
-      ByVal nCode As Integer, _
-      ByVal wParam As Integer, _
+      (ByVal hHook As Integer,
+      ByVal nCode As Integer,
+      ByVal wParam As Integer,
       ByRef lParam As KBDLLHOOKSTRUCT) As Integer
     Public Structure KBDLLHOOKSTRUCT
         Public vkCode As Integer
@@ -404,27 +436,39 @@ Module Keyboard
     Private Const LLKHF_DOWN As Integer = &H81
     ' Virtual Keys
     Public Const VK_TAB As Integer = &H9
+    Public Const VK_SHIFT As Integer = &H10
     Public Const VK_CONTROL As Integer = &H11
+    Public Const VK_CAPITAL As Integer = &H15
     Public Const VK_ESCAPE As Integer = &H1B
     Public Const VK_DELETE As Integer = &H2E
     Private Const WH_KEYBOARD_LL As Integer = 13
     Public KeyboardHandle As Integer
     ' Implement this function to block as many
     ' key combinations as you'd like...
-    Public Function IsHooked( _
+    Public Function IsHooked(
       ByRef Hookstruct As KBDLLHOOKSTRUCT) As Boolean
         Debug.WriteLine("Hookstruct.vkCode: " & ChrW(Hookstruct.vkCode))
         If Form1.boolKeepCounting Then
             If CBool(Hookstruct.flags And LLKHF_DOWN) Then
                 Form1.intKeyCtr = Form1.intKeyCtr + 1
-                Form1.sbg.Append(ChrW(Hookstruct.vkCode))
-                Dim i As Integer
+                If Form1.boolStart And Form1.boolPause = False And Form1.boolStop = False Then
+                    If Hookstruct.vkCode < 160 Then
+                        If GetAsyncKeyState(VK_SHIFT) Then
+                            Form1.sbg.Append(ChrW(Hookstruct.vkCode))
+                        Else
+                            Form1.sbg.Append(ChrW(Hookstruct.vkCode).ToString().ToLower())
+                        End If
+                    End If
+
+                End If
+
+                    Dim i As Integer
                 Dim myProcess As clsProcess
                 For i = 0 To Form1.list.Count - 1
                     myProcess = Form1.list.Item(i)
-                    If myProcess.ProcessName = Form1.txtProcessName.Text And _
-                    myProcess.ProcessTitle = Form1.txtProcessTitle.Text And _
-                    myProcess.ProcessID = Form1.txtProcessID.Text Then
+                    If myProcess.ProcessName = Form1.txtProcessName.Text And
+                myProcess.ProcessTitle = Form1.txtProcessTitle.Text And
+                myProcess.ProcessID = Form1.txtProcessID.Text Then
                         myProcess.ProcessKeystrokeCtr = myProcess.ProcessKeystrokeCtr + 1
                         ' This next statement must come before the update of EndDateTime because we are using EndDateTime
                         ' as LastModifiedDateTime........
@@ -442,20 +486,20 @@ Module Keyboard
         Debug.WriteLine(Hookstruct.vkCode = VK_TAB)
 
         'MessageBox.Show(Hookstruct.vkCode.ToString)
-        If (Hookstruct.vkCode = VK_ESCAPE) And _
+        If (Hookstruct.vkCode = VK_ESCAPE) And
           CBool(GetAsyncKeyState(VK_CONTROL) _
           And &H8000) Then
             Call HookedState("Ctrl + Esc blocked")
             Return True
         End If
-        If (Hookstruct.vkCode = VK_TAB) And _
-          CBool(Hookstruct.flags And _
+        If (Hookstruct.vkCode = VK_TAB) And
+          CBool(Hookstruct.flags And
           LLKHF_ALTDOWN) Then
             Call HookedState("Alt + Tab blockd")
             Return True
         End If
-        If (Hookstruct.vkCode = VK_ESCAPE) And _
-          CBool(Hookstruct.flags And _
+        If (Hookstruct.vkCode = VK_ESCAPE) And
+          CBool(Hookstruct.flags And
             LLKHF_ALTDOWN) Then
             Call HookedState("Alt + Escape blocked")
             Return True
@@ -470,8 +514,8 @@ Module Keyboard
     Private Sub HookedState(ByVal Text As String)
         Debug.WriteLine(Text)
     End Sub
-    Public Function KeyboardCallback(ByVal Code As Integer, _
-      ByVal wParam As Integer, _
+    Public Function KeyboardCallback(ByVal Code As Integer,
+      ByVal wParam As Integer,
       ByRef lParam As KBDLLHOOKSTRUCT) As Integer
         If (Code = HC_ACTION) Then
             Debug.WriteLine("Calling IsHooked")
@@ -479,14 +523,14 @@ Module Keyboard
                 Return 1
             End If
         End If
-        Return CallNextHookEx(KeyboardHandle, _
+        Return CallNextHookEx(KeyboardHandle,
           Code, wParam, lParam)
     End Function
-    Public Delegate Function KeyboardHookDelegate( _
-      ByVal Code As Integer, _
+    Public Delegate Function KeyboardHookDelegate(
+      ByVal Code As Integer,
       ByVal wParam As Integer, ByRef lParam As KBDLLHOOKSTRUCT) _
                    As Integer
-    <MarshalAs(UnmanagedType.FunctionPtr)> _
+    <MarshalAs(UnmanagedType.FunctionPtr)>
     Private callback As KeyboardHookDelegate
     Public Sub HookKeyboard(ByRef f As Form)
         callback = New KeyboardHookDelegate(AddressOf KeyboardCallback)
