@@ -53,6 +53,17 @@ Partial Class Form1
         Me.Label12 = New System.Windows.Forms.Label()
         Me.txtStarted = New System.Windows.Forms.TextBox()
         Me.DataGridView1 = New System.Windows.Forms.DataGridView()
+        Me.btnStart = New System.Windows.Forms.Button()
+        Me.btnPause = New System.Windows.Forms.Button()
+        Me.btnResume = New System.Windows.Forms.Button()
+        Me.btnStop = New System.Windows.Forms.Button()
+        Me.btnBreakText = New System.Windows.Forms.Button()
+        Me.btnClickMouseOnImage = New System.Windows.Forms.Button()
+        Me.btnTypeComment = New System.Windows.Forms.Button()
+        Me.btnActivateWindowByTitle = New System.Windows.Forms.Button()
+        Me.btnInsertUserInputDialog = New System.Windows.Forms.Button()
+        Me.btnRun = New System.Windows.Forms.Button()
+        Me.btnRunAsync = New System.Windows.Forms.Button()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -63,7 +74,7 @@ Partial Class Form1
         'txtProcessID
         '
         Me.txtProcessID.Location = New System.Drawing.Point(112, 6)
-        Me.txtProcessID.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtProcessID.Margin = New System.Windows.Forms.Padding(2)
         Me.txtProcessID.Name = "txtProcessID"
         Me.txtProcessID.Size = New System.Drawing.Size(169, 20)
         Me.txtProcessID.TabIndex = 0
@@ -71,7 +82,7 @@ Partial Class Form1
         'txtProcessName
         '
         Me.txtProcessName.Location = New System.Drawing.Point(112, 44)
-        Me.txtProcessName.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtProcessName.Margin = New System.Windows.Forms.Padding(2)
         Me.txtProcessName.Name = "txtProcessName"
         Me.txtProcessName.Size = New System.Drawing.Size(169, 20)
         Me.txtProcessName.TabIndex = 1
@@ -79,7 +90,7 @@ Partial Class Form1
         'txtProcessTitle
         '
         Me.txtProcessTitle.Location = New System.Drawing.Point(112, 77)
-        Me.txtProcessTitle.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtProcessTitle.Margin = New System.Windows.Forms.Padding(2)
         Me.txtProcessTitle.Name = "txtProcessTitle"
         Me.txtProcessTitle.Size = New System.Drawing.Size(169, 20)
         Me.txtProcessTitle.TabIndex = 2
@@ -87,7 +98,7 @@ Partial Class Form1
         'txtCurrentWindowTitle
         '
         Me.txtCurrentWindowTitle.Location = New System.Drawing.Point(112, 113)
-        Me.txtCurrentWindowTitle.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtCurrentWindowTitle.Margin = New System.Windows.Forms.Padding(2)
         Me.txtCurrentWindowTitle.Name = "txtCurrentWindowTitle"
         Me.txtCurrentWindowTitle.Size = New System.Drawing.Size(169, 20)
         Me.txtCurrentWindowTitle.TabIndex = 3
@@ -95,7 +106,7 @@ Partial Class Form1
         'txtTitleLength
         '
         Me.txtTitleLength.Location = New System.Drawing.Point(112, 150)
-        Me.txtTitleLength.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtTitleLength.Margin = New System.Windows.Forms.Padding(2)
         Me.txtTitleLength.Name = "txtTitleLength"
         Me.txtTitleLength.Size = New System.Drawing.Size(169, 20)
         Me.txtTitleLength.TabIndex = 4
@@ -293,7 +304,7 @@ Partial Class Form1
         'txtStarted
         '
         Me.txtStarted.Location = New System.Drawing.Point(112, 537)
-        Me.txtStarted.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.txtStarted.Margin = New System.Windows.Forms.Padding(2)
         Me.txtStarted.Name = "txtStarted"
         Me.txtStarted.Size = New System.Drawing.Size(140, 20)
         Me.txtStarted.TabIndex = 27
@@ -304,18 +315,128 @@ Partial Class Form1
         Me.DataGridView1.AllowUserToDeleteRows = False
         Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DataGridView1.Location = New System.Drawing.Point(345, 391)
-        Me.DataGridView1.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.DataGridView1.Margin = New System.Windows.Forms.Padding(2)
         Me.DataGridView1.Name = "DataGridView1"
         Me.DataGridView1.ReadOnly = True
         Me.DataGridView1.RowTemplate.Height = 24
         Me.DataGridView1.Size = New System.Drawing.Size(342, 243)
         Me.DataGridView1.TabIndex = 28
         '
+        'btnStart
+        '
+        Me.btnStart.Location = New System.Drawing.Point(308, 4)
+        Me.btnStart.Name = "btnStart"
+        Me.btnStart.Size = New System.Drawing.Size(75, 23)
+        Me.btnStart.TabIndex = 29
+        Me.btnStart.Text = "Start"
+        Me.btnStart.UseVisualStyleBackColor = True
+        '
+        'btnPause
+        '
+        Me.btnPause.Location = New System.Drawing.Point(401, 4)
+        Me.btnPause.Name = "btnPause"
+        Me.btnPause.Size = New System.Drawing.Size(75, 23)
+        Me.btnPause.TabIndex = 30
+        Me.btnPause.Text = "Pause"
+        Me.btnPause.UseVisualStyleBackColor = True
+        '
+        'btnResume
+        '
+        Me.btnResume.Location = New System.Drawing.Point(494, 4)
+        Me.btnResume.Name = "btnResume"
+        Me.btnResume.Size = New System.Drawing.Size(75, 23)
+        Me.btnResume.TabIndex = 31
+        Me.btnResume.Text = "Resume"
+        Me.btnResume.UseVisualStyleBackColor = True
+        '
+        'btnStop
+        '
+        Me.btnStop.Location = New System.Drawing.Point(586, 3)
+        Me.btnStop.Name = "btnStop"
+        Me.btnStop.Size = New System.Drawing.Size(75, 23)
+        Me.btnStop.TabIndex = 32
+        Me.btnStop.Text = "Stop"
+        Me.btnStop.UseVisualStyleBackColor = True
+        '
+        'btnBreakText
+        '
+        Me.btnBreakText.Location = New System.Drawing.Point(308, 40)
+        Me.btnBreakText.Name = "btnBreakText"
+        Me.btnBreakText.Size = New System.Drawing.Size(75, 23)
+        Me.btnBreakText.TabIndex = 33
+        Me.btnBreakText.Text = "Break Text"
+        Me.btnBreakText.UseVisualStyleBackColor = True
+        '
+        'btnClickMouseOnImage
+        '
+        Me.btnClickMouseOnImage.Location = New System.Drawing.Point(308, 77)
+        Me.btnClickMouseOnImage.Name = "btnClickMouseOnImage"
+        Me.btnClickMouseOnImage.Size = New System.Drawing.Size(128, 23)
+        Me.btnClickMouseOnImage.TabIndex = 34
+        Me.btnClickMouseOnImage.Text = "Click Mouse on Image"
+        Me.btnClickMouseOnImage.UseVisualStyleBackColor = True
+        '
+        'btnTypeComment
+        '
+        Me.btnTypeComment.Location = New System.Drawing.Point(308, 109)
+        Me.btnTypeComment.Name = "btnTypeComment"
+        Me.btnTypeComment.Size = New System.Drawing.Size(90, 23)
+        Me.btnTypeComment.TabIndex = 35
+        Me.btnTypeComment.Text = "Type Comment"
+        Me.btnTypeComment.UseVisualStyleBackColor = True
+        '
+        'btnActivateWindowByTitle
+        '
+        Me.btnActivateWindowByTitle.Location = New System.Drawing.Point(308, 150)
+        Me.btnActivateWindowByTitle.Name = "btnActivateWindowByTitle"
+        Me.btnActivateWindowByTitle.Size = New System.Drawing.Size(141, 23)
+        Me.btnActivateWindowByTitle.TabIndex = 36
+        Me.btnActivateWindowByTitle.Text = "Activate Window By Title"
+        Me.btnActivateWindowByTitle.UseVisualStyleBackColor = True
+        '
+        'btnInsertUserInputDialog
+        '
+        Me.btnInsertUserInputDialog.Location = New System.Drawing.Point(308, 183)
+        Me.btnInsertUserInputDialog.Name = "btnInsertUserInputDialog"
+        Me.btnInsertUserInputDialog.Size = New System.Drawing.Size(141, 23)
+        Me.btnInsertUserInputDialog.TabIndex = 37
+        Me.btnInsertUserInputDialog.Text = "Insert User Input Dialog"
+        Me.btnInsertUserInputDialog.UseVisualStyleBackColor = True
+        '
+        'btnRun
+        '
+        Me.btnRun.Location = New System.Drawing.Point(308, 213)
+        Me.btnRun.Name = "btnRun"
+        Me.btnRun.Size = New System.Drawing.Size(75, 23)
+        Me.btnRun.TabIndex = 38
+        Me.btnRun.Text = "Run"
+        Me.btnRun.UseVisualStyleBackColor = True
+        '
+        'btnRunAsync
+        '
+        Me.btnRunAsync.Location = New System.Drawing.Point(308, 250)
+        Me.btnRunAsync.Name = "btnRunAsync"
+        Me.btnRunAsync.Size = New System.Drawing.Size(75, 23)
+        Me.btnRunAsync.TabIndex = 39
+        Me.btnRunAsync.Text = "Run Async"
+        Me.btnRunAsync.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(698, 702)
+        Me.Controls.Add(Me.btnRunAsync)
+        Me.Controls.Add(Me.btnRun)
+        Me.Controls.Add(Me.btnInsertUserInputDialog)
+        Me.Controls.Add(Me.btnActivateWindowByTitle)
+        Me.Controls.Add(Me.btnTypeComment)
+        Me.Controls.Add(Me.btnClickMouseOnImage)
+        Me.Controls.Add(Me.btnBreakText)
+        Me.Controls.Add(Me.btnStop)
+        Me.Controls.Add(Me.btnResume)
+        Me.Controls.Add(Me.btnPause)
+        Me.Controls.Add(Me.btnStart)
         Me.Controls.Add(Me.DataGridView1)
         Me.Controls.Add(Me.txtStarted)
         Me.Controls.Add(Me.Label12)
@@ -345,7 +466,7 @@ Partial Class Form1
         Me.Controls.Add(Me.txtProcessTitle)
         Me.Controls.Add(Me.txtProcessName)
         Me.Controls.Add(Me.txtProcessID)
-        Me.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.Margin = New System.Windows.Forms.Padding(2)
         Me.Name = "Form1"
         Me.Text = "IdealAutomateScriptRecorder"
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
@@ -383,5 +504,15 @@ Partial Class Form1
     Friend WithEvents Label12 As System.Windows.Forms.Label
     Friend WithEvents txtStarted As System.Windows.Forms.TextBox
     Friend WithEvents DataGridView1 As System.Windows.Forms.DataGridView
-
+    Friend WithEvents btnStart As Button
+    Friend WithEvents btnPause As Button
+    Friend WithEvents btnResume As Button
+    Friend WithEvents btnStop As Button
+    Friend WithEvents btnBreakText As Button
+    Friend WithEvents btnClickMouseOnImage As Button
+    Friend WithEvents btnTypeComment As Button
+    Friend WithEvents btnActivateWindowByTitle As Button
+    Friend WithEvents btnInsertUserInputDialog As Button
+    Friend WithEvents btnRun As Button
+    Friend WithEvents btnRunAsync As Button
 End Class
