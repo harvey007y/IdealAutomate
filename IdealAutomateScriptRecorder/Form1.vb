@@ -440,9 +440,11 @@ Module Keyboard
     Public Const VK_TAB As Integer = &H9
     Public Const VK_SHIFT As Integer = &H10
     Public Const VK_CONTROL As Integer = &H11
-    Public Const VK_CAPITAL As Integer = &H15
+    Public Const VK_CAPITAL As Integer = &H14
     Public Const VK_ESCAPE As Integer = &H1B
     Public Const VK_DELETE As Integer = &H2E
+    Public Const VK_LSHIFT As Integer = &HA0
+    Public Const VK_RSHIFT As Integer = &HA1
     Private Const WH_KEYBOARD_LL As Integer = 13
     Public KeyboardHandle As Integer
     ' Implement this function to block as many
@@ -452,36 +454,62 @@ Module Keyboard
         Debug.WriteLine("Hookstruct.vkCode: " & ChrW(Hookstruct.vkCode))
         Form1.boolKeyPressHandled = False
         If Form1.boolKeepCounting Then
-            If CBool(GetAsyncKeyState(VK_SHIFT) _
-And LLKHF_UP) Then
-                Form1.boolCapsOn = False
-                Form1.boolKeyPressHandled = True
-            End If
-            If CBool(GetAsyncKeyState(VK_DELETE) _
-          And LLKHF_UP) Then
-                Form1.boolKeyPressHandled = True
-            End If
+            '            If CBool(GetAsyncKeyState(VK_SHIFT) _
+            'And CBool(Hookstruct.flags And LLKHF_UP)) Then
+            '                Form1.sbg.AppendLine("ShiftKeyUp")
+            '                Form1.boolCapsOn = False
+            '                '  Form1.boolKeyPressHandled = True
+            '            End If
+            '            If CBool(GetAsyncKeyState(VK_CAPITAL) _
+            'And CBool(Hookstruct.flags And LLKHF_UP)) Then
+            '                Form1.sbg.AppendLine("CapitalKeyUp")
+            '                Form1.boolCapsOn = False
+            '                '  Form1.boolKeyPressHandled = True
+            '            End If
+            '            If CBool(GetAsyncKeyState(VK_DELETE) _
+            '          And CBool(Hookstruct.flags And LLKHF_UP)) Then
+            '                ' Form1.boolKeyPressHandled = True
+            '            End If
             If CBool(Hookstruct.flags And LLKHF_DOWN) Then
                 Form1.intKeyCtr = Form1.intKeyCtr + 1
                 If Form1.boolStart And Form1.boolPause = False And Form1.boolStop = False Then
                     If CBool(GetAsyncKeyState(VK_DELETE) _
-          And LLKHF_DOWN) Then
+          And CBool(LLKHF_DOWN)) Then
                         Form1.sbg.Append("{DELETE}")
                         Form1.boolKeyPressHandled = True
                     End If
 
 
-                    If CBool(GetAsyncKeyState(VK_SHIFT) _
-              And LLKHF_DOWN) Then
-                        Form1.boolCapsOn = True
-                        Form1.boolKeyPressHandled = True
+                    If CBool(GetAsyncKeyState(VK_SHIFT) And CBool(Hookstruct.flags And LLKHF_DOWN)
+              ) Then
+                        ' Form1.sbg.AppendLine("ShiftKeyDown")
+                        Form1.boolCapsOn = Not Form1.boolCapsOn
+                        ' Form1.boolKeyPressHandled = True
+                    End If
+                    If CBool(GetAsyncKeyState(VK_CAPITAL) And CBool(Hookstruct.flags And LLKHF_DOWN)
+              ) Then
+                        'Form1.sbg.AppendLine("CAPITALKeyDown")
+                        Form1.boolCapsOn = Not Form1.boolCapsOn
+                        ' Form1.boolKeyPressHandled = True
                     End If
 
                     If Form1.boolKeyPressHandled = False Then
                         If Form1.boolCapsOn Then
-                            Form1.sbg.Append(ChrW(Hookstruct.vkCode))
+                            If Hookstruct.vkCode <> VK_SHIFT _
+                                                                And Hookstruct.vkCode <> VK_CAPITAL _
+                                 And Hookstruct.vkCode <> VK_LSHIFT _
+                                 And Hookstruct.vkCode <> VK_RSHIFT _
+                                                                And Hookstruct.vkCode <> VK_DELETE Then
+                                Form1.sbg.Append(ChrW(Hookstruct.vkCode))
+                            End If
                         Else
-                            Form1.sbg.Append(ChrW(Hookstruct.vkCode).ToString().ToLower())
+                                If Hookstruct.vkCode <> VK_SHIFT _
+                                                                And Hookstruct.vkCode <> VK_CAPITAL _
+                                 And Hookstruct.vkCode <> VK_LSHIFT _
+                                 And Hookstruct.vkCode <> VK_RSHIFT _
+                                                                And Hookstruct.vkCode <> VK_DELETE Then
+                                Form1.sbg.Append(ChrW(Hookstruct.vkCode).ToString().ToLower())
+                            End If
                         End If
 
                     End If
