@@ -249,34 +249,34 @@ Public Class Form1
         '**********************,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
         'End checking for need to display
         '***************************
-        If boolNeedToDisplay Then
-            'This was causing a messagebox to popup with name of active window
-            'Dim tl As Integer = SendMessage(hWnd, WM_GETTEXTLENGTH, 0, 0)
-            'Dim t As New String(" ", tl)
-            'tl = SendMessage(hWnd, WM_GETTEXT, tl + 1, t)
-            'MsgBox(t)
-            Debug.WriteLine("Timer need to display myhWnd: " & myhWnd.ToString())
-            Dim bs As New BindingSource(list, "")
-            DataGridView1.DataSource = bs
-            bs.ResetBindings(False)
-            DataGridView1.AutoResizeColumns()
-            sb.Append(vbCrLf + System.DateTime.Now)
-            txtReminder.Text = sb.ToString()
-            ShowWindow(myhWnd, SW_SHOWNOACTIVATE)
-            SetWindowPos(myhWnd.ToInt32(), HWND_TOPMOST, Me.Left, Me.Top, Me.Width, Me.Height,
-            SWP_NOACTIVATE)
-            intStartShowElapsedSeconds = intElapsedSeconds
-            boolNeedToDisplay = False
-        End If
+        'If boolNeedToDisplay Then
+        '    'This was causing a messagebox to popup with name of active window
+        '    'Dim tl As Integer = SendMessage(hWnd, WM_GETTEXTLENGTH, 0, 0)
+        '    'Dim t As New String(" ", tl)
+        '    'tl = SendMessage(hWnd, WM_GETTEXT, tl + 1, t)
+        '    'MsgBox(t)
+        '    Debug.WriteLine("Timer need to display myhWnd: " & myhWnd.ToString())
+        '    Dim bs As New BindingSource(list, "")
+        '    DataGridView1.DataSource = bs
+        '    bs.ResetBindings(False)
+        '    DataGridView1.AutoResizeColumns()
+        '    sb.Append(vbCrLf + System.DateTime.Now)
+        '    txtReminder.Text = sb.ToString()
+        '    ShowWindow(myhWnd, SW_SHOWNOACTIVATE)
+        '    SetWindowPos(myhWnd.ToInt32(), HWND_TOPMOST, Me.Left, Me.Top, Me.Width, Me.Height,
+        '    SWP_NOACTIVATE)
+        '    intStartShowElapsedSeconds = intElapsedSeconds
+        '    boolNeedToDisplay = False
+        'End If
 
-        'This will minimize window after it has shown for 5 seconds
-        If intStartShowElapsedSeconds > 0 Then
-            If intElapsedSeconds - intStartShowElapsedSeconds > 5 Then
-                Debug.WriteLine("Timer need to minimize myhWnd: " & myhWnd.ToString())
-                ShowWindow(myhWnd, SW_SHOWMINNOACTIVE)
-                intStartShowElapsedSeconds = 0
-            End If
-        End If
+        ''This will minimize window after it has shown for 5 seconds
+        'If intStartShowElapsedSeconds > 0 Then
+        '    If intElapsedSeconds - intStartShowElapsedSeconds > 5 Then
+        '        Debug.WriteLine("Timer need to minimize myhWnd: " & myhWnd.ToString())
+        '        ShowWindow(myhWnd, SW_SHOWMINNOACTIVE)
+        '        intStartShowElapsedSeconds = 0
+        '    End If
+        'End If
 
 
     End Sub
@@ -455,17 +455,351 @@ Module Keyboard
     Private Const LLKHF_DOWN As Integer = &H81
     ' Virtual Keys - the complete list is in the link below
     ' https://msdn.microsoft.com/en-us/library/windows/desktop/dd375731(v=vs.85).aspx
-    Public Const VK_TAB As Integer = &H9
-    Public Const VK_SHIFT As Integer = &H10
-    Public Const VK_CONTROL As Integer = &H11
-    Public Const VK_MENU As Integer = &H12
-    Public Const VK_CAPITAL As Integer = &H14
-    Public Const VK_ESCAPE As Integer = &H1B
-    Public Const VK_DELETE As Integer = &H2E
-    Public Const VK_LSHIFT As Integer = &HA0
-    Public Const VK_RSHIFT As Integer = &HA1
-    Public Const VK_LCONTROL As Integer = &HA2
-    Public Const VK_LMENU As Integer = &HA4
+
+    '''<summary>Left mouse button</summary>
+    Public Const VK_LBUTTON = &H1
+    '''<summary>Right mouse button</summary>
+    Public Const VK_RBUTTON = &H2
+    '''<summary>Control-break processing</summary>
+    Public Const VK_CANCEL = &H3
+    '''<summary>Middle mouse button (three-button mouse)</summary>
+    Public Const VK_MBUTTON = &H4
+    '''<summary>X1 mouse button</summary>
+    Public Const VK_XBUTTON1 = &H5
+    '''<summary>X2 mouse button</summary>
+    Public Const VK_XBUTTON2 = &H6
+    '''<summary>BACKSPACE key</summary>
+    Public Const VK_BACK = &H8
+    '''<summary>TAB key</summary>
+    Public Const VK_TAB = &H9
+    '''<summary>CLEAR key</summary>
+    Public Const VK_CLEAR = &HC
+    '''<summary>ENTER key</summary>
+    Public Const VK_RETURN = &HD
+    '''<summary>SHIFT key</summary>
+    Public Const VK_SHIFT = &H10
+    '''<summary>CTRL key</summary>
+    Public Const VK_CONTROL = &H11
+    '''<summary>ALT key</summary>
+    Public Const VK_MENU = &H12
+    '''<summary>PAUSE key</summary>
+    Public Const VK_PAUSE = &H13
+    '''<summary>CAPS LOCK key</summary>
+    Public Const VK_CAPITAL = &H14
+    '''<summary>IME Kana mode</summary>
+    Public Const VK_KANA = &H15
+    '''<summary>IME Hanguel mode (maintained for compatibility; use Public Const VK_HANGUL)</summary>
+    Public Const VK_HANGUEL = &H15
+    '''<summary>IME Hangul mode</summary>
+    Public Const VK_HANGUL = &H15
+    '''<summary>IME Junja mode</summary>
+    Public Const VK_JUNJA = &H17
+    '''<summary>IME final mode</summary>
+    Public Const VK_FINAL = &H18
+    '''<summary>IME Hanja mode</summary>
+    Public Const VK_HANJA = &H19
+    '''<summary>IME Kanji mode</summary>
+    Public Const VK_KANJI = &H19
+    '''<summary>ESC key</summary>
+    Public Const VK_ESCAPE = &H1B
+    '''<summary>IME convert</summary>
+    Public Const VK_CONVERT = &H1C
+    '''<summary>IME nonconvert</summary>
+    Public Const VK_NONCONVERT = &H1D
+    '''<summary>IME accept</summary>
+    Public Const VK_ACCEPT = &H1E
+    '''<summary>IME mode change request</summary>
+    Public Const VK_MODECHANGE = &H1F
+    '''<summary>SPACEBAR</summary>
+    Public Const VK_SPACE = &H20
+    '''<summary>PAGE UP key</summary>
+    Public Const VK_PRIOR = &H21
+    '''<summary>PAGE DOWN key</summary>
+    Public Const VK_NEXT = &H22
+    '''<summary>END key</summary>
+    Public Const VK_END = &H23
+    '''<summary>HOME key</summary>
+    Public Const VK_HOME = &H24
+    '''<summary>LEFT ARROW key</summary>
+    Public Const VK_LEFT = &H25
+    '''<summary>UP ARROW key</summary>
+    Public Const VK_UP = &H26
+    '''<summary>RIGHT ARROW key</summary>
+    Public Const VK_RIGHT = &H27
+    '''<summary>DOWN ARROW key</summary>
+    Public Const VK_DOWN = &H28
+    '''<summary>SELECT key</summary>
+    Public Const VK_SELECT = &H29
+    '''<summary>PRINT key</summary>
+    Public Const VK_PRINT = &H2A
+    '''<summary>EXECUTE key</summary>
+    Public Const VK_EXECUTE = &H2B
+    '''<summary>PRINT SCREEN key</summary>
+    Public Const VK_SNAPSHOT = &H2C
+    '''<summary>INS key</summary>
+    Public Const VK_INSERT = &H2D
+    '''<summary>DEL key</summary>
+    Public Const VK_DELETE = &H2E
+    '''<summary>HELP key</summary>
+    Public Const VK_HELP = &H2F
+    '''<summary>0 key</summary>
+    Public Const K_0 = &H30
+    '''<summary>1 key</summary>
+    Public Const K_1 = &H31
+    '''<summary>2 key</summary>
+    Public Const K_2 = &H32
+    '''<summary>3 key</summary>
+    Public Const K_3 = &H33
+    '''<summary>4 key</summary>
+    Public Const K_4 = &H34
+    '''<summary>5 key</summary>
+    Public Const K_5 = &H35
+    '''<summary>6 key</summary>
+    Public Const K_6 = &H36
+    '''<summary>7 key</summary>
+    Public Const K_7 = &H37
+    '''<summary>8 key</summary>
+    Public Const K_8 = &H38
+    '''<summary>9 key</summary>
+    Public Const K_9 = &H39
+    '''<summary>A key</summary>
+    Public Const K_A = &H41
+    '''<summary>B key</summary>
+    Public Const K_B = &H42
+    '''<summary>C key</summary>
+    Public Const K_C = &H43
+    '''<summary>D key</summary>
+    Public Const K_D = &H44
+    '''<summary>E key</summary>
+    Public Const K_E = &H45
+    '''<summary>F key</summary>
+    Public Const K_F = &H46
+    '''<summary>G key</summary>
+    Public Const K_G = &H47
+    '''<summary>H key</summary>
+    Public Const K_H = &H48
+    '''<summary>I key</summary>
+    Public Const K_I = &H49
+    '''<summary>J key</summary>
+    Public Const K_J = &H4A
+    '''<summary>K key</summary>
+    Public Const K_K = &H4B
+    '''<summary>L key</summary>
+    Public Const K_L = &H4C
+    '''<summary>M key</summary>
+    Public Const K_M = &H4D
+    '''<summary>N key</summary>
+    Public Const K_N = &H4E
+    '''<summary>O key</summary>
+    Public Const K_O = &H4F
+    '''<summary>P key</summary>
+    Public Const K_P = &H50
+    '''<summary>Q key</summary>
+    Public Const K_Q = &H51
+    '''<summary>R key</summary>
+    Public Const K_R = &H52
+    '''<summary>S key</summary>
+    Public Const K_S = &H53
+    '''<summary>T key</summary>
+    Public Const K_T = &H54
+    '''<summary>U key</summary>
+    Public Const K_U = &H55
+    '''<summary>V key</summary>
+    Public Const K_V = &H56
+    '''<summary>W key</summary>
+    Public Const K_W = &H57
+    '''<summary>X key</summary>
+    Public Const K_X = &H58
+    '''<summary>Y key</summary>
+    Public Const K_Y = &H59
+    '''<summary>Z key</summary>
+    Public Const K_Z = &H5A
+    '''<summary>Left Windows key (Natural keyboard)</summary>
+    Public Const VK_LWIN = &H5B
+    '''<summary>Right Windows key (Natural keyboard)</summary>
+    Public Const VK_RWIN = &H5C
+    '''<summary>Applications key (Natural keyboard)</summary>
+    Public Const VK_APPS = &H5D
+    '''<summary>Computer Sleep key</summary>
+    Public Const VK_SLEEP = &H5F
+    '''<summary>Numeric keypad 0 key</summary>
+    Public Const VK_NUMPAD0 = &H60
+    '''<summary>Numeric keypad 1 key</summary>
+    Public Const VK_NUMPAD1 = &H61
+    '''<summary>Numeric keypad 2 key</summary>
+    Public Const VK_NUMPAD2 = &H62
+    '''<summary>Numeric keypad 3 key</summary>
+    Public Const VK_NUMPAD3 = &H63
+    '''<summary>Numeric keypad 4 key</summary>
+    Public Const VK_NUMPAD4 = &H64
+    '''<summary>Numeric keypad 5 key</summary>
+    Public Const VK_NUMPAD5 = &H65
+    '''<summary>Numeric keypad 6 key</summary>
+    Public Const VK_NUMPAD6 = &H66
+    '''<summary>Numeric keypad 7 key</summary>
+    Public Const VK_NUMPAD7 = &H67
+    '''<summary>Numeric keypad 8 key</summary>
+    Public Const VK_NUMPAD8 = &H68
+    '''<summary>Numeric keypad 9 key</summary>
+    Public Const VK_NUMPAD9 = &H69
+    '''<summary>Multiply key</summary>
+    Public Const VK_MULTIPLY = &H6A
+    '''<summary>Add key</summary>
+    Public Const VK_ADD = &H6B
+    '''<summary>Separator key</summary>
+    Public Const VK_SEPARATOR = &H6C
+    '''<summary>Subtract key</summary>
+    Public Const VK_SUBTRACT = &H6D
+    '''<summary>Decimal key</summary>
+    Public Const VK_DECIMAL = &H6E
+    '''<summary>Divide key</summary>
+    Public Const VK_DIVIDE = &H6F
+    '''<summary>F1 key</summary>
+    Public Const VK_F1 = &H70
+    '''<summary>F2 key</summary>
+    Public Const VK_F2 = &H71
+    '''<summary>F3 key</summary>
+    Public Const VK_F3 = &H72
+    '''<summary>F4 key</summary>
+    Public Const VK_F4 = &H73
+    '''<summary>F5 key</summary>
+    Public Const VK_F5 = &H74
+    '''<summary>F6 key</summary>
+    Public Const VK_F6 = &H75
+    '''<summary>F7 key</summary>
+    Public Const VK_F7 = &H76
+    '''<summary>F8 key</summary>
+    Public Const VK_F8 = &H77
+    '''<summary>F9 key</summary>
+    Public Const VK_F9 = &H78
+    '''<summary>F10 key</summary>
+    Public Const VK_F10 = &H79
+    '''<summary>F11 key</summary>
+    Public Const VK_F11 = &H7A
+    '''<summary>F12 key</summary>
+    Public Const VK_F12 = &H7B
+    '''<summary>F13 key</summary>
+    Public Const VK_F13 = &H7C
+    '''<summary>F14 key</summary>
+    Public Const VK_F14 = &H7D
+    '''<summary>F15 key</summary>
+    Public Const VK_F15 = &H7E
+    '''<summary>F16 key</summary>
+    Public Const VK_F16 = &H7F
+    '''<summary>F17 key</summary>
+    Public Const VK_F17 = &H80
+    '''<summary>F18 key</summary>
+    Public Const VK_F18 = &H81
+    '''<summary>F19 key</summary>
+    Public Const VK_F19 = &H82
+    '''<summary>F20 key</summary>
+    Public Const VK_F20 = &H83
+    '''<summary>F21 key</summary>
+    Public Const VK_F21 = &H84
+    '''<summary>F22 key</summary>
+    Public Const VK_F22 = &H85
+    '''<summary>F23 key</summary>
+    Public Const VK_F23 = &H86
+    '''<summary>F24 key</summary>
+    Public Const VK_F24 = &H87
+    '''<summary>NUM LOCK key</summary>
+    Public Const VK_NUMLOCK = &H90
+    '''<summary>SCROLL LOCK key</summary>
+    Public Const VK_SCROLL = &H91
+    '''<summary>Left SHIFT key</summary>
+    Public Const VK_LSHIFT = &HA0
+    '''<summary>Right SHIFT key</summary>
+    Public Const VK_RSHIFT = &HA1
+    '''<summary>Left CONTROL key</summary>
+    Public Const VK_LCONTROL = &HA2
+    '''<summary>Right CONTROL key</summary>
+    Public Const VK_RCONTROL = &HA3
+    '''<summary>Left MENU key</summary>
+    Public Const VK_LMENU = &HA4
+    '''<summary>Right MENU key</summary>
+    Public Const VK_RMENU = &HA5
+    '''<summary>Browser Back key</summary>
+    Public Const VK_BROWSER_BACK = &HA6
+    '''<summary>Browser Forward key</summary>
+    Public Const VK_BROWSER_FORWARD = &HA7
+    '''<summary>Browser Refresh key</summary>
+    Public Const VK_BROWSER_REFRESH = &HA8
+    '''<summary>Browser Stop key</summary>
+    Public Const VK_BROWSER_STOP = &HA9
+    '''<summary>Browser Search key</summary>
+    Public Const VK_BROWSER_SEARCH = &HAA
+    '''<summary>Browser Favorites key</summary>
+    Public Const VK_BROWSER_FAVORITES = &HAB
+    '''<summary>Browser Start and Home key</summary>
+    Public Const VK_BROWSER_HOME = &HAC
+    '''<summary>Volume Mute key</summary>
+    Public Const VK_VOLUME_MUTE = &HAD
+    '''<summary>Volume Down key</summary>
+    Public Const VK_VOLUME_DOWN = &HAE
+    '''<summary>Volume Up key</summary>
+    Public Const VK_VOLUME_UP = &HAF
+    '''<summary>Next Track key</summary>
+    Public Const VK_MEDIA_NEXT_TRACK = &HB0
+    '''<summary>Previous Track key</summary>
+    Public Const VK_MEDIA_PREV_TRACK = &HB1
+    '''<summary>Stop Media key</summary>
+    Public Const VK_MEDIA_STOP = &HB2
+    '''<summary>Play/Pause Media key</summary>
+    Public Const VK_MEDIA_PLAY_PAUSE = &HB3
+    '''<summary>Start Mail key</summary>
+    Public Const VK_LAUNCH_MAIL = &HB4
+    '''<summary>Select Media key</summary>
+    Public Const VK_LAUNCH_MEDIA_SELECT = &HB5
+    '''<summary>Start Application 1 key</summary>
+    Public Const VK_LAUNCH_APP1 = &HB6
+    '''<summary>Start Application 2 key</summary>
+    Public Const VK_LAUNCH_APP2 = &HB7
+    '''<summary>Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the ';:' key</summary>
+    Public Const VK_OEM_1 = &HBA
+    '''<summary>For any country/region, the '+' key</summary>
+    Public Const VK_OEM_PLUS = &HBB
+    '''<summary>For any country/region, the ',' key</summary>
+    Public Const VK_OEM_COMMA = &HBC
+    '''<summary>For any country/region, the '-' key</summary>
+    Public Const VK_OEM_MINUS = &HBD
+    '''<summary>For any country/region, the '.' key</summary>
+    Public Const VK_OEM_PERIOD = &HBE
+    '''<summary>Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the '/?' key</summary>
+    Public Const VK_OEM_2 = &HBF
+    '''<summary>Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the '`~' key</summary>
+    Public Const VK_OEM_3 = &HC0
+    '''<summary>Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the '[{' key</summary>
+    Public Const VK_OEM_4 = &HDB
+    '''<summary>Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the '\\|' key</summary>
+    Public Const VK_OEM_5 = &HDC
+    '''<summary>Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the ']}' key</summary>
+    Public Const VK_OEM_6 = &HDD
+    '''<summary>Used for miscellaneous characters; it can vary by keyboard. For the US standard keyboard, the 'single-quote/double-quote' key</summary>
+    Public Const VK_OEM_7 = &HDE
+    '''<summary>Used for miscellaneous characters; it can vary by keyboard.</summary>
+    Public Const VK_OEM_8 = &HDF
+    '''<summary>Either the angle bracket key or the backslash key on the RT 102-key keyboard</summary>
+    Public Const VK_OEM_102 = &HE2
+    '''<summary>IME PROCESS key</summary>
+    Public Const VK_PROCESSKEY = &HE5
+    '''<summary>Used to pass Unicode characters as if they were keystrokes. The Public Const VK_PACKET key is the low word of a 32-bit Virtual Key value used for non-keyboard input methods. For more information, see Remark in KEYBDINPUT, SendInput, WM_KEYDOWN, and WM_KEYUP</summary>
+    Public Const VK_PACKET = &HE7
+    '''<summary>Attn key</summary>
+    Public Const VK_ATTN = &HF6
+    '''<summary>CrSel key</summary>
+    Public Const VK_CRSEL = &HF7
+    '''<summary>ExSel key</summary>
+    Public Const VK_EXSEL = &HF8
+    '''<summary>Erase EOF key</summary>
+    Public Const VK_EREOF = &HF9
+    '''<summary>Play key</summary>
+    Public Const VK_PLAY = &HFA
+    '''<summary>Zoom key</summary>
+    Public Const VK_ZOOM = &HFB
+    '''<summary>PA1 key</summary>
+    Public Const VK_PA1 = &HFD
+    '''<summary>Clear key</summary>
+    Public Const VK_OEM_CLEAR = &HFE
     Private Const WH_KEYBOARD_LL As Integer = 13
     Public KeyboardHandle As Integer
     ' Implement this function to block as many
@@ -480,7 +814,156 @@ Module Keyboard
                 Form1.intKeyCtr = Form1.intKeyCtr + 1
                 If Form1.boolStart And Form1.boolPause = False And Form1.boolStop = False Then
                     If CBool(GetAsyncKeyState(VK_DELETE)) Then
+                        If Form1.sbg.Length > 0 Then
+                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                            Form1.sbg.Length = 0
+                        End If
                         Form1.sbg.Append("{DELETE}")
+                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                        Form1.sbg.Length = 0
+                        Form1.boolKeyPressHandled = True
+                    End If
+
+                    If CBool(GetAsyncKeyState(VK_BACK)) Then
+                        If Form1.sbg.Length > 0 Then
+                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                            Form1.sbg.Length = 0
+                        End If
+                        Form1.sbg.Append("{BACKSPACE}")
+                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                        Form1.sbg.Length = 0
+                        Form1.boolKeyPressHandled = True
+                    End If
+
+                    If CBool(GetAsyncKeyState(VK_DOWN)) Then
+                        If Form1.sbg.Length > 0 Then
+                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                            Form1.sbg.Length = 0
+                        End If
+                        Form1.sbg.Append("{DOWN}")
+                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                        Form1.sbg.Length = 0
+                        Form1.boolKeyPressHandled = True
+                    End If
+
+                    If CBool(GetAsyncKeyState(VK_UP)) Then
+                        If Form1.sbg.Length > 0 Then
+                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                            Form1.sbg.Length = 0
+                        End If
+                        Form1.sbg.Append("{UP}")
+                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                        Form1.sbg.Length = 0
+                        Form1.boolKeyPressHandled = True
+                    End If
+
+                    If CBool(GetAsyncKeyState(VK_RIGHT)) Then
+                        If Form1.sbg.Length > 0 Then
+                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                            Form1.sbg.Length = 0
+                        End If
+                        Form1.sbg.Append("{RIGHT}")
+                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                        Form1.sbg.Length = 0
+                        Form1.boolKeyPressHandled = True
+                    End If
+
+                    If CBool(GetAsyncKeyState(VK_LEFT)) Then
+                        If Form1.sbg.Length > 0 Then
+                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                            Form1.sbg.Length = 0
+                        End If
+                        Form1.sbg.Append("{LEFT}")
+                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                        Form1.sbg.Length = 0
+                        Form1.boolKeyPressHandled = True
+                    End If
+
+                    If CBool(GetAsyncKeyState(VK_END)) Then
+                        If Form1.sbg.Length > 0 Then
+                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                            Form1.sbg.Length = 0
+                        End If
+                        Form1.sbg.Append("{END}")
+                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                        Form1.sbg.Length = 0
+                        Form1.boolKeyPressHandled = True
+                    End If
+
+                    If CBool(GetAsyncKeyState(VK_ESCAPE)) Then
+                        If Form1.sbg.Length > 0 Then
+                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                            Form1.sbg.Length = 0
+                        End If
+                        Form1.sbg.Append("{ESC}")
+                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                        Form1.sbg.Length = 0
+                        Form1.boolKeyPressHandled = True
+                    End If
+
+                    If CBool(GetAsyncKeyState(VK_HOME)) Then
+                        If Form1.sbg.Length > 0 Then
+                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                            Form1.sbg.Length = 0
+                        End If
+                        Form1.sbg.Append("{HOME}")
+                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                        Form1.sbg.Length = 0
+                        Form1.boolKeyPressHandled = True
+                    End If
+
+                    If CBool(GetAsyncKeyState(VK_INSERT)) Then
+                        If Form1.sbg.Length > 0 Then
+                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                            Form1.sbg.Length = 0
+                        End If
+                        Form1.sbg.Append("{INSERT}")
+                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                        Form1.sbg.Length = 0
+                        Form1.boolKeyPressHandled = True
+                    End If
+
+                    If CBool(GetAsyncKeyState(VK_NEXT)) Then
+                        If Form1.sbg.Length > 0 Then
+                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                            Form1.sbg.Length = 0
+                        End If
+                        Form1.sbg.Append("{PGDN}")
+                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                        Form1.sbg.Length = 0
+                        Form1.boolKeyPressHandled = True
+                    End If
+
+                    If CBool(GetAsyncKeyState(VK_PRIOR)) Then
+                        If Form1.sbg.Length > 0 Then
+                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                            Form1.sbg.Length = 0
+                        End If
+                        Form1.sbg.Append("{PGUP}")
+                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                        Form1.sbg.Length = 0
+                        Form1.boolKeyPressHandled = True
+                    End If
+
+                    If CBool(GetAsyncKeyState(VK_TAB)) Then
+                        If Form1.sbg.Length > 0 Then
+                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                            Form1.sbg.Length = 0
+                        End If
+                        Form1.sbg.Append("{TAB}")
+                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                        Form1.sbg.Length = 0
+                        Form1.boolKeyPressHandled = True
+                    End If
+
+                    If CBool(GetAsyncKeyState(VK_RETURN)) Then
+                        If Form1.sbg.Length > 0 Then
+                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                            Form1.sbg.Length = 0
+                        End If
+                        Form1.sbg.Append("{RETURN}")
+                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                        Form1.sbg.Length = 0
                         Form1.boolKeyPressHandled = True
                     End If
 
