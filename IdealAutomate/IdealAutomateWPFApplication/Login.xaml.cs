@@ -216,8 +216,19 @@ namespace Hardcodet.Wpf.Samples {
 "END ";
       SqlCommand cmd1Master = new SqlCommand(updCmdMaster, conMaster);
       cmd1Master.CommandType = CommandType.Text;
-      cmd1Master.ExecuteNonQuery();
-      conMaster.Close();
+      
+            try
+            {
+                cmd1Master.ExecuteNonQuery();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(" There was a problem creating IdealAutomateDB in SQLEXPRESS. Use SQL Server Management Studio to go to Security>Logins> and right-click on computername\\windowsloginname or BUILTIN\\Users and select properties. Click on the server roles tab and make sure sysadmin is checked. If you do not have a system administrator (SA) login for your sqlexpress, here are some instructions for how to add an sa login so that you will have authority to check sysadmin for your windowsloginname:http://prognuggets.blogspot.com/2011/05/resetting-sa-password-for-sql-server.html Application will now shut down gracefully. ");
+                Application.Current.Shutdown();
+                return;
+            }
+
+            conMaster.Close();
       con.Open();
 
       string updCmd =
