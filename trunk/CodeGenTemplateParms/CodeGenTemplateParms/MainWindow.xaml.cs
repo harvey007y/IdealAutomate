@@ -907,6 +907,10 @@ namespace CodeGenTemplateParms
                 goto AddControl;
             }
 
+            System.Windows.Forms.DialogResult myResult = myActions.MessageBoxShowWithYesNo("Click Yes to Confirm or No to Continue");
+            if (myResult == System.Windows.Forms.DialogResult.No) {
+              goto AddControl;
+            }
           // Done --------------------
         
             using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutFile)) {
