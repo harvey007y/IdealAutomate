@@ -85,7 +85,7 @@ namespace CreateNewVSProjectForScript {
         myImage.ImageFile = "Images\\imgSolutionExplorer_Home.PNG";
       }
       myImage.Sleep = 200;
-      myImage.Attempts = 5;
+      myImage.Attempts = 15;
       myImage.RelativeX = 10;
       myImage.RelativeY = 10;
 
