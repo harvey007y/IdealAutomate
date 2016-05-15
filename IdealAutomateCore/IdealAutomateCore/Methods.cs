@@ -983,6 +983,10 @@ namespace IdealAutomate.Core {
         InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.MENU, VirtualKeyCode.VK_D); //System.Windows.Forms.Keys.Alt);        
         return;
       }
+      if (myEntity == "%(f)") {
+        InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.MENU, VirtualKeyCode.VK_F); //System.Windows.Forms.Keys.Alt);        
+        return;
+      }
       if (myEntity == "%(\" \")n") {
         InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.MENU, VirtualKeyCode.SPACE); //System.Windows.Forms.Keys.Alt);
         InputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_N);
