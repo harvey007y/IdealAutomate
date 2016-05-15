@@ -7,7 +7,7 @@
         
         WindowStyle="None" 
         AllowsTransparency="True"
-        ShowInTaskbar="False"
+        ShowInTaskbar="True"
         Background="#00000000" Topmost="True">
     <!-- main border -->
     <Border x:Name="MainBorder"

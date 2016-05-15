@@ -26,7 +26,7 @@ namespace IdealAutomate.Core {
   public class Methods {
 
 
-    private bool fbDebugMode = false;
+    private bool fbDebugMode = true;
     private int intFileCtr = 0;
     bool boolUseGrayScaleDB = false;
     public bool DebugMode {
@@ -79,8 +79,69 @@ namespace IdealAutomate.Core {
         }
       }
     }
+        private static void ForceForegroundWindow1(IntPtr hWnd, int Status, int myShowOption)
+        {
 
-    public bool ActivateWindowByTitle(string myTitle) {
+            uint foreThread = GetWindowThreadProcessId(GetForegroundWindow(), IntPtr.Zero);
+
+            uint appThread = GetCurrentThreadId();
+
+            int SW_SHOW = 5;
+            if (Status == 0)
+                SW_SHOW = 3;
+
+            if (foreThread != appThread)
+            {
+
+                AttachThreadInput((int)foreThread, (int)appThread, true);
+
+                BringWindowToTop(hWnd);
+
+                ShowWindow(hWnd, myShowOption);
+
+                AttachThreadInput((int)foreThread, (int)appThread, false);
+
+            }
+
+            else
+            {
+
+                BringWindowToTop(hWnd);
+
+                ShowWindow(hWnd, myShowOption);
+
+            }
+
+        }
+
+
+
+        [return: MarshalAs(UnmanagedType.Bool)]
+        [DllImport("user32", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
+        public static extern bool SetForegroundWindow(IntPtr hwnd);
+        [DllImport("user32.dll")]
+        static extern bool ForceForegroundWindow(IntPtr hWnd);
+        [DllImport("user32.dll")]
+        static extern bool AllowSetForegroundWindow(int dwProcessId);
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+
+        public static extern void SwitchToThisWindow(IntPtr hWnd, bool
+ fAltTab);
+        [DllImport("user32")]
+        static extern int BringWindowToTop(IntPtr hwnd);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool IsWindow(IntPtr hWnd);
+        [DllImport("kernel32.dll")]
+        static extern uint GetCurrentThreadId();
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
+        [DllImport("user32.dll")]
+        static extern uint GetWindowThreadProcessId(IntPtr hWnd, IntPtr ProcessId);
+        [DllImport("User32.DLL")]
+        private static extern int AttachThreadInput(int CurrentForegroundThread, int MakeThisThreadForegrouond, bool boolAttach);
+        public bool ActivateWindowByTitle(string myTitle) {
 
       //Find the window, using the CORRECT Window Title, for example, Notepad
       int hWnd = FindWindow(null, myTitle);
@@ -110,15 +171,19 @@ namespace IdealAutomate.Core {
     /// <param name="myShowOption"></param>
     /// <returns></returns>
     public bool ActivateWindowByTitle(string myTitle, int myShowOption) {
-
-      //Find the window, using the CORRECT Window Title, for example, Notepad
-      int hWnd = FindWindow(null, myTitle);
+            if (fbDebugMode)
+            {
+                Console.WriteLine(oProcess.ProcessName + "==> " + "ActivateWindowByTitle: myTitle=" + myTitle);
+                Logging.WriteLogSimple(oProcess.ProcessName + "==> "   + "ActivateWindowByTitle: myTitle = " + myTitle);
+            }
+            //Find the window, using the CORRECT Window Title, for example, Notepad
+            int hWnd = FindWindow(null, myTitle);
       if (hWnd > 0) //If found
             {
         {
           ShowWindowAsync((IntPtr)hWnd, myShowOption);
         }
-        SetForegroundWindow(hWnd); //Activate it              
+        ForceForegroundWindow1((IntPtr)hWnd,1, myShowOption); //Activate it              
         return true;
       } else {
         MessageBox.Show("Window Not Found! - ActivateWindowByTitle:" + myTitle + " You can try to manually activate it and then click okay on this popup");
