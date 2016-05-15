@@ -47,6 +47,7 @@ namespace CopyVSExecutableToIdealAutomate {
       myImage.RelativeX = 10;
       myActions.ClickImageIfExists(myImage);
       List<string> myWindowTitles = myActions.GetWindowTitlesByProcessName("devenv");
+      string myWebSite = "";
       myWindowTitles.RemoveAll(item => item == "");
       if (myWindowTitles.Count > 0) {
         List<ControlEntity> myListControlEntity = new List<ControlEntity>();
@@ -84,7 +85,7 @@ namespace CopyVSExecutableToIdealAutomate {
 
 
 
-        bool boolOkayPressed = myActions.WindowMultipleControls(ref myListControlEntity, 300, 500, -1, 0);
+        bool boolOkayPressed = myActions.WindowMultipleControls(ref myListControlEntity, 300, 500, 100, 0);
 
         if (boolOkayPressed == false) {
           myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
@@ -92,18 +93,18 @@ namespace CopyVSExecutableToIdealAutomate {
         }
 
        
-        string myWebSite = myListControlEntity.Find(x => x.ID == "myComboBox").SelectedValue;
+        myWebSite = myListControlEntity.Find(x => x.ID == "myComboBox").SelectedValue;
 
 
         myActions.ActivateWindowByTitle(myWebSite,3);
       } else {
         myActions.MessageBoxShow("Could not find visual studio for project to be copied to Ideal Automate");
       }
-      myActions.Sleep(2000);
+      myActions.Sleep(3000);
       string strScriptName = myActions.PutWindowTitleInEntity();
       int intIndex = strScriptName.IndexOf(" - Microsoft");
       if (intIndex < 0) {
-        myActions.MessageBoxShow("Could not find - Microsoft in window title for VS; \nPlease click on visual studio for the project you want to copy and click okay");
+        myActions.MessageBoxShow("Could not find - Microsoft in window title for VS; \nPlease click on visual studio for the project you want to copy and click okay \nHere is the title I did find: " + strScriptName + "\nHere is the title that I was looking for: " + myWebSite);
         
       }
       strScriptName = strScriptName.Substring(0, intIndex);
@@ -179,6 +180,7 @@ namespace CopyVSExecutableToIdealAutomate {
       } else {
         myActions.Run(strFileName, "");
       }
+      myActions.TypeText("{ESCAPE}", 1000);
       
 
       myImage = new ImageEntity();
