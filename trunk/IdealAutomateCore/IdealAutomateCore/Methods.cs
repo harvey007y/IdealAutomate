@@ -835,13 +835,10 @@ namespace IdealAutomate.Core {
           MessageBox.Show(ex1.Message);
         }
       }
-      if (myEntity.Length > 5000) {
-        Console.Write("PutEntityInClipboard: myEntity more than 5000 in length");
-        Logging.WriteLogSimple("PutEntityInClipboard: myEntity more than 5000 in length");
-      } else {
+
         Console.Write("myEntity=" + myEntity);
         Logging.WriteLogSimple("myEntity=" + myEntity);
-      }
+
       return myEntity;
     }
     /// <summary>
@@ -951,13 +948,10 @@ namespace IdealAutomate.Core {
 
     public void PutEntityInClipboard(string myEntity) {
       if (fbDebugMode) {
-        if (myEntity.Length > 5000) {
-          Console.WriteLine("PutEntityInClipboard: myEntity more than 5000 in length");
-          Logging.WriteLogSimple("PutEntityInClipboard: myEntity more than 5000 in length");
-        } else {
+
           Console.WriteLine("PutEntityInClipboard: myEntity=" + myEntity);
           Logging.WriteLogSimple("PutEntityInClipboard: myEntity=" + myEntity);
-        }
+
       }
       try {
 
