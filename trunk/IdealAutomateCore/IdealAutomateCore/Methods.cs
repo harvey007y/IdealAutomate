@@ -51,7 +51,7 @@ namespace IdealAutomate.Core {
     [DllImportAttribute("User32.dll")]
     private static extern IntPtr SetForegroundWindow(int hWnd);
 
-    [DllImport("user32.dll")]
+    [DllImport("user32.dll", SetLastError=true,CharSet=CharSet.Auto) ]
     private static extern
       bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
     [DllImport("user32.dll")]
@@ -171,6 +171,7 @@ namespace IdealAutomate.Core {
     /// <param name="myShowOption"></param>
     /// <returns></returns>
     public bool ActivateWindowByTitle(string myTitle, int myShowOption) {
+
             if (fbDebugMode)
             {
                 Console.WriteLine(oProcess.ProcessName + "==> " + "ActivateWindowByTitle: myTitle=" + myTitle);
@@ -178,12 +179,13 @@ namespace IdealAutomate.Core {
             }
             //Find the window, using the CORRECT Window Title, for example, Notepad
             int hWnd = FindWindow(null, myTitle);
+            Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "ActivateWindowByTitle: hWnd = " + hWnd.ToString());
       if (hWnd > 0) //If found
             {
         {
-          ShowWindowAsync((IntPtr)hWnd, myShowOption);
+          ShowWindow((IntPtr)hWnd, myShowOption);
         }
-        ForceForegroundWindow1((IntPtr)hWnd,1, myShowOption); //Activate it              
+        ForceForegroundWindow1((IntPtr)hWnd,1, myShowOption); //Activate it 
         return true;
       } else {
         MessageBox.Show("Window Not Found! - ActivateWindowByTitle:" + myTitle + " You can try to manually activate it and then click okay on this popup");
