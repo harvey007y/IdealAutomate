@@ -213,8 +213,16 @@ namespace IdealAutomate.Core {
 
     }
     public void KillAllProcessesByProcessName(string myProcessName) {
+      if (fbDebugMode) {
+        Console.WriteLine(oProcess.ProcessName + "==> " + "KillAllProcessesByProcessName: myProcessName=" + myProcessName);
+        Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "KillAllProcessesByProcessName: myProcessName = " + myProcessName);
+      }
       try {
         foreach (Process proc in Process.GetProcessesByName(myProcessName)) {
+          if (fbDebugMode) {
+            Console.WriteLine(oProcess.ProcessName + "==> " + "Killing: proc=" + proc.ToString());
+            Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "Killing: proc=" + proc.ToString());
+          }
           proc.Kill();
         }
       } catch (Exception ex) {
