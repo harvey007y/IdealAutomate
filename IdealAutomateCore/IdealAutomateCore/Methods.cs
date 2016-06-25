@@ -503,8 +503,16 @@ namespace IdealAutomate.Core {
       List<SubPositionInfo> ls = new List<SubPositionInfo>();
       boolUseGrayScaleDB = myImage.UseGrayScale;
       while (boolImageFound == false && intAttempts < myImage.Attempts) {
-        ls = Click_PNG(myImage, boolUseGrayScaleDB);
-        if (ls.Count > 0) {
+                try
+                {
+                    ls = Click_PNG(myImage, boolUseGrayScaleDB);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Here is exception thrown in PutAll method for file " + myImage.ImageFile + ": " + ex.Message + Environment.NewLine + Environment.NewLine + "PutAll image file is probably missing from project. Make sure properties for the image file are: Build Action=> Content;  Copy to Output Directory=> Copy if Newer;");
+                }
+
+                if (ls.Count > 0) {
           boolImageFound = true;
         }
         intAttempts += 1;
@@ -624,8 +632,14 @@ namespace IdealAutomate.Core {
       int intAttempts = 0;
       List<SubPositionInfo> ls = new List<SubPositionInfo>();
       while (boolImageFound == false && intAttempts < myImage.Attempts) {
-        ls = Click_PNG(myImage, boolUseGrayScaleDB);
-        if (ls.Count > 0) {
+            try { 
+            ls = Click_PNG(myImage, boolUseGrayScaleDB);
+            }
+            catch (Exception ex)
+            {
+                    MessageBox.Show("Here is exception thrown in PutAll method for file " + myImage.ImageFile + ": " + ex.Message + Environment.NewLine + Environment.NewLine  + "PutAll image file is probably missing from project. Make sure properties for the image file are: Build Action=> Content;  Copy to Output Directory=> Copy if Newer;");
+                }
+                if (ls.Count > 0) {
           List<SubPositionInfo> SortedList = ls.OrderByDescending(o => o.percentcorrect).ToList();
           boolImageFound = true;
           System.Drawing.Point p = SortedList[0].myPoint;

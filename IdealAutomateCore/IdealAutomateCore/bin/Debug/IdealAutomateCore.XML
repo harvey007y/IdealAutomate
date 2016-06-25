@@ -4,47 +4,6 @@
         <name>IdealAutomateCore</name>
     </assembly>
     <members>
-        <member name="T:IdealAutomateCore.Properties.Resources">
-            <summary>
-              A strongly-typed resource class, for looking up localized strings, etc.
-            </summary>
-        </member>
-        <member name="P:IdealAutomateCore.Properties.Resources.ResourceManager">
-            <summary>
-              Returns the cached ResourceManager instance used by this class.
-            </summary>
-        </member>
-        <member name="P:IdealAutomateCore.Properties.Resources.Culture">
-            <summary>
-              Overrides the current thread's CurrentUICulture property for all
-              resource lookups using this strongly typed resource class.
-            </summary>
-        </member>
-        <member name="P:IdealAutomateCore.Properties.Resources.RedArrowDown">
-            <summary>
-              Looks up a localized resource of type System.Drawing.Bitmap.
-            </summary>
-        </member>
-        <member name="P:IdealAutomateCore.Properties.Resources.RedArrowLeft">
-            <summary>
-              Looks up a localized resource of type System.Drawing.Bitmap.
-            </summary>
-        </member>
-        <member name="P:IdealAutomateCore.Properties.Resources.RedArrowRight">
-            <summary>
-              Looks up a localized resource of type System.Drawing.Bitmap.
-            </summary>
-        </member>
-        <member name="P:IdealAutomateCore.Properties.Resources.RedArrowUp">
-            <summary>
-              Looks up a localized resource of type System.Drawing.Bitmap.
-            </summary>
-        </member>
-        <member name="P:IdealAutomateCore.Properties.Resources.RedBox">
-            <summary>
-              Looks up a localized resource of type System.Drawing.Bitmap.
-            </summary>
-        </member>
         <member name="T:IdealAutomate.Core.WindowMultipleControls">
             <summary>
             Interaction logic for WindowComboBox.xaml
@@ -370,6 +329,10 @@
             <param name="myEntity">string that you want to display in messagebox</param>
         </member>
         <member name="M:IdealAutomate.Core.Methods.MessageBoxShowWithYesNo(System.String)">
+            <summary>
+            MessageBoxShowWithYesNo receives an input string and displays it in a messagebox with Yes and No Buttons
+            </summary>
+            <param name="myEntity">string that you want to display in messagebox</param>
             <returns>System.Windows.Forms.DialogResult</returns>
         </member>
         <member name="M:IdealAutomate.Core.Methods.Run(System.String,System.String)">
@@ -511,6 +474,17 @@
         </member>
         <member name="M:IdealAutomate.Core.Scraper.imageThere(System.Byte[],System.Int32,System.Int32,System.Byte[],System.Drawing.Bitmap,System.Int32,System.Int32,System.Decimal@,System.Int32)">
             <summary>
+            Initialize global data structures
+            </summary>
+            <remarks>
+            Populates image with the Argb values of bmImage and
+            searches through the Argb values to find a pixle value
+            that occurs least often in the image.  This value is 
+            placed into the hashtable pixels, with a value that 
+            corosponds to the position of the pixle in the image.
+            </remarks>
+            <param name="bmImage">Subimage to search for</param>
+            <summary>
             Finds if the image occurs at location loc 
             </summary>
             <remarks>
@@ -551,6 +525,47 @@
             <param name="pOccurrenceString"></param>
             <param name="pOccurrence"></param>
             <returns></returns>
+        </member>
+        <member name="T:IdealAutomateCore.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:IdealAutomateCore.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:IdealAutomateCore.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:IdealAutomateCore.Properties.Resources.RedArrowDown">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:IdealAutomateCore.Properties.Resources.RedArrowLeft">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:IdealAutomateCore.Properties.Resources.RedArrowRight">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:IdealAutomateCore.Properties.Resources.RedArrowUp">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:IdealAutomateCore.Properties.Resources.RedBox">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
         </member>
     </members>
 </doc>
