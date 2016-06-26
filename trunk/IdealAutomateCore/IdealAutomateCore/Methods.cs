@@ -1591,9 +1591,20 @@ namespace IdealAutomate.Core {
         return;
       }
     }
+        public string GetActiveWindowTitle()
+        {
+            const int nChars = 256;
+            StringBuilder Buff = new StringBuilder(nChars);
+            IntPtr hwnd = GetForegroundWindow();
+            var int32Handle = hwnd.ToInt32();
+            if (GetWindowText(int32Handle, Buff, nChars) > 0)
+            {
+                return Buff.ToString();
+            }
+            return null;
+        }
 
-
-    private Process GetProcByID(int id) {
+        private Process GetProcByID(int id) {
       Process[] processlist = Process.GetProcesses();
       return processlist.FirstOrDefault(pr => pr.Id == id);
     }

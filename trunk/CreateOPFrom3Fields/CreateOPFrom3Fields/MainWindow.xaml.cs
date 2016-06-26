@@ -38,7 +38,7 @@ NextOne:
             myWindowTitles.RemoveAll(item => item == "");
             if (myWindowTitles.Count > 0)
             {
-                myActions.ActivateWindowByTitle(myWindowTitles[0]);
+                myActions.ActivateWindowByTitle(myWindowTitles[0],3);
             }
             List<ControlEntity> myListControlEntity = new List<ControlEntity>();
 
@@ -119,7 +119,7 @@ NextOne:
             myWindowTitles.RemoveAll(item => item == "");
             if (myWindowTitles.Count > 0)
             {
-                myActions.ActivateWindowByTitle(myWindowTitles[0]);
+                myActions.ActivateWindowByTitle(myWindowTitles[0],3);
             }
             myActions.MessageBoxShow("Paste");
             goto NextOne;
