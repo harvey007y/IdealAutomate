@@ -52,8 +52,6 @@ namespace IdealAutomate.Core {
 
       }
 
-
-
       _ListControlEntity = myListControlEntity;
       //// Create a button.
       //Button myButton = new Button();
@@ -222,8 +220,10 @@ namespace IdealAutomate.Core {
       this.Close();
     }
     protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e) {
-      base.OnMouseLeftButtonDown(e);
-      DragMove();
+
+            base.OnMouseLeftButtonDown(e);
+            WindowState = WindowState.Normal;
+            DragMove();
     }
 
     protected override void OnMouseRightButtonDown(MouseButtonEventArgs e) {
