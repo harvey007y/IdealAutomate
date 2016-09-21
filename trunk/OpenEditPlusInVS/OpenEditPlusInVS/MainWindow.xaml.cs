@@ -89,11 +89,15 @@ namespace OpenEditPlusInVS {
           myWebSite = myWindowTitles.Find(x => x.StartsWith("WebApp"));
         }
 
-        if (myWebSite == "" && myWebSite != null) {
+        if (myWebSite == "" || myWebSite == null) {
           myActions.MessageBoxShow("Could not find an open visual studio for this type of file");
         } else {
-          myActions.ActivateWindowByTitle(myWebSite, 3);
-          myActions.TypeText("^(o)", 2000);
+          myActions.ActivateWindowByTitle(myWebSite, 3);          
+          myActions.TypeText("%(f)", 2000);
+          myActions.TypeText("{DOWN}", 1000);
+          myActions.TypeText("{RIGHT}", 1000);
+          myActions.TypeText("f", 1000);
+         // myActions.TypeText("^(o)", 2000);
           myActions.TypeText("%(d)", 1500);
           myActions.TypeText(strPathOnly, 1500);
           myActions.TypeText("{ENTER}", 500);
