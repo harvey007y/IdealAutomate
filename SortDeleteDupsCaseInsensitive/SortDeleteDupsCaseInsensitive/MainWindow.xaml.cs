@@ -94,9 +94,9 @@ namespace SortDeleteDupsCaseInsensitive {
       myControlEntity.ColumnNumber = 0;
       myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
-      bool boolOkayPressed = myActions.WindowMultipleControls(ref myListControlEntity, 300, 500, -1, 0);
+      string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 300, 500, -1, 0);
 
-      if (boolOkayPressed == false) {
+      if (strButtonPressed == "btnCancel") {
         myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
         goto myExit;
       }
