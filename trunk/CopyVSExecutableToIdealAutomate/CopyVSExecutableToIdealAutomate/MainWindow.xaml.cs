@@ -85,9 +85,9 @@ namespace CopyVSExecutableToIdealAutomate {
 
 
 
-        bool boolOkayPressed = myActions.WindowMultipleControls(ref myListControlEntity, 300, 500, 100, 0);
+        string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 300, 500, 100, 0);
 
-        if (boolOkayPressed == false) {
+        if (strButtonPressed == "btnCancel") {
           myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
           goto myExit;
         }
@@ -158,9 +158,9 @@ namespace CopyVSExecutableToIdealAutomate {
         myControlEntity.RowNumber = 0;
         myControlEntity.ColumnNumber = 1;
         myListControlEntity.Add(myControlEntity.CreateControlEntity());
-        bool boolOkayPressed = myActions.WindowMultipleControls(ref myListControlEntity, 300, 500, -1, 0);
+        string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 300, 500, -1, 0);
 
-        if (boolOkayPressed == false) {
+        if (strButtonPressed == "btnCancel") {
           myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
           goto myExit;
         }
