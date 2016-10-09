@@ -26,7 +26,9 @@ namespace IdealAutomate.Core
         public bool ShowTextBox { get; set; }
         public bool ShowFormattedAmount { get; set; }
         public decimal Amount { get; set; }
-        public ControlEntity()
+        public System.Windows.Media.Color? BackgroundColor  { get; set; }
+        public System.Windows.Media.Color? ForegroundColor { get; set; }
+    public ControlEntity()
         {
             ControlType = ControlType.Label;
             ID = "";
@@ -45,6 +47,8 @@ namespace IdealAutomate.Core
             Multiline = false;
             ShowTextBox = true;
             ShowFormattedAmount = true;
+      BackgroundColor = null;
+      ForegroundColor = null;
             Amount = 0;
 
         }
@@ -66,7 +70,9 @@ namespace IdealAutomate.Core
           Multiline = false;
           ShowTextBox = true;
           ShowFormattedAmount = true;
-          Amount = 0;
+      BackgroundColor = null;
+      ForegroundColor = null;
+      Amount = 0;
 
         }
         public  ControlEntity CreateControlEntity() {
@@ -89,7 +95,9 @@ namespace IdealAutomate.Core
           myControlEntity.ShowTextBox = ShowTextBox;
           myControlEntity.ShowFormattedAmount = ShowFormattedAmount;
           myControlEntity.Amount = Amount;
-          return myControlEntity;
+          myControlEntity.BackgroundColor = BackgroundColor;
+          myControlEntity.ForegroundColor = ForegroundColor;
+      return myControlEntity;
         }
     }
 }

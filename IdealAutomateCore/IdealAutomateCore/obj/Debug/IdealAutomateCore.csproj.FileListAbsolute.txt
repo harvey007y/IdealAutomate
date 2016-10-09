@@ -37,4 +37,3 @@ C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\ob
 C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore.csproj.GenerateResource.Cache
 C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore.dll
 C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore.pdb
-C:\SVNIA\trunk\IdealAutomateCore\IdealAutomateCore\bin\Debug\WindowsInput.dll

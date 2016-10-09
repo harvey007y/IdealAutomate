@@ -10,5 +10,6 @@ namespace IdealAutomate.Core {
     ComboBox,
     Heading,
     CheckBox,
+    Button,
   }
 }
