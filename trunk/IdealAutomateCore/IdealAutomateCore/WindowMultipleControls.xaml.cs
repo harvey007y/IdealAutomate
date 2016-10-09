@@ -23,6 +23,7 @@ namespace IdealAutomate.Core {
     private List<ControlEntity> _ListControlEntity;
     public ComboBoxPair SelectedComboBoxPair { get; set; }
     public bool boolOkayPressed = false;
+    public string strButtonClickedName = "";
     int _Top;
     int _Left;
     public string SelectedValue { get; set; }
@@ -95,6 +96,24 @@ namespace IdealAutomate.Core {
             }
             myGrid.Children.Add(myLabel);
             break;
+          case ControlType.Button:
+            Button button = new Button();
+            button.Click += new System.Windows.RoutedEventHandler(button_Click);    
+            button.Name = item.ID;            
+            button.Content = item.Text;
+            if (item.BackgroundColor != null) {              
+              button.Background = new SolidColorBrush(item.BackgroundColor ?? Color.FromRgb(00,00,00));
+            }
+            if (item.ForegroundColor != null) {
+              button.Foreground = new SolidColorBrush(item.ForegroundColor ?? Color.FromRgb(00, 00, 00));
+            }
+            Grid.SetRow(button, item.RowNumber);
+            Grid.SetColumn(button, item.ColumnNumber);
+            if (item.Width > 0) {
+              button.Width = item.Width;
+            }
+            myGrid.Children.Add(button);
+            break;
           case ControlType.TextBox:
             TextBox myTextBox = new TextBox();
             myTextBox.Text = item.Text;
@@ -149,6 +168,47 @@ namespace IdealAutomate.Core {
       }
 
     }
+    protected void button_Click(object sender, EventArgs e) {
+      Button button = sender as Button;
+      strButtonClickedName = button.Name;
+
+      // identify which button was clicked and perform necessary actions
+      foreach (ControlEntity item in _ListControlEntity) {
+        switch (item.ControlType) {
+          case ControlType.Button:
+            if (item.ID == strButtonClickedName) {
+              item.ButtonPressed = true;
+            } else {
+              item.ButtonPressed = false;
+            }
+            break;
+          case ControlType.TextBox:
+            TextBox myTextBox = new TextBox();
+            myTextBox = (TextBox)LogicalTreeHelper.FindLogicalNode(this, item.ID);
+            item.Text = myTextBox.Text;
+            break;
+          case ControlType.ComboBox:
+            ComboBox myComboBox = new ComboBox();
+            myComboBox = (ComboBox)LogicalTreeHelper.FindLogicalNode(this, item.ID);
+            if (myComboBox.SelectedIndex > -1) {
+              item.SelectedValue = myComboBox.SelectedValue.ToString();
+              ComboBoxPair mySelectedPair = (ComboBoxPair)(myComboBox.SelectedItem);
+              item.SelectedKey = mySelectedPair._Key;
+            }
+            break;
+          case ControlType.CheckBox:
+            CheckBox myCheckBox = new CheckBox();
+            myCheckBox = (CheckBox)LogicalTreeHelper.FindLogicalNode(this, item.ID);
+            item.Checked = myCheckBox.IsChecked ?? false;
+            break;
+
+          default:
+            break;
+        }
+      }
+     
+      this.Close();
+    }
     private void ComboBox_Loaded(object sender, RoutedEventArgs e) {
 
       Label1.Text = _Label;
@@ -202,6 +262,7 @@ namespace IdealAutomate.Core {
             break;
         }
       }
+      strButtonClickedName = "btnOkay";
       boolOkayPressed = true;
       this.Close();
     }
@@ -216,7 +277,7 @@ namespace IdealAutomate.Core {
     }
 
     private void btnCancel_Click(object sender, RoutedEventArgs e) {
-
+      strButtonClickedName = "btnCancel";
       this.Close();
     }
     protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e) {
