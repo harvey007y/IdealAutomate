@@ -27,7 +27,7 @@ namespace IdealAutomate.Core {
     int _Top;
     int _Left;
     public string SelectedValue { get; set; }
-    public WindowMultipleControls(ref List<ControlEntity> myListControlEntity, int intWindowHeight, int intWindowWidth, int intTop, int intLeft) {
+    public WindowMultipleControls(ref List<ControlEntity> myListControlEntity, int intWindowHeight, int intWindowWidth, int intTop, int intLeft, WindowState windowState) {
       _Top = intTop;
       _Left = intLeft;
       this.Top = _Top;
@@ -35,8 +35,9 @@ namespace IdealAutomate.Core {
       if (intTop < 0 || intLeft < 0) {
         this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
       }
-
-
+      if (windowState == WindowState.Minimized) {
+        this.WindowState = WindowState.Minimized;
+      }
       InitializeComponent();
 
       if (intWindowHeight > 0) {

@@ -158,26 +158,6 @@ namespace IdealAutomate.Core {
       }
 
     }
-
-        public bool ActivateWindowByProcessName(string myProcessName)
-        {
-            var processss = from proc in System.Diagnostics.Process.GetProcesses() where proc.ProcessName == myProcessName && proc.MainWindowTitle != "" orderby proc.ProcessName ascending select  proc;
-            int hWnd = 0;
-            if (processss.Count<System.Diagnostics.Process>() > 0)
-            {
-                string myTitle = processss.FirstOrDefault<System.Diagnostics.Process>().MainWindowTitle;
-                ActivateWindowByTitle(myTitle);
-                //  hWnd = (int)processss.FirstOrDefault<System.Diagnostics.Process>().MainWindowTitle;
-                return true;
-            }
-           
-            
-            else {
-                MessageBox.Show("Window Not Found! - ActivateWindowByProcessName:" + myProcessName + " You can try to manually activate it and then click okay on this popup");
-                return false;
-            }
-
-        }
         /// <summary>
         /// SW_HIDE = 0;
         /// SW_SHOWNORMAL = 1;
@@ -1363,7 +1343,7 @@ namespace IdealAutomate.Core {
         Console.WriteLine(oProcess.ProcessName + "==> " + "WindowMultipleControls");
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "WindowMultipleControls");
       }
-      WindowMultipleControls dlg = new WindowMultipleControls(ref myListControlEntity, intWindowHeight, intWindowWidth, intWindowTop, intWindowLeft);
+      WindowMultipleControls dlg = new WindowMultipleControls(ref myListControlEntity, intWindowHeight, intWindowWidth, intWindowTop, intWindowLeft, WindowState.Normal);
 
       // dlg.Owner = (Window)Window.GetWindow(this);
       // Shadow.Visibility = Visibility.Visible;
@@ -1374,14 +1354,47 @@ namespace IdealAutomate.Core {
 
 
     }
-   /// <summary>
-   /// <para>WindowComboBox receives an IEnumerable of objects (ComboBoxPair) </para>
-   /// <para>and a string for the label for the combobox. It returns the</para>
-   /// <para>selected ComboBoxPair</para>
-   /// </summary>
-   /// <param name="myEntity">IEnumerable of objects</param>
-   /// <param name="myEntity2">String for the label for the combobox</param>
-   /// <returns>Selected ComboBoxPair</returns>
+    /// <summary>
+    /// <para>WindowMultipleControls takes a list of ControlEntity objects</para>
+    /// <para>and positions them in a window. When the user presses the </para>
+    /// <para>okay button on the screen, the list of ControlEntity objects</para>
+    /// <para>are updated with the values the user entered.  This provides</para>
+    /// <para>an easy way to receive multiple values from the user</para>
+    /// <para>A string is returned with the name of the button that was pressed</para>
+    /// <para>Here is an example of setting background color for a button:</para>
+    /// <para>myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);</para>
+    /// </summary>
+    /// <param name="myListControlEntity">list of ControlEntity objects</param>
+    /// <param name="intWindowHeight">integer indicating height of window</param>
+    /// <param name="intWindowWidth">integer indicating width of window</param>
+    /// <param name="intWindowTop">integer indicating number of pixels from top of screen to display window</param>
+    /// <param name="intWindowLeft">integer indicating number of pixels from left side of screen to display window</param>
+    /// <returns>System.Windows.Forms.DialogResult to indicate if okay button was pressed</returns>
+    public string WindowMultipleControlsMinimized(ref List<ControlEntity> myListControlEntity, int intWindowHeight, int intWindowWidth, int intWindowTop, int intWindowLeft) {
+      if (fbDebugMode) {
+        Console.WriteLine(oProcess.ProcessName + "==> " + "WindowMultipleControls");
+        Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "WindowMultipleControls");
+      }
+      WindowMultipleControls dlg = new WindowMultipleControls(ref myListControlEntity, intWindowHeight, intWindowWidth, intWindowTop, intWindowLeft, WindowState.Minimized);
+
+      // dlg.Owner = (Window)Window.GetWindow(this);
+      // Shadow.Visibility = Visibility.Visible;
+      dlg.ShowDialog();
+      
+
+      return dlg.strButtonClickedName;
+
+
+
+    }
+    /// <summary>
+    /// <para>WindowComboBox receives an IEnumerable of objects (ComboBoxPair) </para>
+    /// <para>and a string for the label for the combobox. It returns the</para>
+    /// <para>selected ComboBoxPair</para>
+    /// </summary>
+    /// <param name="myEntity">IEnumerable of objects</param>
+    /// <param name="myEntity2">String for the label for the combobox</param>
+    /// <returns>Selected ComboBoxPair</returns>
     public ComboBoxPair WindowComboBox(IEnumerable<object> myEntity, string myEntity2) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "WindowComboBox: myEntity=" + myEntity);
