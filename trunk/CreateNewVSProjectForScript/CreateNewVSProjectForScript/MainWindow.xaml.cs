@@ -120,7 +120,7 @@ namespace CreateNewVSProjectForScript {
         myImage.ImageFile = "Images\\imgStartPage_Home.PNG";
       }
       myImage.Sleep = 200;
-      myImage.Attempts = 5;
+      myImage.Attempts = 20;
       myImage.RelativeX = 10;
       myImage.RelativeY = 10;
 
