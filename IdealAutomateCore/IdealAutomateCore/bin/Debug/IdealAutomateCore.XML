@@ -295,6 +295,24 @@
             <param name="intWindowLeft">integer indicating number of pixels from left side of screen to display window</param>
             <returns>System.Windows.Forms.DialogResult to indicate if okay button was pressed</returns>
         </member>
+        <member name="M:IdealAutomate.Core.Methods.WindowMultipleControlsMinimized(System.Collections.Generic.List{IdealAutomate.Core.ControlEntity}@,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            <para>WindowMultipleControls takes a list of ControlEntity objects</para>
+            <para>and positions them in a window. When the user presses the </para>
+            <para>okay button on the screen, the list of ControlEntity objects</para>
+            <para>are updated with the values the user entered.  This provides</para>
+            <para>an easy way to receive multiple values from the user</para>
+            <para>A string is returned with the name of the button that was pressed</para>
+            <para>Here is an example of setting background color for a button:</para>
+            <para>myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);</para>
+            </summary>
+            <param name="myListControlEntity">list of ControlEntity objects</param>
+            <param name="intWindowHeight">integer indicating height of window</param>
+            <param name="intWindowWidth">integer indicating width of window</param>
+            <param name="intWindowTop">integer indicating number of pixels from top of screen to display window</param>
+            <param name="intWindowLeft">integer indicating number of pixels from left side of screen to display window</param>
+            <returns>System.Windows.Forms.DialogResult to indicate if okay button was pressed</returns>
+        </member>
         <member name="M:IdealAutomate.Core.Methods.WindowComboBox(System.Collections.Generic.IEnumerable{System.Object},System.String)">
             <summary>
             <para>WindowComboBox receives an IEnumerable of objects (ComboBoxPair) </para>
