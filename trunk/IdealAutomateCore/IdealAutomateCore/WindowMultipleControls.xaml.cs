@@ -90,6 +90,13 @@ namespace IdealAutomate.Core {
             Label myLabel = new Label();
             myLabel.Name = item.ID;
             myLabel.Content = item.Text;
+            if (item.BackgroundColor != null) {
+              myLabel.Background = new SolidColorBrush(item.BackgroundColor ?? Color.FromRgb(00, 00, 00));
+            }
+            if (item.ForegroundColor != null) {
+              myLabel.Foreground = new SolidColorBrush(item.ForegroundColor ?? Color.FromRgb(00, 00, 00));
+            }
+
             Grid.SetRow(myLabel, item.RowNumber);
             Grid.SetColumn(myLabel, item.ColumnNumber);
             if (item.Width > 0) {
