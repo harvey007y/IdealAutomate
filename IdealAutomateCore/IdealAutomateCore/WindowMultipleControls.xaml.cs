@@ -120,6 +120,7 @@ namespace IdealAutomate.Core {
             if (item.Width > 0) {
               button.Width = item.Width;
             }
+                        button.Margin = new Thickness(1,1,1, 1);
             myGrid.Children.Add(button);
             break;
           case ControlType.TextBox:
