@@ -51,52 +51,88 @@ namespace CodeGenTemplateParms
 
          AddControl:
             intRowCtr++;
-            List<ControlEntity> myListControlEntity = new List<ControlEntity>();
-
             ControlEntity myControlEntity = new ControlEntity();
+            List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+            List<ComboBoxPair> cbp = new List<ComboBoxPair>();
             myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.Heading;
-            myControlEntity.Text = "Code Gen Template Parms";
+            myControlEntity.ControlType = ControlType.Button;
+            myControlEntity.ID = "btnLabel";
+            myControlEntity.Text = "Label";
+            myControlEntity.Width = 150;
+            myControlEntity.RowNumber = 0;
+            myControlEntity.ColumnNumber = 0;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
+                       
 
             myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.Label;
-            myControlEntity.ID = "lblSelectControl";
-            myControlEntity.Text = "Select Control To Add";
+            myControlEntity.ControlType = ControlType.Button;
+            myControlEntity.ID = "btnTextBox";
+            myControlEntity.Text = "TextBox";
+            myControlEntity.Width = 150;
             myControlEntity.RowNumber = 1;
             myControlEntity.ColumnNumber = 0;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
+
+
             myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.ComboBox;
-            myControlEntity.ID = "cbxSelectControl";
-            myControlEntity.Text = "Hello World";
-            //    Label = 0,
-            //TextBox = 1,
-            //ComboBox = 2,
-            //Heading = 3,
-            //CheckBox = 4
-            List<ComboBoxPair> cbp = new List<ComboBoxPair>();
-            cbp.Add(new ComboBoxPair("Done Adding", "-1"));
-            cbp.Add(new ComboBoxPair("Label", "0"));
-            cbp.Add(new ComboBoxPair("TextBox", "1"));
-            cbp.Add(new ComboBoxPair("ComboBox", "2"));
-            cbp.Add(new ComboBoxPair("Heading", "3"));
-            cbp.Add(new ComboBoxPair("Iterator", "4"));
-            cbp.Add(new ComboBoxPair("Number of Iterations", "5"));
-            cbp.Add(new ComboBoxPair("Template", "6"));
-            myControlEntity.ListOfKeyValuePairs = cbp;
-            myControlEntity.SelectedValue = "-1";
-            myControlEntity.RowNumber = 1;
-            myControlEntity.ColumnNumber = 1;
+            myControlEntity.ControlType = ControlType.Button;
+            myControlEntity.ID = "btnComboBox";
+            myControlEntity.Text = "ComboBox";
+            myControlEntity.Width = 150;
+            myControlEntity.RowNumber = 3;
+            myControlEntity.ColumnNumber = 0;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
-            myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Button;
+            myControlEntity.ID = "btnHeading";
+            myControlEntity.Text = "Heading";
+            myControlEntity.Width = 150;
+            myControlEntity.RowNumber = 4;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Button;
+            myControlEntity.ID = "btnIterator";
+            myControlEntity.Text = "Iterator";
+            myControlEntity.Width = 150;
+            myControlEntity.RowNumber = 5;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Button;
+            myControlEntity.ID = "btnNumberOfIterations";
+            myControlEntity.Text = "Number of Iterations";
+            myControlEntity.Width = 150;
+            myControlEntity.RowNumber = 6;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Button;
+            myControlEntity.ID = "btnTemplate";
+            myControlEntity.Text = "Template";
+            myControlEntity.Width = 150;
+            myControlEntity.RowNumber = 7;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+        
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Button;
+            myControlEntity.ID = "btnButton";
+            myControlEntity.Text = "Button";
+            myControlEntity.Width = 150;
+            myControlEntity.RowNumber = 8;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
 
             //string mySearchTerm = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
-            string strSelectControl = myListControlEntity.Find(x => x.ID == "cbxSelectControl").SelectedValue;
-            // label
-            if (strSelectControl == "0")
+             // label
+            if (strButtonPressed == "btnLabel")
             {
                 myListControlEntity.Clear();
                 myListControlEntity = new List<ControlEntity>();
@@ -190,7 +226,7 @@ namespace CodeGenTemplateParms
             }
 
             // TextBox ----------------------------------------
-            if (strSelectControl == "1")
+            if (strButtonPressed == "btnTextBox")
             {
                 myListControlEntity.Clear();
                 myListControlEntity = new List<ControlEntity>();
@@ -315,7 +351,7 @@ namespace CodeGenTemplateParms
             }
 
             // ComboBox ----------------------------------------
-            if (strSelectControl == "2")
+            if (strButtonPressed == "btnComboBox")
             {
                 myListControlEntity.Clear();
                 myListControlEntity = new List<ControlEntity>();
@@ -558,7 +594,7 @@ namespace CodeGenTemplateParms
             }
 
             // Heading -------------------------------------------------
-            if (strSelectControl == "3")
+            if (strButtonPressed == "btnHeading")
             {
               myListControlEntity.Clear();
               myListControlEntity = new List<ControlEntity>();
@@ -645,7 +681,7 @@ namespace CodeGenTemplateParms
             }
 
             // Iterator ----------------------------------------
-            if (strSelectControl == "4")
+            if (strButtonPressed == "btnIterator")
             {
                 myListControlEntity.Clear();
                 myListControlEntity = new List<ControlEntity>();
@@ -756,7 +792,7 @@ namespace CodeGenTemplateParms
             }
 
             // Number of Iterations ----------------------------------------
-            if (strSelectControl == "5")
+            if (strButtonPressed == "btnNumberOfIterations")
             {
                 myListControlEntity.Clear();
                 myListControlEntity = new List<ControlEntity>();
@@ -833,7 +869,7 @@ namespace CodeGenTemplateParms
             }
 
             // Template ----------------------------------------
-            if (strSelectControl == "6")
+            if (strButtonPressed == "btnTemplate")
             {
                 myListControlEntity.Clear();
                 myListControlEntity = new List<ControlEntity>();
@@ -904,6 +940,98 @@ namespace CodeGenTemplateParms
 
                 sb2.AppendLine("string strTemplate" + strID.Trim() + " = myListControlEntity.Find(x => x.ID == \"txtTemplate" + strID.Trim() + "\").Text;");
                 sb3.AppendLine("string txtTemplateOut =  strTemplate" + strID.Trim() + ";");
+                goto AddControl;
+            }
+
+            // Add button control
+            if (strButtonPressed == "btnButton") {
+                myListControlEntity.Clear();
+                myListControlEntity = new List<ControlEntity>();
+
+                myControlEntity = new ControlEntity();
+                myControlEntity.ControlEntitySetDefaults();
+                myControlEntity.ControlType = ControlType.Heading;
+                myControlEntity.Text = "Add Button Control";
+                myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                myControlEntity.ControlEntitySetDefaults();
+                myControlEntity.ControlType = ControlType.Label;
+                myControlEntity.ID = "lblText";
+                myControlEntity.Text = "Text";
+                myControlEntity.RowNumber = 0;
+                myControlEntity.ColumnNumber = 0;
+                myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                myControlEntity.ControlEntitySetDefaults();
+                myControlEntity.ControlType = ControlType.TextBox;
+                myControlEntity.ID = "txtText";
+                myControlEntity.Text = "";
+                myControlEntity.RowNumber = 0;
+                myControlEntity.ColumnNumber = 1;
+                myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                myControlEntity.ControlEntitySetDefaults();
+                myControlEntity.ControlType = ControlType.Label;
+                myControlEntity.ID = "lblWidth";
+                myControlEntity.Text = "Width";
+                myControlEntity.RowNumber = 1;
+                myControlEntity.ColumnNumber = 0;
+                myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                myControlEntity.ControlEntitySetDefaults();
+                myControlEntity.ControlType = ControlType.TextBox;
+                myControlEntity.ID = "txtWidth";
+                myControlEntity.Text = "";
+                myControlEntity.RowNumber = 1;
+                myControlEntity.ColumnNumber = 1;
+                myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                myControlEntity.ControlEntitySetDefaults();
+                myControlEntity.ControlType = ControlType.Label;
+                myControlEntity.ID = "lblID";
+                myControlEntity.Text = "ID";
+                myControlEntity.RowNumber = 2;
+                myControlEntity.ColumnNumber = 0;
+                myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                myControlEntity.ControlEntitySetDefaults();
+                myControlEntity.ControlType = ControlType.TextBox;
+                myControlEntity.ID = "txtID";
+                myControlEntity.Text = "";
+                myControlEntity.RowNumber = 2;
+                myControlEntity.ColumnNumber = 1;
+                myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
+
+                string strText = myListControlEntity.Find(x => x.ID == "txtText").Text;
+                string strWidth = myListControlEntity.Find(x => x.ID == "txtWidth").Text;
+                string strID = myListControlEntity.Find(x => x.ID == "txtID").Text;
+                string strInFile = strApplicationPath + "TemplateButton.txt";
+                // private string strInFile = @"C:\Data\LanguageXMLInput3.txt";
+
+                List<string> listOfSolvedProblems = new List<string>();
+                List<string> listofRecs = new List<string>();
+                string[] lineszz = System.IO.File.ReadAllLines(strInFile);
+
+
+
+                int intLineCount = lineszz.Count();
+                int intCtr = 0;
+                for (int i = 0; i < intLineCount; i++) {
+                    string line = lineszz[i];
+                    line = line.Replace("&&ID", strID.Trim());
+                    line = line.Replace("&&TEXT", strText.Trim());
+                    line = line.Replace("&&ROW", intRowCtr.ToString());
+                    if (strWidth != "") {
+                        line = line.Replace("&&WIDTH", strWidth);
+                    }
+
+                    if (!line.Contains("&&WIDTH")) {
+                        sb.AppendLine(line);
+                    }
+                }
+
                 goto AddControl;
             }
 
