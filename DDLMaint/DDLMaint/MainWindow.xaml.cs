@@ -61,15 +61,7 @@ namespace DDLMaint {
             myControlEntity.RowNumber = 2;
             myControlEntity.ColumnNumber = 0;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-            myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.Button;
-            myControlEntity.ID = "btnDropDownListHierarchy";
-            myControlEntity.Text = "Drop Down List Hierarchy";
-            myControlEntity.Width = 150;
-            myControlEntity.RowNumber = 3;
-            myControlEntity.ColumnNumber = 0;
-            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+          
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
 
             if (strButtonPressed == "btnDropDownLists") {
@@ -164,7 +156,6 @@ namespace DDLMaint {
 
                 cmd.CommandText = "SELECT * FROM DDLNames order by ID";
                 cmd.Connection = con;
-                int intCol = 0;
                 int intRow = 0;
 
                 try {
@@ -173,10 +164,6 @@ namespace DDLMaint {
                     //(CommandBehavior.SingleRow)
                     while (reader.Read()) {
                         intRow++;
-                        if (intRow > 20) {
-                            intRow = 1;
-                            intCol++;
-                        }
                         int intInc = reader.GetInt32(0);
                         string strIDx = reader.GetString(1);
                         cbp.Add(new ComboBoxPair(strIDx, intInc.ToString()));
@@ -321,8 +308,8 @@ namespace DDLMaint {
 
                 myControlEntity.ControlEntitySetDefaults();
                 myControlEntity.ControlType = ControlType.Label;
-                myControlEntity.ID = "lblddlIds";
-                myControlEntity.Text = "DDL IDs";
+                myControlEntity.ID = "lblParentddlIds";
+                myControlEntity.Text = "Optional Parent DDL IDs";
                 myControlEntity.RowNumber = 1;
                 myControlEntity.ColumnNumber = 0;
                 myListControlEntity.Add(myControlEntity.CreateControlEntity());
@@ -330,7 +317,7 @@ namespace DDLMaint {
                 myControlEntity.ControlEntitySetDefaults();
                 myControlEntity.ControlType = ControlType.ComboBox;
                 cbp.Clear();
-                cbp.Add(new ComboBoxPair("--Select DDL to Maintain ---", "--Select DDL to Maintain ---"));
+                cbp.Add(new ComboBoxPair("--Select Parent DDL to Maintain ---", "-1"));
                 SqlConnection con = new SqlConnection("Server=(local)\\SQLEXPRESS;Initial Catalog=IdealAutomateDB;Integrated Security=SSPI");
 
                 SqlCommand cmd = new SqlCommand();
@@ -355,8 +342,50 @@ namespace DDLMaint {
                 }
                 myControlEntity.ListOfKeyValuePairs = cbp;
                 myControlEntity.SelectedValue = "";
-                myControlEntity.ID = "cbxddlIds";
+                myControlEntity.ID = "cbxParentddlIds";
                 myControlEntity.RowNumber = 1;
+                myControlEntity.ColumnNumber = 1;
+                myControlEntity.SelectedValue = "-1";
+                myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                myControlEntity.ControlEntitySetDefaults();
+                myControlEntity.ControlType = ControlType.Label;
+                myControlEntity.ID = "lblddlIds";
+                myControlEntity.Text = "DDL IDs";
+                myControlEntity.RowNumber = 2;
+                myControlEntity.ColumnNumber = 0;
+                myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                myControlEntity.ControlEntitySetDefaults();
+                myControlEntity.ControlType = ControlType.ComboBox;
+                cbp1.Clear();
+                cbp1.Add(new ComboBoxPair("--Select DDL to Maintain ---", "--Select DDL to Maintain ---"));
+                con = new SqlConnection("Server=(local)\\SQLEXPRESS;Initial Catalog=IdealAutomateDB;Integrated Security=SSPI");
+
+                cmd = new SqlCommand();
+
+                cmd.CommandText = "SELECT * FROM DDLNames order by ID";
+                cmd.Connection = con;
+                intRow = 0;
+
+                try {
+                    con.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    //(CommandBehavior.SingleRow)
+                    while (reader.Read()) {
+                        intRow++;
+                        int intInc = reader.GetInt32(0);
+                        string strIDx = reader.GetString(1);
+                        cbp1.Add(new ComboBoxPair(strIDx, intInc.ToString()));
+                    }
+                    reader.Close();
+                } finally {
+                    con.Close();
+                }
+                myControlEntity.ListOfKeyValuePairs = cbp1;
+                myControlEntity.SelectedValue = "";
+                myControlEntity.ID = "cbxddlIds";
+                myControlEntity.RowNumber = 2;
                 myControlEntity.ColumnNumber = 1;
                 myControlEntity.SelectedValue = "--Select DDL to Maintain ---";
                 myListControlEntity.Add(myControlEntity.CreateControlEntity());
@@ -365,7 +394,7 @@ namespace DDLMaint {
                 myControlEntity.ControlType = ControlType.Button;
                 myControlEntity.ID = "btnAddItem";
                 myControlEntity.Text = "Add Item";
-                myControlEntity.RowNumber = 2;
+                myControlEntity.RowNumber = 3;
                 myControlEntity.ColumnNumber = 0;
                 myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
@@ -373,17 +402,74 @@ namespace DDLMaint {
                 myControlEntity.ControlType = ControlType.Button;
                 myControlEntity.ID = "btnDeleteItem";
                 myControlEntity.Text = "Delete Item";
-                myControlEntity.RowNumber = 3;
+                myControlEntity.RowNumber = 4;
                 myControlEntity.ColumnNumber = 0;
                 myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
+                DisplayMenu:
                 strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
                 string strddlIds = myListControlEntity.Find(x => x.ID == "cbxddlIds").SelectedValue;
-
+                string strParentddlIds = myListControlEntity.Find(x => x.ID == "cbxParentddlIds").SelectedValue;
+                if (strddlIds == "--Select DDL to Maintain ---" && (strButtonPressed == "btnAddItem" || strButtonPressed == "btnDeleteItem")) {
+                    myActions.MessageBoxShow("Please select DDL to maintain");
+                    goto DisplayMenu;
+                }
                 if (strButtonPressed == "btnAddItem") {
                     myControlEntity = new ControlEntity();
                     myListControlEntity = new List<ControlEntity>();
                     cbp = new List<ComboBoxPair>();
+
+                    myControlEntity.ControlEntitySetDefaults();
+                    myControlEntity.ControlType = ControlType.Label;
+                    myControlEntity.ID = "lblddlItems";
+                    myControlEntity.Text = "Optional Parent DDL Items";
+                    myControlEntity.RowNumber = 1;
+                    myControlEntity.ColumnNumber = 0;
+                    myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                    if (strParentddlIds != "-1") {
+
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.ComboBox;
+                        cbp.Clear();
+                        cbp.Add(new ComboBoxPair("--Select Optional Parent Item ---", "-1"));
+                        con = new SqlConnection("Server=(local)\\SQLEXPRESS;Initial Catalog=IdealAutomateDB;Integrated Security=SSPI");
+
+                        cmd = new SqlCommand();
+
+                        cmd.CommandText = "SELECT lk.inc, i.listItemKey, i.ListItemValue FROM LkDDLNamesItems lk " +
+    "join DDLNames n on n.inc = lk.DDLNamesInc " +
+    "join DDLItems i on i.inc = lk.ddlItemsInc " +
+    "where DDLNamesInc = @DDLNamesInc ";
+                        cmd.Parameters.Add("@DDLNamesInc", SqlDbType.Int);
+                        int intDeleteInc = 0;
+                        Int32.TryParse(strParentddlIds, out intDeleteInc);
+                        cmd.Parameters["@DDLNamesInc"].Value = intDeleteInc;
+                        cmd.Connection = con;
+
+                        intRow = 0;
+
+                        try {
+                            con.Open();
+                            SqlDataReader reader = cmd.ExecuteReader();
+                            //(CommandBehavior.SingleRow)
+                            while (reader.Read()) {
+                                intRow++;
+                                int intInc = reader.GetInt32(0);
+                                string strIDx = reader.GetString(1);
+                                cbp.Add(new ComboBoxPair(strIDx, intInc.ToString()));
+                            }
+                            reader.Close();
+                        } finally {
+                            con.Close();
+                        }
+                        myControlEntity.ListOfKeyValuePairs = cbp;
+                        myControlEntity.SelectedValue = "";
+                        myControlEntity.ID = "cbxParentddlItems";
+                        myControlEntity.RowNumber = 1;
+                        myControlEntity.ColumnNumber = 1;
+                        myControlEntity.SelectedValue = "-1";
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+                    }
 
                     myControlEntity.ControlEntitySetDefaults();
                     myControlEntity.ControlType = ControlType.Label;
@@ -428,7 +514,82 @@ namespace DDLMaint {
                     strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
                     string strKey = myListControlEntity.Find(x => x.ID == "txtKey").Text;
                     string strValue = myListControlEntity.Find(x => x.ID == "txtValue").Text;
+                    string strParentddlItems = "-1";
+                    if (strParentddlIds != "-1") {
+                       strParentddlItems = myListControlEntity.Find(x => x.ID == "cbxParentddlItems").SelectedValue;
+                    }
+                    // TODO: 1. See if key value pair exists in DDLItems
+                    // if it exists, save the inc
+                    // if it does not exist, add it to DDLItems and get the inc
+                    // add record to LK table with DDLNameInc and DDLItemInc if it does 
+                    // not already exist
+                    SqlConnection thisConnection = new SqlConnection("server=.\\SQLEXPRESS;" + "integrated security=sspi;database=IdealAutomateDB");
+                    //Create Command object        
+                    SqlCommand nonqueryCommand = thisConnection.CreateCommand();
+                    SqlCommand nonqueryCommand_delete = thisConnection.CreateCommand();
+                    SqlCommand nonqueryCommand_insert_page_name = thisConnection.CreateCommand();
+                    try {
+                        // Open Connection
+                        thisConnection.Open();
+                        // Console.WriteLine("Connection Opened");
 
+
+                        // Create INSERT statement with named parameters
+                        nonqueryCommand.CommandText = "IF NOT EXISTS (" +
+                        " SELECT * " +
+                        " FROM DDLItems " +
+                        " WHERE ListItemKey = @ListItemKey " +
+                         " AND ListItemValue = @ListItemValue " +
+                        " ) " +
+                " BEGIN " +
+               " INSERT  INTO DDLItems (ListItemKey, ListItemValue) VALUES (@ListItemKey, @ListItemValue)" +
+                  " END " +
+               " DECLARE @DDLItemsInc int;" +
+               " set @DDLItemsInc =   (SELECT Top 1 Inc " +
+                        " FROM DDLItems " +
+                        " WHERE ListItemKey = @ListItemKey " +
+                         " AND ListItemValue = @ListItemValue); " +
+                         "IF NOT EXISTS (" +
+                        " SELECT * " +
+                        " FROM LKDdlNamesItems " +
+                        " WHERE DDLNamesInc = @DDLNamesInc " +
+                         " AND DDLItemsInc = @DDLItemsInc " +
+                        " ) " +
+                         " BEGIN " +
+               " INSERT  INTO LKDdlNamesItems (ParentLkDDLNamesItemsInc,DDLNamesInc, DDLItemsInc) VALUES (@ParentLkDDLNamesItemsInc, @DDLNamesInc, @DDLItemsInc)" +
+             
+                        " END ";
+
+                        // Add Parameters to Command Parameters collection
+
+                        nonqueryCommand.Parameters.Add("@ListItemKey", SqlDbType.VarChar,-1);
+                        nonqueryCommand.Parameters["@ListItemKey"].Value = strKey;
+                        nonqueryCommand.Parameters.Add("@ListItemValue", SqlDbType.VarChar, -1);
+                        nonqueryCommand.Parameters["@ListItemValue"].Value = strValue;
+                        nonqueryCommand.Parameters.Add("@DDLNamesInc", SqlDbType.Int);
+                        int intDDLNamesInc = 0;
+                        Int32.TryParse(strddlIds, out intDDLNamesInc);
+                        nonqueryCommand.Parameters["@DDLNamesInc"].Value = intDDLNamesInc;
+                        nonqueryCommand.Parameters.Add("@ParentLkDDLNamesItemsInc", SqlDbType.Int);
+                        int intParentLkDDLNamesItemsInc = 0;
+                        Int32.TryParse(strParentddlItems, out intParentLkDDLNamesItemsInc);
+                        nonqueryCommand.Parameters["@ParentLkDDLNamesItemsInc"].Value = intParentLkDDLNamesItemsInc;
+
+
+                        // Prepare command for repeated execution
+                        nonqueryCommand.Prepare();
+                        int intRowsModified = nonqueryCommand.ExecuteNonQuery();
+                        if (intRowsModified < 1) {
+                            myActions.MessageBoxShow("Record not added");
+                        }
+
+
+                    } catch (SqlException ex) {
+                        // Display error
+                        //Console.WriteLine("Error: " + ex.ToString());
+                        myActions.MessageBoxShow("Error: " + ex.ToString());
+                    }
+                    goto DisplayMainMenu;
                 }
 
                 if (strButtonPressed == "btnDeleteItem") {
@@ -452,11 +613,14 @@ namespace DDLMaint {
 
                     cmd = new SqlCommand();
 
-                    cmd.CommandText = "SELECT * FROM LkDDLNamesItems where DDLNamesInc = @DDLNamesInc";
-                    cmd.Parameters.Add("@INC", SqlDbType.Int);
+                    cmd.CommandText = "SELECT lk.inc, i.listItemKey, i.ListItemValue FROM LkDDLNamesItems lk " +
+"join DDLNames n on n.inc = lk.DDLNamesInc " +
+"join DDLItems i on i.inc = lk.ddlItemsInc " +
+"where DDLNamesInc = @DDLNamesInc ";
+                    cmd.Parameters.Add("@DDLNamesInc", SqlDbType.Int);
                     int intDeleteInc = 0;
                     Int32.TryParse(strddlIds, out intDeleteInc);
-                    cmd.Parameters["@INC"].Value = intDeleteInc;
+                    cmd.Parameters["@DDLNamesInc"].Value = intDeleteInc;
                     cmd.Connection = con;
 
                     intRow = 0;
@@ -509,12 +673,24 @@ namespace DDLMaint {
                         // Create INSERT statement with named parameters
                         nonqueryCommand.CommandText = "IF EXISTS (" +
                         " SELECT * " +
-                        " FROM DDLItems " +
+                        " FROM LkDDLNamesItems " +
                         " WHERE INC = @INC " +
                         " ) " +
                 " BEGIN " +
-              " DELETE FROM DDLItems WHERE INC = @INC" +
-              " END ";
+                " DECLARE @DDLItemsInc int;" +
+                " SET @DDLItemsInc = (  SELECT DDLItemsInc " +
+                        " FROM LkDDLNamesItems " +
+                        " WHERE INC = @INC); " +
+              " DELETE FROM LKDDLNamesItems WHERE INC = @INC;" +
+              "IF NOT EXISTS (" +
+                        " SELECT * " +
+                        " FROM LkDDLNamesItems " +
+                        " WHERE DDLItemsInc = @DDLItemsInc " +
+                        " ) " +
+                " BEGIN " +
+                " DELETE FROM DDLItems WHERE INC = @DDLItemsInc;" +
+                 " END " +
+                        " END ";
 
                         // Add Parameters to Command Parameters collection
 
@@ -542,116 +718,7 @@ namespace DDLMaint {
 
             }
 
-            if (strButtonPressed == "btnDropDownListHierarchy") {
-                myControlEntity = new ControlEntity();
-                myListControlEntity = new List<ControlEntity>();
-                cbp = new List<ComboBoxPair>();
-                List<ComboBoxPair> cbp1 = new List<ComboBoxPair>();
-                List<ComboBoxPair> cbp2 = new List<ComboBoxPair>();
-                myControlEntity.ControlEntitySetDefaults();
-                myControlEntity.ControlType = ControlType.Heading;
-                myControlEntity.ID = "lblMaintainDDLItems";
-                myControlEntity.Text = "Maintain DropDownList Hierarchies";
-                myControlEntity.RowNumber = 0;
-                myControlEntity.ColumnNumber = 0;
-                myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
-
-
-                myControlEntity.ControlEntitySetDefaults();
-                myControlEntity.ControlType = ControlType.Label;
-                myControlEntity.ID = "lblddlIds";
-                myControlEntity.Text = "Parent DDL IDs";
-                myControlEntity.RowNumber = 1;
-                myControlEntity.ColumnNumber = 0;
-                myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-                myControlEntity.ControlEntitySetDefaults();
-                myControlEntity.ControlType = ControlType.ComboBox;
-                cbp.Clear();
-                cbp.Add(new ComboBoxPair("--Select DDL for Parent ---", "--Select DDL for Parent ---"));
-                myControlEntity.ListOfKeyValuePairs = cbp;
-                myControlEntity.SelectedValue = "";
-                myControlEntity.ID = "cbxParentDdlIds";
-                myControlEntity.RowNumber = 1;
-                myControlEntity.ColumnNumber = 1;
-                myControlEntity.SelectedValue = "--Select DDL for Parent ---";
-                myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-                myControlEntity.ControlEntitySetDefaults();
-                myControlEntity.ControlType = ControlType.Label;
-                myControlEntity.ID = "lblddlIds";
-                myControlEntity.Text = "Child DDL IDs";
-                myControlEntity.RowNumber = 2;
-                myControlEntity.ColumnNumber = 0;
-                myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-                myControlEntity.ControlEntitySetDefaults();
-                myControlEntity.ControlType = ControlType.ComboBox;
-                cbp1.Clear();
-                cbp1.Add(new ComboBoxPair("--Select DDL for Child ---", "--Select DDL for Child ---"));
-                myControlEntity.ListOfKeyValuePairs = cbp1;
-                myControlEntity.SelectedValue = "";
-                myControlEntity.ID = "cbxChildDdlIds";
-                myControlEntity.RowNumber = 2;
-                myControlEntity.ColumnNumber = 1;
-                myControlEntity.SelectedValue = "--Select DDL for Child ---";
-                myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-
-
-                myControlEntity.ControlEntitySetDefaults();
-                myControlEntity.ControlType = ControlType.Button;
-                myControlEntity.ID = "btnAddHierarchy";
-                myControlEntity.Text = "Add Hierarchy";
-                myControlEntity.RowNumber = 4;
-                myControlEntity.ColumnNumber = 1;
-                myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-                myControlEntity.ControlEntitySetDefaults();
-                myControlEntity.ControlType = ControlType.Label;
-                myControlEntity.ID = "lblBlankLine";
-                myControlEntity.Text = " ";
-                myControlEntity.RowNumber = 5;
-                myControlEntity.ColumnNumber = 1;
-                myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-
-                myControlEntity.ControlEntitySetDefaults();
-                myControlEntity.ControlType = ControlType.Label;
-                myControlEntity.ID = "lblddlHierarchies";
-                myControlEntity.Text = "DDL Hierarchies";
-                myControlEntity.RowNumber = 6;
-                myControlEntity.ColumnNumber = 0;
-                myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-                myControlEntity.ControlEntitySetDefaults();
-                myControlEntity.ControlType = ControlType.ComboBox;
-                cbp2.Clear();
-                cbp2.Add(new ComboBoxPair("--Select Hierarchy to Delete ---", "--Select Hierarchy to Delete ---"));
-                myControlEntity.ListOfKeyValuePairs = cbp2;
-                myControlEntity.SelectedValue = "";
-                myControlEntity.ID = "cbxHierarchyDll";
-                myControlEntity.RowNumber = 6;
-                myControlEntity.ColumnNumber = 1;
-                myControlEntity.SelectedValue = "--Select Hierarchy to Delete ---";
-                myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-                myControlEntity.ControlEntitySetDefaults();
-                myControlEntity.ControlType = ControlType.Button;
-                myControlEntity.ID = "btnDeleteHierarchy";
-                myControlEntity.Text = "Delete Hierarchy";
-                myControlEntity.RowNumber = 7;
-                myControlEntity.ColumnNumber = 1;
-                myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-                strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
-
-                string strParentDdlIds = myListControlEntity.Find(x => x.ID == "cbxParentDdlIds").SelectedValue;
-                string strChildDdlIds = myListControlEntity.Find(x => x.ID == "cbxChildDdlIds").SelectedValue;
-                string strHierarchyDll = myListControlEntity.Find(x => x.ID == "cbxHierarchyDll").SelectedValue;
-
-            }
 
 
             goto myExit;
