@@ -61,7 +61,17 @@ namespace DDLMaint {
             myControlEntity.RowNumber = 2;
             myControlEntity.ColumnNumber = 0;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
-          
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            myControlEntity.ID = "Countries";
+            myControlEntity.Text = "Drop Down Items";
+            myControlEntity.Width = 150;
+            myControlEntity.RowNumber = 3;
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.SelectedValue = "--Select Item ---";
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
 
             if (strButtonPressed == "btnDropDownLists") {
