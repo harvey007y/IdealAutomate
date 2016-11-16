@@ -2,6 +2,7 @@
 using IdealAutomate.Core;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System;
 
 namespace ScriptGenerator {
   /// <summary>
@@ -30,6 +31,7 @@ namespace ScriptGenerator {
         myActions.TypeText("%(\" \"n)", 1000); // minimize visual studio
       }
       myActions.Sleep(1000);
+    
       List<ControlEntity> myListControlEntity = new List<ControlEntity>();
 
       ControlEntity myControlEntity = new ControlEntity();
@@ -120,7 +122,8 @@ namespace ScriptGenerator {
       //    myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
       //   myControlEntity.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
       myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
+      string strScripts = "";
+      string strVariables = "";
       string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, 100, 850);
       DisplayWindowAgain:
 
@@ -140,10 +143,184 @@ namespace ScriptGenerator {
 
       string strFilePath = "";
       switch (strButtonPressed) {
-        case "myButtonTypeText":
-          List<ControlEntity> myListControlEntity1 = new List<ControlEntity>();
+                case "myButtonActivateWindowByTitle":
+                    DisplayActivateWindowByTitleWindow:
+                    ControlEntity myControlEntity1 = new ControlEntity();
+                    List<ControlEntity> myListControlEntity1 = new List<ControlEntity>();
+                    List<ComboBoxPair> cbp = new List<ComboBoxPair>();
 
-          ControlEntity myControlEntity1 = new ControlEntity();
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.Heading;
+                    myControlEntity1.ID = "lblActivateWindowByTitle";
+                    myControlEntity1.Text = "Activate Window By Title";
+                    myControlEntity1.Width = 300;
+                    myControlEntity1.RowNumber = 0;
+                    myControlEntity1.ColumnNumber = 0;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.Heading;
+                    myControlEntity1.ID = "lblActivateWindowByTitle";
+                    myControlEntity1.Text = "Activate Window By Title";
+                    myControlEntity1.Width = 300;
+                    myControlEntity1.RowNumber = 0;
+                    myControlEntity1.ColumnNumber = 0;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.Label;
+                    myControlEntity1.ID = "lblWindowTitle";
+                    myControlEntity1.Text = "Window Title:";
+                    myControlEntity1.RowNumber = 1;
+                    myControlEntity1.ColumnNumber = 0;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.TextBox;
+                    myControlEntity1.ID = "txtWindowTitle";
+                    myControlEntity1.Text = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorWindowTitlex", "IdealAutomateDB");
+                    myControlEntity1.RowNumber = 1;
+                    myControlEntity1.ColumnNumber = 1;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.Label;
+                    myControlEntity1.ID = "lblScripts";
+                    myControlEntity1.Text = "Script:";
+                    myControlEntity1.Width = 150;
+                    myControlEntity1.RowNumber = 1;
+                    myControlEntity1.ColumnNumber = 2;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.ComboBox;
+                    myControlEntity1.ID = "Scripts";
+                    myControlEntity1.Text = "Drop Down Items";
+                    myControlEntity1.Width = 150;
+                    myControlEntity1.RowNumber = 1;
+                    myControlEntity1.ColumnNumber = 3;
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptsDefaultValue", "IdealAutomateDB");
+                    strScripts = myActions.GetValueByKey("ScriptsDefaultValue", "IdealAutomateDB");
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    if (strScripts != "--Select Item ---") {
+                        myControlEntity1.ControlEntitySetDefaults();
+                        myControlEntity1.ControlType = ControlType.Label;
+                        myControlEntity1.ID = "lblVariable";
+                        myControlEntity1.Text = "Variable:";
+                        myControlEntity1.Width = 150;
+                        myControlEntity1.RowNumber = 1;
+                        myControlEntity1.ColumnNumber = 4;
+                        myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                        myControlEntity1.ControlEntitySetDefaults();
+                        myControlEntity1.ControlType = ControlType.ComboBox;
+                        myControlEntity1.ID = "Variables";
+                        myControlEntity1.Text = "Drop Down Items";
+                        myControlEntity1.Width = 150;
+                        myControlEntity1.RowNumber = 1;
+                        myControlEntity1.ColumnNumber = 5;
+                        int intScripts = 0;
+                        Int32.TryParse(strScripts, out intScripts);
+                        myControlEntity1.ParentLkDDLNamesItemsInc = intScripts;
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables", "IdealAutomateDB");
+                        myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+                    }
+
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.Label;
+                    myControlEntity1.ID = "lblShowOption";
+                    myControlEntity1.Text = "Show Option:";
+                    myControlEntity1.RowNumber = 2;
+                    myControlEntity1.ColumnNumber = 0;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.ComboBox;
+                    cbp.Clear();
+                    cbp.Add(new ComboBoxPair("--Select Item ---", "--Select Item ---"));
+                    cbp.Add(new ComboBoxPair("SW_HIDE", "0"));
+                    cbp.Add(new ComboBoxPair("SW_SHOWNORMAL", "1"));
+                    cbp.Add(new ComboBoxPair("SW_SHOWMINIMIZED", "2"));
+                    cbp.Add(new ComboBoxPair("SW_SHOWMAXIMIZED", "3"));
+                    cbp.Add(new ComboBoxPair("SW_SHOWNOACTIVATE", "4"));
+                    cbp.Add(new ComboBoxPair("SW_RESTORE", "9"));
+                    cbp.Add(new ComboBoxPair("SW_SHOWDEFAULT", "10"));
+
+                    myControlEntity1.ListOfKeyValuePairs = cbp;
+                    myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorShowOption", "IdealAutomateDB");
+                    if (myControlEntity1.SelectedValue == null) {
+                        myControlEntity1.SelectedValue = "--Select Item ---";
+                    }
+                    myControlEntity1.ID = "cbxShowOption";
+                    myControlEntity1.RowNumber = 2;
+                    myControlEntity1.ColumnNumber = 1;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.Label;
+                    myControlEntity1.ID = "lblShowOption";
+                    myControlEntity1.Text = "(Optional)";
+                    myControlEntity1.RowNumber = 2;
+                    myControlEntity1.ColumnNumber = 2;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.Button;
+                    myControlEntity1.ID = "btnDDLRefresh";
+                    myControlEntity1.Text = "ComboBox Refresh";
+                    myControlEntity1.RowNumber = 3;
+                    myControlEntity1.ColumnNumber = 0;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 400, 700, 0, 0);
+                    strScripts = myListControlEntity1.Find(x => x.ID == "Scripts").SelectedValue;
+                    if (myListControlEntity1.Find(x => x.ID == "Variables") != null) {
+                        strVariables = myListControlEntity1.Find(x => x.ID == "Variables").SelectedKey;
+                    }
+                    string strWindowTitlex = myListControlEntity1.Find(x => x.ID == "txtWindowTitle").Text;
+                    string strShowOption = myListControlEntity1.Find(x => x.ID == "cbxShowOption").SelectedValue;
+                    myActions.SetValueByKey("ScriptsDefaultValue", strScripts, "IdealAutomateDB");
+                    myActions.SetValueByKey("ScriptGeneratorVariables", strVariables, "IdealAutomateDB");
+                    myActions.SetValueByKey("ScriptGeneratorWindowTitlex", strWindowTitlex, "IdealAutomateDB");
+                    myActions.SetValueByKey("ScriptGeneratorShowOption", strShowOption, "IdealAutomateDB");
+                   
+                    if (strButtonPressed == "btnDDLRefresh") {
+                        goto DisplayActivateWindowByTitleWindow;
+                    }
+
+                    if (strButtonPressed == "btnOkay") {
+                        if (strWindowTitlex == "" && strVariables == "--Select Item ---") {
+                            myActions.MessageBoxShow("Please enter Window Title or select script variable; else press Cancel to Exit");
+                            goto DisplayActivateWindowByTitleWindow;
+                        }
+                        string strWindowTitleToUse = "";
+                        if (strWindowTitlex.Trim() == "") {
+                            strWindowTitleToUse = strVariables;
+                        } else {
+                            strWindowTitleToUse = strWindowTitlex.Trim();
+                        }
+                        string strGeneratedLinex = "";
+                        if (strShowOption == "--Select Item ---") { 
+                          strGeneratedLinex = "myActions.ActivateWindowByTitle(\""+ strWindowTitleToUse + "\");";
+                        } else {
+                            strGeneratedLinex = "myActions.ActivateWindowByTitle(\"" + strWindowTitleToUse + "\"," + strShowOption + ");";
+                        }
+                        myActions.PutEntityInClipboard(strGeneratedLinex);
+                        myActions.MessageBoxShow(strGeneratedLinex);
+                    }
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, 100, 850);
+                    goto DisplayWindowAgain;
+                    break;
+                      
+        case "myButtonDeclareAVariable":
+                 
+                    myActions.RunSync(@"C:\SVNIA\trunk\DDLMaint\DDLMaint\bin\debug\DDLMaint.exe", "");
+            break;
+        case "myButtonTypeText":
+           myListControlEntity1 = new List<ControlEntity>();
+
+          myControlEntity1 = new ControlEntity();
           myControlEntity1.ControlEntitySetDefaults();
           myControlEntity1.ControlType = ControlType.Heading;
           myControlEntity1.Text = "Script Generator";
@@ -793,178 +970,14 @@ namespace ScriptGenerator {
 
           strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, 100, 850);
           goto DisplayWindowAgain;
-          break;
-        case "myButtonWorksheetList":
-          strFilePath = "ASPX/Treasury/WorksheetList.aspx";
-          break;
-        case "myButtonForecastRulesList":
-          strFilePath = "ASPX/Treasury/ForecastRulesList.aspx";
-          break;
-        case "myButtonBalanceExplorer":
-          strFilePath = "bal/balSearch.asp";
-          break;
-        case "myButtonIntradayMatching":
-          strFilePath = "ASPX/Reconcilement/IntradayMatching.aspx";
-          break;
-        case "myButtonTARuleList":
-          strFilePath = "ta/TaRuleAcctList.asp";
-          break;
-        case "myButtonFTWorkflow":
-          strFilePath = "ft/ftexplorer.asp";
-          break;
-        case "myButtonFTSearch":
-          strFilePath = "ft/ftfindftrn.asp";
-          break;
-        case "myButtonTemplateModelWorkflow":
-          strFilePath = "models/mdstatuscontrol.asp";
-          break;
-        case "myButtonFTListNew":
-          strFilePath = "ASPX/FT/Trn/FtrnList.aspx";
-          break;
-        case "myButtonFTTestTransactionList":
-          strFilePath = "ASPX/FT/Trn/FtrnTestList.aspx";
-          break;
-        case "myButtonSetupFundsTransferTypesInstrType":
-          strFilePath = "ASPX/FT/Maint/FTInstTypeList.aspx";
-          break;
-        case "myButtonCreateTemplateModel":
-          strFilePath = "models/mdcreate.asp";
-          break;
-        case "myButtonTemplateModelSearch":
-          strFilePath = "models/mdexplorer.asp";
-          break;
-        case "myButtonJournalEntryList":
-          strFilePath = "ASPX/gl/glJournalList.aspx";
-          break;
-        case "myButtonChartofAccounts":
-          strFilePath = "ASPX/GL/GLLedgerList.aspx";
-          break;
-        case "myButtonGLTransactionList":
-          strFilePath = "ASPX/GL/GLTransactionList.aspx";
-          break;
-        case "myButtonTARulesList2":
-          strFilePath = "ta/TaRuleAcctList.asp";
-          break;
-        case "myButtonBankExplorer":
-          strFilePath = "ASPX/AdvMaint/Bank/BankExplorer.aspx";
-          break;
-        case "myButtonBankList":
-          strFilePath = "ASPX/AdvMaint/Bank/bankList.aspx";
-          break;
-        case "myButtonSystemBankList":
-          strFilePath = "ASPX/AdvMaint/SystemBank/systemBankList.aspx";
-          break;
-        case "myButtonAccountWorkflow":
-          strFilePath = "ASPX/AdvMaint/Account/AccountStatus.aspx";
-          break;
-        case "myButtonAccountExplorer":
-          strFilePath = "ASPX/AdvMaint/Account/maintAccountExplorer.aspx";
-          break;
-        case "myButtonAccountList":
-          strFilePath = "ASPX/AdvMaint/Account/accountList.aspx";
-          break;
-        case "myButtonUserCodeExplorer":
-          strFilePath = "ASPX/Maintenance/UserCode/maintUserCodeExplorer.aspx";
-          break;
-        case "myButtonUserCodeList":
-          strFilePath = "ASPX/Maintenance/UserCode/maintUserCodeList.aspx";
-          break;
-        case "myButtonSystemBankCodes":
-          strFilePath = "ASPX/Maintenance/SystemBankCode/maintSysBankCodeList.aspx";
-          break;
-        case "myButtonJobsPluginOptions":
-          strFilePath = "ASPX/Ix/PluginOption/maintPluginOptionList.aspx";
-          break;
-        case "myButtonEnotificationEventTypes":
-          strFilePath = "ASPX/eNotify/eNotifyEventMainList.aspx";
-          break;
-        case "myButtonCommunicationTemplates":
-          strFilePath = "ASPX/Documents/CommunicationTemplateList.aspx";
-          break;
-        case "myButtonGeneralReferenceTypes":
-          strFilePath = "ASPX/AdvMaint/ReferenceType/maintReferenceTypeList.aspx";
-          break;
-        case "myButtonAccessGroupExplorer":
-          strFilePath = "ASPX/AdvMaint/Oper/operAccessGroupExplorer.aspx";
-          break;
-        case "myButtonOperatorList":
-          strFilePath = "ASPX/AdvMaint/Oper/operList.aspx";
-          break;
-        case "myButtonChangePassword":
-          strFilePath = "ASPX/Utilities/ChangePassword.aspx";
-          break;
-        case "myButtonSystemOptions":
-          strFilePath = "ASPX/Maintenance/SystemOptions/maintSystemOptionsList.aspx";
-          break;
-        case "myButtonSystemLocks":
-          strFilePath = "ASPX/admin/maintSignOutList.aspx";
-          break;
+          break;     
 
         default:
           strFilePath = "FT/Trn/FtrnList.aspx";
           break;
       }
 
-      string strCurrentURL = myActions.PutClipboardInEntity();
-      // http://localhost/gt/aspx/main/login.aspx          
-      string strUrlBase = "http://localhost/gt/ASPX/";
-      if (strCurrentURL.Contains("://localhost/gt/")) {
-        strUrlBase = "http://localhost/gt/";
-      }
-      if (strCurrentURL.Contains("://devserver11/gtreasury")) {
-        strUrlBase = "http://devserver11/gtreasury/";
-      }
-      if (strCurrentURL.Contains("://devserver12/gtreasury")) {
-        strUrlBase = "http://devserver12/gtreasury/";
-      }
-      if (strCurrentURL.Contains("://qaserver6/webcash/")) {
-        strUrlBase = "http://qaserver6/webcash/";
-      }
-      if (strCurrentURL.Contains("://qaserver6a/webcash/")) {
-        strUrlBase = "http://qaserver6a/webcash/";
-      }
-      if (strCurrentURL.Contains("://qaserver6b/webcash/")) {
-        strUrlBase = "http://qaserver6b/webcash/";
-      }
-      if (strCurrentURL.Contains("://bbgqa/gt/")) {
-        strUrlBase = "http://bbgqa/gt/";
-      }
-      if (strCurrentURL.Contains("://bbgqa/gt/")) {
-        strUrlBase = "http://bbgqa/gt/";
-      }
-      if (strCurrentURL.Contains("https://qaserver6.gtreasuryss.net/webcash/")) {
-        strUrlBase = "https://qaserver6.gtreasuryss.net/webcash/";
-      }
-      if (strCurrentURL.Contains("https://qaserver6a.gtreasuryss.net/webcash/")) {
-        strUrlBase = "https://qaserver6a.gtreasuryss.net/webcash/";
-      }
-      if (strCurrentURL.Contains("https://qaserver6.gtreasuryss.net/gtreasury/")) {
-        strUrlBase = "https://qaserver6.gtreasuryss.net/gtreasury/";
-      }
-      if (strCurrentURL.Contains("https://qaserver6a.gtreasuryss.net/gtreasury/")) {
-        strUrlBase = "https://qaserver6a.gtreasuryss.net/gtreasury/";
-      }
-      if (strCurrentURL.Contains("https://prodcopy.gtreasuryss.net/gtreasury/")) {
-        strUrlBase = "https://prodcopy.gtreasuryss.net/gtreasury/";
-      }
-
-      string strJavascriptGoURL = "";
-
-      if (strCurrentURL.EndsWith("asp")) {
-        strFilePath = strUrlBase + strFilePath;
-        // first GoUrl has lower case "rl" because we are on classic asp page
-        strJavascriptGoURL = "xjavascript:GoUrl('" + strFilePath + "');";
-      } else {
-        strFilePath = strUrlBase + strFilePath;
-        strJavascriptGoURL = "xjavascript:GoURL('" + strFilePath + "');";
-      }
-      myActions.PutEntityInClipboard(strJavascriptGoURL);
-      myActions.SelectAllPaste(500);
-      myActions.TypeText("{HOME}", 500);
-      myActions.TypeText("{DELETE}", 500);
-      myActions.TypeText("{ENTER}", 500);
-
-      myActions.Sleep(500);
+   
 
       strButtonPressed = myActions.WindowMultipleControlsMinimized(ref myListControlEntity, 500, 1600, 500, 0);
       goto DisplayWindowAgain;
