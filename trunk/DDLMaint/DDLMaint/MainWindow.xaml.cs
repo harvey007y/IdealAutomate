@@ -32,6 +32,7 @@ namespace DDLMaint {
                 myActions.TypeText("%(\" \"n)", 1000); // minimize visual studio
             }
             myActions.Sleep(1000);
+            string strCountries = "";
             DisplayMainMenu:
             ControlEntity myControlEntity = new ControlEntity();
             List<ControlEntity> myListControlEntity = new List<ControlEntity>();
@@ -64,15 +65,36 @@ namespace DDLMaint {
 
             myControlEntity.ControlEntitySetDefaults();
             myControlEntity.ControlType = ControlType.ComboBox;
-            myControlEntity.ID = "Countries";
+            myControlEntity.ID = "Scripts";
             myControlEntity.Text = "Drop Down Items";
             myControlEntity.Width = 150;
             myControlEntity.RowNumber = 3;
             myControlEntity.ColumnNumber = 0;
-            myControlEntity.SelectedValue = "--Select Item ---";
+            myControlEntity.SelectedValue = myActions.GetValueByKey("ScriptsDefaultValue", "IdealAutomateDB");
+            strCountries = myControlEntity.SelectedValue;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
+            if (strCountries != "--Select Item ---") {
+                myControlEntity.ControlEntitySetDefaults();
+                myControlEntity.ControlType = ControlType.ComboBox;
+                myControlEntity.ID = "Variables";
+                myControlEntity.Text = "Drop Down Items";
+                myControlEntity.Width = 150;
+                myControlEntity.RowNumber = 4;
+                myControlEntity.ColumnNumber = 0;
+                int intCountries = 0;
+                Int32.TryParse(strCountries, out intCountries);
+                myControlEntity.ParentLkDDLNamesItemsInc = intCountries;
+                myControlEntity.SelectedValue = "--Select Item ---";
+                myListControlEntity.Add(myControlEntity.CreateControlEntity());
+            }
+
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
+            strCountries = myListControlEntity.Find(x => x.ID == "Scripts").SelectedValue;
+            myActions.SetValueByKey("ScriptsDefaultValue", strCountries, "IdealAutomateDB");
+            if (strCountries != "--Select Item ---" && strButtonPressed == "btnOkay") {
+                goto DisplayMainMenu;
+            }
 
             if (strButtonPressed == "btnDropDownLists") {
                 myControlEntity = new ControlEntity();
@@ -624,9 +646,9 @@ namespace DDLMaint {
                     cmd = new SqlCommand();
 
                     cmd.CommandText = "SELECT lk.inc, i.listItemKey, i.ListItemValue FROM LkDDLNamesItems lk " +
-"join DDLNames n on n.inc = lk.DDLNamesInc " +
-"join DDLItems i on i.inc = lk.ddlItemsInc " +
-"where DDLNamesInc = @DDLNamesInc ";
+                    "join DDLNames n on n.inc = lk.DDLNamesInc " +
+                    "join DDLItems i on i.inc = lk.ddlItemsInc " +
+                    "where DDLNamesInc = @DDLNamesInc ";
                     cmd.Parameters.Add("@DDLNamesInc", SqlDbType.Int);
                     int intDeleteInc = 0;
                     Int32.TryParse(strddlIds, out intDeleteInc);
