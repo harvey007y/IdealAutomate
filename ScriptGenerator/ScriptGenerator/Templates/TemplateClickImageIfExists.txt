@@ -1,0 +1,18 @@
+﻿      myImage = new ImageEntity();
+
+      if (boolRunningFromHome) {
+        myImage.ImageFile = "&&HomeImage"; \\ "Images\\imgNoButton.PNG";
+      } else {
+        myImage.ImageFile = "&&WorkImage"; \\"Images\\imgNoButton.PNG";
+      }
+      myImage.Sleep = &&Sleep; \\ 500;
+      myImage.Attempts = &&Attempts; \\ 5;
+      myImage.RelativeX = &&RelativeX; \\ 5;
+      myImage.RelativeY = &&RelativeY; \\ 10;
+
+	  // the following properties are not often used
+	  myImage.Occurrence = &&Occurrence; \\ 10;
+	  myImage.Tolerance = &&Tolerance; \\ 10;
+	  myImage.UseGrayScale = &&UseGrayScale; \\ True or False
+
+      myActions.ClickImageIfExists(myImage);
