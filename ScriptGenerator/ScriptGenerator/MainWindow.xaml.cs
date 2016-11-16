@@ -143,11 +143,129 @@ namespace ScriptGenerator {
 
       string strFilePath = "";
       switch (strButtonPressed) {
-                case "myButtonActivateWindowByTitle":
-                    DisplayActivateWindowByTitleWindow:
+                case "myButtonClickImageIfExists":
                     ControlEntity myControlEntity1 = new ControlEntity();
                     List<ControlEntity> myListControlEntity1 = new List<ControlEntity>();
                     List<ComboBoxPair> cbp = new List<ComboBoxPair>();
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.Heading;
+                    myControlEntity1.ID = "lblClickImageIfExists";
+                    myControlEntity1.Text = "Click Image If Exists";
+                    myControlEntity1.RowNumber = 0;
+                    myControlEntity1.ColumnNumber = 0;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.Label;
+                    myControlEntity1.ID = "lblHomeImage";
+                    myControlEntity1.Text = "HomeImage";
+                    myControlEntity1.RowNumber = 1;
+                    myControlEntity1.ColumnNumber = 0;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.TextBox;
+                    myControlEntity1.ID = "txtHomeImage";
+                    myControlEntity1.Text = "";
+                    myControlEntity1.RowNumber = 1;
+                    myControlEntity1.ColumnNumber = 1;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.Label;
+                    myControlEntity1.ID = "lblWorkImage";
+                    myControlEntity1.Text = "WorkImage";
+                    myControlEntity1.RowNumber = 2;
+                    myControlEntity1.ColumnNumber = 0;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.TextBox;
+                    myControlEntity1.ID = "txtWorkImage";
+                    myControlEntity1.Text = "";
+                    myControlEntity1.RowNumber = 2;
+                    myControlEntity1.ColumnNumber = 1;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.Label;
+                    myControlEntity1.ID = "lblSleep";
+                    myControlEntity1.Text = "Sleep";
+                    myControlEntity1.RowNumber = 3;
+                    myControlEntity1.ColumnNumber = 0;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.TextBox;
+                    myControlEntity1.ID = "txtSleep";
+                    myControlEntity1.Text = "";
+                    myControlEntity1.RowNumber = 3;
+                    myControlEntity1.ColumnNumber = 1;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.Label;
+                    myControlEntity1.ID = "lblAttempts";
+                    myControlEntity1.Text = "Attempts";
+                    myControlEntity1.RowNumber = 4;
+                    myControlEntity1.ColumnNumber = 0;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.TextBox;
+                    myControlEntity1.ID = "txtAttempts";
+                    myControlEntity1.Text = "";
+                    myControlEntity1.RowNumber = 4;
+                    myControlEntity1.ColumnNumber = 1;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.Label;
+                    myControlEntity1.ID = "lblRelativeX";
+                    myControlEntity1.Text = "RelativeX";
+                    myControlEntity1.RowNumber = 5;
+                    myControlEntity1.ColumnNumber = 0;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.TextBox;
+                    myControlEntity1.ID = "txtRelativeX";
+                    myControlEntity1.Text = "";
+                    myControlEntity1.RowNumber = 5;
+                    myControlEntity1.ColumnNumber = 1;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.Label;
+                    myControlEntity1.ID = "lblRelativeY";
+                    myControlEntity1.Text = "RelativeY";
+                    myControlEntity1.RowNumber = 6;
+                    myControlEntity1.ColumnNumber = 0;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.TextBox;
+                    myControlEntity1.ID = "txtRelativeY";
+                    myControlEntity1.Text = "";
+                    myControlEntity1.RowNumber = 6;
+                    myControlEntity1.ColumnNumber = 1;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.Label;
+                    myControlEntity1.ID = "lbl";
+                    myControlEntity1.Text = "";
+                    myControlEntity1.RowNumber = 7;
+                    myControlEntity1.ColumnNumber = 0;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+
+                    myActions.WindowMultipleControls(ref myListControlEntity1, 400, 500, 0, 0);
+                    string strHomeImage = myListControlEntity1.Find(x => x.ID == "txtHomeImage").Text;
+                    string strWorkImage = myListControlEntity1.Find(x => x.ID == "txtWorkImage").Text;
+                    string strSleep = myListControlEntity1.Find(x => x.ID == "txtSleep").Text;
+                    string strAttempts = myListControlEntity1.Find(x => x.ID == "txtAttempts").Text;
+                    string strRelativeX = myListControlEntity1.Find(x => x.ID == "txtRelativeX").Text;
+                    string strRelativeY = myListControlEntity1.Find(x => x.ID == "txtRelativeY").Text;
+                    break;
+                case "myButtonActivateWindowByTitle":
+                    DisplayActivateWindowByTitleWindow:
+                    myControlEntity1 = new ControlEntity();
+                    myListControlEntity1 = new List<ControlEntity>();
+                    cbp = new List<ComboBoxPair>();
 
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.Heading;
