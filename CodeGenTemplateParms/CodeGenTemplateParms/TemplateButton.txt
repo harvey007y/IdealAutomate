@@ -1,8 +1,8 @@
-﻿			myControlEntity.ControlEntitySetDefaults();
-			myControlEntity.ControlType = ControlType.Button;
-			myControlEntity.ID = "btn&&ID";
-			myControlEntity.Text = "&&TEXT";
-			myControlEntity.RowNumber = &&ROW;
-			myControlEntity.Width = &&WIDTH;
-			myControlEntity.ColumnNumber = 0;
-			myListControlEntity.Add(myControlEntity.CreateControlEntity());
+﻿			myControlEntity&&SUFFIX.ControlEntitySetDefaults();
+			myControlEntity&&SUFFIX.ControlType = ControlType.Button;
+			myControlEntity&&SUFFIX.ID = "btn&&ID";
+			myControlEntity&&SUFFIX.Text = "&&TEXT";
+			myControlEntity&&SUFFIX.RowNumber = &&ROW;
+			myControlEntity&&SUFFIX.Width = &&WIDTH;
+			myControlEntity&&SUFFIX.ColumnNumber = 0;
+			myListControlEntity&&SUFFIX.Add(myControlEntity&&SUFFIX.CreateControlEntity());
