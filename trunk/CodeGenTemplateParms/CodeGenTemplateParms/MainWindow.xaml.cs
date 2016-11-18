@@ -478,7 +478,11 @@ namespace CodeGenTemplateParms {
                     string line = lineszz[i];
                     line = line.Replace("&&ID", strID.Trim());
                     line = line.Replace("&&SUFFIX", strSuffix.Trim());
-                    line = line.Replace("&&TEXT", strText.Trim().Replace("\\r\\n", "\" + System.Environment.NewLine + \""));
+                    if (strText.Trim() == "") {
+                        line = line.Replace("\"&&TEXT\"", "myActions.GetValueByKey(\"YourScriptName???" + strID.Trim() + "\", \"IdealAutomateDB\");");
+                    } else {
+                        line = line.Replace("&&TEXT", strText.Trim().Replace("\\r\\n", "\" + System.Environment.NewLine + \""));
+                    }
                     line = line.Replace("&&ROW", intRowCtr.ToString());
                     if (strWidth != "") {
                         line = line.Replace("&&WIDTH", strWidth);
@@ -495,6 +499,9 @@ namespace CodeGenTemplateParms {
                     }
                 }
                 sb2.AppendLine("string str" + strID + " = myListControlEntity" + strSuffix + ".Find(x => x.ID == \"txt" + strID + "\").Text;");
+                if (strText.Trim() == "") {
+                    sb2.AppendLine("myActions.SetValueByKey(\"YourScriptName???" + strID.Trim() + "\", str" + strID.Trim() + ", \"IdealAutomateDB\");");
+                }
                 sb4.AppendLine("txtTemplateOut = txtTemplateOut.Replace(\"&&" + strID + "\",str" + strID + ");");
 
                 goto AddControl;
@@ -684,7 +691,12 @@ namespace CodeGenTemplateParms {
                     string line = lineszz[i];
                     line = line.Replace("&&ID", strID.Trim());
                     line = line.Replace("&&SUFFIX", strSuffix.Trim());
-                    line = line.Replace("&&SELECTEDVALUE", strSelectedValue.Trim());
+                    if (strSelectedValue.Trim() == "") {
+                        line = line.Replace("\"&&SELECTEDVALUE\"", "myActions.GetValueByKey(\"YourScriptName???" + strID.Trim() + "\", \"IdealAutomateDB\");");
+                    } else {
+                        line = line.Replace("&&SELECTEDVALUE", strSelectedValue.Trim());
+                    }
+                    
                     if (strKey1.Trim() != "") {
                         line = line.Replace("&&KEY1", strKey1);
                     }
@@ -737,6 +749,9 @@ namespace CodeGenTemplateParms {
                 }
 
                 sb2.AppendLine("string str" + strID + " = myListControlEntity" + strSuffix + ".Find(x => x.ID == \"cbx" + strID + "\").SelectedValue;");
+                if (strSelectedValue.Trim() == "") {
+                    sb2.AppendLine("myActions.SetValueByKey(\"YourScriptName???" + strID.Trim() + "\", str" + strID.Trim() + ", \"IdealAutomateDB\");");
+                }
                 sb4.AppendLine("txtTemplateOut = txtTemplateOut.Replace(\"&&" + strID + "\",str" + strID + ");");
 
                 goto AddControl;
