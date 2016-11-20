@@ -1,7 +1,7 @@
 ﻿			myControlEntity&&SUFFIX.ControlEntitySetDefaults();
 			myControlEntity&&SUFFIX.ControlType = ControlType.Label;
 			myControlEntity&&SUFFIX.ID = "lbl&&ID";
-			myControlEntity&&SUFFIX.Text = "&&ID";
+			myControlEntity&&SUFFIX.Text = "&&SPACEDOUTID";
 			myControlEntity&&SUFFIX.RowNumber = &&ROW;			
 			myControlEntity&&SUFFIX.ColumnNumber = 0;
 			myListControlEntity.Add(myControlEntity&&SUFFIX.CreateControlEntity());
@@ -18,7 +18,8 @@
 			myControlEntity&&SUFFIX.SelectedValue = "&&SELECTEDVALUE";		
 			myControlEntity&&SUFFIX.ID = "cbx&&ID";			
 			myControlEntity&&SUFFIX.RowNumber = &&ROW;
-			myControlEntity&&SUFFIX.Width = &&WIDTH;					
+			myControlEntity&&SUFFIX.Width = &&WIDTH;	
+			myControlEntity&&SUFFIX.ToolTipx = "&&TOOLTIP";
 			myControlEntity&&SUFFIX.ColumnNumber = 1;
 			myListControlEntity&&SUFFIX.Add(myControlEntity&&SUFFIX.CreateControlEntity());
 
