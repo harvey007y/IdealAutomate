@@ -414,6 +414,9 @@ namespace IdealAutomate.Core {
       } finally {
         con.Close();
       }
+            if (myValue == null) {
+                myValue = "";
+            }
       return myValue;
     }
     /// <summary>
@@ -430,6 +433,9 @@ namespace IdealAutomate.Core {
     public string SetValueByKey(string pKey, string pValue, string pInitialCatalog) {
 
       string myValue = "";
+      if (pValue == null) {
+                pValue = "";
+            }
       // InitialCatalog is the database name where keyvalue pairs are stored
       SqlConnection con = new SqlConnection("Server=(local)\\SQLEXPRESS;Initial Catalog=" + pInitialCatalog + ";Integrated Security=SSPI");
       SqlCommand cmd = new SqlCommand("SetValueByKey", con);

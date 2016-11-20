@@ -33,6 +33,7 @@ namespace DDLMaint {
             }
             myActions.Sleep(1000);
             string strCountries = "";
+            string strScriptsKey = "";
             DisplayMainMenu:
             ControlEntity myControlEntity = new ControlEntity();
             List<ControlEntity> myListControlEntity = new List<ControlEntity>();
@@ -71,7 +72,9 @@ namespace DDLMaint {
             myControlEntity.RowNumber = 3;
             myControlEntity.ColumnNumber = 0;
             myControlEntity.SelectedValue = myActions.GetValueByKey("ScriptsDefaultValue", "IdealAutomateDB");
+            myControlEntity.SelectedKey = myActions.GetValueByKey("ScriptsDefaultKey", "IdealAutomateDB");
             strCountries = myControlEntity.SelectedValue;
+            strScriptsKey = myControlEntity.SelectedKey;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
             if (strCountries != "--Select Item ---") {
@@ -91,7 +94,9 @@ namespace DDLMaint {
 
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
             strCountries = myListControlEntity.Find(x => x.ID == "Scripts").SelectedValue;
+            strScriptsKey = myListControlEntity.Find(x => x.ID == "Scripts").SelectedKey;
             myActions.SetValueByKey("ScriptsDefaultValue", strCountries, "IdealAutomateDB");
+            myActions.SetValueByKey("ScriptsDefaultKey", strScriptsKey, "IdealAutomateDB");
             if (strCountries != "--Select Item ---" && strButtonPressed == "btnOkay") {
                 goto DisplayMainMenu;
             }
