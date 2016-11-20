@@ -2,6 +2,7 @@
 			myControlEntity&&SUFFIX.ControlType = ControlType.Button;
 			myControlEntity&&SUFFIX.ID = "btn&&ID";
 			myControlEntity&&SUFFIX.Text = "&&TEXT";
+			myControlEntity&&SUFFIX.ToolTipx = "&&TOOLTIP";
 			myControlEntity&&SUFFIX.RowNumber = &&ROW;
 			myControlEntity&&SUFFIX.Width = &&WIDTH;
 			myControlEntity&&SUFFIX.ColumnNumber = 0;
