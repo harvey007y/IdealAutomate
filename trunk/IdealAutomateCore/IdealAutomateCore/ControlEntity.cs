@@ -28,7 +28,10 @@ namespace IdealAutomate.Core
         public decimal Amount { get; set; }
         public System.Windows.Media.Color? BackgroundColor  { get; set; }
         public System.Windows.Media.Color? ForegroundColor { get; set; }
-    public ControlEntity()
+        public int ParentLkDDLNamesItemsInc { get; set; }
+
+        public string ToolTipx { get; set; }
+        public ControlEntity()
         {
             ControlType = ControlType.Label;
             ID = "";
@@ -50,7 +53,8 @@ namespace IdealAutomate.Core
       BackgroundColor = null;
       ForegroundColor = null;
             Amount = 0;
-
+            ParentLkDDLNamesItemsInc = -1;
+            ToolTipx = "";
         }
         public void ControlEntitySetDefaults() {
           ControlType = ControlType.Label;
@@ -73,7 +77,8 @@ namespace IdealAutomate.Core
       BackgroundColor = null;
       ForegroundColor = null;
       Amount = 0;
-
+            ParentLkDDLNamesItemsInc = -1;
+            ToolTipx = "";
         }
         public  ControlEntity CreateControlEntity() {
           ControlEntity myControlEntity = new ControlEntity();
@@ -97,6 +102,8 @@ namespace IdealAutomate.Core
           myControlEntity.Amount = Amount;
           myControlEntity.BackgroundColor = BackgroundColor;
           myControlEntity.ForegroundColor = ForegroundColor;
+          myControlEntity.ParentLkDDLNamesItemsInc = ParentLkDDLNamesItemsInc;
+            myControlEntity.ToolTipx = ToolTipx;
       return myControlEntity;
         }
     }

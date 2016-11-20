@@ -89,7 +89,11 @@ namespace IdealAutomate.Core {
                         }
                         break;
                     case ControlType.Label:
-                        Label myLabel = new Label();
+                        Label myLabel = new Label();                        
+                        if (item.ToolTipx != null && item.ToolTipx.ToString().Trim() != "") {
+                            myLabel.ToolTip = item.ToolTipx;
+                        }
+                       
                         myLabel.Name = item.ID;
                         myLabel.Content = item.Text;
                         if (item.BackgroundColor != null) {
@@ -108,6 +112,9 @@ namespace IdealAutomate.Core {
                         break;
                     case ControlType.Button:
                         Button button = new Button();
+                        if (item.ToolTipx != null && item.ToolTipx.ToString().Trim() != "") {
+                            button.ToolTip = item.ToolTipx;
+                        }
                         button.Click += new System.Windows.RoutedEventHandler(button_Click);
                         button.Name = item.ID;
                         button.Content = item.Text;
@@ -128,6 +135,9 @@ namespace IdealAutomate.Core {
                     case ControlType.TextBox:
                         TextBox myTextBox = new TextBox();
                         myTextBox.Text = item.Text;
+                        if (item.ToolTipx != null && item.ToolTipx.ToString().Trim() != "") {
+                            myTextBox.ToolTip = item.ToolTipx;
+                        }
                         myTextBox.Name = item.ID;
                         if (item.Width > 0) {
                             myTextBox.Width = item.Width;
@@ -148,7 +158,10 @@ namespace IdealAutomate.Core {
                         myGrid.Children.Add(myTextBox);
                         break;
                     case ControlType.ComboBox:
-                        ComboBox myComboBox = new ComboBox();
+                        ComboBox myComboBox = new ComboBox();                       
+                        if (item.ToolTipx != null && item.ToolTipx.ToString().Trim() != "") {
+                            myComboBox.ToolTip = item.ToolTipx;
+                        }
                         myComboBox.Name = item.ID;
                         if (item.ListOfKeyValuePairs.Count == 0) {
                             List<ComboBoxPair> cbp = new List<ComboBoxPair>();
@@ -157,9 +170,14 @@ namespace IdealAutomate.Core {
                             SqlConnection con = new SqlConnection("Server=(local)\\SQLEXPRESS;Initial Catalog=IdealAutomateDB;Integrated Security=SSPI");
                             SqlCommand cmd = new SqlCommand();
                             cmd.CommandText = "SELECT lk.inc, i.listItemKey, i.ListItemValue FROM LkDDLNamesItems lk " +
-        "join DDLNames n on n.inc = lk.DDLNamesInc " +
-        "join DDLItems i on i.inc = lk.ddlItemsInc " +
-        "where n.ID = @ID ";
+                            "join DDLNames n on n.inc = lk.DDLNamesInc " +
+                            "join DDLItems i on i.inc = lk.ddlItemsInc " +
+                            "where n.ID = @ID ";
+                            if (item.ParentLkDDLNamesItemsInc > -1) {
+                                cmd.CommandText += " and lk.ParentLkDDLNamesItemsInc = @ParentLkDDLNamesItemsInc";
+                                cmd.Parameters.Add("@ParentLkDDLNamesItemsInc", SqlDbType.VarChar, -1);
+                                cmd.Parameters["@ParentLkDDLNamesItemsInc"].Value = item.ParentLkDDLNamesItemsInc;
+                            }
                             cmd.Parameters.Add("@ID", SqlDbType.VarChar, -1);
                             cmd.Parameters["@ID"].Value = item.ID;
                             cmd.Connection = con;
@@ -197,7 +215,10 @@ namespace IdealAutomate.Core {
                         myGrid.Children.Add(myComboBox);
                         break;
                     case ControlType.CheckBox:
-                        CheckBox myCheckBox = new CheckBox();
+                        CheckBox myCheckBox = new CheckBox();                       
+                        if (item.ToolTipx != null && item.ToolTipx.ToString().Trim() != "") {
+                            myCheckBox.ToolTip = item.ToolTipx;
+                        }
                         myCheckBox.Name = item.ID;
                         myCheckBox.Content = item.Text;
                         myCheckBox.IsChecked = item.Checked;
@@ -231,7 +252,7 @@ namespace IdealAutomate.Core {
                     case ControlType.TextBox:
                         TextBox myTextBox = new TextBox();
                         myTextBox = (TextBox)LogicalTreeHelper.FindLogicalNode(this, item.ID);
-                        item.Text = myTextBox.Text;
+                        item.Text = myTextBox.Text;                       
                         break;
                     case ControlType.ComboBox:
                         ComboBox myComboBox = new ComboBox();
