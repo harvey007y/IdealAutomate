@@ -16,4 +16,5 @@
 			myControlEntity&&SUFFIX.Height = &&HEIGHT;
 			myControlEntity&&SUFFIX.Multiline = &&MULTILINE;
 			myControlEntity&&SUFFIX.ColumnNumber = 1;
+			myControlEntity&&SUFFIX.ColumnSpan = &&COLUMNSPAN;
 			myListControlEntity&&SUFFIX.Add(myControlEntity&&SUFFIX.CreateControlEntity());
