@@ -1,0 +1,17 @@
+﻿      myImage = new ImageEntity();
+
+      if (boolRunningFromHome) {
+        myImage.ImageFile = "Images\\" + "&&HomeImage"; 
+      } else {
+        myImage.ImageFile = "Images\\" + "&&WorkImage"; 
+      }
+      myImage.Sleep = &&Sleep; 
+      myImage.Attempts = &&Attempts; 
+      myImage.RelativeX = &&RelativeX; 
+      myImage.RelativeY = &&RelativeY; 
+	  // the following properties are not often used &&
+	  myImage.Occurrence = &&Occurrence; 
+	  myImage.Tolerance = &&Tolerance; 
+	  myImage.UseGrayScale = &&UseGrayScale; 
+
+      int[,] &&ResultMyArray = myActions.PutAll(myImage);
