@@ -6,4 +6,5 @@
 			myControlEntity&&SUFFIX.RowNumber = &&ROW;
 			myControlEntity&&SUFFIX.Width = &&WIDTH;
 			myControlEntity&&SUFFIX.ColumnNumber = 0;
+			myControlEntity&&SUFFIX.ColumnSpan = &&COLUMNSPAN;
 			myListControlEntity&&SUFFIX.Add(myControlEntity&&SUFFIX.CreateControlEntity());

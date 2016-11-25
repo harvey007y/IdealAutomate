@@ -350,6 +350,22 @@ namespace CodeGenTemplateParms {
                 myControlEntity.ColumnNumber = 1;
                 myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
+                myControlEntity.ControlEntitySetDefaults();
+                myControlEntity.ControlType = ControlType.Label;
+                myControlEntity.ID = "lblColumnSpan";
+                myControlEntity.Text = "ColumnSpan:";
+                myControlEntity.RowNumber = 4;
+                myControlEntity.ColumnNumber = 0;
+                myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                myControlEntity.ControlEntitySetDefaults();
+                myControlEntity.ControlType = ControlType.TextBox;
+                myControlEntity.ID = "txtColumnSpan";
+                myControlEntity.Text = myActions.GetValueByKey("ScriptGeneratorLabelColumnSpan", "IdealAutomateDB"); ;
+                myControlEntity.RowNumber = 4;
+                myControlEntity.ColumnNumber = 1;
+                myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
                 myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
 
                 string strText = myListControlEntity.Find(x => x.ID == "txtText").Text;
@@ -357,7 +373,9 @@ namespace CodeGenTemplateParms {
                 string strID = myListControlEntity.Find(x => x.ID == "txtID").Text;
                 string strInFile = strApplicationPath + "TemplateLabel.txt";
                 string strToolTip = myListControlEntity.Find(x => x.ID == "txtToolTip").Text;
+                string strColumnSpan = myListControlEntity.Find(x => x.ID == "txtColumnSpan").Text;
                 myActions.SetValueByKey("ScriptGeneratorLabelToolTip", strToolTip, "IdealAutomateDB");
+                myActions.SetValueByKey("ScriptGeneratorLabelColumnSpan", strColumnSpan, "IdealAutomateDB");
                 // private string strInFile = @"C:\Data\LanguageXMLInput3.txt";
 
                 List<string> listOfSolvedProblems = new List<string>();
@@ -375,6 +393,9 @@ namespace CodeGenTemplateParms {
                     line = line.Replace("&&TEXT", strText.Trim());
                     line = line.Replace("&&TOOLTIP", strToolTip.Trim());
                     line = line.Replace("&&ROW", intRowCtr.ToString());
+                    int intColumnSpan = 1;
+                    Int32.TryParse(strColumnSpan, out intColumnSpan);
+                    line = line.Replace("&&COLUMNSPAN", intColumnSpan.ToString());
                     if (strWidth != "") {
                         line = line.Replace("&&WIDTH", strWidth);
                     }
@@ -387,7 +408,7 @@ namespace CodeGenTemplateParms {
                 goto AddControl;
             }
 
-            // label
+            // EmptyRow
             if (strButtonPressed == "btnEmptyRow") {
                 myListControlEntity.Clear();
                 myListControlEntity = new List<ControlEntity>();
@@ -397,8 +418,6 @@ namespace CodeGenTemplateParms {
                 myControlEntity.ControlType = ControlType.Heading;
                 myControlEntity.Text = "Add Empty Row";
                 myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-
 
                 myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
 
@@ -411,8 +430,6 @@ namespace CodeGenTemplateParms {
                 List<string> listOfSolvedProblems = new List<string>();
                 List<string> listofRecs = new List<string>();
                 string[] lineszz = System.IO.File.ReadAllLines(strInFile);
-
-
 
                 int intLineCount = lineszz.Count();
                 int intCtr = 0;
@@ -536,6 +553,22 @@ namespace CodeGenTemplateParms {
                 myControlEntity.ColumnNumber = 1;
                 myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
+                myControlEntity.ControlEntitySetDefaults();
+                myControlEntity.ControlType = ControlType.Label;
+                myControlEntity.ID = "lblColumnSpan";
+                myControlEntity.Text = "ColumnSpan:";
+                myControlEntity.RowNumber = 6;
+                myControlEntity.ColumnNumber = 0;
+                myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                myControlEntity.ControlEntitySetDefaults();
+                myControlEntity.ControlType = ControlType.TextBox;
+                myControlEntity.ID = "txtColumnSpan";
+                myControlEntity.Text = myActions.GetValueByKey("ScriptGeneratorTextBoxColumnSpan", "IdealAutomateDB"); ;
+                myControlEntity.RowNumber = 6;
+                myControlEntity.ColumnNumber = 1;
+                myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
                 myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
 
                 string strText = myListControlEntity.Find(x => x.ID == "txtText").Text;
@@ -545,6 +578,8 @@ namespace CodeGenTemplateParms {
                 bool boolMultiline = myListControlEntity.Find(x => x.ID == "chkMultiline").Checked;
                 string strInFile = strApplicationPath + "TemplateTextBox.txt";
                 string strToolTip = myListControlEntity.Find(x => x.ID == "txtToolTip").Text;
+                string strColumnSpan = myListControlEntity.Find(x => x.ID == "txtColumnSpan").Text;
+                myActions.SetValueByKey("ScriptGeneratorTextBoxColumnSpan", strColumnSpan, "IdealAutomateDB");
                 myActions.SetValueByKey("ScriptGeneratorTextBoxToolTip", strToolTip, "IdealAutomateDB");
 
                 // private string strInFile = @"C:\Data\LanguageXMLInput3.txt";
@@ -563,6 +598,9 @@ namespace CodeGenTemplateParms {
                     } else {
                         line = line.Replace("&&TEXT", strText.Trim().Replace("\\r\\n", "\" + System.Environment.NewLine + \""));
                     }
+                    int intColumnSpan = 1;
+                    Int32.TryParse(strColumnSpan, out intColumnSpan);
+                    line = line.Replace("&&COLUMNSPAN", intColumnSpan.ToString());
                     line = line.Replace("&&TOOLTIP", strToolTip.Trim());
                     line = line.Replace("&&ROW", intRowCtr.ToString());
                     if (strWidth != "") {
@@ -761,7 +799,48 @@ namespace CodeGenTemplateParms {
                 myControlEntity.ColumnNumber = 1;
                 myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
-                myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
+                myControlEntity.ControlEntitySetDefaults();
+                myControlEntity.ControlType = ControlType.Label;
+                myControlEntity.ID = "lblDDLName";
+                myControlEntity.Text = "DDLName";
+                myControlEntity.RowNumber = 10;
+                myControlEntity.ColumnNumber = 0;
+                myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                myControlEntity.ControlEntitySetDefaults();
+                myControlEntity.ControlType = ControlType.TextBox;
+                myControlEntity.ID = "txtDDLName";
+                myControlEntity.Text = myActions.GetValueByKey("ScriptGeneratorComboBoxDDLName", "IdealAutomateDB"); ;
+                myControlEntity.RowNumber = 10;                
+                myControlEntity.ToolTipx = "Only needed when same combobox is used on same page more than once. \r\n The DDLName will be the same ID for both comboboxes, and the ID will be unique for each combobox. \r\n Example, DDLName = variables for two comboboxes, but ID will be variables1 and variables2";
+                myControlEntity.ColumnNumber = 1;
+                myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                myControlEntity.ControlEntitySetDefaults();
+                myControlEntity.ControlType = ControlType.Label;
+                myControlEntity.ID = "lblDDLName2";
+                myControlEntity.Text = "(Optional)";
+                myControlEntity.RowNumber = 10;
+                myControlEntity.ColumnNumber = 2;
+                myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                myControlEntity.ControlEntitySetDefaults();
+                myControlEntity.ControlType = ControlType.Label;
+                myControlEntity.ID = "lblColumnSpan";
+                myControlEntity.Text = "ColumnSpan:";
+                myControlEntity.RowNumber = 11;
+                myControlEntity.ColumnNumber = 0;
+                myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                myControlEntity.ControlEntitySetDefaults();
+                myControlEntity.ControlType = ControlType.TextBox;
+                myControlEntity.ID = "txtColumnSpan";
+                myControlEntity.Text = myActions.GetValueByKey("ScriptGeneratorComboBoxColumnSpan", "IdealAutomateDB"); ;
+                myControlEntity.RowNumber = 11;
+                myControlEntity.ColumnNumber = 1;
+                myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                myActions.WindowMultipleControls(ref myListControlEntity, 500, 500, 0, 0);
 
                 string strSelectedValue = myListControlEntity.Find(x => x.ID == "txtSelectedValue").Text;
                 string strWidth = myListControlEntity.Find(x => x.ID == "txtWidth").Text;
@@ -783,6 +862,9 @@ namespace CodeGenTemplateParms {
 
                 string strInFile = strApplicationPath + "TemplateComboBox.txt";
                 string strToolTip = myListControlEntity.Find(x => x.ID == "txtToolTip").Text;
+                string strDDLName = myListControlEntity.Find(x => x.ID == "txtDDLName").Text;
+                string strColumnSpan = myListControlEntity.Find(x => x.ID == "txtColumnSpan").Text;
+                myActions.SetValueByKey("ScriptGeneratorComboBoxColumnSpan", strColumnSpan, "IdealAutomateDB");
                 myActions.SetValueByKey("ScriptGeneratorComboBoxToolTip", strToolTip, "IdealAutomateDB");
 
                 // private string strInFile = @"C:\Data\LanguageXMLInput3.txt";                
@@ -792,8 +874,13 @@ namespace CodeGenTemplateParms {
                 for (int i = 0; i < intLineCount; i++) {
                     string line = lineszz[i];
                     line = line.Replace("&&ID", strID.Trim().Replace(" ", ""));
+                    
+                    line = line.Replace("&&DDLNAME", strDDLName.Trim().Replace(" ", ""));
                     line = line.Replace("&&SPACEDOUTID", strID.Trim());
                     line = line.Replace("&&SUFFIX", strSuffix.Trim());
+                    int intColumnSpan = 1;
+                    Int32.TryParse(strColumnSpan, out intColumnSpan);
+                    line = line.Replace("&&COLUMNSPAN", intColumnSpan.ToString());
                     line = line.Replace("&&TOOLTIP", strToolTip.Trim());
                     if (strSelectedValue.Trim() == "") {
                         line = line.Replace("\"&&SELECTEDVALUE\"", "myActions.GetValueByKey(\"" + myActions.GetValueByKey("ScriptsDefaultKey", "IdealAutomateDB") + strID.Trim().Replace(" ", "") + "\", \"IdealAutomateDB\");");
@@ -1283,6 +1370,22 @@ namespace CodeGenTemplateParms {
                 myControlEntity.ColumnNumber = 1;
                 myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
+                myControlEntity.ControlEntitySetDefaults();
+                myControlEntity.ControlType = ControlType.Label;
+                myControlEntity.ID = "lblColumnSpan";
+                myControlEntity.Text = "ColumnSpan:";
+                myControlEntity.RowNumber = 4;
+                myControlEntity.ColumnNumber = 0;
+                myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                myControlEntity.ControlEntitySetDefaults();
+                myControlEntity.ControlType = ControlType.TextBox;
+                myControlEntity.ID = "txtColumnSpan";
+                myControlEntity.Text = myActions.GetValueByKey("ScriptGeneratorButtonColumnSpan", "IdealAutomateDB"); ;
+                myControlEntity.RowNumber = 4;
+                myControlEntity.ColumnNumber = 1;
+                myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
                 myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
 
                 string strText = myListControlEntity.Find(x => x.ID == "txtText").Text;
@@ -1290,6 +1393,8 @@ namespace CodeGenTemplateParms {
                 string strID = myListControlEntity.Find(x => x.ID == "txtID").Text;
                 string strInFile = strApplicationPath + "TemplateButton.txt";
                 string strToolTip = myListControlEntity.Find(x => x.ID == "txtToolTip").Text;
+                string strColumnSpan = myListControlEntity.Find(x => x.ID == "txtColumnSpan").Text;
+                myActions.SetValueByKey("ScriptGeneratorButtonColumnSpan", strColumnSpan, "IdealAutomateDB");
                 myActions.SetValueByKey("ScriptGeneratorButtonToolTip", strToolTip, "IdealAutomateDB");
                 // private string strInFile = @"C:\Data\LanguageXMLInput3.txt";
 
@@ -1306,6 +1411,9 @@ namespace CodeGenTemplateParms {
                     line = line.Replace("&&ID", strID.Trim().Replace(" ", ""));
                     line = line.Replace("&&SUFFIX", strSuffix.Trim());
                     line = line.Replace("&&TEXT", strText.Trim());
+                    int intColumnSpan = 1;
+                    Int32.TryParse(strColumnSpan, out intColumnSpan);
+                    line = line.Replace("&&COLUMNSPAN", intColumnSpan.ToString());
                     line = line.Replace("&&TOOLTIP", strToolTip.Trim());
                     line = line.Replace("&&ROW", intRowCtr.ToString());
                     if (strWidth != "") {
@@ -1330,6 +1438,7 @@ using System.Linq;
 using System.Diagnostics;
 using System.Text;
 using System;
+using System.Drawing;
 
 
 using System.Reflection;
