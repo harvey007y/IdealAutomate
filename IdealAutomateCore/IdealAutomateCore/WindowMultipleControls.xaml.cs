@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using IdealAutomate.Core;
 
 namespace IdealAutomate.Core {
     /// <summary>
@@ -70,8 +71,13 @@ namespace IdealAutomate.Core {
                 if (item.RowNumber > intMaxRows) {
                     intMaxRows = item.RowNumber;
                 }
-                if (item.ColumnNumber > intMaxColumns) {
-                    intMaxColumns = item.ColumnNumber;
+                int intNumSpanSum = 0;
+                intNumSpanSum = item.ColumnNumber + item.ColumnSpan;
+                if (item.ColumnSpan > 0) {
+                    intNumSpanSum--;
+                }
+                if (intNumSpanSum > intMaxColumns) {
+                    intMaxColumns = intNumSpanSum;
                 }
             }
             for (int i = 0; i < intMaxRows + 1; i++) {
@@ -93,7 +99,11 @@ namespace IdealAutomate.Core {
                         if (item.ToolTipx != null && item.ToolTipx.ToString().Trim() != "") {
                             myLabel.ToolTip = item.ToolTipx;
                         }
-                       
+                        myLabel.FontFamily = item.FontFamilyx;
+                        myLabel.FontSize = item.FontSize;
+                        myLabel.FontStretch = item.FontStretchx;
+                        myLabel.FontStyle = item.FontStyle;                        
+                        myLabel.FontWeight = FontWeights.Normal;
                         myLabel.Name = item.ID;
                         myLabel.Content = item.Text;
                         if (item.BackgroundColor != null) {
@@ -105,6 +115,10 @@ namespace IdealAutomate.Core {
 
                         Grid.SetRow(myLabel, item.RowNumber);
                         Grid.SetColumn(myLabel, item.ColumnNumber);
+                        if (item.ColumnSpan < 1) {
+                            item.ColumnSpan = 1;
+                        }
+                        Grid.SetColumnSpan(myLabel, item.ColumnSpan);
                         if (item.Width > 0) {
                             myLabel.Width = item.Width;
                         }
@@ -126,6 +140,10 @@ namespace IdealAutomate.Core {
                         }
                         Grid.SetRow(button, item.RowNumber);
                         Grid.SetColumn(button, item.ColumnNumber);
+                        if (item.ColumnSpan < 1) {
+                            item.ColumnSpan = 1;
+                        }
+                        Grid.SetColumnSpan(button, item.ColumnSpan);
                         if (item.Width > 0) {
                             button.Width = item.Width;
                         }
@@ -155,6 +173,10 @@ namespace IdealAutomate.Core {
                         }
                         Grid.SetRow(myTextBox, item.RowNumber);
                         Grid.SetColumn(myTextBox, item.ColumnNumber);
+                        if (item.ColumnSpan < 1) {
+                            item.ColumnSpan = 1;
+                        }
+                        Grid.SetColumnSpan(myTextBox, item.ColumnSpan);
                         myGrid.Children.Add(myTextBox);
                         break;
                     case ControlType.ComboBox:
@@ -180,6 +202,9 @@ namespace IdealAutomate.Core {
                             }
                             cmd.Parameters.Add("@ID", SqlDbType.VarChar, -1);
                             cmd.Parameters["@ID"].Value = item.ID;
+                            if (item.DDLName != null && item.DDLName != "") {
+                                cmd.Parameters["@ID"].Value = item.DDLName;
+                            }
                             cmd.Connection = con;
                             try {
                                 con.Open();
@@ -206,6 +231,10 @@ namespace IdealAutomate.Core {
                         myComboBox.ItemsSource = item.ListOfKeyValuePairs;
                         Grid.SetRow(myComboBox, item.RowNumber);
                         Grid.SetColumn(myComboBox, item.ColumnNumber);
+                        if (item.ColumnSpan < 1) {
+                            item.ColumnSpan = 1;
+                        }
+                        Grid.SetColumnSpan(myComboBox, item.ColumnSpan);
                         myComboBox.SelectedValue = item.SelectedValue;
                         myComboBox.DisplayMemberPath = "_Key";
                         myComboBox.SelectedValuePath = "_Value";
@@ -224,6 +253,10 @@ namespace IdealAutomate.Core {
                         myCheckBox.IsChecked = item.Checked;
                         Grid.SetRow(myCheckBox, item.RowNumber);
                         Grid.SetColumn(myCheckBox, item.ColumnNumber);
+                        if (item.ColumnSpan < 1) {
+                            item.ColumnSpan = 1;
+                        }
+                        Grid.SetColumnSpan(myCheckBox, item.ColumnSpan);
                         if (item.Width > 0) {
                             myCheckBox.Width = item.Width;
                         }
@@ -339,7 +372,15 @@ namespace IdealAutomate.Core {
             //  ComboBoxPair cbp = new ComboBoxPair("","");
             //  SelectedComboBoxPair = cbp;
             //}
-
+           
+            //foreach (System.Windows.Window win in System.Windows.Application.Current.Windows) {
+            //    string name = win.Name;
+              Methods myActions = new Methods();
+            myActions.SetValueByKey("WindowTop", this.Top.ToString(), "IdealAutomateDB");
+            myActions.SetValueByKey("WindowLeft", this.Left.ToString(), "IdealAutomateDB");
+           
+                
+            //}
             base.OnClosing(e);
         }
 

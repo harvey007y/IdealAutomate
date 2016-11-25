@@ -4,6 +4,14 @@
         <name>IdealAutomateCore</name>
     </assembly>
     <members>
+        <member name="P:IdealAutomate.Core.ControlEntity.DDLName">
+            <summary>
+            DDLName is used when you want to use the same dropdownlist on the
+            same screen more than once. In that case, you make the ID unique
+            for each instance, but you use DDLName to point to the ID of the
+            dropdown contained in DDLNames table
+            </summary>
+        </member>
         <member name="T:IdealAutomate.Core.WindowMultipleControls">
             <summary>
             Interaction logic for WindowComboBox.xaml
