@@ -77,12 +77,6 @@
     <Compile Include="WindowShape.xaml.cs">
       <DependentUpon>WindowShape.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WindowTextBox.xaml.cs">
-      <DependentUpon>WindowTextBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="WindowComboBox.xaml.cs">
-      <DependentUpon>WindowComboBox.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ImageEntity.cs" />
     <Compile Include="KeyboardSend.cs" />
     <Compile Include="Logging.cs">
@@ -106,14 +100,6 @@
     <Page Include="WindowShape.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="WindowTextBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="WindowComboBox.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

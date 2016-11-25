@@ -4,12 +4,8 @@ C:\SVNIA\trunk\IdealAutomateCore\IdealAutomateCore\bin\Debug\IdealAutomateCore.p
 C:\SVNIA\trunk\IdealAutomateCore\IdealAutomateCore\bin\Debug\WindowsInput.xml
 C:\SVNIA\trunk\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowMultipleControls.baml
 C:\SVNIA\trunk\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowShape.baml
-C:\SVNIA\trunk\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowTextBox.baml
-C:\SVNIA\trunk\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowComboBox.baml
 C:\SVNIA\trunk\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowMultipleControls.g.cs
 C:\SVNIA\trunk\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowShape.g.cs
-C:\SVNIA\trunk\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowTextBox.g.cs
-C:\SVNIA\trunk\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowComboBox.g.cs
 C:\SVNIA\trunk\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore_MarkupCompile.cache
 C:\SVNIA\trunk\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore.g.resources
 C:\SVNIA\trunk\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore.Properties.Resources.resources

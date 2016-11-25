@@ -38,32 +38,6 @@
             InitializeComponent
             </summary>
         </member>
-        <member name="T:IdealAutomate.Core.WindowTextBox">
-            <summary>
-            Interaction logic for WindowComboBox.xaml
-            </summary>
-            <summary>
-            WindowTextBox
-            </summary>
-        </member>
-        <member name="M:IdealAutomate.Core.WindowTextBox.InitializeComponent">
-            <summary>
-            InitializeComponent
-            </summary>
-        </member>
-        <member name="T:IdealAutomate.Core.WindowComboBox">
-            <summary>
-            Interaction logic for WindowComboBox.xaml
-            </summary>
-            <summary>
-            WindowComboBox
-            </summary>
-        </member>
-        <member name="M:IdealAutomate.Core.WindowComboBox.InitializeComponent">
-            <summary>
-            InitializeComponent
-            </summary>
-        </member>
         <member name="M:IdealAutomate.Core.Methods.ActivateWindowByTitle(System.String,System.Int32)">
             <summary>
             SW_HIDE = 0;
@@ -321,7 +295,7 @@
             <param name="intWindowLeft">integer indicating number of pixels from left side of screen to display window</param>
             <returns>System.Windows.Forms.DialogResult to indicate if okay button was pressed</returns>
         </member>
-        <member name="M:IdealAutomate.Core.Methods.WindowComboBox(System.Collections.Generic.IEnumerable{System.Object},System.String)">
+        <member name="M:IdealAutomate.Core.Methods.WindowShape(System.String,System.String,System.String,System.String,System.Int32,System.Int32)">
             <summary>
             <para>WindowComboBox receives an IEnumerable of objects (ComboBoxPair) </para>
             <para>and a string for the label for the combobox. It returns the</para>
@@ -330,16 +304,6 @@
             <param name="myEntity">IEnumerable of objects</param>
             <param name="myEntity2">String for the label for the combobox</param>
             <returns>Selected ComboBoxPair</returns>
-        </member>
-        <member name="M:IdealAutomate.Core.Methods.WindowTextBox(System.String)">
-            <summary>
-            <para>WindowTextBox receives a string for the label for the textbox</para>
-            <para>and returns a string containing the value the user entered</para>
-            </summary>
-            <param name="myEntity">string that is label for textbox</param>
-            <returns>string that is the value the user entered into textbox</returns>
-        </member>
-        <member name="M:IdealAutomate.Core.Methods.WindowShape(System.String,System.String,System.String,System.String,System.Int32,System.Int32)">
             <summary>
             <para>WindowShape allows you to display info to the user and to position that </para>
             <para>the window on the screen</para>

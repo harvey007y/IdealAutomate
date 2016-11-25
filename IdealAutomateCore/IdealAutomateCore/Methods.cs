@@ -1401,36 +1401,8 @@ namespace IdealAutomate.Core {
     /// <param name="myEntity">IEnumerable of objects</param>
     /// <param name="myEntity2">String for the label for the combobox</param>
     /// <returns>Selected ComboBoxPair</returns>
-    public ComboBoxPair WindowComboBox(IEnumerable<object> myEntity, string myEntity2) {
-      if (fbDebugMode) {
-        Console.WriteLine(oProcess.ProcessName + "==> " + "WindowComboBox: myEntity=" + myEntity);
-        Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "WindowComboBox: myEntity=" + myEntity);
-      }
-      WindowComboBox dlg = new WindowComboBox(myEntity, myEntity2);
-
-      // dlg.Owner = (Window)Window.GetWindow(this);
-      // Shadow.Visibility = Visibility.Visible;
-      dlg.ShowDialog();
-      return dlg.SelectedComboBoxPair;
-    }
-    /// <summary>
-    /// <para>WindowTextBox receives a string for the label for the textbox</para>
-    /// <para>and returns a string containing the value the user entered</para>
-    /// </summary>
-    /// <param name="myEntity">string that is label for textbox</param>
-    /// <returns>string that is the value the user entered into textbox</returns>
-    public string WindowTextBox(string myEntity) {
-      if (fbDebugMode) {
-        Console.WriteLine(oProcess.ProcessName + "==> " + "WindowTextBox: myEntity=" + myEntity);
-        Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "WindowTextBox: myEntity=" + myEntity);
-      }
-      WindowTextBox dlg = new WindowTextBox(myEntity);
-
-      // dlg.Owner = (Window)Window.GetWindow(this);
-      // Shadow.Visibility = Visibility.Visible;
-      dlg.ShowDialog();
-      return dlg.TextBoxValue;
-    }
+  
+  
     /// <summary>
     /// <para>WindowShape allows you to display info to the user and to position that </para>
     /// <para>the window on the screen</para>
