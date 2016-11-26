@@ -5512,16 +5512,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ColumnNumber = 0;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
-                    myControlEntity1.ControlEntitySetDefaults();
-                    myControlEntity1.ControlType = ControlType.Label;
-                    myControlEntity1.ID = "lblNotImplemented";
-                    myControlEntity1.Text = "Code Behind Not Implemented";
-                    myControlEntity1.ToolTipx = "";
-                    myControlEntity1.RowNumber = intRowCtr;
-                    myControlEntity1.ColumnNumber = 1;
-                    myControlEntity1.BackgroundColor = Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
-                    myControlEntity1.ForegroundColor = Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
-                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
 
                     intRowCtr++;
                     myControlEntity1.ControlEntitySetDefaults();
@@ -5770,9 +5761,6 @@ namespace ScriptGenerator {
 "      myActions.FindDelimitedText(delimParms); \r\n" +
 "      string strLineNumber = delimParms.strDelimitedTextFound; ";
 
-
-
-
                     myControlEntity1.ColumnSpan = 4;
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
@@ -5798,8 +5786,46 @@ namespace ScriptGenerator {
                     myActions.SetValueByKey("ScriptGeneratorstrResultTypeFound", strstrResultTypeFound, "IdealAutomateDB");
                     string strintEndDelimColPosFound = myListControlEntity1.Find(x => x.ID == "txtintEndDelimColPosFound").Text;
                     myActions.SetValueByKey("ScriptGeneratorintEndDelimColPosFound", strintEndDelimColPosFound, "IdealAutomateDB");
+                    strInFile = strApplicationPath + "Templates\\TemplateFindDelimitedText.txt";
+                    // private string strInFile = @"C:\Data\LanguageXMLInput3.txt";
+
+                    listOfSolvedProblems = new List<string>();
+                    listofRecs = new List<string>();
+                    lineszz = System.IO.File.ReadAllLines(strInFile);
+
                     sb.Length = 0;
-                    sb.Append("Have not implemented code gen yet");
+
+                    intLineCount = lineszz.Count();
+                    intCtr = 0;
+                    for (int i = 0; i < intLineCount; i++) {
+                        string line = lineszz[i];
+                        line = line.Replace("&&ListBeginDelim", strListBeginDelim.Trim());
+                        line = line.Replace("&&ListEndDelim", strListEndDelim.Trim());
+                        line = line.Replace("&&lines", strlines.Trim());
+                        if (strStartingColumn != "") {
+                            line = line.Replace("&&intStartingColumn", strStartingColumn);
+                        }
+                        if (strLineCtr != "") {
+                            line = line.Replace("&&intLineCtr", strLineCtr);
+                        }
+                        if (strstrDelimitedTextFound != "") {
+                            line = line.Replace("&&strDelimitedTextFound", strstrDelimitedTextFound);
+                        }
+                        if (strintDelimFound != "") {
+                            line = line.Replace("&&intDelimTextFound", strintDelimFound);
+                        }
+                        if (strstrResultTypeFound != "") {
+                            line = line.Replace("&&strResultTypeFound", strstrResultTypeFound);
+                        }
+                        if (strintEndDelimColPosFound != "") {
+                            line = line.Replace("&&intEndDelimColPosFound", strintEndDelimColPosFound);
+                        }
+                   
+
+                        if (!line.Contains("&&")) {
+                            sb.AppendLine(line);
+                        }
+                    }
                     if (strButtonPressed == "btnOkay") {
 
 
@@ -5809,6 +5835,7 @@ namespace ScriptGenerator {
                     GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
                     strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
                     goto DisplayWindowAgain;
+                    break;
 
 
                     break;
