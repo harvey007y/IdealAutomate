@@ -15,6 +15,12 @@ namespace CodeGenTemplateParms {
     /// </summary>
     public partial class MainWindow : Window {
         public MainWindow() {
+            string[] args = Environment.GetCommandLineArgs();
+            string strMinimized = "";
+            if (args.Length > 1 && args[1] == "Minimized") {
+                strMinimized = "Minimized";
+            }
+
             bool boolRunningFromHome = false;
             var window = new Window() //make sure the window is invisible
             {
@@ -27,6 +33,7 @@ namespace CodeGenTemplateParms {
             };
             window.Show();
             IdealAutomate.Core.Methods myActions = new Methods();
+
 
             InitializeComponent();
             this.Hide();
@@ -1463,7 +1470,7 @@ using System.Reflection;
                 "IdealAutomate.Core.Methods myActions = new Methods();" +
                 "string strButtonPressed = \"\";" +               
                 " ControlEntity myControlEntity" + strSuffix + " = new ControlEntity();" +
-                               sb.ToString() + " strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity"  + strSuffix + " , 600, 500, 0, 0);" + sb2.ToString() +
+                               sb.ToString() + " strButtonPressed = myActions.WindowMultipleControls" + strMinimized + "(ref myListControlEntity"  + strSuffix + " , 600, 500, 0, 0);" + sb2.ToString() +
 
                 "Console.WriteLine(\"Hello, world!\");"
                 + @"
@@ -1507,7 +1514,7 @@ using System.Reflection;
                 Type program = assembly.GetType("First.Program");
                 MethodInfo main = program.GetMethod("Main");
                 main.Invoke(null, null);
-                myActions.MessageBoxShow(sb.ToString() + " strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, 0, 0);" + sb2.ToString());
+                myActions.MessageBoxShow(sb.ToString() + " strButtonPressed = myActions.WindowMultipleControls" + strMinimized + "(ref myListControlEntity, 600, 500, 0, 0);" + sb2.ToString());
                 goto AddControl;
             }
 
@@ -1521,9 +1528,10 @@ using System.Reflection;
             // Done --------------------
 
             using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutFile)) {
-                file.WriteLine(" ControlEntity myControlEntity" + strSuffix + " = new ControlEntity();");
+                file.WriteLine("int intCtrRow = 0;");
+                file.WriteLine("ControlEntity myControlEntity" + strSuffix + " = new ControlEntity();");
                 file.Write(sb.ToString());
-                file.WriteLine("myActions.WindowMultipleControls(ref myListControlEntity" + strSuffix + ", 400, 500, 0, 0);");
+                file.WriteLine("myActions.WindowMultipleControls" + strMinimized + "(ref myListControlEntity" + strSuffix + ", 400, 500, 0, 0);");
                 file.Write(sb2.ToString());
 
                 // TODO: I have the template in txtTemplateOut and I need to

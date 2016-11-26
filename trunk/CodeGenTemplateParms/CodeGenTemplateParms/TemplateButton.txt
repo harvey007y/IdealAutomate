@@ -1,10 +1,12 @@
-﻿			myControlEntity&&SUFFIX.ControlEntitySetDefaults();
+﻿			
+			intRowCtr++;
+			myControlEntity&&SUFFIX.ControlEntitySetDefaults();
 			myControlEntity&&SUFFIX.ControlType = ControlType.Button;
 			myControlEntity&&SUFFIX.ID = "btn&&ID";
 			myControlEntity&&SUFFIX.Text = "&&TEXT";
 			myControlEntity&&SUFFIX.ColumnSpan = &&COLUMNSPAN;
 			myControlEntity&&SUFFIX.ToolTipx = "&&TOOLTIP";
-			myControlEntity&&SUFFIX.RowNumber = &&ROW;
+			myControlEntity&&SUFFIX.RowNumber = intRowCtr;
 			myControlEntity&&SUFFIX.Width = &&WIDTH;
 			myControlEntity&&SUFFIX.ColumnNumber = 0;
 			myListControlEntity&&SUFFIX.Add(myControlEntity&&SUFFIX.CreateControlEntity());
