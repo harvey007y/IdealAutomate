@@ -48,10 +48,11 @@ namespace WrapSQLInQuotesForCS {
         int intCtr = 0;
         foreach (string line in lineszz) {
           intCtr++;
+           string linex =         line.Replace("\\", "\\\\").Replace("\"", "\\\"");
           if (intCtr < intLineCount) {
-            file.WriteLine("\"" + line + " \" +");
+            file.WriteLine("\"" + linex + " \" +");
           } else {
-            file.WriteLine("\"" + line + " \";");
+            file.WriteLine("\"" + linex + " \";");
           }
         }
 
