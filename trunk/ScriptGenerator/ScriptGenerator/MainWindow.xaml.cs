@@ -43,6 +43,7 @@ namespace ScriptGenerator {
             ControlEntity myControlEntity1 = new ControlEntity();
             List<ControlEntity> myListControlEntity1 = new List<ControlEntity>();
             List<ComboBoxPair> cbp = new List<ComboBoxPair>();
+            List<ComboBoxPair> cbp1 = new List<ComboBoxPair>();
             string strmyArray = "";
             string strmyArrayToUse = "";
             string strServiceNamex = "";
@@ -125,6 +126,28 @@ namespace ScriptGenerator {
 
             myControlEntity.ControlEntitySetDefaults();
             myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "lblCreateVSProject";
+            myControlEntity.Text = "Create New VS Project";
+            myControlEntity.RowNumber = intRow;
+            myControlEntity.ColumnNumber = intCol;
+            myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
+            myControlEntity.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            intRow++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Button;
+            myControlEntity.ID = "myButtonCreateVSProject";
+            myControlEntity.Text = "CreateNewVSProject";
+            myControlEntity.RowNumber = intRow;
+            myControlEntity.ColumnNumber = intCol;
+            //    myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
+            //   myControlEntity.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            intRow++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
             myControlEntity.ID = "lblDeclareVariable";
             myControlEntity.Text = "Declare A Variable";
             myControlEntity.RowNumber = intRow;
@@ -134,7 +157,6 @@ namespace ScriptGenerator {
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
             intRow++;
-
             myControlEntity.ControlEntitySetDefaults();
             myControlEntity.ControlType = ControlType.Button;
             myControlEntity.ID = "myButtonDeclareAVariable";
@@ -144,6 +166,29 @@ namespace ScriptGenerator {
             //    myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
             //   myControlEntity.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            intRow++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "lblCopyVSProjectToIA";
+            myControlEntity.Text = "Copy VS Project to IA";
+            myControlEntity.RowNumber = intRow;
+            myControlEntity.ColumnNumber = intCol;
+            myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
+            myControlEntity.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            intRow++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Button;
+            myControlEntity.ID = "myButtonCopyVSProjectToIA";
+            myControlEntity.Text = "Copy VS Project to IA";
+            myControlEntity.RowNumber = intRow;
+            myControlEntity.ColumnNumber = intCol;
+            //    myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
+            //   myControlEntity.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
             string strScripts = "";
             string strVariables = "";
             string strVariablesValue = "";
@@ -173,6 +218,217 @@ namespace ScriptGenerator {
 
             string strFilePath = "";
             switch (strButtonPressed) {
+                case "myButtonWindowMultipleControls":
+                    myActions.RunSync(@"C:\SVNIA\trunk\CodeGenTemplateParms\CodeGenTemplateParms\bin\debug\CodeGenTemplateParms.exe", "");
+                    break;
+                case "myButtonWindowMultipleControlsMinimized":
+                    myActions.RunSync(@"C:\SVNIA\trunk\CodeGenTemplateParms\CodeGenTemplateParms\bin\debug\CodeGenTemplateParms.exe", "Minimized");
+                    break;
+                case "myButtonWindowShape":
+                    DisplayWindowShape:
+                    myControlEntity1 = new ControlEntity();
+                    myListControlEntity1 = new List<ControlEntity>();
+                    cbp = new List<ComboBoxPair>();
+                    cbp1 = new List<ComboBoxPair>();
+                    intRowCtr = 0;
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.Heading;
+                    myControlEntity1.ID = "lblWindowShape";
+                    myControlEntity1.Text = "Activate Window By Title";
+                    myControlEntity1.Width = 300;
+                    myControlEntity1.RowNumber = 0;
+                    myControlEntity1.ColumnNumber = 0;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    intRowCtr++;
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.Label;
+                    myControlEntity1.ID = "lblSyntax";
+                    myControlEntity1.Text = "Syntax:";
+                    myControlEntity1.RowNumber = intRowCtr;
+                    myControlEntity1.ColumnNumber = 0;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.TextBox;
+                    myControlEntity1.ID = "txtSyntax2";
+                    myControlEntity1.Text = "myActions.WindowShape([[Shape]], [[Orientation]], [[Title]], [[Content]], [[Top]], [[Left]]);";
+                    myControlEntity1.ColumnSpan = 5;
+                    myControlEntity1.RowNumber = intRowCtr;
+                    myControlEntity1.ColumnNumber = 1;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    intRowCtr++;
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.Label;
+                    myControlEntity1.ID = "lblInput";
+                    myControlEntity1.Text = "Input:";
+                    myControlEntity1.FontFamilyx = new FontFamily("Segoe UI Bold");
+                    myControlEntity1.RowNumber = intRowCtr;
+                    myControlEntity1.ColumnNumber = 0;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    intRowCtr++;
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.Label;
+                    myControlEntity1.ID = "lblShape";
+                    myControlEntity1.Text = "Shape:";
+                    myControlEntity1.RowNumber = intRowCtr;
+                    myControlEntity1.ColumnNumber = 0;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.ComboBox;
+                    cbp.Clear();
+                    cbp.Add(new ComboBoxPair("Box", "Box"));
+                    cbp.Add(new ComboBoxPair("Arrow", "Arrow"));
+                    myControlEntity1.ListOfKeyValuePairs = cbp;
+                    myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorShape", "IdealAutomateDB");
+                    if (myControlEntity1.SelectedValue == null) {
+                        myControlEntity1.SelectedValue = "--Select Item ---";
+                    }
+                    myControlEntity1.ID = "cbxShape";
+                    myControlEntity1.RowNumber = intRowCtr;
+                    myControlEntity1.ColumnNumber = 1;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    intRowCtr++;
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.Label;
+                    myControlEntity1.ID = "lblOrientation";
+                    myControlEntity1.Text = "Orientation:";
+                    myControlEntity1.RowNumber = intRowCtr;
+                    myControlEntity1.ColumnNumber = 0;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.ComboBox;
+                    cbp1.Clear();
+                    cbp1.Add(new ComboBoxPair("Left", "Left"));
+                    cbp1.Add(new ComboBoxPair("Right", "Right"));
+                    cbp1.Add(new ComboBoxPair("Up", "Up"));
+                    cbp1.Add(new ComboBoxPair("Down", "Down"));
+
+                    myControlEntity1.ListOfKeyValuePairs = cbp1;
+                    myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorOrientation", "IdealAutomateDB");
+                    if (myControlEntity1.SelectedValue == null) {
+                        myControlEntity1.SelectedValue = "--Select Item ---";
+                    }
+                    myControlEntity1.ID = "cbxOrientation";
+                    myControlEntity1.RowNumber = intRowCtr;
+                    myControlEntity1.ColumnNumber = 1;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    intRowCtr++;
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.Label;
+                    myControlEntity1.ID = "lblTitle";
+                    myControlEntity1.Text = "Title:";
+                    myControlEntity1.RowNumber = intRowCtr;
+                    myControlEntity1.ColumnNumber = 0;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.TextBox;
+                    myControlEntity1.ID = "txtTitle";
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorTitlex", "IdealAutomateDB");
+                    myControlEntity1.RowNumber = intRowCtr;                    
+                    myControlEntity1.ColumnNumber = 1;
+                    myControlEntity1.ColumnSpan = 5;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                
+
+
+
+
+
+
+
+                    intRowCtr++;
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.Label;
+                    myControlEntity1.ID = "lblContent";
+                    myControlEntity1.Text = "Content:";
+                    myControlEntity1.RowNumber = intRowCtr;
+                    myControlEntity1.ColumnNumber = 0;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.TextBox;
+                    myControlEntity1.ID = "txtContent";
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorContentx", "IdealAutomateDB");
+                    myControlEntity1.RowNumber = intRowCtr;
+                    myControlEntity1.Height = 100;
+                    myControlEntity1.Multiline = true;
+                    myControlEntity1.ColumnNumber = 1;
+                    myControlEntity1.ColumnSpan = 5;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    intRowCtr++;
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.Label;
+                    myControlEntity1.ID = "lblTop";
+                    myControlEntity1.Text = "Top:";
+                    myControlEntity1.RowNumber = intRowCtr;
+                    myControlEntity1.ColumnNumber = 0;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.TextBox;
+                    myControlEntity1.ID = "txtTop";
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorTopx", "IdealAutomateDB");
+                    myControlEntity1.RowNumber = intRowCtr;
+                    myControlEntity1.ColumnNumber = 1;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    intRowCtr++;
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.Label;
+                    myControlEntity1.ID = "lblLeft";
+                    myControlEntity1.Text = "Left:";
+                    myControlEntity1.RowNumber = intRowCtr;
+                    myControlEntity1.ColumnNumber = 0;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.TextBox;
+                    myControlEntity1.ID = "txtLeft";
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorLeftx", "IdealAutomateDB");
+                    myControlEntity1.RowNumber = intRowCtr;
+                    myControlEntity1.ColumnNumber = 1;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 400, 700, intWindowTop, intWindowLeft);
+                   
+                    string strTitlex = myListControlEntity1.Find(x => x.ID == "txtTitle").Text;
+                    string strContentx = myListControlEntity1.Find(x => x.ID == "txtContent").Text;
+                    string strTopx = myListControlEntity1.Find(x => x.ID == "txtTop").Text;
+                    string strLeftx = myListControlEntity1.Find(x => x.ID == "txtLeft").Text;
+                    string strShape = myListControlEntity1.Find(x => x.ID == "cbxShape").SelectedValue;
+                    string strOrientation = myListControlEntity1.Find(x => x.ID == "cbxOrientation").SelectedValue;
+                    myActions.SetValueByKey("ScriptGeneratorTitlex", strTitlex, "IdealAutomateDB");
+                    myActions.SetValueByKey("ScriptGeneratorContentx", strContentx, "IdealAutomateDB");
+                    myActions.SetValueByKey("ScriptGeneratorTopx", strTopx, "IdealAutomateDB");
+                    myActions.SetValueByKey("ScriptGeneratorLeftx", strLeftx, "IdealAutomateDB");
+                    myActions.SetValueByKey("ScriptGeneratorShape", strShape, "IdealAutomateDB");
+                    myActions.SetValueByKey("ScriptGeneratorOrientation", strOrientation, "IdealAutomateDB");
+
+
+                    if (strButtonPressed == "btnOkay") {
+                       
+                        string strGeneratedLinex = "";
+
+                        strGeneratedLinex = "myActions.WindowShape(\"" + strShape + "\", \"" + strOrientation + "\", \"" + strTitlex + "\", \"" + strContentx + "\"," + strTopx + ", " + strLeftx + ");";
+
+                        myActions.PutEntityInClipboard(strGeneratedLinex);
+                        myActions.MessageBoxShow(strGeneratedLinex);
+                    }
+                    GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
+                    goto DisplayWindowAgain;
+                    break;
                 case "myButtonStopService":
                     DisplayStopService:
                     myControlEntity1 = new ControlEntity();
@@ -1975,7 +2231,7 @@ namespace ScriptGenerator {
                     DisplayPutWindowTitleInEntity:
                     myControlEntity1 = new ControlEntity();
                     myListControlEntity1 = new List<ControlEntity>();
-                    List<ComboBoxPair> cbp1 = new List<ComboBoxPair>();
+                    cbp1 = new List<ComboBoxPair>();
 
                     intRowCtr = 0;
                     myListControlEntity1 = new List<ControlEntity>();
@@ -5237,19 +5493,22 @@ namespace ScriptGenerator {
                     myControlEntity1 = new ControlEntity();
                     myListControlEntity1 = new List<ControlEntity>();
                     cbp1 = new List<ComboBoxPair>();
+                    intRowCtr = 0;
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.Heading;
                     myControlEntity1.ID = "lblFindDelimitedText";
                     myControlEntity1.Text = "Find Delimited Text";
-                    myControlEntity1.RowNumber = 1;
+                    myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 0;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    intRowCtr++;
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.Label;
                     myControlEntity1.ID = "lblInputs";
                     myControlEntity1.Text = "Inputs:";
                     myControlEntity1.ToolTipx = "";
-                    myControlEntity1.RowNumber = 2;
+                    myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 0;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
@@ -5258,17 +5517,18 @@ namespace ScriptGenerator {
                     myControlEntity1.ID = "lblNotImplemented";
                     myControlEntity1.Text = "Code Behind Not Implemented";
                     myControlEntity1.ToolTipx = "";
-                    myControlEntity1.RowNumber = 2;
+                    myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myControlEntity1.BackgroundColor = Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
                     myControlEntity1.ForegroundColor = Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
+                    intRowCtr++;
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.Label;
                     myControlEntity1.ID = "lbllines";
                     myControlEntity1.Text = "lines";
-                    myControlEntity1.RowNumber = 3;
+                    myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 0;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
@@ -5277,14 +5537,16 @@ namespace ScriptGenerator {
                     myControlEntity1.ID = "txtlines";
                     myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorlines", "IdealAutomateDB"); ;
                     myControlEntity1.ToolTipx = "string[]";
-                    myControlEntity1.RowNumber = 3;
+                    myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    intRowCtr++;
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.Label;
                     myControlEntity1.ID = "lblStartingColumn";
                     myControlEntity1.Text = "StartingColumn";
-                    myControlEntity1.RowNumber = 4;
+                    myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 0;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
@@ -5293,14 +5555,16 @@ namespace ScriptGenerator {
                     myControlEntity1.ID = "txtStartingColumn";
                     myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorStartingColumn", "IdealAutomateDB"); ;
                     myControlEntity1.ToolTipx = "int";
-                    myControlEntity1.RowNumber = 4;
+                    myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    intRowCtr++;
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.Label;
                     myControlEntity1.ID = "lblListBeginDelim";
                     myControlEntity1.Text = "ListBeginDelim";
-                    myControlEntity1.RowNumber = 6;
+                    myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 0;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
@@ -5309,14 +5573,16 @@ namespace ScriptGenerator {
                     myControlEntity1.ID = "txtListBeginDelim";
                     myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorListBeginDelim", "IdealAutomateDB"); ;
                     myControlEntity1.ToolTipx = "List<string>";
-                    myControlEntity1.RowNumber = 6;
+                    myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    intRowCtr++;
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.Label;
                     myControlEntity1.ID = "lblListEndDelim";
                     myControlEntity1.Text = "ListEndDelim";
-                    myControlEntity1.RowNumber = 7;
+                    myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 0;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
@@ -5325,30 +5591,36 @@ namespace ScriptGenerator {
                     myControlEntity1.ID = "txtListEndDelim";
                     myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorListEndDelim", "IdealAutomateDB"); ;
                     myControlEntity1.ToolTipx = "List<string>";
-                    myControlEntity1.RowNumber = 7;
+                    myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    intRowCtr++;
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.Label;
                     myControlEntity1.ID = "lblEmptyRow9";
                     myControlEntity1.Text = "";
                     myControlEntity1.ToolTipx = "&&TOOLTIP";
-                    myControlEntity1.RowNumber = 9;
+                    myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 0;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    intRowCtr++;
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.Label;
                     myControlEntity1.ID = "lblLineCtrInputandOut";
                     myControlEntity1.Text = "LineCtr Input and Out:";
                     myControlEntity1.ToolTipx = "";
-                    myControlEntity1.RowNumber = 10;
+                    myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 0;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    intRowCtr++;
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.Label;
                     myControlEntity1.ID = "lblLineCtr";
                     myControlEntity1.Text = "LineCtr";
-                    myControlEntity1.RowNumber = 11;
+                    myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 0;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
@@ -5357,30 +5629,36 @@ namespace ScriptGenerator {
                     myControlEntity1.ID = "txtLineCtr";
                     myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorLineCtr", "IdealAutomateDB"); ;
                     myControlEntity1.ToolTipx = "int";
-                    myControlEntity1.RowNumber = 11;
+                    myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    intRowCtr++;
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.Label;
                     myControlEntity1.ID = "lblEmptyRow12";
                     myControlEntity1.Text = "";
                     myControlEntity1.ToolTipx = "&&TOOLTIP";
-                    myControlEntity1.RowNumber = 12;
+                    myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 0;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    intRowCtr++;
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.Label;
                     myControlEntity1.ID = "lblOutputparmsfollow";
                     myControlEntity1.Text = "Output parms follow:";
                     myControlEntity1.ToolTipx = "";
-                    myControlEntity1.RowNumber = 13;
+                    myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 0;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    intRowCtr++;
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.Label;
                     myControlEntity1.ID = "lblstrDelimitedTextFound";
                     myControlEntity1.Text = "strDelimitedTextFound";
-                    myControlEntity1.RowNumber = 14;
+                    myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 0;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
@@ -5389,14 +5667,16 @@ namespace ScriptGenerator {
                     myControlEntity1.ID = "txtstrDelimitedTextFound";
                     myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorstrDelimitedTextFound", "IdealAutomateDB"); ;
                     myControlEntity1.ToolTipx = "string";
-                    myControlEntity1.RowNumber = 14;
+                    myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    intRowCtr++;
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.Label;
                     myControlEntity1.ID = "lblintDelimFound";
                     myControlEntity1.Text = "intDelimFound";
-                    myControlEntity1.RowNumber = 15;
+                    myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 0;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
@@ -5405,14 +5685,16 @@ namespace ScriptGenerator {
                     myControlEntity1.ID = "txtintDelimFound";
                     myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorintDelimFound", "IdealAutomateDB"); ;
                     myControlEntity1.ToolTipx = "int";
-                    myControlEntity1.RowNumber = 15;
+                    myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    intRowCtr++;
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.Label;
                     myControlEntity1.ID = "lblstrResultTypeFound";
                     myControlEntity1.Text = "strResultTypeFound";
-                    myControlEntity1.RowNumber = 16;
+                    myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 0;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
@@ -5421,14 +5703,16 @@ namespace ScriptGenerator {
                     myControlEntity1.ID = "txtstrResultTypeFound";
                     myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorstrResultTypeFound", "IdealAutomateDB"); ;
                     myControlEntity1.ToolTipx = "string";
-                    myControlEntity1.RowNumber = 16;
+                    myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    intRowCtr++;
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.Label;
                     myControlEntity1.ID = "lblintEndDelimColPosFound";
                     myControlEntity1.Text = "intEndDelimColPosFound";
-                    myControlEntity1.RowNumber = 17;
+                    myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 0;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
@@ -5437,11 +5721,65 @@ namespace ScriptGenerator {
                     myControlEntity1.ID = "txtintEndDelimColPosFound";
                     myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorintEndDelimColPosFound", "IdealAutomateDB"); ;
                     myControlEntity1.ToolTipx = "int";
-                    myControlEntity1.RowNumber = 17;
+                    myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    intRowCtr++;
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.Label;
+                    myControlEntity1.ID = "lblExample";
+                    myControlEntity1.Text = "Example:";
+                    myControlEntity1.RowNumber = intRowCtr;
+                    myControlEntity1.ColumnNumber = 0;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.TextBox;
+                    myControlEntity1.ID = "txtExample";
+                    myControlEntity1.Height = 250;
+                    myControlEntity1.Text = "     // Here is an example of looking for what is between two quotes  \r\n" +
+"      // in a single line of text in order to find path and file name \r\n" +
+"      List<string> myBeginDelim = new List<string>(); \r\n" +
+"      List<string> myEndDelim = new List<string>(); \r\n" +
+"      myBeginDelim.Add(\"\\\"\"); \r\n" +
+"      myEndDelim.Add(\"\\\"\"); \r\n" +
+"      FindDelimitedTextParms delimParms = new FindDelimitedTextParms(myBeginDelim, myEndDelim); \r\n" +
+" \r\n" +
+"      string myQuote = \"\\\"\"; \r\n" +
+"      delimParms.lines[0] = myOrigEditPlusLine; \r\n" +
+" \r\n" +
+" \r\n" +
+"      myActions.FindDelimitedText(delimParms); \r\n" +
+"      int intLastSlash = delimParms.strDelimitedTextFound.LastIndexOf('\\\\'); \r\n" +
+"      if (intLastSlash < 1) { \r\n" +
+"        myActions.MessageBoxShow(\"Could not find last slash in in EditPlusLine - aborting\"); \r\n" +
+"        goto myExit;     \r\n" +
+"      } \r\n" +
+"      string strPathOnly = delimParms.strDelimitedTextFound.SubstringBetweenIndexes(0, intLastSlash); \r\n" +
+"      string strFileNameOnly = delimParms.strDelimitedTextFound.Substring(intLastSlash + 1); \r\n" +
+"      myBeginDelim.Clear(); \r\n" +
+"      myEndDelim.Clear(); \r\n" +
+" \r\n" +
+"      // in this example, we are trying to find line number that is between open \r\n" +
+"      // paren and comma \r\n" +
+"      myBeginDelim.Add(\"(\"); \r\n" +
+"      myEndDelim.Add(\",\"); \r\n" +
+"      delimParms = new FindDelimitedTextParms(myBeginDelim, myEndDelim); \r\n" +
+"      delimParms.lines[0] = myOrigEditPlusLine; \r\n" +
+"      myActions.FindDelimitedText(delimParms); \r\n" +
+"      string strLineNumber = delimParms.strDelimitedTextFound; ";
+
+
+
+
+                    myControlEntity1.ColumnSpan = 4;
+                    myControlEntity1.RowNumber = intRowCtr;
+                    myControlEntity1.ColumnNumber = 1;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
                     GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 700, 500, intWindowTop, intWindowLeft);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 750, 800, intWindowTop, intWindowLeft);
                     string strlines = myListControlEntity1.Find(x => x.ID == "txtlines").Text;
                     myActions.SetValueByKey("ScriptGeneratorlines", strlines, "IdealAutomateDB");
                     string strStartingColumn = myListControlEntity1.Find(x => x.ID == "txtStartingColumn").Text;
@@ -5951,9 +6289,19 @@ namespace ScriptGenerator {
                     goto DisplayWindowAgain;
                     break;
 
+                case "myButtonCreateVSProject":
+
+                    myActions.RunSync(@"C:\SVNIA\trunk\CreateNewVSProjectForScript\CreateNewVSProjectForScript\bin\debug\CreateNewVSProjectForScript.exe", "");
+                    break;
+
                 case "myButtonDeclareAVariable":
 
                     myActions.RunSync(@"C:\SVNIA\trunk\DDLMaint\DDLMaint\bin\debug\DDLMaint.exe", "");
+                    break;
+
+                case "myButtonCopyVSProjectToIA":
+
+                    myActions.RunSync(@"C:\SVNIA\trunk\CopyVSExecutableToIdealAutomate\CopyVSExecutableToIdealAutomate\bin\Debug\CopyVSExecutableToIdealAutomate.exe", "");
                     break;
                 case "myButtonTypeText":
                     myListControlEntity1 = new List<ControlEntity>();
