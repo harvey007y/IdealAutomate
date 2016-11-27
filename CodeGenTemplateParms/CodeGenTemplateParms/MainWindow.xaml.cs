@@ -1468,7 +1468,8 @@ using System.Reflection;
             window.Show();
             " +
                 "IdealAutomate.Core.Methods myActions = new Methods();" +
-                "string strButtonPressed = \"\";" +               
+                "string strButtonPressed = \"\";" +  
+                "int intRowCtr = 0;" +             
                 " ControlEntity myControlEntity" + strSuffix + " = new ControlEntity();" +
                                sb.ToString() + " strButtonPressed = myActions.WindowMultipleControls" + strMinimized + "(ref myListControlEntity"  + strSuffix + " , 600, 500, 0, 0);" + sb2.ToString() +
 

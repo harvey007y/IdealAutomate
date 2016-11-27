@@ -1737,8 +1737,31 @@ namespace IdealAutomate.Core {
       }
     }
 
+        public void IEGoToURL(Methods myActions, string myWebSite, bool boolUseNewTab) {
+           
+            if (boolUseNewTab == true) {
+                List<string> myWindowTitles = myActions.GetWindowTitlesByProcessName("iexplore");
+                myWindowTitles.RemoveAll(item => item == "");
+                if (myWindowTitles.Count > 0) {
+                    myActions.ActivateWindowByTitle(myWindowTitles[0], (int)WindowShowEnum.SW_SHOWMAXIMIZED);
+                    myActions.TypeText("%(d)", 1500); // select address bar
+                    myActions.TypeText("{ESC}", 1500);
+                    myActions.TypeText("%({ENTER})", 1500); // Alt enter while in address bar opens new tab
+                    myActions.TypeText("%(d)", 1500);
+                    myActions.TypeText(myWebSite, 1500);
+                    myActions.TypeText("{ENTER}", 1500);
+                    myActions.TypeText("{ESC}", 1500);
 
-    private List<SubPositionInfo> Click_PNG(ImageEntity myImage, bool boolUseGrayScaleDB) {
+                } else {
+                    myActions.Run("iexplore", myWebSite);
+
+                }
+            } else {
+                myActions.Run("iexplore", myWebSite);
+            }
+        }
+
+        private List<SubPositionInfo> Click_PNG(ImageEntity myImage, bool boolUseGrayScaleDB) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "Click_PNG:");
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "Click_PNG:");

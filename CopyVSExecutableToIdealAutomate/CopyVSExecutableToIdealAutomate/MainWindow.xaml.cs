@@ -122,7 +122,7 @@ namespace CopyVSExecutableToIdealAutomate {
       myActions.TypeText("x", 200);             // open folder in windows explorer
      // myActions.TypeText("{DOWN}", 1000);
      // myActions.TypeText("{ENTER}", 1000);
-      myActions.TypeText("{F4}", 1000);         // goto address bar in windows explorer
+      myActions.TypeText("{F4}", 3000);         // goto address bar in windows explorer
       myActions.TypeText("{ESC}", 200);         // clear the dropdown for the address bar   
       myActions.SelectAllCopy(500);             // copy the path to the clipboard
       string strPathForBin = myActions.PutClipboardInEntity() + @"\bin\debug"; 
