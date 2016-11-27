@@ -278,7 +278,7 @@ namespace CodeGenTemplateParms {
             //string mySearchTerm = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
             // label
             if (strButtonPressed == "btnChooseDefaultScript") {
-                myActions.RunSync(@"C:\SVNIA\trunk\DDLMaint\DDLMaint\bin\debug\DDLMaint.exe", "");
+                myActions.RunSync(myActions.GetValueByKey("SVNPath", "IdealAutomateDB") + @"DDLMaint\DDLMaint\bin\debug\DDLMaint.exe", "");
                 goto AddControl;
             }
             if (strButtonPressed == "btnLabel") {
@@ -1483,7 +1483,7 @@ using System.Reflection;
                 CompilerParameters parameters = new CompilerParameters();
                 // Reference to System.Drawing library
                 parameters.ReferencedAssemblies.Add("System.Drawing.dll");
-                parameters.ReferencedAssemblies.Add(@"C:\SVNIA\trunk\IdealAutomateCore\IdealAutomateCore\bin\Debug\IdealAutomateCore.dll");
+                parameters.ReferencedAssemblies.Add(myActions.GetValueByKey("SVNPath", "IdealAutomateDB") + @"IdealAutomateCore\IdealAutomateCore\bin\Debug\IdealAutomateCore.dll");
                 parameters.ReferencedAssemblies.Add(@"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\PresentationFramework.dll");
                 parameters.ReferencedAssemblies.Add(@"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\PresentationCore.dll");
                 parameters.ReferencedAssemblies.Add("System.dll");
