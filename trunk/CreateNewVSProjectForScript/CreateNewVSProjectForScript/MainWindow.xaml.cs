@@ -87,7 +87,7 @@ namespace CreateNewVSProjectForScript {
             } else {
                 myImage.ImageFile = "Images\\imgSolutionExplorer_Home.PNG";
             }
-            myImage.Sleep = 200;
+            myImage.Sleep = 2000;
             myImage.Attempts = 15;
             myImage.RelativeX = 10;
             myImage.RelativeY = 10;
@@ -146,15 +146,7 @@ namespace CreateNewVSProjectForScript {
             List<ComboBoxPair> cbp = new List<ComboBoxPair>();
 
 
-            myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.TextBox;
-            myControlEntity.ID = "txt";
-            myControlEntity.Text = myActions.GetValueByKey("", "IdealAutomateDB"); ;
-            myControlEntity.ToolTipx = "";
-            myControlEntity.RowNumber = 0;
-            myControlEntity.ColumnNumber = 1;
-            myControlEntity.ColumnSpan = 0;
-            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
             myControlEntity.ControlEntitySetDefaults();
             myControlEntity.ControlType = ControlType.Label;
             myControlEntity.ID = "lblProjectNameLabel";
@@ -164,6 +156,7 @@ namespace CreateNewVSProjectForScript {
             myControlEntity.ColumnNumber = 0;
             myControlEntity.ColumnSpan = 0;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
             myControlEntity.ControlEntitySetDefaults();
             myControlEntity.ControlType = ControlType.Label;
             myControlEntity.ID = "lblProjectName";
@@ -178,8 +171,7 @@ namespace CreateNewVSProjectForScript {
             myControlEntity.Text = myActions.GetValueByKey("ProjectName", "IdealAutomateDB"); ;
             myControlEntity.ToolTipx = "";
             myControlEntity.RowNumber = 2;
-            myControlEntity.ColumnNumber = 1;
-            myControlEntity.ColumnSpan = 0;
+            myControlEntity.ColumnNumber = 1;           
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
             myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
 
