@@ -221,7 +221,11 @@ namespace IdealAutomate.Core {
                                 if (item.SelectedValue == "" || item.SelectedValue == null) {
                                     cmd.CommandText = "SELECT Top 1 DefaultValue from DDLNames where ID = @ID ";
                                     var strDefaultValue = cmd.ExecuteScalar();
-                                    item.SelectedValue = strDefaultValue.ToString();
+                                    if (strDefaultValue == null) {
+                                        item.SelectedValue = "";
+                                    } else {
+                                        item.SelectedValue = strDefaultValue.ToString();
+                                    }
                                 }
                             } finally {
                                 con.Close();
