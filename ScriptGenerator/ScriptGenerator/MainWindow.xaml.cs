@@ -404,10 +404,10 @@ namespace ScriptGenerator {
                     goto DisplayWindowAgain;
                     break;
                 case "myButtonWindowMultipleControls":
-                    myActions.RunSync(@"C:\SVNIA\trunk\CodeGenTemplateParms\CodeGenTemplateParms\bin\debug\CodeGenTemplateParms.exe", "");
+                    myActions.RunSync(myActions.GetValueByKey("SVNPath", "IdealAutomateDB") + @"CodeGenTemplateParms\CodeGenTemplateParms\bin\debug\CodeGenTemplateParms.exe", "");
                     break;
                 case "myButtonWindowMultipleControlsMinimized":
-                    myActions.RunSync(@"C:\SVNIA\trunk\CodeGenTemplateParms\CodeGenTemplateParms\bin\debug\CodeGenTemplateParms.exe", "Minimized");
+                    myActions.RunSync(myActions.GetValueByKey("SVNPath", "IdealAutomateDB") + @"CodeGenTemplateParms\CodeGenTemplateParms\bin\debug\CodeGenTemplateParms.exe", "Minimized");
                     break;
                 case "myButtonWindowShape":
                     DisplayWindowShape:
@@ -6503,17 +6503,17 @@ namespace ScriptGenerator {
 
                 case "myButtonCreateVSProject":
 
-                    myActions.RunSync(@"C:\SVNIA\trunk\CreateNewVSProjectForScript\CreateNewVSProjectForScript\bin\debug\CreateNewVSProjectForScript.exe", "");
+                    myActions.RunSync(myActions.GetValueByKey("SVNPath", "IdealAutomateDB") + @"CreateNewVSProjectForScript\CreateNewVSProjectForScript\bin\debug\CreateNewVSProjectForScript.exe", "");
                     break;
 
                 case "myButtonDeclareAVariable":
 
-                    myActions.RunSync(@"C:\SVNIA\trunk\DDLMaint\DDLMaint\bin\debug\DDLMaint.exe", "");
+                    myActions.RunSync(myActions.GetValueByKey("SVNPath", "IdealAutomateDB") + @"DDLMaint\DDLMaint\bin\debug\DDLMaint.exe", "");
                     break;
 
                 case "myButtonCopyVSProjectToIA":
 
-                    myActions.RunSync(@"C:\SVNIA\trunk\CopyVSExecutableToIdealAutomate\CopyVSExecutableToIdealAutomate\bin\Debug\CopyVSExecutableToIdealAutomate.exe", "");
+                    myActions.RunSync(myActions.GetValueByKey("SVNPath", "IdealAutomateDB") + @"CopyVSExecutableToIdealAutomate\CopyVSExecutableToIdealAutomate\bin\Debug\CopyVSExecutableToIdealAutomate.exe", "");
                     break;
                 case "myButtonTypeText":
                     myListControlEntity1 = new List<ControlEntity>();
