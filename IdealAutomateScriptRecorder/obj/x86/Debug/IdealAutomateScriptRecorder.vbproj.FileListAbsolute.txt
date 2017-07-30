@@ -1,0 +1,11 @@
+C:\TFS\WadeHome\Applications\HealthyWorkmate\bin\Debug\WindowsApplication.exe.config
+C:\SVNIA\trunk\IdealAutomateScriptRecorder\obj\x86\Debug\IdealAutomateScriptRecorder.vbprojResolveAssemblyReference.cache
+C:\SVNIA\trunk\IdealAutomateScriptRecorder\obj\x86\Debug\IdealAutomateScriptRecorder.Form1.resources
+C:\SVNIA\trunk\IdealAutomateScriptRecorder\obj\x86\Debug\IdealAutomateScriptRecorder.frmTestGetText.resources
+C:\SVNIA\trunk\IdealAutomateScriptRecorder\obj\x86\Debug\IdealAutomateScriptRecorder.TestMove.resources
+C:\SVNIA\trunk\IdealAutomateScriptRecorder\obj\x86\Debug\IdealAutomateScriptRecorder.vbproj.GenerateResource.Cache
+C:\SVNIA\trunk\IdealAutomateScriptRecorder\bin\Debug\IdealAutomateScriptRecorder.exe.config
+C:\SVNIA\trunk\IdealAutomateScriptRecorder\bin\Debug\IdealAutomateScriptRecorder.exe
+C:\SVNIA\trunk\IdealAutomateScriptRecorder\bin\Debug\IdealAutomateScriptRecorder.pdb
+C:\SVNIA\trunk\IdealAutomateScriptRecorder\obj\x86\Debug\IdealAutomateScriptRecorder.exe
+C:\SVNIA\trunk\IdealAutomateScriptRecorder\obj\x86\Debug\IdealAutomateScriptRecorder.pdb

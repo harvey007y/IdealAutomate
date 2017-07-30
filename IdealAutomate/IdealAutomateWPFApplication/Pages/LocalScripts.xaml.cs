@@ -999,15 +999,37 @@ namespace Hardcodet.Wpf.Samples.Pages
             selectedScript.LastExecutedDate = System.DateTime.Now;
             selectedScript.NumberTimesExecuted += 1;
             selectedScript.NumberActionsSaved += intActionCtr;
+      SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["myConnectionString"].ConnectionString);
+      SqlCommand myCommand = con.CreateCommand();
+      try {
+        con.Open();
+        myCommand.CommandText = "Declare @ScriptID int " +
+"Set @ScriptID = " + selectedScript.ScriptID + " " +
+"Declare @NumberTimesExecuted int " +
+"Set @NumberTimesExecuted = (Select Top 1 NumberTimesExecuted from Scripts where ScriptID = @ScriptID) " +
+"UPDATE [dbo].[Scripts] " +
+"   SET  [NumberTimesExecuted] = @NumberTimesExecuted + 1       " +
+"      ,[LastExecutedDate] = GETDATE()  " +
+"where ScriptID = @ScriptID ";
+        myCommand.ExecuteNonQuery();
+      } catch (SqlException ex) {
+        // Display error
+        MessageBox.Show("Error: " + ex.ToString());
+        Console.WriteLine("Error: " + ex.ToString());
+      } finally {
+        // Close Connection
+        con.Close();
+        Console.WriteLine("Connection Closed");
 
-            
-         
+      }
 
-            // first foreach finds all records where userid is equal to
-            // the logged in user id and local scriptid is equal to the
-            // selected scriptid
-      
-        }
+
+
+      // first foreach finds all records where userid is equal to
+      // the logged in user id and local scriptid is equal to the
+      // selected scriptid
+
+    }
         private void ShowHelpDialog(object sender, RoutedEventArgs e)
         {
             NavWindowAutomater dlg = new NavWindowAutomater();

@@ -21,12 +21,8 @@ C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\bi
 C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore.csprojResolveAssemblyReference.cache
 C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowMultipleControls.baml
 C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowShape.baml
-C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowTextBox.baml
-C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowComboBox.baml
 C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowMultipleControls.g.cs
 C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowShape.g.cs
-C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowTextBox.g.cs
-C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowComboBox.g.cs
 C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore_MarkupCompile.cache
 C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore.g.resources
 C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore.Properties.Resources.resources

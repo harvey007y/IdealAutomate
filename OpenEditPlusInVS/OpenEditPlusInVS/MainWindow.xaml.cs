@@ -37,7 +37,20 @@ namespace OpenEditPlusInVS {
       //myImage.Attempts = 2;
       //myImage.RelativeX = 10;
       //myActions.ClickImageIfExists(myImage);
-      List<string> myWindowTitles = myActions.GetWindowTitlesByProcessName("devenv");
+      List<string> myWindowTitles = myActions.GetWindowTitlesByProcessName("editplus");
+      myWindowTitles.RemoveAll(item => item == "");
+      if (myWindowTitles.Count > 0) {
+        myActions.ActivateWindowByTitle(myWindowTitles[0], 3);
+        myActions.Sleep(1000);
+        int[,] myCursorPosition = myActions.PutCursorPosition();
+
+        myActions.RightClick(myCursorPosition);
+        myActions.TypeText("{UP 5}", 1000);
+        myActions.TypeText("{ENTER}", 800);
+        myActions.TypeText("%(\" \")", 1000);
+        myActions.TypeText("n", 500);
+      }
+      myWindowTitles = myActions.GetWindowTitlesByProcessName("devenv");
       string myWebSite = "";
       TryAgainClip:
       string myOrigEditPlusLine = myActions.PutClipboardInEntity();
@@ -89,11 +102,35 @@ namespace OpenEditPlusInVS {
           myWebSite = myWindowTitles.Find(x => x.StartsWith("WebApp"));
         }
 
+        if (strPathOnly.Contains("\\WindowsServices\\")) {
+          myWebSite = myWindowTitles.Find(x => x.StartsWith("WindowsServices"));
+        }
+
+        if (strPathOnly.Contains("\\Framework\\")) {
+          myWebSite = myWindowTitles.Find(x => x.StartsWith("Framework"));
+        }
+
         if (myWebSite == "" || myWebSite == null) {
           myActions.MessageBoxShow("Could not find an open visual studio for this type of file");
         } else {
-          myActions.ActivateWindowByTitle(myWebSite, 3);          
-          myActions.TypeText("%(f)", 2000);
+          //myWindowTitles = myActions.GetWindowTitlesByProcessName("editplus");
+          //myWindowTitles.RemoveAll(item => item == "");
+          //if (myWindowTitles.Count > 0) {
+          //  myActions.ActivateWindowByTitle(myWindowTitles[0], 3);
+          //  myActions.Sleep(1000);
+          //  int[,] myCursorPosition = myActions.PutCursorPosition();
+
+          //  myActions.RightClick(myCursorPosition);
+          //  myActions.TypeText("{UP 5}", 1000);
+          //  myActions.TypeText("{ENTER}", 800);
+          //  myActions.TypeText("%(\" \")", 1000);
+          //  myActions.TypeText("n", 500);
+          //}
+          myActions.ActivateWindowByTitle(myWebSite, 3);
+          
+         // myActions.MessageBoxShow("just activated vs");
+          myActions.TypeText("{ESC}", 2000);
+          myActions.TypeText("%(f)", 1000);
           myActions.TypeText("{DOWN}", 1000);
           myActions.TypeText("{RIGHT}", 1000);
           myActions.TypeText("f", 1000);
@@ -103,9 +140,9 @@ namespace OpenEditPlusInVS {
           myActions.TypeText("{ENTER}", 500);
           myActions.TypeText("%(n)", 500);
           myActions.TypeText(strFileNameOnly, 1500);
-          myActions.TypeText("{ENTER}", 500);
-          myActions.TypeText("^(g)", 1000);
-          myActions.TypeText(strLineNumber, 500);
+          myActions.TypeText("{ENTER}", 1000);
+          myActions.TypeText("^(g)", 2000);
+          myActions.TypeText(strLineNumber, 1500);
           myActions.TypeText("{ENTER}", 500);
         }
       } else {

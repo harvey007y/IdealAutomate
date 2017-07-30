@@ -11,5 +11,7 @@ namespace IdealAutomate.Core {
     Heading,
     CheckBox,
     Button,
+    Image,
+    PasswordBox,
   }
 }

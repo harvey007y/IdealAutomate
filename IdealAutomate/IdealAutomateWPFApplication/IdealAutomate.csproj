@@ -40,7 +40,7 @@
     <ProductName>Ideal Automate</ProductName>
     <PublisherName>IdealAutomate.com</PublisherName>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>237</ApplicationRevision>
+    <ApplicationRevision>241</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>true</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -69,10 +69,10 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>CC523F4C28603379221900985A401825CF742CE4</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>A9CB59251B60392344B0DAF966A98724EB838DB0</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>IdealAutomate_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>IdealAutomate_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -651,6 +651,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="ClassDiagram1.cd" />
+    <None Include="IdealAutomate_1_TemporaryKey.pfx" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

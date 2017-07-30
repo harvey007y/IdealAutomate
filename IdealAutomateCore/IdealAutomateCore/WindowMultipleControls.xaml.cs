@@ -14,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using IdealAutomate.Core;
+using System.IO;
+using System.Collections;
 
 namespace IdealAutomate.Core {
     /// <summary>
@@ -22,7 +24,7 @@ namespace IdealAutomate.Core {
     public partial class WindowMultipleControls : Window {
 
         string _Label;
-
+        bool boolSkipSelectionChanged = false;
         private List<ControlEntity> _ListControlEntity;
         public ComboBoxPair SelectedComboBoxPair { get; set; }
         public bool boolOkayPressed = false;
@@ -104,6 +106,7 @@ namespace IdealAutomate.Core {
                         myLabel.FontStretch = item.FontStretchx;
                         myLabel.FontStyle = item.FontStyle;                        
                         myLabel.FontWeight = FontWeights.Normal;
+                        myLabel.Margin = new Thickness(1, 1, 1, 1);
                         myLabel.Name = item.ID;
                         myLabel.Content = item.Text;
                         if (item.BackgroundColor != null) {
@@ -179,14 +182,68 @@ namespace IdealAutomate.Core {
                         Grid.SetColumnSpan(myTextBox, item.ColumnSpan);
                         myGrid.Children.Add(myTextBox);
                         break;
+                    case ControlType.PasswordBox:
+                        PasswordBox myPasswordBox = new PasswordBox();
+                        myPasswordBox.Password = item.Text;
+                        if (item.ToolTipx != null && item.ToolTipx.ToString().Trim() != "") {
+                            myPasswordBox.ToolTip = item.ToolTipx;
+                        }
+                        myPasswordBox.Name = item.ID;
+                        if (item.Width > 0) {
+                            myPasswordBox.Width = item.Width;
+                        }
+
+                        if (item.Height > 0) {
+                            myPasswordBox.Height = item.Height;
+                        }
+                        Grid.SetRow(myPasswordBox, item.RowNumber);
+                        Grid.SetColumn(myPasswordBox, item.ColumnNumber);
+                        if (item.ColumnSpan < 1) {
+                            item.ColumnSpan = 1;
+                        }
+                        Grid.SetColumnSpan(myPasswordBox, item.ColumnSpan);
+                        myGrid.Children.Add(myPasswordBox);
+                        break;
                     case ControlType.ComboBox:
-                        ComboBox myComboBox = new ComboBox();                       
+                        string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
+                        string settingsDirectory = GetAppDirectoryForScript(strScriptName);
+                        string fileName = item.ID + ".txt";
+                        string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
+                        ArrayList alHosts = new ArrayList();
+                        List<ComboBoxPair> cbp = new List<ComboBoxPair>();
+                        cbp.Clear();
+                        cbp.Add(new ComboBoxPair("--Select Item ---", "--Select Item ---"));
+                        ComboBox myComboBox = new ComboBox();   
+                        if (item.ComboBoxIsEditable) {
+                            myComboBox.IsEditable = true;
+                            myComboBox.DropDownOpened += comboBoxDropDownOpened;
+                            myComboBox.LostFocus += comboBoxLostFocus;
+                            
+                            myComboBox.SelectionChanged += comboBoxSelectionChanged;                            
+                            
+                            if (!File.Exists(settingsPath)) {
+                                using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
+                                    objSWFile.Close();
+                                }
+                            }
+                            using (StreamReader objSRFile = File.OpenText(settingsPath)) {
+                                string strReadLine = "";
+                                while ((strReadLine = objSRFile.ReadLine()) != null) {
+                                    string[] keyvalue = strReadLine.Split('^');
+                                    if (keyvalue[0] != "--Select Item ---") {
+                                        cbp.Add(new ComboBoxPair(keyvalue[0], keyvalue[1]));
+                                    }
+                                }
+                                objSRFile.Close();
+                            }
+                            item.ListOfKeyValuePairs = cbp;
+                        }
                         if (item.ToolTipx != null && item.ToolTipx.ToString().Trim() != "") {
                             myComboBox.ToolTip = item.ToolTipx;
                         }
                         myComboBox.Name = item.ID;
                         if (item.ListOfKeyValuePairs.Count == 0) {
-                            List<ComboBoxPair> cbp = new List<ComboBoxPair>();
+                            cbp = new List<ComboBoxPair>();
                             cbp.Clear();
                             cbp.Add(new ComboBoxPair("--Select Item ---", "--Select Item ---"));
                             SqlConnection con = new SqlConnection("Server=(local)\\SQLEXPRESS;Initial Catalog=IdealAutomateDB;Integrated Security=SSPI");
@@ -266,12 +323,103 @@ namespace IdealAutomate.Core {
                         }
                         myGrid.Children.Add(myCheckBox);
                         break;
+                    case ControlType.Image:
+                        Image myImage = new Image();
+                        if (item.ToolTipx != null && item.ToolTipx.ToString().Trim() != "")
+                        {
+                            myImage.ToolTip = item.ToolTipx;
+                        }
+                        myImage.Name = item.ID;
+                        
+                        Grid.SetRow(myImage, item.RowNumber);
+                        Grid.SetColumn(myImage, item.ColumnNumber);
+                        if (item.ColumnSpan < 1)
+                        {
+                            item.ColumnSpan = 1;
+                        }
+                        Grid.SetColumnSpan(myImage, item.ColumnSpan);
+                        if (item.Width > 0)
+                        {
+                            myImage.Width = item.Width;
+                        }
+                        if (item.Height > 0)
+                        {
+                            myImage.Height = item.Height;
+                        }
+                        myImage.Source = item.Source;
+                        myGrid.Children.Add(myImage);
+                        
+                        break;
                     default:
                         break;
                 }
             }
 
         }
+
+        private void comboBoxSelectionChanged(object sender, SelectionChangedEventArgs e) {
+            if (boolSkipSelectionChanged == false) {
+                string strHostName = ((ComboBox)sender).Text;
+                funcUpdateCombobox1(strHostName, sender);
+            }
+
+        }
+
+        private void comboBoxLostFocus(object sender, RoutedEventArgs e) {
+            boolSkipSelectionChanged = true;
+            string strHostName = ((ComboBox)sender).Text;
+            funcUpdateCombobox1(strHostName, sender);
+            ((ComboBox)sender).SelectedValue = strHostName;           
+            ((ComboBox)sender).Text = strHostName;
+            boolSkipSelectionChanged = false;
+        }
+
+        private void comboBoxDropDownOpened(object sender, EventArgs e) {
+
+            string strHostName = ((ComboBox)sender).Text;
+            funcUpdateCombobox1(strHostName, sender);
+            ((ComboBox)sender).SelectedValue = strHostName;
+        }
+
+        public void funcUpdateCombobox1(string strNewHostName, object sender) {
+           List<ComboBoxPair> alHosts = ((ComboBox)sender).ItemsSource.Cast<ComboBoxPair>().ToList();
+            List<ComboBoxPair> alHostsNew = new List<ComboBoxPair>();
+            ComboBoxPair myCbp = new ComboBoxPair(strNewHostName, strNewHostName);
+            bool boolNewItem = false;
+           
+                alHostsNew.Add(myCbp);
+            
+            foreach (ComboBoxPair item in alHosts) {              
+                    if (strNewHostName != item._Key && item._Key != "") {
+                        boolNewItem = true;
+                        alHostsNew.Add(item);
+                    }               
+            }
+            if (alHostsNew.Count > 14) {
+                for (int i = alHostsNew.Count - 1; i > 0; i--) {
+                    if (alHostsNew[i]._Key.Trim() != "--Select Item ---") {
+                        alHostsNew.RemoveAt(i);
+                        break;
+                    }
+                }
+            }
+            string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
+            string settingsDirectory = GetAppDirectoryForScript(strScriptName);
+            string fileName = ((ComboBox)sender).Name + ".txt";
+            string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
+            using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
+                foreach (ComboBoxPair item in alHostsNew.OrderBy(x => x._Key)) {
+                    objSWFile.WriteLine(item._Key + '^' + item._Value);
+                }
+                objSWFile.Close();
+            }
+
+            //  alHosts = alHostsNew;
+            if (boolNewItem) {
+                ((ComboBox)sender).ItemsSource = alHostsNew;
+            }
+        }
+
         protected void button_Click(object sender, EventArgs e) {
             Button button = sender as Button;
             strButtonClickedName = button.Name;
@@ -290,6 +438,11 @@ namespace IdealAutomate.Core {
                         TextBox myTextBox = new TextBox();
                         myTextBox = (TextBox)LogicalTreeHelper.FindLogicalNode(this, item.ID);
                         item.Text = myTextBox.Text;                       
+                        break;
+                    case ControlType.PasswordBox:
+                        PasswordBox myPasswordBox = new PasswordBox();
+                        myPasswordBox = (PasswordBox)LogicalTreeHelper.FindLogicalNode(this, item.ID);
+                        item.Text = myPasswordBox.Password;
                         break;
                     case ControlType.ComboBox:
                         ComboBox myComboBox = new ComboBox();
@@ -347,8 +500,13 @@ namespace IdealAutomate.Core {
                         myTextBox = (TextBox)LogicalTreeHelper.FindLogicalNode(this, item.ID);
                         item.Text = myTextBox.Text;
                         break;
+                    case ControlType.PasswordBox:
+                        PasswordBox myPasswordBox = new PasswordBox();
+                        myPasswordBox = (PasswordBox)LogicalTreeHelper.FindLogicalNode(this, item.ID);
+                        item.Text = myPasswordBox.Password;
+                        break;
                     case ControlType.ComboBox:
-                        ComboBox myComboBox = new ComboBox();
+                        ComboBox myComboBox = new ComboBox();                       
                         myComboBox = (ComboBox)LogicalTreeHelper.FindLogicalNode(this, item.ID);
                         if (myComboBox.SelectedIndex > -1) {
                             item.SelectedValue = myComboBox.SelectedValue.ToString();
@@ -361,7 +519,11 @@ namespace IdealAutomate.Core {
                         myCheckBox = (CheckBox)LogicalTreeHelper.FindLogicalNode(this, item.ID);
                         item.Checked = myCheckBox.IsChecked ?? false;
                         break;
-
+                    case ControlType.Image:
+                        Image myImage = new Image();
+                        myImage = (Image)LogicalTreeHelper.FindLogicalNode(this, item.ID);
+                        item.Source = myImage.Source;
+                        break;
                     default:
                         break;
                 }
@@ -380,8 +542,8 @@ namespace IdealAutomate.Core {
             //foreach (System.Windows.Window win in System.Windows.Application.Current.Windows) {
             //    string name = win.Name;
               Methods myActions = new Methods();
-            myActions.SetValueByKey("WindowTop", this.Top.ToString(), "IdealAutomateDB");
-            myActions.SetValueByKey("WindowLeft", this.Left.ToString(), "IdealAutomateDB");
+            myActions.SetValueByKey("WindowTop", this.Top.ToString());
+            myActions.SetValueByKey("WindowLeft", this.Left.ToString());
            
                 
             //}
@@ -402,6 +564,13 @@ namespace IdealAutomate.Core {
         protected override void OnMouseRightButtonDown(MouseButtonEventArgs e) {
             base.OnMouseRightButtonDown(e);
         }
-
+        private string GetAppDirectoryForScript(string strScriptName) {
+            string settingsDirectory =
+      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\" + strScriptName;
+            if (!Directory.Exists(settingsDirectory)) {
+                Directory.CreateDirectory(settingsDirectory);
+            }
+            return settingsDirectory;
+        }
     }
 }

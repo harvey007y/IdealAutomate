@@ -63,7 +63,13 @@
     <Compile Include="ClipboardNative.cs" />
     <Compile Include="ComboBoxPair.cs" />
     <Compile Include="ControlEntity.cs" />
+    <Compile Include="DeviceInfo.cs" />
     <Compile Include="FindDelimitedTextParms.cs" />
+    <Compile Include="ScreenHelper.cs" />
+    <Compile Include="SnippingTool.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SnippingTool.designer.cs" />
     <Compile Include="WindowShowEnum.cs" />
     <Compile Include="ControlType.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

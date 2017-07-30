@@ -421,6 +421,10 @@ Public Class Form1
         End If
         sbg.Length = 0
     End Sub
+
+    Private Sub btnClickMouseOnImage_Click(sender As Object, e As EventArgs) Handles btnClickMouseOnImage.Click
+
+    End Sub
 End Class
 Module Keyboard
     <DllImport("kernel32.dll", CharSet:=CharSet.Auto)>

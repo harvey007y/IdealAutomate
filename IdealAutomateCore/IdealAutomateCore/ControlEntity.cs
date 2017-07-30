@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
+using System.Windows.Media;
 
 namespace IdealAutomate.Core {
     public class ControlEntity {
@@ -29,7 +30,9 @@ namespace IdealAutomate.Core {
         public decimal Amount { get; set; }
         public System.Windows.Media.Color? BackgroundColor { get; set; }
         public System.Windows.Media.Color? ForegroundColor { get; set; }
-        public int ParentLkDDLNamesItemsInc { get; set; }
+        public int ParentLkDDLNamesItemsInc { get; set; }        
+        public ImageSource Source { get; set; }
+        public bool ComboBoxIsEditable { get; set; }
         /// <summary>
         /// DDLName is used when you want to use the same dropdownlist on the
         /// same screen more than once. In that case, you make the ID unique
@@ -57,8 +60,8 @@ namespace IdealAutomate.Core {
             ID = "";
             Text = "";
             ListOfKeyValuePairs = new List<ComboBoxPair>();
-            SelectedKey = "";
-            SelectedValue = "";
+            SelectedKey = "--Select Item ---";
+            SelectedValue = "--Select Item ---";
             Checked = false;
             ButtonPressed = false;
             ImageFile = "";
@@ -74,6 +77,7 @@ namespace IdealAutomate.Core {
             ForegroundColor = null;
             Amount = 0;
             ParentLkDDLNamesItemsInc = -1;
+            ComboBoxIsEditable = false;
             DDLName = "";
             ToolTipx = "";
             ColumnSpan = 1;
@@ -88,8 +92,8 @@ namespace IdealAutomate.Core {
             ID = "";
             Text = "";
             ListOfKeyValuePairs = new List<ComboBoxPair>();
-            SelectedKey = "";
-            SelectedValue = "";
+            SelectedKey = "--Select Item ---";
+            SelectedValue = "--Select Item ---";
             Checked = false;
             ButtonPressed = false;
             ImageFile = "";
@@ -105,6 +109,7 @@ namespace IdealAutomate.Core {
             ForegroundColor = null;
             Amount = 0;
             ParentLkDDLNamesItemsInc = -1;
+            ComboBoxIsEditable = false;
             DDLName = "";
             ToolTipx = "";
             ColumnSpan = 1;
@@ -138,12 +143,14 @@ namespace IdealAutomate.Core {
             myControlEntity.ForegroundColor = ForegroundColor;
             myControlEntity.ParentLkDDLNamesItemsInc = ParentLkDDLNamesItemsInc;
             myControlEntity.ToolTipx = ToolTipx;
+            myControlEntity.ComboBoxIsEditable = ComboBoxIsEditable;
             myControlEntity.DDLName = DDLName;
             myControlEntity.ColumnSpan = ColumnSpan;
             myControlEntity.FontFamilyx = FontFamilyx;
             myControlEntity.FontSize = FontSize;
             myControlEntity.FontStretchx = FontStretchx;
             myControlEntity.FontWeight = FontWeight;
+            myControlEntity.Source = Source;
 
             return myControlEntity;
         }
