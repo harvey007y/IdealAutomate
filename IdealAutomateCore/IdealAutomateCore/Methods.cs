@@ -2240,19 +2240,41 @@ namespace IdealAutomate.Core {
             return settingsDirectory;
         }
 
+    /// <summary>
+    /// <para>GetAppDirectoryForIdealAutomate gets the application </para>
+    /// <para>data folder and adds \IdealAutomate\yourscriptname to it.</para>
+    /// <para>The AppDirectory allows you to store personal settings and</para>
+    /// <para>information that you want to keep private (like passwords) in a location</para>
+    /// <para>outside of your script on in the application directory</para>
+    /// </summary>
+    /// <returns>string that is the app_data/roaming directory path for the script</returns>
+    public string GetAppDirectoryForIdealAutomate() {
+      string directory = AppDomain.CurrentDomain.BaseDirectory;
+      directory = directory.Replace("\\bin\\Debug\\", "");
+      int intLastSlashIndex = directory.LastIndexOf("\\");
+      string strScriptName = directory.Substring(intLastSlashIndex + 1);
+      // string strScriptName = System.Reflection.Assembly.GetCallingAssembly().GetName().Name;
+      string settingsDirectory =
+Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate";
+      if (!Directory.Exists(settingsDirectory)) {
+        Directory.CreateDirectory(settingsDirectory);
+      }
+      return settingsDirectory;
+    }
 
-        /// <summary>
-        /// <para>ReadValueFromAppDataKey takes a key and adds .txt to it in order to create</para>
-        /// <para>a file name. It gets the app data path and adds \IdealAutomate\yourscriptname</para>
-        /// <para>to it. By combining that path to the file name created from the key,</para>
-        /// <para>it can retrieve a value from the key that is unique to your script application.</para>
-        ///  <para>The AppDirectory allows you to store personal settings and</para>
-        /// <para>information that you want to keep private (like passwords) in a location</para>
-        /// <para>outside of your script on in the application directory</para>
-        /// </summary>
-        /// <param name="strKey">Unique key within the script application</param>
-        /// <returns>string that was in application directory for that key</returns>
-        public string GetValueByKey(string strKey) {
+
+    /// <summary>
+    /// <para>ReadValueFromAppDataKey takes a key and adds .txt to it in order to create</para>
+    /// <para>a file name. It gets the app data path and adds \IdealAutomate\yourscriptname</para>
+    /// <para>to it. By combining that path to the file name created from the key,</para>
+    /// <para>it can retrieve a value from the key that is unique to your script application.</para>
+    ///  <para>The AppDirectory allows you to store personal settings and</para>
+    /// <para>information that you want to keep private (like passwords) in a location</para>
+    /// <para>outside of your script on in the application directory</para>
+    /// </summary>
+    /// <param name="strKey">Unique key within the script application</param>
+    /// <returns>string that was in application directory for that key</returns>
+    public string GetValueByKey(string strKey) {
             string fileName = strKey + ".txt";
             StreamReader file = null;
             string strValueRead = "";
@@ -2290,18 +2312,67 @@ namespace IdealAutomate.Core {
             writer.Close();
         }
 
-        /// <summary>
-        /// <para>ReadAppDirectoryKeyToArrayList takes a key and adds .txt to it in order to create</para>
-        /// <para>a file name. It gets the app data path and adds \IdealAutomate\yourscriptname</para>
-        /// <para>to it. By combining that path to the file name created from the key,</para>
-        /// <para>it can retrieve an arraylist that is unique to your script application.</para>
-        /// <para>The AppDirectory allows you to store personal settings and</para>
-        /// <para>information that you want to keep private (like passwords) in a location</para>
-        /// <para>outside of your script on in the application directory</para>
-        /// </summary>
-        /// <param name="strKey">Unique key within the script application</param>
-        /// <returns>ArrayList that was in application directory for that key</returns>
-        public ArrayList ReadAppDirectoryKeyToArrayList(string strKey) {
+    /// <summary>
+    /// <para>GetValueByKeyGlobal takes a key and adds .txt to it in order to create</para>
+    /// <para>a file name. It gets the app data path and adds \IdealAutomate\yourscriptname</para>
+    /// <para>to it. By combining that path to the file name created from the key,</para>
+    /// <para>it can retrieve a value from the key that is unique to your script application.</para>
+    ///  <para>The AppDirectory allows you to store personal settings and</para>
+    /// <para>information that you want to keep private (like passwords) in a location</para>
+    /// <para>outside of your script on in the application directory</para>
+    /// </summary>
+    /// <param name="strKey">Unique key within the script application</param>
+    /// <returns>string that was in application directory for that key</returns>
+    public string GetValueByKeyGlobal(string strKey) {
+      string fileName = strKey + ".txt";
+      StreamReader file = null;
+      string strValueRead = "";
+      string settingsDirectory = GetAppDirectoryForIdealAutomate();
+      string settingsPath = Path.Combine(settingsDirectory, fileName);
+      if (File.Exists(settingsPath)) {
+        file = File.OpenText(settingsPath);
+        strValueRead = file.ReadToEnd();
+        file.Close();
+      }
+      return strValueRead;
+    }
+
+    /// <summary>
+    /// <para>SetValueByKeyGlobal takes a key and adds .txt to it in order to create</para>
+    /// <para>a file name. It gets the app data path and adds \IdealAutomate\yourscriptname</para>
+    /// <para>to it. By combining that path to the file name,</para>
+    /// <para>it can write a value to the key that is unique to your script application.</para>
+    /// <para>The AppDirectory allows you to store personal settings and</para>
+    /// <para>information that you want to keep private (like passwords) in a location</para>
+    /// <para>outside of your script on in the application directory</para>
+    /// </summary>
+    /// <param name="strKey">Unique key within the script application</param>
+    /// <param name="strValueToWrite">Value to write to the Unique key 
+    /// within the script application</param>
+    public void SetValueByKeyGlobal(string strKey, string strValueToWrite) {
+      string fileName = strKey + ".txt";
+      StreamWriter writer = null;
+      string settingsDirectory = GetAppDirectoryForIdealAutomate();
+      string settingsPath = Path.Combine(settingsDirectory, fileName);
+      // Hook a write to the text file.
+      writer = new StreamWriter(settingsPath);
+      // Rewrite the entire value of s to the file
+      writer.Write(strValueToWrite);
+      writer.Close();
+    }
+
+    /// <summary>
+    /// <para>ReadAppDirectoryKeyToArrayList takes a key and adds .txt to it in order to create</para>
+    /// <para>a file name. It gets the app data path and adds \IdealAutomate\yourscriptname</para>
+    /// <para>to it. By combining that path to the file name created from the key,</para>
+    /// <para>it can retrieve an arraylist that is unique to your script application.</para>
+    /// <para>The AppDirectory allows you to store personal settings and</para>
+    /// <para>information that you want to keep private (like passwords) in a location</para>
+    /// <para>outside of your script on in the application directory</para>
+    /// </summary>
+    /// <param name="strKey">Unique key within the script application</param>
+    /// <returns>ArrayList that was in application directory for that key</returns>
+    public ArrayList ReadAppDirectoryKeyToArrayList(string strKey) {
             string fileName = strKey + ".txt";
             ArrayList myArrayList = new ArrayList();
             string settingsDirectory = GetAppDirectoryForScript();

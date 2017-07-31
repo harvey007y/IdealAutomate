@@ -4,7 +4,7 @@
 library
 C#
 .cs
-C:\SVNIA\trunk\IdealAutomateCore\IdealAutomateCore\obj\Debug\
+C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\obj\Debug\
 IdealAutomateCore
 none
 false
@@ -13,7 +13,7 @@ DEBUG;TRACE
 2697605890
 
 23-96584975
-16997897522
+161536972499
 WindowMultipleControls.xaml;WindowShape.xaml;
 
 False

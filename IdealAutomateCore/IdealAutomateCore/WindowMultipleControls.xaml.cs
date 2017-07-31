@@ -542,8 +542,8 @@ namespace IdealAutomate.Core {
             //foreach (System.Windows.Window win in System.Windows.Application.Current.Windows) {
             //    string name = win.Name;
               Methods myActions = new Methods();
-            myActions.SetValueByKey("WindowTop", this.Top.ToString());
-            myActions.SetValueByKey("WindowLeft", this.Left.ToString());
+            myActions.SetValueByKeyGlobal("WindowTop", this.Top.ToString());
+            myActions.SetValueByKeyGlobal("WindowLeft", this.Left.ToString());
            
                 
             //}
