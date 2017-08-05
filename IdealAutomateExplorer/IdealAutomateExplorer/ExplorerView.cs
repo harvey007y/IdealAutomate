@@ -252,9 +252,13 @@ namespace System.Windows.Forms.Samples
         private void ev_Process_File(string myFile)
         {
             // process .vb
-            if (myFile.EndsWith(".exe"))
-            {
-                Process.Start(myFile);
+            try {
+                if (myFile.EndsWith(".exe")) {
+                    Process.Start(myFile);
+                }
+            } catch (Exception ex) {
+
+                MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
             }
 
            
@@ -283,7 +287,7 @@ namespace System.Windows.Forms.Samples
                 }
 
             }
-            MessageBox.Show("Traceoff Completed");
+           
         }
     }
 
