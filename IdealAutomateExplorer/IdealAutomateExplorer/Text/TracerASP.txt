@@ -1,0 +1,237 @@
+﻿'TraceOn Begin
+ 
+ 	Protected Sub WriteLogSimple(ByVal pMsg As String)
+		
+        If (Directory.Exists("C:\Data") = false) Then
+            Directory.CreateDirectory("C:\Data")
+        End If
+			
+        Dim filePath As String = "C:\Data\Trace.html"
+		'System.Web.HttpContext.Current.Server.MapPath("~//Trace.html")
+        Dim sw As StreamWriter = Nothing
+
+        If File.Exists(filePath) = False Then
+            ' Create a file to write to.
+            sw = File.CreateText(filePath)            
+			sw.WriteLine("<!DOCTYPE html PUBLIC ""-//W3C//DTD HTML 4.01 Transitional//EN"">")
+			sw.WriteLine("<html>")
+			sw.WriteLine("<head>")
+			sw.WriteLine("<meta content=""text/html; charset=ISO-8859-1"" http-equiv=""content-type"">")
+			sw.WriteLine("<title>Ideal Tracer</title>")
+			sw.WriteLine("</head>")
+			sw.WriteLine("<body>")
+			sw.WriteLine("<table border-style=""solid"" border=""1px"" bordercolor=""black"" width=""100%"" style=""margin-top:10px;"">")
+
+            sw.Flush()
+            sw.Close()
+        End If
+
+        Try
+            sw = File.AppendText(filePath)
+            sw.WriteLine(pMsg)
+            sw.Flush()
+
+            sw.Close()
+        Catch Ex As Exception
+        End Try
+    End Sub
+	Protected Sub WriteLog(ByVal pClass As String, ByVal pMethod As String, ByVal pLineNumber As String, ByVal pText As String, ByVal pData As String)
+		
+        If (Directory.Exists("C:\Data") = false) Then
+            Directory.CreateDirectory("C:\Data")
+        End If
+			
+        Dim filePath As String = "C:\Data\Trace.html"
+		'System.Web.HttpContext.Current.Server.MapPath("~//Trace.html")
+        Dim sw As StreamWriter = Nothing
+
+        If File.Exists(filePath) = False Then
+            ' Create a file to write to.
+            sw = File.CreateText(filePath)            
+			sw.WriteLine("<!DOCTYPE html PUBLIC ""-//W3C//DTD HTML 4.01 Transitional//EN"">")
+			sw.WriteLine("<html>")
+			sw.WriteLine("<head>")
+			sw.WriteLine("<meta content=""text/html; charset=ISO-8859-1"" http-equiv=""content-type"">")
+			sw.WriteLine("<title>Ideal Tracer</title>")
+			sw.WriteLine("</head>")
+			sw.WriteLine("<body>")
+			sw.WriteLine("<table border-style=""solid"" border=""1px"" bordercolor=""black"" width=""100%"" style=""margin-top:10px;"">")
+
+            sw.Flush()
+            sw.Close()
+        End If
+
+        Try
+            sw = File.AppendText(filePath)
+            sw.WriteLine("<tr style=""vertical-align: top;""><td>" + System.DateTime.Now + "</td><td>" + pClass + "</td><td>" + pMethod + "</td><td>" + pLineNumber + "</td><td>" + pText + "</td><td>" + pData + "</td></tr>")
+            sw.Flush()
+
+            sw.Close()
+        Catch Ex As Exception
+        End Try
+    End Sub
+	' Example usage WriteLog(DumpObject(yourcomplexobjectname)) 
+	Public Shared Function DumpObject(ByVal obj As Object) As String
+        Return DumpObject(obj, -1)
+    End Function
+
+    Public Shared Function DumpObject(ByVal obj As Object, ByVal MaxLevel As Integer) As String
+        Dim sb As StringBuilder
+
+        sb = New StringBuilder(10000)
+        If obj Is Nothing Then
+            Return "Nothing"
+        Else
+        PrivDump(sb, obj, "[ObjectToDump]", 0, MaxLevel)
+            Return sb.ToString()
+        End If
+    End Function
+
+    Public Shared Function GetFieldValue(ByVal obj As Object, ByVal fieldName As String) As Object
+        Dim fi As FieldInfo
+        Dim t As Type
+
+        t = obj.GetType()
+        fi = t.GetField(fieldName, BindingFlags.Public Or BindingFlags.NonPublic Or BindingFlags.Instance)
+        If fi Is Nothing Then
+            Return Nothing
+        Else
+            Return fi.GetValue(obj)
+        End If
+    End Function
+
+
+    Protected Shared Sub PrivDump(ByVal sb As StringBuilder, ByVal obj As Object, ByVal objName As String, ByVal level As Integer, ByVal MaxLevel As Integer)
+
+        If obj Is Nothing Then
+            Return
+        End If
+        If MaxLevel >= 0 AndAlso level >= MaxLevel Then
+            Return
+        End If
+
+        Dim padstr As String
+        padstr = ""
+        For i As Integer = 0 To level - 1
+            If i < level - 1 Then
+                padstr &= "|"
+            Else
+                padstr &= "+"
+            End If
+        Next i
+        Dim str As String
+        Dim strarr() As String
+        Dim t As Type
+        t = obj.GetType()
+        strarr = New String(6) {}
+        strarr(0) = padstr
+        strarr(1) = objName
+        strarr(2) = " AS "
+        strarr(3) = t.FullName
+        strarr(4) = " = "
+        strarr(5) = obj.ToString()
+        strarr(6) = vbCrLf
+        sb.Append(String.Concat(strarr))
+        If obj.GetType().BaseType Is GetType(ValueType) Then
+            Return
+        End If
+    DumpType(padstr, sb, obj, level, t, MaxLevel)
+        Dim bt As Type
+        bt = t.BaseType
+        If bt IsNot Nothing Then
+            Do While Not (bt Is GetType(Object))
+                str = bt.FullName
+                sb.Append(padstr & "(" & str & ")" & vbCrLf)
+            DumpType(padstr, sb, obj, level, bt, MaxLevel)
+                bt = bt.BaseType
+                If bt IsNot Nothing Then
+                    Continue Do
+                End If
+                Exit Do
+                While (bt IsNot GetType(Object))
+
+                End While
+            Loop
+        End If
+    End Sub
+
+    Protected Shared Sub DumpType(ByVal InitialStr As String, ByVal sb As StringBuilder, ByVal obj As Object, ByVal level As Integer, ByVal t As System.Type, ByVal maxlevel As Integer)
+        Dim fi() As FieldInfo
+        fi = t.GetFields(BindingFlags.Public Or BindingFlags.NonPublic Or BindingFlags.Instance)
+        If t Is GetType(System.Delegate) Then
+            Return
+        End If
+		'This for each was commented out previously
+        'For Each f As FieldInfo In fi
+        '    PrivDump(sb, f.GetValue(obj), f.Name, level + 1, maxlevel)
+        'Next f
+        Dim arl() As Object
+        Dim i As Integer
+        If TypeOf obj Is System.Array Then
+            Try
+                arl = CType(obj, Object())
+                For i = 0 To arl.GetLength(0) - 1
+                    PrivDump(sb, arl(i), "[" & i & "]", level + 1, maxlevel)
+                Next i
+            Catch e1 As Exception
+            End Try
+        End If
+    End Sub
+
+	' Example usage: WriteLogSimple("</table>" & Dump(oddlPrefixes) & "<table>")
+	Public Shared Function Dump(ByVal o As Object, Optional ByVal name As String = "", Optional ByVal depth As Integer = 3) As String
+        Try
+            Dim leafprefix = (If(String.IsNullOrWhiteSpace(name), name, name & " = "))
+
+            If Nothing Is o Then
+                Return leafprefix & "null" & "<br/>"
+            End If
+
+            Dim t = o.GetType()
+            Dim tempVar As Boolean = depth < 1 OrElse t.FullName = "System.String" OrElse t.IsValueType
+            depth -= 1
+            If tempVar Then
+                Return leafprefix + o.ToString() & "<br/>"
+            End If
+
+            Dim sb = New StringBuilder()
+            Dim enumerable = TryCast(o, IEnumerable)
+            If enumerable IsNot Nothing Then
+                If name = "Items" Then
+                    For l_index As Integer = 0 To o.Count - 1
+                        Dim l_text As ListItem = o.Item(l_index)
+                        sb.Append(name & l_index.ToString() & " = " & l_text.Value & ": " & l_text.Text & "<br/>")
+                    Next
+                    Return sb.ToString() & "<br/>"
+                Else
+                    name = (If(name, "")).TrimEnd("[", "]") + AscW("[")
+                End If
+                Dim elements = enumerable.Cast(Of Object)().Select(Function(e) Dump(e, "", depth)).ToList()
+                Dim arrayInOneLine = elements.Count & "] = {" & String.Join(",", elements) + AscW("}")
+                If Not arrayInOneLine.Contains(Environment.NewLine) Then ' Single line?
+                    Return name & arrayInOneLine & "<br/>"
+                End If
+                Dim i = 0
+                For Each element In elements
+                    Dim lineheader = name & i + AscW("]")
+                    i += 1
+                    sb.Append(lineheader).AppendLine(element.Replace(Environment.NewLine, Environment.NewLine & lineheader))
+                Next element
+                Return sb.ToString() & "<br/>"
+            End If
+            For Each f In t.GetFields()
+                sb.AppendLine(Dump(f.GetValue(o), name & f.Name, depth))
+            Next f
+            For Each p In t.GetProperties()
+                sb.AppendLine(Dump(p.GetValue(o, Nothing), name & p.Name, depth))
+            Next p
+            If sb.Length = 0 Then
+                Return leafprefix + o.ToString() & "<br/>"
+            End If
+            Return sb.ToString().TrimEnd() & "<br/>"
+        Catch ex As Exception
+            Return name & "???" & ex.ToString() & "<br/>"
+        End Try
+    End Function
+    
+    'TraceOn End
