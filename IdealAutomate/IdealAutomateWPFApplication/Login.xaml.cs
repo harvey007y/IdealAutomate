@@ -396,6 +396,57 @@ namespace Hardcodet.Wpf.Samples {
 ") ON [PRIMARY] " +
 "END " +
 "  " +
+"IF  NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DDLItems]') AND type in (N'U')) " +
+"BEGIN " +
+"CREATE TABLE [dbo].[DDLItems]( " +
+"	[Inc] [int] IDENTITY(1,1) NOT NULL, " +
+"	[ListItemKey] [varchar](max) NOT NULL, " +
+"	[ListItemValue] [varchar](max) NOT NULL, " +
+" CONSTRAINT [PK_DDLItems] PRIMARY KEY CLUSTERED  " +
+"( " +
+"	[Inc] ASC " +
+")WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY] " +
+") ON [PRIMARY] TEXTIMAGE_ON [PRIMARY] " +
+"END " +
+"  " +
+"IF  NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DDLNames]') AND type in (N'U')) " +
+"BEGIN " +
+"CREATE TABLE [dbo].[DDLNames]( " +
+"	[Inc] [int] IDENTITY(1,1) NOT NULL, " +
+"	[ID] [varchar](500) NOT NULL, " +
+"	[DefaultValue] [varchar](500) NULL, " +
+"	[Width] [int] NULL, " +
+" CONSTRAINT [PK_DDLNames] PRIMARY KEY CLUSTERED  " +
+"( " +
+"	[Inc] ASC " +
+" " +
+")WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY] " +
+") ON [PRIMARY] " +
+"END " +
+"  " +
+"IF  NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[LkDDLNamesItems]') AND type in (N'U')) " +
+"BEGIN " +
+"CREATE TABLE [dbo].[LkDDLNamesItems]( " +
+"	[Inc] [int] IDENTITY(1,1) NOT NULL, " +
+"	[ParentLkDDLNamesItemsInc] [int] NOT NULL, " +
+"	[DDLNamesInc] [int] NOT NULL, " +
+"	[DDLItemsInc] [int] NOT NULL, " +
+" CONSTRAINT [PK_LkDDLNamesItems] PRIMARY KEY CLUSTERED  " +
+"( " +
+"	[Inc] ASC " +
+" " +
+")WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY] " +
+") ON [PRIMARY] " +
+"END " +
+"  " +
+"IF  NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Methods]') AND type in (N'U')) " +
+"BEGIN " +
+"CREATE TABLE [dbo].[Methods]( " +
+"	[Method] [varchar](500) NOT NULL, " +
+"	[Category] [varchar](500) NULL " +
+") ON [PRIMARY] " +
+"END " +
+"  " +
 "IF NOT EXISTS ( " +
 "		SELECT * " +
 "		FROM sys.objects " +
@@ -505,7 +556,214 @@ namespace Hardcodet.Wpf.Samples {
       SqlCommand cmd2 = new SqlCommand(updCmd, con);
       cmd2.CommandType = CommandType.Text;
       cmd2.ExecuteNonQuery();
-      SqlCommand cmd = new SqlCommand("Select * from UserInfo", con);
+            updCmd = "declare @myCount2 int  " +
+ "set @myCount2 = (select COUNT(*) from [dbo].[Methods])  " +
+ "            if @myCount2 = 0  " +
+ "            begin  " +
+ "            INSERT INTO [dbo].[Methods]  " +
+ "                       ([Method]  " +
+ "           ,[Category] )  " +
+ "     VALUES  " +
+ "           ('ActivateWindowByTitle'  " +
+ "           ,'Window')  " +
+  "            INSERT INTO [dbo].[Methods]  " +
+ "                       ([Method]  " +
+ "           ,[Category] )  " +
+ "     VALUES  " +
+ "           ('ClickImageIfExists'  " +
+ "           ,'Image')  " +
+  "            INSERT INTO [dbo].[Methods]  " +
+ "                       ([Method]  " +
+ "           ,[Category] )  " +
+ "     VALUES  " +
+ "           ('FindDelimitedText'  " +
+ "           ,'Search')  " +
+  "            INSERT INTO [dbo].[Methods]  " +
+ "                       ([Method]  " +
+ "           ,[Category] )  " +
+ "     VALUES  " +
+ "           ('GetActiveWindowTitle'  " +
+ "           ,'Window')  " +
+  "            INSERT INTO [dbo].[Methods]  " +
+ "                       ([Method]  " +
+ "           ,[Category] )  " +
+ "     VALUES  " +
+ "           ('GetValueByKey'  " +
+ "           ,'Database')  " +
+  "            INSERT INTO [dbo].[Methods]  " +
+ "                       ([Method]  " +
+ "           ,[Category] )  " +
+ "     VALUES  " +
+ "           ('GetWindowTitlesByProcessName'  " +
+ "           ,'Window')  " +
+  "            INSERT INTO [dbo].[Methods]  " +
+ "                       ([Method]  " +
+ "           ,[Category] )  " +
+ "     VALUES  " +
+ "           ('KillAllProcessesByProcessName'  " +
+ "           ,'Processes')  " +
+  "            INSERT INTO [dbo].[Methods]  " +
+ "                       ([Method]  " +
+ "           ,[Category] )  " +
+ "     VALUES  " +
+ "           ('LeftClick'  " +
+ "           ,'Mouse')  " +
+  "            INSERT INTO [dbo].[Methods]  " +
+ "                       ([Method]  " +
+ "           ,[Category] )  " +
+ "     VALUES  " +
+ "           ('MessageBoxShow'  " +
+ "           ,'MessageBox')  " +
+  "            INSERT INTO [dbo].[Methods]  " +
+ "                       ([Method]  " +
+ "           ,[Category] )  " +
+ "     VALUES  " +
+ "           ('MessageBoxShowWithYesNo'  " +
+ "           ,'MessageBox')  " +
+  "            INSERT INTO [dbo].[Methods]  " +
+ "                       ([Method]  " +
+ "           ,[Category] )  " +
+ "     VALUES  " +
+ "           ('PositionCursor'  " +
+ "           ,'Mouse')  " +
+  "            INSERT INTO [dbo].[Methods]  " +
+ "                       ([Method]  " +
+ "           ,[Category] )  " +
+ "     VALUES  " +
+ "           ('PutAll'  " +
+ "           ,'Image')  " +
+  "            INSERT INTO [dbo].[Methods]  " +
+ "                       ([Method]  " +
+ "           ,[Category] )  " +
+ "     VALUES  " +
+ "           ('PutCaretPositionInArray'  " +
+ "           ,'Caret Position')  " +
+  "            INSERT INTO [dbo].[Methods]  " +
+ "                       ([Method]  " +
+ "           ,[Category] )  " +
+ "     VALUES  " +
+ "           ('PutClipboardInEntity'  " +
+ "           ,'Clipboard')  " +
+  "            INSERT INTO [dbo].[Methods]  " +
+ "                       ([Method]  " +
+ "           ,[Category] )  " +
+ "     VALUES  " +
+ "           ('PutCursorPosition'  " +
+ "           ,'Mouse')  " +
+  "            INSERT INTO [dbo].[Methods]  " +
+ "                       ([Method]  " +
+ "           ,[Category] )  " +
+ "     VALUES  " +
+ "           ('PutEntityInClipboard'  " +
+ "           ,'Clipboard')  " +
+  "            INSERT INTO [dbo].[Methods]  " +
+ "                       ([Method]  " +
+ "           ,[Category] )  " +
+ "     VALUES  " +
+ "           ('PutInternetExplorerTabTitleInEntity'  " +
+ "           ,'Internet Explorer')  " +
+  "            INSERT INTO [dbo].[Methods]  " +
+ "                       ([Method]  " +
+ "           ,[Category] )  " +
+ "     VALUES  " +
+ "           ('PutInternetExplorerTabURLContainingStringInEntity'  " +
+ "           ,'Internet Explorer')  " +
+  "            INSERT INTO [dbo].[Methods]  " +
+ "                       ([Method]  " +
+ "           ,[Category] )  " +
+ "     VALUES  " +
+ "           ('PutWindowTitleInEntity'  " +
+ "           ,'Window')  " +
+  "            INSERT INTO [dbo].[Methods]  " +
+ "                       ([Method]  " +
+ "           ,[Category] )  " +
+ "     VALUES  " +
+ "           ('RestartService'  " +
+ "           ,'Service')  " +
+  "            INSERT INTO [dbo].[Methods]  " +
+ "                       ([Method]  " +
+ "           ,[Category] )  " +
+ "     VALUES  " +
+ "           ('RightClick'  " +
+ "           ,'Mouse')  " +
+  "            INSERT INTO [dbo].[Methods]  " +
+ "                       ([Method]  " +
+ "           ,[Category] )  " +
+ "     VALUES  " +
+ "           ('Run'  " +
+ "           ,'Run')  " +
+  "            INSERT INTO [dbo].[Methods]  " +
+ "                       ([Method]  " +
+ "           ,[Category] )  " +
+ "     VALUES  " +
+ "           ('RunSync'  " +
+ "           ,'Run')  " +
+  "            INSERT INTO [dbo].[Methods]  " +
+ "                       ([Method]  " +
+ "           ,[Category] )  " +
+ "     VALUES  " +
+ "           ('SetValueByKey'  " +
+ "           ,'Database')  " +
+  "            INSERT INTO [dbo].[Methods]  " +
+ "                       ([Method]  " +
+ "           ,[Category] )  " +
+ "     VALUES  " +
+ "           ('ShiftClick'  " +
+ "           ,'Mouse')  " +
+  "            INSERT INTO [dbo].[Methods]  " +
+ "                       ([Method]  " +
+ "           ,[Category] )  " +
+ "     VALUES  " +
+ "           ('Sleep'  " +
+ "           ,'Sleep')  " +
+  "            INSERT INTO [dbo].[Methods]  " +
+ "                       ([Method]  " +
+ "           ,[Category] )  " +
+ "     VALUES  " +
+ "           ('StartService'  " +
+ "           ,'Service')  " +
+  "            INSERT INTO [dbo].[Methods]  " +
+ "                       ([Method]  " +
+ "           ,[Category] )  " +
+ "     VALUES  " +
+ "           ('StopService'  " +
+ "           ,'Service')  " +
+  "            INSERT INTO [dbo].[Methods]  " +
+ "                       ([Method]  " +
+ "           ,[Category] )  " +
+ "     VALUES  " +
+ "           ('TypeText'  " +
+ "           ,'TypeText')  " +
+  "            INSERT INTO [dbo].[Methods]  " +
+ "                       ([Method]  " +
+ "           ,[Category] )  " +
+ "     VALUES  " +
+ "           ('IEGoToURL'  " +
+ "           ,'Internet Explorer')  " +
+  "            INSERT INTO [dbo].[Methods]  " +
+ "                       ([Method]  " +
+ "           ,[Category] )  " +
+ "     VALUES  " +
+ "           ('WindowMultipleControls'  " +
+ "           ,'Window')  " +
+  "            INSERT INTO [dbo].[Methods]  " +
+ "                       ([Method]  " +
+ "           ,[Category] )  " +
+ "     VALUES  " +
+ "           ('WindowMultipleControlsMinimized'  " +
+ "           ,'Window')  " +
+  "            INSERT INTO [dbo].[Methods]  " +
+ "                       ([Method]  " +
+ "           ,[Category] )  " +
+ "     VALUES  " +
+ "           ('WindowShape'  " +
+ "           ,'Window')  " +  
+ "  end  " +
+ " ";
+            cmd2 = new SqlCommand(updCmd, con);
+            cmd2.CommandType = CommandType.Text;
+            cmd2.ExecuteNonQuery();
+            SqlCommand cmd = new SqlCommand("Select * from UserInfo", con);
       cmd.CommandType = CommandType.Text;
       SqlDataAdapter adapter = new SqlDataAdapter();
       adapter.SelectCommand = cmd;
@@ -592,6 +850,7 @@ namespace Hardcodet.Wpf.Samples {
         myHotKeyRecord.HotKeys = item.HotKey.Split('+');
         myHotKeyRecord.Executable = item.Executable;
         myHotKeyRecord.ExecuteContent = item.ExecuteContent;
+        myHotKeyRecord.ScriptID = item.ScriptID;
         bool boolHotKeysGood = true;
         foreach (string myHotKey in myHotKeyRecord.HotKeys) {
           if (dictVirtualKeyCodes.ContainsKey(myHotKey)) {
@@ -675,7 +934,31 @@ namespace Hardcodet.Wpf.Samples {
             
             if (boolAllHotKeysPressed && boolStopEvent == false) {
               boolStopEvent = true;
-              RunWaitTillStart(myHotKeyRecord.Executable, myHotKeyRecord.ExecuteContent ?? "");
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["myConnectionString"].ConnectionString);
+            SqlCommand myCommand = con.CreateCommand();
+            try {
+              con.Open();
+              myCommand.CommandText = "Declare @ScriptID int " +
+  "Set @ScriptID = " + myHotKeyRecord.ScriptID + " " +
+  "Declare @NumberTimesExecuted int " +
+  "Set @NumberTimesExecuted = (Select Top 1 NumberTimesExecuted from Scripts where ScriptID = @ScriptID) " +
+  "UPDATE [dbo].[Scripts] " +
+  "   SET  [NumberTimesExecuted] = @NumberTimesExecuted + 1       " +
+  "      ,[LastExecutedDate] = GETDATE()  " +
+  "where ScriptID = @ScriptID ";
+              myCommand.ExecuteNonQuery();
+            } catch (SqlException ex) {
+              // Display error
+              MessageBox.Show("Error: " + ex.ToString());
+              Console.WriteLine("Error: " + ex.ToString());
+            } finally {
+              // Close Connection
+              con.Close();
+              Console.WriteLine("Connection Closed");
+
+            }
+
+            RunWaitTillStart(myHotKeyRecord.Executable, myHotKeyRecord.ExecuteContent ?? "");
 
              
             }       

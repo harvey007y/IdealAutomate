@@ -71,8 +71,8 @@ namespace DDLMaint {
             myControlEntity.Width = 150;
             myControlEntity.RowNumber = 3;
             myControlEntity.ColumnNumber = 0;
-            myControlEntity.SelectedValue = myActions.GetValueByKey("ScriptsDefaultValue", "IdealAutomateDB");
-            myControlEntity.SelectedKey = myActions.GetValueByKey("ScriptsDefaultKey", "IdealAutomateDB");
+            myControlEntity.SelectedValue = myActions.GetValueByKey("ScriptsDefaultValue");
+            myControlEntity.SelectedKey = myActions.GetValueByKey("ScriptsDefaultKey");
             strCountries = myControlEntity.SelectedValue;
             strScriptsKey = myControlEntity.SelectedKey;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
@@ -95,8 +95,8 @@ namespace DDLMaint {
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
             strCountries = myListControlEntity.Find(x => x.ID == "Scripts").SelectedValue;
             strScriptsKey = myListControlEntity.Find(x => x.ID == "Scripts").SelectedKey;
-            myActions.SetValueByKey("ScriptsDefaultValue", strCountries, "IdealAutomateDB");
-            myActions.SetValueByKey("ScriptsDefaultKey", strScriptsKey, "IdealAutomateDB");
+            myActions.SetValueByKey("ScriptsDefaultValue", strCountries);
+            myActions.SetValueByKey("ScriptsDefaultKey", strScriptsKey);
             if (strCountries != "--Select Item ---" && strButtonPressed == "btnOkay") {
                 goto DisplayMainMenu;
             }

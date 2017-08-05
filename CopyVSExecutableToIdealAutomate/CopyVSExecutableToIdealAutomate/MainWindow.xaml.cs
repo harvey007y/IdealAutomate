@@ -26,7 +26,7 @@ namespace CopyVSExecutableToIdealAutomate {
       InitializeComponent();
       this.Hide();
       IdealAutomate.Core.Methods myActions = new Methods();
-      string strRunningFromHome = myActions.GetValueByKey("RunningFromHome", "IdealAutomateDB");
+      string strRunningFromHome = myActions.GetValueByKey("RunningFromHome");
       if (strRunningFromHome == "True") {
         boolRunningFromHome = true;
       }
@@ -101,8 +101,9 @@ namespace CopyVSExecutableToIdealAutomate {
         myActions.MessageBoxShow("Could not find visual studio for project to be copied to Ideal Automate");
       }
       myActions.Sleep(3000);
+      myActions.TypeText("{ESC}", 500);
       string strScriptName = myActions.PutWindowTitleInEntity();
-      int intIndex = strScriptName.IndexOf(" - Microsoft");
+      int intIndex = strScriptName.IndexOf("- Microsoft");
       if (intIndex < 0) {
         myActions.MessageBoxShow("Could not find - Microsoft in window title for VS; \nPlease click on visual studio for the project you want to copy and click okay \nHere is the title I did find: " + strScriptName + "\nHere is the title that I was looking for: " + myWebSite);
         
@@ -128,7 +129,7 @@ namespace CopyVSExecutableToIdealAutomate {
       string strPathForBin = myActions.PutClipboardInEntity() + @"\bin\debug"; 
       myActions.CloseApplicationAltFc(200);     // close Windows Explorer
     TryToFindFile:
-      string strWindowsLoginName = myActions.GetValueByKey("WindowsLoginName", "IdealAutomateDB");
+      string strWindowsLoginName = myActions.GetValueByKey("WindowsLoginName");
  
       string strFileName = @"C:\Users\" + strWindowsLoginName + @"\Desktop\Ideal Automate - 1 .appref-ms";
    
@@ -169,7 +170,7 @@ namespace CopyVSExecutableToIdealAutomate {
           myActions.MessageBoxShow("Script cancelled");
           goto myExit;
         } else {
-          myActions.SetValueByKey("WindowsLoginName", strNewWindowsLoginName, "IdealAutomateDB");
+          myActions.SetValueByKey("WindowsLoginName", strNewWindowsLoginName);
           goto TryToFindFile;
         }
       }

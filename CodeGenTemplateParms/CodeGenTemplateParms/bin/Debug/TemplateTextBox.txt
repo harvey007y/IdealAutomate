@@ -1,0 +1,22 @@
+﻿			
+			intRowCtr++;
+			myControlEntity&&SUFFIX.ControlEntitySetDefaults();
+			myControlEntity&&SUFFIX.ControlType = ControlType.Label;
+			myControlEntity&&SUFFIX.ID = "lbl&&ID";
+			myControlEntity&&SUFFIX.Text = "&&SPACEDOUTID";
+			myControlEntity&&SUFFIX.RowNumber = intRowCtr;			
+			myControlEntity&&SUFFIX.ColumnNumber = 0;
+			myListControlEntity&&SUFFIX.Add(myControlEntity&&SUFFIX.CreateControlEntity());
+			
+			myControlEntity&&SUFFIX.ControlEntitySetDefaults();
+			myControlEntity&&SUFFIX.ControlType = ControlType.TextBox;
+			myControlEntity&&SUFFIX.ID = "txt&&ID";
+			myControlEntity&&SUFFIX.Text = "&&TEXT";
+			myControlEntity&&SUFFIX.ToolTipx = "&&TOOLTIP";
+			myControlEntity&&SUFFIX.RowNumber = intRowCtr;
+			myControlEntity&&SUFFIX.Width = &&WIDTH;
+			myControlEntity&&SUFFIX.Height = &&HEIGHT;
+			myControlEntity&&SUFFIX.Multiline = &&MULTILINE;
+			myControlEntity&&SUFFIX.ColumnNumber = 1;
+			myControlEntity&&SUFFIX.ColumnSpan = &&COLUMNSPAN;
+			myListControlEntity&&SUFFIX.Add(myControlEntity&&SUFFIX.CreateControlEntity());

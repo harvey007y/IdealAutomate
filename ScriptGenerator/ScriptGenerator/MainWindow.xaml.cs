@@ -62,21 +62,21 @@ namespace ScriptGenerator {
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
 
-            myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.Label;
-            myControlEntity.ID = "myLabelMethods";
-            myControlEntity.Text = "IdealAutomateCore Methods";
-            myControlEntity.RowNumber = 0;
-            myControlEntity.ColumnNumber = 0;
-            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+            //myControlEntity.ControlEntitySetDefaults();
+            //myControlEntity.ControlType = ControlType.Label;
+            //myControlEntity.ID = "myLabelMethods";
+            //myControlEntity.Text = "IdealAutomateCore Methods";
+            //myControlEntity.RowNumber = 0;
+            //myControlEntity.ColumnNumber = 0;
+            //myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
-            myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.Label;
-            myControlEntity.ID = "myLabelCashManagement";
-            myControlEntity.Text = "More IdealAutomateCore Methods";
-            myControlEntity.RowNumber = 0;
-            myControlEntity.ColumnNumber = 1;
-            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+            //myControlEntity.ControlEntitySetDefaults();
+            //myControlEntity.ControlType = ControlType.Label;
+            //myControlEntity.ID = "myLabelCashManagement";
+            //myControlEntity.Text = "More IdealAutomateCore Methods";
+            //myControlEntity.RowNumber = 0;
+            //myControlEntity.ColumnNumber = 1;
+            //myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
 
 
@@ -86,10 +86,11 @@ namespace ScriptGenerator {
 
             SqlCommand cmd = new SqlCommand();
 
-            cmd.CommandText = "SELECT Method FROM Methods order by Method";
+            cmd.CommandText = "SELECT * FROM Methods order by Category, Method";
             cmd.Connection = con;
             int intCol = 0;
             int intRow = 0;
+            string strPreviousCategory = "";
 
             try {
                 con.Open();
@@ -102,6 +103,25 @@ namespace ScriptGenerator {
                         intCol++;
                     }
                     string strMethodName = reader.GetString(0);
+                    string strCategory = reader.GetString(1);
+            
+                    if (strCategory != strPreviousCategory) {
+                        if (intRow > 18) {
+                            intRow = 1;
+                            intCol++;
+                        }
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.Label;
+                        myControlEntity.ID = "lbl" + strCategory.Replace(" ","");
+                        myControlEntity.Text = strCategory;
+                        myControlEntity.RowNumber = intRow;
+                        myControlEntity.ColumnNumber = intCol;
+                        myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
+                        myControlEntity.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+                        strPreviousCategory = strCategory;
+                        intRow++;
+                    }
                     myControlEntity.ControlEntitySetDefaults();
                     myControlEntity.ControlType = ControlType.Button;
                     myControlEntity.ID = "myButton" + strMethodName;
@@ -199,7 +219,7 @@ namespace ScriptGenerator {
             string strVariables1Value = "";
             string strVariables2Value = "";
             GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
+            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
             DisplayWindowAgain:
 
             if (strButtonPressed == "btnCancel") {
@@ -227,7 +247,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.Heading;
                     myControlEntity1.ID = "lblIEGoToURL";
-                    myControlEntity1.Text = "Activate Window By Title";
+                    myControlEntity1.Text = "IE Go To URL";
                     myControlEntity1.Width = 300;
                     myControlEntity1.RowNumber = 0;
                     myControlEntity1.ColumnNumber = 0;
@@ -273,7 +293,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtWebsiteURL";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorWebsiteURLx", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorWebsiteURLx");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -294,8 +314,8 @@ namespace ScriptGenerator {
                     myControlEntity1.Width = 150;
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 3;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptsDefaultValue", "IdealAutomateDB");
-                    strScripts = myActions.GetValueByKey("ScriptsDefaultValue", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptsDefaultValue");
+                    strScripts = myActions.GetValueByKey("ScriptsDefaultValue");
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     if (strScripts != "--Select Item ---") {
@@ -318,7 +338,7 @@ namespace ScriptGenerator {
                         int intScripts = 0;
                         Int32.TryParse(strScripts, out intScripts);
                         myControlEntity1.ParentLkDDLNamesItemsInc = intScripts;
-                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables", "IdealAutomateDB");
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables");
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                     }
 
@@ -337,7 +357,7 @@ namespace ScriptGenerator {
                     cbp.Add(new ComboBoxPair("true", "true"));
                     cbp.Add(new ComboBoxPair("false", "false"));
                     myControlEntity1.ListOfKeyValuePairs = cbp;
-                    myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorUseNewTab", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorUseNewTab");
                     if (myControlEntity1.SelectedValue == null) {
                         myControlEntity1.SelectedValue = "--Select Item ---";
                     }
@@ -372,10 +392,10 @@ namespace ScriptGenerator {
                     }
                     string strWebsiteURLx = myListControlEntity1.Find(x => x.ID == "txtWebsiteURL").Text;
                     string strUseNewTab = myListControlEntity1.Find(x => x.ID == "cbxUseNewTab").SelectedValue;
-                    myActions.SetValueByKey("ScriptsDefaultValue", strScripts, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorVariables", strVariablesValue, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorWebsiteURLx", strWebsiteURLx, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorUseNewTab", strUseNewTab, "IdealAutomateDB");
+                    myActions.SetValueByKey("ScriptsDefaultValue", strScripts);
+                    myActions.SetValueByKey("ScriptGeneratorVariables", strVariablesValue);
+                    myActions.SetValueByKey("ScriptGeneratorWebsiteURLx", strWebsiteURLx);
+                    myActions.SetValueByKey("ScriptGeneratorUseNewTab", strUseNewTab);
 
                     if (strButtonPressed == "btnDDLRefresh") {
                         goto DisplayIEGoToURLWindow;
@@ -400,7 +420,7 @@ namespace ScriptGenerator {
                         myActions.MessageBoxShow(strGeneratedLinex);
                     }
                     GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
                     goto DisplayWindowAgain;
                     break;
                 case "myButtonWindowMultipleControls":
@@ -468,7 +488,7 @@ namespace ScriptGenerator {
                     cbp.Add(new ComboBoxPair("Box", "Box"));
                     cbp.Add(new ComboBoxPair("Arrow", "Arrow"));
                     myControlEntity1.ListOfKeyValuePairs = cbp;
-                    myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorShape", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorShape");
                     if (myControlEntity1.SelectedValue == null) {
                         myControlEntity1.SelectedValue = "--Select Item ---";
                     }
@@ -495,7 +515,7 @@ namespace ScriptGenerator {
                     cbp1.Add(new ComboBoxPair("Down", "Down"));
 
                     myControlEntity1.ListOfKeyValuePairs = cbp1;
-                    myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorOrientation", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorOrientation");
                     if (myControlEntity1.SelectedValue == null) {
                         myControlEntity1.SelectedValue = "--Select Item ---";
                     }
@@ -516,7 +536,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtTitle";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorTitlex", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorTitlex");
                     myControlEntity1.RowNumber = intRowCtr;                    
                     myControlEntity1.ColumnNumber = 1;
                     myControlEntity1.ColumnSpan = 5;
@@ -542,7 +562,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtContent";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorContentx", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorContentx");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.Height = 100;
                     myControlEntity1.Multiline = true;
@@ -562,7 +582,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtTop";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorTopx", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorTopx");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -579,7 +599,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtLeft";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorLeftx", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorLeftx");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -593,12 +613,12 @@ namespace ScriptGenerator {
                     string strLeftx = myListControlEntity1.Find(x => x.ID == "txtLeft").Text;
                     string strShape = myListControlEntity1.Find(x => x.ID == "cbxShape").SelectedValue;
                     string strOrientation = myListControlEntity1.Find(x => x.ID == "cbxOrientation").SelectedValue;
-                    myActions.SetValueByKey("ScriptGeneratorTitlex", strTitlex, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorContentx", strContentx, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorTopx", strTopx, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorLeftx", strLeftx, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorShape", strShape, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorOrientation", strOrientation, "IdealAutomateDB");
+                    myActions.SetValueByKey("ScriptGeneratorTitlex", strTitlex);
+                    myActions.SetValueByKey("ScriptGeneratorContentx", strContentx);
+                    myActions.SetValueByKey("ScriptGeneratorTopx", strTopx);
+                    myActions.SetValueByKey("ScriptGeneratorLeftx", strLeftx);
+                    myActions.SetValueByKey("ScriptGeneratorShape", strShape);
+                    myActions.SetValueByKey("ScriptGeneratorOrientation", strOrientation);
 
 
                     if (strButtonPressed == "btnOkay") {
@@ -611,7 +631,7 @@ namespace ScriptGenerator {
                         myActions.MessageBoxShow(strGeneratedLinex);
                     }
                     GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
                     goto DisplayWindowAgain;
                     break;
                 case "myButtonStopService":
@@ -669,7 +689,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtServiceName";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorServiceNamex", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorServiceNamex");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -690,8 +710,8 @@ namespace ScriptGenerator {
                     myControlEntity1.Width = 150;
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 3;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptsDefaultValue", "IdealAutomateDB");
-                    strScripts = myActions.GetValueByKey("ScriptsDefaultValue", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptsDefaultValue");
+                    strScripts = myActions.GetValueByKey("ScriptsDefaultValue");
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     if (strScripts != "--Select Item ---") {
@@ -714,7 +734,7 @@ namespace ScriptGenerator {
                         int intScripts = 0;
                         Int32.TryParse(strScripts, out intScripts);
                         myControlEntity1.ParentLkDDLNamesItemsInc = intScripts;
-                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables", "IdealAutomateDB");
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables");
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                     }
 
@@ -730,7 +750,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
 
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorTimeoutMilliseconds", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorTimeoutMilliseconds");
 
                     myControlEntity1.ID = "txtTimeoutMilliseconds";
                     myControlEntity1.RowNumber = intRowCtr;
@@ -757,10 +777,10 @@ namespace ScriptGenerator {
                     }
                     strServiceNamex = myListControlEntity1.Find(x => x.ID == "txtServiceName").Text;
                     strTimeoutMilliseconds = myListControlEntity1.Find(x => x.ID == "txtTimeoutMilliseconds").Text;
-                    myActions.SetValueByKey("ScriptsDefaultValue", strScripts, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorVariables", strVariablesValue, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorServiceNamex", strServiceNamex, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorTimeoutMilliseconds", strTimeoutMilliseconds, "IdealAutomateDB");
+                    myActions.SetValueByKey("ScriptsDefaultValue", strScripts);
+                    myActions.SetValueByKey("ScriptGeneratorVariables", strVariablesValue);
+                    myActions.SetValueByKey("ScriptGeneratorServiceNamex", strServiceNamex);
+                    myActions.SetValueByKey("ScriptGeneratorTimeoutMilliseconds", strTimeoutMilliseconds);
 
                     if (strButtonPressed == "btnDDLRefresh") {
                         goto DisplayStopService;
@@ -785,7 +805,7 @@ namespace ScriptGenerator {
                         myActions.MessageBoxShow(strGeneratedLinex);
                     }
                     GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
                     goto DisplayWindowAgain;
                     break;
                 case "myButtonStartService":
@@ -843,7 +863,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtServiceName";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorServiceNamex", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorServiceNamex");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -864,8 +884,8 @@ namespace ScriptGenerator {
                     myControlEntity1.Width = 150;
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 3;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptsDefaultValue", "IdealAutomateDB");
-                    strScripts = myActions.GetValueByKey("ScriptsDefaultValue", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptsDefaultValue");
+                    strScripts = myActions.GetValueByKey("ScriptsDefaultValue");
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     if (strScripts != "--Select Item ---") {
@@ -888,7 +908,7 @@ namespace ScriptGenerator {
                         int intScripts = 0;
                         Int32.TryParse(strScripts, out intScripts);
                         myControlEntity1.ParentLkDDLNamesItemsInc = intScripts;
-                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables", "IdealAutomateDB");
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables");
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                     }
 
@@ -904,7 +924,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
 
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorTimeoutMilliseconds", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorTimeoutMilliseconds");
 
                     myControlEntity1.ID = "txtTimeoutMilliseconds";
                     myControlEntity1.RowNumber = intRowCtr;
@@ -931,10 +951,10 @@ namespace ScriptGenerator {
                     }
                     strServiceNamex = myListControlEntity1.Find(x => x.ID == "txtServiceName").Text;
                     strTimeoutMilliseconds = myListControlEntity1.Find(x => x.ID == "txtTimeoutMilliseconds").Text;
-                    myActions.SetValueByKey("ScriptsDefaultValue", strScripts, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorVariables", strVariablesValue, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorServiceNamex", strServiceNamex, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorTimeoutMilliseconds", strTimeoutMilliseconds, "IdealAutomateDB");
+                    myActions.SetValueByKey("ScriptsDefaultValue", strScripts);
+                    myActions.SetValueByKey("ScriptGeneratorVariables", strVariablesValue);
+                    myActions.SetValueByKey("ScriptGeneratorServiceNamex", strServiceNamex);
+                    myActions.SetValueByKey("ScriptGeneratorTimeoutMilliseconds", strTimeoutMilliseconds);
 
                     if (strButtonPressed == "btnDDLRefresh") {
                         goto DisplayStartService;
@@ -959,7 +979,7 @@ namespace ScriptGenerator {
                         myActions.MessageBoxShow(strGeneratedLinex);
                     }
                     GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
                     goto DisplayWindowAgain;
                     break;
                 case "myButtonSleep":
@@ -1017,7 +1037,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtMillisecondsToSleep";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorSleepMillisecondsToSleep", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorSleepMillisecondsToSleep");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -1038,8 +1058,8 @@ namespace ScriptGenerator {
                     myControlEntity1.Width = 150;
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 3;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptsDefaultValue", "IdealAutomateDB");
-                    strScripts = myActions.GetValueByKey("ScriptsDefaultValue", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptsDefaultValue");
+                    strScripts = myActions.GetValueByKey("ScriptsDefaultValue");
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     if (strScripts != "--Select Item ---") {
@@ -1062,7 +1082,7 @@ namespace ScriptGenerator {
                         int intScripts = 0;
                         Int32.TryParse(strScripts, out intScripts);
                         myControlEntity1.ParentLkDDLNamesItemsInc = intScripts;
-                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables", "IdealAutomateDB");
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables");
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                     }
 
@@ -1085,9 +1105,9 @@ namespace ScriptGenerator {
                         strVariablesValue = myListControlEntity1.Find(x => x.ID == "Variables").SelectedValue;
                     }
                     string strMillisecondsToSleep = myListControlEntity1.Find(x => x.ID == "txtMillisecondsToSleep").Text;
-                    myActions.SetValueByKey("ScriptsDefaultValue", strScripts, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorVariables", strVariablesValue, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorSleepMillisecondsToSleep", strMillisecondsToSleep, "IdealAutomateDB");
+                    myActions.SetValueByKey("ScriptsDefaultValue", strScripts);
+                    myActions.SetValueByKey("ScriptGeneratorVariables", strVariablesValue);
+                    myActions.SetValueByKey("ScriptGeneratorSleepMillisecondsToSleep", strMillisecondsToSleep);
 
                     if (strButtonPressed == "btnDDLRefresh") {
                         goto DisplaySleepWindow;
@@ -1112,7 +1132,7 @@ namespace ScriptGenerator {
                         myActions.MessageBoxShow(strGeneratedLinex);
                     }
                     GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
                     goto DisplayWindowAgain;
                     break;
                 case "myButtonShiftClick":
@@ -1170,7 +1190,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtmyArray";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorShiftClickmyArray", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorShiftClickmyArray");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -1191,8 +1211,8 @@ namespace ScriptGenerator {
                     myControlEntity1.Width = 150;
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 3;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptsDefaultValue", "IdealAutomateDB");
-                    strScripts = myActions.GetValueByKey("ScriptsDefaultValue", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptsDefaultValue");
+                    strScripts = myActions.GetValueByKey("ScriptsDefaultValue");
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     if (strScripts != "--Select Item ---") {
@@ -1215,7 +1235,7 @@ namespace ScriptGenerator {
                         int intScripts = 0;
                         Int32.TryParse(strScripts, out intScripts);
                         myControlEntity1.ParentLkDDLNamesItemsInc = intScripts;
-                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables", "IdealAutomateDB");
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables");
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                     }
 
@@ -1279,9 +1299,9 @@ namespace ScriptGenerator {
                         strVariablesValue = myListControlEntity1.Find(x => x.ID == "Variables").SelectedValue;
                     }
                     strmyArray = myListControlEntity1.Find(x => x.ID == "txtmyArray").Text;
-                    myActions.SetValueByKey("ScriptsDefaultValue", strScripts, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorVariables", strVariablesValue, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorShiftClickmyArray", strmyArray, "IdealAutomateDB");
+                    myActions.SetValueByKey("ScriptsDefaultValue", strScripts);
+                    myActions.SetValueByKey("ScriptGeneratorVariables", strVariablesValue);
+                    myActions.SetValueByKey("ScriptGeneratorShiftClickmyArray", strmyArray);
 
                     if (strButtonPressed == "btnDDLRefresh") {
                         goto DisplayShiftClick;
@@ -1306,7 +1326,7 @@ namespace ScriptGenerator {
                         myActions.MessageBoxShow(strGeneratedLinex);
                     }
                     GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
                     goto DisplayWindowAgain;
                     break;
                 case "myButtonSetValueByKey":
@@ -1364,7 +1384,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtKey";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorSetValueByKeyKey", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorSetValueByKeyKey");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -1386,8 +1406,8 @@ namespace ScriptGenerator {
                     myControlEntity1.Width = 150;
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 3;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts1DefaultValue", "IdealAutomateDB");
-                    strScripts = myActions.GetValueByKey("Scripts1DefaultValue", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts1DefaultValue");
+                    strScripts = myActions.GetValueByKey("Scripts1DefaultValue");
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     if (strScripts != "--Select Item ---") {
@@ -1411,7 +1431,7 @@ namespace ScriptGenerator {
                         int intScripts = 0;
                         Int32.TryParse(strScripts, out intScripts);
                         myControlEntity1.ParentLkDDLNamesItemsInc = intScripts;
-                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables1", "IdealAutomateDB");
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables1");
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                     }
 
@@ -1428,7 +1448,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtValue";
-                    myControlEntity1.Text  = myActions.GetValueByKey("ScriptGeneratorSetValueByKeyValue", "IdealAutomateDB");
+                    myControlEntity1.Text  = myActions.GetValueByKey("ScriptGeneratorSetValueByKeyValue");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -1450,8 +1470,8 @@ namespace ScriptGenerator {
                     myControlEntity1.Width = 150;
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 3;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts2DefaultValue", "IdealAutomateDB");
-                    strScripts2 = myActions.GetValueByKey("Scripts2DefaultValue", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts2DefaultValue");
+                    strScripts2 = myActions.GetValueByKey("Scripts2DefaultValue");
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     if (strScripts2 != "--Select Item ---") {
@@ -1475,7 +1495,7 @@ namespace ScriptGenerator {
                         int intScripts2 = 0;
                         Int32.TryParse(strScripts2, out intScripts2);
                         myControlEntity1.ParentLkDDLNamesItemsInc = intScripts2;
-                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables2", "IdealAutomateDB");
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables2");
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                     }
 
@@ -1509,12 +1529,12 @@ namespace ScriptGenerator {
                     }
                     string strKey = myListControlEntity1.Find(x => x.ID == "txtKey").Text;
                     string strValue = myListControlEntity1.Find(x => x.ID == "txtValue").Text;
-                    myActions.SetValueByKey("Scripts1DefaultValue", strScripts1, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorVariables1", strVariables1Value, "IdealAutomateDB");
-                    myActions.SetValueByKey("Scripts2DefaultValue", strScripts2, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorVariables2", strVariables2Value, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorSetValueByKeyKey", strKey, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorSetValueByKeyValue", strValue, "IdealAutomateDB");
+                    myActions.SetValueByKey("Scripts1DefaultValue", strScripts1);
+                    myActions.SetValueByKey("ScriptGeneratorVariables1", strVariables1Value);
+                    myActions.SetValueByKey("Scripts2DefaultValue", strScripts2);
+                    myActions.SetValueByKey("ScriptGeneratorVariables2", strVariables2Value);
+                    myActions.SetValueByKey("ScriptGeneratorSetValueByKeyKey", strKey);
+                    myActions.SetValueByKey("ScriptGeneratorSetValueByKeyValue", strValue);
 
 
                     if (strButtonPressed == "btnDDLRefresh") {
@@ -1551,7 +1571,7 @@ namespace ScriptGenerator {
                         myActions.MessageBoxShow(strGeneratedLinex);
                     }
                     GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
                     goto DisplayWindowAgain;
                     break;
                 case "myButtonRunSync":
@@ -1609,7 +1629,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtExecutable";
-                    myControlEntity1.Text  = myActions.GetValueByKey("ScriptGeneratorRunSyncExecutable", "IdealAutomateDB");
+                    myControlEntity1.Text  = myActions.GetValueByKey("ScriptGeneratorRunSyncExecutable");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -1631,8 +1651,8 @@ namespace ScriptGenerator {
                     myControlEntity1.Width = 150;
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 3;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts1DefaultValue", "IdealAutomateDB");
-                    strScripts = myActions.GetValueByKey("Scripts1DefaultValue", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts1DefaultValue");
+                    strScripts = myActions.GetValueByKey("Scripts1DefaultValue");
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     if (strScripts != "--Select Item ---") {
@@ -1656,7 +1676,7 @@ namespace ScriptGenerator {
                         int intScripts = 0;
                         Int32.TryParse(strScripts, out intScripts);
                         myControlEntity1.ParentLkDDLNamesItemsInc = intScripts;
-                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables1", "IdealAutomateDB");
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables1");
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                     }
 
@@ -1672,7 +1692,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtContent";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorRunSyncContent", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorRunSyncContent");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -1694,8 +1714,8 @@ namespace ScriptGenerator {
                     myControlEntity1.Width = 150;
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 3;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts2DefaultValue", "IdealAutomateDB");
-                    strScripts2 = myActions.GetValueByKey("Scripts2DefaultValue", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts2DefaultValue");
+                    strScripts2 = myActions.GetValueByKey("Scripts2DefaultValue");
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     if (strScripts2 != "--Select Item ---") {
@@ -1719,7 +1739,7 @@ namespace ScriptGenerator {
                         int intScripts2 = 0;
                         Int32.TryParse(strScripts2, out intScripts2);
                         myControlEntity1.ParentLkDDLNamesItemsInc = intScripts2;
-                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables2", "IdealAutomateDB");
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables2");
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                     }
 
@@ -1754,13 +1774,13 @@ namespace ScriptGenerator {
                     }
                     string strExecutable = myListControlEntity1.Find(x => x.ID == "txtExecutable").Text;
                     string strContent = myListControlEntity1.Find(x => x.ID == "txtContent").Text;
-                    myActions.SetValueByKey("Scripts1DefaultValue", strScripts1, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorVariables1", strVariables1Value, "IdealAutomateDB");
-                    myActions.SetValueByKey("Scripts2DefaultValue", strScripts2, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorVariables2", strVariables2Value, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorRunSyncExecutable", strExecutable, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorRunSyncContent", strContent, "IdealAutomateDB");
-                    //   myActions.SetValueByKey("ScriptGeneratorShowOption", strShowOption, "IdealAutomateDB");
+                    myActions.SetValueByKey("Scripts1DefaultValue", strScripts1);
+                    myActions.SetValueByKey("ScriptGeneratorVariables1", strVariables1Value);
+                    myActions.SetValueByKey("Scripts2DefaultValue", strScripts2);
+                    myActions.SetValueByKey("ScriptGeneratorVariables2", strVariables2Value);
+                    myActions.SetValueByKey("ScriptGeneratorRunSyncExecutable", strExecutable);
+                    myActions.SetValueByKey("ScriptGeneratorRunSyncContent", strContent);
+                    //   myActions.SetValueByKey("ScriptGeneratorShowOption", strShowOption);
 
                     if (strButtonPressed == "btnDDLRefresh") {
                         goto DisplayRunSync;
@@ -1796,7 +1816,7 @@ namespace ScriptGenerator {
                         myActions.MessageBoxShow(strGeneratedLinex);
                     }
                     GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
                     goto DisplayWindowAgain;
                     break;
                 case "myButtonRun":
@@ -1854,7 +1874,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtExecutable";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorRunExecutable", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorRunExecutable");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -1876,8 +1896,8 @@ namespace ScriptGenerator {
                     myControlEntity1.Width = 150;
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 3;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts1DefaultValue", "IdealAutomateDB");
-                    strScripts = myActions.GetValueByKey("Scripts1DefaultValue", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts1DefaultValue");
+                    strScripts = myActions.GetValueByKey("Scripts1DefaultValue");
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     if (strScripts != "--Select Item ---") {
@@ -1901,7 +1921,7 @@ namespace ScriptGenerator {
                         int intScripts = 0;
                         Int32.TryParse(strScripts, out intScripts);
                         myControlEntity1.ParentLkDDLNamesItemsInc = intScripts;
-                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables1", "IdealAutomateDB");
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables1");
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                     }
 
@@ -1917,7 +1937,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtContent";
-                    myControlEntity1.Text  = myActions.GetValueByKey("ScriptGeneratorRunContent", "IdealAutomateDB");
+                    myControlEntity1.Text  = myActions.GetValueByKey("ScriptGeneratorRunContent");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -1939,8 +1959,8 @@ namespace ScriptGenerator {
                     myControlEntity1.Width = 150;
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 3;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts2DefaultValue", "IdealAutomateDB");
-                    strScripts2 = myActions.GetValueByKey("Scripts2DefaultValue", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts2DefaultValue");
+                    strScripts2 = myActions.GetValueByKey("Scripts2DefaultValue");
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     if (strScripts2 != "--Select Item ---") {
@@ -1964,7 +1984,7 @@ namespace ScriptGenerator {
                         int intScripts2 = 0;
                         Int32.TryParse(strScripts2, out intScripts2);
                         myControlEntity1.ParentLkDDLNamesItemsInc = intScripts2;
-                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables2", "IdealAutomateDB");
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables2");
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                     }
 
@@ -1999,13 +2019,13 @@ namespace ScriptGenerator {
                     }
                     strExecutable = myListControlEntity1.Find(x => x.ID == "txtExecutable").Text;
                     strContent = myListControlEntity1.Find(x => x.ID == "txtContent").Text;
-                    myActions.SetValueByKey("Scripts1DefaultValue", strScripts1, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorVariables1", strVariables1Value, "IdealAutomateDB");
-                    myActions.SetValueByKey("Scripts2DefaultValue", strScripts2, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorVariables2", strVariables2Value, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorRunExecutable", strExecutable, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorRunContent", strContent, "IdealAutomateDB");
-                    //   myActions.SetValueByKey("ScriptGeneratorShowOption", strShowOption, "IdealAutomateDB");
+                    myActions.SetValueByKey("Scripts1DefaultValue", strScripts1);
+                    myActions.SetValueByKey("ScriptGeneratorVariables1", strVariables1Value);
+                    myActions.SetValueByKey("Scripts2DefaultValue", strScripts2);
+                    myActions.SetValueByKey("ScriptGeneratorVariables2", strVariables2Value);
+                    myActions.SetValueByKey("ScriptGeneratorRunExecutable", strExecutable);
+                    myActions.SetValueByKey("ScriptGeneratorRunContent", strContent);
+                    //   myActions.SetValueByKey("ScriptGeneratorShowOption", strShowOption);
 
                     if (strButtonPressed == "btnDDLRefresh") {
                         goto DisplayRun;
@@ -2041,7 +2061,7 @@ namespace ScriptGenerator {
                         myActions.MessageBoxShow(strGeneratedLinex);
                     }
                     GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
                     goto DisplayWindowAgain;
                     break;
                 case "myButtonRightClick":
@@ -2099,7 +2119,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtmyArray";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorRightClickmyArray", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorRightClickmyArray");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -2120,8 +2140,8 @@ namespace ScriptGenerator {
                     myControlEntity1.Width = 150;
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 3;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptsDefaultValue", "IdealAutomateDB");
-                    strScripts = myActions.GetValueByKey("ScriptsDefaultValue", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptsDefaultValue");
+                    strScripts = myActions.GetValueByKey("ScriptsDefaultValue");
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     if (strScripts != "--Select Item ---") {
@@ -2144,7 +2164,7 @@ namespace ScriptGenerator {
                         int intScripts = 0;
                         Int32.TryParse(strScripts, out intScripts);
                         myControlEntity1.ParentLkDDLNamesItemsInc = intScripts;
-                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables", "IdealAutomateDB");
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables");
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                     }
 
@@ -2208,9 +2228,9 @@ namespace ScriptGenerator {
                         strVariablesValue = myListControlEntity1.Find(x => x.ID == "Variables").SelectedValue;
                     }
                     strmyArray = myListControlEntity1.Find(x => x.ID == "txtmyArray").Text;
-                    myActions.SetValueByKey("ScriptsDefaultValue", strScripts, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorVariables", strVariablesValue, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorRightClickmyArray", strmyArray, "IdealAutomateDB");
+                    myActions.SetValueByKey("ScriptsDefaultValue", strScripts);
+                    myActions.SetValueByKey("ScriptGeneratorVariables", strVariablesValue);
+                    myActions.SetValueByKey("ScriptGeneratorRightClickmyArray", strmyArray);
 
                     if (strButtonPressed == "btnDDLRefresh") {
                         goto DisplayRightClick;
@@ -2235,7 +2255,7 @@ namespace ScriptGenerator {
                         myActions.MessageBoxShow(strGeneratedLinex);
                     }
                     GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
                     goto DisplayWindowAgain;
                     break;
                 case "myButtonRestartService":
@@ -2293,7 +2313,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtServiceName";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorServiceNamex", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorServiceNamex");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -2314,8 +2334,8 @@ namespace ScriptGenerator {
                     myControlEntity1.Width = 150;
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 3;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptsDefaultValue", "IdealAutomateDB");
-                    strScripts = myActions.GetValueByKey("ScriptsDefaultValue", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptsDefaultValue");
+                    strScripts = myActions.GetValueByKey("ScriptsDefaultValue");
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     if (strScripts != "--Select Item ---") {
@@ -2338,7 +2358,7 @@ namespace ScriptGenerator {
                         int intScripts = 0;
                         Int32.TryParse(strScripts, out intScripts);
                         myControlEntity1.ParentLkDDLNamesItemsInc = intScripts;
-                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables", "IdealAutomateDB");
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables");
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                     }
 
@@ -2354,7 +2374,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
 
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorTimeoutMilliseconds", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorTimeoutMilliseconds");
 
                     myControlEntity1.ID = "txtTimeoutMilliseconds";
                     myControlEntity1.RowNumber = intRowCtr;
@@ -2381,10 +2401,10 @@ namespace ScriptGenerator {
                     }
                     strServiceNamex = myListControlEntity1.Find(x => x.ID == "txtServiceName").Text;
                     strTimeoutMilliseconds = myListControlEntity1.Find(x => x.ID == "txtTimeoutMilliseconds").Text;
-                    myActions.SetValueByKey("ScriptsDefaultValue", strScripts, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorVariables", strVariablesValue, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorServiceNamex", strServiceNamex, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorTimeoutMilliseconds", strTimeoutMilliseconds, "IdealAutomateDB");
+                    myActions.SetValueByKey("ScriptsDefaultValue", strScripts);
+                    myActions.SetValueByKey("ScriptGeneratorVariables", strVariablesValue);
+                    myActions.SetValueByKey("ScriptGeneratorServiceNamex", strServiceNamex);
+                    myActions.SetValueByKey("ScriptGeneratorTimeoutMilliseconds", strTimeoutMilliseconds);
 
                     if (strButtonPressed == "btnDDLRefresh") {
                         goto DisplayRestartService;
@@ -2409,7 +2429,7 @@ namespace ScriptGenerator {
                         myActions.MessageBoxShow(strGeneratedLinex);
                     }
                     GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
                     goto DisplayWindowAgain;
                     break;
                 case "myButtonPutWindowTitleInEntity":
@@ -2466,7 +2486,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtResultValue";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorPutWindowTitleInEntityResultValue", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorPutWindowTitleInEntityResultValue");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -2488,8 +2508,8 @@ namespace ScriptGenerator {
                     myControlEntity1.Width = 150;
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 3;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts2DefaultValue", "IdealAutomateDB");
-                    strScripts2 = myActions.GetValueByKey("Scripts2DefaultValue", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts2DefaultValue");
+                    strScripts2 = myActions.GetValueByKey("Scripts2DefaultValue");
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     if (strScripts2 != "--Select Item ---") {
@@ -2513,7 +2533,7 @@ namespace ScriptGenerator {
                         int intScripts2 = 0;
                         Int32.TryParse(strScripts2, out intScripts2);
                         myControlEntity1.ParentLkDDLNamesItemsInc = intScripts2;
-                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables2", "IdealAutomateDB");
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables2");
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                     }
 
@@ -2537,10 +2557,10 @@ namespace ScriptGenerator {
                     }
                     string strResultValue = myListControlEntity1.Find(x => x.ID == "txtResultValue").Text;
                     // string strShowOption = myListControlEntity1.Find(x => x.ID == "cbxShowOption").SelectedValue;
-                    myActions.SetValueByKey("Scripts2DefaultValue", strScripts2, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorVariables2", strVariables2Value, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorPutWindowTitleInEntityResultValue", strResultValue, "IdealAutomateDB");
-                    //   myActions.SetValueByKey("ScriptGeneratorShowOption", strShowOption, "IdealAutomateDB");
+                    myActions.SetValueByKey("Scripts2DefaultValue", strScripts2);
+                    myActions.SetValueByKey("ScriptGeneratorVariables2", strVariables2Value);
+                    myActions.SetValueByKey("ScriptGeneratorPutWindowTitleInEntityResultValue", strResultValue);
+                    //   myActions.SetValueByKey("ScriptGeneratorShowOption", strShowOption);
 
                     if (strButtonPressed == "btnDDLRefresh") {
                         goto DisplayPutWindowTitleInEntity;
@@ -2566,7 +2586,7 @@ namespace ScriptGenerator {
                         myActions.MessageBoxShow(strGeneratedLinex);
                     }
                     GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
                     goto DisplayWindowAgain;
 
                     break;
@@ -2625,7 +2645,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtResultURL";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorPutInternetExplorerTabURLContainingStringInEntityResultURL", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorPutInternetExplorerTabURLContainingStringInEntityResultURL");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -2647,8 +2667,8 @@ namespace ScriptGenerator {
                     myControlEntity1.Width = 150;
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 3;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts2DefaultValue", "IdealAutomateDB");
-                    strScripts2 = myActions.GetValueByKey("Scripts2DefaultValue", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts2DefaultValue");
+                    strScripts2 = myActions.GetValueByKey("Scripts2DefaultValue");
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     if (strScripts2 != "--Select Item ---") {
@@ -2672,7 +2692,7 @@ namespace ScriptGenerator {
                         int intScripts2 = 0;
                         Int32.TryParse(strScripts2, out intScripts2);
                         myControlEntity1.ParentLkDDLNamesItemsInc = intScripts2;
-                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables2", "IdealAutomateDB");
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables2");
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                     }
                     intRowCtr++;
@@ -2706,7 +2726,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtSearchString";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorPutInternetExplorerTabURLContainingStringInEntitySearchString", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorPutInternetExplorerTabURLContainingStringInEntitySearchString");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -2728,8 +2748,8 @@ namespace ScriptGenerator {
                     myControlEntity1.Width = 150;
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 3;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts1DefaultValue", "IdealAutomateDB");
-                    strScripts = myActions.GetValueByKey("Scripts1DefaultValue", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts1DefaultValue");
+                    strScripts = myActions.GetValueByKey("Scripts1DefaultValue");
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     if (strScripts != "--Select Item ---") {
@@ -2753,7 +2773,7 @@ namespace ScriptGenerator {
                         int intScripts = 0;
                         Int32.TryParse(strScripts, out intScripts);
                         myControlEntity1.ParentLkDDLNamesItemsInc = intScripts;
-                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables1", "IdealAutomateDB");
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables1");
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                     }
 
@@ -2786,13 +2806,13 @@ namespace ScriptGenerator {
                     string strSearchString = myListControlEntity1.Find(x => x.ID == "txtSearchString").Text;
                     string strResultURL = myListControlEntity1.Find(x => x.ID == "txtResultURL").Text;
                     // string strShowOption = myListControlEntity1.Find(x => x.ID == "cbxShowOption").SelectedValue;
-                    myActions.SetValueByKey("Scripts1DefaultValue", strScripts1, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorVariables1", strVariables1Value, "IdealAutomateDB");
-                    myActions.SetValueByKey("Scripts2DefaultValue", strScripts2, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorVariables2", strVariables2Value, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorPutInternetExplorerTabURLContainingStringInEntitySearchString", strSearchString, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorPutInternetExplorerTabURLContainingStringInEntityResultURL", strResultURL, "IdealAutomateDB");
-                    //   myActions.SetValueByKey("ScriptGeneratorShowOption", strShowOption, "IdealAutomateDB");
+                    myActions.SetValueByKey("Scripts1DefaultValue", strScripts1);
+                    myActions.SetValueByKey("ScriptGeneratorVariables1", strVariables1Value);
+                    myActions.SetValueByKey("Scripts2DefaultValue", strScripts2);
+                    myActions.SetValueByKey("ScriptGeneratorVariables2", strVariables2Value);
+                    myActions.SetValueByKey("ScriptGeneratorPutInternetExplorerTabURLContainingStringInEntitySearchString", strSearchString);
+                    myActions.SetValueByKey("ScriptGeneratorPutInternetExplorerTabURLContainingStringInEntityResultURL", strResultURL);
+                    //   myActions.SetValueByKey("ScriptGeneratorShowOption", strShowOption);
 
                     if (strButtonPressed == "btnDDLRefresh") {
                         goto DisplayPutInternetExplorerTabURLContainingStringInEntity;
@@ -2828,7 +2848,7 @@ namespace ScriptGenerator {
                         myActions.MessageBoxShow(strGeneratedLinex);
                     }
                     GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
                     goto DisplayWindowAgain;
                     break;
                 case "myButtonPutInternetExplorerTabTitleInEntity":
@@ -2885,7 +2905,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtResultValue";
-                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorPutInternetExplorerTabTitleInEntityResultValue", "IdealAutomateDB");
+                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorPutInternetExplorerTabTitleInEntityResultValue");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -2907,8 +2927,8 @@ namespace ScriptGenerator {
                     myControlEntity1.Width = 150;
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 3;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts2DefaultValue", "IdealAutomateDB");
-                    strScripts2 = myActions.GetValueByKey("Scripts2DefaultValue", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts2DefaultValue");
+                    strScripts2 = myActions.GetValueByKey("Scripts2DefaultValue");
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     if (strScripts2 != "--Select Item ---") {
@@ -2932,7 +2952,7 @@ namespace ScriptGenerator {
                         int intScripts2 = 0;
                         Int32.TryParse(strScripts2, out intScripts2);
                         myControlEntity1.ParentLkDDLNamesItemsInc = intScripts2;
-                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables2", "IdealAutomateDB");
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables2");
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                     }
 
@@ -2956,10 +2976,10 @@ namespace ScriptGenerator {
                     }
                     strResultValue = myListControlEntity1.Find(x => x.ID == "txtResultValue").Text;
                     // string strShowOption = myListControlEntity1.Find(x => x.ID == "cbxShowOption").SelectedValue;
-                    myActions.SetValueByKey("Scripts2DefaultValue", strScripts2, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorVariables2", strVariables2Value, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorPutInternetExplorerTabTitleInEntityResultValue", strResultValue, "IdealAutomateDB");
-                    //   myActions.SetValueByKey("ScriptGeneratorShowOption", strShowOption, "IdealAutomateDB");
+                    myActions.SetValueByKey("Scripts2DefaultValue", strScripts2);
+                    myActions.SetValueByKey("ScriptGeneratorVariables2", strVariables2Value);
+                    myActions.SetValueByKey("ScriptGeneratorPutInternetExplorerTabTitleInEntityResultValue", strResultValue);
+                    //   myActions.SetValueByKey("ScriptGeneratorShowOption", strShowOption);
 
                     if (strButtonPressed == "btnDDLRefresh") {
                         goto DisplayPutInternetExplorerTabTitleInEntity;
@@ -2985,7 +3005,7 @@ namespace ScriptGenerator {
                         myActions.MessageBoxShow(strGeneratedLinex);
                     }
                     GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
                     goto DisplayWindowAgain;
 
                     break;
@@ -3044,7 +3064,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtmyEntity";
-                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorPutEntityInClipboardmyEntity", "IdealAutomateDB");
+                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorPutEntityInClipboardmyEntity");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -3065,8 +3085,8 @@ namespace ScriptGenerator {
                     myControlEntity1.Width = 150;
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 3;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptsDefaultValue", "IdealAutomateDB");
-                    strScripts = myActions.GetValueByKey("ScriptsDefaultValue", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptsDefaultValue");
+                    strScripts = myActions.GetValueByKey("ScriptsDefaultValue");
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     if (strScripts != "--Select Item ---") {
@@ -3089,7 +3109,7 @@ namespace ScriptGenerator {
                         int intScripts = 0;
                         Int32.TryParse(strScripts, out intScripts);
                         myControlEntity1.ParentLkDDLNamesItemsInc = intScripts;
-                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables", "IdealAutomateDB");
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables");
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                     }
 
@@ -3112,9 +3132,9 @@ namespace ScriptGenerator {
                         strVariablesValue = myListControlEntity1.Find(x => x.ID == "Variables").SelectedValue;
                     }
                     string strMyEntity = myListControlEntity1.Find(x => x.ID == "txtmyEntity").Text;
-                    myActions.SetValueByKey("ScriptsDefaultValue", strScripts, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorVariables", strVariablesValue, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorPutEntityInClipboardmyEntity", strMyEntity, "IdealAutomateDB");
+                    myActions.SetValueByKey("ScriptsDefaultValue", strScripts);
+                    myActions.SetValueByKey("ScriptGeneratorVariables", strVariablesValue);
+                    myActions.SetValueByKey("ScriptGeneratorPutEntityInClipboardmyEntity", strMyEntity);
 
                     if (strButtonPressed == "btnDDLRefresh") {
                         goto DisplayPutEntityInClipboard;
@@ -3139,7 +3159,7 @@ namespace ScriptGenerator {
                         myActions.MessageBoxShow(strGeneratedLinex);
                     }
                     GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
                     goto DisplayWindowAgain;
                     break;
                 case "myButtonPutCursorPosition":
@@ -3196,7 +3216,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtResultValue";
-                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorPutCursorPositionResultValue", "IdealAutomateDB");
+                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorPutCursorPositionResultValue");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -3218,8 +3238,8 @@ namespace ScriptGenerator {
                     myControlEntity1.Width = 150;
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 3;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts2DefaultValue", "IdealAutomateDB");
-                    strScripts2 = myActions.GetValueByKey("Scripts2DefaultValue", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts2DefaultValue");
+                    strScripts2 = myActions.GetValueByKey("Scripts2DefaultValue");
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     if (strScripts2 != "--Select Item ---") {
@@ -3243,7 +3263,7 @@ namespace ScriptGenerator {
                         int intScripts2 = 0;
                         Int32.TryParse(strScripts2, out intScripts2);
                         myControlEntity1.ParentLkDDLNamesItemsInc = intScripts2;
-                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables2", "IdealAutomateDB");
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables2");
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                     }
 
@@ -3267,10 +3287,10 @@ namespace ScriptGenerator {
                     }
                     strResultValue = myListControlEntity1.Find(x => x.ID == "txtResultValue").Text;
                     // string strShowOption = myListControlEntity1.Find(x => x.ID == "cbxShowOption").SelectedValue;
-                    myActions.SetValueByKey("Scripts2DefaultValue", strScripts2, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorVariables2", strVariables2Value, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorPutCursorPositionResultValue", strResultValue, "IdealAutomateDB");
-                    //   myActions.SetValueByKey("ScriptGeneratorShowOption", strShowOption, "IdealAutomateDB");
+                    myActions.SetValueByKey("Scripts2DefaultValue", strScripts2);
+                    myActions.SetValueByKey("ScriptGeneratorVariables2", strVariables2Value);
+                    myActions.SetValueByKey("ScriptGeneratorPutCursorPositionResultValue", strResultValue);
+                    //   myActions.SetValueByKey("ScriptGeneratorShowOption", strShowOption);
 
                     if (strButtonPressed == "btnDDLRefresh") {
                         goto DisplayPutCursorPosition;
@@ -3296,7 +3316,7 @@ namespace ScriptGenerator {
                         myActions.MessageBoxShow(strGeneratedLinex);
                     }
                     GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
                     goto DisplayWindowAgain;
 
                     break;
@@ -3354,7 +3374,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtResultValue";
-                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorPutClipboardInEntityResultValue", "IdealAutomateDB");
+                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorPutClipboardInEntityResultValue");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -3376,8 +3396,8 @@ namespace ScriptGenerator {
                     myControlEntity1.Width = 150;
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 3;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts2DefaultValue", "IdealAutomateDB");
-                    strScripts2 = myActions.GetValueByKey("Scripts2DefaultValue", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts2DefaultValue");
+                    strScripts2 = myActions.GetValueByKey("Scripts2DefaultValue");
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     if (strScripts2 != "--Select Item ---") {
@@ -3401,7 +3421,7 @@ namespace ScriptGenerator {
                         int intScripts2 = 0;
                         Int32.TryParse(strScripts2, out intScripts2);
                         myControlEntity1.ParentLkDDLNamesItemsInc = intScripts2;
-                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables2", "IdealAutomateDB");
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables2");
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                     }
 
@@ -3425,10 +3445,10 @@ namespace ScriptGenerator {
                     }
                     strResultValue = myListControlEntity1.Find(x => x.ID == "txtResultValue").Text;
                     // string strShowOption = myListControlEntity1.Find(x => x.ID == "cbxShowOption").SelectedValue;
-                    myActions.SetValueByKey("Scripts2DefaultValue", strScripts2, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorVariables2", strVariables2Value, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorPutClipboardInEntityResultValue", strResultValue, "IdealAutomateDB");
-                    //   myActions.SetValueByKey("ScriptGeneratorShowOption", strShowOption, "IdealAutomateDB");
+                    myActions.SetValueByKey("Scripts2DefaultValue", strScripts2);
+                    myActions.SetValueByKey("ScriptGeneratorVariables2", strVariables2Value);
+                    myActions.SetValueByKey("ScriptGeneratorPutClipboardInEntityResultValue", strResultValue);
+                    //   myActions.SetValueByKey("ScriptGeneratorShowOption", strShowOption);
 
                     if (strButtonPressed == "btnDDLRefresh") {
                         goto DisplayPutClipboardInEntity;
@@ -3454,7 +3474,7 @@ namespace ScriptGenerator {
                         myActions.MessageBoxShow(strGeneratedLinex);
                     }
                     GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
                     goto DisplayWindowAgain;
 
                     break;
@@ -3513,7 +3533,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtResultValue";
-                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorPutCaretPositionInArrayResultValue", "IdealAutomateDB");
+                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorPutCaretPositionInArrayResultValue");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -3535,8 +3555,8 @@ namespace ScriptGenerator {
                     myControlEntity1.Width = 150;
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 3;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts2DefaultValue", "IdealAutomateDB");
-                    strScripts2 = myActions.GetValueByKey("Scripts2DefaultValue", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts2DefaultValue");
+                    strScripts2 = myActions.GetValueByKey("Scripts2DefaultValue");
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     if (strScripts2 != "--Select Item ---") {
@@ -3560,7 +3580,7 @@ namespace ScriptGenerator {
                         int intScripts2 = 0;
                         Int32.TryParse(strScripts2, out intScripts2);
                         myControlEntity1.ParentLkDDLNamesItemsInc = intScripts2;
-                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables2", "IdealAutomateDB");
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables2");
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                     }
 
@@ -3584,10 +3604,10 @@ namespace ScriptGenerator {
                     }
                     strResultValue = myListControlEntity1.Find(x => x.ID == "txtResultValue").Text;
                     // string strShowOption = myListControlEntity1.Find(x => x.ID == "cbxShowOption").SelectedValue;
-                    myActions.SetValueByKey("Scripts2DefaultValue", strScripts2, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorVariables2", strVariables2Value, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorPutCaretPositionInArrayResultValue", strResultValue, "IdealAutomateDB");
-                    //   myActions.SetValueByKey("ScriptGeneratorShowOption", strShowOption, "IdealAutomateDB");
+                    myActions.SetValueByKey("Scripts2DefaultValue", strScripts2);
+                    myActions.SetValueByKey("ScriptGeneratorVariables2", strVariables2Value);
+                    myActions.SetValueByKey("ScriptGeneratorPutCaretPositionInArrayResultValue", strResultValue);
+                    //   myActions.SetValueByKey("ScriptGeneratorShowOption", strShowOption);
 
                     if (strButtonPressed == "btnDDLRefresh") {
                         goto DisplayPutCaretPositionInArray;
@@ -3613,7 +3633,7 @@ namespace ScriptGenerator {
                         myActions.MessageBoxShow(strGeneratedLinex);
                     }
                     GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
                     goto DisplayWindowAgain;
 
                     break;                   
@@ -3655,7 +3675,16 @@ namespace ScriptGenerator {
 "      myImage.RelativeX = [[RelativeX]];  \r\n " +
 "      myImage.RelativeY = [[RelativeY]]; \r\n " +
 " \r\n " +
-"      int[,] [[ResultMyArray]] = myActions.PutAll(myImage); ";
+"      int[,] [[ResultMyArray]] = myActions.PutAll(myImage); \r\n" +
+"      if (myArray.Length == 0) { \r\n" +
+"        myActions.MessageBoxShow(\"I could not find image of SVN Update\"); \r\n" +
+"      } \r\n" +
+"      // We found output completed and now want to copy the results \r\n" +
+"      // to notepad \r\n" +
+" \r\n" +
+"      // Highlight the output completed line \r\n" +
+"      myActions.Sleep(1000); \r\n" +
+"      myActions.LeftClick(myArray); ";
                     myControlEntity1.ColumnSpan = 4;
                     myControlEntity1.Height = 225;
                     myControlEntity1.RowNumber = intRowCtr;
@@ -3674,7 +3703,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtHomeImage";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorHomeImage", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorHomeImage");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -3691,7 +3720,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtWorkImage";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorWorkImage", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorWorkImage");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -3708,7 +3737,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtSleep";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorSleep", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorSleep");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -3725,7 +3754,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtAttempts";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorAttempts", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorAttempts");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -3742,7 +3771,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtRelativeX";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorRelativeX", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorRelativeX");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -3759,7 +3788,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtRelativeY";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorRelativeY", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorRelativeY");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -3785,7 +3814,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtOccurrence";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorOccurrence", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorOccurrence");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -3802,7 +3831,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtTolerance";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorTolerance", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorTolerance");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -3822,7 +3851,7 @@ namespace ScriptGenerator {
                     cbp.Add(new ComboBoxPair("True", "True"));
                     cbp.Add(new ComboBoxPair("False", "False"));
                     myControlEntity1.ListOfKeyValuePairs = cbp;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorUseGrayScale", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorUseGrayScale");
                     myControlEntity1.ID = "cbxUseGrayScale";
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
@@ -3850,7 +3879,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtResultMyArray";
-                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorPutAllResultMyArray", "IdealAutomateDB");
+                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorPutAllResultMyArray");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -3872,8 +3901,8 @@ namespace ScriptGenerator {
                     myControlEntity1.Width = 150;
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 3;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts2DefaultValue", "IdealAutomateDB");
-                    strScripts2 = myActions.GetValueByKey("Scripts2DefaultValue", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts2DefaultValue");
+                    strScripts2 = myActions.GetValueByKey("Scripts2DefaultValue");
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     if (strScripts2 != "--Select Item ---") {
@@ -3897,7 +3926,7 @@ namespace ScriptGenerator {
                         int intScripts2 = 0;
                         Int32.TryParse(strScripts2, out intScripts2);
                         myControlEntity1.ParentLkDDLNamesItemsInc = intScripts2;
-                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables2", "IdealAutomateDB");
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables2");
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                     }
 
@@ -3921,15 +3950,15 @@ namespace ScriptGenerator {
                     string strOccurrence = myListControlEntity1.Find(x => x.ID == "txtOccurrence").Text;
                     string strTolerance = myListControlEntity1.Find(x => x.ID == "txtTolerance").Text;
                     string strUseGrayScale = myListControlEntity1.Find(x => x.ID == "cbxUseGrayScale").SelectedValue;
-                    myActions.SetValueByKey("ScriptGeneratorHomeImage", strHomeImage, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorWorkImage", strWorkImage, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorSleep", strSleep, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorAttempts", strAttempts, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorRelativeX", strRelativeX, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorRelativeY", strRelativeY, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorOccurrence", strOccurrence, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorTolerance", strTolerance, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorUseGrayScale", strUseGrayScale, "IdealAutomateDB");
+                    myActions.SetValueByKey("ScriptGeneratorHomeImage", strHomeImage);
+                    myActions.SetValueByKey("ScriptGeneratorWorkImage", strWorkImage);
+                    myActions.SetValueByKey("ScriptGeneratorSleep", strSleep);
+                    myActions.SetValueByKey("ScriptGeneratorAttempts", strAttempts);
+                    myActions.SetValueByKey("ScriptGeneratorRelativeX", strRelativeX);
+                    myActions.SetValueByKey("ScriptGeneratorRelativeY", strRelativeY);
+                    myActions.SetValueByKey("ScriptGeneratorOccurrence", strOccurrence);
+                    myActions.SetValueByKey("ScriptGeneratorTolerance", strTolerance);
+                    myActions.SetValueByKey("ScriptGeneratorUseGrayScale", strUseGrayScale);
                     strScripts2 = myListControlEntity1.Find(x => x.ID == "Scripts2").SelectedValue;
 
 
@@ -3939,10 +3968,10 @@ namespace ScriptGenerator {
                     }
                     string strResultMyArray = myListControlEntity1.Find(x => x.ID == "txtResultMyArray").Text;
                     // string strShowOption = myListControlEntity1.Find(x => x.ID == "cbxShowOption").SelectedValue;
-                    myActions.SetValueByKey("Scripts2DefaultValue", strScripts2, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorVariables2", strVariables2Value, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorPutAllResultMyArray", strResultMyArray, "IdealAutomateDB");
-                    //   myActions.SetValueByKey("ScriptGeneratorShowOption", strShowOption, "IdealAutomateDB");
+                    myActions.SetValueByKey("Scripts2DefaultValue", strScripts2);
+                    myActions.SetValueByKey("ScriptGeneratorVariables2", strVariables2Value);
+                    myActions.SetValueByKey("ScriptGeneratorPutAllResultMyArray", strResultMyArray);
+                    //   myActions.SetValueByKey("ScriptGeneratorShowOption", strShowOption);
 
                     if (strButtonPressed == "btnDDLRefresh") {
                         goto DisplayPutAll;
@@ -4011,7 +4040,7 @@ namespace ScriptGenerator {
                         myActions.MessageBoxShow(sb.ToString());
                     }
                     GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
                     goto DisplayWindowAgain;
                     break;
                 case "myButtonPositionCursor":
@@ -4069,7 +4098,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtmyArray";
-                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorPositionCursormyArray", "IdealAutomateDB");
+                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorPositionCursormyArray");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -4090,8 +4119,8 @@ namespace ScriptGenerator {
                     myControlEntity1.Width = 150;
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 3;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptsDefaultValue", "IdealAutomateDB");
-                    strScripts = myActions.GetValueByKey("ScriptsDefaultValue", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptsDefaultValue");
+                    strScripts = myActions.GetValueByKey("ScriptsDefaultValue");
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     if (strScripts != "--Select Item ---") {
@@ -4114,7 +4143,7 @@ namespace ScriptGenerator {
                         int intScripts = 0;
                         Int32.TryParse(strScripts, out intScripts);
                         myControlEntity1.ParentLkDDLNamesItemsInc = intScripts;
-                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables", "IdealAutomateDB");
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables");
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                     }
 
@@ -4178,9 +4207,9 @@ namespace ScriptGenerator {
                         strVariablesValue = myListControlEntity1.Find(x => x.ID == "Variables").SelectedValue;
                     }
                     strmyArray = myListControlEntity1.Find(x => x.ID == "txtmyArray").Text;
-                    myActions.SetValueByKey("ScriptsDefaultValue", strScripts, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorVariables", strVariablesValue, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorPositionCursormyArray", strmyArray, "IdealAutomateDB");
+                    myActions.SetValueByKey("ScriptsDefaultValue", strScripts);
+                    myActions.SetValueByKey("ScriptGeneratorVariables", strVariablesValue);
+                    myActions.SetValueByKey("ScriptGeneratorPositionCursormyArray", strmyArray);
 
                     if (strButtonPressed == "btnDDLRefresh") {
                         goto DisplayPositionCursor;
@@ -4205,7 +4234,7 @@ namespace ScriptGenerator {
                         myActions.MessageBoxShow(strGeneratedLinex);
                     }
                     GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
                     goto DisplayWindowAgain;
                     break;
                 case "myButtonMessageBoxShowWithYesNo":
@@ -4263,7 +4292,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtResultYesNo";
-                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorMessageBoxShowWithYesNoResultYesNo", "IdealAutomateDB");
+                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorMessageBoxShowWithYesNoResultYesNo");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -4285,8 +4314,8 @@ namespace ScriptGenerator {
                     myControlEntity1.Width = 150;
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 3;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts2DefaultValue", "IdealAutomateDB");
-                    strScripts2 = myActions.GetValueByKey("Scripts2DefaultValue", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts2DefaultValue");
+                    strScripts2 = myActions.GetValueByKey("Scripts2DefaultValue");
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     if (strScripts2 != "--Select Item ---") {
@@ -4310,7 +4339,7 @@ namespace ScriptGenerator {
                         int intScripts2 = 0;
                         Int32.TryParse(strScripts2, out intScripts2);
                         myControlEntity1.ParentLkDDLNamesItemsInc = intScripts2;
-                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables2", "IdealAutomateDB");
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables2");
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                     }
                     intRowCtr++;
@@ -4344,7 +4373,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtMessage";
-                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorMessageBoxShowWithYesNoMessage", "IdealAutomateDB");
+                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorMessageBoxShowWithYesNoMessage");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -4366,8 +4395,8 @@ namespace ScriptGenerator {
                     myControlEntity1.Width = 150;
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 3;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts1DefaultValue", "IdealAutomateDB");
-                    strScripts = myActions.GetValueByKey("Scripts1DefaultValue", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts1DefaultValue");
+                    strScripts = myActions.GetValueByKey("Scripts1DefaultValue");
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     if (strScripts != "--Select Item ---") {
@@ -4391,7 +4420,7 @@ namespace ScriptGenerator {
                         int intScripts = 0;
                         Int32.TryParse(strScripts, out intScripts);
                         myControlEntity1.ParentLkDDLNamesItemsInc = intScripts;
-                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables1", "IdealAutomateDB");
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables1");
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                     }
 
@@ -4449,13 +4478,13 @@ namespace ScriptGenerator {
                     string strMessage = myListControlEntity1.Find(x => x.ID == "txtMessage").Text;
                     string strResultYesNo = myListControlEntity1.Find(x => x.ID == "txtResultYesNo").Text;
                     // string strShowOption = myListControlEntity1.Find(x => x.ID == "cbxShowOption").SelectedValue;
-                    myActions.SetValueByKey("Scripts1DefaultValue", strScripts1, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorVariables1", strVariables1Value, "IdealAutomateDB");
-                    myActions.SetValueByKey("Scripts2DefaultValue", strScripts2, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorVariables2", strVariables2Value, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorMessageBoxShowWithYesNoMessage", strMessage, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorMessageBoxShowWithYesNoResultYesNo", strResultYesNo, "IdealAutomateDB");
-                    //   myActions.SetValueByKey("ScriptGeneratorShowOption", strShowOption, "IdealAutomateDB");
+                    myActions.SetValueByKey("Scripts1DefaultValue", strScripts1);
+                    myActions.SetValueByKey("ScriptGeneratorVariables1", strVariables1Value);
+                    myActions.SetValueByKey("Scripts2DefaultValue", strScripts2);
+                    myActions.SetValueByKey("ScriptGeneratorVariables2", strVariables2Value);
+                    myActions.SetValueByKey("ScriptGeneratorMessageBoxShowWithYesNoMessage", strMessage);
+                    myActions.SetValueByKey("ScriptGeneratorMessageBoxShowWithYesNoResultYesNo", strResultYesNo);
+                    //   myActions.SetValueByKey("ScriptGeneratorShowOption", strShowOption);
 
                     if (strButtonPressed == "btnDDLRefresh") {
                         goto DisplayMessageBoxShowWithYesNoWindow;
@@ -4491,7 +4520,7 @@ namespace ScriptGenerator {
                         myActions.MessageBoxShow(strGeneratedLinex);
                     }
                     GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
                     goto DisplayWindowAgain;
                     break;
                 case "myButtonMessageBoxShow":
@@ -4549,7 +4578,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtMessage";
-                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorMessageBoxShowMessage", "IdealAutomateDB");
+                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorMessageBoxShowMessage");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -4570,8 +4599,8 @@ namespace ScriptGenerator {
                     myControlEntity1.Width = 150;
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 3;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptsDefaultValue", "IdealAutomateDB");
-                    strScripts = myActions.GetValueByKey("ScriptsDefaultValue", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptsDefaultValue");
+                    strScripts = myActions.GetValueByKey("ScriptsDefaultValue");
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     if (strScripts != "--Select Item ---") {
@@ -4594,7 +4623,7 @@ namespace ScriptGenerator {
                         int intScripts = 0;
                         Int32.TryParse(strScripts, out intScripts);
                         myControlEntity1.ParentLkDDLNamesItemsInc = intScripts;
-                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables", "IdealAutomateDB");
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables");
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                     }
 
@@ -4617,9 +4646,9 @@ namespace ScriptGenerator {
                         strVariablesValue = myListControlEntity1.Find(x => x.ID == "Variables").SelectedValue;
                     }
                     strMessage = myListControlEntity1.Find(x => x.ID == "txtMessage").Text;
-                    myActions.SetValueByKey("ScriptsDefaultValue", strScripts, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorVariables", strVariablesValue, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorMessageBoxShowMessage", strMessage, "IdealAutomateDB");
+                    myActions.SetValueByKey("ScriptsDefaultValue", strScripts);
+                    myActions.SetValueByKey("ScriptGeneratorVariables", strVariablesValue);
+                    myActions.SetValueByKey("ScriptGeneratorMessageBoxShowMessage", strMessage);
 
                     if (strButtonPressed == "btnDDLRefresh") {
                         goto DisplayMessageBoxShow;
@@ -4644,7 +4673,7 @@ namespace ScriptGenerator {
                         myActions.MessageBoxShow(strGeneratedLinex);
                     }
                     GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
                     goto DisplayWindowAgain;
                     break;
                 case "myButtonLeftClick":
@@ -4702,7 +4731,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtmyArray";
-                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorLeftClickmyArray", "IdealAutomateDB");
+                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorLeftClickmyArray");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -4723,8 +4752,8 @@ namespace ScriptGenerator {
                     myControlEntity1.Width = 150;
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 3;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptsDefaultValue", "IdealAutomateDB");
-                    strScripts = myActions.GetValueByKey("ScriptsDefaultValue", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptsDefaultValue");
+                    strScripts = myActions.GetValueByKey("ScriptsDefaultValue");
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     if (strScripts != "--Select Item ---") {
@@ -4747,7 +4776,7 @@ namespace ScriptGenerator {
                         int intScripts = 0;
                         Int32.TryParse(strScripts, out intScripts);
                         myControlEntity1.ParentLkDDLNamesItemsInc = intScripts;
-                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables", "IdealAutomateDB");
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables");
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                     }
 
@@ -4811,9 +4840,9 @@ namespace ScriptGenerator {
                         strVariablesValue = myListControlEntity1.Find(x => x.ID == "Variables").SelectedValue;
                     }
                     strmyArray = myListControlEntity1.Find(x => x.ID == "txtmyArray").Text;
-                    myActions.SetValueByKey("ScriptsDefaultValue", strScripts, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorVariables", strVariablesValue, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorLeftClickmyArray", strmyArray, "IdealAutomateDB");
+                    myActions.SetValueByKey("ScriptsDefaultValue", strScripts);
+                    myActions.SetValueByKey("ScriptGeneratorVariables", strVariablesValue);
+                    myActions.SetValueByKey("ScriptGeneratorLeftClickmyArray", strmyArray);
 
                     if (strButtonPressed == "btnDDLRefresh") {
                         goto DisplayLeftClick;
@@ -4838,7 +4867,7 @@ namespace ScriptGenerator {
                         myActions.MessageBoxShow(strGeneratedLinex);
                     }
                     GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
                     goto DisplayWindowAgain;
                     break;
                 case "myButtonKillAllProcessesByProcessName":
@@ -4896,7 +4925,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtProcessName";
-                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorKillAllProcessesByProcessNameProcessName", "IdealAutomateDB");
+                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorKillAllProcessesByProcessNameProcessName");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -4917,8 +4946,8 @@ namespace ScriptGenerator {
                     myControlEntity1.Width = 150;
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 3;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptsDefaultValue", "IdealAutomateDB");
-                    strScripts = myActions.GetValueByKey("ScriptsDefaultValue", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptsDefaultValue");
+                    strScripts = myActions.GetValueByKey("ScriptsDefaultValue");
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     if (strScripts != "--Select Item ---") {
@@ -4941,7 +4970,7 @@ namespace ScriptGenerator {
                         int intScripts = 0;
                         Int32.TryParse(strScripts, out intScripts);
                         myControlEntity1.ParentLkDDLNamesItemsInc = intScripts;
-                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables", "IdealAutomateDB");
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables");
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                     }
 
@@ -4964,9 +4993,9 @@ namespace ScriptGenerator {
                         strVariablesValue = myListControlEntity1.Find(x => x.ID == "Variables").SelectedValue;
                     }
                     string strProcessName = myListControlEntity1.Find(x => x.ID == "txtProcessName").Text;
-                    myActions.SetValueByKey("ScriptsDefaultValue", strScripts, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorVariables", strVariablesValue, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorKillAllProcessesByProcessNameProcessName", strProcessName, "IdealAutomateDB");
+                    myActions.SetValueByKey("ScriptsDefaultValue", strScripts);
+                    myActions.SetValueByKey("ScriptGeneratorVariables", strVariablesValue);
+                    myActions.SetValueByKey("ScriptGeneratorKillAllProcessesByProcessNameProcessName", strProcessName);
 
                     if (strButtonPressed == "btnDDLRefresh") {
                         goto DisplayKillAllProcessesByProcessNameWindow;
@@ -4991,7 +5020,7 @@ namespace ScriptGenerator {
                         myActions.MessageBoxShow(strGeneratedLinex);
                     }
                     GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
                     goto DisplayWindowAgain;
                     break;
                 case "myButtonGetWindowTitlesByProcessName":
@@ -5049,7 +5078,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtValue";
-                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorGetWindowTitlesByProcessNameWindowTitles", "IdealAutomateDB");
+                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorGetWindowTitlesByProcessNameWindowTitles");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -5071,8 +5100,8 @@ namespace ScriptGenerator {
                     myControlEntity1.Width = 150;
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 3;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts2DefaultValue", "IdealAutomateDB");
-                    strScripts2 = myActions.GetValueByKey("Scripts2DefaultValue", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts2DefaultValue");
+                    strScripts2 = myActions.GetValueByKey("Scripts2DefaultValue");
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     if (strScripts2 != "--Select Item ---") {
@@ -5096,7 +5125,7 @@ namespace ScriptGenerator {
                         int intScripts2 = 0;
                         Int32.TryParse(strScripts2, out intScripts2);
                         myControlEntity1.ParentLkDDLNamesItemsInc = intScripts2;
-                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables2", "IdealAutomateDB");
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables2");
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                     }
                     intRowCtr++;
@@ -5130,7 +5159,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtKey";
-                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorGetWindowTitlesByProcessNameProcessName", "IdealAutomateDB");
+                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorGetWindowTitlesByProcessNameProcessName");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -5152,8 +5181,8 @@ namespace ScriptGenerator {
                     myControlEntity1.Width = 150;
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 3;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts1DefaultValue", "IdealAutomateDB");
-                    strScripts = myActions.GetValueByKey("Scripts1DefaultValue", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts1DefaultValue");
+                    strScripts = myActions.GetValueByKey("Scripts1DefaultValue");
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     if (strScripts != "--Select Item ---") {
@@ -5177,7 +5206,7 @@ namespace ScriptGenerator {
                         int intScripts = 0;
                         Int32.TryParse(strScripts, out intScripts);
                         myControlEntity1.ParentLkDDLNamesItemsInc = intScripts;
-                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables1", "IdealAutomateDB");
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables1");
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                     }
 
@@ -5210,13 +5239,13 @@ namespace ScriptGenerator {
                     strKey = myListControlEntity1.Find(x => x.ID == "txtKey").Text;
                     strValue = myListControlEntity1.Find(x => x.ID == "txtValue").Text;
                     // string strShowOption = myListControlEntity1.Find(x => x.ID == "cbxShowOption").SelectedValue;
-                    myActions.SetValueByKey("Scripts1DefaultValue", strScripts1, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorVariables1", strVariables1Value, "IdealAutomateDB");
-                    myActions.SetValueByKey("Scripts2DefaultValue", strScripts2, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorVariables2", strVariables2Value, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorGetWindowTitlesByProcessNameProcessName", strKey, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorGetWindowTitlesByProcessNameWindowTitles", strValue, "IdealAutomateDB");
-                    //   myActions.SetValueByKey("ScriptGeneratorShowOption", strShowOption, "IdealAutomateDB");
+                    myActions.SetValueByKey("Scripts1DefaultValue", strScripts1);
+                    myActions.SetValueByKey("ScriptGeneratorVariables1", strVariables1Value);
+                    myActions.SetValueByKey("Scripts2DefaultValue", strScripts2);
+                    myActions.SetValueByKey("ScriptGeneratorVariables2", strVariables2Value);
+                    myActions.SetValueByKey("ScriptGeneratorGetWindowTitlesByProcessNameProcessName", strKey);
+                    myActions.SetValueByKey("ScriptGeneratorGetWindowTitlesByProcessNameWindowTitles", strValue);
+                    //   myActions.SetValueByKey("ScriptGeneratorShowOption", strShowOption);
 
                     if (strButtonPressed == "btnDDLRefresh") {
                         goto DisplayGetWindowTitlesByProcessName;
@@ -5252,7 +5281,7 @@ namespace ScriptGenerator {
                         myActions.MessageBoxShow(strGeneratedLinex);
                     }
                     GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
                     goto DisplayWindowAgain;
                     break;
                 case "myButtonGetValueByKey":
@@ -5310,7 +5339,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtValue";
-                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorGetValueByKeyValue", "IdealAutomateDB");
+                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorGetValueByKeyValue");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -5332,8 +5361,8 @@ namespace ScriptGenerator {
                     myControlEntity1.Width = 150;
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 3;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts2DefaultValue", "IdealAutomateDB");
-                    strScripts2 = myActions.GetValueByKey("Scripts2DefaultValue", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts2DefaultValue");
+                    strScripts2 = myActions.GetValueByKey("Scripts2DefaultValue");
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     if (strScripts2 != "--Select Item ---") {
@@ -5357,7 +5386,7 @@ namespace ScriptGenerator {
                         int intScripts2 = 0;
                         Int32.TryParse(strScripts2, out intScripts2);
                         myControlEntity1.ParentLkDDLNamesItemsInc = intScripts2;
-                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables2", "IdealAutomateDB");
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables2");
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                     }
                     intRowCtr++;
@@ -5391,7 +5420,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtKey";
-                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorGetValueByKeyKey", "IdealAutomateDB");
+                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorGetValueByKeyKey");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -5413,8 +5442,8 @@ namespace ScriptGenerator {
                     myControlEntity1.Width = 150;
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 3;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts1DefaultValue", "IdealAutomateDB");
-                    strScripts = myActions.GetValueByKey("Scripts1DefaultValue", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts1DefaultValue");
+                    strScripts = myActions.GetValueByKey("Scripts1DefaultValue");
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     if (strScripts != "--Select Item ---") {
@@ -5438,7 +5467,7 @@ namespace ScriptGenerator {
                         int intScripts = 0;
                         Int32.TryParse(strScripts, out intScripts);
                         myControlEntity1.ParentLkDDLNamesItemsInc = intScripts;
-                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables1", "IdealAutomateDB");
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables1");
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                     }
 
@@ -5471,13 +5500,13 @@ namespace ScriptGenerator {
                      strKey = myListControlEntity1.Find(x => x.ID == "txtKey").Text;
                      strValue = myListControlEntity1.Find(x => x.ID == "txtValue").Text;
                     // string strShowOption = myListControlEntity1.Find(x => x.ID == "cbxShowOption").SelectedValue;
-                    myActions.SetValueByKey("Scripts1DefaultValue", strScripts1, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorVariables1", strVariables1Value, "IdealAutomateDB");
-                    myActions.SetValueByKey("Scripts2DefaultValue", strScripts2, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorVariables2", strVariables2Value, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorGetValueByKeyKey", strKey, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorGetValueByKeyValue", strValue, "IdealAutomateDB");
-                    //   myActions.SetValueByKey("ScriptGeneratorShowOption", strShowOption, "IdealAutomateDB");
+                    myActions.SetValueByKey("Scripts1DefaultValue", strScripts1);
+                    myActions.SetValueByKey("ScriptGeneratorVariables1", strVariables1Value);
+                    myActions.SetValueByKey("Scripts2DefaultValue", strScripts2);
+                    myActions.SetValueByKey("ScriptGeneratorVariables2", strVariables2Value);
+                    myActions.SetValueByKey("ScriptGeneratorGetValueByKeyKey", strKey);
+                    myActions.SetValueByKey("ScriptGeneratorGetValueByKeyValue", strValue);
+                    //   myActions.SetValueByKey("ScriptGeneratorShowOption", strShowOption);
 
                     if (strButtonPressed == "btnDDLRefresh") {
                         goto DisplayGetValueByKeyWindow;
@@ -5513,7 +5542,7 @@ namespace ScriptGenerator {
                         myActions.MessageBoxShow(strGeneratedLinex);
                     }
                     GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
                     goto DisplayWindowAgain;
                     break;
                 case "myButtonGetActiveWindowTitle":
@@ -5570,7 +5599,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtResultValue";
-                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorGetActiveWindowTitleResultValue", "IdealAutomateDB");
+                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorGetActiveWindowTitleResultValue");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -5592,8 +5621,8 @@ namespace ScriptGenerator {
                     myControlEntity1.Width = 150;
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 3;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts2DefaultValue", "IdealAutomateDB");
-                    strScripts2 = myActions.GetValueByKey("Scripts2DefaultValue", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("Scripts2DefaultValue");
+                    strScripts2 = myActions.GetValueByKey("Scripts2DefaultValue");
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     if (strScripts2 != "--Select Item ---") {
@@ -5617,7 +5646,7 @@ namespace ScriptGenerator {
                         int intScripts2 = 0;
                         Int32.TryParse(strScripts2, out intScripts2);
                         myControlEntity1.ParentLkDDLNamesItemsInc = intScripts2;
-                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables2", "IdealAutomateDB");
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables2");
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                     }
 
@@ -5641,10 +5670,10 @@ namespace ScriptGenerator {
                     }
                     strResultValue = myListControlEntity1.Find(x => x.ID == "txtResultValue").Text;
                     // string strShowOption = myListControlEntity1.Find(x => x.ID == "cbxShowOption").SelectedValue;
-                    myActions.SetValueByKey("Scripts2DefaultValue", strScripts2, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorVariables2", strVariables2Value, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorGetActiveWindowTitleResultValue", strResultValue, "IdealAutomateDB");
-                    //   myActions.SetValueByKey("ScriptGeneratorShowOption", strShowOption, "IdealAutomateDB");
+                    myActions.SetValueByKey("Scripts2DefaultValue", strScripts2);
+                    myActions.SetValueByKey("ScriptGeneratorVariables2", strVariables2Value);
+                    myActions.SetValueByKey("ScriptGeneratorGetActiveWindowTitleResultValue", strResultValue);
+                    //   myActions.SetValueByKey("ScriptGeneratorShowOption", strShowOption);
 
                     if (strButtonPressed == "btnDDLRefresh") {
                         goto DisplayGetActiveWindowTitle;
@@ -5670,7 +5699,7 @@ namespace ScriptGenerator {
                         myActions.MessageBoxShow(strGeneratedLinex);
                     }
                     GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
                     goto DisplayWindowAgain;
 
                     break;
@@ -5711,7 +5740,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtlines";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorlines", "IdealAutomateDB"); ;
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorlines"); ;
                     myControlEntity1.ToolTipx = "string[]";
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
@@ -5729,7 +5758,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtStartingColumn";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorStartingColumn", "IdealAutomateDB"); ;
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorStartingColumn"); ;
                     myControlEntity1.ToolTipx = "int";
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
@@ -5747,7 +5776,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtListBeginDelim";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorListBeginDelim", "IdealAutomateDB"); ;
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorListBeginDelim"); ;
                     myControlEntity1.ToolTipx = "List<string>";
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
@@ -5765,7 +5794,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtListEndDelim";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorListEndDelim", "IdealAutomateDB"); ;
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorListEndDelim"); ;
                     myControlEntity1.ToolTipx = "List<string>";
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
@@ -5803,7 +5832,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtLineCtr";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorLineCtr", "IdealAutomateDB"); ;
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorLineCtr"); ;
                     myControlEntity1.ToolTipx = "int";
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
@@ -5841,7 +5870,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtstrDelimitedTextFound";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorstrDelimitedTextFound", "IdealAutomateDB"); ;
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorstrDelimitedTextFound"); ;
                     myControlEntity1.ToolTipx = "string";
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
@@ -5859,7 +5888,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtintDelimFound";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorintDelimFound", "IdealAutomateDB"); ;
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorintDelimFound"); ;
                     myControlEntity1.ToolTipx = "int";
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
@@ -5877,7 +5906,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtstrResultTypeFound";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorstrResultTypeFound", "IdealAutomateDB"); ;
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorstrResultTypeFound"); ;
                     myControlEntity1.ToolTipx = "string";
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
@@ -5895,7 +5924,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtintEndDelimColPosFound";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorintEndDelimColPosFound", "IdealAutomateDB"); ;
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorintEndDelimColPosFound"); ;
                     myControlEntity1.ToolTipx = "int";
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
@@ -5954,23 +5983,23 @@ namespace ScriptGenerator {
                     GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
                     strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 750, 800, intWindowTop, intWindowLeft);
                     string strlines = myListControlEntity1.Find(x => x.ID == "txtlines").Text;
-                    myActions.SetValueByKey("ScriptGeneratorlines", strlines, "IdealAutomateDB");
+                    myActions.SetValueByKey("ScriptGeneratorlines", strlines);
                     string strStartingColumn = myListControlEntity1.Find(x => x.ID == "txtStartingColumn").Text;
-                    myActions.SetValueByKey("ScriptGeneratorStartingColumn", strStartingColumn, "IdealAutomateDB");
+                    myActions.SetValueByKey("ScriptGeneratorStartingColumn", strStartingColumn);
                     string strListBeginDelim = myListControlEntity1.Find(x => x.ID == "txtListBeginDelim").Text;
-                    myActions.SetValueByKey("ScriptGeneratorListBeginDelim", strListBeginDelim, "IdealAutomateDB");
+                    myActions.SetValueByKey("ScriptGeneratorListBeginDelim", strListBeginDelim);
                     string strListEndDelim = myListControlEntity1.Find(x => x.ID == "txtListEndDelim").Text;
-                    myActions.SetValueByKey("ScriptGeneratorListEndDelim", strListEndDelim, "IdealAutomateDB");
+                    myActions.SetValueByKey("ScriptGeneratorListEndDelim", strListEndDelim);
                     string strLineCtr = myListControlEntity1.Find(x => x.ID == "txtLineCtr").Text;
-                    myActions.SetValueByKey("ScriptGeneratorLineCtr", strLineCtr, "IdealAutomateDB");
+                    myActions.SetValueByKey("ScriptGeneratorLineCtr", strLineCtr);
                     string strstrDelimitedTextFound = myListControlEntity1.Find(x => x.ID == "txtstrDelimitedTextFound").Text;
-                    myActions.SetValueByKey("ScriptGeneratorstrDelimitedTextFound", strstrDelimitedTextFound, "IdealAutomateDB");
+                    myActions.SetValueByKey("ScriptGeneratorstrDelimitedTextFound", strstrDelimitedTextFound);
                     string strintDelimFound = myListControlEntity1.Find(x => x.ID == "txtintDelimFound").Text;
-                    myActions.SetValueByKey("ScriptGeneratorintDelimFound", strintDelimFound, "IdealAutomateDB");
+                    myActions.SetValueByKey("ScriptGeneratorintDelimFound", strintDelimFound);
                     string strstrResultTypeFound = myListControlEntity1.Find(x => x.ID == "txtstrResultTypeFound").Text;
-                    myActions.SetValueByKey("ScriptGeneratorstrResultTypeFound", strstrResultTypeFound, "IdealAutomateDB");
+                    myActions.SetValueByKey("ScriptGeneratorstrResultTypeFound", strstrResultTypeFound);
                     string strintEndDelimColPosFound = myListControlEntity1.Find(x => x.ID == "txtintEndDelimColPosFound").Text;
-                    myActions.SetValueByKey("ScriptGeneratorintEndDelimColPosFound", strintEndDelimColPosFound, "IdealAutomateDB");
+                    myActions.SetValueByKey("ScriptGeneratorintEndDelimColPosFound", strintEndDelimColPosFound);
                     strInFile = strApplicationPath + "Templates\\TemplateFindDelimitedText.txt";
                     // private string strInFile = @"C:\Data\LanguageXMLInput3.txt";
 
@@ -6018,7 +6047,7 @@ namespace ScriptGenerator {
                         myActions.MessageBoxShow(sb.ToString());
                     }
                     GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
                     goto DisplayWindowAgain;
                     break;
 
@@ -6080,7 +6109,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtHomeImage";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorHomeImage", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorHomeImage");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -6097,7 +6126,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtWorkImage";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorWorkImage", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorWorkImage");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -6114,7 +6143,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtSleep";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorSleep", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorSleep");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -6131,7 +6160,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtAttempts";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorAttempts", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorAttempts");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -6148,7 +6177,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtRelativeX";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorRelativeX", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorRelativeX");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -6165,7 +6194,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtRelativeY";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorRelativeY", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorRelativeY");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -6191,7 +6220,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtOccurrence";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorOccurrence", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorOccurrence");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -6208,7 +6237,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtTolerance";
-                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorTolerance", "IdealAutomateDB");
+                    myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorTolerance");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -6228,7 +6257,7 @@ namespace ScriptGenerator {
                     cbp.Add(new ComboBoxPair("True", "True"));
                     cbp.Add(new ComboBoxPair("False", "False"));
                     myControlEntity1.ListOfKeyValuePairs = cbp;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorUseGrayScale", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorUseGrayScale");
                     myControlEntity1.ID = "cbxUseGrayScale";
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
@@ -6245,15 +6274,15 @@ namespace ScriptGenerator {
                     strOccurrence = myListControlEntity1.Find(x => x.ID == "txtOccurrence").Text;
                     strTolerance = myListControlEntity1.Find(x => x.ID == "txtTolerance").Text;
                     strUseGrayScale = myListControlEntity1.Find(x => x.ID == "cbxUseGrayScale").SelectedValue;
-                    myActions.SetValueByKey("ScriptGeneratorHomeImage", strHomeImage, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorWorkImage", strWorkImage, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorSleep", strSleep, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorAttempts", strAttempts, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorRelativeX", strRelativeX, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorRelativeY", strRelativeY, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorOccurrence", strOccurrence, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorTolerance", strTolerance, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorUseGrayScale", strUseGrayScale, "IdealAutomateDB");
+                    myActions.SetValueByKey("ScriptGeneratorHomeImage", strHomeImage);
+                    myActions.SetValueByKey("ScriptGeneratorWorkImage", strWorkImage);
+                    myActions.SetValueByKey("ScriptGeneratorSleep", strSleep);
+                    myActions.SetValueByKey("ScriptGeneratorAttempts", strAttempts);
+                    myActions.SetValueByKey("ScriptGeneratorRelativeX", strRelativeX);
+                    myActions.SetValueByKey("ScriptGeneratorRelativeY", strRelativeY);
+                    myActions.SetValueByKey("ScriptGeneratorOccurrence", strOccurrence);
+                    myActions.SetValueByKey("ScriptGeneratorTolerance", strTolerance);
+                    myActions.SetValueByKey("ScriptGeneratorUseGrayScale", strUseGrayScale);
 
                     strInFile = strApplicationPath + "Templates\\TemplateClickImageIfExists.txt";
                     // private string strInFile = @"C:\Data\LanguageXMLInput3.txt";
@@ -6303,7 +6332,7 @@ namespace ScriptGenerator {
                         myActions.MessageBoxShow(sb.ToString());
                     }
                     GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
                     goto DisplayWindowAgain;
                     break;
                 case "myButtonActivateWindowByTitle":
@@ -6361,7 +6390,7 @@ namespace ScriptGenerator {
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtWindowTitle";
-                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorWindowTitlex", "IdealAutomateDB");
+                    myControlEntity1.Text =  myActions.GetValueByKey("ScriptGeneratorWindowTitlex");
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -6382,8 +6411,8 @@ namespace ScriptGenerator {
                     myControlEntity1.Width = 150;
                     myControlEntity1.RowNumber = intRowCtr;
                     myControlEntity1.ColumnNumber = 3;
-                    myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptsDefaultValue", "IdealAutomateDB");
-                    strScripts = myActions.GetValueByKey("ScriptsDefaultValue", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptsDefaultValue");
+                    strScripts = myActions.GetValueByKey("ScriptsDefaultValue");
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     if (strScripts != "--Select Item ---") {
@@ -6406,7 +6435,7 @@ namespace ScriptGenerator {
                         int intScripts = 0;
                         Int32.TryParse(strScripts, out intScripts);
                         myControlEntity1.ParentLkDDLNamesItemsInc = intScripts;
-                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables", "IdealAutomateDB");
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables");
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                     }
 
@@ -6432,7 +6461,7 @@ namespace ScriptGenerator {
                     cbp.Add(new ComboBoxPair("SW_SHOWDEFAULT", "10"));
 
                     myControlEntity1.ListOfKeyValuePairs = cbp;
-                    myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorShowOption", "IdealAutomateDB");
+                    myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorShowOption");
                     if (myControlEntity1.SelectedValue == null) {
                         myControlEntity1.SelectedValue = "--Select Item ---";
                     }
@@ -6467,10 +6496,10 @@ namespace ScriptGenerator {
                     }
                     string strWindowTitlex = myListControlEntity1.Find(x => x.ID == "txtWindowTitle").Text;
                     string strShowOption = myListControlEntity1.Find(x => x.ID == "cbxShowOption").SelectedValue;
-                    myActions.SetValueByKey("ScriptsDefaultValue", strScripts, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorVariables", strVariablesValue, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorWindowTitlex", strWindowTitlex, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorShowOption", strShowOption, "IdealAutomateDB");
+                    myActions.SetValueByKey("ScriptsDefaultValue", strScripts);
+                    myActions.SetValueByKey("ScriptGeneratorVariables", strVariablesValue);
+                    myActions.SetValueByKey("ScriptGeneratorWindowTitlex", strWindowTitlex);
+                    myActions.SetValueByKey("ScriptGeneratorShowOption", strShowOption);
 
                     if (strButtonPressed == "btnDDLRefresh") {
                         goto DisplayActivateWindowByTitleWindow;
@@ -6497,7 +6526,7 @@ namespace ScriptGenerator {
                         myActions.MessageBoxShow(strGeneratedLinex);
                     }
                     GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
                     goto DisplayWindowAgain;
                     break;
 
@@ -6516,6 +6545,7 @@ namespace ScriptGenerator {
                     myActions.RunSync(myActions.GetValueByKey("SVNPath", "IdealAutomateDB") + @"CopyVSExecutableToIdealAutomate\CopyVSExecutableToIdealAutomate\bin\Debug\CopyVSExecutableToIdealAutomate.exe", "");
                     break;
                 case "myButtonTypeText":
+                    DisplayTypeText:
                     myListControlEntity1 = new List<ControlEntity>();
 
                     myControlEntity1 = new ControlEntity();
@@ -6538,7 +6568,54 @@ namespace ScriptGenerator {
                     myControlEntity1.Text = "";
                     myControlEntity1.RowNumber = 0;
                     myControlEntity1.ColumnNumber = 1;
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.Label;
+                    myControlEntity1.ID = "lblScripts";
+                    myControlEntity1.Text = "Script:";
+                    myControlEntity1.Width = 150;
+                    myControlEntity1.RowNumber = 0;
+                    myControlEntity1.ColumnNumber = 3;
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    myControlEntity1.ControlEntitySetDefaults();
+                    myControlEntity1.ControlType = ControlType.ComboBox;
+                    myControlEntity1.ID = "Scripts";
+                    myControlEntity1.Text = "Drop Down Items";
+                    myControlEntity1.Width = 300;
+                    myControlEntity1.RowNumber = 0;
+                    myControlEntity1.ColumnNumber = 4;
+                    myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptsDefaultValue");
+                    strScripts = myActions.GetValueByKey("ScriptsDefaultValue");
+                    myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                    if (strScripts != "--Select Item ---") {
+                        myControlEntity1.ControlEntitySetDefaults();
+                        myControlEntity1.ControlType = ControlType.Label;
+                        myControlEntity1.ID = "lblVariable";
+                        myControlEntity1.Text = "Variable:";
+                        myControlEntity1.Width = 150;
+                        myControlEntity1.RowNumber = 0;
+                        myControlEntity1.ColumnNumber = 5;
+                        myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                        myControlEntity1.ControlEntitySetDefaults();
+                        myControlEntity1.ControlType = ControlType.ComboBox;
+                        myControlEntity1.ID = "Variables";
+                        myControlEntity1.Text = "Drop Down Items";
+                        myControlEntity1.Width = 300;
+                        myControlEntity1.RowNumber = 0;
+                        myControlEntity1.ColumnNumber = 6;
+                        int intScripts = 0;
+                        Int32.TryParse(strScripts, out intScripts);
+                        myControlEntity1.ParentLkDDLNamesItemsInc = intScripts;
+                        myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables");
+                        myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+                    }
+
+
 
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.Label;
@@ -6546,15 +6623,17 @@ namespace ScriptGenerator {
                     myControlEntity1.Text = "Milliseconds to Wait:";
                     myControlEntity1.RowNumber = 1;
                     myControlEntity1.ColumnNumber = 0;
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
-                    string strDefaultMilliseconds = myActions.GetValueByKey("ScriptGeneratorDefaultMilliseconds", "IdealAutomateDB");
+                    string strDefaultMilliseconds = myActions.GetValueByKey("ScriptGeneratorDefaultMilliseconds");
                     myControlEntity1.ControlEntitySetDefaults();
                     myControlEntity1.ControlType = ControlType.TextBox;
                     myControlEntity1.ID = "txtMillisecondsToWait";
                     myControlEntity1.Text = strDefaultMilliseconds;
                     myControlEntity1.RowNumber = 1;
-                    myControlEntity1.ColumnNumber = 1;
+                    myControlEntity1.ColumnNumber = 2;
+                    myControlEntity1.ColumnSpan = 1;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     myControlEntity1.ControlEntitySetDefaults();
@@ -6563,6 +6642,7 @@ namespace ScriptGenerator {
                     myControlEntity1.Text = "Append Comment (no slashes needed):";
                     myControlEntity1.RowNumber = 2;
                     myControlEntity1.ColumnNumber = 0;
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     myControlEntity1.ControlEntitySetDefaults();
@@ -6570,21 +6650,18 @@ namespace ScriptGenerator {
                     myControlEntity1.ID = "txtAppendComment";
                     myControlEntity1.Text = "";
                     myControlEntity1.RowNumber = 2;
-                    myControlEntity1.ColumnNumber = 1;
+                    myControlEntity1.ColumnNumber = 2;
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
 
                     myControlEntity1.ControlEntitySetDefaults();
-                    myControlEntity1.ControlType = ControlType.CheckBox;
-                    myControlEntity1.ID = "chkVariable";
-                    myControlEntity1.Text = "Is this a variable?";
+                    myControlEntity1.ControlType = ControlType.Button;
+                    myControlEntity1.ID = "btnDDLRefresh";
+                    myControlEntity1.Text = "ComboBox Refresh";
                     myControlEntity1.RowNumber = 3;
                     myControlEntity1.ColumnNumber = 0;
-                    if (myActions.GetValueByKey("ScriptGeneratorVariable", "IdealAutomateDB") == "True") {
-                        myControlEntity1.Checked = true;
-                    } else {
-                        myControlEntity1.Checked = false;
-                    }
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     myControlEntity1.ControlEntitySetDefaults();
@@ -6593,6 +6670,7 @@ namespace ScriptGenerator {
                     myControlEntity1.Text = "Is Control Key Pressed?";
                     myControlEntity1.RowNumber = 4;
                     myControlEntity1.ColumnNumber = 0;
+                    myControlEntity1.ColumnSpan = 2;
                     if (myActions.GetValueByKey("ScriptGeneratorCtrlKey", "IdealAutomateDB") == "True") {
                         myControlEntity1.Checked = true;
                     } else {
@@ -6606,6 +6684,7 @@ namespace ScriptGenerator {
                     myControlEntity1.Text = "Is Alt Key Pressed?";
                     myControlEntity1.RowNumber = 5;
                     myControlEntity1.ColumnNumber = 0;
+                    myControlEntity1.ColumnSpan = 2;
                     if (myActions.GetValueByKey("ScriptGeneratorAltKey", "IdealAutomateDB") == "True") {
                         myControlEntity1.Checked = true;
                     } else {
@@ -6619,6 +6698,7 @@ namespace ScriptGenerator {
                     myControlEntity1.Text = "Is Shift Key Pressed?";
                     myControlEntity1.RowNumber = 6;
                     myControlEntity1.ColumnNumber = 0;
+                    myControlEntity1.ColumnSpan = 2;
                     if (myActions.GetValueByKey("ScriptGeneratorShiftKey", "IdealAutomateDB") == "True") {
                         myControlEntity1.Checked = true;
                     } else {
@@ -6632,6 +6712,7 @@ namespace ScriptGenerator {
                     myControlEntity1.Text = "Visual Studio Shortcut Keys:";
                     myControlEntity1.RowNumber = 7;
                     myControlEntity1.ColumnNumber = 0;
+                    myControlEntity1.ColumnSpan = 2;
                     myControlEntity1.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
                     myControlEntity1.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
 
@@ -6643,6 +6724,7 @@ namespace ScriptGenerator {
                     myControlEntity1.Text = "Minimize Visual Studio";
                     myControlEntity1.RowNumber = 8;
                     myControlEntity1.ColumnNumber = 0;
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     myControlEntity1.ControlEntitySetDefaults();
@@ -6651,6 +6733,7 @@ namespace ScriptGenerator {
                     myControlEntity1.Text = "Maximize Visual Studio";
                     myControlEntity1.RowNumber = 9;
                     myControlEntity1.ColumnNumber = 0;
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     myControlEntity1.ControlEntitySetDefaults();
@@ -6659,6 +6742,7 @@ namespace ScriptGenerator {
                     myControlEntity1.Text = "Internet Explorer Shortcut Keys:";
                     myControlEntity1.RowNumber = 10;
                     myControlEntity1.ColumnNumber = 0;
+                    myControlEntity1.ColumnSpan = 2;
                     myControlEntity1.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
                     myControlEntity1.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -6669,6 +6753,7 @@ namespace ScriptGenerator {
                     myControlEntity1.Text = "Go To Address Bar and select it Alt-D";
                     myControlEntity1.RowNumber = 11;
                     myControlEntity1.ColumnNumber = 0;
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     myControlEntity1.ControlEntitySetDefaults();
@@ -6677,6 +6762,7 @@ namespace ScriptGenerator {
                     myControlEntity1.Text = "Alt enter while in address bar opens new tab";
                     myControlEntity1.RowNumber = 12;
                     myControlEntity1.ColumnNumber = 0;
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     myControlEntity1.ControlEntitySetDefaults();
@@ -6685,6 +6771,7 @@ namespace ScriptGenerator {
                     myControlEntity1.Text = "F6 selects address bar in IE";
                     myControlEntity1.RowNumber = 13;
                     myControlEntity1.ColumnNumber = 0;
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     myControlEntity1.ControlEntitySetDefaults();
@@ -6693,6 +6780,7 @@ namespace ScriptGenerator {
                     myControlEntity1.Text = "Maximize IE";
                     myControlEntity1.RowNumber = 14;
                     myControlEntity1.ColumnNumber = 0;
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     myControlEntity1.ControlEntitySetDefaults();
@@ -6701,6 +6789,7 @@ namespace ScriptGenerator {
                     myControlEntity1.Text = "Close Current Tab";
                     myControlEntity1.RowNumber = 15;
                     myControlEntity1.ColumnNumber = 0;
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     myControlEntity1.ControlEntitySetDefaults();
@@ -6709,6 +6798,7 @@ namespace ScriptGenerator {
                     myControlEntity1.Text = "HOME goes to top of page";
                     myControlEntity1.RowNumber = 16;
                     myControlEntity1.ColumnNumber = 0;
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     myControlEntity1.ControlEntitySetDefaults();
@@ -6717,6 +6807,7 @@ namespace ScriptGenerator {
                     myControlEntity1.Text = "Close IE";
                     myControlEntity1.RowNumber = 17;
                     myControlEntity1.ColumnNumber = 0;
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
 
@@ -6738,7 +6829,8 @@ namespace ScriptGenerator {
                     myControlEntity1.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
                     myControlEntity1.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
                     myControlEntity1.RowNumber = 3;
-                    myControlEntity1.ColumnNumber = 1;
+                    myControlEntity1.ColumnNumber = 2;
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     myControlEntity1.ControlEntitySetDefaults();
@@ -6746,7 +6838,8 @@ namespace ScriptGenerator {
                     myControlEntity1.ID = "btnCopy";
                     myControlEntity1.Text = "Ctrl-C Copy";
                     myControlEntity1.RowNumber = 4;
-                    myControlEntity1.ColumnNumber = 1;
+                    myControlEntity1.ColumnNumber = 2;
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     myControlEntity1.ControlEntitySetDefaults();
@@ -6754,7 +6847,8 @@ namespace ScriptGenerator {
                     myControlEntity1.ID = "btnCut";
                     myControlEntity1.Text = "Ctrl-x Cut";
                     myControlEntity1.RowNumber = 5;
-                    myControlEntity1.ColumnNumber = 1;
+                    myControlEntity1.ColumnNumber = 2;
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     myControlEntity1.ControlEntitySetDefaults();
@@ -6762,7 +6856,8 @@ namespace ScriptGenerator {
                     myControlEntity1.ID = "btnSelectAll";
                     myControlEntity1.Text = "Ctrl-a Select All";
                     myControlEntity1.RowNumber = 6;
-                    myControlEntity1.ColumnNumber = 1;
+                    myControlEntity1.ColumnNumber = 2;
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     myControlEntity1.ControlEntitySetDefaults();
@@ -6770,7 +6865,8 @@ namespace ScriptGenerator {
                     myControlEntity1.ID = "btnPaste";
                     myControlEntity1.Text = "Ctrl-v Paste";
                     myControlEntity1.RowNumber = 7;
-                    myControlEntity1.ColumnNumber = 1;
+                    myControlEntity1.ColumnNumber = 2;
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     myControlEntity1.ControlEntitySetDefaults();
@@ -6780,7 +6876,8 @@ namespace ScriptGenerator {
                     myControlEntity1.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
                     myControlEntity1.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
                     myControlEntity1.RowNumber = 8;
-                    myControlEntity1.ColumnNumber = 1;
+                    myControlEntity1.ColumnNumber = 2;
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     myControlEntity1.ControlEntitySetDefaults();
@@ -6788,7 +6885,8 @@ namespace ScriptGenerator {
                     myControlEntity1.ID = "btnDelete";
                     myControlEntity1.Text = "{DELETE}";
                     myControlEntity1.RowNumber = 9;
-                    myControlEntity1.ColumnNumber = 1;
+                    myControlEntity1.ColumnNumber = 2;
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     myControlEntity1.ControlEntitySetDefaults();
@@ -6796,7 +6894,8 @@ namespace ScriptGenerator {
                     myControlEntity1.ID = "btnDown";
                     myControlEntity1.Text = "{DOWN}";
                     myControlEntity1.RowNumber = 10;
-                    myControlEntity1.ColumnNumber = 1;
+                    myControlEntity1.ColumnNumber = 2;
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     myControlEntity1.ControlEntitySetDefaults();
@@ -6804,7 +6903,8 @@ namespace ScriptGenerator {
                     myControlEntity1.ID = "btnEnd";
                     myControlEntity1.Text = "{END}";
                     myControlEntity1.RowNumber = 11;
-                    myControlEntity1.ColumnNumber = 1;
+                    myControlEntity1.ColumnNumber = 2;
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     myControlEntity1.ControlEntitySetDefaults();
@@ -6812,7 +6912,8 @@ namespace ScriptGenerator {
                     myControlEntity1.ID = "btnEnter";
                     myControlEntity1.Text = "{ENTER}";
                     myControlEntity1.RowNumber = 12;
-                    myControlEntity1.ColumnNumber = 1;
+                    myControlEntity1.ColumnNumber = 2;
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     myControlEntity1.ControlEntitySetDefaults();
@@ -6820,7 +6921,8 @@ namespace ScriptGenerator {
                     myControlEntity1.ID = "btnEscape";
                     myControlEntity1.Text = "{ESCAPE}";
                     myControlEntity1.RowNumber = 13;
-                    myControlEntity1.ColumnNumber = 1;
+                    myControlEntity1.ColumnNumber = 2;
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     myControlEntity1.ControlEntitySetDefaults();
@@ -6828,7 +6930,8 @@ namespace ScriptGenerator {
                     myControlEntity1.ID = "btnFxx";
                     myControlEntity1.Text = "{Fxx}";
                     myControlEntity1.RowNumber = 14;
-                    myControlEntity1.ColumnNumber = 1;
+                    myControlEntity1.ColumnNumber = 2;
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     myControlEntity1.ControlEntitySetDefaults();
@@ -6836,7 +6939,8 @@ namespace ScriptGenerator {
                     myControlEntity1.ID = "btnHome";
                     myControlEntity1.Text = "{HOME}";
                     myControlEntity1.RowNumber = 15;
-                    myControlEntity1.ColumnNumber = 1;
+                    myControlEntity1.ColumnNumber = 2;
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     myControlEntity1.ControlEntitySetDefaults();
@@ -6844,7 +6948,8 @@ namespace ScriptGenerator {
                     myControlEntity1.ID = "btnLeft";
                     myControlEntity1.Text = "{LEFT}";
                     myControlEntity1.RowNumber = 16;
-                    myControlEntity1.ColumnNumber = 1;
+                    myControlEntity1.ColumnNumber = 2;
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     myControlEntity1.ControlEntitySetDefaults();
@@ -6852,7 +6957,8 @@ namespace ScriptGenerator {
                     myControlEntity1.ID = "btnPGDN";
                     myControlEntity1.Text = "{PGDN}";
                     myControlEntity1.RowNumber = 17;
-                    myControlEntity1.ColumnNumber = 1;
+                    myControlEntity1.ColumnNumber = 2;
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     myControlEntity1.ControlEntitySetDefaults();
@@ -6860,7 +6966,8 @@ namespace ScriptGenerator {
                     myControlEntity1.ID = "btnPGUP";
                     myControlEntity1.Text = "{PGUP}";
                     myControlEntity1.RowNumber = 18;
-                    myControlEntity1.ColumnNumber = 1;
+                    myControlEntity1.ColumnNumber = 2;
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     myControlEntity1.ControlEntitySetDefaults();
@@ -6868,7 +6975,8 @@ namespace ScriptGenerator {
                     myControlEntity1.ID = "btnRight";
                     myControlEntity1.Text = "{RIGHT}";
                     myControlEntity1.RowNumber = 19;
-                    myControlEntity1.ColumnNumber = 1;
+                    myControlEntity1.ColumnNumber = 2;
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     myControlEntity1.ControlEntitySetDefaults();
@@ -6876,7 +6984,8 @@ namespace ScriptGenerator {
                     myControlEntity1.ID = "btnSpace";
                     myControlEntity1.Text = "{SPACE}";
                     myControlEntity1.RowNumber = 20;
-                    myControlEntity1.ColumnNumber = 1;
+                    myControlEntity1.ColumnNumber = 2;
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     myControlEntity1.ControlEntitySetDefaults();
@@ -6884,7 +6993,8 @@ namespace ScriptGenerator {
                     myControlEntity1.ID = "btnTAB";
                     myControlEntity1.Text = "{TAB}";
                     myControlEntity1.RowNumber = 21;
-                    myControlEntity1.ColumnNumber = 1;
+                    myControlEntity1.ColumnNumber = 2;
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     myControlEntity1.ControlEntitySetDefaults();
@@ -6892,7 +7002,8 @@ namespace ScriptGenerator {
                     myControlEntity1.ID = "btnUP";
                     myControlEntity1.Text = "{UP}";
                     myControlEntity1.RowNumber = 22;
-                    myControlEntity1.ColumnNumber = 1;
+                    myControlEntity1.ColumnNumber = 2;
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     myControlEntity1.ControlEntitySetDefaults();
@@ -6901,6 +7012,7 @@ namespace ScriptGenerator {
                     myControlEntity1.Text = "Special Keys Repeat Count/Func Modifier:";
                     myControlEntity1.RowNumber = 23;
                     myControlEntity1.ColumnNumber = 0;
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
                     myControlEntity1.ControlEntitySetDefaults();
@@ -6908,14 +7020,24 @@ namespace ScriptGenerator {
                     myControlEntity1.ID = "txtSpecialKeysModifier";
                     myControlEntity1.Text = "";
                     myControlEntity1.RowNumber = 23;
-                    myControlEntity1.ColumnNumber = 1;
+                    myControlEntity1.ColumnNumber = 2;
+                    myControlEntity1.ColumnSpan = 2;
                     myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                     GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 700, 500, intWindowTop, intWindowLeft);
-
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 800, 900, intWindowTop, intWindowLeft);
+                    strScripts = myListControlEntity1.Find(x => x.ID == "Scripts").SelectedValue;
+                    if (myListControlEntity1.Find(x => x.ID == "Variables") != null) {
+                        strVariables = myListControlEntity1.Find(x => x.ID == "Variables").SelectedKey;
+                        strVariablesValue = myListControlEntity1.Find(x => x.ID == "Variables").SelectedValue;
+                    }
+                    myActions.SetValueByKey("ScriptsDefaultValue", strScripts);
+                    myActions.SetValueByKey("ScriptGeneratorVariables", strVariablesValue);
+                    if (strButtonPressed == "btnDDLRefresh") {
+                        goto DisplayTypeText;
+                    }
                     if (strButtonPressed == "btnCancel") {
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
+                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
                         goto DisplayWindowAgain;
                     }
 
@@ -6923,21 +7045,21 @@ namespace ScriptGenerator {
                         myListControlEntity1.Find(x => x.ID == "txtTextToType").Text = "%(\" \"n)";
                         myListControlEntity1.Find(x => x.ID == "txtAppendComment").Text = "Minimize Visual Studio";
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 700, 500, intWindowTop, intWindowLeft);
+                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 800, 900, intWindowTop, intWindowLeft);
                     }
 
                     if (strButtonPressed == "btnMaximizeVisualStudio") {
                         myListControlEntity1.Find(x => x.ID == "txtTextToType").Text = "%(f)x";
                         myListControlEntity1.Find(x => x.ID == "txtAppendComment").Text = "Maximize Visual Studio";
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 700, 500, intWindowTop, intWindowLeft);
+                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 800, 900, intWindowTop, intWindowLeft);
                     }
 
                     if (strButtonPressed == "btnIEAltD") {
                         myListControlEntity1.Find(x => x.ID == "txtTextToType").Text = "%(d)";
                         myListControlEntity1.Find(x => x.ID == "txtAppendComment").Text = "Go to IE address bar and select it";
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 700, 500, intWindowTop, intWindowLeft);
+                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 800, 900, intWindowTop, intWindowLeft);
                     }
 
 
@@ -6945,70 +7067,70 @@ namespace ScriptGenerator {
                         myListControlEntity1.Find(x => x.ID == "txtTextToType").Text = "%({ENTER})";
                         myListControlEntity1.Find(x => x.ID == "txtAppendComment").Text = "Alt enter while in address bar opens new tab";
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 700, 500, intWindowTop, intWindowLeft);
+                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 800, 900, intWindowTop, intWindowLeft);
                     }
 
                     if (strButtonPressed == "btnIEF6") {
                         myListControlEntity1.Find(x => x.ID == "txtTextToType").Text = "{F6}";
                         myListControlEntity1.Find(x => x.ID == "txtAppendComment").Text = "F6 is another way to highlight address bar in IE";
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 700, 500, intWindowTop, intWindowLeft);
+                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 800, 900, intWindowTop, intWindowLeft);
                     }
 
                     if (strButtonPressed == "btnIEMax") {
                         myListControlEntity1.Find(x => x.ID == "txtTextToType").Text = "%(\" \")";
                         myListControlEntity1.Find(x => x.ID == "txtAppendComment").Text = "maximize internet explorer";
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 700, 500, intWindowTop, intWindowLeft);
+                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 800, 900, intWindowTop, intWindowLeft);
                     }
 
                     if (strButtonPressed == "btnIECloseCurrentTab") {
                         myListControlEntity1.Find(x => x.ID == "txtTextToType").Text = "^(w)";
                         myListControlEntity1.Find(x => x.ID == "txtAppendComment").Text = "close the current tab";
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 700, 500, intWindowTop, intWindowLeft);
+                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 800, 900, intWindowTop, intWindowLeft);
                     }
 
                     if (strButtonPressed == "btnIEGoToTopOfPage") {
                         myListControlEntity1.Find(x => x.ID == "txtTextToType").Text = "{HOME}";
                         myListControlEntity1.Find(x => x.ID == "txtAppendComment").Text = "go to top of web page";
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 700, 500, intWindowTop, intWindowLeft);
+                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 800, 900, intWindowTop, intWindowLeft);
                     }
 
                     if (strButtonPressed == "btnIEClose") {
                         myListControlEntity1.Find(x => x.ID == "txtTextToType").Text = "%(f)x";
                         myListControlEntity1.Find(x => x.ID == "txtAppendComment").Text = "close internet explorer";
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 700, 500, intWindowTop, intWindowLeft);
+                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 800, 900, intWindowTop, intWindowLeft);
                     }
 
                     if (strButtonPressed == "btnCopy") {
                         myListControlEntity1.Find(x => x.ID == "txtTextToType").Text = "^(c)";
                         myListControlEntity1.Find(x => x.ID == "txtAppendComment").Text = "copy";
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 700, 500, intWindowTop, intWindowLeft);
+                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 800, 900, intWindowTop, intWindowLeft);
                     }
 
                     if (strButtonPressed == "btnCut") {
                         myListControlEntity1.Find(x => x.ID == "txtTextToType").Text = "^(x)";
                         myListControlEntity1.Find(x => x.ID == "txtAppendComment").Text = "cut";
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 700, 500, intWindowTop, intWindowLeft);
+                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 800, 900, intWindowTop, intWindowLeft);
                     }
 
                     if (strButtonPressed == "btnSelectAll") {
                         myListControlEntity1.Find(x => x.ID == "txtTextToType").Text = "^(a)";
                         myListControlEntity1.Find(x => x.ID == "txtAppendComment").Text = "select all";
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 700, 500, intWindowTop, intWindowLeft);
+                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 800, 900, intWindowTop, intWindowLeft);
                     }
 
                     if (strButtonPressed == "btnPaste") {
                         myListControlEntity1.Find(x => x.ID == "txtTextToType").Text = "^(v)";
                         myListControlEntity1.Find(x => x.ID == "txtAppendComment").Text = "paste";
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 700, 500, intWindowTop, intWindowLeft);
+                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 800, 900, intWindowTop, intWindowLeft);
                     }
 
                     string txtSpecialKeysModifier = myListControlEntity1.Find(x => x.ID == "txtSpecialKeysModifier").Text;
@@ -7017,7 +7139,7 @@ namespace ScriptGenerator {
                         myListControlEntity1.Find(x => x.ID == "txtTextToType").Text = "{F" + txtSpecialKeysModifier + "}";
                         myListControlEntity1.Find(x => x.ID == "txtAppendComment").Text = "";
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 700, 500, intWindowTop, intWindowLeft);
+                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 800, 900, intWindowTop, intWindowLeft);
                     }
 
                     if (txtSpecialKeysModifier.Length > 0) {
@@ -7028,91 +7150,91 @@ namespace ScriptGenerator {
                         myListControlEntity1.Find(x => x.ID == "txtTextToType").Text = "{DELETE" + txtSpecialKeysModifier + "}";
                         myListControlEntity1.Find(x => x.ID == "txtAppendComment").Text = "delete";
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 700, 500, intWindowTop, intWindowLeft);
+                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 800, 900, intWindowTop, intWindowLeft);
                     }
 
                     if (strButtonPressed == "btnDown") {
                         myListControlEntity1.Find(x => x.ID == "txtTextToType").Text = "{DOWN" + txtSpecialKeysModifier + "}";
                         myListControlEntity1.Find(x => x.ID == "txtAppendComment").Text = "down";
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 700, 500, intWindowTop, intWindowLeft);
+                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 800, 900, intWindowTop, intWindowLeft);
                     }
 
                     if (strButtonPressed == "btnEnd") {
                         myListControlEntity1.Find(x => x.ID == "txtTextToType").Text = "{END" + txtSpecialKeysModifier + "}";
                         myListControlEntity1.Find(x => x.ID == "txtAppendComment").Text = "end";
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 700, 500, intWindowTop, intWindowLeft);
+                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 800, 900, intWindowTop, intWindowLeft);
                     }
 
                     if (strButtonPressed == "btnEnter") {
                         myListControlEntity1.Find(x => x.ID == "txtTextToType").Text = "{ENTER" + txtSpecialKeysModifier + "}";
                         myListControlEntity1.Find(x => x.ID == "txtAppendComment").Text = "enter";
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 700, 500, intWindowTop, intWindowLeft);
+                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 800, 900, intWindowTop, intWindowLeft);
                     }
 
                     if (strButtonPressed == "btnEscape") {
                         myListControlEntity1.Find(x => x.ID == "txtTextToType").Text = "{ESCAPE" + txtSpecialKeysModifier + "}";
                         myListControlEntity1.Find(x => x.ID == "txtAppendComment").Text = "escape";
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 700, 500, intWindowTop, intWindowLeft);
+                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 800, 900, intWindowTop, intWindowLeft);
                     }
 
                     if (strButtonPressed == "btnHome") {
                         myListControlEntity1.Find(x => x.ID == "txtTextToType").Text = "{HOME" + txtSpecialKeysModifier + "}";
                         myListControlEntity1.Find(x => x.ID == "txtAppendComment").Text = "home";
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 700, 500, intWindowTop, intWindowLeft);
+                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 800, 900, intWindowTop, intWindowLeft);
                     }
 
                     if (strButtonPressed == "btnLeft") {
                         myListControlEntity1.Find(x => x.ID == "txtTextToType").Text = "{LEFT" + txtSpecialKeysModifier + "}";
                         myListControlEntity1.Find(x => x.ID == "txtAppendComment").Text = "left";
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 700, 500, intWindowTop, intWindowLeft);
+                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 800, 900, intWindowTop, intWindowLeft);
                     }
 
                     if (strButtonPressed == "btnPGDN") {
                         myListControlEntity1.Find(x => x.ID == "txtTextToType").Text = "{PGDN" + txtSpecialKeysModifier + "}";
                         myListControlEntity1.Find(x => x.ID == "txtAppendComment").Text = "page down";
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 700, 500, intWindowTop, intWindowLeft);
+                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 800, 900, intWindowTop, intWindowLeft);
                     }
 
                     if (strButtonPressed == "btnPGUP") {
                         myListControlEntity1.Find(x => x.ID == "txtTextToType").Text = "{PGUP" + txtSpecialKeysModifier + "}";
                         myListControlEntity1.Find(x => x.ID == "txtAppendComment").Text = "page up";
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 700, 500, intWindowTop, intWindowLeft);
+                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 800, 900, intWindowTop, intWindowLeft);
                     }
 
                     if (strButtonPressed == "btnRight") {
                         myListControlEntity1.Find(x => x.ID == "txtTextToType").Text = "{RIGHT" + txtSpecialKeysModifier + "}";
                         myListControlEntity1.Find(x => x.ID == "txtAppendComment").Text = "right";
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 700, 500, intWindowTop, intWindowLeft);
+                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 800, 900, intWindowTop, intWindowLeft);
                     }
 
                     if (strButtonPressed == "btnSpace") {
                         myListControlEntity1.Find(x => x.ID == "txtTextToType").Text = "{SPACE" + txtSpecialKeysModifier + "}";
                         myListControlEntity1.Find(x => x.ID == "txtAppendComment").Text = "space";
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 700, 500, intWindowTop, intWindowLeft);
+                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 800, 900, intWindowTop, intWindowLeft);
                     }
 
                     if (strButtonPressed == "btnTAB") {
                         myListControlEntity1.Find(x => x.ID == "txtTextToType").Text = "{TAB" + txtSpecialKeysModifier + "}";
                         myListControlEntity1.Find(x => x.ID == "txtAppendComment").Text = "tab";
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 700, 500, intWindowTop, intWindowLeft);
+                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 800, 900, intWindowTop, intWindowLeft);
                     }
 
                     if (strButtonPressed == "btnUP") {
                         myListControlEntity1.Find(x => x.ID == "txtTextToType").Text = "{UP" + txtSpecialKeysModifier + "}";
                         myListControlEntity1.Find(x => x.ID == "txtAppendComment").Text = "up";
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 700, 500, intWindowTop, intWindowLeft);
+                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 800, 900, intWindowTop, intWindowLeft);
                     }
 
 
@@ -7120,26 +7242,35 @@ namespace ScriptGenerator {
 
 
                     //if (strButtonPressed == "btnOkay") {
-                    //  strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, 100, 850);
+                    //  strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, 100, 850);
                     //  goto DisplayWindowAgain;
                     //}
                     string strTextToType = myListControlEntity1.Find(x => x.ID == "txtTextToType").Text;
                     string strAppendComment = myListControlEntity1.Find(x => x.ID == "txtAppendComment").Text;
                     string strMillisecondsToWait = myListControlEntity1.Find(x => x.ID == "txtMillisecondsToWait").Text;
-                    bool boolVariable = myListControlEntity1.Find(x => x.ID == "chkVariable").Checked;
                     bool boolCtrlKey = myListControlEntity1.Find(x => x.ID == "chkCtrlKey").Checked;
                     bool boolAltKey = myListControlEntity1.Find(x => x.ID == "chkAltKey").Checked;
                     bool boolShiftKey = myListControlEntity1.Find(x => x.ID == "chkShiftKey").Checked;
-                    myActions.SetValueByKey("ScriptGeneratorDefaultMilliseconds", strMillisecondsToWait, "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorVariable", boolVariable.ToString(), "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorCtrlKey", boolCtrlKey.ToString(), "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorAltKey", boolAltKey.ToString(), "IdealAutomateDB");
-                    myActions.SetValueByKey("ScriptGeneratorShiftKey", boolShiftKey.ToString(), "IdealAutomateDB");
+                    myActions.SetValueByKey("ScriptGeneratorDefaultMilliseconds", strMillisecondsToWait);
+                    myActions.SetValueByKey("ScriptGeneratorCtrlKey", boolCtrlKey.ToString());
+                    myActions.SetValueByKey("ScriptGeneratorAltKey", boolAltKey.ToString());
+                    myActions.SetValueByKey("ScriptGeneratorShiftKey", boolShiftKey.ToString());
                     if (strAppendComment.Length > 0) {
                         strAppendComment = " // " + strAppendComment;
                     }
                     string strGeneratedLine = "";
                     //   string strType = myListControlEntity1.Find(x => x.ID == "cbxType").SelectedValue;
+                    bool boolVariable = false;
+                    
+                    if (strTextToType.Trim() == "") {
+                        boolVariable = true;
+                    }
+                    string strTextToTypeToUse = "";                   
+                    if (strTextToType.Trim() == "") {
+                        strTextToTypeToUse = strVariables;
+                    } else {
+                        strTextToTypeToUse = "\"" + strTextToType.Trim() + "\"";
+                    }
                     if (!boolVariable && !boolCtrlKey && !boolAltKey && !boolShiftKey) {
                         if (strAppendComment == " // Maximize Visual Studio" && strTextToType == "%(f)x") {
                             strGeneratedLine = "myActions.TypeText(\"%(f)\"," + strMillisecondsToWait + ");" + strAppendComment;
@@ -7147,7 +7278,7 @@ namespace ScriptGenerator {
                             myActions.PutEntityInClipboard(strGeneratedLine);
                             myActions.MessageBoxShow(strGeneratedLine);
                         } else if (strAppendComment == " // maximize internet explorer" && strTextToType == "%(\" \")") {
-                            strGeneratedLine = "myActions.TypeText(\"%(\\\" \\\")," + strMillisecondsToWait + ");" + strAppendComment;
+                            strGeneratedLine = "myActions.TypeText(\"%(\\\" \\\")\"," + strMillisecondsToWait + ");" + strAppendComment;
                             strGeneratedLine += System.Environment.NewLine + "myActions.TypeText(\"x\"," + strMillisecondsToWait + ");";
                             myActions.PutEntityInClipboard(strGeneratedLine);
                             myActions.MessageBoxShow(strGeneratedLine);
@@ -7157,14 +7288,14 @@ namespace ScriptGenerator {
                             myActions.PutEntityInClipboard(strGeneratedLine);
                             myActions.MessageBoxShow(strGeneratedLine);
                         } else {
-                            strGeneratedLine = "myActions.TypeText(\"" + strTextToType + "\"," + strMillisecondsToWait + ");" + strAppendComment;
+                            strGeneratedLine = "myActions.TypeText(" + strTextToTypeToUse + "," + strMillisecondsToWait + ");" + strAppendComment;
                             myActions.PutEntityInClipboard(strGeneratedLine);
                             myActions.MessageBoxShow(strGeneratedLine);
                         }
 
                     }
                     if (boolVariable && !boolCtrlKey && !boolAltKey && !boolShiftKey) {
-                        strGeneratedLine = "myActions.TypeText(" + strTextToType + "," + strMillisecondsToWait + ");" + strAppendComment;
+                        strGeneratedLine = "myActions.TypeText(" + strTextToTypeToUse + "," + strMillisecondsToWait + ");" + strAppendComment;
                         myActions.PutEntityInClipboard(strGeneratedLine);
                         myActions.MessageBoxShow(strGeneratedLine);
                     }
@@ -7194,7 +7325,7 @@ namespace ScriptGenerator {
                         myActions.MessageBoxShow("Shift Key and Variable is not valid");
                     }
                     GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
                     goto DisplayWindowAgain;
                     break;
 
@@ -7205,7 +7336,7 @@ namespace ScriptGenerator {
 
 
             GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-            strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, intWindowTop, intWindowLeft);
+            strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
             goto DisplayWindowAgain;
 
             myExit:
@@ -7213,8 +7344,8 @@ namespace ScriptGenerator {
         }
 
         private static void GetSavedWindowPosition(Methods myActions, out int intWindowTop, out int intWindowLeft, out string strWindowTop, out string strWindowLeft) {
-            strWindowLeft = myActions.GetValueByKey("WindowLeft", "IdealAutomateDB");
-            strWindowTop = myActions.GetValueByKey("WindowTop", "IdealAutomateDB");
+            strWindowLeft = myActions.GetValueByKey("WindowLeft");
+            strWindowTop = myActions.GetValueByKey("WindowTop");
             Int32.TryParse(strWindowLeft, out intWindowLeft);
             Int32.TryParse(strWindowTop, out intWindowTop);
         }

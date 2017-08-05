@@ -21,7 +21,7 @@ namespace CreateNewVSProjectForScript {
             };
             window.Show();
             IdealAutomate.Core.Methods myActions = new Methods();
-            string strRunningFromHome = myActions.GetValueByKey("RunningFromHome", "IdealAutomateDB");
+            string strRunningFromHome = myActions.GetValueByKey("RunningFromHome");
             if (strRunningFromHome == "True") {
                 boolRunningFromHome = true;
             }
@@ -35,7 +35,7 @@ namespace CreateNewVSProjectForScript {
             List<ControlEntity> myListControlEntity = new List<ControlEntity>();
 
             ControlEntity myControlEntity = new ControlEntity();
-            string strFileName = myActions.GetValueByKey("VS2013Path", "IdealAutomateDB");
+            string strFileName = myActions.GetValueByKey("VS2013Path");
             TryToFindFile:
             if (!File.Exists(strFileName)) {
                 myListControlEntity = new List<ControlEntity>();
@@ -74,7 +74,7 @@ namespace CreateNewVSProjectForScript {
                     myActions.MessageBoxShow("Script cancelled");
                     goto myExit;
                 } else {
-                    myActions.SetValueByKey("VS2013Path", strNewFile, "IdealAutomateDB");
+                    myActions.SetValueByKey("VS2013Path", strNewFile);
                     strFileName = strNewFile;
                     goto TryToFindFile;
                 }
@@ -168,7 +168,7 @@ namespace CreateNewVSProjectForScript {
             myControlEntity.ControlEntitySetDefaults();
             myControlEntity.ControlType = ControlType.TextBox;
             myControlEntity.ID = "txtProjectName";
-            myControlEntity.Text = myActions.GetValueByKey("ProjectName", "IdealAutomateDB"); ;
+            myControlEntity.Text = myActions.GetValueByKey("ProjectName"); ;
             myControlEntity.ToolTipx = "";
             myControlEntity.RowNumber = 2;
             myControlEntity.ColumnNumber = 1;           
@@ -176,7 +176,7 @@ namespace CreateNewVSProjectForScript {
             myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
 
             string strProjectName = myListControlEntity.Find(x => x.ID == "txtProjectName").Text;
-            myActions.SetValueByKey("ProjectName", strProjectName, "IdealAutomateDB");
+            myActions.SetValueByKey("ProjectName", strProjectName);
 
             if (strProjectName == "") {
                 myActions.MessageBoxShow("Script Cancelled");

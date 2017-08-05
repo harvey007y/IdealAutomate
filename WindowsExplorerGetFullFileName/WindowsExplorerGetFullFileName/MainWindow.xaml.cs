@@ -35,7 +35,7 @@ namespace WindowsExplorerGetFullFileName {
       myActions.TypeText("+({F10})", 500); // right-click filename in windows explorer
       myActions.TypeText("{UP}", 500);  // highlight properties
       myActions.TypeText("+({ENTER})", 500); // select properties
-      myActions.TypeText("+({TAB 2})", 500); // focus filename
+      myActions.TypeText("+({TAB})", 500); // focus filename
       myActions.SelectAllCopy(500); // Copy filename
       myActions.TypeText("+({TAB 2})", 500); // focus cancel button
       myActions.TypeText("{ENTER}", 500); // close properties window
@@ -43,7 +43,7 @@ namespace WindowsExplorerGetFullFileName {
       myImage.ImageFile = "Images\\imgName.PNG";
       myImage.Sleep = 700;
       myImage.Attempts = 2;
-      myImage.RelativeX = 300;
+      myImage.RelativeX = 600;
       myImage.RelativeY = -25;
       int[,] myArray = myActions.PutAll(myImage);
       if (myArray.Length == 0) {
