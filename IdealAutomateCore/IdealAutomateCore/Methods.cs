@@ -67,7 +67,17 @@ namespace IdealAutomate.Core {
         private const int SW_SHOWDEFAULT = 10;
         Process oProcess;
         public Methods() {
+            string settingsDirectory = GetAppDirectoryForScript();
+            if (!Directory.Exists(settingsDirectory)) {
+                Directory.CreateDirectory(settingsDirectory);
+            }
+            string filePath = Path.Combine(settingsDirectory, "IdealAutomateLog.txt");
+            //System.Web.HttpContext.Current.Server.MapPath("~//Trace.html")
+            StreamWriter sw = null;
 
+            if (File.Exists(filePath)) {
+                File.Delete(filePath);
+            }
             oProcess = Process.GetCurrentProcess();
             BreakOnPauseKeyPress();
             string directory = AppDomain.CurrentDomain.BaseDirectory;
