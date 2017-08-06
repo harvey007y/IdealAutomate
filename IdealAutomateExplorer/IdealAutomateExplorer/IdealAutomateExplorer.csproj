@@ -128,5 +128,11 @@
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IdealAutomateCore\IdealAutomateCore\IdealAutomateCore.csproj">
+      <Project>{109780dd-3fc0-4f59-9623-9617586acc1b}</Project>
+      <Name>IdealAutomateCore</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
 </Project>

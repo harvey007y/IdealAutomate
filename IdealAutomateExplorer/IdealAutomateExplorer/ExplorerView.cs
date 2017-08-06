@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Text;
 using System.Diagnostics;
+using IdealAutomate.Core;
 
 #endregion
 
@@ -316,14 +317,85 @@ namespace System.Windows.Forms.Samples
                 } else {
                     ev_Process_File(myFileView.FullName.ToString());
                 }
-
             }
         }
 
 
 
         private void projectToolStripMenuItem_Click(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            List<ControlEntity> myListControlEntity = new List<ControlEntity>();
 
+            ControlEntity myControlEntity = new ControlEntity();
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Heading;
+            myControlEntity.Text = "Create New Project";
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "myLabel";
+            myControlEntity.Text = "Enter New Project Name";
+            myControlEntity.RowNumber = 0;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "myTextBox";
+            myControlEntity.Text = "";
+            myControlEntity.RowNumber = 0;
+            myControlEntity.ColumnNumber = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            ReDisplayNewProjectDialog:
+            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
+
+            if (strButtonPressed == "btnCancel") {
+                myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                return;
+            }
+
+            string myNewProjectName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
+            string strNewProjectDir = Path.Combine(_dir.FileView.FullName, myNewProjectName);
+            if (Directory.Exists(strNewProjectDir)) {
+                myActions.MessageBoxShow(strNewProjectDir + "already exists");
+                goto ReDisplayNewProjectDialog;
+            }
+            try {
+                // create the directories
+                Directory.CreateDirectory(strNewProjectDir);
+                string binDir = Path.Combine(strNewProjectDir, "bin");
+                Directory.CreateDirectory(binDir);
+                string strDebug = Path.Combine(binDir, "Debug");
+                Directory.CreateDirectory(strDebug);
+                string strImages = Path.Combine(strNewProjectDir, "Images");
+                Directory.CreateDirectory(strImages);
+                string strObj = Path.Combine(strNewProjectDir, "obj");
+                Directory.CreateDirectory(strObj);
+                string strX86 = Path.Combine(strObj, "x86");
+                Directory.CreateDirectory(strX86);
+                string strObjDebug = Path.Combine(strX86, "Debug");
+                Directory.CreateDirectory(strObjDebug);
+                string strObjDebugTempPE = Path.Combine(strObjDebug, "TempPE");
+                Directory.CreateDirectory(strObjDebugTempPE);
+                string strProperties = Path.Combine(strNewProjectDir, "Properties");
+                Directory.CreateDirectory(strProperties);
+
+            } catch (Exception ex) {
+
+                MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
+            }
+            
+            
+            // TODO: Check if new project directory exists 
+            // if so display a message, and redisplay dialog
+
+            // TODO: Copy myNewProject files and replace myNewProject with
+            // myNewProjectName
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e) {
