@@ -33,6 +33,9 @@
     <OutputPath>.\bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\folder.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -42,6 +45,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common.cs" />
+    <Content Include="MyNewProject\MyNewProject\App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Content>
+    <Content Include="MyNewProject\MyNewProject\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Content>
+    <Content Include="MyNewProject\MyNewProject\Properties\AssemblyInfo.cs" />
+    <Content Include="MyNewProject\MyNewProject\Properties\Resources.Designer.cs" />
+    <Content Include="MyNewProject\MyNewProject\Properties\Settings.Designer.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="DirectoryView.cs" />
     <Compile Include="ExplorerView.cs">
@@ -56,10 +68,13 @@
     <EmbeddedResource Include="ExplorerView.resx">
       <DependentUpon>ExplorerView.cs</DependentUpon>
     </EmbeddedResource>
+    <Content Include="MyNewProject\MyNewProject\Properties\Resources.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="MyNewProject\MyNewProject\ClassDiagram1.cd" />
+    <Content Include="MyNewProject\MyNewProject\Properties\Settings.settings" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -82,42 +97,36 @@
     <Content Include="Images\Details.PNG" />
     <Content Include="Images\Forward.PNG" />
     <Content Include="Images\Up.PNG" />
-    <Content Include="Text\Methods_JS.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Text\Reserved_Words_JS.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Text\Type_Words_JS.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Text\Type_Words_CS.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Text\Reserved_Words_CS.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Text\Reserved_Words_VB.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="MyNewProject\MyNewProject.sln" />
+    <Content Include="MyNewProject\MyNewProject\Images\112_UpArrowShort_Green.ico" />
+    <Content Include="MyNewProject\MyNewProject\Images\imgPatch16.PNG" />
+    <Content Include="MyNewProject\MyNewProject\Images\imgPatch17.PNG" />
+    <Content Include="MyNewProject\MyNewProject\Images\imgPatch2015_08.PNG" />
+    <Content Include="MyNewProject\MyNewProject\Images\imgPatch2015_08_Home.PNG" />
+    <Content Include="MyNewProject\MyNewProject\Images\imgSVNUpdate.PNG" />
+    <Content Include="MyNewProject\MyNewProject\Images\imgSVNUpdate_Home.PNG" />
+    <Content Include="MyNewProject\MyNewProject\Images\imgUpdateLogOK.PNG" />
+    <Content Include="MyNewProject\MyNewProject\Images\imgUpdateLogOK_Home.PNG" />
+    <Content Include="MyNewProject\MyNewProject\MyNewProject.csproj" />
+    <None Include="Resources\folder.ico" />
     <Content Include="Text\InitialDirectory.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Text\TracerCS.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Text\TracerJS.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Text\TracerASP.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Text\TracerVB.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="MyNewProject\MyNewProject\bin\Debug\" />
+    <Folder Include="MyNewProject\MyNewProject\obj\x86\Debug\TempPE\" />
     <Folder Include="Properties\DataSources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="MyNewProject\MyNewProject\App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="MyNewProject\MyNewProject\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
 </Project>

@@ -250,19 +250,28 @@ namespace System.Windows.Forms.Samples
 
         }
         private void ev_Process_File(string myFile)
-        {
-            // process .vb
-            try {
-                if (myFile.EndsWith(".exe")) {
-                    Process.Start(myFile);
-                }
+        {           
+            try {               
+                    Process.Start(myFile);                
             } catch (Exception ex) {
+                MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
+            }   
+        }
 
+        private void ev_Delete_File(string myFile) {
+            try {
+                File.Delete(myFile);
+            } catch (Exception ex) {
                 MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
             }
+        }
 
-           
-
+        private void ev_Delete_Directory(string myFile) {
+            try {
+                Directory.Delete(myFile,true);
+            } catch (Exception ex) {
+                MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
+            }
         }
 
 
@@ -276,7 +285,7 @@ namespace System.Windows.Forms.Samples
                 if (myFileView.IsDirectory) {
                     // Call EnumerateFiles in a foreach-loop.
                     foreach (string file in Directory.EnumerateFiles(myFileView.FullName.ToString(),
-                        "*.*",
+                       myFileView.Name + ".exe",
                         SearchOption.AllDirectories)) {
                         // Display file path.
                         ev_Process_File(file);
@@ -288,6 +297,50 @@ namespace System.Windows.Forms.Samples
 
             }
            
+        }
+
+        private void btnVisualStudio_Click(object sender, EventArgs e) {
+            FileView myFileView;
+            foreach (DataGridViewCell myCell in dataGridView1.SelectedCells) {
+                myFileView = (FileView)this.FileViewBindingSource[myCell.RowIndex];
+                //MessageBox.Show(myFileView.FullName.ToString());
+                if (myFileView.IsDirectory) {
+                    // Call EnumerateFiles in a foreach-loop.
+                    foreach (string file in Directory.EnumerateFiles(myFileView.FullName.ToString(),
+                       myFileView.Name + ".sln",
+                        SearchOption.AllDirectories)) {
+                        // Display file path.
+                        ev_Process_File(file);
+                    }
+
+                } else {
+                    ev_Process_File(myFileView.FullName.ToString());
+                }
+
+            }
+        }
+
+
+
+        private void projectToolStripMenuItem_Click(object sender, EventArgs e) {
+
+        }
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e) {
+            FileView myFileView;
+            foreach (DataGridViewCell myCell in dataGridView1.SelectedCells) {
+                myFileView = (FileView)this.FileViewBindingSource[myCell.RowIndex];
+                //MessageBox.Show(myFileView.FullName.ToString());
+                if (myFileView.IsDirectory) {
+                    // Call EnumerateFiles in a foreach-loop.
+                    
+                        ev_Delete_Directory(myFileView.FullName.ToString());                 
+
+                } else {
+                    ev_Delete_File(myFileView.FullName.ToString());
+                }
+
+            }
         }
     }
 
