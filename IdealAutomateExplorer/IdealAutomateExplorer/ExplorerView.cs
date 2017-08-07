@@ -240,7 +240,9 @@ namespace System.Windows.Forms.Samples {
                        myFileView.Name + ".exe",
                         SearchOption.AllDirectories)) {
                         // Display file path.
-                        ev_Process_File(file);
+                        if (file.Contains("bin\\Debug")) {
+                            ev_Process_File(file);
+                        }
                     }
 
                 } else {
