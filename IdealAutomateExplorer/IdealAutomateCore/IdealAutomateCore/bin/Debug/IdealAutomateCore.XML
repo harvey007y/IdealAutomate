@@ -470,6 +470,32 @@
             <param name="strKey">Unique key within the script application</param>
             <param name="arrayListToWrite">ArrayList that is to written to the application directory for that key</param>
         </member>
+        <member name="M:IdealAutomate.Core.Methods.ReadAppDirectoryKeyToArrayListGlobal(System.String)">
+            <summary>
+            <para>ReadAppDirectoryKeyToArrayList takes a key and adds .txt to it in order to create</para>
+            <para>a file name. It gets the app data path and adds \IdealAutomate\yourscriptname</para>
+            <para>to it. By combining that path to the file name created from the key,</para>
+            <para>it can retrieve an arraylist that is unique to your script application.</para>
+            <para>The AppDirectory allows you to store personal settings and</para>
+            <para>information that you want to keep private (like passwords) in a location</para>
+            <para>outside of your script on in the application directory</para>
+            </summary>
+            <param name="strKey">Unique key within the script application</param>
+            <returns>ArrayList that was in application directory for that key</returns>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.WriteArrayListToAppDirectoryKeyGlobal(System.String,System.Collections.ArrayList)">
+            <summary>
+            <para>WriteArrayListToAppDirectoryKey takes a key and adds .txt to it in order to create</para>
+            <para>a file name. It gets the app data path and adds \IdealAutomate\yourscriptname</para>
+            <para>to it. By combining that path to the file name created from the key,</para>
+            <para>it can write an arraylist to the key filename is unique to your script application.</para>
+            <para>The AppDirectory allows you to store personal settings and</para>
+            <para>information that you want to keep private (like passwords) in a location</para>
+            <para>outside of your script on in the application directory</para>
+            </summary>
+            <param name="strKey">Unique key within the script application</param>
+            <param name="arrayListToWrite">ArrayList that is to written to the application directory for that key</param>
+        </member>
         <member name="T:IdealAutomate.Core.Position_Cursor.Point">
             <summary>
             Not sure if we're just supposed to create our own point class.

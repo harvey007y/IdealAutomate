@@ -38,11 +38,17 @@
     <ApplicationIcon>Resources\folder.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsInput, Version=1.0.4.0, Culture=neutral, PublicKeyToken=9b287f7dc5073cad, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\WrapSQLInQuotesForCS\WrapSQLInQuotesForCS\packages\InputSimulator.1.0.4.0\lib\net20\WindowsInput.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common.cs" />
@@ -55,6 +61,7 @@
     <Content Include="MyNewProject\MyNewProject\Properties\AssemblyInfo.cs" />
     <Content Include="MyNewProject\MyNewProject\Properties\Resources.Designer.cs" />
     <Content Include="MyNewProject\MyNewProject\Properties\Settings.Designer.cs" />
+    <Compile Include="HotKeyRecord.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="DirectoryView.cs" />
     <Compile Include="ExplorerView.cs">

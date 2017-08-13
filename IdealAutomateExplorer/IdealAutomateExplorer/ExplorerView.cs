@@ -10,13 +10,20 @@ using System.IO;
 using System.Text;
 using System.Diagnostics;
 using IdealAutomate.Core;
+using System.Collections;
+using WindowsInput;
+using WindowsInput.Native;
+using System.Windows;
+using System.Linq;
 
 #endregion
 
 namespace System.Windows.Forms.Samples {
     partial class ExplorerView : Form {
         private DirectoryView _dir;
-
+        bool boolStopEvent = false;
+        List<HotKeyRecord> listHotKeyRecords = new List<HotKeyRecord>();
+        Dictionary<string, VirtualKeyCode> dictVirtualKeyCodes = new Dictionary<string, VirtualKeyCode>();
 
         public ExplorerView() {
             InitializeComponent();
@@ -106,6 +113,7 @@ namespace System.Windows.Forms.Samples {
             if (null != col) {
                 this.dataGridView1.Rows[0].Cells[col.Index].Selected = true;
             }
+            AddGlobalHotKeys();
         }
 
         private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e) {
@@ -341,7 +349,7 @@ namespace System.Windows.Forms.Samples {
                 Directory.CreateDirectory(strProperties);
                 string strApplicationBinDebug = Application.StartupPath;
                 string myNewProjectSourcePath = strApplicationBinDebug.Replace("bin\\Debug", "MyNewProject");
-                 string strLine = "";
+                string strLine = "";
 
                 string[] myLines0 = File.ReadAllLines(Path.Combine(myNewProjectSourcePath, "MyNewProject.sln"));
                 using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Path.Combine(strNewProjectDir, myNewProjectName + ".sln"))) {
@@ -361,16 +369,16 @@ namespace System.Windows.Forms.Samples {
                 File.Copy(Path.Combine(myNewProjectSourcePath, "Images\\imgSVNUpdate_Home.PNG"), Path.Combine(strNewProjectDir, "Images\\imgSVNUpdate_Home.PNG"));
                 File.Copy(Path.Combine(myNewProjectSourcePath, "Images\\imgUpdateLogOK.PNG"), Path.Combine(strNewProjectDir, "Images\\imgUpdateLogOK.PNG"));
                 File.Copy(Path.Combine(myNewProjectSourcePath, "Images\\imgUpdateLogOK_Home.PNG"), Path.Combine(strNewProjectDir, "Images\\imgUpdateLogOK_Home.PNG"));
-              
+
 
                 string[] myLines = File.ReadAllLines(Path.Combine(myNewProjectSourcePath, "Properties\\AssemblyInfo.cs"));
-                 using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Path.Combine(strNewProjectDir, "Properties\\AssemblyInfo.cs"))) {
+                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Path.Combine(strNewProjectDir, "Properties\\AssemblyInfo.cs"))) {
                     foreach (var item in myLines) {
                         strLine = item.Replace("MyNewProject", myNewProjectName);
                         sw.WriteLine(strLine);
                     }
                 }
-                
+
 
                 string[] myLines1 = File.ReadAllLines(Path.Combine(myNewProjectSourcePath, "Properties\\Resources.Designer.cs"));
                 using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Path.Combine(strNewProjectDir, "Properties\\Resources.Designer.cs"))) {
@@ -453,6 +461,414 @@ namespace System.Windows.Forms.Samples {
                 }
 
             }
+        }
+
+        private void addHotKeyToolStripMenuItem_Click(object sender, EventArgs e) {
+            FileView myFileView;
+            Methods myActions = new Methods();
+            List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+
+            ControlEntity myControlEntity = new ControlEntity();
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Heading;
+            myControlEntity.Text = "Add HotKey";
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "myLabel";
+            myControlEntity.Text = "Enter HotKey Character";
+            myControlEntity.RowNumber = 0;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "myTextBox";
+            myControlEntity.Text = "";
+            myControlEntity.RowNumber = 0;
+            myControlEntity.ColumnNumber = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+
+            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
+
+            if (strButtonPressed == "btnCancel") {
+                myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                return;
+            }
+
+            string myHotKey = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
+            foreach (DataGridViewCell myCell in dataGridView1.SelectedCells) {
+                myFileView = (FileView)this.FileViewBindingSource[myCell.RowIndex];
+                //MessageBox.Show(myFileView.FullName.ToString());
+                if (myFileView.IsDirectory) {
+                    // Call EnumerateFiles in a foreach-loop.
+                    foreach (string file in Directory.EnumerateFiles(myFileView.FullName.ToString(),
+                       myFileView.Name + ".exe",
+                        SearchOption.AllDirectories)) {
+                        // Display file path.
+                        if (file.Contains("bin\\Debug")) {
+                            ArrayList myArrayList = myActions.ReadAppDirectoryKeyToArrayListGlobal("ScriptInfo");
+                            ArrayList newArrayList = new ArrayList();
+                            bool boolScriptFound = false;
+                            foreach (var item in myArrayList) {
+                                string[] myScriptInfoFields = item.ToString().Split('^');
+                                string scriptName = myScriptInfoFields[0];
+                                if (scriptName == myFileView.Name) {
+                                    boolScriptFound = true;
+                                    string strHotKey = myScriptInfoFields[1];
+                                    string strTotalExecutions = myScriptInfoFields[2];
+                                    string strSuccessfulExecutions = myScriptInfoFields[3];
+                                    string strLastExecuted = myScriptInfoFields[4];
+                                    string strHotKeyExecutable = myScriptInfoFields[5];
+                                    int intTotalExecutions = 0;
+                                    Int32.TryParse(strTotalExecutions, out intTotalExecutions);
+                                    int intSuccessfulExecutions = 0;
+                                    Int32.TryParse(strSuccessfulExecutions, out intSuccessfulExecutions);
+                                    DateTime dateLastExecuted = DateTime.MinValue;
+                                    DateTime.TryParse(strLastExecuted, out dateLastExecuted);
+                                    newArrayList.Add(scriptName + "^" +
+                                        "Ctrl+Alt+" + myHotKey + "^" +
+                                         myScriptInfoFields[2] + "^" +
+                                         myScriptInfoFields[3] + "^" +
+                                         myScriptInfoFields[4] + "^" +
+                                         myScriptInfoFields[5] + "^"
+                                        );
+                                } else {
+                                    newArrayList.Add(item.ToString());
+                                }
+                            }
+                            if (boolScriptFound == false) {
+                                newArrayList.Add(myFileView.Name + "^" +
+                                       "Ctrl+Alt+" + myHotKey + "^" +
+                                        "0" + "^" +
+                                        "0" + "^" +
+                                       null + "^" +
+                                       file + "^"
+                                       );
+                            }
+                            myActions.WriteArrayListToAppDirectoryKeyGlobal("ScriptInfo", newArrayList);
+                        }
+                    }
+
+                } else {
+                    ev_Process_File(myFileView.FullName.ToString());
+                }
+
+            }
+        }
+
+        private void removeHotKeyToolStripMenuItem_Click(object sender, EventArgs e) {
+            FileView myFileView;
+            Methods myActions = new Methods();
+
+            foreach (DataGridViewCell myCell in dataGridView1.SelectedCells) {
+                myFileView = (FileView)this.FileViewBindingSource[myCell.RowIndex];
+                //MessageBox.Show(myFileView.FullName.ToString());
+                if (myFileView.IsDirectory) {
+                    // Call EnumerateFiles in a foreach-loop.
+                    foreach (string file in Directory.EnumerateFiles(myFileView.FullName.ToString(),
+                       myFileView.Name + ".exe",
+                        SearchOption.AllDirectories)) {
+                        // Display file path.
+                        if (file.Contains("bin\\Debug")) {
+                            ArrayList myArrayList = myActions.ReadAppDirectoryKeyToArrayListGlobal("ScriptInfo");
+                            ArrayList newArrayList = new ArrayList();
+                            bool boolScriptFound = false;
+                            foreach (var item in myArrayList) {
+                                string[] myScriptInfoFields = item.ToString().Split('^');
+                                string scriptName = myScriptInfoFields[0];
+                                if (scriptName == myFileView.Name) {
+                                    boolScriptFound = true;
+                                    string strHotKey = myScriptInfoFields[1];
+                                    string strTotalExecutions = myScriptInfoFields[2];
+                                    string strSuccessfulExecutions = myScriptInfoFields[3];
+                                    string strLastExecuted = myScriptInfoFields[4];
+                                    string strHotKeyExecutable = myScriptInfoFields[5];
+                                    int intTotalExecutions = 0;
+                                    Int32.TryParse(strTotalExecutions, out intTotalExecutions);
+                                    int intSuccessfulExecutions = 0;
+                                    Int32.TryParse(strSuccessfulExecutions, out intSuccessfulExecutions);
+                                    DateTime dateLastExecuted = DateTime.MinValue;
+                                    DateTime.TryParse(strLastExecuted, out dateLastExecuted);
+                                    newArrayList.Add(scriptName + "^" +
+                                        "" + "^" +
+                                         myScriptInfoFields[2] + "^" +
+                                         myScriptInfoFields[3] + "^" +
+                                         myScriptInfoFields[4] + "^" +
+                                         myScriptInfoFields[5] + "^"
+                                        );
+
+                                } else {
+                                    newArrayList.Add(item.ToString());
+                                }
+                            }
+
+                            myActions.WriteArrayListToAppDirectoryKeyGlobal("ScriptInfo", newArrayList);
+                        }
+                    }
+
+                } else {
+                    ev_Process_File(myFileView.FullName.ToString());
+                }
+
+            }
+        }
+        private void AddGlobalHotKeys() {
+            Methods myActions = new Methods();
+            ArrayList myArrayList = myActions.ReadAppDirectoryKeyToArrayListGlobal("ScriptInfo");
+            ArrayList newArrayList = new ArrayList();
+            bool boolScriptFound = false;
+            foreach (var item in myArrayList) {
+                string[] myScriptInfoFields = item.ToString().Split('^');
+                string scriptName = myScriptInfoFields[0];
+
+                string strHotKey = myScriptInfoFields[1];
+                if (strHotKey != "") {
+                  
+                    string strHotKeyExecutable = myScriptInfoFields[5];
+                    HotKeyRecord myHotKeyRecord = new HotKeyRecord();
+                    myHotKeyRecord.HotKeys = strHotKey.Split('+');
+                    myHotKeyRecord.Executable = strHotKeyExecutable;
+                    myHotKeyRecord.ExecuteContent = "";                   
+                    bool boolHotKeysGood = true;
+                    foreach (string myHotKey in myHotKeyRecord.HotKeys) {
+                        if (dictVirtualKeyCodes.ContainsKey(myHotKey)) {
+                            MessageBox.Show("Invalid hotkey: " + myHotKey + " on script: " + scriptName);
+                            boolHotKeysGood = false;
+                        }
+                    }
+                    if (boolHotKeysGood) {
+                        listHotKeyRecords.Add(myHotKeyRecord);
+                    }
+                }
+               
+
+            }
+ 
+            dictVirtualKeyCodes.Add("Ctrl", VirtualKeyCode.CONTROL);
+            dictVirtualKeyCodes.Add("Alt", VirtualKeyCode.MENU);
+            dictVirtualKeyCodes.Add("Shift", VirtualKeyCode.SHIFT);
+            dictVirtualKeyCodes.Add("Space", VirtualKeyCode.SPACE);
+            dictVirtualKeyCodes.Add("Up", VirtualKeyCode.UP);
+            dictVirtualKeyCodes.Add("Down", VirtualKeyCode.DOWN);
+            dictVirtualKeyCodes.Add("Left", VirtualKeyCode.LEFT);
+            dictVirtualKeyCodes.Add("Right", VirtualKeyCode.RIGHT);
+            dictVirtualKeyCodes.Add("A", VirtualKeyCode.VK_A);
+            dictVirtualKeyCodes.Add("B", VirtualKeyCode.VK_B);
+            dictVirtualKeyCodes.Add("C", VirtualKeyCode.VK_C);
+            dictVirtualKeyCodes.Add("D", VirtualKeyCode.VK_D);
+            dictVirtualKeyCodes.Add("E", VirtualKeyCode.VK_E);
+            dictVirtualKeyCodes.Add("F", VirtualKeyCode.VK_F);
+            dictVirtualKeyCodes.Add("G", VirtualKeyCode.VK_G);
+            dictVirtualKeyCodes.Add("H", VirtualKeyCode.VK_H);
+            dictVirtualKeyCodes.Add("I", VirtualKeyCode.VK_I);
+            dictVirtualKeyCodes.Add("J", VirtualKeyCode.VK_J);
+            dictVirtualKeyCodes.Add("K", VirtualKeyCode.VK_K);
+            dictVirtualKeyCodes.Add("L", VirtualKeyCode.VK_L);
+            dictVirtualKeyCodes.Add("M", VirtualKeyCode.VK_M);
+            dictVirtualKeyCodes.Add("N", VirtualKeyCode.VK_N);
+            dictVirtualKeyCodes.Add("O", VirtualKeyCode.VK_O);
+            dictVirtualKeyCodes.Add("P", VirtualKeyCode.VK_P);
+            dictVirtualKeyCodes.Add("Q", VirtualKeyCode.VK_Q);
+            dictVirtualKeyCodes.Add("R", VirtualKeyCode.VK_R);
+            dictVirtualKeyCodes.Add("S", VirtualKeyCode.VK_S);
+            dictVirtualKeyCodes.Add("T", VirtualKeyCode.VK_T);
+            dictVirtualKeyCodes.Add("U", VirtualKeyCode.VK_U);
+            dictVirtualKeyCodes.Add("V", VirtualKeyCode.VK_V);
+            dictVirtualKeyCodes.Add("W", VirtualKeyCode.VK_W);
+            dictVirtualKeyCodes.Add("X", VirtualKeyCode.VK_X);
+            dictVirtualKeyCodes.Add("Y", VirtualKeyCode.VK_Y);
+            dictVirtualKeyCodes.Add("Z", VirtualKeyCode.VK_Z);
+            // Create a timer and set a two millisecond interval.
+            System.Timers.Timer aTimer = new System.Timers.Timer();
+            aTimer.Interval = 2;
+
+            // Alternate method: create a Timer with an interval argument to the constructor. 
+            //aTimer = new System.Timers.Timer(2000); 
+
+            // Create a timer with a two millisecond interval.
+            aTimer = new System.Timers.Timer(2);
+
+            // Hook up the Elapsed event for the timer. 
+            aTimer.Elapsed += OnTimedEvent;
+
+            // Have the timer fire repeated events (true is the default)
+            aTimer.AutoReset = true;
+
+            // Start the timer
+            aTimer.Enabled = true;
+        }
+
+
+        private void OnTimedEvent(object sender, System.Timers.ElapsedEventArgs e) {
+            InputSimulator myInputSimulator = new InputSimulator();
+
+            if (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.CONTROL) || myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.MENU)) {
+                foreach (HotKeyRecord myHotKeyRecord in listHotKeyRecords) {
+                    bool boolAllHotKeysPressed = true;
+                    foreach (string myHotKey in myHotKeyRecord.HotKeys) {
+                        VirtualKeyCode myVirtualKeyCode;
+                        dictVirtualKeyCodes.TryGetValue(myHotKey, out myVirtualKeyCode);
+                        if (!myInputSimulator.InputDeviceState.IsKeyDown(myVirtualKeyCode)) {
+                            boolAllHotKeysPressed = false;
+                        }
+                    }
+
+
+                    if (boolAllHotKeysPressed && boolStopEvent == false) {
+                        boolStopEvent = true;
+                        //TODO: increment number times executed
+
+                        RunWaitTillStart(myHotKeyRecord.Executable, myHotKeyRecord.ExecuteContent ?? "");
+
+
+                    }
+
+                    //switch (item.HotKey.ToUpper()) {
+
+                    //  case "P":
+                    //    if (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.VK_P)  && boolStopEvent == false) {
+                    //      boolStopEvent = true;
+                    //      RunWaitTillStart(item.Executable, item.ExecuteContent ?? "");
+
+                    //      while (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.VK_P)) {
+                    //        System.Threading.Thread.Sleep(1000);
+                    //      }
+                    //    }
+                    //    break;
+
+                    //  case "R":
+                    //    if (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.VK_R)) {                
+                    //      Run(item.Executable, item.ExecuteContent ?? "");
+                    //      while (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.CONTROL)) {
+                    //        System.Threading.Thread.Sleep(200);
+                    //      }
+                    //    }
+                    //    break;
+                    //  case "S":
+                    //    if (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.VK_S)) {
+                    //      Run(item.Executable, item.ExecuteContent ?? "");
+                    //      while (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.CONTROL)) {
+                    //        System.Threading.Thread.Sleep(200);
+                    //      }
+                    //   }
+                    //    break;
+                    //  default:
+                    //    break;
+                    //}
+                }
+            }
+
+
+
+
+
+            //if (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.CONTROL) && myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.MENU) && myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.VK_S)) {
+
+
+            //  Run(myActions.GetValueByKey("SVNPath","IdealAutomateDB") + ClipboardSaveToDB\ClipboardSaveToDB\bin\Debug\ClipboardSaveToDB.exe", "");
+            //  while (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.CONTROL) && myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.MENU) && myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.VK_S)) {
+            //    System.Threading.Thread.Sleep(200);
+            //  }
+
+
+            //  //Here is the code that runs when the hotkey is pressed'
+            //}
+            //if (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.CONTROL) && myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.MENU) && myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.VK_R)) {
+
+            //  //Here is the code that runs when the hotkey is pressed'
+
+
+            //  Run(myActions.GetValueByKey("SVNPath","IdealAutomateDB") + ClipboardRestoreFromDB\ClipboardRestoreFromDB\bin\Debug\ClipboardRestoreFromDB.exe", "");
+            //  while (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.CONTROL) && myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.MENU) && myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.VK_R)) {
+            //    System.Threading.Thread.Sleep(200);
+            //  }
+
+
+
+            //}
+        }
+        public void RunWaitTillStart(string myEntityForExecutable, string myEntityForContent) {
+
+
+            if (myEntityForExecutable == null) {
+                string message = "Error - You need to specify executable primitive  "; // +"; EntityName is: " + myEntityForExecutable.EntityName;
+                MessageBox.Show(message);
+                return;
+            }
+            string strExecutable = myEntityForExecutable;
+
+            string strContent = "";
+            if (myEntityForContent != null) {
+                strContent = myEntityForContent;
+            }
+            var p = new Process();
+            p.StartInfo.FileName = strExecutable;
+            if (strContent != "") {
+                p.StartInfo.Arguments = string.Concat("", strContent, "");
+            }
+            bool started = true;
+            try {
+                p.Start();
+            } catch (Exception) {
+                MessageBox.Show("Could not start process; Executable = " + strExecutable);
+                boolStopEvent = false;
+
+            }
+
+            int procId = 0;
+            try {
+                procId = p.Id;
+                Console.WriteLine("ID: " + procId);
+            } catch (InvalidOperationException) {
+                started = false;
+                boolStopEvent = false;
+            } catch (Exception ex) {
+                started = false;
+                boolStopEvent = false;
+            }
+            while (started == true && GetProcByID(procId) != null) {
+                System.Threading.Thread.Sleep(1000);
+                boolStopEvent = false;
+                started = false;
+            }
+
+        }
+
+        public void Run(string myEntityForExecutable, string myEntityForContent) {
+
+
+            if (myEntityForExecutable == null) {
+                string message = "Error - You need to specify executable primitive  "; // +"; EntityName is: " + myEntityForExecutable.EntityName;
+               MessageBox.Show(message);
+                return;
+            }
+            string strExecutable = myEntityForExecutable;
+
+            string strContent = "";
+            if (myEntityForContent != null) {
+                strContent = myEntityForContent;
+            }
+            if (strContent == "") {
+                Process.Start(strExecutable);
+            } else {
+                try {
+                    Process.Start(strExecutable, string.Concat("", strContent, ""));
+                } catch (Exception ex) {
+
+                    MessageBox.Show(ex.ToString());
+                }
+            }
+
+        }
+        private Process GetProcByID(int id) {
+            Process[] processlist = Process.GetProcesses();
+            return processlist.FirstOrDefault(pr => pr.Id == id);
         }
     }
 
