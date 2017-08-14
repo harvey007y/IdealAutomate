@@ -36,8 +36,10 @@ namespace System.Windows.Forms.Samples {
             this.Icon = fv.Icon;
             string[] strInitialDirectoryArray = new string[1];
             strInitialDirectoryArray[0] = fv.FullName;
+      Methods myActions = new Methods();
+      myActions.SetValueByKey("InitialDirectory", fv.FullName);
 
-            File.WriteAllLines(Path.Combine(Application.StartupPath, @"Text\InitialDirectory.txt"), strInitialDirectoryArray);
+            //File.WriteAllLines(Path.Combine(Application.StartupPath, @"Text\InitialDirectory.txt"), strInitialDirectoryArray);
         }
 
         private void toolStripMenuItem4_CheckStateChanged(object sender, EventArgs e) {
@@ -84,12 +86,14 @@ namespace System.Windows.Forms.Samples {
 
         #region Event Handlers
         private void ExplorerView_Load(object sender, EventArgs e) {
-            string strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-            // Set Initial Directory to My Documents
-            string[] strIntialDirectoryArray = File.ReadAllLines(Path.Combine(Application.StartupPath, @"Text\InitialDirectory.txt"));
+      Methods myActions = new Methods();
+      string strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+      // Set Initial Directory to My Documents
+      string strSavedDirectory = myActions.GetValueByKey("InitialDirectory");
+       
 
-            if (strIntialDirectoryArray[0].Trim() != "Use Default") {
-                strInitialDirectory = strIntialDirectoryArray[0].Trim();
+            if (Directory.Exists(strSavedDirectory)) {
+                strInitialDirectory = strSavedDirectory;
             }
             _dir = new DirectoryView(strInitialDirectory);
             this.FileViewBindingSource.DataSource = _dir;
