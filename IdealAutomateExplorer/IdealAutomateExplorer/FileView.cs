@@ -56,8 +56,11 @@ namespace System.Windows.Forms.Samples
             _lastExecuted = myActions.GetValueByKeyAsDateTimeForNonCurrentScript("ScriptStartDateTime",_name);
             _avgExecutionTime = myActions.GetValueByKeyAsIntForNonCurrentScript("AvgSuccessfulExecutionTime", _name);
             _manualExecutionTime = myActions.GetValueByKeyAsIntForNonCurrentScript("ManualExecutionTime", _name);
-            _totalSavings = myActions.GetValueByKeyAsIntForNonCurrentScript("ScriptTotalSavedExecutionTime", _name);
-
+            if (_manualExecutionTime == 0) {
+                _totalSavings = 0;
+            } else {
+                _totalSavings = _successfulExecutions * (_manualExecutionTime - _avgExecutionTime);
+            }
 
             ArrayList myArrayList = myActions.ReadAppDirectoryKeyToArrayListGlobal("ScriptInfo");
             foreach (var item in myArrayList) {

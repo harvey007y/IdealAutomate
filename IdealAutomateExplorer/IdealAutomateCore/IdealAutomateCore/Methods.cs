@@ -2453,7 +2453,20 @@ namespace IdealAutomate.Core {
             // Rewrite the entire value of s to the file
             writer.Write(strValueToWrite);
             writer.Close();
-        }        
+        }
+
+        public void SetValueByKeyForNonCurrentScript(string strKey, string strValueToWrite, string strScriptName) {
+            string fileName = strKey + ".txt";
+            StreamWriter writer = null;
+            string settingsDirectory = GetAppDirectoryForIdealAutomate();
+            settingsDirectory = Path.Combine(settingsDirectory, strScriptName);
+            string settingsPath = Path.Combine(settingsDirectory, fileName);
+            // Hook a write to the text file.
+            writer = new StreamWriter(settingsPath);
+            // Rewrite the entire value of s to the file
+            writer.Write(strValueToWrite);
+            writer.Close();
+        }
 
         /// <summary>
         /// <para>GetValueByKeyGlobal takes a key and adds .txt to it in order to create</para>

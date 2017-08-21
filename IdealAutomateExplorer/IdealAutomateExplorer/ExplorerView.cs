@@ -15,6 +15,7 @@ using WindowsInput;
 using WindowsInput.Native;
 using System.Windows;
 using System.Linq;
+using System.Globalization;
 
 #endregion
 
@@ -86,6 +87,7 @@ namespace System.Windows.Forms.Samples {
 
         #region Event Handlers
         private void ExplorerView_Load(object sender, EventArgs e) {
+            int intTotalSavingsForAllScripts = 0;
       Methods myActions = new Methods();
       string strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
       // Set Initial Directory to My Documents
@@ -118,6 +120,20 @@ namespace System.Windows.Forms.Samples {
                 this.dataGridView1.Rows[0].Cells[col.Index].Selected = true;
             }
             AddGlobalHotKeys();
+            foreach (DataGridViewRow item in dataGridView1.Rows) {
+                intTotalSavingsForAllScripts += (int)item.Cells["TotalSavingsCol"].Value;
+            }
+            TimeSpan diff = TimeSpan.FromSeconds(intTotalSavingsForAllScripts);
+            string formatted = string.Format(
+                  CultureInfo.CurrentCulture,
+                  "{0} years, {1} months, {2} days, {3} hours, {4} minutes, {5} seconds",
+                  diff.Days / 365,
+                  (diff.Days - (diff.Days / 365) * 365) / 30,
+                  (diff.Days - (diff.Days / 365) * 365) - ((diff.Days - (diff.Days / 365) * 365) / 30) * 30,
+                  diff.Hours,
+                  diff.Minutes,
+                  diff.Seconds);
+            lblTotalSavings.Text = formatted;
         }
 
         private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e) {
@@ -873,6 +889,66 @@ namespace System.Windows.Forms.Samples {
         private Process GetProcByID(int id) {
             Process[] processlist = Process.GetProcesses();
             return processlist.FirstOrDefault(pr => pr.Id == id);
+        }
+
+        private void toolStripMenuItemManualTime_Click(object sender, EventArgs e) {
+            FileView myFileView;
+            Methods myActions = new Methods();
+            List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+
+            ControlEntity myControlEntity = new ControlEntity();
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Heading;
+            myControlEntity.Text = "Add Manual Time";
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "myLabel";
+            myControlEntity.Text = "Enter Manual Time in Seconds";
+            myControlEntity.RowNumber = 0;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "myTextBox";
+            myControlEntity.Text = "";
+            myControlEntity.RowNumber = 0;
+            myControlEntity.ColumnNumber = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+
+            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
+
+            if (strButtonPressed == "btnCancel") {
+                myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                return;
+            }
+
+            string myManualExecutionTime = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
+            foreach (DataGridViewCell myCell in dataGridView1.SelectedCells) {
+                myFileView = (FileView)this.FileViewBindingSource[myCell.RowIndex];
+                //MessageBox.Show(myFileView.FullName.ToString());
+                if (myFileView.IsDirectory) {
+                    // Call EnumerateFiles in a foreach-loop.
+                    foreach (string file in Directory.EnumerateFiles(myFileView.FullName.ToString(),
+                       myFileView.Name + ".exe",
+                        SearchOption.AllDirectories)) {
+                        // Display file path.
+                        if (file.Contains("bin\\Debug")) {
+                            myActions.SetValueByKeyForNonCurrentScript("ManualExecutionTime", myManualExecutionTime, myFileView.Name);
+                        }
+                    }
+
+                } else {
+                    ev_Process_File(myFileView.FullName.ToString());
+                }
+
+            }
         }
     }
 
