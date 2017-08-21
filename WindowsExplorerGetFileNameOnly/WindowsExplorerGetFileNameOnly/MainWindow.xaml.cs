@@ -26,6 +26,7 @@ namespace WindowsExplorerGetFileNameOnly
             };
             window.Show();
             IdealAutomate.Core.Methods myActions = new Methods();
+            myActions.ScriptStartedUpdateStats();
 
             InitializeComponent();
             this.Hide();
@@ -88,6 +89,7 @@ namespace WindowsExplorerGetFileNameOnly
             string strToFullFile = strToPath + strFileNameOnly;
             File.Copy(strFromFullFile, strToFullFile, true);
             myExit:
+            myActions.ScriptEndedSuccessfullyUpdateStats();
             Application.Current.Shutdown();
         }
     }

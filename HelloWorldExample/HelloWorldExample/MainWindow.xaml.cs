@@ -97,7 +97,7 @@ namespace HelloWorldExample {
             myActions.IEGoToURL(myActions, strSearchEngine, true);
             myActions.TypeText("{ESCAPE}", 4000); // escape
             myActions.TypeText(strSearchTerm, 4000);
-            myActions.TypeText("{ENTER}", 4000); // enter
+            myActions.TypeText("{ENTER}", 4000); // enter.
             myExit:
             myActions.ScriptEndedSuccessfullyUpdateStats();
             Application.Current.Shutdown();

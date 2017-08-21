@@ -21,8 +21,9 @@ namespace TestWindowMultipleControls {
 };
       window.Show();
       IdealAutomate.Core.Methods myActions = new Methods();
+            myActions.ScriptStartedUpdateStats();
 
-      InitializeComponent();
+            InitializeComponent();
       this.Hide();
 
       string strWindowTitle = myActions.PutWindowTitleInEntity();
@@ -124,7 +125,8 @@ namespace TestWindowMultipleControls {
       goto myExit;
      
       myExit:
-      Application.Current.Shutdown();
+            myActions.ScriptEndedSuccessfullyUpdateStats();
+            Application.Current.Shutdown();
     }
   }
 }
