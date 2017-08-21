@@ -33,6 +33,8 @@ namespace CodeGenTemplateParms {
             };
             window.Show();
             IdealAutomate.Core.Methods myActions = new Methods();
+            myActions.ScriptStartedUpdateStats();
+
 
 
             InitializeComponent();
@@ -278,7 +280,7 @@ namespace CodeGenTemplateParms {
             //string mySearchTerm = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
             // label
             if (strButtonPressed == "btnChooseDefaultScript") {
-                myActions.RunSync(myActions.GetValueByKey("SVNPath", "IdealAutomateDB") + @"DDLMaint\DDLMaint\bin\debug\DDLMaint.exe", "");
+                myActions.RunSync(myActions.GetValueByKey("SVNPath") + @"DDLMaint\DDLMaint\bin\debug\DDLMaint.exe", "");
                 goto AddControl;
             }
             if (strButtonPressed == "btnLabel") {
@@ -601,7 +603,7 @@ namespace CodeGenTemplateParms {
                     line = line.Replace("&&SPACEDOUTID", strID.Trim().Replace(" ", ""));
                     line = line.Replace("&&SUFFIX", strSuffix.Trim());
                     if (strText.Trim() == "") {
-                        line = line.Replace("\"&&TEXT\"", "myActions.GetValueByKey(\"" + myActions.GetValueByKey("ScriptsDefaultKey", "IdealAutomateDB") + strID.Trim().Replace(" ", "") + "\", \"IdealAutomateDB\");");
+                        line = line.Replace("\"&&TEXT\"", "myActions.GetValueByKey(\"" + myActions.GetValueByKey("ScriptsDefaultKey") + strID.Trim().Replace(" ", "") + "\", \"IdealAutomateDB\");");
                     } else {
                         line = line.Replace("&&TEXT", strText.Trim().Replace("\\r\\n", "\" + System.Environment.NewLine + \""));
                     }
@@ -626,7 +628,7 @@ namespace CodeGenTemplateParms {
                 }
                 sb2.AppendLine("string str" + strID.Replace(" ", "") + " = myListControlEntity" + strSuffix + ".Find(x => x.ID == \"txt" + strID.Replace(" ", "") + "\").Text;");
                 if (strText.Trim() == "") {
-                    sb2.AppendLine("myActions.SetValueByKey(\"" + myActions.GetValueByKey("ScriptsDefaultKey", "IdealAutomateDB") + strID.Trim().Replace(" ", "") + "\", str" + strID.Trim().Replace(" ", "") + ", \"IdealAutomateDB\");");
+                    sb2.AppendLine("myActions.SetValueByKey(\"" + myActions.GetValueByKey("ScriptsDefaultKey") + strID.Trim().Replace(" ", "") + "\", str" + strID.Trim().Replace(" ", "") + ", \"IdealAutomateDB\");");
                 }
                 sb4.AppendLine("txtTemplateOut = txtTemplateOut.Replace(\"&&" + strID.Replace(" ", "") + "\",str" + strID.Replace(" ", "") + ");");
 
@@ -891,7 +893,7 @@ namespace CodeGenTemplateParms {
                     line = line.Replace("&&COLUMNSPAN", intColumnSpan.ToString());
                     line = line.Replace("&&TOOLTIP", strToolTip.Trim());
                     if (strSelectedValue.Trim() == "") {
-                        line = line.Replace("\"&&SELECTEDVALUE\"", "myActions.GetValueByKey(\"" + myActions.GetValueByKey("ScriptsDefaultKey", "IdealAutomateDB") + strID.Trim().Replace(" ", "") + "\", \"IdealAutomateDB\");");
+                        line = line.Replace("\"&&SELECTEDVALUE\"", "myActions.GetValueByKey(\"" + myActions.GetValueByKey("ScriptsDefaultKey") + strID.Trim().Replace(" ", "") + "\", \"IdealAutomateDB\");");
                     } else {
                         line = line.Replace("&&SELECTEDVALUE", strSelectedValue.Trim());
                     }
@@ -949,7 +951,7 @@ namespace CodeGenTemplateParms {
 
                 sb2.AppendLine("string str" + strID.Replace(" ", "") + " = myListControlEntity" + strSuffix + ".Find(x => x.ID == \"cbx" + strID.Replace(" ", "") + "\").SelectedValue;");
                 if (strSelectedValue.Trim() == "") {
-                    sb2.AppendLine("myActions.SetValueByKey(\"" + myActions.GetValueByKey("ScriptsDefaultKey", "IdealAutomateDB") + strID.Trim().Replace(" ", "") + "\", str" + strID.Trim().Replace(" ", "") + ", \"IdealAutomateDB\");");
+                    sb2.AppendLine("myActions.SetValueByKey(\"" + myActions.GetValueByKey("ScriptsDefaultKey") + strID.Trim().Replace(" ", "") + "\", str" + strID.Trim().Replace(" ", "") + ", \"IdealAutomateDB\");");
                 }
                 sb4.AppendLine("txtTemplateOut = txtTemplateOut.Replace(\"&&" + strID.Replace(" ", "") + "\",str" + strID.Replace(" ", "") + ");");
 
@@ -1484,7 +1486,7 @@ using System.Reflection;
                 CompilerParameters parameters = new CompilerParameters();
                 // Reference to System.Drawing library
                 parameters.ReferencedAssemblies.Add("System.Drawing.dll");
-                parameters.ReferencedAssemblies.Add(myActions.GetValueByKey("SVNPath", "IdealAutomateDB") + @"IdealAutomateCore\IdealAutomateCore\bin\Debug\IdealAutomateCore.dll");
+                parameters.ReferencedAssemblies.Add(myActions.GetValueByKey("SVNPath") + @"IdealAutomateCore\IdealAutomateCore\bin\Debug\IdealAutomateCore.dll");
                 parameters.ReferencedAssemblies.Add(@"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\PresentationFramework.dll");
                 parameters.ReferencedAssemblies.Add(@"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\PresentationCore.dll");
                 parameters.ReferencedAssemblies.Add("System.dll");
@@ -1717,6 +1719,7 @@ using System.Reflection;
             myActions.Run(@"C:\SVNStats.bat", "");
             myActions.Run(@"C:\Program Files\Microsoft Office\Office15\EXCEL.EXE", @"C:\SVNStats\SVNStats.xlsx");
             myExit:
+            myActions.ScriptEndedSuccessfullyUpdateStats();
             Application.Current.Shutdown();
         }
     }

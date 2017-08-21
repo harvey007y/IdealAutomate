@@ -23,6 +23,7 @@ namespace CreateOPFrom3Fields
             };
             window.Show();
             IdealAutomate.Core.Methods myActions = new Methods();
+            myActions.ScriptStartedUpdateStats();
 
             InitializeComponent();
             this.Hide();
@@ -124,6 +125,7 @@ NextOne:
             myActions.MessageBoxShow("Paste");
             goto NextOne;
             myExit:
+            myActions.ScriptEndedSuccessfullyUpdateStats();
             Application.Current.Shutdown();
         }
     }
