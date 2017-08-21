@@ -113,7 +113,7 @@ namespace System.Windows.Forms.Samples {
                 style.Alignment = DataGridViewContentAlignment.MiddleRight;
             }
 
-            // Select first item
+            // Select first item.
             col = this.dataGridView1.Columns["Name"];
 
             if (null != col) {
