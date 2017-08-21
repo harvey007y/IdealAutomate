@@ -13,7 +13,7 @@ using System.Threading;
 
 namespace System.Windows.Forms.Samples
 {
-    class DirectoryView : BindingList<FileView>
+    class DirectoryView : SortableBindingList<FileView>
     {
         private FileView _directory;
         private bool _suspend = false;

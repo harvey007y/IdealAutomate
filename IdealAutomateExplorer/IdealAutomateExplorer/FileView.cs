@@ -25,9 +25,12 @@ namespace System.Windows.Forms.Samples
         private string _hotkey;
         private int _totalExecutions;
         private int _successfulExecutions;
-        private double _percentSuccesful;
+        private int _percentSuccesful;
         private DateTime? _lastExecuted;
         private string _hotKeyExecutable;
+        private int _avgExecutionTime;
+        private int _manualExecutionTime;
+        private int _totalSavings;
 
         public FileView(string path) : this(new FileInfo(path)) {        }
 
@@ -43,42 +46,47 @@ namespace System.Windows.Forms.Samples
 
         private void SetState(FileSystemInfo fileInfo)
         {
+            Methods myActions = new Methods();
             _path = fileInfo.FullName;
             _name = fileInfo.Name;
             _hotkey = "";
-            _totalExecutions = 0;
-            _successfulExecutions = 0;
-            _percentSuccesful = 0;
-            _lastExecuted = null;
-            Methods myActions = new Methods();
+            _totalExecutions = myActions.GetValueByKeyAsIntForNonCurrentScript("ScriptTotalExecutions", _name);
+            _successfulExecutions = myActions.GetValueByKeyAsIntForNonCurrentScript("ScriptSuccessfulExecutions", _name);
+            _percentSuccesful = myActions.GetValueByKeyAsIntForNonCurrentScript("ScriptPercentSuccessful", _name);
+            _lastExecuted = myActions.GetValueByKeyAsDateTimeForNonCurrentScript("ScriptStartDateTime",_name);
+            _avgExecutionTime = myActions.GetValueByKeyAsIntForNonCurrentScript("AvgSuccessfulExecutionTime", _name);
+            _manualExecutionTime = myActions.GetValueByKeyAsIntForNonCurrentScript("ManualExecutionTime", _name);
+            _totalSavings = myActions.GetValueByKeyAsIntForNonCurrentScript("ScriptTotalSavedExecutionTime", _name);
+
+
             ArrayList myArrayList = myActions.ReadAppDirectoryKeyToArrayListGlobal("ScriptInfo");
             foreach (var item in myArrayList) {
                 string[] myScriptInfoFields = item.ToString().Split('^');
                 string scriptName = myScriptInfoFields[0];
                 if (scriptName == _name) {
                     string strHotKey = myScriptInfoFields[1];
-                    string strTotalExecutions = myScriptInfoFields[2];
-                    string strSuccessfulExecutions = myScriptInfoFields[3];
-                    string strLastExecuted = myScriptInfoFields[4];
+                    //string strTotalExecutions = myScriptInfoFields[2];
+                    //string strSuccessfulExecutions = myScriptInfoFields[3];
+                    //string strLastExecuted = myScriptInfoFields[4];
                     string strHotKeyExecutable = myScriptInfoFields[5];
-                    int intTotalExecutions = 0;
-                    Int32.TryParse(strTotalExecutions, out intTotalExecutions);
-                    int intSuccessfulExecutions = 0;
-                    Int32.TryParse(strSuccessfulExecutions, out intSuccessfulExecutions);
-                    DateTime dateLastExecuted = DateTime.MinValue;
-                    DateTime.TryParse(strLastExecuted, out dateLastExecuted);
+                    //int intTotalExecutions = 0;
+                    //Int32.TryParse(strTotalExecutions, out intTotalExecutions);
+                    //int intSuccessfulExecutions = 0;
+                    //Int32.TryParse(strSuccessfulExecutions, out intSuccessfulExecutions);
+                    //DateTime dateLastExecuted = DateTime.MinValue;
+                    //DateTime.TryParse(strLastExecuted, out dateLastExecuted);
                     _hotkey = strHotKey;
-                    _totalExecutions = intTotalExecutions;
-                    _successfulExecutions = intSuccessfulExecutions;
-                    if (_totalExecutions == 0) {
-                        _percentSuccesful = 0;
-                    } else {
-                        _percentSuccesful = (_successfulExecutions / _totalExecutions) * 100;
-                    }
-                    _lastExecuted = dateLastExecuted;
-                    if (_lastExecuted == DateTime.MinValue) {
-                        _lastExecuted = null;
-                    }
+                    //_totalExecutions = intTotalExecutions;
+                    //_successfulExecutions = intSuccessfulExecutions;
+                    //if (_totalExecutions == 0) {
+                    //    _percentSuccesful = 0;
+                    //} else {
+                    //    _percentSuccesful = (_successfulExecutions / _totalExecutions) * 100;
+                    //}
+                    //_lastExecuted = dateLastExecuted;
+                    //if (_lastExecuted == DateTime.MinValue) {
+                    //    _lastExecuted = null;
+                    //}
                     _hotKeyExecutable = strHotKeyExecutable;
                 }
             }
@@ -161,7 +169,25 @@ namespace System.Windows.Forms.Samples
 
         public int PercentCorrect {
             get {
-                return Convert.ToInt32(_percentSuccesful);
+                return _percentSuccesful;
+            }
+        }
+
+        public int AvgExecutionTime {
+            get {
+                return _avgExecutionTime;
+            }
+        }
+
+        public int ManualExecutionTime {
+            get {
+                return _manualExecutionTime;
+            }
+        }
+
+        public int TotalSavings {
+            get {
+                return _totalSavings;
             }
         }
 

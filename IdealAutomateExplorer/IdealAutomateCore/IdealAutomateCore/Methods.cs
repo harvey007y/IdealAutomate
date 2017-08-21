@@ -2298,6 +2298,139 @@ namespace IdealAutomate.Core {
             return strValueRead;
         }
 
+        public int GetValueByKeyAsInt(string strKey) {
+            string fileName = strKey + ".txt";
+            StreamReader file = null;
+            string strValueRead = "";
+            string settingsDirectory = GetAppDirectoryForScript();
+            string settingsPath = Path.Combine(settingsDirectory, fileName);
+            if (File.Exists(settingsPath)) {
+                file = File.OpenText(settingsPath);
+                strValueRead = file.ReadToEnd();
+                file.Close();
+            }
+            int intValue = 0;
+            Int32.TryParse(strValueRead, out intValue);
+            return intValue;
+        }
+
+        public int GetValueByKeyAsIntForNonCurrentScript(string strKey, string strScriptName) {
+            string fileName = strKey + ".txt";
+            StreamReader file = null;
+            string strValueRead = "";
+            string settingsDirectory = GetAppDirectoryForIdealAutomate();
+            settingsDirectory = Path.Combine(settingsDirectory, strScriptName);
+            string settingsPath = Path.Combine(settingsDirectory, fileName);
+            if (File.Exists(settingsPath)) {
+                file = File.OpenText(settingsPath);
+                strValueRead = file.ReadToEnd();
+                file.Close();
+            }
+            int intValue = 0;
+            Int32.TryParse(strValueRead, out intValue);
+            return intValue;
+        }
+
+        public double GetValueByKeyAsDouble(string strKey) {
+            string fileName = strKey + ".txt";
+            StreamReader file = null;
+            string strValueRead = "";
+            string settingsDirectory = GetAppDirectoryForScript();
+            string settingsPath = Path.Combine(settingsDirectory, fileName);
+            if (File.Exists(settingsPath)) {
+                file = File.OpenText(settingsPath);
+                strValueRead = file.ReadToEnd();
+                file.Close();
+            }
+            double intValue = 0;
+            double.TryParse(strValueRead, out intValue);
+            return intValue;
+        }
+        public DateTime GetValueByKeyAsDateTime(string strKey) {
+            string fileName = strKey + ".txt";
+            StreamReader file = null;
+            string strValueRead = "";
+            string settingsDirectory = GetAppDirectoryForScript();
+            string settingsPath = Path.Combine(settingsDirectory, fileName);
+            if (File.Exists(settingsPath)) {
+                file = File.OpenText(settingsPath);
+                strValueRead = file.ReadToEnd();
+                file.Close();
+            }
+            DateTime dtScriptStartDateTime = DateTime.MinValue;
+            bool boolDTSuccessful = DateTime.TryParse(strValueRead, out dtScriptStartDateTime);
+            return dtScriptStartDateTime;
+        }
+
+        public DateTime GetValueByKeyAsDateTimeForNonCurrentScript(string strKey, string strScriptName) {
+            string fileName = strKey + ".txt";
+            StreamReader file = null;
+            string strValueRead = "";
+            string settingsDirectory = GetAppDirectoryForIdealAutomate();
+            settingsDirectory = Path.Combine(settingsDirectory, strScriptName);
+            string settingsPath = Path.Combine(settingsDirectory, fileName);
+            if (File.Exists(settingsPath)) {
+                file = File.OpenText(settingsPath);
+                strValueRead = file.ReadToEnd();
+                file.Close();
+            }
+            DateTime dtScriptStartDateTime = DateTime.MinValue;
+            bool boolDTSuccessful = DateTime.TryParse(strValueRead, out dtScriptStartDateTime);
+            return dtScriptStartDateTime;
+        }
+
+        public int GetValueByKeyAsIntGlobal(string strKey) {
+            string fileName = strKey + ".txt";
+            StreamReader file = null;
+            string strValueRead = "";
+            string settingsDirectory = GetAppDirectoryForIdealAutomate();
+            string settingsPath = Path.Combine(settingsDirectory, fileName);
+            if (File.Exists(settingsPath)) {
+                file = File.OpenText(settingsPath);
+                strValueRead = file.ReadToEnd();
+                file.Close();
+            }
+            int intValue = 0;
+            Int32.TryParse(strValueRead, out intValue);
+            return intValue;
+        }
+
+        public int IncrementValueByKeyByValue(string strKey, int intIncrementValue) {
+            string fileName = strKey + ".txt";
+            StreamReader file = null;
+            string strValueRead = "";
+            string settingsDirectory = GetAppDirectoryForScript();
+            string settingsPath = Path.Combine(settingsDirectory, fileName);
+            if (File.Exists(settingsPath)) {
+                file = File.OpenText(settingsPath);
+                strValueRead = file.ReadToEnd();
+                file.Close();
+            }
+            int intValue = 0;
+            Int32.TryParse(strValueRead, out intValue);
+            int intResult = intValue + intIncrementValue;
+            SetValueByKey(strKey, intResult.ToString());
+            return intResult;
+        }
+
+        public int IncrementValueByKeyByValueGlobal(string strKey, int intIncrementValue) {
+            string fileName = strKey + ".txt";
+            StreamReader file = null;
+            string strValueRead = "";
+            string settingsDirectory = GetAppDirectoryForIdealAutomate();
+            string settingsPath = Path.Combine(settingsDirectory, fileName);
+            if (File.Exists(settingsPath)) {
+                file = File.OpenText(settingsPath);
+                strValueRead = file.ReadToEnd();
+                file.Close();
+            }
+            int intValue = 0;
+            Int32.TryParse(strValueRead, out intValue);
+            int intResult = intValue + intIncrementValue;
+            SetValueByKey(strKey, intResult.ToString());
+            return intResult;
+        }
+
         /// <summary>
         /// <para>SetValueByKey takes a key and adds .txt to it in order to create</para>
         /// <para>a file name. It gets the app data path and adds \IdealAutomate\yourscriptname</para>
@@ -2320,7 +2453,7 @@ namespace IdealAutomate.Core {
             // Rewrite the entire value of s to the file
             writer.Write(strValueToWrite);
             writer.Close();
-        }
+        }        
 
         /// <summary>
         /// <para>GetValueByKeyGlobal takes a key and adds .txt to it in order to create</para>
@@ -2486,7 +2619,59 @@ namespace IdealAutomate.Core {
             }
             writer.Close();
         }
+        /// <summary>
+        /// At beginning of template, Write StartTime, StartDate, Add 1 to total executions. 
+        /// 
+        /// </summary>
+        public void ScriptStartedUpdateStats() {
+            SetValueByKey("ScriptStartDateTime", System.DateTime.Now.ToString());
+            IncrementValueByKeyByValue("ScriptTotalExecutions",1);
+          
+        }
+
+        /// <summary>
+        /// ScriptEndedSuccessfullyUpdateStats - At end of template, Subtract start time and start date
+        /// from Current date and time, add 1 to successful executions. 
+        /// (avg successful execution time * 
+        /// (total successful executions - 1)) + current successful execution time) / total successful executions. 
+        /// Write PercentSuccessful = (SuccessfulExecutions / TotalExecutions) * 100. 
+        /// CurrentSavedExecutionTime = CurrentExecutionTime - ManualExecutionTime.
+        /// ScriptTotalSavedExecutionTime += CurrentSavedExecutionTime
+        ///  StartDate is the LastExecutedDate.
+        /// </summary>
+        public void ScriptEndedSuccessfullyUpdateStats() {
+            DateTime dtScriptStartDateTime = GetValueByKeyAsDateTime("ScriptStartDateTime");
 
 
-    }
+            if (dtScriptStartDateTime == DateTime.MinValue) {
+                return;
+            }
+
+            TimeSpan ts = System.DateTime.Now - dtScriptStartDateTime;         
+            
+            int intAvgSuccessfulExecutionTime = GetValueByKeyAsInt("AvgSuccessfulExecutionTime");
+            int intScriptSuccessfulExecutions = GetValueByKeyAsInt("ScriptSuccessfulExecutions");
+            int intTotalSuccessfulExecutionTimePrev = intAvgSuccessfulExecutionTime *
+                (intScriptSuccessfulExecutions);
+            int intTotalSuccessfulExecutionTime = intTotalSuccessfulExecutionTimePrev + (int)ts.TotalSeconds;
+            intScriptSuccessfulExecutions = IncrementValueByKeyByValue("ScriptSuccessfulExecutions", 1);
+            intAvgSuccessfulExecutionTime = intTotalSuccessfulExecutionTime / intScriptSuccessfulExecutions;
+            SetValueByKey("AvgSuccessfulExecutionTime", intAvgSuccessfulExecutionTime.ToString());
+            int intScriptTotalExecutions = GetValueByKeyAsInt("ScriptTotalExecutions");
+            decimal decPercentSuccessful = (intScriptSuccessfulExecutions / intScriptTotalExecutions) * 100;
+            int intPercentSuccessful = (int)Math.Round(decPercentSuccessful);
+            SetValueByKey("ScriptPercentSuccessful",intPercentSuccessful.ToString());
+            int intManualExecutionTime = GetValueByKeyAsInt("ManualExecutionTime");
+            int intScriptCurrentExecutionTimeSavings = 0;
+            if (intManualExecutionTime != 0) {
+               intScriptCurrentExecutionTimeSavings = intManualExecutionTime - intTotalSuccessfulExecutionTime;
+            }
+
+            IncrementValueByKeyByValue("ScriptTotalSavedExecutionTime", intScriptCurrentExecutionTimeSavings);
+
+
+
+
+        }
+        }
 }

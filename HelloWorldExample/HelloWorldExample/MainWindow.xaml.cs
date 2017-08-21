@@ -20,6 +20,7 @@ namespace HelloWorldExample {
             };
             window.Show();
             IdealAutomate.Core.Methods myActions = new Methods();
+            myActions.ScriptStartedUpdateStats();
 
             InitializeComponent();
             this.Hide();
@@ -98,6 +99,7 @@ namespace HelloWorldExample {
             myActions.TypeText(strSearchTerm, 4000);
             myActions.TypeText("{ENTER}", 4000); // enter
             myExit:
+            myActions.ScriptEndedSuccessfullyUpdateStats();
             Application.Current.Shutdown();
         }
     }

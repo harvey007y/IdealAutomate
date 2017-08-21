@@ -496,6 +496,24 @@
             <param name="strKey">Unique key within the script application</param>
             <param name="arrayListToWrite">ArrayList that is to written to the application directory for that key</param>
         </member>
+        <member name="M:IdealAutomate.Core.Methods.ScriptStartedUpdateStats">
+            <summary>
+            At beginning of template, Write StartTime, StartDate, Add 1 to total executions. 
+            
+            </summary>
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.ScriptEndedSuccessfullyUpdateStats">
+            <summary>
+            ScriptEndedSuccessfullyUpdateStats - At end of template, Subtract start time and start date
+            from Current date and time, add 1 to successful executions. 
+            (avg successful execution time * 
+            (total successful executions - 1)) + current successful execution time) / total successful executions. 
+            Write PercentSuccessful = (SuccessfulExecutions / TotalExecutions) * 100. 
+            CurrentSavedExecutionTime = CurrentExecutionTime - ManualExecutionTime.
+            ScriptTotalSavedExecutionTime += CurrentSavedExecutionTime
+             StartDate is the LastExecutedDate.
+            </summary>
+        </member>
         <member name="T:IdealAutomate.Core.Position_Cursor.Point">
             <summary>
             Not sure if we're just supposed to create our own point class.
