@@ -333,9 +333,8 @@ namespace IdealAutomate.Core {
                             //  System.Diagnostics.Debugger.Break();
                             x.Kill();
                         }
-                    } catch (Exception) {
-
-                        continue;
+                    } catch (Exception ex) {
+                        continue;                      
                     }
 
                 }
@@ -363,10 +362,10 @@ namespace IdealAutomate.Core {
                     thread.Start();
                     thread.Join();
                 } catch (Exception ex) {
-
+                   // MessageBox.Show(ex.Message);
                 }
                 Sleep(500);
-                Environment.Exit(0);
+               // Environment.Exit(0);
                 //Here is the code that runs when the hotkey is pressed'
             }
         }
