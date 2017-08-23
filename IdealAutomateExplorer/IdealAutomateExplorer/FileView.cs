@@ -44,15 +44,19 @@ namespace System.Windows.Forms.Samples
             get { return (_size == -1); }
         }
 
-        private void SetState(FileSystemInfo fileInfo)
-        {
+        private void SetState(FileSystemInfo fileInfo) {
             Methods myActions = new Methods();
             _path = fileInfo.FullName;
             _name = fileInfo.Name;
             _hotkey = "";
             _totalExecutions = myActions.GetValueByKeyAsIntForNonCurrentScript("ScriptTotalExecutions", _name);
             _successfulExecutions = myActions.GetValueByKeyAsIntForNonCurrentScript("ScriptSuccessfulExecutions", _name);
-            _percentSuccesful = myActions.GetValueByKeyAsIntForNonCurrentScript("ScriptPercentSuccessful", _name);
+            if (_totalExecutions == 0) {
+                _percentSuccesful = 0;
+            } else {
+                decimal decPercentSuccessful = ((decimal)_successfulExecutions / (decimal)_totalExecutions) * 100;
+                _percentSuccesful = Decimal.ToInt32(decPercentSuccessful);
+            }
             _lastExecuted = myActions.GetValueByKeyAsDateTimeForNonCurrentScript("ScriptStartDateTime",_name);
             _avgExecutionTime = myActions.GetValueByKeyAsIntForNonCurrentScript("AvgSuccessfulExecutionTime", _name);
             _manualExecutionTime = myActions.GetValueByKeyAsIntForNonCurrentScript("ManualExecutionTime", _name);
