@@ -22,6 +22,7 @@ using System.Globalization;
 namespace System.Windows.Forms.Samples {
     partial class ExplorerView : Form {
         private DirectoryView _dir;
+        string strInitialDirectory = "";
         bool boolStopEvent = false;
         List<HotKeyRecord> listHotKeyRecords = new List<HotKeyRecord>();
         Dictionary<string, VirtualKeyCode> dictVirtualKeyCodes = new Dictionary<string, VirtualKeyCode>();
@@ -89,7 +90,7 @@ namespace System.Windows.Forms.Samples {
         private void ExplorerView_Load(object sender, EventArgs e) {
             int intTotalSavingsForAllScripts = 0;
       Methods myActions = new Methods();
-      string strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+      strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
       // Set Initial Directory to My Documents
       string strSavedDirectory = myActions.GetValueByKey("InitialDirectory");
        
@@ -452,18 +453,28 @@ namespace System.Windows.Forms.Samples {
                     }
                 }
 
-                File.Copy(Path.Combine(myNewProjectSourcePath, "MyNewProject.csproj"), Path.Combine(strNewProjectDir, myNewProjectName + ".csproj"));
+                string[] myLines7 = File.ReadAllLines(Path.Combine(myNewProjectSourcePath, "MyNewProject.csproj"));
+                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Path.Combine(strNewProjectDir, myNewProjectName + ".csproj"))) {
+                    foreach (var item in myLines7) {
+                        strLine = item.Replace("MyNewProject", myNewProjectName);
+                        sw.WriteLine(strLine);
+                    }
+                }
+
+               
             } catch (Exception ex) {
 
                 MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
             }
+            // refresh datagridview
+            _dir = new DirectoryView(strInitialDirectory);
+            this.FileViewBindingSource.DataSource = _dir;
 
-
-            // TODO: Check if new project directory exists 
-            // if so display a message, and redisplay dialog
-
-            // TODO: Copy myNewProject files and replace myNewProject with
-            // myNewProjectName
+            // Set the title
+            SetTitle(_dir.FileView);
+            this.dataGridView1.DataSource = null;
+            this.dataGridView1.DataSource = this.FileViewBindingSource;
+            this.dataGridView1.Sort(dataGridView1.Columns[1],ListSortDirection.Ascending);
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -481,6 +492,15 @@ namespace System.Windows.Forms.Samples {
                 }
 
             }
+            // refresh datagridview
+            _dir = new DirectoryView(strInitialDirectory);
+            this.FileViewBindingSource.DataSource = _dir;
+
+            // Set the title
+            SetTitle(_dir.FileView);
+            this.dataGridView1.DataSource = null;
+            this.dataGridView1.DataSource = this.FileViewBindingSource;
+            this.dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
         }
 
         private void addHotKeyToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -510,6 +530,17 @@ namespace System.Windows.Forms.Samples {
             myControlEntity.Text = "";
             myControlEntity.RowNumber = 0;
             myControlEntity.ColumnNumber = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "myLabel";
+            myControlEntity.Text = "You need to restart explorer after setting new hotkey";
+            myControlEntity.RowNumber = 1;
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 2;
+            myControlEntity.BackgroundColor = Media.Colors.Red;
+            myControlEntity.ForegroundColor = Media.Colors.White;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
 
@@ -580,6 +611,16 @@ namespace System.Windows.Forms.Samples {
                 }
 
             }
+            // refresh datagridview
+            _dir = new DirectoryView(strInitialDirectory);
+            this.FileViewBindingSource.DataSource = _dir;
+
+            // Set the title
+            SetTitle(_dir.FileView);
+            this.dataGridView1.DataSource = null;
+            this.dataGridView1.DataSource = this.FileViewBindingSource;
+            this.dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
+           // AddGlobalHotKeys();
         }
 
         private void removeHotKeyToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -637,6 +678,16 @@ namespace System.Windows.Forms.Samples {
                 }
 
             }
+            // refresh datagridview
+            _dir = new DirectoryView(strInitialDirectory);
+            this.FileViewBindingSource.DataSource = _dir;
+
+            // Set the title
+            SetTitle(_dir.FileView);
+            this.dataGridView1.DataSource = null;
+            this.dataGridView1.DataSource = this.FileViewBindingSource;
+            this.dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
+            // AddGlobalHotKeys();
         }
         private void AddGlobalHotKeys() {
             Methods myActions = new Methods();
