@@ -334,7 +334,7 @@ namespace IdealAutomate.Core {
                             x.Kill();
                         }
                     } catch (Exception ex) {
-                        continue;                      
+                        continue;
                     }
 
                 }
@@ -362,10 +362,10 @@ namespace IdealAutomate.Core {
                     thread.Start();
                     thread.Join();
                 } catch (Exception ex) {
-                   // MessageBox.Show(ex.Message);
+                    // MessageBox.Show(ex.Message);
                 }
                 Sleep(500);
-               // Environment.Exit(0);
+                // Environment.Exit(0);
                 //Here is the code that runs when the hotkey is pressed'
             }
         }
@@ -2330,6 +2330,21 @@ namespace IdealAutomate.Core {
             return intValue;
         }
 
+        public string GetValueByKeyForNonCurrentScript(string strKey, string strScriptName) {
+            string fileName = strKey + ".txt";
+            StreamReader file = null;
+            string strValueRead = "";
+            string settingsDirectory = GetAppDirectoryForIdealAutomate();
+            settingsDirectory = Path.Combine(settingsDirectory, strScriptName);
+            string settingsPath = Path.Combine(settingsDirectory, fileName);
+            if (File.Exists(settingsPath)) {
+                file = File.OpenText(settingsPath);
+                strValueRead = file.ReadToEnd();
+                file.Close();
+            }
+            return strValueRead;
+        }
+
         public double GetValueByKeyAsDouble(string strKey) {
             string fileName = strKey + ".txt";
             StreamReader file = null;
@@ -2637,8 +2652,8 @@ namespace IdealAutomate.Core {
         /// </summary>
         public void ScriptStartedUpdateStats() {
             SetValueByKey("ScriptStartDateTime", System.DateTime.Now.ToString());
-            IncrementValueByKeyByValue("ScriptTotalExecutions",1);
-          
+            IncrementValueByKeyByValue("ScriptTotalExecutions", 1);
+
         }
 
         /// <summary>
@@ -2659,8 +2674,8 @@ namespace IdealAutomate.Core {
                 return;
             }
 
-            TimeSpan ts = System.DateTime.Now - dtScriptStartDateTime;         
-            
+            TimeSpan ts = System.DateTime.Now - dtScriptStartDateTime;
+
             int intAvgSuccessfulExecutionTime = GetValueByKeyAsInt("AvgSuccessfulExecutionTime");
             int intScriptSuccessfulExecutions = GetValueByKeyAsInt("ScriptSuccessfulExecutions");
             int intTotalSuccessfulExecutionTimePrev = intAvgSuccessfulExecutionTime *
@@ -2672,11 +2687,11 @@ namespace IdealAutomate.Core {
             int intScriptTotalExecutions = GetValueByKeyAsInt("ScriptTotalExecutions");
             decimal decPercentSuccessful = (intScriptSuccessfulExecutions / intScriptTotalExecutions) * 100;
             int intPercentSuccessful = (int)Math.Round(decPercentSuccessful);
-            SetValueByKey("ScriptPercentSuccessful",intPercentSuccessful.ToString());
+            SetValueByKey("ScriptPercentSuccessful", intPercentSuccessful.ToString());
             int intManualExecutionTime = GetValueByKeyAsInt("ManualExecutionTime");
             int intScriptCurrentExecutionTimeSavings = 0;
             if (intManualExecutionTime != 0) {
-               intScriptCurrentExecutionTimeSavings = intManualExecutionTime - intTotalSuccessfulExecutionTime;
+                intScriptCurrentExecutionTimeSavings = intManualExecutionTime - intTotalSuccessfulExecutionTime;
             }
 
             IncrementValueByKeyByValue("ScriptTotalSavedExecutionTime", intScriptCurrentExecutionTimeSavings);
@@ -2685,5 +2700,5 @@ namespace IdealAutomate.Core {
 
 
         }
-        }
+    }
 }
