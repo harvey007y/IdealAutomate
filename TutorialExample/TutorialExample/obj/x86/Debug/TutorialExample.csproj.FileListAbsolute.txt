@@ -24,3 +24,4 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\TutorialExample\TutorialExample\ob
 C:\Users\harve\Documents\GitHub\IdealAutomate\TutorialExample\TutorialExample\obj\x86\Debug\TutorialExample.csproj.GenerateResource.Cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\TutorialExample\TutorialExample\obj\x86\Debug\TutorialExample.exe
 C:\Users\harve\Documents\GitHub\IdealAutomate\TutorialExample\TutorialExample\obj\x86\Debug\TutorialExample.pdb
+C:\Users\harve\Documents\GitHub\IdealAutomate\TutorialExample\TutorialExample\obj\x86\Debug\TutorialExample.csprojResolveAssemblyReference.cache

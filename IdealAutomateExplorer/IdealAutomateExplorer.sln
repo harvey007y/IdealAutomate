@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.26430.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdealAutomateExplorer", "IdealAutomateExplorer\IdealAutomateExplorer.csproj", "{6D257B9D-F273-4A69-A5F9-9CABE568F337}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdealAutomateCore", "IdealAutomateCore\IdealAutomateCore\IdealAutomateCore.csproj", "{109780DD-3FC0-4F59-9623-9617586ACC1B}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,10 +15,6 @@ Global
 		{6D257B9D-F273-4A69-A5F9-9CABE568F337}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D257B9D-F273-4A69-A5F9-9CABE568F337}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D257B9D-F273-4A69-A5F9-9CABE568F337}.Release|Any CPU.Build.0 = Release|Any CPU
-		{109780DD-3FC0-4F59-9623-9617586ACC1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{109780DD-3FC0-4F59-9623-9617586ACC1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{109780DD-3FC0-4F59-9623-9617586ACC1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{109780DD-3FC0-4F59-9623-9617586ACC1B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

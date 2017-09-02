@@ -1,5 +1,7 @@
 ﻿using System.Windows;
 using IdealAutomate.Core;
+using System;
+using System.IO;
 
 namespace TutorialExample {
   /// <summary>
@@ -18,7 +20,8 @@ namespace TutorialExample {
   ShowActivated = false,
 };
       window.Show();
-      IdealAutomate.Core.Methods myActions = new Methods();
+         
+            IdealAutomate.Core.Methods myActions = new Methods();
             myActions.ScriptStartedUpdateStats();
 
             InitializeComponent();
