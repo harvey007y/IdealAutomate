@@ -21,7 +21,7 @@ using System.Globalization;
 
 namespace System.Windows.Forms.Samples {
     partial class ExplorerView : Form {
-        private DirectoryView _dir;       
+        private DirectoryView _dir;
         string strInitialDirectory = "";
         bool boolStopEvent = false;
         List<HotKeyRecord> listHotKeyRecords = new List<HotKeyRecord>();
@@ -168,13 +168,13 @@ namespace System.Windows.Forms.Samples {
             string fileName = ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Value.ToString();
             Methods myActions = new Methods();
             string categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", fileName);
-            if (categoryState != "") {
+            if (categoryState == "Collapsed" || categoryState == "Expanded") {
                 ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Style.Font = new Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold);
             }
             if (categoryState == "Child") {
                 ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Style.Font = new Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Italic);
             }
-            }
+        }
 
         private void dataGridView1_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e) {
             // Call Active on DirectoryView
@@ -199,7 +199,7 @@ namespace System.Windows.Forms.Samples {
                 SetTitle(_dir.FileView);
                 this.dataGridView1.DataSource = null;
                 this.dataGridView1.DataSource = this.FileViewBindingSource;
-             //   this.dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
+                //   this.dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
                 return;
             }
             if (categoryState == "Collapsed") {
@@ -220,7 +220,7 @@ namespace System.Windows.Forms.Samples {
                 SetTitle(_dir.FileView);
                 this.dataGridView1.DataSource = null;
                 this.dataGridView1.DataSource = this.FileViewBindingSource;
-             //   this.dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
+                //   this.dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
                 return;
             }
             try {
@@ -536,7 +536,7 @@ namespace System.Windows.Forms.Samples {
             SetTitle(_dir.FileView);
             this.dataGridView1.DataSource = null;
             this.dataGridView1.DataSource = this.FileViewBindingSource;
-          //  this.dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
+            //  this.dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -571,7 +571,7 @@ namespace System.Windows.Forms.Samples {
             SetTitle(_dir.FileView);
             this.dataGridView1.DataSource = null;
             this.dataGridView1.DataSource = this.FileViewBindingSource;
-          //  this.dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
+            //  this.dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
         }
 
         private void addHotKeyToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -699,7 +699,7 @@ namespace System.Windows.Forms.Samples {
             SetTitle(_dir.FileView);
             this.dataGridView1.DataSource = null;
             this.dataGridView1.DataSource = this.FileViewBindingSource;
-         //   this.dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
+            //   this.dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
             // AddGlobalHotKeys();
         }
 
@@ -775,7 +775,7 @@ namespace System.Windows.Forms.Samples {
             SetTitle(_dir.FileView);
             this.dataGridView1.DataSource = null;
             this.dataGridView1.DataSource = this.FileViewBindingSource;
-          //  this.dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
+            //  this.dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
             // AddGlobalHotKeys();
         }
         private void AddGlobalHotKeys() {
@@ -1161,7 +1161,7 @@ namespace System.Windows.Forms.Samples {
             SetTitle(_dir.FileView);
             this.dataGridView1.DataSource = null;
             this.dataGridView1.DataSource = this.FileViewBindingSource;
-         //   this.dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
+            //   this.dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
         }
     }
 
