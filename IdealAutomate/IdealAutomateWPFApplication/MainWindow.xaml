@@ -1,8 +1,0 @@
-﻿<Window x:Class="Hardcodet.Wpf.Samples.MainWindow"
-               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-        Title="Ideal Automate" Height="700" Width="850" WindowStartupLocation="CenterScreen">
-    <Grid>
-
-    </Grid>
-</Window>

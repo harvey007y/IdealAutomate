@@ -424,10 +424,10 @@ namespace ScriptGenerator {
                     goto DisplayWindowAgain;
                     break;
                 case "myButtonWindowMultipleControls":
-                    myActions.RunSync(myActions.GetValueByKey("SVNPath", "IdealAutomateDB") + @"CodeGenTemplateParms\CodeGenTemplateParms\bin\debug\CodeGenTemplateParms.exe", "");
+                    myActions.RunSync(myActions.GetValueByKey("SVNPath") + @"CodeGenTemplateParms\CodeGenTemplateParms\bin\debug\CodeGenTemplateParms.exe", "");
                     break;
                 case "myButtonWindowMultipleControlsMinimized":
-                    myActions.RunSync(myActions.GetValueByKey("SVNPath", "IdealAutomateDB") + @"CodeGenTemplateParms\CodeGenTemplateParms\bin\debug\CodeGenTemplateParms.exe", "Minimized");
+                    myActions.RunSync(myActions.GetValueByKey("SVNPath") + @"CodeGenTemplateParms\CodeGenTemplateParms\bin\debug\CodeGenTemplateParms.exe", "Minimized");
                     break;
                 case "myButtonWindowShape":
                     DisplayWindowShape:
@@ -6532,17 +6532,17 @@ namespace ScriptGenerator {
 
                 case "myButtonCreateVSProject":
 
-                    myActions.RunSync(myActions.GetValueByKey("SVNPath", "IdealAutomateDB") + @"CreateNewVSProjectForScript\CreateNewVSProjectForScript\bin\debug\CreateNewVSProjectForScript.exe", "");
+                    myActions.RunSync(myActions.GetValueByKey("SVNPath") + @"CreateNewVSProjectForScript\CreateNewVSProjectForScript\bin\debug\CreateNewVSProjectForScript.exe", "");
                     break;
 
                 case "myButtonDeclareAVariable":
 
-                    myActions.RunSync(myActions.GetValueByKey("SVNPath", "IdealAutomateDB") + @"DDLMaint\DDLMaint\bin\debug\DDLMaint.exe", "");
+                    myActions.RunSync(myActions.GetValueByKey("SVNPath") + @"DDLMaint\DDLMaint\bin\debug\DDLMaint.exe", "");
                     break;
 
                 case "myButtonCopyVSProjectToIA":
 
-                    myActions.RunSync(myActions.GetValueByKey("SVNPath", "IdealAutomateDB") + @"CopyVSExecutableToIdealAutomate\CopyVSExecutableToIdealAutomate\bin\Debug\CopyVSExecutableToIdealAutomate.exe", "");
+                    myActions.RunSync(myActions.GetValueByKey("SVNPath") + @"CopyVSExecutableToIdealAutomate\CopyVSExecutableToIdealAutomate\bin\Debug\CopyVSExecutableToIdealAutomate.exe", "");
                     break;
                 case "myButtonTypeText":
                     DisplayTypeText:
@@ -6671,7 +6671,7 @@ namespace ScriptGenerator {
                     myControlEntity1.RowNumber = 4;
                     myControlEntity1.ColumnNumber = 0;
                     myControlEntity1.ColumnSpan = 2;
-                    if (myActions.GetValueByKey("ScriptGeneratorCtrlKey", "IdealAutomateDB") == "True") {
+                    if (myActions.GetValueByKey("ScriptGeneratorCtrlKey") == "True") {
                         myControlEntity1.Checked = true;
                     } else {
                         myControlEntity1.Checked = false;
@@ -6685,7 +6685,7 @@ namespace ScriptGenerator {
                     myControlEntity1.RowNumber = 5;
                     myControlEntity1.ColumnNumber = 0;
                     myControlEntity1.ColumnSpan = 2;
-                    if (myActions.GetValueByKey("ScriptGeneratorAltKey", "IdealAutomateDB") == "True") {
+                    if (myActions.GetValueByKey("ScriptGeneratorAltKey") == "True") {
                         myControlEntity1.Checked = true;
                     } else {
                         myControlEntity1.Checked = false;
@@ -6699,7 +6699,7 @@ namespace ScriptGenerator {
                     myControlEntity1.RowNumber = 6;
                     myControlEntity1.ColumnNumber = 0;
                     myControlEntity1.ColumnSpan = 2;
-                    if (myActions.GetValueByKey("ScriptGeneratorShiftKey", "IdealAutomateDB") == "True") {
+                    if (myActions.GetValueByKey("ScriptGeneratorShiftKey") == "True") {
                         myControlEntity1.Checked = true;
                     } else {
                         myControlEntity1.Checked = false;
@@ -7340,6 +7340,7 @@ namespace ScriptGenerator {
             goto DisplayWindowAgain;
 
             myExit:
+            myActions.ScriptEndedSuccessfullyUpdateStats();
             Application.Current.Shutdown();
         }
 

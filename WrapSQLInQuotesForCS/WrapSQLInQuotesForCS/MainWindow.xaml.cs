@@ -21,9 +21,10 @@ namespace WrapSQLInQuotesForCS {
   ShowActivated = false,
 };
       window.Show();
-      IdealAutomate.Core.Methods myActions = new Methods();
+      Methods myActions = new Methods();           
+            
 
-      InitializeComponent();
+            InitializeComponent();
       this.Hide();
 
 
@@ -61,7 +62,8 @@ namespace WrapSQLInQuotesForCS {
       goto myExit;
     
     myExit:
-      Application.Current.Shutdown();
+           
+            Application.Current.Shutdown();
     }
   }
 }

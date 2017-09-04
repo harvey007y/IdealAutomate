@@ -29,15 +29,29 @@ namespace System.Windows.Forms.Samples
         {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExplorerView));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.dataGridViewImageColumn1 = new System.Windows.Forms.DataGridViewImageColumn();
             this.NameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.HotKeyCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TotalExecutionsCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SuccessfulExecutionsCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PercentCorrectCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LastExecutedCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.SizeCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AvgExecutionTimeCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ManualExecutionTimeCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TotalSavingsCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.DateModified = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.FileViewBindingSource = new System.Windows.Forms.BindingSource(this.components);
@@ -55,10 +69,14 @@ namespace System.Windows.Forms.Samples
             this.mainMenu = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tempToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.projectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.createShortcutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemManualTime = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.addHotKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeHotKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.renameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -72,6 +90,10 @@ namespace System.Windows.Forms.Samples
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnRun = new System.Windows.Forms.Button();
+            this.btnVisualStudio = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lblTotalSavings = new System.Windows.Forms.Label();
+            this.categoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource)).BeginInit();
             this.toolBar.SuspendLayout();
@@ -99,30 +121,38 @@ namespace System.Windows.Forms.Samples
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewImageColumn1,
             this.NameCol,
+            this.HotKeyCol,
+            this.TotalExecutionsCol,
+            this.SuccessfulExecutionsCol,
+            this.PercentCorrectCol,
+            this.LastExecutedCol,
             this.SizeCol,
+            this.AvgExecutionTimeCol,
+            this.ManualExecutionTimeCol,
+            this.TotalSavingsCol,
             this.Type,
             this.DateModified});
             this.dataGridView1.DataSource = this.FileViewBindingSource;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle4.Padding = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle10.Padding = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle10;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(0, 63);
             this.dataGridView1.Name = "dataGridView1";
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle11;
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowTemplate.Height = 17;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
@@ -142,24 +172,97 @@ namespace System.Windows.Forms.Samples
             this.dataGridViewImageColumn1.HeaderText = "";
             this.dataGridViewImageColumn1.Name = "dataGridViewImageColumn1";
             this.dataGridViewImageColumn1.ReadOnly = true;
+            this.dataGridViewImageColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.dataGridViewImageColumn1.Width = 20;
             // 
             // NameCol
             // 
             this.NameCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.NameCol.DataPropertyName = "Name";
+            this.NameCol.FillWeight = 200F;
             this.NameCol.HeaderText = "Name";
             this.NameCol.Name = "NameCol";
+            // 
+            // HotKeyCol
+            // 
+            this.HotKeyCol.DataPropertyName = "HotKey";
+            this.HotKeyCol.HeaderText = "HotKey";
+            this.HotKeyCol.Name = "HotKeyCol";
+            this.HotKeyCol.ReadOnly = true;
+            // 
+            // TotalExecutionsCol
+            // 
+            this.TotalExecutionsCol.DataPropertyName = "TotalExecutions";
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.TotalExecutionsCol.DefaultCellStyle = dataGridViewCellStyle3;
+            this.TotalExecutionsCol.HeaderText = "Total Executions";
+            this.TotalExecutionsCol.Name = "TotalExecutionsCol";
+            this.TotalExecutionsCol.ReadOnly = true;
+            // 
+            // SuccessfulExecutionsCol
+            // 
+            this.SuccessfulExecutionsCol.DataPropertyName = "SuccessfulExecutions";
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.SuccessfulExecutionsCol.DefaultCellStyle = dataGridViewCellStyle4;
+            this.SuccessfulExecutionsCol.HeaderText = "Successful Executions";
+            this.SuccessfulExecutionsCol.Name = "SuccessfulExecutionsCol";
+            this.SuccessfulExecutionsCol.ReadOnly = true;
+            this.SuccessfulExecutionsCol.Width = 75;
+            // 
+            // PercentCorrectCol
+            // 
+            this.PercentCorrectCol.DataPropertyName = "PercentCorrect";
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.PercentCorrectCol.DefaultCellStyle = dataGridViewCellStyle5;
+            this.PercentCorrectCol.HeaderText = "Percent Correct";
+            this.PercentCorrectCol.Name = "PercentCorrectCol";
+            this.PercentCorrectCol.ReadOnly = true;
+            // 
+            // LastExecutedCol
+            // 
+            this.LastExecutedCol.DataPropertyName = "LastExecuted";
+            this.LastExecutedCol.HeaderText = "Last Executed";
+            this.LastExecutedCol.Name = "LastExecutedCol";
+            this.LastExecutedCol.ReadOnly = true;
+            this.LastExecutedCol.Width = 125;
             // 
             // SizeCol
             // 
             this.SizeCol.DataPropertyName = "Size";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.SizeCol.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.SizeCol.DefaultCellStyle = dataGridViewCellStyle6;
             this.SizeCol.HeaderText = "Size";
             this.SizeCol.Name = "SizeCol";
             this.SizeCol.ReadOnly = true;
             this.SizeCol.Width = 60;
+            // 
+            // AvgExecutionTimeCol
+            // 
+            this.AvgExecutionTimeCol.DataPropertyName = "AvgExecutionTime";
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.AvgExecutionTimeCol.DefaultCellStyle = dataGridViewCellStyle7;
+            this.AvgExecutionTimeCol.HeaderText = "Avg Time Secs";
+            this.AvgExecutionTimeCol.Name = "AvgExecutionTimeCol";
+            this.AvgExecutionTimeCol.ReadOnly = true;
+            // 
+            // ManualExecutionTimeCol
+            // 
+            this.ManualExecutionTimeCol.DataPropertyName = "ManualExecutionTime";
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.ManualExecutionTimeCol.DefaultCellStyle = dataGridViewCellStyle8;
+            this.ManualExecutionTimeCol.HeaderText = "Manual Time Secs";
+            this.ManualExecutionTimeCol.Name = "ManualExecutionTimeCol";
+            this.ManualExecutionTimeCol.ReadOnly = true;
+            this.ManualExecutionTimeCol.Width = 75;
+            // 
+            // TotalSavingsCol
+            // 
+            this.TotalSavingsCol.DataPropertyName = "TotalSavings";
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.TotalSavingsCol.DefaultCellStyle = dataGridViewCellStyle9;
+            this.TotalSavingsCol.HeaderText = "TotalSavings";
+            this.TotalSavingsCol.Name = "TotalSavingsCol";
+            this.TotalSavingsCol.ReadOnly = true;
             // 
             // Type
             // 
@@ -167,7 +270,6 @@ namespace System.Windows.Forms.Samples
             this.Type.HeaderText = "Type";
             this.Type.Name = "Type";
             this.Type.ReadOnly = true;
-            this.Type.Width = 150;
             // 
             // DateModified
             // 
@@ -308,6 +410,8 @@ namespace System.Windows.Forms.Samples
             this.toolStripMenuItem1,
             this.createShortcutToolStripMenuItem,
             this.deleteToolStripMenuItem,
+            this.toolStripMenuItemManualTime,
+            this.toolStripMenuItem2,
             this.renameToolStripMenuItem,
             this.propertiesToolStripMenuItem,
             this.toolStripSeparator2,
@@ -321,16 +425,18 @@ namespace System.Windows.Forms.Samples
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tempToolStripMenuItem});
+            this.projectToolStripMenuItem,
+            this.categoryToolStripMenuItem});
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
             this.newToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.newToolStripMenuItem.Text = "New";
             // 
-            // tempToolStripMenuItem
+            // projectToolStripMenuItem
             // 
-            this.tempToolStripMenuItem.Name = "tempToolStripMenuItem";
-            this.tempToolStripMenuItem.Size = new System.Drawing.Size(104, 22);
-            this.tempToolStripMenuItem.Text = "Temp";
+            this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
+            this.projectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.projectToolStripMenuItem.Text = "Project";
+            this.projectToolStripMenuItem.Click += new System.EventHandler(this.projectToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
@@ -348,6 +454,37 @@ namespace System.Windows.Forms.Samples
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
             this.deleteToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.deleteToolStripMenuItem.Text = "Delete";
+            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItemManualTime
+            // 
+            this.toolStripMenuItemManualTime.Name = "toolStripMenuItemManualTime";
+            this.toolStripMenuItemManualTime.Size = new System.Drawing.Size(156, 22);
+            this.toolStripMenuItemManualTime.Text = "Manual Time";
+            this.toolStripMenuItemManualTime.Click += new System.EventHandler(this.toolStripMenuItemManualTime_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addHotKeyToolStripMenuItem,
+            this.removeHotKeyToolStripMenuItem});
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(156, 22);
+            this.toolStripMenuItem2.Text = "HotKeys";
+            // 
+            // addHotKeyToolStripMenuItem
+            // 
+            this.addHotKeyToolStripMenuItem.Name = "addHotKeyToolStripMenuItem";
+            this.addHotKeyToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.addHotKeyToolStripMenuItem.Text = "Add HotKey";
+            this.addHotKeyToolStripMenuItem.Click += new System.EventHandler(this.addHotKeyToolStripMenuItem_Click);
+            // 
+            // removeHotKeyToolStripMenuItem
+            // 
+            this.removeHotKeyToolStripMenuItem.Name = "removeHotKeyToolStripMenuItem";
+            this.removeHotKeyToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.removeHotKeyToolStripMenuItem.Text = "Remove HotKey";
+            this.removeHotKeyToolStripMenuItem.Click += new System.EventHandler(this.removeHotKeyToolStripMenuItem_Click);
             // 
             // renameToolStripMenuItem
             // 
@@ -432,10 +569,48 @@ namespace System.Windows.Forms.Samples
             this.btnRun.UseVisualStyleBackColor = true;
             this.btnRun.Click += new System.EventHandler(this.btnRun_Click);
             // 
+            // btnVisualStudio
+            // 
+            this.btnVisualStudio.Location = new System.Drawing.Point(370, 34);
+            this.btnVisualStudio.Name = "btnVisualStudio";
+            this.btnVisualStudio.Size = new System.Drawing.Size(81, 23);
+            this.btnVisualStudio.TabIndex = 2;
+            this.btnVisualStudio.Text = "Visual Studio";
+            this.btnVisualStudio.UseVisualStyleBackColor = true;
+            this.btnVisualStudio.Click += new System.EventHandler(this.btnVisualStudio_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(474, 39);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(75, 13);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Total Savings:";
+            // 
+            // lblTotalSavings
+            // 
+            this.lblTotalSavings.AutoSize = true;
+            this.lblTotalSavings.Location = new System.Drawing.Point(556, 39);
+            this.lblTotalSavings.Name = "lblTotalSavings";
+            this.lblTotalSavings.Size = new System.Drawing.Size(35, 13);
+            this.lblTotalSavings.TabIndex = 4;
+            this.lblTotalSavings.Text = "label2";
+            // 
+            // categoryToolStripMenuItem
+            // 
+            this.categoryToolStripMenuItem.Name = "categoryToolStripMenuItem";
+            this.categoryToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.categoryToolStripMenuItem.Text = "Category";
+            this.categoryToolStripMenuItem.Click += new System.EventHandler(this.categoryToolStripMenuItem_Click);
+            // 
             // ExplorerView
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.ClientSize = new System.Drawing.Size(646, 357);
+            this.Controls.Add(this.lblTotalSavings);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.btnVisualStudio);
             this.Controls.Add(this.btnRun);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.toolBar);
@@ -478,7 +653,7 @@ namespace System.Windows.Forms.Samples
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem tempToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem projectToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem createShortcutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
@@ -489,13 +664,28 @@ namespace System.Windows.Forms.Samples
         private System.Windows.Forms.ToolStripMenuItem tempToolStripMenuItem1;
         private System.Windows.Forms.ToolStripSeparator sepToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
-        private System.Windows.Forms.DataGridViewImageColumn dataGridViewImageColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NameCol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn SizeCol;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Type;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DateModified;
         private Button btnRun;
-
+        private Button btnVisualStudio;
+        private ToolStripMenuItem toolStripMenuItem2;
+        private ToolStripMenuItem addHotKeyToolStripMenuItem;
+        private ToolStripMenuItem removeHotKeyToolStripMenuItem;
+        private DataGridViewImageColumn dataGridViewImageColumn1;
+        private DataGridViewTextBoxColumn NameCol;
+        private DataGridViewTextBoxColumn HotKeyCol;
+        private DataGridViewTextBoxColumn TotalExecutionsCol;
+        private DataGridViewTextBoxColumn SuccessfulExecutionsCol;
+        private DataGridViewTextBoxColumn PercentCorrectCol;
+        private DataGridViewTextBoxColumn LastExecutedCol;
+        private DataGridViewTextBoxColumn SizeCol;
+        private DataGridViewTextBoxColumn AvgExecutionTimeCol;
+        private DataGridViewTextBoxColumn ManualExecutionTimeCol;
+        private DataGridViewTextBoxColumn TotalSavingsCol;
+        private DataGridViewTextBoxColumn Type;
+        private DataGridViewTextBoxColumn DateModified;
+        private ToolStripMenuItem toolStripMenuItemManualTime;
+        private Label label1;
+        private Label lblTotalSavings;
+        private ToolStripMenuItem categoryToolStripMenuItem;
     }
 }
 

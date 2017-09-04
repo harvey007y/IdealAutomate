@@ -21,6 +21,7 @@ namespace HotKeysMenu {
             };
             window.Show();
             IdealAutomate.Core.Methods myActions = new Methods();
+            myActions.ScriptStartedUpdateStats();
 
             InitializeComponent();
             this.Hide();
@@ -116,6 +117,7 @@ namespace HotKeysMenu {
 
             myActions.Sleep(1000);
             myExit:
+            myActions.ScriptStartedUpdateStats();
             Application.Current.Shutdown();
         }
     }

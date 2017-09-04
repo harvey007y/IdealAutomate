@@ -8,12 +8,13 @@ using System.IO;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading;
+using IdealAutomate.Core;
 
 #endregion
 
 namespace System.Windows.Forms.Samples
 {
-    class DirectoryView : BindingList<FileView>
+    class DirectoryView : SortableBindingList<FileView>
     {
         private FileView _directory;
         private bool _suspend = false;
@@ -62,6 +63,20 @@ namespace System.Windows.Forms.Samples
             foreach (FileSystemInfo di in info.GetDirectories())
             {
                 this.Add(new FileView(di));
+                FileView myFileView = new FileView(di);
+                if (myFileView.CategoryState == "Expanded") {
+                    DirectoryInfo info2 = new DirectoryInfo(di.FullName);
+                    foreach (FileSystemInfo di2 in info2.GetDirectories()) {
+                        Methods myActions = new Methods();
+                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Child", di2.Name);
+                        this.Add(new FileView(di2));
+                        FileView myFileView2 = new FileView(di2);
+                        if (myFileView2.CategoryState == "Expanded") {
+                            DirectoryInfo info3 = new DirectoryInfo(di2.FullName);
+
+                        }
+                    }
+                }
             }
 
             foreach (FileSystemInfo fi in info.GetFiles())

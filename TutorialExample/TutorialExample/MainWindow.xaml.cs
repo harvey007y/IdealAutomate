@@ -1,5 +1,7 @@
 ﻿using System.Windows;
 using IdealAutomate.Core;
+using System;
+using System.IO;
 
 namespace TutorialExample {
   /// <summary>
@@ -18,9 +20,11 @@ namespace TutorialExample {
   ShowActivated = false,
 };
       window.Show();
-      IdealAutomate.Core.Methods myActions = new Methods();
+         
+            IdealAutomate.Core.Methods myActions = new Methods();
+            myActions.ScriptStartedUpdateStats();
 
-      InitializeComponent();
+            InitializeComponent();
       this.Hide();
 
       string strWindowTitle = myActions.PutWindowTitleInEntity();
@@ -154,7 +158,8 @@ namespace TutorialExample {
       myActions.Run(@"C:\Program Files\Microsoft Office\Office15\EXCEL.EXE", @"C:\SVNStats\SVNStats.xlsx");
 
       myExit:
-      Application.Current.Shutdown();
+            myActions.ScriptEndedSuccessfullyUpdateStats();
+            Application.Current.Shutdown();
     }
   }
 }
