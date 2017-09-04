@@ -1,1 +1,0 @@
-C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomate.Core.csprojResolveAssemblyReference.cache
