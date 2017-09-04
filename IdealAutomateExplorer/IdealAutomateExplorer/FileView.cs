@@ -143,11 +143,29 @@ namespace System.Windows.Forms.Samples
             {
                 _icon = System.Drawing.Icon.FromHandle(info.hIcon);
                 string categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", fileInfo.Name);
+                string expandCollapseAll = myActions.GetValueByKey("ExpandCollapseAll");
+
                 if (categoryState == "Collapsed") {
+                    if (expandCollapseAll == "Expand") {
+                        categoryState = "Expanded";
+                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Expanded", fileInfo.Name);
+                    }
+                    if (expandCollapseAll == "Collapse") {
+                        categoryState = "Collapsed";
+                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Collapsed", fileInfo.Name);
+                    }
                     CategoryState = categoryState;
                     _icon = new Icon(Properties.Resources._112_Plus_Grey,16,16);
                 }
                 if (categoryState == "Expanded") {
+                    if (expandCollapseAll == "Expand") {
+                        categoryState = "Expanded";
+                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Expanded", fileInfo.Name);
+                    }
+                    if (expandCollapseAll == "Collapse") {
+                        categoryState = "Collapsed";
+                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Collapsed", fileInfo.Name);
+                    }
                     CategoryState = categoryState;
                     _icon = new Icon(Properties.Resources._112_Minus_Grey, 16, 16);
                 }

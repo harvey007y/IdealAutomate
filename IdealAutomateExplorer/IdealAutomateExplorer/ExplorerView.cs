@@ -135,6 +135,7 @@ namespace System.Windows.Forms.Samples {
                   diff.Minutes,
                   diff.Seconds);
             lblTotalSavings.Text = formatted;
+            myActions.SetValueByKey("ExpandCollapseAll", "");
         }
 
         private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e) {
@@ -1162,6 +1163,43 @@ namespace System.Windows.Forms.Samples {
             this.dataGridView1.DataSource = null;
             this.dataGridView1.DataSource = this.FileViewBindingSource;
             //   this.dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e) {
+            RefreshDataGrid();
+        }
+
+        private void RefreshDataGrid() {
+            // refresh datagridview
+            strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            // Set Initial Directory to My Documents
+            Methods myActions = new Methods();
+            string strSavedDirectory = myActions.GetValueByKey("InitialDirectory");
+
+
+            if (Directory.Exists(strSavedDirectory)) {
+                strInitialDirectory = strSavedDirectory;
+            }
+            _dir = new DirectoryView(strInitialDirectory);
+            this.FileViewBindingSource.DataSource = _dir;
+
+            // Set the title
+            SetTitle(_dir.FileView);
+            this.dataGridView1.DataSource = null;
+            this.dataGridView1.DataSource = this.FileViewBindingSource;
+            //   this.dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
+        }
+
+        private void btnExpanAll_Click(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            myActions.SetValueByKey("ExpandCollapseAll", "Expand");
+            RefreshDataGrid();
+        }
+
+        private void btnCollapseAll_Click(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            myActions.SetValueByKey("ExpandCollapseAll", "Collapse");
+            RefreshDataGrid();
         }
     }
 
