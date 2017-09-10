@@ -13,6 +13,7 @@ using System.Collections;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Resources;
+using System.Linq;
 
 namespace System.Windows.Forms.Samples
 {
@@ -29,7 +30,7 @@ namespace System.Windows.Forms.Samples
         private int _totalExecutions;
         private int _successfulExecutions;
         private int _percentSuccesful;
-        private DateTime? _lastExecuted;
+        private DateTime _lastExecuted;
         private string _hotKeyExecutable;
         private int _avgExecutionTime;
         private int _manualExecutionTime;
@@ -142,17 +143,22 @@ namespace System.Windows.Forms.Samples
             try
             {
                 _icon = System.Drawing.Icon.FromHandle(info.hIcon);
-                string categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", fileInfo.Name);
+                string initialDirectory = myActions.GetValueByKeyForNonCurrentScript("InitialDirectory", "IdealAutomateExplorer");
+              
+            
+                  string  scriptName = fileInfo.Name;
+       
+                string categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", scriptName);
                 string expandCollapseAll = myActions.GetValueByKey("ExpandCollapseAll");
 
                 if (categoryState == "Collapsed") {
                     if (expandCollapseAll == "Expand") {
                         categoryState = "Expanded";
-                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Expanded", fileInfo.Name);
+                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Expanded", scriptName);
                     }
                     if (expandCollapseAll == "Collapse") {
                         categoryState = "Collapsed";
-                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Collapsed", fileInfo.Name);
+                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Collapsed", scriptName);
                     }
                     CategoryState = categoryState;
                     _icon = new Icon(Properties.Resources._112_Plus_Grey,16,16);
@@ -160,11 +166,11 @@ namespace System.Windows.Forms.Samples
                 if (categoryState == "Expanded") {
                     if (expandCollapseAll == "Expand") {
                         categoryState = "Expanded";
-                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Expanded", fileInfo.Name);
+                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Expanded", scriptName);
                     }
                     if (expandCollapseAll == "Collapse") {
                         categoryState = "Collapsed";
-                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Collapsed", fileInfo.Name);
+                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Collapsed", scriptName);
                     }
                     CategoryState = categoryState;
                     _icon = new Icon(Properties.Resources._112_Minus_Grey, 16, 16);
@@ -240,7 +246,7 @@ namespace System.Windows.Forms.Samples
             }
         }
 
-        public DateTime? LastExecuted {
+        public DateTime LastExecuted {
             get {
                 return _lastExecuted;
             }

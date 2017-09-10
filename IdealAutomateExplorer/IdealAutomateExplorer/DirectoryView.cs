@@ -68,12 +68,26 @@ namespace System.Windows.Forms.Samples
                     DirectoryInfo info2 = new DirectoryInfo(di.FullName);
                     foreach (FileSystemInfo di2 in info2.GetDirectories()) {
                         Methods myActions = new Methods();
-                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Child", di2.Name);
+                        string categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", di2.Name);
+                        if (categoryState != "Collapsed" && categoryState != "Expanded") {
+                            myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Child", di2.Name);
+                        }
                         this.Add(new FileView(di2));
                         FileView myFileView2 = new FileView(di2);
                         if (myFileView2.CategoryState == "Expanded") {
                             DirectoryInfo info3 = new DirectoryInfo(di2.FullName);
+                            foreach (FileSystemInfo di3 in info3.GetDirectories()) {      
+                                categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", di3.Name);
+                                if (categoryState != "Collapsed" && categoryState != "Expanded") {
+                                    myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Child", di3.Name);
+                                }
+                                this.Add(new FileView(di3));
+                                FileView myFileView3 = new FileView(di3);
+                                if (myFileView3.CategoryState == "Expanded") {
+                                    DirectoryInfo info4 = new DirectoryInfo(di3.FullName);
 
+                                }
+                            }
                         }
                     }
                 }

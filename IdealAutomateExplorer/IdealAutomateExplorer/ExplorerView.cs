@@ -29,6 +29,7 @@ namespace System.Windows.Forms.Samples {
 
         public ExplorerView() {
             InitializeComponent();
+            this.dataGridView1.SortCompare += new DataGridViewSortCompareEventHandler(dataGridView1_SortCompare);
         }
 
         #region Helper Methods
@@ -87,7 +88,23 @@ namespace System.Windows.Forms.Samples {
         #endregion
 
         #region Event Handlers
-        private void ExplorerView_Load(object sender, EventArgs e) {
+        private void dataGridView1_SortCompare(object sender, DataGridViewSortCompareEventArgs e) {
+            try {
+                if (DBNull.Value.Equals(e.CellValue1) || DBNull.Value.Equals(e.CellValue2)) {
+                    if (DBNull.Value.Equals(e.CellValue1) || e.CellValue1.Equals(null)) {
+                        e.SortResult = 1;
+                    } else if (DBNull.Value.Equals(e.CellValue2) || e.CellValue2.Equals(null)) {
+                        e.SortResult = -1;
+                    }
+                } else {
+                    e.SortResult = (e.CellValue1 as IComparable).CompareTo(e.CellValue2 as IComparable);
+                }
+                e.Handled = true;
+            } catch (Exception ex) {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+        private void ExplorerView_Load(object sender, EventArgs e) {           
             int intTotalSavingsForAllScripts = 0;
             Methods myActions = new Methods();
             strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
@@ -201,6 +218,7 @@ namespace System.Windows.Forms.Samples {
                 this.dataGridView1.DataSource = null;
                 this.dataGridView1.DataSource = this.FileViewBindingSource;
                 //   this.dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
+                RefreshDataGrid();
                 return;
             }
             if (categoryState == "Collapsed") {
@@ -222,11 +240,13 @@ namespace System.Windows.Forms.Samples {
                 this.dataGridView1.DataSource = null;
                 this.dataGridView1.DataSource = this.FileViewBindingSource;
                 //   this.dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
+                RefreshDataGrid();
                 return;
             }
             try {
                 _dir.Activate(this.FileViewBindingSource[e.RowIndex] as FileView);
                 SetTitle(_dir.FileView);
+                RefreshDataGrid();
             } catch (Exception ex) {
                 MessageBox.Show(ex.Message);
             }
@@ -275,11 +295,13 @@ namespace System.Windows.Forms.Samples {
         private void upSplitButton_Click(object sender, EventArgs e) {
             _dir.Up();
             SetTitle(_dir.FileView);
+            RefreshDataGrid();
         }
 
         private void backSplitButton_Click(object sender, EventArgs e) {
             _dir.Up();
             SetTitle(_dir.FileView);
+            RefreshDataGrid();
         }
         #endregion
 
@@ -542,6 +564,7 @@ namespace System.Windows.Forms.Samples {
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e) {
             FileView myFileView;
+            Methods myActions = new Methods();
             foreach (DataGridViewCell myCell in dataGridView1.SelectedCells) {
                 myFileView = (FileView)this.FileViewBindingSource[myCell.RowIndex];
                 //MessageBox.Show(myFileView.FullName.ToString());
@@ -549,30 +572,19 @@ namespace System.Windows.Forms.Samples {
                     // Call EnumerateFiles in a foreach-loop.
 
                     ev_Delete_Directory(myFileView.FullName.ToString());
+                    
+                    string settingsDirectory = myActions.GetAppDirectoryForIdealAutomate();
+                    settingsDirectory = Path.Combine(settingsDirectory, myFileView.Name);
+                    if (Directory.Exists(settingsDirectory)) {
+                        Directory.Delete(settingsDirectory, true);
+                    }
 
                 } else {
                     ev_Delete_File(myFileView.FullName.ToString());
                 }
 
             }
-            // refresh datagridview
-            Methods myActions = new Methods();
-            strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-            // Set Initial Directory to My Documents
-            string strSavedDirectory = myActions.GetValueByKey("InitialDirectory");
-
-
-            if (Directory.Exists(strSavedDirectory)) {
-                strInitialDirectory = strSavedDirectory;
-            }
-            _dir = new DirectoryView(strInitialDirectory);
-            this.FileViewBindingSource.DataSource = _dir;
-
-            // Set the title
-            SetTitle(_dir.FileView);
-            this.dataGridView1.DataSource = null;
-            this.dataGridView1.DataSource = this.FileViewBindingSource;
-            //  this.dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
+            RefreshDataGrid();
         }
 
         private void addHotKeyToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -641,13 +653,13 @@ namespace System.Windows.Forms.Samples {
                             foreach (var item in myArrayList) {
                                 string[] myScriptInfoFields = item.ToString().Split('^');
                                 string scriptName = myScriptInfoFields[0];
-                                if (scriptName == myFileView.Name) {
+                                string strHotKeyExecutable = myScriptInfoFields[5];
+                                if (scriptName == myFileView.Name && file == strHotKeyExecutable) {
                                     boolScriptFound = true;
                                     string strHotKey = myScriptInfoFields[1];
                                     string strTotalExecutions = myScriptInfoFields[2];
                                     string strSuccessfulExecutions = myScriptInfoFields[3];
-                                    string strLastExecuted = myScriptInfoFields[4];
-                                    string strHotKeyExecutable = myScriptInfoFields[5];
+                                    string strLastExecuted = myScriptInfoFields[4];                                    
                                     int intTotalExecutions = 0;
                                     Int32.TryParse(strTotalExecutions, out intTotalExecutions);
                                     int intSuccessfulExecutions = 0;
@@ -711,6 +723,7 @@ namespace System.Windows.Forms.Samples {
             foreach (DataGridViewCell myCell in dataGridView1.SelectedCells) {
                 myFileView = (FileView)this.FileViewBindingSource[myCell.RowIndex];
                 //MessageBox.Show(myFileView.FullName.ToString());
+                bool boolScriptFound = false;
                 if (myFileView.IsDirectory) {
                     // Call EnumerateFiles in a foreach-loop.
                     foreach (string file in Directory.EnumerateFiles(myFileView.FullName.ToString(),
@@ -719,8 +732,7 @@ namespace System.Windows.Forms.Samples {
                         // Display file path.
                         if (file.Contains("bin\\Debug")) {
                             ArrayList myArrayList = myActions.ReadAppDirectoryKeyToArrayListGlobal("ScriptInfo");
-                            ArrayList newArrayList = new ArrayList();
-                            bool boolScriptFound = false;
+                            ArrayList newArrayList = new ArrayList();                           
                             foreach (var item in myArrayList) {
                                 string[] myScriptInfoFields = item.ToString().Split('^');
                                 string scriptName = myScriptInfoFields[0];
@@ -753,7 +765,9 @@ namespace System.Windows.Forms.Samples {
                             myActions.WriteArrayListToAppDirectoryKeyGlobal("ScriptInfo", newArrayList);
                         }
                     }
-
+                    if (boolScriptFound == false) {
+                        myActions.MessageBoxShow(@"Could not find the HotKey; Script may have been moved; you can manually delete the row from AppData\Roaming\IdealAutomate\ScriptInfo.txt");
+                    }
                 } else {
                     ev_Process_File(myFileView.FullName.ToString());
                 }
@@ -1146,23 +1160,7 @@ namespace System.Windows.Forms.Samples {
 
                 MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
             }
-            // refresh datagridview
-            strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-            // Set Initial Directory to My Documents
-            string strSavedDirectory = myActions.GetValueByKey("InitialDirectory");
-
-
-            if (Directory.Exists(strSavedDirectory)) {
-                strInitialDirectory = strSavedDirectory;
-            }
-            _dir = new DirectoryView(strInitialDirectory);
-            this.FileViewBindingSource.DataSource = _dir;
-
-            // Set the title
-            SetTitle(_dir.FileView);
-            this.dataGridView1.DataSource = null;
-            this.dataGridView1.DataSource = this.FileViewBindingSource;
-            //   this.dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
+            RefreshDataGrid();
         }
 
         private void btnRefresh_Click(object sender, EventArgs e) {
@@ -1179,6 +1177,7 @@ namespace System.Windows.Forms.Samples {
 
             if (Directory.Exists(strSavedDirectory)) {
                 strInitialDirectory = strSavedDirectory;
+                myActions.SetValueByKey("InitialDirectory", strSavedDirectory);
             }
             _dir = new DirectoryView(strInitialDirectory);
             this.FileViewBindingSource.DataSource = _dir;
@@ -1199,6 +1198,68 @@ namespace System.Windows.Forms.Samples {
         private void btnCollapseAll_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             myActions.SetValueByKey("ExpandCollapseAll", "Collapse");
+            RefreshDataGrid();
+        }
+
+        private void subCategoryToolStripMenuItem_Click(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+
+            ControlEntity myControlEntity = new ControlEntity();
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Heading;
+            myControlEntity.Text = "Create New SubCategory";
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "myLabel";
+            myControlEntity.Text = "Enter New SubCategory Name";
+            myControlEntity.RowNumber = 0;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "myTextBox";
+            myControlEntity.Text = "";
+            myControlEntity.RowNumber = 0;
+            myControlEntity.ColumnNumber = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            ReDisplayNewSubCategoryDialog:
+            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
+
+            if (strButtonPressed == "btnCancel") {
+                myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                return;
+            }
+
+            string myNewSubCategoryName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
+            string strNewSubCategoryDir = "";
+
+            foreach (DataGridViewCell myCell in dataGridView1.SelectedCells) {
+                FileView myFileView = (FileView)this.FileViewBindingSource[myCell.RowIndex];
+                //MessageBox.Show(myFileView.FullName.ToString());
+                if (myFileView.IsDirectory) {                    
+                     strNewSubCategoryDir = Path.Combine(myFileView.FullName, myNewSubCategoryName);
+                    if (Directory.Exists(strNewSubCategoryDir)) {
+                        myActions.MessageBoxShow(strNewSubCategoryDir + "already exists");
+                        goto ReDisplayNewSubCategoryDialog;
+                    }
+                    try {
+                        // create the directories
+                        Directory.CreateDirectory(strNewSubCategoryDir);
+                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Collapsed", myNewSubCategoryName);
+                    } catch (Exception ex) {
+                        MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
+                    }
+                }
+            }
+
             RefreshDataGrid();
         }
     }
