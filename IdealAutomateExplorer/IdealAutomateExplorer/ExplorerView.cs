@@ -377,7 +377,7 @@ namespace System.Windows.Forms.Samples {
             string basePathForNewProject = _dir.FileView.FullName;
             foreach (DataGridViewCell myCell in dataGridView1.SelectedCells) {
                 FileView myFileView = (FileView)this.FileViewBindingSource[myCell.RowIndex];
-                if (myFileView.IsDirectory) {
+                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     basePathForNewProject = myFileView.FullName;
                 }
             }
