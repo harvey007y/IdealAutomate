@@ -24,12 +24,12 @@ namespace System.Windows.Forms.Samples {
         private DirectoryView _dir;
         string strInitialDirectory = "";
         bool boolStopEvent = false;
+        Rectangle _IconRectangle = new Rectangle();
         List<HotKeyRecord> listHotKeyRecords = new List<HotKeyRecord>();
         Dictionary<string, VirtualKeyCode> dictVirtualKeyCodes = new Dictionary<string, VirtualKeyCode>();
 
         public ExplorerView() {
             InitializeComponent();
-            this.dataGridView1.SortCompare += new DataGridViewSortCompareEventHandler(dataGridView1_SortCompare);
         }
 
         #region Helper Methods
@@ -87,23 +87,7 @@ namespace System.Windows.Forms.Samples {
         }
         #endregion
 
-        #region Event Handlers
-        private void dataGridView1_SortCompare(object sender, DataGridViewSortCompareEventArgs e) {
-            try {
-                if (DBNull.Value.Equals(e.CellValue1) || DBNull.Value.Equals(e.CellValue2)) {
-                    if (DBNull.Value.Equals(e.CellValue1) || e.CellValue1.Equals(null)) {
-                        e.SortResult = 1;
-                    } else if (DBNull.Value.Equals(e.CellValue2) || e.CellValue2.Equals(null)) {
-                        e.SortResult = -1;
-                    }
-                } else {
-                    e.SortResult = (e.CellValue1 as IComparable).CompareTo(e.CellValue2 as IComparable);
-                }
-                e.Handled = true;
-            } catch (Exception ex) {
-                MessageBox.Show(ex.ToString());
-            }
-        }
+        #region Event Handlers        
         private void ExplorerView_Load(object sender, EventArgs e) {           
             int intTotalSavingsForAllScripts = 0;
             Methods myActions = new Methods();
@@ -175,7 +159,7 @@ namespace System.Windows.Forms.Samples {
                 using (SolidBrush b = new SolidBrush(e.CellStyle.BackColor)) {
                     e.Graphics.FillRectangle(b, e.CellBounds);
                 }
-
+                _IconRectangle = e.CellBounds;
                 // Draw right aligned icon (1 pixed padding)
                 e.Graphics.DrawIcon(icon, e.CellBounds.Width - icon.Width - 1, e.CellBounds.Y + 1);
                 e.Handled = true;
@@ -186,12 +170,18 @@ namespace System.Windows.Forms.Samples {
             string fileName = ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Value.ToString();
             Methods myActions = new Methods();
             string categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", fileName);
+            int categoryLevel = myActions.GetValueByKeyAsIntForNonCurrentScript("CategoryLevel", fileName);
+            int indent = categoryLevel * 20;
             if (categoryState == "Collapsed" || categoryState == "Expanded") {
                 ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Style.Font = new Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold);
+                ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Style.Padding = new Padding(indent, 0, 0, 0);
             }
             if (categoryState == "Child") {
-                ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Style.Font = new Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Italic);
+              //  ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Style.Font = new Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Italic);
+                ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Style.Padding = new Padding(indent, 0, 0, 0);
+                DataGridViewCell iconCell = ((DataGridView)sender).Rows[e.RowIndex].Cells[0];
             }
+
         }
 
         private void dataGridView1_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e) {
@@ -200,46 +190,12 @@ namespace System.Windows.Forms.Samples {
             Methods myActions = new Methods();
             string categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", fileName);
             if (categoryState == "Expanded") {
-                myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Collapsed", fileName);
-                // refresh datagridview
-                strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-                // Set Initial Directory to My Documents
-                string strSavedDirectory = myActions.GetValueByKey("InitialDirectory");
-
-
-                if (Directory.Exists(strSavedDirectory)) {
-                    strInitialDirectory = strSavedDirectory;
-                }
-                _dir = new DirectoryView(strInitialDirectory);
-                this.FileViewBindingSource.DataSource = _dir;
-
-                // Set the title
-                SetTitle(_dir.FileView);
-                this.dataGridView1.DataSource = null;
-                this.dataGridView1.DataSource = this.FileViewBindingSource;
-                //   this.dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
+                myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Collapsed", fileName);                
                 RefreshDataGrid();
                 return;
             }
             if (categoryState == "Collapsed") {
-                myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Expanded", fileName);
-                // refresh datagridview
-                strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-                // Set Initial Directory to My Documents
-                string strSavedDirectory = myActions.GetValueByKey("InitialDirectory");
-
-
-                if (Directory.Exists(strSavedDirectory)) {
-                    strInitialDirectory = strSavedDirectory;
-                }
-                _dir = new DirectoryView(strInitialDirectory);
-                this.FileViewBindingSource.DataSource = _dir;
-
-                // Set the title
-                SetTitle(_dir.FileView);
-                this.dataGridView1.DataSource = null;
-                this.dataGridView1.DataSource = this.FileViewBindingSource;
-                //   this.dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
+                myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Expanded", fileName);                
                 RefreshDataGrid();
                 return;
             }
@@ -1243,6 +1199,7 @@ namespace System.Windows.Forms.Samples {
 
             foreach (DataGridViewCell myCell in dataGridView1.SelectedCells) {
                 FileView myFileView = (FileView)this.FileViewBindingSource[myCell.RowIndex];
+                int categoryLevel = myActions.GetValueByKeyAsIntForNonCurrentScript("CategoryLevel", myFileView.Name);
                 //MessageBox.Show(myFileView.FullName.ToString());
                 if (myFileView.IsDirectory) {                    
                      strNewSubCategoryDir = Path.Combine(myFileView.FullName, myNewSubCategoryName);
@@ -1254,6 +1211,8 @@ namespace System.Windows.Forms.Samples {
                         // create the directories
                         Directory.CreateDirectory(strNewSubCategoryDir);
                         myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Collapsed", myNewSubCategoryName);
+                        int newCategoryLevel = categoryLevel + 1;
+                        myActions.SetValueByKeyForNonCurrentScript("CategoryLevel", newCategoryLevel.ToString(), myNewSubCategoryName);
                     } catch (Exception ex) {
                         MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
                     }
