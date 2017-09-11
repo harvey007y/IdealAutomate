@@ -1221,6 +1221,34 @@ namespace System.Windows.Forms.Samples {
 
             RefreshDataGrid();
         }
+
+        private void dataGridView1_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e) {
+            foreach (DataGridViewCell myCell in dataGridView1.SelectedCells) {
+                if (myCell.ColumnIndex == 0) {
+                    // Call Active on DirectoryView
+                    string fileName = ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Value.ToString();
+                    Methods myActions = new Methods();
+                    string categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", fileName);
+                    if (categoryState == "Expanded") {
+                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Collapsed", fileName);
+                        RefreshDataGrid();
+                        return;
+                    }
+                    if (categoryState == "Collapsed") {
+                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Expanded", fileName);
+                        RefreshDataGrid();
+                        return;
+                    }
+                    try {
+                        _dir.Activate(this.FileViewBindingSource[e.RowIndex] as FileView);
+                        SetTitle(_dir.FileView);
+                        RefreshDataGrid();
+                    } catch (Exception ex) {
+                        MessageBox.Show(ex.Message);
+                    }
+                }
+            }
+            }
     }
 
 }
