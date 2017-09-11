@@ -374,8 +374,16 @@ namespace System.Windows.Forms.Samples {
                 return;
             }
 
-            string myNewProjectName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
-            string strNewProjectDir = Path.Combine(_dir.FileView.FullName, myNewProjectName);
+            string basePathForNewProject = _dir.FileView.FullName;
+            foreach (DataGridViewCell myCell in dataGridView1.SelectedCells) {
+                FileView myFileView = (FileView)this.FileViewBindingSource[myCell.RowIndex];
+                if (myFileView.IsDirectory) {
+                    basePathForNewProject = myFileView.FullName;
+                }
+            }
+
+                string myNewProjectName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
+            string strNewProjectDir = Path.Combine(basePathForNewProject, myNewProjectName);
             if (Directory.Exists(strNewProjectDir)) {
                 myActions.MessageBoxShow(strNewProjectDir + "already exists");
                 goto ReDisplayNewProjectDialog;
@@ -1224,7 +1232,7 @@ namespace System.Windows.Forms.Samples {
 
         private void dataGridView1_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e) {
             foreach (DataGridViewCell myCell in dataGridView1.SelectedCells) {
-                if (myCell.ColumnIndex == 0) {
+                if (myCell.ColumnIndex == 0 && e.RowIndex > -1) {
                     // Call Active on DirectoryView
                     string fileName = ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Value.ToString();
                     Methods myActions = new Methods();
