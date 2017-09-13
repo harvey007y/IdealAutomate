@@ -167,10 +167,10 @@ namespace System.Windows.Forms.Samples {
         }
 
         private void dataGridView1_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e) {
-            string fileName = ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Value.ToString();
+            string fileName = ((DataGridView)sender).Rows[e.RowIndex].Cells[13].Value.ToString();
             Methods myActions = new Methods();
-            string categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", fileName);
-            int categoryLevel = myActions.GetValueByKeyAsIntForNonCurrentScript("CategoryLevel", fileName);
+            string categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToScriptPath(fileName));
+            int categoryLevel = myActions.GetValueByKeyAsIntForNonCurrentScript("CategoryLevel", myActions.ConvertFullFileNameToScriptPath(fileName));
             int indent = categoryLevel * 20;
             if (categoryState == "Collapsed" || categoryState == "Expanded") {
                 ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Style.Font = new Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold);
@@ -618,7 +618,7 @@ namespace System.Windows.Forms.Samples {
                                 string[] myScriptInfoFields = item.ToString().Split('^');
                                 string scriptName = myScriptInfoFields[0];
                                 string strHotKeyExecutable = myScriptInfoFields[5];
-                                if (scriptName == myFileView.Name && file == strHotKeyExecutable) {
+                                if (scriptName == myActions.ConvertFullFileNameToScriptPath(myFileView.FullName) && file == strHotKeyExecutable) {
                                     boolScriptFound = true;
                                     string strHotKey = myScriptInfoFields[1];
                                     string strTotalExecutions = myScriptInfoFields[2];
@@ -642,7 +642,7 @@ namespace System.Windows.Forms.Samples {
                                 }
                             }
                             if (boolScriptFound == false) {
-                                newArrayList.Add(myFileView.Name + "^" +
+                                newArrayList.Add(myActions.ConvertFullFileNameToScriptPath(myFileView.FullName) + "^" +
                                        "Ctrl+Alt+" + myHotKey + "^" +
                                         "0" + "^" +
                                         "0" + "^" +
@@ -1116,7 +1116,7 @@ namespace System.Windows.Forms.Samples {
             try {
                 // create the directories
                 Directory.CreateDirectory(strNewCategoryDir);
-                myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Collapsed", myNewCategoryName);
+                myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Collapsed", myActions.ConvertFullFileNameToScriptPath(_dir.FileView.FullName) + "-" + myNewCategoryName);
 
 
 
@@ -1207,7 +1207,7 @@ namespace System.Windows.Forms.Samples {
 
             foreach (DataGridViewCell myCell in dataGridView1.SelectedCells) {
                 FileView myFileView = (FileView)this.FileViewBindingSource[myCell.RowIndex];
-                int categoryLevel = myActions.GetValueByKeyAsIntForNonCurrentScript("CategoryLevel", myFileView.Name);
+                int categoryLevel = myActions.GetValueByKeyAsIntForNonCurrentScript("CategoryLevel", myActions.ConvertFullFileNameToScriptPath(myFileView.FullName));
                 //MessageBox.Show(myFileView.FullName.ToString());
                 if (myFileView.IsDirectory) {                    
                      strNewSubCategoryDir = Path.Combine(myFileView.FullName, myNewSubCategoryName);
@@ -1218,9 +1218,9 @@ namespace System.Windows.Forms.Samples {
                     try {
                         // create the directories
                         Directory.CreateDirectory(strNewSubCategoryDir);
-                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Collapsed", myNewSubCategoryName);
+                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Collapsed", myActions.ConvertFullFileNameToScriptPath(_dir.FileView.FullName) + "-" + myNewSubCategoryName);
                         int newCategoryLevel = categoryLevel + 1;
-                        myActions.SetValueByKeyForNonCurrentScript("CategoryLevel", newCategoryLevel.ToString(), myNewSubCategoryName);
+                        myActions.SetValueByKeyForNonCurrentScript("CategoryLevel", newCategoryLevel.ToString(), myActions.ConvertFullFileNameToScriptPath(_dir.FileView.FullName) + "-" + myNewSubCategoryName);
                     } catch (Exception ex) {
                         MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
                     }
@@ -1234,16 +1234,16 @@ namespace System.Windows.Forms.Samples {
             foreach (DataGridViewCell myCell in dataGridView1.SelectedCells) {
                 if (myCell.ColumnIndex == 0 && e.RowIndex > -1) {
                     // Call Active on DirectoryView
-                    string fileName = ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Value.ToString();
+                    string fileName = ((DataGridView)sender).Rows[e.RowIndex].Cells[13].Value.ToString();
                     Methods myActions = new Methods();
-                    string categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", fileName);
+                    string categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToScriptPath(fileName));
                     if (categoryState == "Expanded") {
-                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Collapsed", fileName);
+                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Collapsed", myActions.ConvertFullFileNameToScriptPath(fileName));
                         RefreshDataGrid();
                         return;
                     }
                     if (categoryState == "Collapsed") {
-                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Expanded", fileName);
+                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Expanded", myActions.ConvertFullFileNameToScriptPath(fileName));
                         RefreshDataGrid();
                         return;
                     }
@@ -1346,7 +1346,10 @@ namespace System.Windows.Forms.Samples {
                     myActions.SetValueByKey("cbxFolderSelectedValue", strFolder);
                     string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
                     string fileName = "cbxFolder.txt";
-                    string settingsDirectory = GetAppDirectoryForScript(strScriptName);
+                    string strApplicationBinDebug = Application.StartupPath;
+                    string myNewProjectSourcePath = strApplicationBinDebug.Replace("bin\\Debug", "");
+
+                    string settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPath(myNewProjectSourcePath));
                     string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
                     ArrayList alHosts = new ArrayList();
                     cbp = new List<ComboBoxPair>();

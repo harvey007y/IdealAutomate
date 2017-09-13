@@ -82,7 +82,7 @@ namespace System.Windows.Forms.Samples
             foreach (var item in myArrayList) {
                 string[] myScriptInfoFields = item.ToString().Split('^');
                 string scriptName = myScriptInfoFields[0];
-                if (scriptName == _name) {
+                if (scriptName == myActions.ConvertFullFileNameToScriptPath(fileInfo.FullName)) {
                     string strHotKey = myScriptInfoFields[1];
                     //string strTotalExecutions = myScriptInfoFields[2];
                     //string strSuccessfulExecutions = myScriptInfoFields[3];
@@ -143,10 +143,10 @@ namespace System.Windows.Forms.Samples
             try
             {
                 _icon = System.Drawing.Icon.FromHandle(info.hIcon);
-                string initialDirectory = myActions.GetValueByKeyForNonCurrentScript("InitialDirectory", "IdealAutomateExplorer");
-              
+                string myProjectSourcePath = myActions.GetPathForScriptNoBinDebug();
+                string initialDirectory = myActions.GetValueByKeyForNonCurrentScript("InitialDirectory", myActions.ConvertFullFileNameToScriptPath(myProjectSourcePath));
             
-                  string  scriptName = fileInfo.Name;
+                  string  scriptName = myActions.ConvertFullFileNameToScriptPath(fileInfo.FullName); 
        
                 string categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", scriptName);
                 string expandCollapseAll = myActions.GetValueByKey("ExpandCollapseAll");

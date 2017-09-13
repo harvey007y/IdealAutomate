@@ -2236,13 +2236,14 @@ namespace IdealAutomate.Core {
         /// </summary>
         /// <returns>string that is the app_data/roaming directory path for the script</returns>
         public string GetAppDirectoryForScript() {
+
             string directory = AppDomain.CurrentDomain.BaseDirectory;
             directory = directory.Replace("\\bin\\Debug\\", "");
             int intLastSlashIndex = directory.LastIndexOf("\\");
-            string strScriptName = directory.Substring(intLastSlashIndex + 1);
+            //string strScriptName = directory.Substring(intLastSlashIndex + 1);
             // string strScriptName = System.Reflection.Assembly.GetCallingAssembly().GetName().Name;
             string settingsDirectory =
-      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\" + strScriptName;
+      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\" + ConvertFullFileNameToScriptPath(directory);
             if (!Directory.Exists(settingsDirectory)) {
                 Directory.CreateDirectory(settingsDirectory);
             }
@@ -2703,5 +2704,21 @@ namespace IdealAutomate.Core {
 
 
         }
+        public string ConvertFullFileNameToScriptPath(string fullFileName) {
+            int intIndex = fullFileName.LastIndexOf(@"/");
+            if (intIndex > -1) {
+                fullFileName = fullFileName.Substring(0, intIndex);
+            }  
+            string scriptPath = fullFileName;
+            scriptPath = scriptPath.Replace(":","+").Replace(@"\","-");
+            return scriptPath;
+        }
+
+        public string GetPathForScriptNoBinDebug() {
+            string directory = AppDomain.CurrentDomain.BaseDirectory;
+            directory = directory.Replace("\\bin\\Debug\\", "");
+            return directory;
+        }
+
     }
 }

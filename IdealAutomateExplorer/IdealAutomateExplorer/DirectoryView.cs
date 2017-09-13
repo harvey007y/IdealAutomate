@@ -68,12 +68,12 @@ namespace System.Windows.Forms.Samples
                     DirectoryInfo info2 = new DirectoryInfo(di.FullName);
                     foreach (FileSystemInfo di2 in info2.GetDirectories()) {
                         Methods myActions = new Methods();
-                        string categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", di2.Name);
+                        string categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToScriptPath(di2.FullName));
                         if (categoryState != "Collapsed" && categoryState != "Expanded") {
-                            int categoryLevel = myActions.GetValueByKeyAsIntForNonCurrentScript("CategoryLevel", myFileView.Name);
-                            myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Child", di2.Name);
+                            int categoryLevel = myActions.GetValueByKeyAsIntForNonCurrentScript("CategoryLevel", myActions.ConvertFullFileNameToScriptPath(myFileView.FullName));
+                            myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Child", myActions.ConvertFullFileNameToScriptPath(di2.FullName));
                             int newCategoryLevel = categoryLevel + 1;
-                            myActions.SetValueByKeyForNonCurrentScript("CategoryLevel", newCategoryLevel.ToString(), di2.Name);
+                            myActions.SetValueByKeyForNonCurrentScript("CategoryLevel", newCategoryLevel.ToString(), myActions.ConvertFullFileNameToScriptPath(di2.FullName));
 
                         }
                         this.Add(new FileView(di2));
@@ -81,24 +81,24 @@ namespace System.Windows.Forms.Samples
                         if (myFileView2.CategoryState == "Expanded") {
                             DirectoryInfo info3 = new DirectoryInfo(di2.FullName);
                             foreach (FileSystemInfo di3 in info3.GetDirectories()) {      
-                                categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", di3.Name);
+                                categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToScriptPath(di3.FullName));
                                 if (categoryState != "Collapsed" && categoryState != "Expanded") {
-                                    int categoryLevel = myActions.GetValueByKeyAsIntForNonCurrentScript("CategoryLevel", myFileView2.Name);
-                                    myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Child", di3.Name);
+                                    int categoryLevel = myActions.GetValueByKeyAsIntForNonCurrentScript("CategoryLevel", myActions.ConvertFullFileNameToScriptPath(myFileView2.FullName));
+                                    myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Child", myActions.ConvertFullFileNameToScriptPath(di3.FullName));
                                     int newCategoryLevel = categoryLevel + 1;
-                                    myActions.SetValueByKeyForNonCurrentScript("CategoryLevel", newCategoryLevel.ToString(), di3.Name);
+                                    myActions.SetValueByKeyForNonCurrentScript("CategoryLevel", newCategoryLevel.ToString(), myActions.ConvertFullFileNameToScriptPath(di3.FullName));
                                 }
                                 this.Add(new FileView(di3));
                                 FileView myFileView3 = new FileView(di3);
                                 if (myFileView3.CategoryState == "Expanded") {
                                     DirectoryInfo info4 = new DirectoryInfo(di3.FullName);
                                     foreach (FileSystemInfo di4 in info4.GetDirectories()) {
-                                        categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", di4.Name);
+                                        categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToScriptPath(di4.FullName));
                                         if (categoryState != "Collapsed" && categoryState != "Expanded") {
-                                            int categoryLevel = myActions.GetValueByKeyAsIntForNonCurrentScript("CategoryLevel", myFileView3.Name);
-                                            myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Child", di4.Name);
+                                            int categoryLevel = myActions.GetValueByKeyAsIntForNonCurrentScript("CategoryLevel", myActions.ConvertFullFileNameToScriptPath(myFileView3.FullName));
+                                            myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Child", myActions.ConvertFullFileNameToScriptPath(di4.FullName));
                                             int newCategoryLevel = categoryLevel + 1;
-                                            myActions.SetValueByKeyForNonCurrentScript("CategoryLevel", newCategoryLevel.ToString(), di4.Name);
+                                            myActions.SetValueByKeyForNonCurrentScript("CategoryLevel", newCategoryLevel.ToString(), myActions.ConvertFullFileNameToScriptPath(di4.Name));
                                         }
                                         this.Add(new FileView(di4));
                                         FileView myFileView4 = new FileView(di4);
