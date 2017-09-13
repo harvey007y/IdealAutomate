@@ -12,11 +12,11 @@ namespace IdealAutomateCore {
             string directory = AppDomain.CurrentDomain.BaseDirectory;
             directory = directory.Replace("\\bin\\Debug\\", "");
             int intLastSlashIndex = directory.LastIndexOf("\\");
-            string strScriptName = directory.Substring(intLastSlashIndex + 1);
+          //  string strScriptName = directory.Substring(intLastSlashIndex + 1);
             // string strScriptName = System.Reflection.Assembly.GetCallingAssembly().GetName().Name;
             string settingsDirectory =
-      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\" + strScriptName;
-            if (!Directory.Exists(settingsDirectory)) {
+      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\" + ConvertFullFileNameToScriptPath(directory);
+      if (!Directory.Exists(settingsDirectory)) {
                 Directory.CreateDirectory(settingsDirectory);
             }
             string filePath = Path.Combine(settingsDirectory, "IdealAutomateLog.txt");
@@ -43,7 +43,16 @@ namespace IdealAutomateCore {
             }
         }
 
-        public static void WriteLog(string pClass, string pMethod, string pLineNumber, string pText, string pData) {
+    private static string ConvertFullFileNameToScriptPath(string fullFileName) {
+      int intIndex = fullFileName.LastIndexOf(@"/");
+      if (intIndex > -1) {
+        fullFileName = fullFileName.Substring(0, intIndex);
+      }
+      string scriptPath = fullFileName;
+      scriptPath = scriptPath.Replace(":", "+").Replace(@"\", "-");
+      return scriptPath;
+    }
+    public static void WriteLog(string pClass, string pMethod, string pLineNumber, string pText, string pData) {
 
             if (Directory.Exists("C:\\Data") == false) {
                 Directory.CreateDirectory("C:\\Data");

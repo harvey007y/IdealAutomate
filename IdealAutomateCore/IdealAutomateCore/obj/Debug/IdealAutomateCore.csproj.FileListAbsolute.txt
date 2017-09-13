@@ -85,3 +85,17 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomat
 C:\Users\harve\AppData\Roaming\IdealAutomate\IdealAutomateCore.dll
 C:\Users\harve\AppData\Roaming\IdealAutomate\IdealAutomateCore.pdb
 C:\Users\harve\AppData\Roaming\IdealAutomate\IdealAutomateCore.XML
+C:\Users\wharvey\AppData\Roaming\IdealAutomate\IdealAutomateCore.dll
+C:\Users\wharvey\AppData\Roaming\IdealAutomate\IdealAutomateCore.pdb
+C:\Users\wharvey\AppData\Roaming\IdealAutomate\IdealAutomateCore.XML
+C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateComponents\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore.csprojResolveAssemblyReference.cache
+C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateComponents\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowMultipleControls.baml
+C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateComponents\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowShape.baml
+C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateComponents\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowMultipleControls.g.cs
+C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateComponents\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowShape.g.cs
+C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateComponents\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore_MarkupCompile.cache
+C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateComponents\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore.g.resources
+C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateComponents\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore.Properties.Resources.resources
+C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateComponents\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore.csproj.GenerateResource.Cache
+C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateComponents\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore.dll
+C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateComponents\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore.pdb
