@@ -186,9 +186,10 @@ namespace System.Windows.Forms.Samples {
         }
 
         private void dataGridView1_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e) {
-            // Call Active on DirectoryView
-            string fileName = ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Value.ToString();
-            Methods myActions = new Methods();
+      // Call Active on DirectoryView
+      string fileName = ((DataGridView)sender).Rows[e.RowIndex].Cells[13].Value.ToString() + "\\" + ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Value.ToString();
+      Methods myActions = new Methods();
+      fileName = myActions.ConvertFullFileNameToScriptPath(fileName);
             string categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", fileName);
             if (categoryState == "Expanded") {
                 myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Collapsed", fileName);                
@@ -1235,7 +1236,7 @@ namespace System.Windows.Forms.Samples {
             foreach (DataGridViewCell myCell in dataGridView1.SelectedCells) {
                 if (myCell.ColumnIndex == 0 && e.RowIndex > -1) {
                     // Call Active on DirectoryView
-                    string fileName = ((DataGridView)sender).Rows[e.RowIndex].Cells[13].Value.ToString();
+                    string fileName = ((DataGridView)sender).Rows[e.RowIndex].Cells[13].Value.ToString() + "\\" + ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Value.ToString();
                     Methods myActions = new Methods();
                     string categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToScriptPath(fileName));
                     if (categoryState == "Expanded") {
