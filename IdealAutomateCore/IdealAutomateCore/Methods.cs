@@ -2705,7 +2705,7 @@ namespace IdealAutomate.Core {
 
         }
         public string ConvertFullFileNameToScriptPath(string fullFileName) {
-            int intIndex = fullFileName.LastIndexOf(@"/");
+            int intIndex = fullFileName.LastIndexOf(@"\");
             if (intIndex > -1) {
                 fullFileName = fullFileName.Substring(0, intIndex);
             }  
