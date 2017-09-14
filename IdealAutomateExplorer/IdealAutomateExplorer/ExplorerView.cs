@@ -168,9 +168,10 @@ namespace System.Windows.Forms.Samples {
 
         private void dataGridView1_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e) {
             string fileName = ((DataGridView)sender).Rows[e.RowIndex].Cells[13].Value.ToString();
-            Methods myActions = new Methods();
-            string categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToScriptPath(fileName));
-            int categoryLevel = myActions.GetValueByKeyAsIntForNonCurrentScript("CategoryLevel", myActions.ConvertFullFileNameToScriptPath(fileName));
+      string scriptName = ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Value.ToString();
+      Methods myActions = new Methods();
+            string categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToScriptPath(fileName) + "-" + scriptName);
+            int categoryLevel = myActions.GetValueByKeyAsIntForNonCurrentScript("CategoryLevel", myActions.ConvertFullFileNameToScriptPath(fileName) + "-" + scriptName);
             int indent = categoryLevel * 20;
             if (categoryState == "Collapsed" || categoryState == "Expanded") {
                 ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Style.Font = new Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold);

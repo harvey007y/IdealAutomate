@@ -570,6 +570,7 @@ namespace IdealAutomate.Core {
       Methods myActions = new Methods();
       string directory = AppDomain.CurrentDomain.BaseDirectory;
       directory = directory.Replace("\\bin\\Debug\\", "");
+      int intIndex = directory.LastIndexOf("\\");
       string settingsDirectory =
       Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\" + myActions.ConvertFullFileNameToScriptPath(directory);
       if (!Directory.Exists(settingsDirectory)) {
