@@ -206,7 +206,7 @@ namespace IdealAutomate.Core {
                         break;
                     case ControlType.ComboBox:
                         string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
-                        string settingsDirectory = GetAppDirectoryForScript(strScriptName);
+                        string settingsDirectory = GetAppDirectoryForScript();
                         string fileName = item.ID + ".txt";
                         string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
                         ArrayList alHosts = new ArrayList();
@@ -404,7 +404,7 @@ namespace IdealAutomate.Core {
                 }
             }
             string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
-            string settingsDirectory = GetAppDirectoryForScript(strScriptName);
+            string settingsDirectory = GetAppDirectoryForScript();
             string fileName = ((ComboBox)sender).Name + ".txt";
             string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
             using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
@@ -566,10 +566,13 @@ namespace IdealAutomate.Core {
         protected override void OnMouseRightButtonDown(MouseButtonEventArgs e) {
             base.OnMouseRightButtonDown(e);
         }
-        private string GetAppDirectoryForScript(string strScriptName) {
-            string settingsDirectory =
-      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\" + strScriptName;
-            if (!Directory.Exists(settingsDirectory)) {
+        private string GetAppDirectoryForScript() {
+      Methods myActions = new Methods();
+      string directory = AppDomain.CurrentDomain.BaseDirectory;
+      directory = directory.Replace("\\bin\\Debug\\", "");
+      string settingsDirectory =
+      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\" + myActions.ConvertFullFileNameToScriptPath(directory);
+      if (!Directory.Exists(settingsDirectory)) {
                 Directory.CreateDirectory(settingsDirectory);
             }
             return settingsDirectory;
