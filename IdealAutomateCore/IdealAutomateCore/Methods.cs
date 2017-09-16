@@ -2714,6 +2714,12 @@ namespace IdealAutomate.Core {
             return scriptPath;
         }
 
+        public string ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(string fullFileName) {
+            string scriptPath = fullFileName;
+            scriptPath = scriptPath.Replace(":", "+").Replace(@"\", "-");
+            return scriptPath;
+        }
+
         public string GetPathForScriptNoBinDebug() {
             string directory = AppDomain.CurrentDomain.BaseDirectory;
             directory = directory.Replace("\\bin\\Debug\\", "");

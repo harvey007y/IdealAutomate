@@ -60,19 +60,19 @@ namespace System.Windows.Forms.Samples
             Methods myActions = new Methods();
             _path = fileInfo.FullName;
             _name = fileInfo.Name;
-      string _pathAndName = fileInfo.FullName + @"\" + fileInfo.Name;
+      string fileFullName = fileInfo.FullName;
       _hotkey = "";
-            _totalExecutions = myActions.GetValueByKeyAsIntForNonCurrentScript("ScriptTotalExecutions", myActions.ConvertFullFileNameToScriptPath(_pathAndName));
-            _successfulExecutions = myActions.GetValueByKeyAsIntForNonCurrentScript("ScriptSuccessfulExecutions", myActions.ConvertFullFileNameToScriptPath(_pathAndName));
+            _totalExecutions = myActions.GetValueByKeyAsIntForNonCurrentScript("ScriptTotalExecutions", myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
+            _successfulExecutions = myActions.GetValueByKeyAsIntForNonCurrentScript("ScriptSuccessfulExecutions", myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
             if (_totalExecutions == 0) {
                 _percentSuccesful = 0;
             } else {
                 decimal decPercentSuccessful = ((decimal)_successfulExecutions / (decimal)_totalExecutions) * 100;
                 _percentSuccesful = Decimal.ToInt32(decPercentSuccessful);
             }
-            _lastExecuted = myActions.GetValueByKeyAsDateTimeForNonCurrentScript("ScriptStartDateTime",myActions.ConvertFullFileNameToScriptPath(_pathAndName));
-            _avgExecutionTime = myActions.GetValueByKeyAsIntForNonCurrentScript("AvgSuccessfulExecutionTime", myActions.ConvertFullFileNameToScriptPath(_pathAndName));
-            _manualExecutionTime = myActions.GetValueByKeyAsIntForNonCurrentScript("ManualExecutionTime", myActions.ConvertFullFileNameToScriptPath(_pathAndName));
+            _lastExecuted = myActions.GetValueByKeyAsDateTimeForNonCurrentScript("ScriptStartDateTime",myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
+            _avgExecutionTime = myActions.GetValueByKeyAsIntForNonCurrentScript("AvgSuccessfulExecutionTime", myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
+            _manualExecutionTime = myActions.GetValueByKeyAsIntForNonCurrentScript("ManualExecutionTime", myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
             if (_manualExecutionTime == 0) {
                 _totalSavings = 0;
             } else {
@@ -83,7 +83,7 @@ namespace System.Windows.Forms.Samples
             foreach (var item in myArrayList) {
                 string[] myScriptInfoFields = item.ToString().Split('^');
                 string scriptName = myScriptInfoFields[0];
-                if (scriptName == myActions.ConvertFullFileNameToScriptPath(_pathAndName)) {
+                if (scriptName == myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName)) {
                     string strHotKey = myScriptInfoFields[1];
                     //string strTotalExecutions = myScriptInfoFields[2];
                     //string strSuccessfulExecutions = myScriptInfoFields[3];

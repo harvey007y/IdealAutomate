@@ -187,10 +187,10 @@ namespace System.Windows.Forms.Samples {
         }
 
         private void dataGridView1_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e) {
-      // Call Active on DirectoryView
-      string fileName = ((DataGridView)sender).Rows[e.RowIndex].Cells[13].Value.ToString() + "\\" + ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Value.ToString();
+            // Call Active on DirectoryView
+            string fileName = ((DataGridView)sender).Rows[e.RowIndex].Cells[13].Value.ToString();
       Methods myActions = new Methods();
-      fileName = myActions.ConvertFullFileNameToScriptPath(fileName);
+      fileName = myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileName);
             string categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", fileName);
             if (categoryState == "Expanded") {
                 myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Collapsed", fileName);                
@@ -972,8 +972,8 @@ namespace System.Windows.Forms.Samples {
                         SearchOption.AllDirectories)) {
                         // Display file path.
                         if (file.Contains("bin\\Debug")) {
-              string _pathAndName = myFileView.FullName + @"\" + myFileView.Name;
-              myActions.SetValueByKeyForNonCurrentScript("ManualExecutionTime", myManualExecutionTime, myActions.ConvertFullFileNameToScriptPath(_pathAndName));
+              string fileFullName = myFileView.FullName;
+              myActions.SetValueByKeyForNonCurrentScript("ManualExecutionTime", myManualExecutionTime, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
                         }
                     }
 
@@ -1149,16 +1149,16 @@ namespace System.Windows.Forms.Samples {
             foreach (DataGridViewCell myCell in dataGridView1.SelectedCells) {
                 if (myCell.ColumnIndex == 0 && e.RowIndex > -1) {
                     // Call Active on DirectoryView
-                    string fileName = ((DataGridView)sender).Rows[e.RowIndex].Cells[13].Value.ToString() + "\\" + ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Value.ToString();
+                    string fileName = ((DataGridView)sender).Rows[e.RowIndex].Cells[13].Value.ToString();
                     Methods myActions = new Methods();
-                    string categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToScriptPath(fileName));
+                    string categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileName));
                     if (categoryState == "Expanded") {
-                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Collapsed", myActions.ConvertFullFileNameToScriptPath(fileName));
+                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Collapsed", myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileName));
                         RefreshDataGrid();
                         return;
                     }
                     if (categoryState == "Collapsed") {
-                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Expanded", myActions.ConvertFullFileNameToScriptPath(fileName));
+                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Expanded", myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileName));
                         RefreshDataGrid();
                         return;
                     }
@@ -1262,7 +1262,7 @@ namespace System.Windows.Forms.Samples {
                     string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
                     string fileName = "cbxFolder.txt";
                     string strApplicationBinDebug = Application.StartupPath;
-                    string myNewProjectSourcePath = strApplicationBinDebug.Replace("bin\\Debug", "");
+                    string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
 
                     string settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPath(myNewProjectSourcePath));
                     string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
@@ -1350,6 +1350,238 @@ namespace System.Windows.Forms.Samples {
             }
             return settingsDirectory;
         }
+
+        private void copyStripMenuItem4_Click(object sender, EventArgs e) {
+            string fullFileName = "";
+            string fileNamea = "";
+            FileView myFileView;
+            foreach (DataGridViewCell myCell in dataGridView1.SelectedCells) {
+                if (myCell.ColumnIndex != 0 && myCell.RowIndex != 0) {
+                    myFileView = (FileView)this.FileViewBindingSource[myCell.RowIndex];
+                    fullFileName = myFileView.FullName;
+                    fileNamea = myFileView.Name;
+                }
+
+            }
+            Methods myActions = new Methods();
+            if (fullFileName == "") {
+                myActions.MessageBoxShow("Please select a row to copy before selecting File/Copy");
+                return;
+            }
+           
+            strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            // Set Initial Directory to My Documents
+            string strSavedDirectory = myActions.GetValueByKey("InitialDirectory");
+
+
+            if (Directory.Exists(strSavedDirectory)) {
+                strInitialDirectory = strSavedDirectory;
+            }
+            DisplayCopyWindow:
+            int intRowCtr = 0;
+            ControlEntity myControlEntity = new ControlEntity();
+            List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+            List<ComboBoxPair> cbp = new List<ComboBoxPair>();
+            List<ComboBoxPair> cbp1 = new List<ComboBoxPair>();
+            List<ComboBoxPair> cbp2 = new List<ComboBoxPair>();
+            List<ComboBoxPair> cbp3 = new List<ComboBoxPair>();
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Heading;
+            myControlEntity.ID = "lbl";
+            myControlEntity.Text = "Copy File/Folder";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "lblFolder";
+            myControlEntity.Text = "Folder";
+            myControlEntity.Width = 150;
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            myControlEntity.SelectedValue = myActions.GetValueByKey("cbxCopyFolderSelectedValue");
+            myControlEntity.ID = "cbxCopyFolder";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = @"Here is an example: C:\Users\harve\Documents\GitHub";
+            myControlEntity.ComboBoxIsEditable = true;
+            myControlEntity.ColumnNumber = 1;
+            myControlEntity.ColumnSpan = 2;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Button;
+            myControlEntity.ID = "btnSelectFolder";
+            myControlEntity.Text = "Select Folder...";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 3;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+
+            DisplayCopyWindowAgain:
+            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 300, 1200, 100, 100);
+            LineAfterDisplayCopyWindow:
+            if (strButtonPressed == "btnCancel") {
+                myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                return;
+            }
+
+
+            string strFolder = myListControlEntity.Find(x => x.ID == "cbxCopyFolder").SelectedValue;
+            //     string strFolderKey = myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedKey;
+
+            myActions.SetValueByKey("cbxCopyFolderSelectedValue", strFolder);
+
+            if (strButtonPressed == "btnSelectFolder") {
+                var dialog1 = new System.Windows.Forms.FolderBrowserDialog();
+                dialog1.SelectedPath = myActions.GetValueByKey("LastSearchCopyFolder");
+
+
+                System.Windows.Forms.DialogResult result = dialog1.ShowDialog();
+                if (result == System.Windows.Forms.DialogResult.OK && Directory.Exists(dialog1.SelectedPath)) {
+                    myListControlEntity.Find(x => x.ID == "cbxCopyFolder").SelectedValue = dialog1.SelectedPath;
+                    myListControlEntity.Find(x => x.ID == "cbxCopyFolder").SelectedKey = dialog1.SelectedPath;
+                    myListControlEntity.Find(x => x.ID == "cbxCopyFolder").Text = dialog1.SelectedPath;
+
+                    myActions.SetValueByKey("LastSearchCopyFolder", dialog1.SelectedPath);
+                    strFolder = dialog1.SelectedPath;
+                    myActions.SetValueByKey("cbxCopyFolderSelectedValue", strFolder);
+                    string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
+                    string fileName = "cbxCopyFolder.txt";
+                    string strApplicationBinDebug = Application.StartupPath;
+                    string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
+
+                    string settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPath(myNewProjectSourcePath));
+                    string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
+                    ArrayList alHosts = new ArrayList();
+                    cbp = new List<ComboBoxPair>();
+                    cbp.Clear();
+                    cbp.Add(new ComboBoxPair("--Select Item ---", "--Select Item ---"));
+                    ComboBox myComboBox = new ComboBox();
+
+
+                    if (!File.Exists(settingsPath)) {
+                        using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
+                            objSWFile.Close();
+                        }
+                    }
+                    using (StreamReader objSRFile = File.OpenText(settingsPath)) {
+                        string strReadLine = "";
+                        while ((strReadLine = objSRFile.ReadLine()) != null) {
+                            string[] keyvalue = strReadLine.Split('^');
+                            if (keyvalue[0] != "--Select Item ---") {
+                                cbp.Add(new ComboBoxPair(keyvalue[0], keyvalue[1]));
+                            }
+                        }
+                        objSRFile.Close();
+                    }
+                    string strNewHostName = dialog1.SelectedPath;
+                    List<ComboBoxPair> alHostx = cbp;
+                    List<ComboBoxPair> alHostsNew = new List<ComboBoxPair>();
+                    ComboBoxPair myCbp = new ComboBoxPair(strNewHostName, strNewHostName);
+                    bool boolNewItem = false;
+
+                    alHostsNew.Add(myCbp);
+                    if (alHostx.Count > 14) {
+                        for (int i = alHostx.Count - 1; i > 0; i--) {
+                            if (alHostx[i]._Key.Trim() != "--Select Item ---") {
+                                alHostx.RemoveAt(i);
+                                break;
+                            }
+                        }
+                    }
+                    foreach (ComboBoxPair item in alHostx) {
+                        if (strNewHostName != item._Key && item._Key != "--Select Item ---") {
+                            boolNewItem = true;
+                            alHostsNew.Add(item);
+                        }
+                    }
+
+                    using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
+                        foreach (ComboBoxPair item in alHostsNew) {
+                            if (item._Key != "") {
+                                objSWFile.WriteLine(item._Key + '^' + item._Value);
+                            }
+                        }
+                        objSWFile.Close();
+                    }
+                    goto DisplayCopyWindowAgain;
+                }
+            }
+
+            string strFolderToUse = "";
+            if (strButtonPressed == "btnOkay") {
+
+                if ((strFolder == "--Select Item ---" || strFolder == "")) {
+                    myActions.MessageBoxShow("Please enter Folder or select Folder from ComboBox; else press Cancel to Exit");
+                    goto DisplayCopyWindow;
+                }
+
+                strFolderToUse = strFolder;
+                Copy(fullFileName, strFolder);
+
+
+
+                RefreshDataGrid();
+                return;
+            }
+
+            if (strButtonPressed == "btnOkay") {
+                strButtonPressed = myActions.WindowMultipleControlsMinimized(ref myListControlEntity, 300, 1200, 100, 100);
+                goto LineAfterDisplayCopyWindow;
+            }
+        }
+        public static void Copy(string sourceDirectory, string targetDirectory) {
+            DirectoryInfo diSource = new DirectoryInfo(sourceDirectory);
+            DirectoryInfo diTarget = new DirectoryInfo(targetDirectory);
+
+            CopyAll(diSource, diTarget);
+
+        }
+
+        public static void CopyAll(DirectoryInfo source, DirectoryInfo target) {
+            Directory.CreateDirectory(target.FullName);
+
+            // Copy each file into the new directory.
+            foreach (FileInfo fi in source.GetFiles()) {
+              //  Console.WriteLine(@"Copying {0}\{1}", target.FullName, fi.Name);
+                fi.CopyTo(Path.Combine(target.FullName, fi.Name), true);
+            }
+            Methods myActions = new Methods();
+            // Copy each subdirectory using recursion.
+            foreach (DirectoryInfo diSourceSubDir in source.GetDirectories()) {
+                DirectoryInfo nextTargetSubDir =
+                    target.CreateSubdirectory(diSourceSubDir.Name);
+                string convertedPath = "";
+                string settingsDirectory = "";
+               convertedPath = myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(diSourceSubDir.FullName);
+                settingsDirectory = myActions.GetAppDirectoryForIdealAutomate();
+                string fromRoamingDirectory = Path.Combine(settingsDirectory, convertedPath);
+                convertedPath = myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(target.FullName);
+                settingsDirectory = myActions.GetAppDirectoryForIdealAutomate();
+                string toRoamingDirectory = Path.Combine(settingsDirectory, convertedPath);
+                if (Directory.Exists(fromRoamingDirectory)) {
+                    DirectoryInfo fromRoamingDirectoryDI = new DirectoryInfo(fromRoamingDirectory);
+                    DirectoryInfo toRoamingDirectoryDI = Directory.CreateDirectory(toRoamingDirectory);
+                    // Copy each file into the new directory.
+                    foreach (FileInfo fi in fromRoamingDirectoryDI.GetFiles()) {
+                        //  Console.WriteLine(@"Copying {0}\{1}", target.FullName, fi.Name);
+                        fi.CopyTo(Path.Combine(toRoamingDirectoryDI.FullName, fi.Name), true);
+                    }
+                }
+                CopyAll(diSourceSubDir, nextTargetSubDir);
+               
+
+            }
+        }
+
     }
 
 }

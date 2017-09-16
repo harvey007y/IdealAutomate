@@ -101,6 +101,7 @@ namespace System.Windows.Forms.Samples
             this.btnCollapseAll = new System.Windows.Forms.Button();
             this.btnExpanAll = new System.Windows.Forms.Button();
             this.btnRefresh = new System.Windows.Forms.Button();
+            this.copyStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource)).BeginInit();
             this.toolBar.SuspendLayout();
@@ -431,6 +432,7 @@ namespace System.Windows.Forms.Samples
             this.toolStripMenuItemManualTime,
             this.toolStripMenuItem2,
             this.toolStripMenuItem3,
+            this.copyStripMenuItem4,
             this.renameToolStripMenuItem,
             this.propertiesToolStripMenuItem,
             this.toolStripSeparator2,
@@ -668,6 +670,13 @@ namespace System.Windows.Forms.Samples
             this.btnRefresh.UseVisualStyleBackColor = true;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
+            // copyStripMenuItem4
+            // 
+            this.copyStripMenuItem4.Name = "copyStripMenuItem4";
+            this.copyStripMenuItem4.Size = new System.Drawing.Size(156, 22);
+            this.copyStripMenuItem4.Text = "Copy";
+            this.copyStripMenuItem4.Click += new System.EventHandler(this.copyStripMenuItem4_Click);
+            // 
             // ExplorerView
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
@@ -759,6 +768,7 @@ namespace System.Windows.Forms.Samples
         private DataGridViewTextBoxColumn DateModifiedCol;
         private ToolStripMenuItem toolStripMenuItem3;
         private DataGridViewTextBoxColumn FullName;
+        private ToolStripMenuItem copyStripMenuItem4;
     }
 }
 
