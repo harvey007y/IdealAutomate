@@ -391,7 +391,7 @@ namespace System.Windows.Forms.Samples {
             if (basePathForNewProject != _dir.FileView.FullName) {
                 parentScriptLevel++;
             }
-            myActions.SetValueByKeyForNonCurrentScript("CategoryLevel", parentScriptLevel.ToString(), "");
+            
             string myNewProjectName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
             string strNewProjectDir = Path.Combine(basePathForNewProject, myNewProjectName);
             string scriptPathNewProject = myActions.ConvertFullFileNameToScriptPath(strNewProjectDir) + "-" + myNewProjectName;
@@ -1582,6 +1582,75 @@ namespace System.Windows.Forms.Samples {
             }
         }
 
+        private void folderToolStripMenuItem_Click(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+
+            ControlEntity myControlEntity = new ControlEntity();
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Heading;
+            myControlEntity.Text = "Create New Folder";
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "myLabel";
+            myControlEntity.Text = "Enter New Folder Name";
+            myControlEntity.RowNumber = 0;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "myTextBox";
+            myControlEntity.Text = "";
+            myControlEntity.RowNumber = 0;
+            myControlEntity.ColumnNumber = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            ReDisplayNewFolderDialog:
+            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
+
+            if (strButtonPressed == "btnCancel") {
+                myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                return;
+            }
+            string basePathForNewFolder = _dir.FileView.FullName;
+            string basePathName = _dir.FileView.Name;
+            foreach (DataGridViewCell myCell in dataGridView1.SelectedCells) {
+                FileView myFileView = (FileView)this.FileViewBindingSource[myCell.RowIndex];
+                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
+                    basePathForNewFolder = myFileView.FullName;
+                    basePathName = myFileView.Name;
+                }
+            }
+            string parentScriptPath = myActions.ConvertFullFileNameToScriptPath(basePathForNewFolder) + "-" + basePathName;
+            int parentScriptLevel = myActions.GetValueByKeyAsIntForNonCurrentScript("CategoryLevel", parentScriptPath);
+            if (basePathForNewFolder != _dir.FileView.FullName) {
+                parentScriptLevel++;
+            }
+           
+            string myNewFolderName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
+            string strNewFolderDir = Path.Combine(basePathForNewFolder, myNewFolderName);
+            if (Directory.Exists(strNewFolderDir)) {
+                myActions.MessageBoxShow(strNewFolderDir + "already exists");
+                goto ReDisplayNewFolderDialog;
+            }
+            try {
+                // create the directories
+                string newFolderScriptPath = myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(basePathForNewFolder) + "-" + myNewFolderName;
+                myActions.SetValueByKeyForNonCurrentScript("CategoryLevel", parentScriptLevel.ToString(), newFolderScriptPath);
+                myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
+                Directory.CreateDirectory(strNewFolderDir);     
+            } catch (Exception ex) {
+
+                MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
+            }
+            RefreshDataGrid();
+        }
     }
 
 }

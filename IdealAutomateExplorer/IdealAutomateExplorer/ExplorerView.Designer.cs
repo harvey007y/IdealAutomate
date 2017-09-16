@@ -82,6 +82,7 @@ namespace System.Windows.Forms.Samples
             this.addHotKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeHotKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.renameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -101,7 +102,7 @@ namespace System.Windows.Forms.Samples
             this.btnCollapseAll = new System.Windows.Forms.Button();
             this.btnExpanAll = new System.Windows.Forms.Button();
             this.btnRefresh = new System.Windows.Forms.Button();
-            this.copyStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.folderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource)).BeginInit();
             this.toolBar.SuspendLayout();
@@ -448,7 +449,8 @@ namespace System.Windows.Forms.Samples
             this.newToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.categoryToolStripMenuItem,
             this.projectToolStripMenuItem,
-            this.subCategoryToolStripMenuItem});
+            this.subCategoryToolStripMenuItem,
+            this.folderToolStripMenuItem});
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
             this.newToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.newToolStripMenuItem.Text = "New";
@@ -456,21 +458,21 @@ namespace System.Windows.Forms.Samples
             // categoryToolStripMenuItem
             // 
             this.categoryToolStripMenuItem.Name = "categoryToolStripMenuItem";
-            this.categoryToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.categoryToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.categoryToolStripMenuItem.Text = "Category";
             this.categoryToolStripMenuItem.Click += new System.EventHandler(this.categoryToolStripMenuItem_Click);
             // 
             // projectToolStripMenuItem
             // 
             this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
-            this.projectToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.projectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.projectToolStripMenuItem.Text = "Project";
             this.projectToolStripMenuItem.Click += new System.EventHandler(this.projectToolStripMenuItem_Click);
             // 
             // subCategoryToolStripMenuItem
             // 
             this.subCategoryToolStripMenuItem.Name = "subCategoryToolStripMenuItem";
-            this.subCategoryToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
+            this.subCategoryToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.subCategoryToolStripMenuItem.Text = "SubCategory";
             this.subCategoryToolStripMenuItem.Click += new System.EventHandler(this.subCategoryToolStripMenuItem_Click);
             // 
@@ -528,6 +530,13 @@ namespace System.Windows.Forms.Samples
             this.toolStripMenuItem3.Size = new System.Drawing.Size(156, 22);
             this.toolStripMenuItem3.Text = "Open";
             this.toolStripMenuItem3.Click += new System.EventHandler(this.openStripMenuItem3_Click);
+            // 
+            // copyStripMenuItem4
+            // 
+            this.copyStripMenuItem4.Name = "copyStripMenuItem4";
+            this.copyStripMenuItem4.Size = new System.Drawing.Size(156, 22);
+            this.copyStripMenuItem4.Text = "Copy";
+            this.copyStripMenuItem4.Click += new System.EventHandler(this.copyStripMenuItem4_Click);
             // 
             // renameToolStripMenuItem
             // 
@@ -670,12 +679,12 @@ namespace System.Windows.Forms.Samples
             this.btnRefresh.UseVisualStyleBackColor = true;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
-            // copyStripMenuItem4
+            // folderToolStripMenuItem
             // 
-            this.copyStripMenuItem4.Name = "copyStripMenuItem4";
-            this.copyStripMenuItem4.Size = new System.Drawing.Size(156, 22);
-            this.copyStripMenuItem4.Text = "Copy";
-            this.copyStripMenuItem4.Click += new System.EventHandler(this.copyStripMenuItem4_Click);
+            this.folderToolStripMenuItem.Name = "folderToolStripMenuItem";
+            this.folderToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.folderToolStripMenuItem.Text = "Folder";
+            this.folderToolStripMenuItem.Click += new System.EventHandler(this.folderToolStripMenuItem_Click);
             // 
             // ExplorerView
             // 
@@ -769,6 +778,7 @@ namespace System.Windows.Forms.Samples
         private ToolStripMenuItem toolStripMenuItem3;
         private DataGridViewTextBoxColumn FullName;
         private ToolStripMenuItem copyStripMenuItem4;
+        private ToolStripMenuItem folderToolStripMenuItem;
     }
 }
 
