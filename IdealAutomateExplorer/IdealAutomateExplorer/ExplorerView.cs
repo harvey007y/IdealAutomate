@@ -533,9 +533,9 @@ namespace System.Windows.Forms.Samples {
                     // Call EnumerateFiles in a foreach-loop.
 
                     ev_Delete_Directory(myFileView.FullName.ToString());
-                    
+                    string scriptPath = myActions.ConvertFullFileNameToScriptPath(myFileView.FullName) + "-" + myFileView.Name;
                     string settingsDirectory = myActions.GetAppDirectoryForIdealAutomate();
-                    settingsDirectory = Path.Combine(settingsDirectory, myFileView.Name);
+                    settingsDirectory = Path.Combine(settingsDirectory, scriptPath);
                     if (Directory.Exists(settingsDirectory)) {
                         Directory.Delete(settingsDirectory, true);
                     }
