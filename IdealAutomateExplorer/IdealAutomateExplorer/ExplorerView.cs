@@ -1077,6 +1077,7 @@ namespace System.Windows.Forms.Samples {
             Methods myActions = new Methods();
             myActions.SetValueByKey("ExpandCollapseAll", "Collapse");
             RefreshDataGrid();
+            RefreshDataGrid();
         }
 
         private void subCategoryToolStripMenuItem_Click(object sender, EventArgs e) {
