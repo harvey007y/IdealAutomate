@@ -12,6 +12,7 @@ namespace IdealAutomateCore {
             string directory = AppDomain.CurrentDomain.BaseDirectory;
             directory = directory.Replace("\\bin\\Debug\\", "");
             int intLastSlashIndex = directory.LastIndexOf("\\");
+            directory = directory.Substring(0, intLastSlashIndex);
           //  string strScriptName = directory.Substring(intLastSlashIndex + 1);
             // string strScriptName = System.Reflection.Assembly.GetCallingAssembly().GetName().Name;
             string settingsDirectory =
