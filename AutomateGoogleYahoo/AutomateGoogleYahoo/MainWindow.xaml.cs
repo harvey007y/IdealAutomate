@@ -23,7 +23,6 @@ namespace AutomateGoogleYahoo
             };
             window.Show();
             IdealAutomate.Core.Methods myActions = new Methods();
-            myActions.ScriptStartedUpdateStats();
 
             InitializeComponent();
             this.Hide();
@@ -271,7 +270,6 @@ namespace AutomateGoogleYahoo
             myActions.Run(@"C:\SVNStats.bat", "");
             myActions.Run(@"C:\Program Files\Microsoft Office\Office15\EXCEL.EXE", @"C:\SVNStats\SVNStats.xlsx");
             myExit:
-            myActions.ScriptEndedSuccessfullyUpdateStats();
             Application.Current.Shutdown();
         }
     }

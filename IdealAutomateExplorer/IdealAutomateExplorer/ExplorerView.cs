@@ -88,7 +88,8 @@ namespace System.Windows.Forms.Samples {
         #endregion
 
         #region Event Handlers        
-        private void ExplorerView_Load(object sender, EventArgs e) {           
+        private void ExplorerView_Load(object sender, EventArgs e) {
+            dataGridView1.ClearSelection();
             int intTotalSavingsForAllScripts = 0;
             Methods myActions = new Methods();
             strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
@@ -377,15 +378,25 @@ namespace System.Windows.Forms.Samples {
             }
 
             string basePathForNewProject = _dir.FileView.FullName;
+            string basePathName = _dir.FileView.Name;
             foreach (DataGridViewCell myCell in dataGridView1.SelectedCells) {
                 FileView myFileView = (FileView)this.FileViewBindingSource[myCell.RowIndex];
                 if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     basePathForNewProject = myFileView.FullName;
+                    basePathName = myFileView.Name;
                 }
             }
-
-                string myNewProjectName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
+            string parentScriptPath = myActions.ConvertFullFileNameToScriptPath(basePathForNewProject) + "-" + basePathName;
+            int parentScriptLevel = myActions.GetValueByKeyAsIntForNonCurrentScript("CategoryLevel", parentScriptPath);
+            if (basePathForNewProject != _dir.FileView.FullName) {
+                parentScriptLevel++;
+            }
+            myActions.SetValueByKeyForNonCurrentScript("CategoryLevel", parentScriptLevel.ToString(), "");
+            string myNewProjectName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
             string strNewProjectDir = Path.Combine(basePathForNewProject, myNewProjectName);
+            string scriptPathNewProject = myActions.ConvertFullFileNameToScriptPath(strNewProjectDir) + "-" + myNewProjectName;
+            myActions.SetValueByKeyForNonCurrentScript("CategoryLevel", parentScriptLevel.ToString(), scriptPathNewProject);
+            myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Child", scriptPathNewProject);
             if (Directory.Exists(strNewProjectDir)) {
                 myActions.MessageBoxShow(strNewProjectDir + "already exists");
                 goto ReDisplayNewProjectDialog;
@@ -509,23 +520,7 @@ namespace System.Windows.Forms.Samples {
 
                 MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
             }
-            // refresh datagridview
-            strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-            // Set Initial Directory to My Documents
-            string strSavedDirectory = myActions.GetValueByKey("InitialDirectory");
-
-
-            if (Directory.Exists(strSavedDirectory)) {
-                strInitialDirectory = strSavedDirectory;
-            }
-            _dir = new DirectoryView(strInitialDirectory);
-            this.FileViewBindingSource.DataSource = _dir;
-
-            // Set the title
-            SetTitle(_dir.FileView);
-            this.dataGridView1.DataSource = null;
-            this.dataGridView1.DataSource = this.FileViewBindingSource;
-            //  this.dataGridView1.Sort(dataGridView1.Columns[1], ListSortDirection.Ascending);
+            RefreshDataGrid();
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -611,6 +606,7 @@ namespace System.Windows.Forms.Samples {
                     foreach (string file in Directory.EnumerateFiles(myFileView.FullName.ToString(),
                        myFileView.Name + ".exe",
                         SearchOption.AllDirectories)) {
+                        string newHotKeyScriptUniqueName = myActions.ConvertFullFileNameToScriptPath(myFileView.FullName) + "-" + myFileView.Name;
                         // Display file path.
                         if (file.Contains("bin\\Debug")) {
                             ArrayList myArrayList = myActions.ReadAppDirectoryKeyToArrayListGlobal("ScriptInfo");
@@ -620,7 +616,7 @@ namespace System.Windows.Forms.Samples {
                                 string[] myScriptInfoFields = item.ToString().Split('^');
                                 string scriptName = myScriptInfoFields[0];
                                 string strHotKeyExecutable = myScriptInfoFields[5];
-                                if (scriptName == myActions.ConvertFullFileNameToScriptPath(myFileView.FullName) && file == strHotKeyExecutable) {
+                                if (scriptName == newHotKeyScriptUniqueName && file == strHotKeyExecutable) {
                                     boolScriptFound = true;
                                     string strHotKey = myScriptInfoFields[1];
                                     string strTotalExecutions = myScriptInfoFields[2];
@@ -644,7 +640,7 @@ namespace System.Windows.Forms.Samples {
                                 }
                             }
                             if (boolScriptFound == false) {
-                                newArrayList.Add(myActions.ConvertFullFileNameToScriptPath(myFileView.FullName) + "^" +
+                                newArrayList.Add(newHotKeyScriptUniqueName + "^" +
                                        "Ctrl+Alt+" + myHotKey + "^" +
                                         "0" + "^" +
                                         "0" + "^" +
@@ -702,32 +698,12 @@ namespace System.Windows.Forms.Samples {
                             foreach (var item in myArrayList) {
                                 string[] myScriptInfoFields = item.ToString().Split('^');
                                 string scriptName = myScriptInfoFields[0];
-                                if (scriptName == myFileView.Name) {
+                                if (scriptName == myActions.ConvertFullFileNameToScriptPath(myFileView.FullName) + "-" + myFileView.Name) {
                                     boolScriptFound = true;
-                                    string strHotKey = myScriptInfoFields[1];
-                                    string strTotalExecutions = myScriptInfoFields[2];
-                                    string strSuccessfulExecutions = myScriptInfoFields[3];
-                                    string strLastExecuted = myScriptInfoFields[4];
-                                    string strHotKeyExecutable = myScriptInfoFields[5];
-                                    int intTotalExecutions = 0;
-                                    Int32.TryParse(strTotalExecutions, out intTotalExecutions);
-                                    int intSuccessfulExecutions = 0;
-                                    Int32.TryParse(strSuccessfulExecutions, out intSuccessfulExecutions);
-                                    DateTime dateLastExecuted = DateTime.MinValue;
-                                    DateTime.TryParse(strLastExecuted, out dateLastExecuted);
-                                    newArrayList.Add(scriptName + "^" +
-                                        "" + "^" +
-                                         myScriptInfoFields[2] + "^" +
-                                         myScriptInfoFields[3] + "^" +
-                                         myScriptInfoFields[4] + "^" +
-                                         myScriptInfoFields[5] + "^"
-                                        );
-
                                 } else {
                                     newArrayList.Add(item.ToString());
                                 }
                             }
-
                             myActions.WriteArrayListToAppDirectoryKeyGlobal("ScriptInfo", newArrayList);
                         }
                     }
@@ -762,8 +738,7 @@ namespace System.Windows.Forms.Samples {
         private void AddGlobalHotKeys() {
             Methods myActions = new Methods();
             ArrayList myArrayList = myActions.ReadAppDirectoryKeyToArrayListGlobal("ScriptInfo");
-            ArrayList newArrayList = new ArrayList();
-            bool boolScriptFound = false;
+            ArrayList newArrayList = new ArrayList();           
             foreach (var item in myArrayList) {
                 string[] myScriptInfoFields = item.ToString().Split('^');
                 string scriptName = myScriptInfoFields[0];
@@ -866,73 +841,9 @@ namespace System.Windows.Forms.Samples {
                         //TODO: increment number times executed
 
                         RunWaitTillStart(myHotKeyRecord.Executable, myHotKeyRecord.ExecuteContent ?? "");
-
-
-                    }
-
-                    //switch (item.HotKey.ToUpper()) {
-
-                    //  case "P":
-                    //    if (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.VK_P)  && boolStopEvent == false) {
-                    //      boolStopEvent = true;
-                    //      RunWaitTillStart(item.Executable, item.ExecuteContent ?? "");
-
-                    //      while (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.VK_P)) {
-                    //        System.Threading.Thread.Sleep(1000);
-                    //      }
-                    //    }
-                    //    break;
-
-                    //  case "R":
-                    //    if (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.VK_R)) {                
-                    //      Run(item.Executable, item.ExecuteContent ?? "");
-                    //      while (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.CONTROL)) {
-                    //        System.Threading.Thread.Sleep(200);
-                    //      }
-                    //    }
-                    //    break;
-                    //  case "S":
-                    //    if (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.VK_S)) {
-                    //      Run(item.Executable, item.ExecuteContent ?? "");
-                    //      while (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.CONTROL)) {
-                    //        System.Threading.Thread.Sleep(200);
-                    //      }
-                    //   }
-                    //    break;
-                    //  default:
-                    //    break;
-                    //}
+                    }                   
                 }
-            }
-
-
-
-
-
-            //if (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.CONTROL) && myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.MENU) && myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.VK_S)) {
-
-
-            //  Run(myActions.GetValueByKey("SVNPath","IdealAutomateDB") + ClipboardSaveToDB\ClipboardSaveToDB\bin\Debug\ClipboardSaveToDB.exe", "");
-            //  while (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.CONTROL) && myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.MENU) && myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.VK_S)) {
-            //    System.Threading.Thread.Sleep(200);
-            //  }
-
-
-            //  //Here is the code that runs when the hotkey is pressed'
-            //}
-            //if (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.CONTROL) && myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.MENU) && myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.VK_R)) {
-
-            //  //Here is the code that runs when the hotkey is pressed'
-
-
-            //  Run(myActions.GetValueByKey("SVNPath","IdealAutomateDB") + ClipboardRestoreFromDB\ClipboardRestoreFromDB\bin\Debug\ClipboardRestoreFromDB.exe", "");
-            //  while (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.CONTROL) && myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.MENU) && myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.VK_R)) {
-            //    System.Threading.Thread.Sleep(200);
-            //  }
-
-
-
-            //}
+            }            
         }
         public void RunWaitTillStart(string myEntityForExecutable, string myEntityForContent) {
 
@@ -1119,7 +1030,7 @@ namespace System.Windows.Forms.Samples {
             try {
                 // create the directories
                 Directory.CreateDirectory(strNewCategoryDir);
-                myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Collapsed", myActions.ConvertFullFileNameToScriptPath(_dir.FileView.FullName) + "-" + myNewCategoryName);
+                myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Collapsed", myActions.ConvertFullFileNameToScriptPath(strNewCategoryDir) + "-" + myNewCategoryName);
 
 
 
@@ -1210,7 +1121,7 @@ namespace System.Windows.Forms.Samples {
 
             foreach (DataGridViewCell myCell in dataGridView1.SelectedCells) {
                 FileView myFileView = (FileView)this.FileViewBindingSource[myCell.RowIndex];
-                int categoryLevel = myActions.GetValueByKeyAsIntForNonCurrentScript("CategoryLevel", myActions.ConvertFullFileNameToScriptPath(myFileView.FullName));
+                int categoryLevel = myActions.GetValueByKeyAsIntForNonCurrentScript("CategoryLevel", myActions.ConvertFullFileNameToScriptPath(myFileView.FullName) + "-" + myFileView.Name);
                 //MessageBox.Show(myFileView.FullName.ToString());
                 if (myFileView.IsDirectory) {                    
                      strNewSubCategoryDir = Path.Combine(myFileView.FullName, myNewSubCategoryName);
@@ -1221,9 +1132,9 @@ namespace System.Windows.Forms.Samples {
                     try {
                         // create the directories
                         Directory.CreateDirectory(strNewSubCategoryDir);
-                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Collapsed", myActions.ConvertFullFileNameToScriptPath(_dir.FileView.FullName) + "-" + myNewSubCategoryName);
+                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Collapsed", myActions.ConvertFullFileNameToScriptPath(strNewSubCategoryDir) + "-" + myNewSubCategoryName);
                         int newCategoryLevel = categoryLevel + 1;
-                        myActions.SetValueByKeyForNonCurrentScript("CategoryLevel", newCategoryLevel.ToString(), myActions.ConvertFullFileNameToScriptPath(_dir.FileView.FullName) + "-" + myNewSubCategoryName);
+                        myActions.SetValueByKeyForNonCurrentScript("CategoryLevel", newCategoryLevel.ToString(), myActions.ConvertFullFileNameToScriptPath(strNewSubCategoryDir) + "-" + myNewSubCategoryName);
                     } catch (Exception ex) {
                         MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
                     }

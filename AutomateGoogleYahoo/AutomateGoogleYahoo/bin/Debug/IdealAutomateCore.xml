@@ -380,16 +380,6 @@
             </summary>
             <returns>string that is the app_data/roaming directory path for the script</returns>
         </member>
-        <member name="M:IdealAutomate.Core.Methods.GetAppDirectoryForIdealAutomate">
-            <summary>
-            <para>GetAppDirectoryForIdealAutomate gets the application </para>
-            <para>data folder and adds \IdealAutomate\yourscriptname to it.</para>
-            <para>The AppDirectory allows you to store personal settings and</para>
-            <para>information that you want to keep private (like passwords) in a location</para>
-            <para>outside of your script on in the application directory</para>
-            </summary>
-            <returns>string that is the app_data/roaming directory path for the script</returns>
-        </member>
         <member name="M:IdealAutomate.Core.Methods.GetValueByKey(System.String)">
             <summary>
             <para>ReadValueFromAppDataKey takes a key and adds .txt to it in order to create</para>
@@ -406,33 +396,6 @@
         <member name="M:IdealAutomate.Core.Methods.SetValueByKey(System.String,System.String)">
             <summary>
             <para>SetValueByKey takes a key and adds .txt to it in order to create</para>
-            <para>a file name. It gets the app data path and adds \IdealAutomate\yourscriptname</para>
-            <para>to it. By combining that path to the file name,</para>
-            <para>it can write a value to the key that is unique to your script application.</para>
-            <para>The AppDirectory allows you to store personal settings and</para>
-            <para>information that you want to keep private (like passwords) in a location</para>
-            <para>outside of your script on in the application directory</para>
-            </summary>
-            <param name="strKey">Unique key within the script application</param>
-            <param name="strValueToWrite">Value to write to the Unique key 
-            within the script application</param>
-        </member>
-        <member name="M:IdealAutomate.Core.Methods.GetValueByKeyGlobal(System.String)">
-            <summary>
-            <para>GetValueByKeyGlobal takes a key and adds .txt to it in order to create</para>
-            <para>a file name. It gets the app data path and adds \IdealAutomate\yourscriptname</para>
-            <para>to it. By combining that path to the file name created from the key,</para>
-            <para>it can retrieve a value from the key that is unique to your script application.</para>
-             <para>The AppDirectory allows you to store personal settings and</para>
-            <para>information that you want to keep private (like passwords) in a location</para>
-            <para>outside of your script on in the application directory</para>
-            </summary>
-            <param name="strKey">Unique key within the script application</param>
-            <returns>string that was in application directory for that key</returns>
-        </member>
-        <member name="M:IdealAutomate.Core.Methods.SetValueByKeyGlobal(System.String,System.String)">
-            <summary>
-            <para>SetValueByKeyGlobal takes a key and adds .txt to it in order to create</para>
             <para>a file name. It gets the app data path and adds \IdealAutomate\yourscriptname</para>
             <para>to it. By combining that path to the file name,</para>
             <para>it can write a value to the key that is unique to your script application.</para>
@@ -469,50 +432,6 @@
             </summary>
             <param name="strKey">Unique key within the script application</param>
             <param name="arrayListToWrite">ArrayList that is to written to the application directory for that key</param>
-        </member>
-        <member name="M:IdealAutomate.Core.Methods.ReadAppDirectoryKeyToArrayListGlobal(System.String)">
-            <summary>
-            <para>ReadAppDirectoryKeyToArrayList takes a key and adds .txt to it in order to create</para>
-            <para>a file name. It gets the app data path and adds \IdealAutomate\yourscriptname</para>
-            <para>to it. By combining that path to the file name created from the key,</para>
-            <para>it can retrieve an arraylist that is unique to your script application.</para>
-            <para>The AppDirectory allows you to store personal settings and</para>
-            <para>information that you want to keep private (like passwords) in a location</para>
-            <para>outside of your script on in the application directory</para>
-            </summary>
-            <param name="strKey">Unique key within the script application</param>
-            <returns>ArrayList that was in application directory for that key</returns>
-        </member>
-        <member name="M:IdealAutomate.Core.Methods.WriteArrayListToAppDirectoryKeyGlobal(System.String,System.Collections.ArrayList)">
-            <summary>
-            <para>WriteArrayListToAppDirectoryKey takes a key and adds .txt to it in order to create</para>
-            <para>a file name. It gets the app data path and adds \IdealAutomate\yourscriptname</para>
-            <para>to it. By combining that path to the file name created from the key,</para>
-            <para>it can write an arraylist to the key filename is unique to your script application.</para>
-            <para>The AppDirectory allows you to store personal settings and</para>
-            <para>information that you want to keep private (like passwords) in a location</para>
-            <para>outside of your script on in the application directory</para>
-            </summary>
-            <param name="strKey">Unique key within the script application</param>
-            <param name="arrayListToWrite">ArrayList that is to written to the application directory for that key</param>
-        </member>
-        <member name="M:IdealAutomate.Core.Methods.ScriptStartedUpdateStats">
-            <summary>
-            At beginning of template, Write StartTime, StartDate, Add 1 to total executions. 
-            
-            </summary>
-        </member>
-        <member name="M:IdealAutomate.Core.Methods.ScriptEndedSuccessfullyUpdateStats">
-            <summary>
-            ScriptEndedSuccessfullyUpdateStats - At end of template, Subtract start time and start date
-            from Current date and time, add 1 to successful executions. 
-            (avg successful execution time * 
-            (total successful executions - 1)) + current successful execution time) / total successful executions. 
-            Write PercentSuccessful = (SuccessfulExecutions / TotalExecutions) * 100. 
-            CurrentSavedExecutionTime = CurrentExecutionTime - ManualExecutionTime.
-            ScriptTotalSavedExecutionTime += CurrentSavedExecutionTime
-             StartDate is the LastExecutedDate.
-            </summary>
         </member>
         <member name="T:IdealAutomate.Core.Position_Cursor.Point">
             <summary>

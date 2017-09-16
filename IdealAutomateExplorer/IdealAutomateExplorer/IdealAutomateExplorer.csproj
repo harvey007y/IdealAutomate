@@ -60,6 +60,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common.cs" />
+    <None Include="Images\plus.png" />
+    <None Include="Images\minus.png" />
+    <Content Include="Images\minus_a5g_icon.ico" />
+    <Content Include="Images\plus_Pu6_icon.ico" />
     <Content Include="Resources\112_Minus_Grey.ico" />
     <Content Include="Images\112_Plus_Grey.ico" />
     <Content Include="MyNewProject\MyNewProject\App.xaml.cs">
@@ -131,6 +135,7 @@
     <None Include="Resources\folder.ico" />
     <None Include="Resources\plus.ico" />
     <None Include="Resources\minus.ico" />
+    <None Include="Resources\Plusx.ico" />
     <Content Include="Text\InitialDirectory.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
