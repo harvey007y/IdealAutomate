@@ -1,0 +1,36 @@
+// Null-coalescing operator 
+x = y ?? 5;  // if y != null then x = y, else x = 5 
+// Ternary/Conditional operator 
+greeting = age < 20 ? "What's up?" : "Hello"; 
+if (age < 20) 
+ greeting = "What's up?"; 
+else 
+ greeting = "Hello";  
+// Multiple statements must be enclosed in {} 
+if (x != 100 && y < 5) { 
+ x *= 5; 
+ y *= 2; 
+} 
+ 
+ 
+No need for _ or : since ; is used to terminate each statement. 
+ 
+ 
+if (x > 5)  
+ x *= y;  
+else if (x == 5 || y % 2 == 0)  
+ x += y;  
+else if (x < 10)  
+ x -= y;  
+else  
+ x /= y; 
+ 
+ 
+// Every case must end with break or goto case  
+switch (color){ // Must be integer or string 
+ case "pink": 
+ case "red": r++; break;  
+ case "blue": b++; break; 
+ case "green": g++; break; 
+ default: other++; break;  // break necessary on default 
+}  

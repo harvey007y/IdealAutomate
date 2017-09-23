@@ -1,0 +1,17 @@
+int[] nums = {1, 2, 3}; 
+for (int i = 0; i < nums.Length; i++) 
+ Console.WriteLine(nums[i]); 
+ 
+ 
+// 5 is the size of the array 
+string[] names = new string[5]; 
+names[0] = "David"; 
+names[5] = "Bobby"; // Throws System.IndexOutOfRangeException  
+ 
+// Add two elements, keeping the existing values 
+Array.Resize(ref names, 7); 
+float[,] twoD = new float[rows, cols]; 
+twoD[2,0] = 4.5f;  
+int[][] jagged = new int[3][] {  
+ new int[5], new int[2], new int[3] }; 
+jagged[0][4] = 5;  

@@ -104,12 +104,23 @@ namespace System.Windows.Forms.Samples
                                         FileView myFileView4 = new FileView(di4);
                                         if (myFileView4.CategoryState == "Expanded") {
                                             DirectoryInfo info5 = new DirectoryInfo(di4.FullName);
-
+                                            foreach (FileSystemInfo fi in info5.GetFiles()) {
+                                                this.Add(new FileView(fi));
+                                            }
                                         }
+                                    }
+                                    foreach (FileSystemInfo fi in info4.GetFiles()) {
+                                        this.Add(new FileView(fi));
                                     }
                                 }
                             }
+                            foreach (FileSystemInfo fi in info3.GetFiles()) {
+                                this.Add(new FileView(fi));
+                            }
                         }
+                    }
+                    foreach (FileSystemInfo fi in info2.GetFiles()) {
+                        this.Add(new FileView(fi));
                     }
                 }
             }

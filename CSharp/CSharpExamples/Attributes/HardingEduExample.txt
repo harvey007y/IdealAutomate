@@ -1,0 +1,26 @@
+// Attribute can be applied to anything 
+public class IsTestedAttribute : Attribute 
+{ 
+} 
+ 
+// Attribute can only be applied to classes or structs 
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)] 
+public class AuthorAttribute : Attribute { 
+ 
+  public string Name { get; set; } 
+  public int Version { get; set; }  
+ 
+  public AuthorAttribute(string name) { 
+    Name = name; 
+    Version = 0; 
+  } 
+} 
+ 
+[Author("Sue", Version = 3)] 
+class Shape { 
+ 
+  [IsTested] 
+  void Move() { 
+    // Do something... 
+  } 
+} 

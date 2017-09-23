@@ -171,8 +171,8 @@ namespace System.Windows.Forms.Samples {
             string fileName = ((DataGridView)sender).Rows[e.RowIndex].Cells[13].Value.ToString();
       string scriptName = ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Value.ToString();
       Methods myActions = new Methods();
-            string categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToScriptPath(fileName) + "-" + scriptName);
-            int categoryLevel = myActions.GetValueByKeyAsIntForNonCurrentScript("CategoryLevel", myActions.ConvertFullFileNameToScriptPath(fileName) + "-" + scriptName);
+            string categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToScriptPath(fileName) + "-" + scriptName.Replace(".txt","").Replace(".rtf", ""));
+            int categoryLevel = myActions.GetValueByKeyAsIntForNonCurrentScript("CategoryLevel", myActions.ConvertFullFileNameToScriptPath(fileName) + "-" + scriptName.Replace(".txt", "").Replace(".rtf", ""));
             int indent = categoryLevel * 20;
             if (categoryState == "Collapsed" || categoryState == "Expanded") {
                 ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Style.Font = new Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold);
@@ -1675,6 +1675,271 @@ namespace System.Windows.Forms.Samples {
             }
         
     }
+
+        private void notepadToolStripMenuItem1_Click(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            foreach (DataGridViewCell myCell in dataGridView1.SelectedCells) {
+                FileView myFileView = (FileView)this.FileViewBindingSource[myCell.RowIndex];
+                if (!myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
+                    string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
+                    myActions.Run(strExecutable, myFileView.FullName);
+
+                }
+            }
+        }
+
+        private void textDocumentToolStripMenuItem_Click(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            foreach (DataGridViewCell myCell in dataGridView1.SelectedCells) {
+                FileView myFileView = (FileView)this.FileViewBindingSource[myCell.RowIndex];
+                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
+                    List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+
+                    ControlEntity myControlEntity = new ControlEntity();
+                    myControlEntity.ControlEntitySetDefaults();
+                    myControlEntity.ControlType = ControlType.Heading;
+                    myControlEntity.Text = "Create New TextDocument";
+                    myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+                    myControlEntity.ControlEntitySetDefaults();
+                    myControlEntity.ControlType = ControlType.Label;
+                    myControlEntity.ID = "myLabel";
+                    myControlEntity.Text = "Enter New TextDocument Name";
+                    myControlEntity.RowNumber = 0;
+                    myControlEntity.ColumnNumber = 0;
+                    myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+                    myControlEntity.ControlEntitySetDefaults();
+                    myControlEntity.ControlType = ControlType.TextBox;
+                    myControlEntity.ID = "myTextBox";
+                    myControlEntity.Text = "";
+                    myControlEntity.RowNumber = 0;
+                    myControlEntity.ColumnNumber = 1;
+                    myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+                    ReDisplayNewTextDocumentDialog:
+                    string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
+
+                    if (strButtonPressed == "btnCancel") {
+                        myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                        return;
+                    }
+                    string basePathForNewTextDocument = _dir.FileView.FullName;
+                    string basePathName = _dir.FileView.Name;
+                    
+                    basePathForNewTextDocument = myFileView.FullName;
+                    basePathName = myFileView.Name;
+
+                    string parentScriptPath = myActions.ConvertFullFileNameToScriptPath(basePathForNewTextDocument) + "-" + basePathName;
+                    int parentScriptLevel = myActions.GetValueByKeyAsIntForNonCurrentScript("CategoryLevel", parentScriptPath);
+                    if (basePathForNewTextDocument != _dir.FileView.FullName) {
+                        parentScriptLevel++;
+                    }
+
+                    string myNewTextDocumentName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
+                    if (!myNewTextDocumentName.EndsWith(".txt")) {
+                        myNewTextDocumentName = myNewTextDocumentName + ".txt";
+                    }
+                    string strNewTextDocumentDir = Path.Combine(basePathForNewTextDocument, myNewTextDocumentName);
+                    if (!File.Exists(strNewTextDocumentDir)) {
+                        string newFolderScriptPath = myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(basePathForNewTextDocument) + "-" + myNewTextDocumentName.Replace(".txt","");
+                        myActions.SetValueByKeyForNonCurrentScript("CategoryLevel", parentScriptLevel.ToString(), newFolderScriptPath);
+                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
+
+                       // File.Create(strNewTextDocumentDir);
+                      
+                    }
+                    string strExecutable = @"C:\Windows\system32\notepad.exe";
+                    myActions.Run(strExecutable, strNewTextDocumentDir);
+
+                }
+            }
+        }
+
+        private void folderToolStripMenuItem1_Click(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+
+            ControlEntity myControlEntity = new ControlEntity();
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Heading;
+            myControlEntity.Text = "Create New Folder";
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "myLabel";
+            myControlEntity.Text = "Enter New Folder Name";
+            myControlEntity.RowNumber = 0;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "myTextBox";
+            myControlEntity.Text = "";
+            myControlEntity.RowNumber = 0;
+            myControlEntity.ColumnNumber = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            ReDisplayNewFolderDialog:
+            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
+
+            if (strButtonPressed == "btnCancel") {
+                myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                return;
+            }
+            string basePathForNewFolder = _dir.FileView.FullName;
+            string basePathName = _dir.FileView.Name;
+            foreach (DataGridViewCell myCell in dataGridView1.SelectedCells) {
+                FileView myFileView = (FileView)this.FileViewBindingSource[myCell.RowIndex];
+                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
+                    basePathForNewFolder = myFileView.FullName;
+                    basePathName = myFileView.Name;
+                }
+            }
+            string parentScriptPath = myActions.ConvertFullFileNameToScriptPath(basePathForNewFolder) + "-" + basePathName;
+            int parentScriptLevel = myActions.GetValueByKeyAsIntForNonCurrentScript("CategoryLevel", parentScriptPath);
+            if (basePathForNewFolder != _dir.FileView.FullName) {
+                parentScriptLevel++;
+            }
+
+            string myNewFolderName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
+            string strNewFolderDir = Path.Combine(basePathForNewFolder, myNewFolderName);
+            if (Directory.Exists(strNewFolderDir)) {
+                myActions.MessageBoxShow(strNewFolderDir + "already exists");
+                goto ReDisplayNewFolderDialog;
+            }
+            try {
+                // create the directories
+                string newFolderScriptPath = myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(basePathForNewFolder) + "-" + myNewFolderName;
+                myActions.SetValueByKeyForNonCurrentScript("CategoryLevel", parentScriptLevel.ToString(), newFolderScriptPath);
+                myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
+                Directory.CreateDirectory(strNewFolderDir);
+            } catch (Exception ex) {
+
+                MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
+            }
+            RefreshDataGrid();
+        }
+
+        private void wordPadToolStripMenuItem1_Click(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            foreach (DataGridViewCell myCell in dataGridView1.SelectedCells) {
+                FileView myFileView = (FileView)this.FileViewBindingSource[myCell.RowIndex];
+                if (!myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
+                    string strExecutable = @"C:\Program Files\Windows NT\Accessories\wordpad.exe";
+                    myActions.Run(strExecutable, myFileView.FullName);
+
+                }
+            }
+        }
+
+        private void wordPadToolStripMenuItem_Click(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            foreach (DataGridViewCell myCell in dataGridView1.SelectedCells) {
+                FileView myFileView = (FileView)this.FileViewBindingSource[myCell.RowIndex];
+                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
+                    List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+
+                    ControlEntity myControlEntity = new ControlEntity();
+                    myControlEntity.ControlEntitySetDefaults();
+                    myControlEntity.ControlType = ControlType.Heading;
+                    myControlEntity.Text = "Create New TextDocument";
+                    myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+                    myControlEntity.ControlEntitySetDefaults();
+                    myControlEntity.ControlType = ControlType.Label;
+                    myControlEntity.ID = "myLabel";
+                    myControlEntity.Text = "Enter New TextDocument Name";
+                    myControlEntity.RowNumber = 0;
+                    myControlEntity.ColumnNumber = 0;
+                    myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+                    myControlEntity.ControlEntitySetDefaults();
+                    myControlEntity.ControlType = ControlType.TextBox;
+                    myControlEntity.ID = "myTextBox";
+                    myControlEntity.Text = "";
+                    myControlEntity.RowNumber = 0;
+                    myControlEntity.ColumnNumber = 1;
+                    myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+                    ReDisplayNewTextDocumentDialog:
+                    string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
+
+                    if (strButtonPressed == "btnCancel") {
+                        myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                        return;
+                    }
+                    string basePathForNewTextDocument = _dir.FileView.FullName;
+                    string basePathName = _dir.FileView.Name;
+
+                    basePathForNewTextDocument = myFileView.FullName;
+                    basePathName = myFileView.Name;
+
+                    string parentScriptPath = myActions.ConvertFullFileNameToScriptPath(basePathForNewTextDocument) + "-" + basePathName;
+                    int parentScriptLevel = myActions.GetValueByKeyAsIntForNonCurrentScript("CategoryLevel", parentScriptPath);
+                    if (basePathForNewTextDocument != _dir.FileView.FullName) {
+                        parentScriptLevel++;
+                    }
+
+                    string myNewTextDocumentName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
+                    if (!myNewTextDocumentName.EndsWith(".rtf")) {
+                        myNewTextDocumentName = myNewTextDocumentName + ".rtf";
+                    }
+                    string strNewTextDocumentDir = Path.Combine(basePathForNewTextDocument, myNewTextDocumentName);
+                    if (!File.Exists(strNewTextDocumentDir)) {
+                        string newFolderScriptPath = myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(basePathForNewTextDocument) + "-" + myNewTextDocumentName.Replace(".rtf", "");
+                        myActions.SetValueByKeyForNonCurrentScript("CategoryLevel", parentScriptLevel.ToString(), newFolderScriptPath);
+                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
+                        using (StreamWriter sw = new StreamWriter(strNewTextDocumentDir)) {
+ 
+   
+ 
+   }
+                     //   File.Create(strNewTextDocumentDir);
+
+                    }
+                    string strExecutable = @"C:\Program Files\Windows NT\Accessories\wordpad.exe";
+                    myActions.Run(strExecutable, strNewTextDocumentDir);
+
+                }
+            }
+        }
+
+        private void DeleteStripMenuItem4_Click(object sender, EventArgs e) {
+            FileView myFileView;
+            Methods myActions = new Methods();
+            foreach (DataGridViewCell myCell in dataGridView1.SelectedCells) {
+                myFileView = (FileView)this.FileViewBindingSource[myCell.RowIndex];
+                //MessageBox.Show(myFileView.FullName.ToString());
+                if (myFileView.IsDirectory) {
+                    // Call EnumerateFiles in a foreach-loop.
+
+                    ev_Delete_Directory(myFileView.FullName.ToString());
+                    string scriptPath = myActions.ConvertFullFileNameToScriptPath(myFileView.FullName) + "-" + myFileView.Name;
+                    string settingsDirectory = myActions.GetAppDirectoryForIdealAutomate();
+                    settingsDirectory = Path.Combine(settingsDirectory, scriptPath);
+                    if (Directory.Exists(settingsDirectory)) {
+                        Directory.Delete(settingsDirectory, true);
+                    }
+
+                } else {
+                    ev_Delete_File(myFileView.FullName.ToString());
+                }
+
+            }
+            RefreshDataGrid();
+        }
     }
 
 }
