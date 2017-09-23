@@ -1651,6 +1651,30 @@ namespace System.Windows.Forms.Samples {
             }
             RefreshDataGrid();
         }
+
+        private void notepadToolStripMenuItem_Click(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            foreach (DataGridViewCell myCell in dataGridView1.SelectedCells) {
+                FileView myFileView = (FileView)this.FileViewBindingSource[myCell.RowIndex];
+                if (!myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
+                    string strExecutable = @"C:\Windows\system32\notepad.exe";
+                    myActions.Run(strExecutable, myFileView.FullName);
+                    
+                }
+            }
+        }
+
+        private void dataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e) {
+            if (e.ColumnIndex != -1 && e.RowIndex != -1 && e.Button == System.Windows.Forms.MouseButtons.Right) {
+                DataGridViewCell c = (sender as DataGridView)[e.ColumnIndex, e.RowIndex];
+                if (!c.Selected) {
+                    c.DataGridView.ClearSelection();
+                    c.DataGridView.CurrentCell = c;
+                    c.Selected = true;
+                }
+            }
+        
+    }
     }
 
 }

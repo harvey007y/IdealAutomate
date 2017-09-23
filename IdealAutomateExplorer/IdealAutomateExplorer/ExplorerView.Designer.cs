@@ -42,20 +42,6 @@ namespace System.Windows.Forms.Samples
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.dataGridViewImageColumn1 = new System.Windows.Forms.DataGridViewImageColumn();
-            this.NameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.HotKeyCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TotalExecutionsCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SuccessfulExecutionsCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PercentCorrectCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.LastExecutedCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SizeCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AvgExecutionTimeCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ManualExecutionTimeCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TotalSavingsCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DateModifiedCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.FullName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.FileViewBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.toolBar = new System.Windows.Forms.ToolStrip();
             this.backSplitButton = new System.Windows.Forms.ToolStripDropDownButton();
@@ -103,10 +89,28 @@ namespace System.Windows.Forms.Samples
             this.btnCollapseAll = new System.Windows.Forms.Button();
             this.btnExpanAll = new System.Windows.Forms.Button();
             this.btnRefresh = new System.Windows.Forms.Button();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.openWithToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.notepadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dataGridViewImageColumn1 = new System.Windows.Forms.DataGridViewImageColumn();
+            this.NameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.HotKeyCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TotalExecutionsCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SuccessfulExecutionsCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PercentCorrectCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.LastExecutedCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.SizeCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AvgExecutionTimeCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ManualExecutionTimeCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TotalSavingsCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.DateModifiedCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.FullName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource)).BeginInit();
             this.toolBar.SuspendLayout();
             this.mainMenu.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataGridView1
@@ -172,132 +176,9 @@ namespace System.Windows.Forms.Samples
             this.dataGridView1.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridView1_CellFormatting);
             this.dataGridView1.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseClick);
             this.dataGridView1.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDoubleClick);
+            this.dataGridView1.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDown);
             this.dataGridView1.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.dataGridView1_CellPainting);
             this.dataGridView1.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.dataGridView1_RowPrePaint);
-            // 
-            // dataGridViewImageColumn1
-            // 
-            this.dataGridViewImageColumn1.DataPropertyName = "Icon";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopLeft;
-            dataGridViewCellStyle3.NullValue = ((object)(resources.GetObject("dataGridViewCellStyle3.NullValue")));
-            this.dataGridViewImageColumn1.DefaultCellStyle = dataGridViewCellStyle3;
-            this.dataGridViewImageColumn1.HeaderText = "";
-            this.dataGridViewImageColumn1.Name = "dataGridViewImageColumn1";
-            this.dataGridViewImageColumn1.ReadOnly = true;
-            this.dataGridViewImageColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.dataGridViewImageColumn1.Width = 20;
-            // 
-            // NameCol
-            // 
-            this.NameCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.NameCol.DataPropertyName = "Name";
-            this.NameCol.FillWeight = 200F;
-            this.NameCol.HeaderText = "Name";
-            this.NameCol.Name = "NameCol";
-            // 
-            // HotKeyCol
-            // 
-            this.HotKeyCol.DataPropertyName = "HotKey";
-            this.HotKeyCol.HeaderText = "HotKey";
-            this.HotKeyCol.Name = "HotKeyCol";
-            this.HotKeyCol.ReadOnly = true;
-            // 
-            // TotalExecutionsCol
-            // 
-            this.TotalExecutionsCol.DataPropertyName = "TotalExecutions";
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.TotalExecutionsCol.DefaultCellStyle = dataGridViewCellStyle4;
-            this.TotalExecutionsCol.HeaderText = "Total Executions";
-            this.TotalExecutionsCol.Name = "TotalExecutionsCol";
-            this.TotalExecutionsCol.ReadOnly = true;
-            // 
-            // SuccessfulExecutionsCol
-            // 
-            this.SuccessfulExecutionsCol.DataPropertyName = "SuccessfulExecutions";
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.SuccessfulExecutionsCol.DefaultCellStyle = dataGridViewCellStyle5;
-            this.SuccessfulExecutionsCol.HeaderText = "Successful Executions";
-            this.SuccessfulExecutionsCol.Name = "SuccessfulExecutionsCol";
-            this.SuccessfulExecutionsCol.ReadOnly = true;
-            this.SuccessfulExecutionsCol.Width = 75;
-            // 
-            // PercentCorrectCol
-            // 
-            this.PercentCorrectCol.DataPropertyName = "PercentCorrect";
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.PercentCorrectCol.DefaultCellStyle = dataGridViewCellStyle6;
-            this.PercentCorrectCol.HeaderText = "Percent Correct";
-            this.PercentCorrectCol.Name = "PercentCorrectCol";
-            this.PercentCorrectCol.ReadOnly = true;
-            // 
-            // LastExecutedCol
-            // 
-            this.LastExecutedCol.DataPropertyName = "LastExecuted";
-            this.LastExecutedCol.HeaderText = "Last Executed";
-            this.LastExecutedCol.Name = "LastExecutedCol";
-            this.LastExecutedCol.ReadOnly = true;
-            this.LastExecutedCol.Width = 125;
-            // 
-            // SizeCol
-            // 
-            this.SizeCol.DataPropertyName = "Size";
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.SizeCol.DefaultCellStyle = dataGridViewCellStyle7;
-            this.SizeCol.HeaderText = "Size";
-            this.SizeCol.Name = "SizeCol";
-            this.SizeCol.ReadOnly = true;
-            this.SizeCol.Width = 60;
-            // 
-            // AvgExecutionTimeCol
-            // 
-            this.AvgExecutionTimeCol.DataPropertyName = "AvgExecutionTime";
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.AvgExecutionTimeCol.DefaultCellStyle = dataGridViewCellStyle8;
-            this.AvgExecutionTimeCol.HeaderText = "Avg Time Secs";
-            this.AvgExecutionTimeCol.Name = "AvgExecutionTimeCol";
-            this.AvgExecutionTimeCol.ReadOnly = true;
-            // 
-            // ManualExecutionTimeCol
-            // 
-            this.ManualExecutionTimeCol.DataPropertyName = "ManualExecutionTime";
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.ManualExecutionTimeCol.DefaultCellStyle = dataGridViewCellStyle9;
-            this.ManualExecutionTimeCol.HeaderText = "Manual Time Secs";
-            this.ManualExecutionTimeCol.Name = "ManualExecutionTimeCol";
-            this.ManualExecutionTimeCol.ReadOnly = true;
-            this.ManualExecutionTimeCol.Width = 75;
-            // 
-            // TotalSavingsCol
-            // 
-            this.TotalSavingsCol.DataPropertyName = "TotalSavings";
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.TotalSavingsCol.DefaultCellStyle = dataGridViewCellStyle10;
-            this.TotalSavingsCol.HeaderText = "TotalSavings";
-            this.TotalSavingsCol.Name = "TotalSavingsCol";
-            this.TotalSavingsCol.ReadOnly = true;
-            // 
-            // Type
-            // 
-            this.Type.DataPropertyName = "Type";
-            this.Type.HeaderText = "Type";
-            this.Type.Name = "Type";
-            this.Type.ReadOnly = true;
-            // 
-            // DateModifiedCol
-            // 
-            this.DateModifiedCol.DataPropertyName = "DateModified";
-            this.DateModifiedCol.HeaderText = "Date Modified";
-            this.DateModifiedCol.Name = "DateModifiedCol";
-            this.DateModifiedCol.ReadOnly = true;
-            this.DateModifiedCol.Width = 150;
-            // 
-            // FullName
-            // 
-            this.FullName.DataPropertyName = "FullName";
-            this.FullName.HeaderText = "FullName";
-            this.FullName.Name = "FullName";
-            this.FullName.ReadOnly = true;
-            this.FullName.Visible = false;
             // 
             // FileViewBindingSource
             // 
@@ -458,28 +339,28 @@ namespace System.Windows.Forms.Samples
             // categoryToolStripMenuItem
             // 
             this.categoryToolStripMenuItem.Name = "categoryToolStripMenuItem";
-            this.categoryToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.categoryToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.categoryToolStripMenuItem.Text = "Category";
             this.categoryToolStripMenuItem.Click += new System.EventHandler(this.categoryToolStripMenuItem_Click);
             // 
             // projectToolStripMenuItem
             // 
             this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
-            this.projectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.projectToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.projectToolStripMenuItem.Text = "Project";
             this.projectToolStripMenuItem.Click += new System.EventHandler(this.projectToolStripMenuItem_Click);
             // 
             // subCategoryToolStripMenuItem
             // 
             this.subCategoryToolStripMenuItem.Name = "subCategoryToolStripMenuItem";
-            this.subCategoryToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.subCategoryToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.subCategoryToolStripMenuItem.Text = "SubCategory";
             this.subCategoryToolStripMenuItem.Click += new System.EventHandler(this.subCategoryToolStripMenuItem_Click);
             // 
             // folderToolStripMenuItem
             // 
             this.folderToolStripMenuItem.Name = "folderToolStripMenuItem";
-            this.folderToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.folderToolStripMenuItem.Size = new System.Drawing.Size(142, 22);
             this.folderToolStripMenuItem.Text = "Folder";
             this.folderToolStripMenuItem.Click += new System.EventHandler(this.folderToolStripMenuItem_Click);
             // 
@@ -686,6 +567,153 @@ namespace System.Windows.Forms.Samples
             this.btnRefresh.UseVisualStyleBackColor = true;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openWithToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(132, 26);
+            // 
+            // openWithToolStripMenuItem
+            // 
+            this.openWithToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.notepadToolStripMenuItem});
+            this.openWithToolStripMenuItem.Name = "openWithToolStripMenuItem";
+            this.openWithToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
+            this.openWithToolStripMenuItem.Text = "Open With";
+            // 
+            // notepadToolStripMenuItem
+            // 
+            this.notepadToolStripMenuItem.Name = "notepadToolStripMenuItem";
+            this.notepadToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.notepadToolStripMenuItem.Text = "Notepad";
+            this.notepadToolStripMenuItem.Click += new System.EventHandler(this.notepadToolStripMenuItem_Click);
+            // 
+            // dataGridViewImageColumn1
+            // 
+            this.dataGridViewImageColumn1.DataPropertyName = "Icon";
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopLeft;
+            dataGridViewCellStyle3.NullValue = ((object)(resources.GetObject("dataGridViewCellStyle3.NullValue")));
+            this.dataGridViewImageColumn1.DefaultCellStyle = dataGridViewCellStyle3;
+            this.dataGridViewImageColumn1.HeaderText = "";
+            this.dataGridViewImageColumn1.Name = "dataGridViewImageColumn1";
+            this.dataGridViewImageColumn1.ReadOnly = true;
+            this.dataGridViewImageColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.dataGridViewImageColumn1.Width = 20;
+            // 
+            // NameCol
+            // 
+            this.NameCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.NameCol.ContextMenuStrip = this.contextMenuStrip1;
+            this.NameCol.DataPropertyName = "Name";
+            this.NameCol.FillWeight = 200F;
+            this.NameCol.HeaderText = "Name";
+            this.NameCol.Name = "NameCol";
+            // 
+            // HotKeyCol
+            // 
+            this.HotKeyCol.DataPropertyName = "HotKey";
+            this.HotKeyCol.HeaderText = "HotKey";
+            this.HotKeyCol.Name = "HotKeyCol";
+            this.HotKeyCol.ReadOnly = true;
+            // 
+            // TotalExecutionsCol
+            // 
+            this.TotalExecutionsCol.DataPropertyName = "TotalExecutions";
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.TotalExecutionsCol.DefaultCellStyle = dataGridViewCellStyle4;
+            this.TotalExecutionsCol.HeaderText = "Total Executions";
+            this.TotalExecutionsCol.Name = "TotalExecutionsCol";
+            this.TotalExecutionsCol.ReadOnly = true;
+            // 
+            // SuccessfulExecutionsCol
+            // 
+            this.SuccessfulExecutionsCol.DataPropertyName = "SuccessfulExecutions";
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.SuccessfulExecutionsCol.DefaultCellStyle = dataGridViewCellStyle5;
+            this.SuccessfulExecutionsCol.HeaderText = "Successful Executions";
+            this.SuccessfulExecutionsCol.Name = "SuccessfulExecutionsCol";
+            this.SuccessfulExecutionsCol.ReadOnly = true;
+            this.SuccessfulExecutionsCol.Width = 75;
+            // 
+            // PercentCorrectCol
+            // 
+            this.PercentCorrectCol.DataPropertyName = "PercentCorrect";
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.PercentCorrectCol.DefaultCellStyle = dataGridViewCellStyle6;
+            this.PercentCorrectCol.HeaderText = "Percent Correct";
+            this.PercentCorrectCol.Name = "PercentCorrectCol";
+            this.PercentCorrectCol.ReadOnly = true;
+            // 
+            // LastExecutedCol
+            // 
+            this.LastExecutedCol.DataPropertyName = "LastExecuted";
+            this.LastExecutedCol.HeaderText = "Last Executed";
+            this.LastExecutedCol.Name = "LastExecutedCol";
+            this.LastExecutedCol.ReadOnly = true;
+            this.LastExecutedCol.Width = 125;
+            // 
+            // SizeCol
+            // 
+            this.SizeCol.DataPropertyName = "Size";
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.SizeCol.DefaultCellStyle = dataGridViewCellStyle7;
+            this.SizeCol.HeaderText = "Size";
+            this.SizeCol.Name = "SizeCol";
+            this.SizeCol.ReadOnly = true;
+            this.SizeCol.Width = 60;
+            // 
+            // AvgExecutionTimeCol
+            // 
+            this.AvgExecutionTimeCol.DataPropertyName = "AvgExecutionTime";
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.AvgExecutionTimeCol.DefaultCellStyle = dataGridViewCellStyle8;
+            this.AvgExecutionTimeCol.HeaderText = "Avg Time Secs";
+            this.AvgExecutionTimeCol.Name = "AvgExecutionTimeCol";
+            this.AvgExecutionTimeCol.ReadOnly = true;
+            // 
+            // ManualExecutionTimeCol
+            // 
+            this.ManualExecutionTimeCol.DataPropertyName = "ManualExecutionTime";
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.ManualExecutionTimeCol.DefaultCellStyle = dataGridViewCellStyle9;
+            this.ManualExecutionTimeCol.HeaderText = "Manual Time Secs";
+            this.ManualExecutionTimeCol.Name = "ManualExecutionTimeCol";
+            this.ManualExecutionTimeCol.ReadOnly = true;
+            this.ManualExecutionTimeCol.Width = 75;
+            // 
+            // TotalSavingsCol
+            // 
+            this.TotalSavingsCol.DataPropertyName = "TotalSavings";
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            this.TotalSavingsCol.DefaultCellStyle = dataGridViewCellStyle10;
+            this.TotalSavingsCol.HeaderText = "TotalSavings";
+            this.TotalSavingsCol.Name = "TotalSavingsCol";
+            this.TotalSavingsCol.ReadOnly = true;
+            // 
+            // Type
+            // 
+            this.Type.DataPropertyName = "Type";
+            this.Type.HeaderText = "Type";
+            this.Type.Name = "Type";
+            this.Type.ReadOnly = true;
+            // 
+            // DateModifiedCol
+            // 
+            this.DateModifiedCol.DataPropertyName = "DateModified";
+            this.DateModifiedCol.HeaderText = "Date Modified";
+            this.DateModifiedCol.Name = "DateModifiedCol";
+            this.DateModifiedCol.ReadOnly = true;
+            this.DateModifiedCol.Width = 150;
+            // 
+            // FullName
+            // 
+            this.FullName.DataPropertyName = "FullName";
+            this.FullName.HeaderText = "FullName";
+            this.FullName.Name = "FullName";
+            this.FullName.ReadOnly = true;
+            this.FullName.Visible = false;
+            // 
             // ExplorerView
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
@@ -710,6 +738,7 @@ namespace System.Windows.Forms.Samples
             this.toolBar.PerformLayout();
             this.mainMenu.ResumeLayout(false);
             this.mainMenu.PerformLayout();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -762,6 +791,12 @@ namespace System.Windows.Forms.Samples
         private Button btnExpanAll;
         private Button btnRefresh;
         private ToolStripMenuItem subCategoryToolStripMenuItem;
+        private ToolStripMenuItem toolStripMenuItem3;
+        private ToolStripMenuItem copyStripMenuItem4;
+        private ToolStripMenuItem folderToolStripMenuItem;
+        private ContextMenuStrip contextMenuStrip1;
+        private ToolStripMenuItem openWithToolStripMenuItem;
+        private ToolStripMenuItem notepadToolStripMenuItem;
         private DataGridViewImageColumn dataGridViewImageColumn1;
         private DataGridViewTextBoxColumn NameCol;
         private DataGridViewTextBoxColumn HotKeyCol;
@@ -775,10 +810,7 @@ namespace System.Windows.Forms.Samples
         private DataGridViewTextBoxColumn TotalSavingsCol;
         private DataGridViewTextBoxColumn Type;
         private DataGridViewTextBoxColumn DateModifiedCol;
-        private ToolStripMenuItem toolStripMenuItem3;
         private DataGridViewTextBoxColumn FullName;
-        private ToolStripMenuItem copyStripMenuItem4;
-        private ToolStripMenuItem folderToolStripMenuItem;
     }
 }
 
