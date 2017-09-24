@@ -1,0 +1,31 @@
+class SuperHero : Person { 
+ 
+ private int powerLevel; 
+ private string name; 
+ 
+ 
+ // Default constructor 
+ public SuperHero() { 
+  powerLevel = 0; 
+  name = "Super Bison"; 
+ } 
+ 
+ public SuperHero(int powerLevel)  
+  : this("Super Bison") {  // Call other constructor 
+ this.powerLevel = powerLevel; 
+ } 
+ 
+ public SuperHero(string name) 
+  : base(name) {  // Call base classes' constructor 
+  this.name = name; 
+ } 
+ 
+ static SuperHero() { 
+  // Static constructor invoked before 1st instance is created 
+ } 
+ 
+ ~SuperHero() { 
+ // Destructor implicitly creates a Finalize method 
+ } 
+ 
+} 

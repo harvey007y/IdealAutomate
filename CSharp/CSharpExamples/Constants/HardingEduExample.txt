@@ -1,0 +1,3 @@
+const int MAX_STUDENTS = 25;  
+// Can set to a const or var; may be initialized in a constructor  
+readonly float MIN_DIAMETER = 4.93f;  

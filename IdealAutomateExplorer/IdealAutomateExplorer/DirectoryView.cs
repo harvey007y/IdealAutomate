@@ -18,6 +18,7 @@ namespace System.Windows.Forms.Samples
     {
         private FileView _directory;
         private bool _suspend = false;
+        private int _nestingLevel = 0;
 
         //public DirectoryView() : this(Environment.GetFolderPath(Environment.SpecialFolder.Personal)) { }
 
@@ -47,6 +48,8 @@ namespace System.Windows.Forms.Samples
 
         private void Fill(string dir)
         {
+            Methods myActions = new Methods();
+            myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
             // Suspend
             _suspend = true;
 
@@ -64,64 +67,61 @@ namespace System.Windows.Forms.Samples
             {
                 this.Add(new FileView(di));
                 FileView myFileView = new FileView(di);
+                
                 if (myFileView.CategoryState == "Expanded") {
+                    _nestingLevel++;
+                    myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
                     DirectoryInfo info2 = new DirectoryInfo(di.FullName);
                     foreach (FileSystemInfo di2 in info2.GetDirectories()) {
-                        Methods myActions = new Methods();
-                        string categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToScriptPath(di2.FullName));
-                        if (categoryState != "Collapsed" && categoryState != "Expanded") {
-                            int categoryLevel = myActions.GetValueByKeyAsIntForNonCurrentScript("CategoryLevel", myActions.ConvertFullFileNameToScriptPath(myFileView.FullName));
-                            myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Child", myActions.ConvertFullFileNameToScriptPath(di2.FullName));
-                            int newCategoryLevel = categoryLevel + 1;
-                            myActions.SetValueByKeyForNonCurrentScript("CategoryLevel", newCategoryLevel.ToString(), myActions.ConvertFullFileNameToScriptPath(di2.FullName));
-
-                        }
+                        string categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToPublicPath(di2.FullName));
                         this.Add(new FileView(di2));
                         FileView myFileView2 = new FileView(di2);
                         if (myFileView2.CategoryState == "Expanded") {
+                            _nestingLevel++;
+                            myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
                             DirectoryInfo info3 = new DirectoryInfo(di2.FullName);
-                            foreach (FileSystemInfo di3 in info3.GetDirectories()) {      
-                                categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToScriptPath(di3.FullName));
-                                if (categoryState != "Collapsed" && categoryState != "Expanded") {
-                                    int categoryLevel = myActions.GetValueByKeyAsIntForNonCurrentScript("CategoryLevel", myActions.ConvertFullFileNameToScriptPath(myFileView2.FullName));
-                                    myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Child", myActions.ConvertFullFileNameToScriptPath(di3.FullName));
-                                    int newCategoryLevel = categoryLevel + 1;
-                                    myActions.SetValueByKeyForNonCurrentScript("CategoryLevel", newCategoryLevel.ToString(), myActions.ConvertFullFileNameToScriptPath(di3.FullName));
-                                }
+                            foreach (FileSystemInfo di3 in info3.GetDirectories()) {
+                                categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToPublicPath(di3.FullName));
                                 this.Add(new FileView(di3));
                                 FileView myFileView3 = new FileView(di3);
                                 if (myFileView3.CategoryState == "Expanded") {
                                     DirectoryInfo info4 = new DirectoryInfo(di3.FullName);
+                                    _nestingLevel++;
+                                    myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
                                     foreach (FileSystemInfo di4 in info4.GetDirectories()) {
-                                        categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToScriptPath(di4.FullName));
-                                        if (categoryState != "Collapsed" && categoryState != "Expanded") {
-                                            int categoryLevel = myActions.GetValueByKeyAsIntForNonCurrentScript("CategoryLevel", myActions.ConvertFullFileNameToScriptPath(myFileView3.FullName));
-                                            myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Child", myActions.ConvertFullFileNameToScriptPath(di4.FullName));
-                                            int newCategoryLevel = categoryLevel + 1;
-                                            myActions.SetValueByKeyForNonCurrentScript("CategoryLevel", newCategoryLevel.ToString(), myActions.ConvertFullFileNameToScriptPath(di4.Name));
-                                        }
+                                        categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToPublicPath(di4.FullName));
                                         this.Add(new FileView(di4));
                                         FileView myFileView4 = new FileView(di4);
                                         if (myFileView4.CategoryState == "Expanded") {
-                                            DirectoryInfo info5 = new DirectoryInfo(di4.FullName);
+                                            DirectoryInfo info5 = new DirectoryInfo(di4.FullName);                                           
                                             foreach (FileSystemInfo fi in info5.GetFiles()) {
                                                 this.Add(new FileView(fi));
                                             }
+                                            _nestingLevel--;
+                                            myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
                                         }
                                     }
+
                                     foreach (FileSystemInfo fi in info4.GetFiles()) {
                                         this.Add(new FileView(fi));
                                     }
+                                    _nestingLevel--;
+                                    myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
                                 }
                             }
                             foreach (FileSystemInfo fi in info3.GetFiles()) {
                                 this.Add(new FileView(fi));
                             }
+                            _nestingLevel--;
+                            myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
                         }
                     }
+
                     foreach (FileSystemInfo fi in info2.GetFiles()) {
                         this.Add(new FileView(fi));
                     }
+                    _nestingLevel--;
+                    myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
                 }
             }
 

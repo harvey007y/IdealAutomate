@@ -1,0 +1,47 @@
+Popular classes in System.Collections (stored as Object) 
+ArrayList 
+Hashtable 
+Queue 
+Stack 
+Popular classes in System.Collections.Generic (stored as type T) 
+List<T> 
+SortedList<TKey, TValue> 
+Dictionary<TKey, TValue> 
+Queue<T> 
+Stack<T> 
+Popular classes in System.Collections.Concurrent (thread safe) 
+BlockingCollection<T> 
+ConcurrentDictionary<TKey, TValue> 
+ConcurrentQueue<T> 
+ConcurrentStack<T>  
+No equivalent to Microsoft.VisualBasic.Collection  
+ 
+// Store ID and name 
+var students = new Dictionary<int, string>  
+{ 
+ { 123, "Bob" }, 
+ { 444, "Sue" }, 
+ { 555, "Jane" } 
+}; 
+ 
+students.Add(987, "Gary"); 
+Console.WriteLine(students[444]);  // Sue 
+ 
+// Display all 
+foreach (var stu in students) { 
+ Console.WriteLine(stu.Key + " = " + stu.Value); 
+} 
+ 
+// Method iterator for custom iteration over a collection 
+static System.Collections.Generic.IEnumerable<int> OddNumbers(int lastNum) 
+{ 
+ for (var num = 1; num <= lastNum; num++) 
+  if (num % 2 == 1) 
+   yield return num; 
+} 
+ 
+// 1 3 5 7 
+foreach (double num in OddNumbers(7)) 
+{ 
+ Console.Write(num + " "); 
+} 

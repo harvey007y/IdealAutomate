@@ -1,0 +1,53 @@
+Access Modifiers  
+public 
+private 
+internal 
+protected 
+protected internal 
+Class Modifiers  
+abstract 
+sealed 
+static 
+Method Modifiers  
+abstract 
+sealed 
+static 
+virtual 
+No Module equivalent - just use static class 
+ 
+// Partial classes 
+partial class Team { 
+ ... 
+ protected string name; 
+ public virtual void DislpayName() { 
+  Console.WriteLine(name); 
+}  
+ 
+// Inheritance 
+class FootballTeam : Team { 
+ ... 
+ public override void DislpayName() { 
+  Console.WriteLine("** " + name + " **"); 
+ } 
+}  
+ 
+// Interface definition 
+interface IAlarmClock { 
+ void Ring();  
+ DateTime CurrentDateTime { get; set; } 
+}  
+// Extending an interface 
+interface IAlarmClock : IClock { 
+ ... 
+}  
+ 
+// Interface implementation 
+class WristWatch : IAlarmClock, ITimer { 
+ 
+ public void Ring() { 
+  Console.WriteLine("Wake up!"); 
+ } 
+ 
+ public DateTime TriggerDateTime { get; set; } 
+ ... 
+}  

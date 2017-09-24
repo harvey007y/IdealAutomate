@@ -44,10 +44,16 @@ namespace System.Windows.Forms.Samples
         }
 
         private string _categoryState;
+        private int _nestingLevel;
 
         public string CategoryState {
             get { return _categoryState; }
             set { _categoryState = value; }
+        }
+
+        public int NestingLevel {
+            get { return _nestingLevel; }
+            set { _nestingLevel = value; }
         }
 
 
@@ -141,25 +147,27 @@ namespace System.Windows.Forms.Samples
 
             // Get ICON
             CategoryState = "";
+            NestingLevel = myActions.GetValueByKeyAsInt("NestingLevel");
+
             try
             {
                 _icon = System.Drawing.Icon.FromHandle(info.hIcon);
                 string myProjectSourcePath = myActions.GetPathForScriptNoBinDebug();
                 string initialDirectory = myActions.GetValueByKeyForNonCurrentScript("InitialDirectory", myActions.ConvertFullFileNameToScriptPath(myProjectSourcePath));
             
-                  string  scriptName = myActions.ConvertFullFileNameToScriptPath(fileInfo.FullName) + "-" + fileInfo.Name; 
+                  string  scriptName = myActions.ConvertFullFileNameToPublicPath(fileInfo.FullName) + "\\" + fileInfo.Name; 
        
-                string categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", scriptName);
+                string categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", scriptName);
                 string expandCollapseAll = myActions.GetValueByKey("ExpandCollapseAll");
 
                 if (categoryState == "Collapsed") {
                     if (expandCollapseAll == "Expand") {
                         categoryState = "Expanded";
-                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Expanded", scriptName);
+                        myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Expanded", scriptName);
                     }
                     if (expandCollapseAll == "Collapse") {
                         categoryState = "Collapsed";
-                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Collapsed", scriptName);
+                        myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Collapsed", scriptName);
                     }
                     CategoryState = categoryState;
                     _icon = new Icon(Properties.Resources._112_Plus_Grey,16,16);
@@ -167,11 +175,11 @@ namespace System.Windows.Forms.Samples
                 if (categoryState == "Expanded") {
                     if (expandCollapseAll == "Expand") {
                         categoryState = "Expanded";
-                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Expanded", scriptName);
+                        myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Expanded", scriptName);
                     }
                     if (expandCollapseAll == "Collapse") {
                         categoryState = "Collapsed";
-                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Collapsed", scriptName);
+                        myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Collapsed", scriptName);
                     }
                     CategoryState = categoryState;
                     _icon = new Icon(Properties.Resources._112_Minus_Grey, 16, 16);

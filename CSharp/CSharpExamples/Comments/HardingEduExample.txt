@@ -1,0 +1,8 @@
+REMSingle line only 
+ 
+''' <summary>XML comments</summary>  
+// Single line 
+/* Multiple 
+ line */ 
+/// <summary>XML comments on single line</summary> 
+/** <summary>XML comments on multiple lines</summary> */ 

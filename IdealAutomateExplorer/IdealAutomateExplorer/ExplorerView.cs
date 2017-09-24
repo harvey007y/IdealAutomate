@@ -21,7 +21,7 @@ using System.Globalization;
 
 namespace System.Windows.Forms.Samples {
     partial class ExplorerView : Form {
-        private DirectoryView _dir;
+        private DirectoryView _dir;        
         string strInitialDirectory = "";
         bool boolStopEvent = false;
         Rectangle _IconRectangle = new Rectangle();
@@ -171,34 +171,34 @@ namespace System.Windows.Forms.Samples {
             string fileName = ((DataGridView)sender).Rows[e.RowIndex].Cells[13].Value.ToString();
       string scriptName = ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Value.ToString();
       Methods myActions = new Methods();
-            string categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToScriptPath(fileName) + "-" + scriptName.Replace(".txt","").Replace(".rtf", ""));
-            int categoryLevel = myActions.GetValueByKeyAsIntForNonCurrentScript("CategoryLevel", myActions.ConvertFullFileNameToScriptPath(fileName) + "-" + scriptName.Replace(".txt", "").Replace(".rtf", ""));
-            int indent = categoryLevel * 20;
+            string categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToPublicPath(fileName) + "\\" + scriptName.Replace(".txt","").Replace(".rtf", ""));
+            string strNestingLevel = ((DataGridView)sender).Rows[e.RowIndex].Cells[14].Value.ToString();
+            int nestingLevel = 0;
+            Int32.TryParse(strNestingLevel, out nestingLevel);
+            int indent = nestingLevel * 20;
             if (categoryState == "Collapsed" || categoryState == "Expanded") {
                 ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Style.Font = new Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold);
                 ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Style.Padding = new Padding(indent, 0, 0, 0);
             }
-            if (categoryState == "Child") {
-              //  ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Style.Font = new Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Italic);
+            else {               
                 ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Style.Padding = new Padding(indent, 0, 0, 0);
                 DataGridViewCell iconCell = ((DataGridView)sender).Rows[e.RowIndex].Cells[0];
             }
-
         }
 
         private void dataGridView1_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e) {
             // Call Active on DirectoryView
             string fileName = ((DataGridView)sender).Rows[e.RowIndex].Cells[13].Value.ToString();
       Methods myActions = new Methods();
-      fileName = myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileName);
-            string categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", fileName);
+     // fileName = fileName;
+            string categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", fileName);
             if (categoryState == "Expanded") {
-                myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Collapsed", fileName);                
+                myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Collapsed", fileName);                
                 RefreshDataGrid();
                 return;
             }
             if (categoryState == "Collapsed") {
-                myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Expanded", fileName);                
+                myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Expanded", fileName);                
                 RefreshDataGrid();
                 return;
             }
@@ -386,17 +386,11 @@ namespace System.Windows.Forms.Samples {
                     basePathName = myFileView.Name;
                 }
             }
-            string parentScriptPath = myActions.ConvertFullFileNameToScriptPath(basePathForNewProject) + "-" + basePathName;
-            int parentScriptLevel = myActions.GetValueByKeyAsIntForNonCurrentScript("CategoryLevel", parentScriptPath);
-            if (basePathForNewProject != _dir.FileView.FullName) {
-                parentScriptLevel++;
-            }
-            
+            string parentScriptPath = myActions.ConvertFullFileNameToPublicPath(basePathForNewProject) + "\\" + basePathName;
             string myNewProjectName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
             string strNewProjectDir = Path.Combine(basePathForNewProject, myNewProjectName);
-            string scriptPathNewProject = myActions.ConvertFullFileNameToScriptPath(strNewProjectDir) + "-" + myNewProjectName;
-            myActions.SetValueByKeyForNonCurrentScript("CategoryLevel", parentScriptLevel.ToString(), scriptPathNewProject);
-            myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Child", scriptPathNewProject);
+            string scriptPathNewProject = myActions.ConvertFullFileNameToPublicPath(strNewProjectDir) + "\\-" + myNewProjectName;
+            myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", scriptPathNewProject);
             if (Directory.Exists(strNewProjectDir)) {
                 myActions.MessageBoxShow(strNewProjectDir + "already exists");
                 goto ReDisplayNewProjectDialog;
@@ -533,7 +527,7 @@ namespace System.Windows.Forms.Samples {
                     // Call EnumerateFiles in a foreach-loop.
 
                     ev_Delete_Directory(myFileView.FullName.ToString());
-                    string scriptPath = myActions.ConvertFullFileNameToScriptPath(myFileView.FullName) + "-" + myFileView.Name;
+                    string scriptPath = myActions.ConvertFullFileNameToPublicPath(myFileView.FullName) + "\\" + myFileView.Name;
                     string settingsDirectory = myActions.GetAppDirectoryForIdealAutomate();
                     settingsDirectory = Path.Combine(settingsDirectory, scriptPath);
                     if (Directory.Exists(settingsDirectory)) {
@@ -1030,7 +1024,7 @@ namespace System.Windows.Forms.Samples {
             try {
                 // create the directories
                 Directory.CreateDirectory(strNewCategoryDir);
-                myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Collapsed", myActions.ConvertFullFileNameToScriptPath(strNewCategoryDir) + "-" + myNewCategoryName);
+                myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Collapsed", myActions.ConvertFullFileNameToPublicPath(strNewCategoryDir) + "\\" + myNewCategoryName);
 
 
 
@@ -1122,8 +1116,6 @@ namespace System.Windows.Forms.Samples {
 
             foreach (DataGridViewCell myCell in dataGridView1.SelectedCells) {
                 FileView myFileView = (FileView)this.FileViewBindingSource[myCell.RowIndex];
-                int categoryLevel = myActions.GetValueByKeyAsIntForNonCurrentScript("CategoryLevel", myActions.ConvertFullFileNameToScriptPath(myFileView.FullName) + "-" + myFileView.Name);
-                //MessageBox.Show(myFileView.FullName.ToString());
                 if (myFileView.IsDirectory) {                    
                      strNewSubCategoryDir = Path.Combine(myFileView.FullName, myNewSubCategoryName);
                     if (Directory.Exists(strNewSubCategoryDir)) {
@@ -1133,9 +1125,7 @@ namespace System.Windows.Forms.Samples {
                     try {
                         // create the directories
                         Directory.CreateDirectory(strNewSubCategoryDir);
-                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Collapsed", myActions.ConvertFullFileNameToScriptPath(strNewSubCategoryDir) + "-" + myNewSubCategoryName);
-                        int newCategoryLevel = categoryLevel + 1;
-                        myActions.SetValueByKeyForNonCurrentScript("CategoryLevel", newCategoryLevel.ToString(), myActions.ConvertFullFileNameToScriptPath(strNewSubCategoryDir) + "-" + myNewSubCategoryName);
+                        myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Collapsed", myActions.ConvertFullFileNameToPublicPath(strNewSubCategoryDir) + "\\" + myNewSubCategoryName);
                     } catch (Exception ex) {
                         MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
                     }
@@ -1151,14 +1141,14 @@ namespace System.Windows.Forms.Samples {
                     // Call Active on DirectoryView
                     string fileName = ((DataGridView)sender).Rows[e.RowIndex].Cells[13].Value.ToString();
                     Methods myActions = new Methods();
-                    string categoryState = myActions.GetValueByKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileName));
+                    string categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", fileName);
                     if (categoryState == "Expanded") {
-                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Collapsed", myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileName));
+                        myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Collapsed", fileName);
                         RefreshDataGrid();
                         return;
                     }
                     if (categoryState == "Collapsed") {
-                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Expanded", myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileName));
+                        myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Expanded", fileName);
                         RefreshDataGrid();
                         return;
                     }
@@ -1627,12 +1617,7 @@ namespace System.Windows.Forms.Samples {
                     basePathName = myFileView.Name;
                 }
             }
-            string parentScriptPath = myActions.ConvertFullFileNameToScriptPath(basePathForNewFolder) + "-" + basePathName;
-            int parentScriptLevel = myActions.GetValueByKeyAsIntForNonCurrentScript("CategoryLevel", parentScriptPath);
-            if (basePathForNewFolder != _dir.FileView.FullName) {
-                parentScriptLevel++;
-            }
-           
+            string parentScriptPath = myActions.ConvertFullFileNameToPublicPath(basePathForNewFolder) + "\\" + basePathName;
             string myNewFolderName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
             string strNewFolderDir = Path.Combine(basePathForNewFolder, myNewFolderName);
             if (Directory.Exists(strNewFolderDir)) {
@@ -1641,9 +1626,8 @@ namespace System.Windows.Forms.Samples {
             }
             try {
                 // create the directories
-                string newFolderScriptPath = myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(basePathForNewFolder) + "-" + myNewFolderName;
-                myActions.SetValueByKeyForNonCurrentScript("CategoryLevel", parentScriptLevel.ToString(), newFolderScriptPath);
-                myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
+                string newFolderScriptPath = basePathForNewFolder + "\\" + myNewFolderName;
+                myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
                 Directory.CreateDirectory(strNewFolderDir);     
             } catch (Exception ex) {
 
@@ -1733,21 +1717,15 @@ namespace System.Windows.Forms.Samples {
                     basePathForNewTextDocument = myFileView.FullName;
                     basePathName = myFileView.Name;
 
-                    string parentScriptPath = myActions.ConvertFullFileNameToScriptPath(basePathForNewTextDocument) + "-" + basePathName;
-                    int parentScriptLevel = myActions.GetValueByKeyAsIntForNonCurrentScript("CategoryLevel", parentScriptPath);
-                    if (basePathForNewTextDocument != _dir.FileView.FullName) {
-                        parentScriptLevel++;
-                    }
-
+                    string parentScriptPath = myActions.ConvertFullFileNameToPublicPath(basePathForNewTextDocument) + "\\" + basePathName;
                     string myNewTextDocumentName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
                     if (!myNewTextDocumentName.EndsWith(".txt")) {
                         myNewTextDocumentName = myNewTextDocumentName + ".txt";
                     }
                     string strNewTextDocumentDir = Path.Combine(basePathForNewTextDocument, myNewTextDocumentName);
                     if (!File.Exists(strNewTextDocumentDir)) {
-                        string newFolderScriptPath = myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(basePathForNewTextDocument) + "-" + myNewTextDocumentName.Replace(".txt","");
-                        myActions.SetValueByKeyForNonCurrentScript("CategoryLevel", parentScriptLevel.ToString(), newFolderScriptPath);
-                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
+                        string newFolderScriptPath = basePathForNewTextDocument + "\\" + myNewTextDocumentName.Replace(".txt","");
+                        myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
 
                        // File.Create(strNewTextDocumentDir);
                       
@@ -1804,13 +1782,8 @@ namespace System.Windows.Forms.Samples {
                     basePathName = myFileView.Name;
                 }
             }
-            string parentScriptPath = myActions.ConvertFullFileNameToScriptPath(basePathForNewFolder) + "-" + basePathName;
-            int parentScriptLevel = myActions.GetValueByKeyAsIntForNonCurrentScript("CategoryLevel", parentScriptPath);
-            if (basePathForNewFolder != _dir.FileView.FullName) {
-                parentScriptLevel++;
-            }
-
-            string myNewFolderName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
+            string parentScriptPath = myActions.ConvertFullFileNameToPublicPath(basePathForNewFolder) + "\\" + basePathName;
+              string myNewFolderName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
             string strNewFolderDir = Path.Combine(basePathForNewFolder, myNewFolderName);
             if (Directory.Exists(strNewFolderDir)) {
                 myActions.MessageBoxShow(strNewFolderDir + "already exists");
@@ -1818,9 +1791,8 @@ namespace System.Windows.Forms.Samples {
             }
             try {
                 // create the directories
-                string newFolderScriptPath = myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(basePathForNewFolder) + "-" + myNewFolderName;
-                myActions.SetValueByKeyForNonCurrentScript("CategoryLevel", parentScriptLevel.ToString(), newFolderScriptPath);
-                myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
+                string newFolderScriptPath = basePathForNewFolder + "\\" + myNewFolderName;
+                myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
                 Directory.CreateDirectory(strNewFolderDir);
             } catch (Exception ex) {
 
@@ -1886,21 +1858,15 @@ namespace System.Windows.Forms.Samples {
                     basePathForNewTextDocument = myFileView.FullName;
                     basePathName = myFileView.Name;
 
-                    string parentScriptPath = myActions.ConvertFullFileNameToScriptPath(basePathForNewTextDocument) + "-" + basePathName;
-                    int parentScriptLevel = myActions.GetValueByKeyAsIntForNonCurrentScript("CategoryLevel", parentScriptPath);
-                    if (basePathForNewTextDocument != _dir.FileView.FullName) {
-                        parentScriptLevel++;
-                    }
-
+                    string parentScriptPath = myActions.ConvertFullFileNameToPublicPath(basePathForNewTextDocument) + "\\" + basePathName;
                     string myNewTextDocumentName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
                     if (!myNewTextDocumentName.EndsWith(".rtf")) {
                         myNewTextDocumentName = myNewTextDocumentName + ".rtf";
                     }
                     string strNewTextDocumentDir = Path.Combine(basePathForNewTextDocument, myNewTextDocumentName);
                     if (!File.Exists(strNewTextDocumentDir)) {
-                        string newFolderScriptPath = myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(basePathForNewTextDocument) + "-" + myNewTextDocumentName.Replace(".rtf", "");
-                        myActions.SetValueByKeyForNonCurrentScript("CategoryLevel", parentScriptLevel.ToString(), newFolderScriptPath);
-                        myActions.SetValueByKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
+                        string newFolderScriptPath = basePathForNewTextDocument + "\\" + myNewTextDocumentName.Replace(".rtf", "");
+                        myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
                         using (StreamWriter sw = new StreamWriter(strNewTextDocumentDir)) {
  
    
@@ -1926,7 +1892,7 @@ namespace System.Windows.Forms.Samples {
                     // Call EnumerateFiles in a foreach-loop.
 
                     ev_Delete_Directory(myFileView.FullName.ToString());
-                    string scriptPath = myActions.ConvertFullFileNameToScriptPath(myFileView.FullName) + "-" + myFileView.Name;
+                    string scriptPath = myActions.ConvertFullFileNameToPublicPath(myFileView.FullName) + "\\" + myFileView.Name;
                     string settingsDirectory = myActions.GetAppDirectoryForIdealAutomate();
                     settingsDirectory = Path.Combine(settingsDirectory, scriptPath);
                     if (Directory.Exists(settingsDirectory)) {
@@ -1938,6 +1904,67 @@ namespace System.Windows.Forms.Samples {
                 }
 
             }
+            RefreshDataGrid();
+        }
+
+        private void subCategoryStripMenuItem5_Click(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+
+            ControlEntity myControlEntity = new ControlEntity();
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Heading;
+            myControlEntity.Text = "Create New SubCategory";
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "myLabel";
+            myControlEntity.Text = "Enter New SubCategory Name";
+            myControlEntity.RowNumber = 0;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "myTextBox";
+            myControlEntity.Text = "";
+            myControlEntity.RowNumber = 0;
+            myControlEntity.ColumnNumber = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            ReDisplayNewSubCategoryDialog:
+            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
+
+            if (strButtonPressed == "btnCancel") {
+                myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                return;
+            }
+
+            string myNewSubCategoryName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
+            string strNewSubCategoryDir = "";
+
+            foreach (DataGridViewCell myCell in dataGridView1.SelectedCells) {
+                FileView myFileView = (FileView)this.FileViewBindingSource[myCell.RowIndex];
+                if (myFileView.IsDirectory) {
+                    strNewSubCategoryDir = Path.Combine(myFileView.FullName, myNewSubCategoryName);
+                    if (Directory.Exists(strNewSubCategoryDir)) {
+                        myActions.MessageBoxShow(strNewSubCategoryDir + "already exists");
+                        goto ReDisplayNewSubCategoryDialog;
+                    }
+                    try {
+                        // create the directories
+                        Directory.CreateDirectory(strNewSubCategoryDir);
+                        myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Collapsed", myActions.ConvertFullFileNameToPublicPath(strNewSubCategoryDir) + "\\" + myNewSubCategoryName);
+                    } catch (Exception ex) {
+                        MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
+                    }
+                }
+            }
+
             RefreshDataGrid();
         }
     }

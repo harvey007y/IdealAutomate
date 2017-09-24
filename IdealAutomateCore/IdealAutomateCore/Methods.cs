@@ -2331,12 +2331,44 @@ namespace IdealAutomate.Core {
             return intValue;
         }
 
+        public int GetValueByPublicKeyAsIntForNonCurrentScript(string strKey, string strFullFolderPath) {
+            string fileName = strKey + ".txt";
+            StreamReader file = null;
+            string strValueRead = "";
+            string settingsDirectory = strFullFolderPath;
+            settingsDirectory = Path.Combine(settingsDirectory, "..IdealAutomate");
+            string settingsPath = Path.Combine(settingsDirectory, fileName);
+            if (File.Exists(settingsPath)) {
+                file = File.OpenText(settingsPath);
+                strValueRead = file.ReadToEnd();
+                file.Close();
+            }
+            int intValue = 0;
+            Int32.TryParse(strValueRead, out intValue);
+            return intValue;
+        }
+
         public string GetValueByKeyForNonCurrentScript(string strKey, string strScriptName) {
             string fileName = strKey + ".txt";
             StreamReader file = null;
             string strValueRead = "";
             string settingsDirectory = GetAppDirectoryForIdealAutomate();
             settingsDirectory = Path.Combine(settingsDirectory, strScriptName);
+            string settingsPath = Path.Combine(settingsDirectory, fileName);
+            if (File.Exists(settingsPath)) {
+                file = File.OpenText(settingsPath);
+                strValueRead = file.ReadToEnd();
+                file.Close();
+            }
+            return strValueRead;
+        }
+
+        public string GetValueByPublicKeyForNonCurrentScript(string strKey, string strFullFolderPath) {
+            string fileName = strKey + ".txt";
+            StreamReader file = null;
+            string strValueRead = "";
+            string settingsDirectory = strFullFolderPath;
+            settingsDirectory = Path.Combine(settingsDirectory, "..IdealAutomate");
             string settingsPath = Path.Combine(settingsDirectory, fileName);
             if (File.Exists(settingsPath)) {
                 file = File.OpenText(settingsPath);
@@ -2383,6 +2415,23 @@ namespace IdealAutomate.Core {
             string strValueRead = "";
             string settingsDirectory = GetAppDirectoryForIdealAutomate();
             settingsDirectory = Path.Combine(settingsDirectory, strScriptName);
+            string settingsPath = Path.Combine(settingsDirectory, fileName);
+            if (File.Exists(settingsPath)) {
+                file = File.OpenText(settingsPath);
+                strValueRead = file.ReadToEnd();
+                file.Close();
+            }
+            DateTime dtScriptStartDateTime = DateTime.MinValue;
+            bool boolDTSuccessful = DateTime.TryParse(strValueRead, out dtScriptStartDateTime);
+            return dtScriptStartDateTime;
+        }
+
+        public DateTime GetValueByPublicKeyAsDateTimeForNonCurrentScript(string strKey, string strFullFolderPath) {
+            string fileName = strKey + ".txt";
+            StreamReader file = null;
+            string strValueRead = "";
+            string settingsDirectory = strFullFolderPath;
+            settingsDirectory = Path.Combine(settingsDirectory, "..IdealAutomate");
             string settingsPath = Path.Combine(settingsDirectory, fileName);
             if (File.Exists(settingsPath)) {
                 file = File.OpenText(settingsPath);
@@ -2475,6 +2524,22 @@ namespace IdealAutomate.Core {
             StreamWriter writer = null;
             string settingsDirectory = GetAppDirectoryForIdealAutomate();
             settingsDirectory = Path.Combine(settingsDirectory, strScriptName);
+            if (!Directory.Exists(settingsDirectory)) {
+                Directory.CreateDirectory(settingsDirectory);
+            }
+            string settingsPath = Path.Combine(settingsDirectory, fileName);
+            // Hook a write to the text file.
+            writer = new StreamWriter(settingsPath);
+            // Rewrite the entire value of s to the file
+            writer.Write(strValueToWrite);
+            writer.Close();
+        }
+
+        public void SetValueByPublicKeyForNonCurrentScript(string strKey, string strValueToWrite, string strFullFolderPath) {
+            string fileName = strKey + ".txt";
+            StreamWriter writer = null;
+            string settingsDirectory = strFullFolderPath;
+            settingsDirectory = Path.Combine(settingsDirectory, "..IdealAutomate");
             if (!Directory.Exists(settingsDirectory)) {
                 Directory.CreateDirectory(settingsDirectory);
             }
@@ -2711,6 +2776,15 @@ namespace IdealAutomate.Core {
             }  
             string scriptPath = fullFileName;
             scriptPath = scriptPath.Replace(":","+").Replace(@"\","-");
+            return scriptPath;
+        }
+
+        public string ConvertFullFileNameToPublicPath(string fullFileName) {
+            int intIndex = fullFileName.LastIndexOf(@"\");
+            if (intIndex > -1) {
+                fullFileName = fullFileName.Substring(0, intIndex);
+            }
+            string scriptPath = fullFileName; 
             return scriptPath;
         }
 

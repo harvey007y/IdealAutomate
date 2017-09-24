@@ -1,0 +1,10 @@
+Console.Write("What's your name? "); 
+string name = Console.ReadLine(); 
+Console.Write("How old are you? "); 
+int age = Convert.ToInt32(Console.ReadLine()); 
+Console.WriteLine("{0} is {1} years old.", name, age); 
+// or 
+Console.WriteLine(name + " is " + age + " years old.");  
+ 
+int c = Console.Read(); // Read single char 
+Console.WriteLine(c); // Prints 65 if user enters "A" 
