@@ -28,20 +28,7 @@ namespace System.Windows.Forms.Samples
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExplorerView));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.openWithToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -100,95 +87,24 @@ namespace System.Windows.Forms.Samples
             this.btnCollapseAll = new System.Windows.Forms.Button();
             this.btnExpanAll = new System.Windows.Forms.Button();
             this.btnRefresh = new System.Windows.Forms.Button();
-            this.dataGridViewImageColumn1 = new System.Windows.Forms.DataGridViewImageColumn();
-            this.NameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.HotKeyCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TotalExecutionsCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SuccessfulExecutionsCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PercentCorrectCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.LastExecutedCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.SizeCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.AvgExecutionTimeCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ManualExecutionTimeCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.TotalSavingsCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DateModifiedCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.FullName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NestingLevel = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.FileViewBindingSource2 = new System.Windows.Forms.BindingSource(this.components);
+            this.FileViewBindingSource3 = new System.Windows.Forms.BindingSource(this.components);
+            this.FileViewBindingSource4 = new System.Windows.Forms.BindingSource(this.components);
+            this.FileViewBindingSource5 = new System.Windows.Forms.BindingSource(this.components);
+            this.FileViewBindingSource6 = new System.Windows.Forms.BindingSource(this.components);
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource)).BeginInit();
             this.toolBar.SuspendLayout();
             this.mainMenu.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource5)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource6)).BeginInit();
             this.SuspendLayout();
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
-            this.dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            this.dataGridView1.AutoGenerateColumns = false;
-            this.dataGridView1.BackgroundColor = System.Drawing.Color.White;
-            this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dataGridView1.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            this.dataGridView1.ColumnHeadersHeight = 22;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewImageColumn1,
-            this.NameCol,
-            this.HotKeyCol,
-            this.TotalExecutionsCol,
-            this.SuccessfulExecutionsCol,
-            this.PercentCorrectCol,
-            this.LastExecutedCol,
-            this.SizeCol,
-            this.AvgExecutionTimeCol,
-            this.ManualExecutionTimeCol,
-            this.TotalSavingsCol,
-            this.Type,
-            this.DateModifiedCol,
-            this.FullName,
-            this.NestingLevel});
-            this.dataGridView1.DataSource = this.FileViewBindingSource;
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle11.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle11.Padding = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle11;
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(0, 63);
-            this.dataGridView1.Name = "dataGridView1";
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle12.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.RowHeadersDefaultCellStyle = dataGridViewCellStyle12;
-            this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(856, 294);
-            this.dataGridView1.TabIndex = 0;
-            this.dataGridView1.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridView1_CellFormatting);
-            this.dataGridView1.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseClick);
-            this.dataGridView1.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDoubleClick);
-            this.dataGridView1.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDown);
-            this.dataGridView1.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.dataGridView1_CellPainting);
-            this.dataGridView1.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.dataGridView1_RowPrePaint);
             // 
             // contextMenuStrip1
             // 
@@ -663,142 +579,54 @@ namespace System.Windows.Forms.Samples
             this.btnRefresh.UseVisualStyleBackColor = true;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
-            // dataGridViewImageColumn1
+            // tabControl1
             // 
-            this.dataGridViewImageColumn1.DataPropertyName = "Icon";
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopLeft;
-            dataGridViewCellStyle3.NullValue = ((object)(resources.GetObject("dataGridViewCellStyle3.NullValue")));
-            this.dataGridViewImageColumn1.DefaultCellStyle = dataGridViewCellStyle3;
-            this.dataGridViewImageColumn1.HeaderText = "";
-            this.dataGridViewImageColumn1.Name = "dataGridViewImageColumn1";
-            this.dataGridViewImageColumn1.ReadOnly = true;
-            this.dataGridViewImageColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.dataGridViewImageColumn1.Width = 20;
+            this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 63);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.ShowToolTips = true;
+            this.tabControl1.Size = new System.Drawing.Size(856, 294);
+            this.tabControl1.TabIndex = 8;
+            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
-            // NameCol
+            // tabPage3
             // 
-            this.NameCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.NameCol.ContextMenuStrip = this.contextMenuStrip1;
-            this.NameCol.DataPropertyName = "Name";
-            this.NameCol.FillWeight = 200F;
-            this.NameCol.HeaderText = "Name";
-            this.NameCol.Name = "NameCol";
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(848, 268);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "    +";
+            this.tabPage3.ToolTipText = "Add New Tab";
+            this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // HotKeyCol
+            // FileViewBindingSource2
             // 
-            this.HotKeyCol.DataPropertyName = "HotKey";
-            this.HotKeyCol.HeaderText = "HotKey";
-            this.HotKeyCol.Name = "HotKeyCol";
-            this.HotKeyCol.ReadOnly = true;
+            this.FileViewBindingSource2.DataSource = typeof(System.Windows.Forms.Samples.FileView);
             // 
-            // TotalExecutionsCol
+            // FileViewBindingSource3
             // 
-            this.TotalExecutionsCol.DataPropertyName = "TotalExecutions";
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.TotalExecutionsCol.DefaultCellStyle = dataGridViewCellStyle4;
-            this.TotalExecutionsCol.HeaderText = "Total Executions";
-            this.TotalExecutionsCol.Name = "TotalExecutionsCol";
-            this.TotalExecutionsCol.ReadOnly = true;
+            this.FileViewBindingSource3.DataSource = typeof(System.Windows.Forms.Samples.FileView);
             // 
-            // SuccessfulExecutionsCol
+            // FileViewBindingSource4
             // 
-            this.SuccessfulExecutionsCol.DataPropertyName = "SuccessfulExecutions";
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.SuccessfulExecutionsCol.DefaultCellStyle = dataGridViewCellStyle5;
-            this.SuccessfulExecutionsCol.HeaderText = "Successful Executions";
-            this.SuccessfulExecutionsCol.Name = "SuccessfulExecutionsCol";
-            this.SuccessfulExecutionsCol.ReadOnly = true;
-            this.SuccessfulExecutionsCol.Width = 75;
+            this.FileViewBindingSource4.DataSource = typeof(System.Windows.Forms.Samples.FileView);
             // 
-            // PercentCorrectCol
+            // FileViewBindingSource5
             // 
-            this.PercentCorrectCol.DataPropertyName = "PercentCorrect";
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.PercentCorrectCol.DefaultCellStyle = dataGridViewCellStyle6;
-            this.PercentCorrectCol.HeaderText = "Percent Correct";
-            this.PercentCorrectCol.Name = "PercentCorrectCol";
-            this.PercentCorrectCol.ReadOnly = true;
+            this.FileViewBindingSource5.DataSource = typeof(System.Windows.Forms.Samples.FileView);
             // 
-            // LastExecutedCol
+            // FileViewBindingSource6
             // 
-            this.LastExecutedCol.DataPropertyName = "LastExecuted";
-            this.LastExecutedCol.HeaderText = "Last Executed";
-            this.LastExecutedCol.Name = "LastExecutedCol";
-            this.LastExecutedCol.ReadOnly = true;
-            this.LastExecutedCol.Width = 125;
-            // 
-            // SizeCol
-            // 
-            this.SizeCol.DataPropertyName = "Size";
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.SizeCol.DefaultCellStyle = dataGridViewCellStyle7;
-            this.SizeCol.HeaderText = "Size";
-            this.SizeCol.Name = "SizeCol";
-            this.SizeCol.ReadOnly = true;
-            this.SizeCol.Width = 60;
-            // 
-            // AvgExecutionTimeCol
-            // 
-            this.AvgExecutionTimeCol.DataPropertyName = "AvgExecutionTime";
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.AvgExecutionTimeCol.DefaultCellStyle = dataGridViewCellStyle8;
-            this.AvgExecutionTimeCol.HeaderText = "Avg Time Secs";
-            this.AvgExecutionTimeCol.Name = "AvgExecutionTimeCol";
-            this.AvgExecutionTimeCol.ReadOnly = true;
-            // 
-            // ManualExecutionTimeCol
-            // 
-            this.ManualExecutionTimeCol.DataPropertyName = "ManualExecutionTime";
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.ManualExecutionTimeCol.DefaultCellStyle = dataGridViewCellStyle9;
-            this.ManualExecutionTimeCol.HeaderText = "Manual Time Secs";
-            this.ManualExecutionTimeCol.Name = "ManualExecutionTimeCol";
-            this.ManualExecutionTimeCol.ReadOnly = true;
-            this.ManualExecutionTimeCol.Width = 75;
-            // 
-            // TotalSavingsCol
-            // 
-            this.TotalSavingsCol.DataPropertyName = "TotalSavings";
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.TotalSavingsCol.DefaultCellStyle = dataGridViewCellStyle10;
-            this.TotalSavingsCol.HeaderText = "TotalSavings";
-            this.TotalSavingsCol.Name = "TotalSavingsCol";
-            this.TotalSavingsCol.ReadOnly = true;
-            // 
-            // Type
-            // 
-            this.Type.DataPropertyName = "Type";
-            this.Type.HeaderText = "Type";
-            this.Type.Name = "Type";
-            this.Type.ReadOnly = true;
-            // 
-            // DateModifiedCol
-            // 
-            this.DateModifiedCol.DataPropertyName = "DateModified";
-            this.DateModifiedCol.HeaderText = "Date Modified";
-            this.DateModifiedCol.Name = "DateModifiedCol";
-            this.DateModifiedCol.ReadOnly = true;
-            this.DateModifiedCol.Width = 150;
-            // 
-            // FullName
-            // 
-            this.FullName.DataPropertyName = "FullName";
-            this.FullName.HeaderText = "FullName";
-            this.FullName.Name = "FullName";
-            this.FullName.ReadOnly = true;
-            this.FullName.Visible = false;
-            // 
-            // NestingLevel
-            // 
-            this.NestingLevel.DataPropertyName = "NestingLevel";
-            this.NestingLevel.HeaderText = "NestingLevel";
-            this.NestingLevel.Name = "NestingLevel";
-            this.NestingLevel.Visible = false;
+            this.FileViewBindingSource6.DataSource = typeof(System.Windows.Forms.Samples.FileView);
             // 
             // ExplorerView
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.ClientSize = new System.Drawing.Size(856, 357);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.btnExpanAll);
             this.Controls.Add(this.btnCollapseAll);
@@ -806,28 +634,30 @@ namespace System.Windows.Forms.Samples
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnVisualStudio);
             this.Controls.Add(this.btnRun);
-            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.toolBar);
             this.Controls.Add(this.mainMenu);
             this.Name = "ExplorerView";
             this.Text = "[File Name]";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.ExplorerView_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource)).EndInit();
             this.toolBar.ResumeLayout(false);
             this.toolBar.PerformLayout();
             this.mainMenu.ResumeLayout(false);
             this.mainMenu.PerformLayout();
+            this.tabControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource5)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource6)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.BindingSource FileViewBindingSource;
         private System.Windows.Forms.ToolStrip toolBar;
         private System.Windows.Forms.ToolStripDropDownButton backSplitButton;
@@ -886,21 +716,13 @@ namespace System.Windows.Forms.Samples
         private ToolStripMenuItem wordPadToolStripMenuItem;
         private ToolStripMenuItem toolStripMenuItem4;
         private ToolStripMenuItem toolStripMenuItem5;
-        private DataGridViewImageColumn dataGridViewImageColumn1;
-        private DataGridViewTextBoxColumn NameCol;
-        private DataGridViewTextBoxColumn HotKeyCol;
-        private DataGridViewTextBoxColumn TotalExecutionsCol;
-        private DataGridViewTextBoxColumn SuccessfulExecutionsCol;
-        private DataGridViewTextBoxColumn PercentCorrectCol;
-        private DataGridViewTextBoxColumn LastExecutedCol;
-        private DataGridViewTextBoxColumn SizeCol;
-        private DataGridViewTextBoxColumn AvgExecutionTimeCol;
-        private DataGridViewTextBoxColumn ManualExecutionTimeCol;
-        private DataGridViewTextBoxColumn TotalSavingsCol;
-        private DataGridViewTextBoxColumn Type;
-        private DataGridViewTextBoxColumn DateModifiedCol;
-        private DataGridViewTextBoxColumn FullName;
-        private DataGridViewTextBoxColumn NestingLevel;
+        private TabControl tabControl1;
+        private BindingSource FileViewBindingSource2;
+        private TabPage tabPage3;
+        private BindingSource FileViewBindingSource3;
+        private BindingSource FileViewBindingSource4;
+        private BindingSource FileViewBindingSource5;
+        private BindingSource FileViewBindingSource6;
     }
 }
 

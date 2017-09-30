@@ -62,6 +62,7 @@
     <Compile Include="Common.cs" />
     <None Include="Images\plus.png" />
     <None Include="Images\minus.png" />
+    <Content Include="Images\icon_close.png" />
     <Content Include="Images\minus_a5g_icon.ico" />
     <Content Include="Images\plus_Pu6_icon.ico" />
     <Content Include="Resources\112_Minus_Grey.ico" />
