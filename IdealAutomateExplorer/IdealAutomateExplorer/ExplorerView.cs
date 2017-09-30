@@ -2463,12 +2463,13 @@ namespace System.Windows.Forms.Samples {
             // 
             // NameCol
             // 
-            NameCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            NameCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             NameCol.ContextMenuStrip = contextMenuStrip1;
             NameCol.DataPropertyName = "Name";
-            NameCol.FillWeight = 200F;
+           // NameCol.FillWeight = 200F;
             NameCol.HeaderText = "Name";
             NameCol.Name = "NameCol";
+            NameCol.Width = 300;
             // 
             // contextMenuStrip1
             // 
