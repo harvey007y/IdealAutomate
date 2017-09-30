@@ -2365,13 +2365,7 @@ namespace System.Windows.Forms.Samples {
             this.favoritesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnRun = new System.Windows.Forms.Button();
-            this.btnVisualStudio = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.lblTotalSavings = new System.Windows.Forms.Label();
-            this.btnCollapseAll = new System.Windows.Forms.Button();
-            this.btnExpanAll = new System.Windows.Forms.Button();
-            this.btnRefresh = new System.Windows.Forms.Button();
+
 
 
 
