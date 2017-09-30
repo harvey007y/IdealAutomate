@@ -81,8 +81,9 @@ namespace System.Windows.Forms.Samples {
                     nextIndex = i + 1;
                     string nextInitialDirectory = myActions.GetValueByKey("InitialDirectory" + nextIndex.ToString());
                     myActions.SetValueByKey("InitialDirectory" + i.ToString(), nextInitialDirectory);
-                    myActions.SetValueByKey("NumOfTabs", this.tabControl1.TabPages.Count.ToString());
+                   
                 }
+                myActions.SetValueByKey("NumOfTabs", this.tabControl1.TabPages.Count.ToString());
             }
         }
 
