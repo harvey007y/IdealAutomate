@@ -67,6 +67,10 @@ namespace System.Windows.Forms.Samples {
                 //Getting the position of the "x" mark.
                 Rectangle closeButton = new Rectangle(r.Right - 15, r.Top + 4, 9, 7);
                 if (closeButton.Contains(e.Location)) {
+                    if (tabControl1.TabPages.Count == 2) {
+                        MessageBox.Show("You can not remove all tabs");
+                        break;
+                    }
                     if (MessageBox.Show("Would you like to Close this Tab?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
                         this.tabControl1.TabPages.RemoveAt(i);
                         removedIndex = i;
@@ -176,6 +180,10 @@ namespace System.Windows.Forms.Samples {
             int numOfTabs = myActions.GetValueByKeyAsInt("NumOfTabs");
             if (numOfTabs < 2) {
                 numOfTabs = 2;
+                myActions.SetValueByKey("NumOfTabs", numOfTabs.ToString());
+                myActions.SetValueByKey("InitialDirectory0", Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
+                myActions.SetValueByKey("InitialDirectory1", Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
+
             }
 
 
@@ -287,8 +295,14 @@ namespace System.Windows.Forms.Samples {
                 }
                 _IconRectangle = e.CellBounds;
                 // Draw right aligned icon (1 pixed padding)
-                e.Graphics.DrawIcon(icon, e.CellBounds.Width - icon.Width - 1, e.CellBounds.Y + 1);
-                e.Handled = true;
+                try {
+                    e.Graphics.DrawIcon(icon, e.CellBounds.Width - icon.Width - 1, e.CellBounds.Y + 1);
+                } catch (Exception ex) {
+
+                    MessageBox.Show(ex.Message);
+                } finally {
+                    e.Handled = true;
+                }
             }
         }
 
