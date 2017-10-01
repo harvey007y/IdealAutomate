@@ -30,7 +30,7 @@ namespace System.Windows.Forms.Samples
             _oper = AsyncOperationManager.CreateOperation(null);
 
             // Fill
-            Fill(dir);
+            Fill(dir, true);
 
             // Setup the FileSystemWatcher
             FileSystemWatcher fsw = new FileSystemWatcher(dir);
@@ -46,7 +46,28 @@ namespace System.Windows.Forms.Samples
             WriteDebugThreadInfo("DirectoryView");
         }
 
-        private void Fill(string dir)
+        public DirectoryView(string dir, bool fillDir) {
+            // Setup Async
+            _oper = AsyncOperationManager.CreateOperation(null);
+
+            // Fill
+            Fill(dir, fillDir);
+
+            // Setup the FileSystemWatcher
+            FileSystemWatcher fsw = new FileSystemWatcher(dir);
+            fsw.EnableRaisingEvents = true;
+
+            fsw.NotifyFilter = NotifyFilters.DirectoryName | NotifyFilters.FileName | NotifyFilters.LastWrite | NotifyFilters.LastAccess;
+            fsw.Changed += new FileSystemEventHandler(FileSystem_Changed);
+            fsw.Created += new FileSystemEventHandler(FileSystem_Created);
+            fsw.Deleted += new FileSystemEventHandler(FileSystem_Deleted);
+            fsw.Renamed += new RenamedEventHandler(FileSystem_Renamed);
+
+            // Debug info
+            WriteDebugThreadInfo("DirectoryView");
+        }
+
+        private void Fill(string dir,bool fillDir)
         {
             Methods myActions = new Methods();
             myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
@@ -63,71 +84,71 @@ namespace System.Windows.Forms.Samples
             _directory = new FileView(info);
 
             // Load child files and directories
-            foreach (FileSystemInfo di in info.GetDirectories())
-            {
-                this.Add(new FileView(di));
-                FileView myFileView = new FileView(di);
-                
-                if (myFileView.CategoryState == "Expanded") {
-                    _nestingLevel++;
-                    myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
-                    DirectoryInfo info2 = new DirectoryInfo(di.FullName);
-                    foreach (FileSystemInfo di2 in info2.GetDirectories()) {
-                        string categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToPublicPath(di2.FullName));
-                        this.Add(new FileView(di2));
-                        FileView myFileView2 = new FileView(di2);
-                        if (myFileView2.CategoryState == "Expanded") {
-                            _nestingLevel++;
-                            myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
-                            DirectoryInfo info3 = new DirectoryInfo(di2.FullName);
-                            foreach (FileSystemInfo di3 in info3.GetDirectories()) {
-                                categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToPublicPath(di3.FullName));
-                                this.Add(new FileView(di3));
-                                FileView myFileView3 = new FileView(di3);
-                                if (myFileView3.CategoryState == "Expanded") {
-                                    DirectoryInfo info4 = new DirectoryInfo(di3.FullName);
-                                    _nestingLevel++;
-                                    myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
-                                    foreach (FileSystemInfo di4 in info4.GetDirectories()) {
-                                        categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToPublicPath(di4.FullName));
-                                        this.Add(new FileView(di4));
-                                        FileView myFileView4 = new FileView(di4);
-                                        if (myFileView4.CategoryState == "Expanded") {
-                                            DirectoryInfo info5 = new DirectoryInfo(di4.FullName);                                           
-                                            foreach (FileSystemInfo fi in info5.GetFiles()) {
-                                                this.Add(new FileView(fi));
+            if (fillDir) {
+                foreach (FileSystemInfo di in info.GetDirectories()) {
+                    this.Add(new FileView(di));
+                    FileView myFileView = new FileView(di);
+
+                    if (myFileView.CategoryState == "Expanded") {
+                        _nestingLevel++;
+                        myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
+                        DirectoryInfo info2 = new DirectoryInfo(di.FullName);
+                        foreach (FileSystemInfo di2 in info2.GetDirectories()) {
+                            string categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToPublicPath(di2.FullName));
+                            this.Add(new FileView(di2));
+                            FileView myFileView2 = new FileView(di2);
+                            if (myFileView2.CategoryState == "Expanded") {
+                                _nestingLevel++;
+                                myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
+                                DirectoryInfo info3 = new DirectoryInfo(di2.FullName);
+                                foreach (FileSystemInfo di3 in info3.GetDirectories()) {
+                                    categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToPublicPath(di3.FullName));
+                                    this.Add(new FileView(di3));
+                                    FileView myFileView3 = new FileView(di3);
+                                    if (myFileView3.CategoryState == "Expanded") {
+                                        DirectoryInfo info4 = new DirectoryInfo(di3.FullName);
+                                        _nestingLevel++;
+                                        myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
+                                        foreach (FileSystemInfo di4 in info4.GetDirectories()) {
+                                            categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToPublicPath(di4.FullName));
+                                            this.Add(new FileView(di4));
+                                            FileView myFileView4 = new FileView(di4);
+                                            if (myFileView4.CategoryState == "Expanded") {
+                                                DirectoryInfo info5 = new DirectoryInfo(di4.FullName);
+                                                foreach (FileSystemInfo fi in info5.GetFiles()) {
+                                                    this.Add(new FileView(fi));
+                                                }
+                                                _nestingLevel--;
+                                                myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
                                             }
-                                            _nestingLevel--;
-                                            myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
                                         }
-                                    }
 
-                                    foreach (FileSystemInfo fi in info4.GetFiles()) {
-                                        this.Add(new FileView(fi));
+                                        foreach (FileSystemInfo fi in info4.GetFiles()) {
+                                            this.Add(new FileView(fi));
+                                        }
+                                        _nestingLevel--;
+                                        myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
                                     }
-                                    _nestingLevel--;
-                                    myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
                                 }
+                                foreach (FileSystemInfo fi in info3.GetFiles()) {
+                                    this.Add(new FileView(fi));
+                                }
+                                _nestingLevel--;
+                                myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
                             }
-                            foreach (FileSystemInfo fi in info3.GetFiles()) {
-                                this.Add(new FileView(fi));
-                            }
-                            _nestingLevel--;
-                            myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
                         }
-                    }
 
-                    foreach (FileSystemInfo fi in info2.GetFiles()) {
-                        this.Add(new FileView(fi));
+                        foreach (FileSystemInfo fi in info2.GetFiles()) {
+                            this.Add(new FileView(fi));
+                        }
+                        _nestingLevel--;
+                        myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
                     }
-                    _nestingLevel--;
-                    myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
                 }
-            }
 
-            foreach (FileSystemInfo fi in info.GetFiles())
-            {
-                this.Add(new FileView(fi));
+                foreach (FileSystemInfo fi in info.GetFiles()) {
+                    this.Add(new FileView(fi));
+                }
             }
 
             // Resume ListChanged events
@@ -147,7 +168,7 @@ namespace System.Windows.Forms.Samples
             if (fv.IsDirectory)
             {
                 // Reload the list
-                Fill(fv.FullName);
+                Fill(fv.FullName, true);
             }
             else
             {
@@ -165,7 +186,7 @@ namespace System.Windows.Forms.Samples
 
             if (null != parent)
             {
-                Fill(parent.FullName);
+                Fill(parent.FullName, true);
             }
         }
 

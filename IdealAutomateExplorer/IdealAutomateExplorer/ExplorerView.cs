@@ -31,7 +31,7 @@ namespace System.Windows.Forms.Samples {
         Rectangle _IconRectangle = new Rectangle();
         List<HotKeyRecord> listHotKeyRecords = new List<HotKeyRecord>();
         Dictionary<string, VirtualKeyCode> dictVirtualKeyCodes = new Dictionary<string, VirtualKeyCode>();
-        List<BindingSource> listBindingSource= new List<BindingSource>();
+        List<BindingSource> listBindingSource = new List<BindingSource>();
         private Point _imageLocation = new Point(13, 5);
         private Point _imgHitArea = new Point(13, 2);
         const int LEADING_SPACE = 12;
@@ -54,10 +54,10 @@ namespace System.Windows.Forms.Samples {
 
             tabControl1.DrawItem += TabControl1_DrawItem;
             tabControl1.Padding = new Point(20, 3);
-            tabControl1.MouseClick += TabControl1_MouseClick;            
+            tabControl1.MouseClick += TabControl1_MouseClick;
         }
 
-  
+
 
         private void TabControl1_MouseClick(object sender, MouseEventArgs e) {
             //Looping through the controls.
@@ -81,7 +81,7 @@ namespace System.Windows.Forms.Samples {
                     nextIndex = i + 1;
                     string nextInitialDirectory = myActions.GetValueByKey("InitialDirectory" + nextIndex.ToString());
                     myActions.SetValueByKey("InitialDirectory" + i.ToString(), nextInitialDirectory);
-                   
+
                 }
                 myActions.SetValueByKey("NumOfTabs", this.tabControl1.TabPages.Count.ToString());
             }
@@ -96,10 +96,10 @@ namespace System.Windows.Forms.Samples {
             }
             e.DrawFocusRectangle();
             //This code will render a "x" mark at the end of the Tab caption.
-            if (e.Index != tabControl1.TabCount - 1) {               
-                e.Graphics.DrawString("x", e.Font, Brushes.Black, e.Bounds.Right  - CLOSE_AREA, e.Bounds.Top + 4);
+            if (e.Index != tabControl1.TabCount - 1) {
+                e.Graphics.DrawString("x", e.Font, Brushes.Black, e.Bounds.Right - CLOSE_AREA, e.Bounds.Top + 4);
             }
-            
+
             e.Graphics.DrawString(this.tabControl1.TabPages[e.Index].Text, e.Font, Brushes.Black, e.Bounds.Left + LEADING_SPACE, e.Bounds.Top + 4);
 
 
@@ -174,8 +174,8 @@ namespace System.Windows.Forms.Samples {
             int intTotalSavingsForAllScripts = 0;
             Methods myActions = new Methods();
             int numOfTabs = myActions.GetValueByKeyAsInt("NumOfTabs");
-            if (numOfTabs < 1) {
-                numOfTabs = 1;
+            if (numOfTabs < 2) {
+                numOfTabs = 2;
             }
 
 
@@ -186,15 +186,21 @@ namespace System.Windows.Forms.Samples {
                 if (Directory.Exists(strSavedDirectory1)) {
                     strInitialDirectory = strSavedDirectory1;
                 }
-                _dir = new DirectoryView(strInitialDirectory);
-                this._CurrentFileViewBindingSource.DataSource = _dir;
+                bool fillDirectory = false;
+                if (i == tabControl1.SelectedIndex) {
+                    fillDirectory = true;
+                }
+                _dir = new DirectoryView(strInitialDirectory,fillDirectory);
+                    this._CurrentFileViewBindingSource.DataSource = _dir;
+                
                     tabControl1.TabPages[i].Text = _dir.FileView.Name;
                     tabControl1.TabPages[i].ToolTipText = _dir.FileView.FullName;
-                  _CurrentIndex = i;
-                AddDataGridToTab();
+                    _CurrentIndex = i;
+                    AddDataGridToTab();
                 
+
             }
-            
+
             strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             // Set Initial Directory to My Documents
             string strSavedDirectory2 = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
@@ -205,10 +211,10 @@ namespace System.Windows.Forms.Samples {
             this._CurrentFileViewBindingSource.DataSource = _dir;
             tabControl1.TabPages[tabControl1.SelectedIndex].Text = _dir.FileView.Name;
             _CurrentIndex = tabControl1.SelectedIndex;
-           // AddDataGridToTab();
+            // AddDataGridToTab();
 
-                _CurrentDataGridView = (DataGridView)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
-                _CurrentFileViewBindingSource = listBindingSource[tabControl1.SelectedIndex];
+            _CurrentDataGridView = (DataGridView)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
+            _CurrentFileViewBindingSource = listBindingSource[tabControl1.SelectedIndex];
 
             RefreshDataGrid();
             strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
@@ -2250,7 +2256,7 @@ namespace System.Windows.Forms.Samples {
                 }
 
                 AddDataGridToTab();
-             
+
                 myActions.SetValueByKey("NumOfTabs", (tabControl1.TabCount).ToString());
                 strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
                 // Set Initial Directory to My Documents
@@ -2262,16 +2268,16 @@ namespace System.Windows.Forms.Samples {
                 this._CurrentFileViewBindingSource.DataSource = _dir;
                 tabControl1.TabPages[tabControl1.SelectedIndex].Text = _dir.FileView.Name;
                 tabControl1.TabPages[tabControl1.SelectedIndex].ToolTipText = _dir.FileView.FullName;
-                
+
             }
             _CurrentDataGridView = (DataGridView)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
             _CurrentFileViewBindingSource = listBindingSource[tabControl1.SelectedIndex];
-           
+
             RefreshDataGrid();
         }
 
         private void AddDataGridToTab() {
-            tabControl1.TabPages.Insert(_CurrentIndex + 1, "    +");           
+            tabControl1.TabPages.Insert(_CurrentIndex + 1, "    +");
             DataGridView myDataGridView = new DataGridView();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -2417,7 +2423,7 @@ namespace System.Windows.Forms.Samples {
              DateModifiedCol,
              FullName,
              NestingLevel});
-          //  myDataGridView.DataSource = this.FileViewBindingSource;
+            //  myDataGridView.DataSource = this.FileViewBindingSource;
             dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle11.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -2466,7 +2472,7 @@ namespace System.Windows.Forms.Samples {
             NameCol.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
             NameCol.ContextMenuStrip = contextMenuStrip1;
             NameCol.DataPropertyName = "Name";
-           // NameCol.FillWeight = 200F;
+            // NameCol.FillWeight = 200F;
             NameCol.HeaderText = "Name";
             NameCol.Name = "NameCol";
             NameCol.Width = 300;
