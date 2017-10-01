@@ -2667,6 +2667,7 @@ namespace System.Windows.Forms.Samples {
             NestingLevel.HeaderText = "NestingLevel";
             NestingLevel.Name = "NestingLevel";
             NestingLevel.Visible = false;
+            this.contextMenuStrip1.ResumeLayout(false);
             // 
             // FileViewBindingSource
             // 
