@@ -178,6 +178,7 @@ namespace System.Windows.Forms.Samples {
             int intTotalSavingsForAllScripts = 0;
             Methods myActions = new Methods();
             int numOfTabs = myActions.GetValueByKeyAsInt("NumOfTabs");
+            // default to desktop if they have no tabs
             if (numOfTabs < 2) {
                 numOfTabs = 2;
                 myActions.SetValueByKey("NumOfTabs", numOfTabs.ToString());
@@ -186,7 +187,10 @@ namespace System.Windows.Forms.Samples {
 
             }
 
+            // for each tab, add name and tooltip;
 
+            // if an initial directory does not exist for a tab,
+            // default to the documents folder for that tab
             for (int i = 0; i < numOfTabs - 1; i++) {
                 strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
                 // Set Initial Directory to My Documents
@@ -194,11 +198,10 @@ namespace System.Windows.Forms.Samples {
                 if (Directory.Exists(strSavedDirectory1)) {
                     strInitialDirectory = strSavedDirectory1;
                 }
-                bool fillDirectory = false;
-                if (i == tabControl1.SelectedIndex) {
-                    fillDirectory = true;
-                }
-                _dir = new DirectoryView(strInitialDirectory,fillDirectory);
+
+                // do not fill the directory because first time through
+                // we are just addding name and tooltip to each tab
+                _dir = new DirectoryView(strInitialDirectory,false);
                     this._CurrentFileViewBindingSource.DataSource = _dir;
                 
                     tabControl1.TabPages[i].Text = _dir.FileView.Name;
@@ -209,6 +212,13 @@ namespace System.Windows.Forms.Samples {
 
             }
 
+            // fill the directory for the selected tab with everything under 
+            // that tabs initial directory
+
+            // we are skipping the following load of the directory because
+            // it seems to be redundant, but we may need to reinstate
+            // if categories do not expand and collapse correctly
+            goto testskip;
             strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             // Set Initial Directory to My Documents
             string strSavedDirectory2 = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
@@ -220,6 +230,8 @@ namespace System.Windows.Forms.Samples {
             tabControl1.TabPages[tabControl1.SelectedIndex].Text = _dir.FileView.Name;
             _CurrentIndex = tabControl1.SelectedIndex;
             // AddDataGridToTab();
+
+            testskip:
 
             _CurrentDataGridView = (DataGridView)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
             _CurrentFileViewBindingSource = listBindingSource[tabControl1.SelectedIndex];
@@ -288,7 +300,7 @@ namespace System.Windows.Forms.Samples {
 
         private void dataGridView1_CellPainting(object sender, DataGridViewCellPaintingEventArgs e) {
             Icon icon = (e.Value as Icon);
-
+     
             if (null != icon) {
                 using (SolidBrush b = new SolidBrush(e.CellStyle.BackColor)) {
                     e.Graphics.FillRectangle(b, e.CellBounds);
@@ -296,7 +308,15 @@ namespace System.Windows.Forms.Samples {
                 _IconRectangle = e.CellBounds;
                 // Draw right aligned icon (1 pixed padding)
                 try {
-                    e.Graphics.DrawIcon(icon, e.CellBounds.Width - icon.Width - 1, e.CellBounds.Y + 1);
+                    int myX = e.CellBounds.Width - icon.Width - 1;
+                    int myY = e.CellBounds.Y + 1;
+                    if (myX < 1) {
+                        myX = 15;
+                    }
+                    if (myY < 1) {
+                        myY = 15;
+                    }
+                    e.Graphics.DrawIcon(icon, myX, myY);
                 } catch (Exception ex) {
 
                     MessageBox.Show(ex.Message);
@@ -1423,7 +1443,7 @@ namespace System.Windows.Forms.Samples {
                     bool boolNewItem = false;
 
                     alHostsNew.Add(myCbp);
-                    if (alHostx.Count > 14) {
+                    if (alHostx.Count > 24) {
                         for (int i = alHostx.Count - 1; i > 0; i--) {
                             if (alHostx[i]._Key.Trim() != "--Select Item ---") {
                                 alHostx.RemoveAt(i);
@@ -1617,7 +1637,7 @@ namespace System.Windows.Forms.Samples {
                     bool boolNewItem = false;
 
                     alHostsNew.Add(myCbp);
-                    if (alHostx.Count > 14) {
+                    if (alHostx.Count > 24) {
                         for (int i = alHostx.Count - 1; i > 0; i--) {
                             if (alHostx[i]._Key.Trim() != "--Select Item ---") {
                                 alHostx.RemoveAt(i);
@@ -2227,7 +2247,7 @@ namespace System.Windows.Forms.Samples {
                         bool boolNewItem = false;
 
                         alHostsNew.Add(myCbp);
-                        if (alHostx.Count > 14) {
+                        if (alHostx.Count > 24) {
                             for (int i = alHostx.Count - 1; i > 0; i--) {
                                 if (alHostx[i]._Key.Trim() != "--Select Item ---") {
                                     alHostx.RemoveAt(i);

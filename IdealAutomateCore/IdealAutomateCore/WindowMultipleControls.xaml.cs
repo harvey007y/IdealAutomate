@@ -395,7 +395,7 @@ namespace IdealAutomate.Core {
                         alHostsNew.Add(item);
                     }               
             }
-            if (alHostsNew.Count > 14) {
+            if (alHostsNew.Count > 24) {
                 for (int i = alHostsNew.Count - 1; i > 0; i--) {
                     if (alHostsNew[i]._Key.Trim() != "--Select Item ---") {
                         alHostsNew.RemoveAt(i);
