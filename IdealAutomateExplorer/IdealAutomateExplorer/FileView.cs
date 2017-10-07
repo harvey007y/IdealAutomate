@@ -151,12 +151,8 @@ namespace System.Windows.Forms.Samples
 
             try
             {
-                _icon = System.Drawing.Icon.FromHandle(info.hIcon);
-                string myProjectSourcePath = myActions.GetPathForScriptNoBinDebug();
-                string initialDirectory = myActions.GetValueByKeyForNonCurrentScript("InitialDirectory", myActions.ConvertFullFileNameToScriptPath(myProjectSourcePath));
-            
-                  string  scriptName = myActions.ConvertFullFileNameToPublicPath(fileInfo.FullName) + "\\" + fileInfo.Name; 
-       
+                _icon = System.Drawing.Icon.FromHandle(info.hIcon);               
+                string scriptName = myActions.ConvertFullFileNameToPublicPath(fileInfo.FullName) + "\\" + fileInfo.Name; 
                 string categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", scriptName);
                 string expandCollapseAll = myActions.GetValueByKey("ExpandCollapseAll");
 

@@ -43,7 +43,7 @@ namespace System.Windows.Forms.Samples {
 
         public ExplorerView() {
             InitializeComponent();
-            for (int i = 0; i < 50; i++) {
+            for (int i = 0; i < 20; i++) {
                 BindingSource myNewBindingSource = new BindingSource();
                 listBindingSource.Add(myNewBindingSource);
             }
@@ -101,15 +101,11 @@ namespace System.Windows.Forms.Samples {
             e.DrawFocusRectangle();
             //This code will render a "x" mark at the end of the Tab caption.
             if (e.Index != tabControl1.TabCount - 1) {
-                e.Graphics.DrawString("x", e.Font, Brushes.Black, e.Bounds.Right - CLOSE_AREA, e.Bounds.Top + 4);
+                e.Graphics.DrawString("x", e.Font, new SolidBrush(Color.Black), e.Bounds.Right - CLOSE_AREA, e.Bounds.Top + 4);
             }
 
-            e.Graphics.DrawString(this.tabControl1.TabPages[e.Index].Text, e.Font, Brushes.Black, e.Bounds.Left + LEADING_SPACE, e.Bounds.Top + 4);
-
-
-
-
-
+            e.Graphics.DrawString(this.tabControl1.TabPages[e.Index].Text, e.Font, new SolidBrush(Color.Black), e.Bounds.Left + LEADING_SPACE, e.Bounds.Top + 4);
+            
 
         }
 

@@ -1933,8 +1933,8 @@ namespace IdealAutomate.Core {
             // this will exit on the first one that it finds
 
             for (int i = 0; i < myParms.lsBeginDelim.Count; i++) {
-                string strBeginDelim = myParms.lsBeginDelim[i];
-                string strEndDelim = myParms.lsEndDelim[i];
+                string strBeginDelim = myParms.lsBeginDelim[i].ToUpper();
+                string strEndDelim = myParms.lsEndDelim[i].ToUpper();
                 // Find location of beginning delim
                 int intBeginDelimLength = strBeginDelim.Length;
 
@@ -1942,7 +1942,7 @@ namespace IdealAutomate.Core {
                 int indexBeginDelim = myLine.ToUpper().IndexOf(strBeginDelim);
                 // Get the rest of the line after Begin Delim
                 if (indexBeginDelim == -1) {
-                    if (myParms.intLineCtr < myParms.lines.Count()) {
+                    if (myParms.intLineCtr < myParms.lines.Count() - 1) {
                         myParms.intLineCtr++;
                         myLine = myParms.lines[myParms.intLineCtr];
                         goto LookForBeginDelim;
@@ -1976,9 +1976,9 @@ namespace IdealAutomate.Core {
 
                 LookForEndDelim:
 
-                int indexEndDelim = d.IndexOf(strEndDelim);
+                int indexEndDelim = d.ToUpper().IndexOf(strEndDelim);
                 if (indexEndDelim == -1) {
-                    if (myParms.intLineCtr < myParms.lines.Count()) {
+                    if (myParms.intLineCtr < myParms.lines.Count() - 1) {
                         myParms.intLineCtr++;
                         myLine = myParms.lines[myParms.intLineCtr];
                         goto LookForEndDelim;
@@ -2773,9 +2773,9 @@ namespace IdealAutomate.Core {
             int intIndex = fullFileName.LastIndexOf(@"\");
             if (intIndex > -1) {
                 fullFileName = fullFileName.Substring(0, intIndex);
-            }  
+            }
             string scriptPath = fullFileName;
-            scriptPath = scriptPath.Replace(":","+").Replace(@"\","-");
+            scriptPath = scriptPath.Replace(":", "+").Replace(@"\", "-");
             return scriptPath;
         }
 
@@ -2784,7 +2784,7 @@ namespace IdealAutomate.Core {
             if (intIndex > -1) {
                 fullFileName = fullFileName.Substring(0, intIndex);
             }
-            string scriptPath = fullFileName; 
+            string scriptPath = fullFileName;
             return scriptPath;
         }
 
