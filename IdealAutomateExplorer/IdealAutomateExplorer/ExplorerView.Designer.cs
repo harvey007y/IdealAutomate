@@ -94,6 +94,7 @@ namespace System.Windows.Forms.Samples
             this.FileViewBindingSource4 = new System.Windows.Forms.BindingSource(this.components);
             this.FileViewBindingSource5 = new System.Windows.Forms.BindingSource(this.components);
             this.FileViewBindingSource6 = new System.Windows.Forms.BindingSource(this.components);
+            this.lblIdealAutomateExplorer = new System.Windows.Forms.Label();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource)).BeginInit();
             this.toolBar.SuspendLayout();
@@ -622,10 +623,22 @@ namespace System.Windows.Forms.Samples
             // 
             this.FileViewBindingSource6.DataSource = typeof(System.Windows.Forms.Samples.FileView);
             // 
+            // lblIdealAutomateExplorer
+            // 
+            this.lblIdealAutomateExplorer.AutoSize = true;
+            this.lblIdealAutomateExplorer.Font = new System.Drawing.Font("Century Schoolbook", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblIdealAutomateExplorer.ForeColor = System.Drawing.Color.Red;
+            this.lblIdealAutomateExplorer.Location = new System.Drawing.Point(466, 0);
+            this.lblIdealAutomateExplorer.Name = "lblIdealAutomateExplorer";
+            this.lblIdealAutomateExplorer.Size = new System.Drawing.Size(212, 20);
+            this.lblIdealAutomateExplorer.TabIndex = 9;
+            this.lblIdealAutomateExplorer.Text = "Ideal Automate Explorer";
+            // 
             // ExplorerView
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.ClientSize = new System.Drawing.Size(856, 357);
+            this.Controls.Add(this.lblIdealAutomateExplorer);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.btnExpanAll);
@@ -640,6 +653,7 @@ namespace System.Windows.Forms.Samples
             this.Text = "[File Name]";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.ExplorerView_Load);
+            this.ClientSizeChanged += new System.EventHandler(this.ExplorerView_ClientSizeChanged);
             this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource)).EndInit();
             this.toolBar.ResumeLayout(false);
@@ -723,6 +737,7 @@ namespace System.Windows.Forms.Samples
         private BindingSource FileViewBindingSource4;
         private BindingSource FileViewBindingSource5;
         private BindingSource FileViewBindingSource6;
+        private Label lblIdealAutomateExplorer;
     }
 }
 

@@ -172,6 +172,7 @@ namespace System.Windows.Forms.Samples {
         private void ExplorerView_Load(object sender, EventArgs e) {
             _CurrentDataGridView.ClearSelection();
             int intTotalSavingsForAllScripts = 0;
+            lblIdealAutomateExplorer.Left = (this.ClientSize.Width - lblIdealAutomateExplorer.Width) / 2;
             Methods myActions = new Methods();
             int numOfTabs = myActions.GetValueByKeyAsInt("NumOfTabs");
             // default to desktop if they have no tabs
@@ -2717,6 +2718,10 @@ namespace System.Windows.Forms.Samples {
             } else {
                 tabControl1.TabPages[_CurrentIndex].Controls.Add(myDataGridView);
             }
+        }
+
+        private void ExplorerView_ClientSizeChanged(object sender, EventArgs e) {
+            lblIdealAutomateExplorer.Left = (this.ClientSize.Width - lblIdealAutomateExplorer.Width) / 2;
         }
     }
 
