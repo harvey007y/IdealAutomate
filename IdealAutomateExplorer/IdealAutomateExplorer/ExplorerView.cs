@@ -265,20 +265,7 @@ namespace System.Windows.Forms.Samples {
                 this._CurrentDataGridView.Rows[0].Cells[col.Index].Selected = true;
             }
             AddGlobalHotKeys();
-            foreach (DataGridViewRow item in _CurrentDataGridView.Rows) {
-                intTotalSavingsForAllScripts += (int)item.Cells["TotalSavingsCol"].Value;
-            }
-            TimeSpan diff = TimeSpan.FromSeconds(intTotalSavingsForAllScripts);
-            string formatted = string.Format(
-                  CultureInfo.CurrentCulture,
-                  "{0} years, {1} months, {2} days, {3} hours, {4} minutes, {5} seconds",
-                  diff.Days / 365,
-                  (diff.Days - (diff.Days / 365) * 365) / 30,
-                  (diff.Days - (diff.Days / 365) * 365) - ((diff.Days - (diff.Days / 365) * 365) / 30) * 30,
-                  diff.Hours,
-                  diff.Minutes,
-                  diff.Seconds);
-            lblTotalSavings.Text = formatted;
+            
             myActions.SetValueByKey("ExpandCollapseAll", "");
         }
 
@@ -458,49 +445,10 @@ namespace System.Windows.Forms.Samples {
 
 
 
-        private void btnRun_Click(object sender, EventArgs e) {
 
-            FileView myFileView;
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
-                //MessageBox.Show(myFileView.FullName.ToString());
-                if (myFileView.IsDirectory) {
-                    // Call EnumerateFiles in a foreach-loop.
-                    foreach (string file in Directory.EnumerateFiles(myFileView.FullName.ToString(),
-                       myFileView.Name + ".exe",
-                        SearchOption.AllDirectories)) {
-                        // Display file path.
-                        if (file.Contains("bin\\Debug")) {
-                            ev_Process_File(file);
-                        }
-                    }
-
-                } else {
-                    ev_Process_File(myFileView.FullName.ToString());
-                }
-
-            }
-
-        }
 
         private void btnVisualStudio_Click(object sender, EventArgs e) {
-            FileView myFileView;
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
-                //MessageBox.Show(myFileView.FullName.ToString());
-                if (myFileView.IsDirectory) {
-                    // Call EnumerateFiles in a foreach-loop.
-                    foreach (string file in Directory.EnumerateFiles(myFileView.FullName.ToString(),
-                       myFileView.Name + ".sln",
-                        SearchOption.AllDirectories)) {
-                        // Display file path.
-                        ev_Process_File(file);
-                    }
 
-                } else {
-                    ev_Process_File(myFileView.FullName.ToString());
-                }
-            }
         }
 
 
@@ -1200,10 +1148,6 @@ namespace System.Windows.Forms.Samples {
             RefreshDataGrid();
         }
 
-        private void btnRefresh_Click(object sender, EventArgs e) {
-            RefreshDataGrid();
-        }
-
         private void RefreshDataGrid() {
             // refresh datagridview
             strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
@@ -1226,18 +1170,9 @@ namespace System.Windows.Forms.Samples {
             //   this._CurrentDataGridView.Sort(_CurrentDataGridView.Columns[1], ListSortDirection.Ascending);
         }
 
-        private void btnExpanAll_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
-            myActions.SetValueByKey("ExpandCollapseAll", "Expand");
-            RefreshDataGrid();
-        }
 
-        private void btnCollapseAll_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
-            myActions.SetValueByKey("ExpandCollapseAll", "Collapse");
-            RefreshDataGrid();
-            RefreshDataGrid();
-        }
+
+       
 
         private void subCategoryToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
@@ -2351,10 +2286,12 @@ namespace System.Windows.Forms.Samples {
             DataGridViewTextBoxColumn NameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.buildStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.runToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.openWithToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notepadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notepadToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.visualStudioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.wordPadToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.folderToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -2526,7 +2463,8 @@ namespace System.Windows.Forms.Samples {
             this.buildStripMenuItem4,
             this.toolStripMenuItem4,
             this.newToolStripMenuItem1,
-            this.openWithToolStripMenuItem
+            this.openWithToolStripMenuItem,
+            this.runToolStripMenuItem
             });
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(132, 70);
@@ -2542,13 +2480,19 @@ namespace System.Windows.Forms.Samples {
             this.buildStripMenuItem4.Size = new System.Drawing.Size(131, 22);
             this.buildStripMenuItem4.Text = "Build";
             this.buildStripMenuItem4.Click += new System.EventHandler(this.buildStripMenuItem4_Click_1);
-
+            // runToolStripMenuItem
+            // 
+            this.runToolStripMenuItem.Name = "runToolStripMenuItem";
+            this.runToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.runToolStripMenuItem.Text = "Run";
+            this.runToolStripMenuItem.Click += new System.EventHandler(this.runToolStripMenuItem_Click);
             // 
             // openWithToolStripMenuItem
             // 
             this.openWithToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.notepadToolStripMenuItem,
             this.notepadToolStripMenuItem1,
+            this.visualStudioToolStripMenuItem,
             this.wordPadToolStripMenuItem1});
             this.openWithToolStripMenuItem.Name = "openWithToolStripMenuItem";
             this.openWithToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
@@ -2568,6 +2512,14 @@ namespace System.Windows.Forms.Samples {
             this.notepadToolStripMenuItem1.Text = "Notepad++";
             this.notepadToolStripMenuItem1.Click += new System.EventHandler(this.notepadToolStripMenuItem1_Click);
             // 
+            // visualStudioToolStripMenuItem
+            // 
+            this.visualStudioToolStripMenuItem.Name = "visualStudioToolStripMenuItem";
+            this.visualStudioToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.visualStudioToolStripMenuItem.Text = "Visual Studio";
+            this.visualStudioToolStripMenuItem.Click += new System.EventHandler(this.visualStudioToolStripMenuItem_Click);
+
+            // 
             // wordPadToolStripMenuItem1
             // 
             this.wordPadToolStripMenuItem1.Name = "wordPadToolStripMenuItem1";
@@ -2580,7 +2532,7 @@ namespace System.Windows.Forms.Samples {
             this.newToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
                 this.folderToolStripMenuItem1,
             this.toolStripMenuItem5,
-            this.textDocumentToolStripMenuItem,
+            this.textDocumentToolStripMenuItem,           
             this.wordPadToolStripMenuItem});
             this.newToolStripMenuItem1.Name = "newToolStripMenuItem1";
             this.newToolStripMenuItem1.Size = new System.Drawing.Size(131, 22);
@@ -2760,6 +2712,85 @@ namespace System.Windows.Forms.Samples {
 
                 } else {
                     ev_Build_File(myFileView.FullName.ToString());
+                }
+            }
+        }
+
+        private void collapseAllToolStripMenuItem_Click(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            myActions.SetValueByKey("ExpandCollapseAll", "Collapse");
+            RefreshDataGrid();
+            RefreshDataGrid();
+        }
+
+        private void expandAllToolStripMenuItem_Click(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            myActions.SetValueByKey("ExpandCollapseAll", "Expand");
+            RefreshDataGrid();
+        }
+
+        private void refreshToolStripMenuItem_Click(object sender, EventArgs e) {
+            RefreshDataGrid();
+        }
+
+        private void totalSavingsToolStripMenuItem_Click(object sender, EventArgs e) {
+            int intTotalSavingsForAllScripts = 0;
+            foreach (DataGridViewRow item in _CurrentDataGridView.Rows) {
+                intTotalSavingsForAllScripts += (int)item.Cells["TotalSavingsCol"].Value;
+            }
+            TimeSpan diff = TimeSpan.FromSeconds(intTotalSavingsForAllScripts);
+            string formatted = string.Format(
+                  CultureInfo.CurrentCulture,
+                  "{0} years, {1} months, {2} days, {3} hours, {4} minutes, {5} seconds",
+                  diff.Days / 365,
+                  (diff.Days - (diff.Days / 365) * 365) / 30,
+                  (diff.Days - (diff.Days / 365) * 365) - ((diff.Days - (diff.Days / 365) * 365) / 30) * 30,
+                  diff.Hours,
+                  diff.Minutes,
+                  diff.Seconds);
+            
+            MessageBox.Show("Total Savings: " + formatted);
+        }
+
+        private void runToolStripMenuItem_Click(object sender, EventArgs e) {
+            FileView myFileView;
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
+                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                //MessageBox.Show(myFileView.FullName.ToString());
+                if (myFileView.IsDirectory) {
+                    // Call EnumerateFiles in a foreach-loop.
+                    foreach (string file in Directory.EnumerateFiles(myFileView.FullName.ToString(),
+                       myFileView.Name + ".exe",
+                        SearchOption.AllDirectories)) {
+                        // Display file path.
+                        if (file.Contains("bin\\Debug")) {
+                            ev_Process_File(file);
+                        }
+                    }
+
+                } else {
+                    ev_Process_File(myFileView.FullName.ToString());
+                }
+
+            }
+        }
+
+        private void visualStudioToolStripMenuItem_Click(object sender, EventArgs e) {
+            FileView myFileView;
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
+                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                //MessageBox.Show(myFileView.FullName.ToString());
+                if (myFileView.IsDirectory) {
+                    // Call EnumerateFiles in a foreach-loop.
+                    foreach (string file in Directory.EnumerateFiles(myFileView.FullName.ToString(),
+                       myFileView.Name + ".sln",
+                        SearchOption.AllDirectories)) {
+                        // Display file path.
+                        ev_Process_File(file);
+                    }
+
+                } else {
+                    ev_Process_File(myFileView.FullName.ToString());
                 }
             }
         }
