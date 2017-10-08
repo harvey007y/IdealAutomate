@@ -655,193 +655,6 @@ namespace System.Windows.Forms.Samples {
             RefreshDataGrid();
         }
 
-        private void addHotKeyToolStripMenuItem_Click(object sender, EventArgs e) {
-            FileView myFileView;
-            Methods myActions = new Methods();
-            List<ControlEntity> myListControlEntity = new List<ControlEntity>();
-
-            ControlEntity myControlEntity = new ControlEntity();
-            myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.Heading;
-            myControlEntity.Text = "Add HotKey";
-            myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-
-            myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.Label;
-            myControlEntity.ID = "myLabel";
-            myControlEntity.Text = "Enter HotKey Character";
-            myControlEntity.RowNumber = 0;
-            myControlEntity.ColumnNumber = 0;
-            myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-
-            myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.TextBox;
-            myControlEntity.ID = "myTextBox";
-            myControlEntity.Text = "";
-            myControlEntity.RowNumber = 0;
-            myControlEntity.ColumnNumber = 1;
-            myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-            myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.Label;
-            myControlEntity.ID = "myLabel";
-            myControlEntity.Text = "You need to restart explorer after setting new hotkey";
-            myControlEntity.RowNumber = 1;
-            myControlEntity.ColumnNumber = 0;
-            myControlEntity.ColumnSpan = 2;
-            myControlEntity.BackgroundColor = Media.Colors.Red;
-            myControlEntity.ForegroundColor = Media.Colors.White;
-            myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-
-
-            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
-
-            if (strButtonPressed == "btnCancel") {
-                myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
-                return;
-            }
-
-            string myHotKey = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
-                //MessageBox.Show(myFileView.FullName.ToString());
-                if (myFileView.IsDirectory) {
-                    // Call EnumerateFiles in a foreach-loop.
-                    foreach (string file in Directory.EnumerateFiles(myFileView.FullName.ToString(),
-                       myFileView.Name + ".exe",
-                        SearchOption.AllDirectories)) {
-                        string newHotKeyScriptUniqueName = myActions.ConvertFullFileNameToScriptPath(myFileView.FullName) + "-" + myFileView.Name;
-                        // Display file path.
-                        if (file.Contains("bin\\Debug")) {
-                            ArrayList myArrayList = myActions.ReadAppDirectoryKeyToArrayListGlobal("ScriptInfo");
-                            ArrayList newArrayList = new ArrayList();
-                            bool boolScriptFound = false;
-                            foreach (var item in myArrayList) {
-                                string[] myScriptInfoFields = item.ToString().Split('^');
-                                string scriptName = myScriptInfoFields[0];
-                                string strHotKeyExecutable = myScriptInfoFields[5];
-                                if (scriptName == newHotKeyScriptUniqueName && file == strHotKeyExecutable) {
-                                    boolScriptFound = true;
-                                    string strHotKey = myScriptInfoFields[1];
-                                    string strTotalExecutions = myScriptInfoFields[2];
-                                    string strSuccessfulExecutions = myScriptInfoFields[3];
-                                    string strLastExecuted = myScriptInfoFields[4];
-                                    int intTotalExecutions = 0;
-                                    Int32.TryParse(strTotalExecutions, out intTotalExecutions);
-                                    int intSuccessfulExecutions = 0;
-                                    Int32.TryParse(strSuccessfulExecutions, out intSuccessfulExecutions);
-                                    DateTime dateLastExecuted = DateTime.MinValue;
-                                    DateTime.TryParse(strLastExecuted, out dateLastExecuted);
-                                    newArrayList.Add(scriptName + "^" +
-                                        "Ctrl+Alt+" + myHotKey + "^" +
-                                         myScriptInfoFields[2] + "^" +
-                                         myScriptInfoFields[3] + "^" +
-                                         myScriptInfoFields[4] + "^" +
-                                         myScriptInfoFields[5] + "^"
-                                        );
-                                } else {
-                                    newArrayList.Add(item.ToString());
-                                }
-                            }
-                            if (boolScriptFound == false) {
-                                newArrayList.Add(newHotKeyScriptUniqueName + "^" +
-                                       "Ctrl+Alt+" + myHotKey + "^" +
-                                        "0" + "^" +
-                                        "0" + "^" +
-                                       null + "^" +
-                                       file + "^"
-                                       );
-                            }
-                            myActions.WriteArrayListToAppDirectoryKeyGlobal("ScriptInfo", newArrayList);
-                        }
-                    }
-
-                } else {
-                    ev_Process_File(myFileView.FullName.ToString());
-                }
-
-            }
-            // refresh datagridview
-
-            strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-            // Set Initial Directory to My Documents
-            string strSavedDirectory = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
-
-
-            if (Directory.Exists(strSavedDirectory)) {
-                strInitialDirectory = strSavedDirectory;
-            }
-            _dir = new DirectoryView(strInitialDirectory);
-            this._CurrentFileViewBindingSource.DataSource = _dir;
-
-            // Set the title
-            SetTitle(_dir.FileView);
-            this._CurrentDataGridView.DataSource = null;
-            this._CurrentDataGridView.DataSource = this._CurrentFileViewBindingSource;
-            //   this._CurrentDataGridView.Sort(_CurrentDataGridView.Columns[1], ListSortDirection.Ascending);
-            // AddGlobalHotKeys();
-        }
-
-        private void removeHotKeyToolStripMenuItem_Click(object sender, EventArgs e) {
-            FileView myFileView;
-            Methods myActions = new Methods();
-
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
-                //MessageBox.Show(myFileView.FullName.ToString());
-                bool boolScriptFound = false;
-                if (myFileView.IsDirectory) {
-                    // Call EnumerateFiles in a foreach-loop.
-                    foreach (string file in Directory.EnumerateFiles(myFileView.FullName.ToString(),
-                       myFileView.Name + ".exe",
-                        SearchOption.AllDirectories)) {
-                        // Display file path.
-                        if (file.Contains("bin\\Debug")) {
-                            ArrayList myArrayList = myActions.ReadAppDirectoryKeyToArrayListGlobal("ScriptInfo");
-                            ArrayList newArrayList = new ArrayList();
-                            foreach (var item in myArrayList) {
-                                string[] myScriptInfoFields = item.ToString().Split('^');
-                                string scriptName = myScriptInfoFields[0];
-                                if (scriptName == myActions.ConvertFullFileNameToScriptPath(myFileView.FullName) + "-" + myFileView.Name) {
-                                    boolScriptFound = true;
-                                } else {
-                                    newArrayList.Add(item.ToString());
-                                }
-                            }
-                            myActions.WriteArrayListToAppDirectoryKeyGlobal("ScriptInfo", newArrayList);
-                        }
-                    }
-                    if (boolScriptFound == false) {
-                        myActions.MessageBoxShow(@"Could not find the HotKey; Script may have been moved; you can manually delete the row from AppData\Roaming\IdealAutomate\ScriptInfo.txt");
-                    }
-                } else {
-                    ev_Process_File(myFileView.FullName.ToString());
-                }
-
-            }
-            // refresh datagridview
-
-            strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-            // Set Initial Directory to My Documents
-            string strSavedDirectory = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
-
-
-            if (Directory.Exists(strSavedDirectory)) {
-                strInitialDirectory = strSavedDirectory;
-            }
-            _dir = new DirectoryView(strInitialDirectory);
-            this._CurrentFileViewBindingSource.DataSource = _dir;
-
-            // Set the title
-            SetTitle(_dir.FileView);
-            this._CurrentDataGridView.DataSource = null;
-            this._CurrentDataGridView.DataSource = this._CurrentFileViewBindingSource;
-            //  this._CurrentDataGridView.Sort(_CurrentDataGridView.Columns[1], ListSortDirection.Ascending);
-            // AddGlobalHotKeys();
-        }
         private void AddGlobalHotKeys() {
             Methods myActions = new Methods();
             ArrayList myArrayList = myActions.ReadAppDirectoryKeyToArrayListGlobal("ScriptInfo");
@@ -1030,68 +843,7 @@ namespace System.Windows.Forms.Samples {
             return processlist.FirstOrDefault(pr => pr.Id == id);
         }
 
-        private void toolStripMenuItemManualTime_Click(object sender, EventArgs e) {
-            FileView myFileView;
-            Methods myActions = new Methods();
-            List<ControlEntity> myListControlEntity = new List<ControlEntity>();
-
-            ControlEntity myControlEntity = new ControlEntity();
-            myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.Heading;
-            myControlEntity.Text = "Add Manual Time";
-            myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-
-            myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.Label;
-            myControlEntity.ID = "myLabel";
-            myControlEntity.Text = "Enter Manual Time in Seconds";
-            myControlEntity.RowNumber = 0;
-            myControlEntity.ColumnNumber = 0;
-            myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-
-            myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.TextBox;
-            myControlEntity.ID = "myTextBox";
-            myControlEntity.Text = "";
-            myControlEntity.RowNumber = 0;
-            myControlEntity.ColumnNumber = 1;
-            myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-
-
-            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
-
-            if (strButtonPressed == "btnCancel") {
-                myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
-                return;
-            }
-
-            string myManualExecutionTime = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
-                //MessageBox.Show(myFileView.FullName.ToString());
-                if (myFileView.IsDirectory) {
-                    // Call EnumerateFiles in a foreach-loop.
-                    foreach (string file in Directory.EnumerateFiles(myFileView.FullName.ToString(),
-                       myFileView.Name + ".exe",
-                        SearchOption.AllDirectories)) {
-                        // Display file path.
-                        if (file.Contains("bin\\Debug")) {
-                            string fileFullName = myFileView.FullName;
-                            myActions.SetValueByKeyForNonCurrentScript("ManualExecutionTime", myManualExecutionTime, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
-                        }
-                    }
-
-                } else {
-                    ev_Process_File(myFileView.FullName.ToString());
-                }
-
-            }
-        }
-
-        private void categoryToolStripMenuItem_Click(object sender, EventArgs e) {
+         private void categoryToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             List<ControlEntity> myListControlEntity = new List<ControlEntity>();
 
@@ -1441,193 +1193,7 @@ namespace System.Windows.Forms.Samples {
             return settingsDirectory;
         }
 
-        private void copyStripMenuItem4_Click(object sender, EventArgs e) {
-            string fullFileName = "";
-            string fileNamea = "";
-            FileView myFileView;
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                if (myCell.ColumnIndex != 0 && myCell.RowIndex != 0) {
-                    myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
-                    fullFileName = myFileView.FullName;
-                    fileNamea = myFileView.Name;
-                }
 
-            }
-            Methods myActions = new Methods();
-            if (fullFileName == "") {
-                myActions.MessageBoxShow("Please select a row to copy before selecting File/Copy");
-                return;
-            }
-
-            strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-            // Set Initial Directory to My Documents
-            string strSavedDirectory = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
-
-
-            if (Directory.Exists(strSavedDirectory)) {
-                strInitialDirectory = strSavedDirectory;
-            }
-            DisplayCopyWindow:
-            int intRowCtr = 0;
-            ControlEntity myControlEntity = new ControlEntity();
-            List<ControlEntity> myListControlEntity = new List<ControlEntity>();
-            List<ComboBoxPair> cbp = new List<ComboBoxPair>();
-            List<ComboBoxPair> cbp1 = new List<ComboBoxPair>();
-            List<ComboBoxPair> cbp2 = new List<ComboBoxPair>();
-            List<ComboBoxPair> cbp3 = new List<ComboBoxPair>();
-            myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.Heading;
-            myControlEntity.ID = "lbl";
-            myControlEntity.Text = "Copy File/Folder";
-            myControlEntity.RowNumber = intRowCtr;
-            myControlEntity.ColumnNumber = 0;
-            myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-            intRowCtr++;
-            myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.Label;
-            myControlEntity.ID = "lblFolder";
-            myControlEntity.Text = "Folder";
-            myControlEntity.Width = 150;
-            myControlEntity.RowNumber = intRowCtr;
-            myControlEntity.ColumnNumber = 0;
-            myControlEntity.ColumnSpan = 1;
-            myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-            myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.ComboBox;
-            myControlEntity.SelectedValue = myActions.GetValueByKey("cbxCopyFolderSelectedValue");
-            myControlEntity.ID = "cbxCopyFolder";
-            myControlEntity.RowNumber = intRowCtr;
-            myControlEntity.ToolTipx = @"Here is an example: C:\Users\harve\Documents\GitHub";
-            myControlEntity.ComboBoxIsEditable = true;
-            myControlEntity.ColumnNumber = 1;
-            myControlEntity.ColumnSpan = 2;
-            myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-            myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.Button;
-            myControlEntity.ID = "btnSelectFolder";
-            myControlEntity.Text = "Select Folder...";
-            myControlEntity.RowNumber = intRowCtr;
-            myControlEntity.ColumnNumber = 3;
-            myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-
-
-            DisplayCopyWindowAgain:
-            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 300, 1200, 100, 100);
-            LineAfterDisplayCopyWindow:
-            if (strButtonPressed == "btnCancel") {
-                myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
-                return;
-            }
-
-
-            string strFolder = myListControlEntity.Find(x => x.ID == "cbxCopyFolder").SelectedValue;
-            //     string strFolderKey = myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedKey;
-
-            myActions.SetValueByKey("cbxCopyFolderSelectedValue", strFolder);
-
-            if (strButtonPressed == "btnSelectFolder") {
-                var dialog1 = new System.Windows.Forms.FolderBrowserDialog();
-                dialog1.SelectedPath = myActions.GetValueByKey("LastSearchCopyFolder");
-
-
-                System.Windows.Forms.DialogResult result = dialog1.ShowDialog();
-                if (result == System.Windows.Forms.DialogResult.OK && Directory.Exists(dialog1.SelectedPath)) {
-                    myListControlEntity.Find(x => x.ID == "cbxCopyFolder").SelectedValue = dialog1.SelectedPath;
-                    myListControlEntity.Find(x => x.ID == "cbxCopyFolder").SelectedKey = dialog1.SelectedPath;
-                    myListControlEntity.Find(x => x.ID == "cbxCopyFolder").Text = dialog1.SelectedPath;
-
-                    myActions.SetValueByKey("LastSearchCopyFolder", dialog1.SelectedPath);
-                    strFolder = dialog1.SelectedPath;
-                    myActions.SetValueByKey("cbxCopyFolderSelectedValue", strFolder);
-                    string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
-                    string fileName = "cbxCopyFolder.txt";
-                    string strApplicationBinDebug = Application.StartupPath;
-                    string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
-
-                    string settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPath(myNewProjectSourcePath));
-                    string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
-                    ArrayList alHosts = new ArrayList();
-                    cbp = new List<ComboBoxPair>();
-                    cbp.Clear();
-                    cbp.Add(new ComboBoxPair("--Select Item ---", "--Select Item ---"));
-                    ComboBox myComboBox = new ComboBox();
-
-
-                    if (!File.Exists(settingsPath)) {
-                        using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
-                            objSWFile.Close();
-                        }
-                    }
-                    using (StreamReader objSRFile = File.OpenText(settingsPath)) {
-                        string strReadLine = "";
-                        while ((strReadLine = objSRFile.ReadLine()) != null) {
-                            string[] keyvalue = strReadLine.Split('^');
-                            if (keyvalue[0] != "--Select Item ---") {
-                                cbp.Add(new ComboBoxPair(keyvalue[0], keyvalue[1]));
-                            }
-                        }
-                        objSRFile.Close();
-                    }
-                    string strNewHostName = dialog1.SelectedPath;
-                    List<ComboBoxPair> alHostx = cbp;
-                    List<ComboBoxPair> alHostsNew = new List<ComboBoxPair>();
-                    ComboBoxPair myCbp = new ComboBoxPair(strNewHostName, strNewHostName);
-                    bool boolNewItem = false;
-
-                    alHostsNew.Add(myCbp);
-                    if (alHostx.Count > 24) {
-                        for (int i = alHostx.Count - 1; i > 0; i--) {
-                            if (alHostx[i]._Key.Trim() != "--Select Item ---") {
-                                alHostx.RemoveAt(i);
-                                break;
-                            }
-                        }
-                    }
-                    foreach (ComboBoxPair item in alHostx) {
-                        if (strNewHostName != item._Key && item._Key != "--Select Item ---") {
-                            boolNewItem = true;
-                            alHostsNew.Add(item);
-                        }
-                    }
-
-                    using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
-                        foreach (ComboBoxPair item in alHostsNew) {
-                            if (item._Key != "") {
-                                objSWFile.WriteLine(item._Key + '^' + item._Value);
-                            }
-                        }
-                        objSWFile.Close();
-                    }
-                    goto DisplayCopyWindowAgain;
-                }
-            }
-
-            string strFolderToUse = "";
-            if (strButtonPressed == "btnOkay") {
-
-                if ((strFolder == "--Select Item ---" || strFolder == "")) {
-                    myActions.MessageBoxShow("Please enter Folder or select Folder from ComboBox; else press Cancel to Exit");
-                    goto DisplayCopyWindow;
-                }
-
-                strFolderToUse = strFolder;
-                Copy(fullFileName, strFolder);
-
-
-
-                RefreshDataGrid();
-                return;
-            }
-
-            if (strButtonPressed == "btnOkay") {
-                strButtonPressed = myActions.WindowMultipleControlsMinimized(ref myListControlEntity, 300, 1200, 100, 100);
-                goto LineAfterDisplayCopyWindow;
-            }
-        }
         public static void Copy(string sourceDirectory, string targetDirectory) {
             DirectoryInfo diSource = new DirectoryInfo(sourceDirectory);
             DirectoryInfo diTarget = new DirectoryInfo(targetDirectory);
@@ -2287,8 +1853,10 @@ namespace System.Windows.Forms.Samples {
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.buildStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.runToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.manualTimeStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.openWithToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hotKeysStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notepadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notepadToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.visualStudioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -2332,15 +1900,11 @@ namespace System.Windows.Forms.Samples {
             this.folderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
          
-            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItemManualTime = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addHotKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeHotKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
-            this.copyStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.sepToolStripMenuItem = new System.Windows.Forms.ToolStripSeparator();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -2456,7 +2020,10 @@ namespace System.Windows.Forms.Samples {
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.buildStripMenuItem4,
+            this.copyStripMenuItem,
             this.toolStripMenuItem4,
+            this.hotKeysStripMenuItem,
+            this.manualTimeStripMenuItem,
             this.newToolStripMenuItem1,
             this.openWithToolStripMenuItem,
             this.runToolStripMenuItem
@@ -2481,6 +2048,43 @@ namespace System.Windows.Forms.Samples {
             this.runToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.runToolStripMenuItem.Text = "Run";
             this.runToolStripMenuItem.Click += new System.EventHandler(this.runToolStripMenuItem_Click);
+            // 
+            // copyStripMenuItem
+            // 
+            this.copyStripMenuItem.Name = "copyStripMenuItem";
+            this.copyStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.copyStripMenuItem.Text = "Copy";
+            this.copyStripMenuItem.Click += new System.EventHandler(this.copyStripMenuItem_Click);
+            // 
+            // manualTimeStripMenuItem
+            // 
+            this.manualTimeStripMenuItem.Name = "manualTimeStripMenuItem";
+            this.manualTimeStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.manualTimeStripMenuItem.Text = "Manual Time";
+            this.manualTimeStripMenuItem.Click += new System.EventHandler(this.manualTimeStripMenuItem_Click);
+            // 
+            // hotKeysStripMenuItem
+            // 
+            this.hotKeysStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addHotKeyToolStripMenuItem,
+            this.removeHotKeyToolStripMenuItem});
+            this.hotKeysStripMenuItem.Name = "hotKeysStripMenuItem";
+            this.hotKeysStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.hotKeysStripMenuItem.Text = "HotKeys";
+            // 
+            // addHotKeyToolStripMenuItem
+            // 
+            this.addHotKeyToolStripMenuItem.Name = "addHotKeyToolStripMenuItem";
+            this.addHotKeyToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.addHotKeyToolStripMenuItem.Text = "Add HotKey";
+            this.addHotKeyToolStripMenuItem.Click += new System.EventHandler(this.addHotKeyToolStripMenuItem_Click_1);
+            // 
+            // removeHotKeyToolStripMenuItem
+            // 
+            this.removeHotKeyToolStripMenuItem.Name = "removeHotKeyToolStripMenuItem";
+            this.removeHotKeyToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.removeHotKeyToolStripMenuItem.Text = "Remove HotKey";
+            this.removeHotKeyToolStripMenuItem.Click += new System.EventHandler(this.removeHotKeyToolStripMenuItem_Click_1);
             // 
             // openWithToolStripMenuItem
             // 
@@ -2788,6 +2392,443 @@ namespace System.Windows.Forms.Samples {
                     ev_Process_File(myFileView.FullName.ToString());
                 }
             }
+        }
+
+        private void copyStripMenuItem_Click(object sender, EventArgs e) {
+            string fullFileName = "";
+            string fileNamea = "";
+            FileView myFileView;
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
+                if (myCell.ColumnIndex != 0 && myCell.RowIndex != 0) {
+                    myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                    fullFileName = myFileView.FullName;
+                    fileNamea = myFileView.Name;
+                }
+
+            }
+            Methods myActions = new Methods();
+            if (fullFileName == "") {
+                myActions.MessageBoxShow("Please select a row to copy before selecting File/Copy");
+                return;
+            }
+
+            strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            // Set Initial Directory to My Documents
+            string strSavedDirectory = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
+
+
+            if (Directory.Exists(strSavedDirectory)) {
+                strInitialDirectory = strSavedDirectory;
+            }
+            DisplayCopyWindow:
+            int intRowCtr = 0;
+            ControlEntity myControlEntity = new ControlEntity();
+            List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+            List<ComboBoxPair> cbp = new List<ComboBoxPair>();
+            List<ComboBoxPair> cbp1 = new List<ComboBoxPair>();
+            List<ComboBoxPair> cbp2 = new List<ComboBoxPair>();
+            List<ComboBoxPair> cbp3 = new List<ComboBoxPair>();
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Heading;
+            myControlEntity.ID = "lbl";
+            myControlEntity.Text = "Copy File/Folder";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "lblFolder";
+            myControlEntity.Text = "Folder";
+            myControlEntity.Width = 150;
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            myControlEntity.SelectedValue = myActions.GetValueByKey("cbxCopyFolderSelectedValue");
+            myControlEntity.ID = "cbxCopyFolder";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = @"Here is an example: C:\Users\harve\Documents\GitHub";
+            myControlEntity.ComboBoxIsEditable = true;
+            myControlEntity.ColumnNumber = 1;
+            myControlEntity.ColumnSpan = 2;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Button;
+            myControlEntity.ID = "btnSelectFolder";
+            myControlEntity.Text = "Select Folder...";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 3;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+
+            DisplayCopyWindowAgain:
+            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 300, 1200, 100, 100);
+            LineAfterDisplayCopyWindow:
+            if (strButtonPressed == "btnCancel") {
+                myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                return;
+            }
+
+
+            string strFolder = myListControlEntity.Find(x => x.ID == "cbxCopyFolder").SelectedValue;
+            //     string strFolderKey = myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedKey;
+
+            myActions.SetValueByKey("cbxCopyFolderSelectedValue", strFolder);
+
+            if (strButtonPressed == "btnSelectFolder") {
+                var dialog1 = new System.Windows.Forms.FolderBrowserDialog();
+                dialog1.SelectedPath = myActions.GetValueByKey("LastSearchCopyFolder");
+
+
+                System.Windows.Forms.DialogResult result = dialog1.ShowDialog();
+                if (result == System.Windows.Forms.DialogResult.OK && Directory.Exists(dialog1.SelectedPath)) {
+                    myListControlEntity.Find(x => x.ID == "cbxCopyFolder").SelectedValue = dialog1.SelectedPath;
+                    myListControlEntity.Find(x => x.ID == "cbxCopyFolder").SelectedKey = dialog1.SelectedPath;
+                    myListControlEntity.Find(x => x.ID == "cbxCopyFolder").Text = dialog1.SelectedPath;
+
+                    myActions.SetValueByKey("LastSearchCopyFolder", dialog1.SelectedPath);
+                    strFolder = dialog1.SelectedPath;
+                    myActions.SetValueByKey("cbxCopyFolderSelectedValue", strFolder);
+                    string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
+                    string fileName = "cbxCopyFolder.txt";
+                    string strApplicationBinDebug = Application.StartupPath;
+                    string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
+
+                    string settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPath(myNewProjectSourcePath));
+                    string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
+                    ArrayList alHosts = new ArrayList();
+                    cbp = new List<ComboBoxPair>();
+                    cbp.Clear();
+                    cbp.Add(new ComboBoxPair("--Select Item ---", "--Select Item ---"));
+                    ComboBox myComboBox = new ComboBox();
+
+
+                    if (!File.Exists(settingsPath)) {
+                        using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
+                            objSWFile.Close();
+                        }
+                    }
+                    using (StreamReader objSRFile = File.OpenText(settingsPath)) {
+                        string strReadLine = "";
+                        while ((strReadLine = objSRFile.ReadLine()) != null) {
+                            string[] keyvalue = strReadLine.Split('^');
+                            if (keyvalue[0] != "--Select Item ---") {
+                                cbp.Add(new ComboBoxPair(keyvalue[0], keyvalue[1]));
+                            }
+                        }
+                        objSRFile.Close();
+                    }
+                    string strNewHostName = dialog1.SelectedPath;
+                    List<ComboBoxPair> alHostx = cbp;
+                    List<ComboBoxPair> alHostsNew = new List<ComboBoxPair>();
+                    ComboBoxPair myCbp = new ComboBoxPair(strNewHostName, strNewHostName);
+                    bool boolNewItem = false;
+
+                    alHostsNew.Add(myCbp);
+                    if (alHostx.Count > 24) {
+                        for (int i = alHostx.Count - 1; i > 0; i--) {
+                            if (alHostx[i]._Key.Trim() != "--Select Item ---") {
+                                alHostx.RemoveAt(i);
+                                break;
+                            }
+                        }
+                    }
+                    foreach (ComboBoxPair item in alHostx) {
+                        if (strNewHostName != item._Key && item._Key != "--Select Item ---") {
+                            boolNewItem = true;
+                            alHostsNew.Add(item);
+                        }
+                    }
+
+                    using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
+                        foreach (ComboBoxPair item in alHostsNew) {
+                            if (item._Key != "") {
+                                objSWFile.WriteLine(item._Key + '^' + item._Value);
+                            }
+                        }
+                        objSWFile.Close();
+                    }
+                    goto DisplayCopyWindowAgain;
+                }
+            }
+
+            string strFolderToUse = "";
+            if (strButtonPressed == "btnOkay") {
+
+                if ((strFolder == "--Select Item ---" || strFolder == "")) {
+                    myActions.MessageBoxShow("Please enter Folder or select Folder from ComboBox; else press Cancel to Exit");
+                    goto DisplayCopyWindow;
+                }
+
+                strFolderToUse = strFolder;
+                Copy(fullFileName, strFolder);
+
+
+
+                RefreshDataGrid();
+                return;
+            }
+
+            if (strButtonPressed == "btnOkay") {
+                strButtonPressed = myActions.WindowMultipleControlsMinimized(ref myListControlEntity, 300, 1200, 100, 100);
+                goto LineAfterDisplayCopyWindow;
+            }
+        }
+
+        private void addHotKeyToolStripMenuItem_Click_1(object sender, EventArgs e) {
+            FileView myFileView;
+            Methods myActions = new Methods();
+            List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+
+            ControlEntity myControlEntity = new ControlEntity();
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Heading;
+            myControlEntity.Text = "Add HotKey";
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "myLabel";
+            myControlEntity.Text = "Enter HotKey Character";
+            myControlEntity.RowNumber = 0;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "myTextBox";
+            myControlEntity.Text = "";
+            myControlEntity.RowNumber = 0;
+            myControlEntity.ColumnNumber = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "myLabel";
+            myControlEntity.Text = "You need to restart explorer after setting new hotkey";
+            myControlEntity.RowNumber = 1;
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 2;
+            myControlEntity.BackgroundColor = Media.Colors.Red;
+            myControlEntity.ForegroundColor = Media.Colors.White;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+
+            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
+
+            if (strButtonPressed == "btnCancel") {
+                myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                return;
+            }
+
+            string myHotKey = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
+                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                //MessageBox.Show(myFileView.FullName.ToString());
+                if (myFileView.IsDirectory) {
+                    // Call EnumerateFiles in a foreach-loop.
+                    foreach (string file in Directory.EnumerateFiles(myFileView.FullName.ToString(),
+                       myFileView.Name + ".exe",
+                        SearchOption.AllDirectories)) {
+                        string newHotKeyScriptUniqueName = myActions.ConvertFullFileNameToScriptPath(myFileView.FullName) + "-" + myFileView.Name;
+                        // Display file path.
+                        if (file.Contains("bin\\Debug")) {
+                            ArrayList myArrayList = myActions.ReadAppDirectoryKeyToArrayListGlobal("ScriptInfo");
+                            ArrayList newArrayList = new ArrayList();
+                            bool boolScriptFound = false;
+                            foreach (var item in myArrayList) {
+                                string[] myScriptInfoFields = item.ToString().Split('^');
+                                string scriptName = myScriptInfoFields[0];
+                                string strHotKeyExecutable = myScriptInfoFields[5];
+                                if (scriptName == newHotKeyScriptUniqueName && file == strHotKeyExecutable) {
+                                    boolScriptFound = true;
+                                    string strHotKey = myScriptInfoFields[1];
+                                    string strTotalExecutions = myScriptInfoFields[2];
+                                    string strSuccessfulExecutions = myScriptInfoFields[3];
+                                    string strLastExecuted = myScriptInfoFields[4];
+                                    int intTotalExecutions = 0;
+                                    Int32.TryParse(strTotalExecutions, out intTotalExecutions);
+                                    int intSuccessfulExecutions = 0;
+                                    Int32.TryParse(strSuccessfulExecutions, out intSuccessfulExecutions);
+                                    DateTime dateLastExecuted = DateTime.MinValue;
+                                    DateTime.TryParse(strLastExecuted, out dateLastExecuted);
+                                    newArrayList.Add(scriptName + "^" +
+                                        "Ctrl+Alt+" + myHotKey + "^" +
+                                         myScriptInfoFields[2] + "^" +
+                                         myScriptInfoFields[3] + "^" +
+                                         myScriptInfoFields[4] + "^" +
+                                         myScriptInfoFields[5] + "^"
+                                        );
+                                } else {
+                                    newArrayList.Add(item.ToString());
+                                }
+                            }
+                            if (boolScriptFound == false) {
+                                newArrayList.Add(newHotKeyScriptUniqueName + "^" +
+                                       "Ctrl+Alt+" + myHotKey + "^" +
+                                        "0" + "^" +
+                                        "0" + "^" +
+                                       null + "^" +
+                                       file + "^"
+                                       );
+                            }
+                            myActions.WriteArrayListToAppDirectoryKeyGlobal("ScriptInfo", newArrayList);
+                        }
+                    }
+
+                } else {
+                    ev_Process_File(myFileView.FullName.ToString());
+                }
+
+            }
+            // refresh datagridview
+
+            strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            // Set Initial Directory to My Documents
+            string strSavedDirectory = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
+
+
+            if (Directory.Exists(strSavedDirectory)) {
+                strInitialDirectory = strSavedDirectory;
+            }
+            _dir = new DirectoryView(strInitialDirectory);
+            this._CurrentFileViewBindingSource.DataSource = _dir;
+
+            // Set the title
+            SetTitle(_dir.FileView);
+            this._CurrentDataGridView.DataSource = null;
+            this._CurrentDataGridView.DataSource = this._CurrentFileViewBindingSource;
+            //   this._CurrentDataGridView.Sort(_CurrentDataGridView.Columns[1], ListSortDirection.Ascending);
+            // AddGlobalHotKeys();
+        }
+
+        private void removeHotKeyToolStripMenuItem_Click_1(object sender, EventArgs e) {
+            FileView myFileView;
+            Methods myActions = new Methods();
+
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
+                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                //MessageBox.Show(myFileView.FullName.ToString());
+                bool boolScriptFound = false;
+                if (myFileView.IsDirectory) {
+                    // Call EnumerateFiles in a foreach-loop.
+                    foreach (string file in Directory.EnumerateFiles(myFileView.FullName.ToString(),
+                       myFileView.Name + ".exe",
+                        SearchOption.AllDirectories)) {
+                        // Display file path.
+                        if (file.Contains("bin\\Debug")) {
+                            ArrayList myArrayList = myActions.ReadAppDirectoryKeyToArrayListGlobal("ScriptInfo");
+                            ArrayList newArrayList = new ArrayList();
+                            foreach (var item in myArrayList) {
+                                string[] myScriptInfoFields = item.ToString().Split('^');
+                                string scriptName = myScriptInfoFields[0];
+                                if (scriptName == myActions.ConvertFullFileNameToScriptPath(myFileView.FullName) + "-" + myFileView.Name) {
+                                    boolScriptFound = true;
+                                } else {
+                                    newArrayList.Add(item.ToString());
+                                }
+                            }
+                            myActions.WriteArrayListToAppDirectoryKeyGlobal("ScriptInfo", newArrayList);
+                        }
+                    }
+                    if (boolScriptFound == false) {
+                        myActions.MessageBoxShow(@"Could not find the HotKey; Script may have been moved; you can manually delete the row from AppData\Roaming\IdealAutomate\ScriptInfo.txt");
+                    }
+                } else {
+                    ev_Process_File(myFileView.FullName.ToString());
+                }
+
+            }
+            // refresh datagridview
+
+            strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            // Set Initial Directory to My Documents
+            string strSavedDirectory = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
+
+
+            if (Directory.Exists(strSavedDirectory)) {
+                strInitialDirectory = strSavedDirectory;
+            }
+            _dir = new DirectoryView(strInitialDirectory);
+            this._CurrentFileViewBindingSource.DataSource = _dir;
+
+            // Set the title
+            SetTitle(_dir.FileView);
+            this._CurrentDataGridView.DataSource = null;
+            this._CurrentDataGridView.DataSource = this._CurrentFileViewBindingSource;
+            //  this._CurrentDataGridView.Sort(_CurrentDataGridView.Columns[1], ListSortDirection.Ascending);
+            // AddGlobalHotKeys();
+        }
+
+        private void manualTimeStripMenuItem_Click(object sender, EventArgs e) {
+            FileView myFileView;
+            Methods myActions = new Methods();
+            List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+
+            ControlEntity myControlEntity = new ControlEntity();
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Heading;
+            myControlEntity.Text = "Add Manual Time";
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "myLabel";
+            myControlEntity.Text = "Enter Manual Time in Seconds";
+            myControlEntity.RowNumber = 0;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "myTextBox";
+            myControlEntity.Text = "";
+            myControlEntity.RowNumber = 0;
+            myControlEntity.ColumnNumber = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+
+            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
+
+            if (strButtonPressed == "btnCancel") {
+                myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                return;
+            }
+
+            string myManualExecutionTime = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
+                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                //MessageBox.Show(myFileView.FullName.ToString());
+                if (myFileView.IsDirectory) {
+                    // Call EnumerateFiles in a foreach-loop.
+                    foreach (string file in Directory.EnumerateFiles(myFileView.FullName.ToString(),
+                       myFileView.Name + ".exe",
+                        SearchOption.AllDirectories)) {
+                        // Display file path.
+                        if (file.Contains("bin\\Debug")) {
+                            string fileFullName = myFileView.FullName;
+                            myActions.SetValueByKeyForNonCurrentScript("ManualExecutionTime", myManualExecutionTime, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
+                        }
+                    }
+
+                } else {
+                    ev_Process_File(myFileView.FullName.ToString());
+                }
+
+           }
         }
     }
 
