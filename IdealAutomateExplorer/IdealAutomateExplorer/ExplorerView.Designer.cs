@@ -112,26 +112,26 @@ namespace System.Windows.Forms.Samples
             this.openWithToolStripMenuItem,
             this.runToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 202);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(145, 180);
             // 
             // buildStripMenuItem4
             // 
             this.buildStripMenuItem4.Name = "buildStripMenuItem4";
-            this.buildStripMenuItem4.Size = new System.Drawing.Size(152, 22);
+            this.buildStripMenuItem4.Size = new System.Drawing.Size(144, 22);
             this.buildStripMenuItem4.Text = "Build";
             this.buildStripMenuItem4.Click += new System.EventHandler(this.buildStripMenuItem4_Click_1);
             // 
             // copyStripMenuItem
             // 
             this.copyStripMenuItem.Name = "copyStripMenuItem";
-            this.copyStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.copyStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.copyStripMenuItem.Text = "Copy";
             this.copyStripMenuItem.Click += new System.EventHandler(this.copyStripMenuItem_Click);
             // 
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(144, 22);
             this.toolStripMenuItem4.Text = "Delete";
             this.toolStripMenuItem4.Click += new System.EventHandler(this.DeleteStripMenuItem4_Click);
             // 
@@ -141,7 +141,7 @@ namespace System.Windows.Forms.Samples
             this.addHotKeyToolStripMenuItem,
             this.removeHotKeyToolStripMenuItem});
             this.hotKeysStripMenuItem.Name = "hotKeysStripMenuItem";
-            this.hotKeysStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.hotKeysStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.hotKeysStripMenuItem.Text = "HotKeys";
             // 
             // addHotKeyToolStripMenuItem
@@ -161,7 +161,7 @@ namespace System.Windows.Forms.Samples
             // manualTimeStripMenuItem
             // 
             this.manualTimeStripMenuItem.Name = "manualTimeStripMenuItem";
-            this.manualTimeStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.manualTimeStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.manualTimeStripMenuItem.Text = "Manual Time";
             this.manualTimeStripMenuItem.Click += new System.EventHandler(this.manualTimeStripMenuItem_Click);
             // 
@@ -173,7 +173,7 @@ namespace System.Windows.Forms.Samples
             this.textDocumentToolStripMenuItem,
             this.wordPadToolStripMenuItem});
             this.newToolStripMenuItem1.Name = "newToolStripMenuItem1";
-            this.newToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.newToolStripMenuItem1.Size = new System.Drawing.Size(144, 22);
             this.newToolStripMenuItem1.Text = "New";
             // 
             // folderToolStripMenuItem1
@@ -212,7 +212,7 @@ namespace System.Windows.Forms.Samples
             this.visualStudioToolStripMenuItem,
             this.wordPadToolStripMenuItem1});
             this.openWithToolStripMenuItem.Name = "openWithToolStripMenuItem";
-            this.openWithToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openWithToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.openWithToolStripMenuItem.Text = "Open With";
             // 
             // notepadToolStripMenuItem
@@ -246,7 +246,7 @@ namespace System.Windows.Forms.Samples
             // runToolStripMenuItem
             // 
             this.runToolStripMenuItem.Name = "runToolStripMenuItem";
-            this.runToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.runToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.runToolStripMenuItem.Text = "Run";
             this.runToolStripMenuItem.Click += new System.EventHandler(this.runToolStripMenuItem_Click);
             // 
@@ -499,6 +499,7 @@ namespace System.Windows.Forms.Samples
             this.favoritesToolStripMenuItem.Name = "favoritesToolStripMenuItem";
             this.favoritesToolStripMenuItem.Size = new System.Drawing.Size(66, 20);
             this.favoritesToolStripMenuItem.Text = "Favorites";
+            this.favoritesToolStripMenuItem.Click += new System.EventHandler(this.favoritesToolStripMenuItem_Click);
             // 
             // toolsToolStripMenuItem
             // 
