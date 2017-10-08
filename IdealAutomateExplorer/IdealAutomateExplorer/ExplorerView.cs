@@ -2348,7 +2348,7 @@ namespace System.Windows.Forms.Samples {
                   diff.Minutes,
                   diff.Seconds);
             
-            MessageBox.Show("Total Savings: " + formatted);
+            MessageBox.Show("Total Savings shows total savings for current tab.\r\nTo see total savings for current tab, you need to use toolbar View\\ExpandAll and View\\Refresh prior to using View\\Total Savings.\r\nTotal Savings: " + formatted);
         }
 
         private void runToolStripMenuItem_Click(object sender, EventArgs e) {
