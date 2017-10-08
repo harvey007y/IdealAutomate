@@ -430,6 +430,16 @@ namespace System.Windows.Forms.Samples {
             }
         }
 
+        private void ev_Build_File(string myFile) {
+            Methods myActions = new Methods();
+            try {
+                string strApplicationPath = System.AppDomain.CurrentDomain.BaseDirectory;
+                myActions.RunSync(strApplicationPath + "BuildProjects.bat", myFile);
+            } catch (Exception ex) {
+                MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
+            }
+        }
+
         private void ev_Delete_File(string myFile) {
             try {
                 File.Delete(myFile);
@@ -2037,7 +2047,7 @@ namespace System.Windows.Forms.Samples {
             }
         }
 
-        private void DeleteStripMenuItem4_Click(object sender, EventArgs e) {
+            private void DeleteStripMenuItem4_Click(object sender, EventArgs e) {
             FileView myFileView;
             Methods myActions = new Methods();
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
@@ -2340,6 +2350,7 @@ namespace System.Windows.Forms.Samples {
 
             DataGridViewTextBoxColumn NameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.buildStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.openWithToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notepadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -2384,6 +2395,7 @@ namespace System.Windows.Forms.Samples {
             this.folderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.createShortcutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItemManualTime = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
@@ -2511,18 +2523,26 @@ namespace System.Windows.Forms.Samples {
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.buildStripMenuItem4,
             this.toolStripMenuItem4,
-            this.openWithToolStripMenuItem,
-            this.newToolStripMenuItem1});
+            this.newToolStripMenuItem1,
+            this.openWithToolStripMenuItem
+            });
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(132, 70);
-            // 
-            // toolStripMenuItem4
+                // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
             this.toolStripMenuItem4.Size = new System.Drawing.Size(131, 22);
             this.toolStripMenuItem4.Text = "Delete";
             this.toolStripMenuItem4.Click += new System.EventHandler(this.DeleteStripMenuItem4_Click);
+
+            // 
+            this.buildStripMenuItem4.Name = "buildStripMenuItem4";
+            this.buildStripMenuItem4.Size = new System.Drawing.Size(131, 22);
+            this.buildStripMenuItem4.Text = "Build";
+            this.buildStripMenuItem4.Click += new System.EventHandler(this.buildStripMenuItem4_Click_1);
+
             // 
             // openWithToolStripMenuItem
             // 
@@ -2558,7 +2578,7 @@ namespace System.Windows.Forms.Samples {
             // newToolStripMenuItem1
             // 
             this.newToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.folderToolStripMenuItem1,
+                this.folderToolStripMenuItem1,
             this.toolStripMenuItem5,
             this.textDocumentToolStripMenuItem,
             this.wordPadToolStripMenuItem});
@@ -2722,6 +2742,26 @@ namespace System.Windows.Forms.Samples {
 
         private void ExplorerView_ClientSizeChanged(object sender, EventArgs e) {
             lblIdealAutomateExplorer.Left = (this.ClientSize.Width - lblIdealAutomateExplorer.Width) / 2;
+        }
+
+        private void buildStripMenuItem4_Click_1(object sender, EventArgs e) {
+            FileView myFileView;
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
+                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                //MessageBox.Show(myFileView.FullName.ToString());
+                if (myFileView.IsDirectory) {
+                    // Call EnumerateFiles in a foreach-loop.
+                    foreach (string file in Directory.EnumerateFiles(myFileView.FullName.ToString(),
+                       myFileView.Name + ".sln",
+                        SearchOption.AllDirectories)) {
+                        // Display file path.
+                        ev_Build_File(file);
+                    }
+
+                } else {
+                    ev_Build_File(myFileView.FullName.ToString());
+                }
+            }
         }
     }
 

@@ -59,3 +59,4 @@ C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateExplorer\IdealAutomateExp
 C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\IdealAutomateExplorer.exe
 C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\IdealAutomateExplorer.pdb
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\IdealAutomateCore.dll
+C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\BuildProjects.bat

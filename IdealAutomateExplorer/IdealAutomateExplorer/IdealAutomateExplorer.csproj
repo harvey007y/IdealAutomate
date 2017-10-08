@@ -60,6 +60,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common.cs" />
+    <Content Include="BuildProjects.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Images\plus.png" />
     <None Include="Images\minus.png" />
     <Content Include="Images\icon_close.png" />

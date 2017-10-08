@@ -95,6 +95,7 @@ namespace System.Windows.Forms.Samples
             this.FileViewBindingSource5 = new System.Windows.Forms.BindingSource(this.components);
             this.FileViewBindingSource6 = new System.Windows.Forms.BindingSource(this.components);
             this.lblIdealAutomateExplorer = new System.Windows.Forms.Label();
+            this.buildStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource)).BeginInit();
             this.toolBar.SuspendLayout();
@@ -110,16 +111,17 @@ namespace System.Windows.Forms.Samples
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.buildStripMenuItem4,
             this.toolStripMenuItem4,
             this.openWithToolStripMenuItem,
             this.newToolStripMenuItem1});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(132, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 114);
             // 
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(131, 22);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItem4.Text = "Delete";
             this.toolStripMenuItem4.Click += new System.EventHandler(this.DeleteStripMenuItem4_Click);
             // 
@@ -130,7 +132,7 @@ namespace System.Windows.Forms.Samples
             this.notepadToolStripMenuItem1,
             this.wordPadToolStripMenuItem1});
             this.openWithToolStripMenuItem.Name = "openWithToolStripMenuItem";
-            this.openWithToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
+            this.openWithToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.openWithToolStripMenuItem.Text = "Open With";
             // 
             // notepadToolStripMenuItem
@@ -162,7 +164,7 @@ namespace System.Windows.Forms.Samples
             this.textDocumentToolStripMenuItem,
             this.wordPadToolStripMenuItem});
             this.newToolStripMenuItem1.Name = "newToolStripMenuItem1";
-            this.newToolStripMenuItem1.Size = new System.Drawing.Size(131, 22);
+            this.newToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
             this.newToolStripMenuItem1.Text = "New";
             // 
             // folderToolStripMenuItem1
@@ -634,6 +636,13 @@ namespace System.Windows.Forms.Samples
             this.lblIdealAutomateExplorer.TabIndex = 9;
             this.lblIdealAutomateExplorer.Text = "Ideal Automate Explorer";
             // 
+            // buildStripMenuItem4
+            // 
+            this.buildStripMenuItem4.Name = "buildStripMenuItem4";
+            this.buildStripMenuItem4.Size = new System.Drawing.Size(152, 22);
+            this.buildStripMenuItem4.Text = "Build";
+            this.buildStripMenuItem4.Click += new System.EventHandler(this.buildStripMenuItem4_Click_1);
+            // 
             // ExplorerView
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
@@ -738,6 +747,7 @@ namespace System.Windows.Forms.Samples
         private BindingSource FileViewBindingSource5;
         private BindingSource FileViewBindingSource6;
         private Label lblIdealAutomateExplorer;
+        private ToolStripMenuItem buildStripMenuItem4;
     }
 }
 
