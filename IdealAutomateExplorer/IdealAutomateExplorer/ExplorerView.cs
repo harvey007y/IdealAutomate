@@ -112,8 +112,9 @@ namespace System.Windows.Forms.Samples {
         #region Helper Methods
         private void SetTitle(FileView fv) {
             // Clicked on the Name property, update the title
-            this.Text = fv.Name;
+            this.Text = fv.Name + " - Ideal Automate Explorer";
             this.Icon = fv.Icon;
+            cbxCurrentPath.Text = fv.FullName;
             string[] strInitialDirectoryArray = new string[1];
             strInitialDirectoryArray[0] = fv.FullName;
             Methods myActions = new Methods();
@@ -171,8 +172,7 @@ namespace System.Windows.Forms.Samples {
         #region Event Handlers        
         private void ExplorerView_Load(object sender, EventArgs e) {
             _CurrentDataGridView.ClearSelection();
-            int intTotalSavingsForAllScripts = 0;
-            lblIdealAutomateExplorer.Left = (this.ClientSize.Width - lblIdealAutomateExplorer.Width) / 2;
+            int intTotalSavingsForAllScripts = 0;          
             Methods myActions = new Methods();
             int numOfTabs = myActions.GetValueByKeyAsInt("NumOfTabs");
             // default to desktop if they have no tabs
@@ -202,7 +202,7 @@ namespace System.Windows.Forms.Samples {
                     this._CurrentFileViewBindingSource.DataSource = _dir;
                 
                     tabControl1.TabPages[i].Text = _dir.FileView.Name;
-                    tabControl1.TabPages[i].ToolTipText = _dir.FileView.FullName;
+                    tabControl1.TabPages[i].ToolTipText = _dir.FileView.FullName;                
                     _CurrentIndex = i;
                     AddDataGridToTab();
                 
@@ -2292,7 +2292,6 @@ namespace System.Windows.Forms.Samples {
         }
 
         private void ExplorerView_ClientSizeChanged(object sender, EventArgs e) {
-            lblIdealAutomateExplorer.Left = (this.ClientSize.Width - lblIdealAutomateExplorer.Width) / 2;
         }
 
         private void buildStripMenuItem4_Click_1(object sender, EventArgs e) {
@@ -3074,6 +3073,24 @@ namespace System.Windows.Forms.Samples {
                 strButtonPressed = myActions.WindowMultipleControlsMinimized(ref myListControlEntity, 300, 1200, 100, 100);
                 goto LineAfterDisplayWindow;
             }
+        }
+
+        private void cbxCurrentPath_SelectedIndexChanged(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString(), cbxCurrentPath.SelectedText);
+
+            RefreshDataGrid();
+        }
+
+        private void cbxCurrentPath_TextChanged(object sender, EventArgs e) {
+
+        }
+
+        private void cbxCurrentPath_Leave(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString(), cbxCurrentPath.Text);
+
+            RefreshDataGrid();
         }
     }
 

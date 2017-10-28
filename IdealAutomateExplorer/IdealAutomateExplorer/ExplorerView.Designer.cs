@@ -87,7 +87,8 @@ namespace System.Windows.Forms.Samples
             this.FileViewBindingSource4 = new System.Windows.Forms.BindingSource(this.components);
             this.FileViewBindingSource5 = new System.Windows.Forms.BindingSource(this.components);
             this.FileViewBindingSource6 = new System.Windows.Forms.BindingSource(this.components);
-            this.lblIdealAutomateExplorer = new System.Windows.Forms.Label();
+            this.cbxCurrentPath = new System.Windows.Forms.ComboBox();
+            this.txtSearch = new System.Windows.Forms.TextBox();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource)).BeginInit();
             this.toolBar.SuspendLayout();
@@ -556,22 +557,30 @@ namespace System.Windows.Forms.Samples
             // 
             this.FileViewBindingSource6.DataSource = typeof(System.Windows.Forms.Samples.FileView);
             // 
-            // lblIdealAutomateExplorer
+            // cbxCurrentPath
             // 
-            this.lblIdealAutomateExplorer.AutoSize = true;
-            this.lblIdealAutomateExplorer.Font = new System.Drawing.Font("Century Schoolbook", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblIdealAutomateExplorer.ForeColor = System.Drawing.Color.Red;
-            this.lblIdealAutomateExplorer.Location = new System.Drawing.Point(466, 0);
-            this.lblIdealAutomateExplorer.Name = "lblIdealAutomateExplorer";
-            this.lblIdealAutomateExplorer.Size = new System.Drawing.Size(212, 20);
-            this.lblIdealAutomateExplorer.TabIndex = 9;
-            this.lblIdealAutomateExplorer.Text = "Ideal Automate Explorer";
+            this.cbxCurrentPath.FormattingEnabled = true;
+            this.cbxCurrentPath.Location = new System.Drawing.Point(218, 36);
+            this.cbxCurrentPath.Name = "cbxCurrentPath";
+            this.cbxCurrentPath.Size = new System.Drawing.Size(337, 21);
+            this.cbxCurrentPath.TabIndex = 9;
+            this.cbxCurrentPath.SelectedIndexChanged += new System.EventHandler(this.cbxCurrentPath_SelectedIndexChanged);
+            this.cbxCurrentPath.TextChanged += new System.EventHandler(this.cbxCurrentPath_TextChanged);
+            this.cbxCurrentPath.Leave += new System.EventHandler(this.cbxCurrentPath_Leave);
+            // 
+            // txtSearch
+            // 
+            this.txtSearch.Location = new System.Drawing.Point(586, 36);
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.Size = new System.Drawing.Size(183, 20);
+            this.txtSearch.TabIndex = 10;
             // 
             // ExplorerView
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.ClientSize = new System.Drawing.Size(856, 357);
-            this.Controls.Add(this.lblIdealAutomateExplorer);
+            this.Controls.Add(this.txtSearch);
+            this.Controls.Add(this.cbxCurrentPath);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.toolBar);
             this.Controls.Add(this.mainMenu);
@@ -644,7 +653,6 @@ namespace System.Windows.Forms.Samples
         private BindingSource FileViewBindingSource4;
         private BindingSource FileViewBindingSource5;
         private BindingSource FileViewBindingSource6;
-        private Label lblIdealAutomateExplorer;
         private ToolStripMenuItem buildStripMenuItem4;
         private ToolStripMenuItem collapseAllToolStripMenuItem;
         private ToolStripMenuItem expandAllToolStripMenuItem;
@@ -657,6 +665,8 @@ namespace System.Windows.Forms.Samples
         private ToolStripMenuItem addHotKeyToolStripMenuItem;
         private ToolStripMenuItem removeHotKeyToolStripMenuItem;
         private ToolStripMenuItem manualTimeStripMenuItem;
+        private ComboBox cbxCurrentPath;
+        private TextBox txtSearch;
     }
 }
 
