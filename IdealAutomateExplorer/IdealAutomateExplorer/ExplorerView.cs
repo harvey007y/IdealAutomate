@@ -1309,7 +1309,8 @@ namespace System.Windows.Forms.Samples {
                 if (!myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     string strExecutable = @"C:\Windows\system32\notepad.exe";
                     myActions.Run(strExecutable, myFileView.FullName);
-
+                } else {
+                    myActions.MessageBoxShow("You cannot open folders with Notepad");
                 }
             }
         }
@@ -1333,7 +1334,8 @@ namespace System.Windows.Forms.Samples {
                 if (!myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
                     myActions.Run(strExecutable, myFileView.FullName);
-
+                } else {
+                    myActions.MessageBoxShow("You can not open folders with Notepad++");
                 }
             }
         }
@@ -1399,6 +1401,8 @@ namespace System.Windows.Forms.Samples {
                     string strExecutable = @"C:\Windows\system32\notepad.exe";
                     myActions.Run(strExecutable, strNewTextDocumentDir);
 
+                } else {
+                    myActions.MessageBoxShow("You can not create a text file inside a file; you need to select folder first");
                 }
             }
         }
@@ -1474,7 +1478,8 @@ namespace System.Windows.Forms.Samples {
                 if (!myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     string strExecutable = @"C:\Program Files\Windows NT\Accessories\wordpad.exe";
                     myActions.Run(strExecutable, myFileView.FullName);
-
+                } else {
+                    myActions.MessageBoxShow("You can not create a wordpad file inside a file; first select folder and then right click");
                 }
             }
         }
@@ -1544,6 +1549,8 @@ namespace System.Windows.Forms.Samples {
                     string strExecutable = @"C:\Program Files\Windows NT\Accessories\wordpad.exe";
                     myActions.Run(strExecutable, strNewTextDocumentDir);
 
+                } else {
+                    myActions.MessageBoxShow("You can not create a text document inside a file; first select folder and right click");
                 }
             }
         }
@@ -1861,6 +1868,7 @@ namespace System.Windows.Forms.Samples {
             this.notepadToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.visualStudioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.wordPadToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.WindowsExplorerStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.folderToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
@@ -2092,6 +2100,7 @@ namespace System.Windows.Forms.Samples {
             this.notepadToolStripMenuItem,
             this.notepadToolStripMenuItem1,
             this.visualStudioToolStripMenuItem,
+            this.WindowsExplorerStripMenuItem2,
             this.wordPadToolStripMenuItem1});
             this.openWithToolStripMenuItem.Name = "openWithToolStripMenuItem";
             this.openWithToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
@@ -2125,6 +2134,14 @@ namespace System.Windows.Forms.Samples {
             this.wordPadToolStripMenuItem1.Size = new System.Drawing.Size(136, 22);
             this.wordPadToolStripMenuItem1.Text = "WordPad";
             this.wordPadToolStripMenuItem1.Click += new System.EventHandler(this.wordPadToolStripMenuItem1_Click);
+            // 
+            // 
+            // WindowsExplorerStripMenuItem2
+            // 
+            this.WindowsExplorerStripMenuItem2.Name = "WindowsExplorerStripMenuItem2";
+            this.WindowsExplorerStripMenuItem2.Size = new System.Drawing.Size(136, 22);
+            this.WindowsExplorerStripMenuItem2.Text = "Windows Explorer";
+            this.WindowsExplorerStripMenuItem2.Click += new System.EventHandler(this.WindowsExplorerStripMenuItem2_Click);
             // 
             // newToolStripMenuItem1
             // 
@@ -3091,6 +3108,19 @@ namespace System.Windows.Forms.Samples {
             myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString(), cbxCurrentPath.Text);
 
             RefreshDataGrid();
+        }
+
+        private void WindowsExplorerStripMenuItem2_Click(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
+                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
+                    string strExecutable = @"C:\Windows\explorer.exe";
+                    myActions.Run(strExecutable, myFileView.FullName);
+                } else {
+                    myActions.MessageBoxShow("You can only open directories with Windows Explorer");
+                }
+            }
         }
     }
 
