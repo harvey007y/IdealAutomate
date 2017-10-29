@@ -266,7 +266,12 @@ namespace System.Windows.Forms.Samples
         {
             // Make sure we fire ListChanged on the UI thread
             ListChangedEventArgs args = (state as ListChangedEventArgs);
-            base.OnListChanged(args);
+            try {
+                base.OnListChanged(args);
+            } catch (Exception) {
+
+                
+            }
 
             // Debug info
             WriteDebugThreadInfo("PostCallback");

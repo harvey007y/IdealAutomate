@@ -284,7 +284,9 @@ namespace System.Windows.Forms.Samples {
 
         private void dataGridView1_CellPainting(object sender, DataGridViewCellPaintingEventArgs e) {
             Icon icon = (e.Value as Icon);
-     
+            if (e.Value == null) {
+                return;
+            }
             if (null != icon) {
                 using (SolidBrush b = new SolidBrush(e.CellStyle.BackColor)) {
                     e.Graphics.FillRectangle(b, e.CellBounds);
@@ -311,6 +313,9 @@ namespace System.Windows.Forms.Samples {
         }
 
         private void dataGridView1_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e) {
+            if (e.RowIndex < 0 || ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Value == null) {
+                return;
+            }
             string fileName = ((DataGridView)sender).Rows[e.RowIndex].Cells[13].Value.ToString();
             string scriptName = ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Value.ToString();
             Methods myActions = new Methods();
@@ -1995,6 +2000,8 @@ namespace System.Windows.Forms.Samples {
             myDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             myDataGridView.Size = new System.Drawing.Size(842, 262);
             myDataGridView.TabIndex = 0;
+            myDataGridView.DataError +=
+    new DataGridViewDataErrorEventHandler(dataGridView1_DataError);
             myDataGridView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridView1_CellFormatting);
             myDataGridView.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseClick);
             myDataGridView.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDoubleClick);
@@ -2306,6 +2313,27 @@ namespace System.Windows.Forms.Samples {
             } else {
                 tabControl1.TabPages[_CurrentIndex].Controls.Add(myDataGridView);
             }
+        }
+
+        private void dataGridView1_DataError(object sender, DataGridViewDataErrorEventArgs e) {
+            Methods myActions = new Methods();
+            strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            // Set Initial Directory to My Documents
+            string strSavedDirectory = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
+
+
+            if (Directory.Exists(strSavedDirectory)) {
+                strInitialDirectory = strSavedDirectory;
+            }
+            _dir = new DirectoryView(strInitialDirectory);
+            this._CurrentFileViewBindingSource.DataSource = _dir;
+
+            // Set the title
+            SetTitle(_dir.FileView);
+            this._CurrentDataGridView.DataSource = null;
+            this._CurrentDataGridView.DataSource = this._CurrentFileViewBindingSource;
+            //   this._CurrentDataGridView.Sort(_CurrentDataGridView.Columns[1], ListSortDirection.Ascending);
+            // AddGlobalHotKeys();
         }
 
         private void ExplorerView_ClientSizeChanged(object sender, EventArgs e) {

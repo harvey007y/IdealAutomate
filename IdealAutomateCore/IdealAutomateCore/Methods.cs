@@ -324,6 +324,7 @@ namespace IdealAutomate.Core {
         private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e) {
             uint VK_PAUSE = 0x13;
             int intPauseKeyState = GetAsyncKeyState(VK_PAUSE);
+            int intNumberOfKilledProcesses = 0;
             if (intPauseKeyState != 0) {
                 string FileDes = "IdealAutomateScript"; //FileDescription
                 var myCurrentProcess = Process.GetCurrentProcess();
@@ -332,37 +333,40 @@ namespace IdealAutomate.Core {
                         if (FileDes == x.MainModule.FileVersionInfo.Comments && x.ProcessName != myCurrentProcess.ProcessName) {
                             //  System.Diagnostics.Debugger.Break();
                             x.Kill();
+                            intNumberOfKilledProcesses++;
                         }
                     } catch (Exception ex) {
                         continue;
                     }
 
                 }
-                try {
-                    Thread thread = new Thread(new ThreadStart(() => {
-                        var window = new Window() //make sure the window is invisible
-                        {
-                            Width = 300,
-                            Height = 300,
-                            Title = "Application Cancelled",
-                            Content = "Application Cancelled",
-                            WindowStyle = WindowStyle.ToolWindow,
-                            Visibility = System.Windows.Visibility.Visible,
-                            Topmost = true,
-                            FontSize = 24,
-                            ShowInTaskbar = true,
-                            ShowActivated = true,
-                        };
-                        window.Show();
-                        Sleep(5000);
-                    }));
+                if (intNumberOfKilledProcesses > 0) {
+                    try {
+                        Thread thread = new Thread(new ThreadStart(() => {
+                            var window = new Window() //make sure the window is invisible
+                            {
+                                Width = 300,
+                                Height = 300,
+                                Title = "Application Cancelled",
+                                Content = "Application Cancelled",
+                                WindowStyle = WindowStyle.ToolWindow,
+                                Visibility = System.Windows.Visibility.Visible,
+                                Topmost = true,
+                                FontSize = 24,
+                                ShowInTaskbar = true,
+                                ShowActivated = true,
+                            };
+                            window.Show();
+                            Sleep(5000);
+                        }));
 
-                    thread.SetApartmentState(ApartmentState.STA);
+                        thread.SetApartmentState(ApartmentState.STA);
 
-                    thread.Start();
-                    thread.Join();
-                } catch (Exception ex) {
-                    // MessageBox.Show(ex.Message);
+                        thread.Start();
+                        thread.Join();
+                    } catch (Exception ex) {
+                        // MessageBox.Show(ex.Message);
+                    }
                 }
                 Sleep(500);
                 // Environment.Exit(0);
