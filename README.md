@@ -3,9 +3,8 @@ Here is a group of C# WPF applications for automating redundant tasks.
 The main project is IdealAutomateExplorer. This project is very similar to Windows Explorer. IdealAutomateExplorer allows
 you to create a central repository of all the projects that you have written to automate various redundant tasks that you perform. 
 You can use IdealAutomateCore library to help you write projects that automate these tasks. <br/><br/>
-
 You can also use IdealAutomateExplorer to help you build a knowledge base.<br/><br/>
-Here is a screenshot of Ideal Automate Explorer:<br/>
+Here is a screenshot of IdealAutomateExplorer:<br/>
 <center>
 <img src="http://www.idealautomate.com/images/IdealAutomateExplorer.PNG" border="0" alt="Ideal Automate Explorer" />
 
