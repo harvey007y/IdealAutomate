@@ -1586,7 +1586,7 @@ namespace IdealAutomate.Core {
             }
             string strExecutable = myEntityForExecutable;
 
-            if (!File.Exists(strExecutable) && strExecutable != "iexplore") {
+            if (!File.Exists(strExecutable) && strExecutable != "iexplore" && strExecutable != "microsoft-edge:") {
                 string directory = AppDomain.CurrentDomain.BaseDirectory;
                 string altExecutable = GetValueByKey(strExecutable);
 
@@ -1677,7 +1677,11 @@ namespace IdealAutomate.Core {
                 Process.Start(strExecutable);
             } else {
                 try {
+                  if (strExecutable == "microsoft-edge:") {
+                    Process.Start(strExecutable + strContent);
+                  } else {
                     Process.Start(strExecutable, string.Concat("", strContent, ""));
+                  }
                 } catch (Exception ex) {
 
                     MessageBox.Show("Here is an exception thrown in the Run method in IdealAutomateCore for Executable " + strExecutable + ": " + ex.Message);
