@@ -1680,6 +1680,7 @@ namespace IdealAutomate.Core {
                   if (strExecutable == "microsoft-edge:") {
                     Process.Start(strExecutable + strContent);
                   } else {
+                    
                     Process.Start(strExecutable, string.Concat("", strContent, ""));
                   }
                 } catch (Exception ex) {
@@ -1688,16 +1689,44 @@ namespace IdealAutomate.Core {
                 }
             }
         }
-        /// <summary>
-        /// <para>RunSync receives two input strings. The first is the path to the executable.</para>
-        /// <para>The second is optional and it is the content you want to open with the executable.</para>
-        /// <para>Run starts the executable as a thread and continues to the next statement</para>
-        /// <para>AFTER the thread completes</para>
-        /// </summary>
-        /// <param name="myEntityForExecutable">string for the path of the executable</param>
-        /// <param name="myEntityForContent">string for the content for the executable to open</param>
+    public int RunProcessAsAdmin(string exeName, string parameters) {
+      try {
+        System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
+        startInfo.UseShellExecute = true;
+        // startInfo.WorkingDirectory = CurrentDirectory;;
+        startInfo.FileName = exeName;
+        startInfo.Verb = "runas";
+        //MLHIDE
+        startInfo.Arguments = parameters;
+        startInfo.ErrorDialog = true;
 
-        public void RunSync(string myEntityForExecutable, string myEntityForContent) {
+        Process process = System.Diagnostics.Process.Start(startInfo);
+        process.WaitForExit();
+        return process.ExitCode;
+      } catch (Win32Exception ex) {
+        MessageBox.Show(ex.ToString());
+        switch (ex.NativeErrorCode) {
+          case 1223:
+            return ex.NativeErrorCode;
+          default:
+            return 777;
+        }
+
+      } catch (Exception ex) {
+        MessageBox.Show(ex.ToString());
+        return 7777;
+      }
+    }
+    /// <summary>
+    /// <para>RunSync receives two input strings. The first is the path to the executable.</para>
+    /// <para>The second is optional and it is the content you want to open with the executable.</para>
+    /// <para>Run starts the executable as a thread and continues to the next statement</para>
+    /// <para>AFTER the thread completes</para>
+    /// </summary>
+    /// <param name="myEntityForExecutable">string for the path of the executable</param>
+    /// <param name="myEntityForContent">string for the content for the executable to open</param>
+
+    public void RunSync(string myEntityForExecutable, string myEntityForContent) {
             if (fbDebugMode) {
                 Console.WriteLine(oProcess.ProcessName + "==> " + "RunSync: myEntityForExecutable=" + myEntityForExecutable + " myEntityForContent=" + myEntityForContent);
                 Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "RunSync: myEntityForExecutable=" + myEntityForExecutable + " myEntityForContent=" + myEntityForContent);
