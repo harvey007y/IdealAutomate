@@ -17,6 +17,10 @@ using System.Windows;
 using System.Linq;
 using System.Globalization;
 
+
+
+
+
 #endregion
 
 namespace System.Windows.Forms.Samples {
@@ -115,6 +119,10 @@ namespace System.Windows.Forms.Samples {
             this.Text = fv.Name + " - Ideal Automate Explorer";
             this.Icon = fv.Icon;
             cbxCurrentPath.Text = fv.FullName;
+            cbxCurrentPath.SelectedValue = fv.FullName;
+           
+ 
+           
             string[] strInitialDirectoryArray = new string[1];
             strInitialDirectoryArray[0] = fv.FullName;
             Methods myActions = new Methods();
@@ -247,6 +255,41 @@ namespace System.Windows.Forms.Samples {
 
             // Set the title
             SetTitle(_dir.FileView);
+           
+            string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
+            string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
+            string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
+            string settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPath(myNewProjectSourcePath));
+            string fileName = cbxCurrentPath.Name + ".txt";
+            string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
+            ArrayList alHosts = new ArrayList();
+            List<ComboBoxPair> cbp = new List<ComboBoxPair>();
+            cbp.Clear();
+            //  cbxCurrentPath.Items.Clear();
+            //  cbp.Add(new ComboBoxPair("--Select Item ---", "--Select Item ---"));
+            ComboBox myComboBox = new ComboBox();
+
+            if (!File.Exists(settingsPath)) {
+                using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
+                    objSWFile.Close();
+                }
+            }
+            using (StreamReader objSRFile = File.OpenText(settingsPath)) {
+                string strReadLine = "";
+                while ((strReadLine = objSRFile.ReadLine()) != null) {
+                    string[] keyvalue = strReadLine.Split('^');
+                    if (keyvalue[0] != "--Select Item ---" && keyvalue[0] != "") {
+                        cbp.Add(new ComboBoxPair(keyvalue[0], keyvalue[1]));
+
+                    }
+                }
+                objSRFile.Close();
+            }
+
+            foreach (var item in cbp) {
+                cbxCurrentPath.Items.Add(item);
+            }
+            cbxCurrentPath.DisplayMember = "_Value";
 
             // Set Size column to right align
             DataGridViewColumn col = this._CurrentDataGridView.Columns["Size"];
@@ -1151,7 +1194,7 @@ namespace System.Windows.Forms.Samples {
                         }
                     }
                     foreach (ComboBoxPair item in alHostx) {
-                        if (strNewHostName != item._Key && item._Key != "--Select Item ---") {
+                        if (strNewHostName.ToLower() != item._Key.ToLower() && item._Key != "--Select Item ---") {
                             boolNewItem = true;
                             alHostsNew.Add(item);
                         }
@@ -1776,7 +1819,7 @@ namespace System.Windows.Forms.Samples {
                             }
                         }
                         foreach (ComboBoxPair item in alHostx) {
-                            if (strNewHostName != item._Key && item._Key != "--Select Item ---") {
+                            if (strNewHostName.ToLower() != item._Key.ToLower() && item._Key != "--Select Item ---") {
                                 boolNewItem = true;
                                 alHostsNew.Add(item);
                             }
@@ -2585,7 +2628,7 @@ namespace System.Windows.Forms.Samples {
                         }
                     }
                     foreach (ComboBoxPair item in alHostx) {
-                        if (strNewHostName != item._Key && item._Key != "--Select Item ---") {
+                        if (strNewHostName.ToLower() != item._Key.ToLower() && item._Key != "--Select Item ---") {
                             boolNewItem = true;
                             alHostsNew.Add(item);
                         }
@@ -3002,7 +3045,7 @@ namespace System.Windows.Forms.Samples {
                         }
                     }
                     foreach (ComboBoxPair item in alHostx) {
-                        if (strNewHostName != item._Key && item._Key != "--Select Item ---") {
+                        if (strNewHostName.ToLower() != item._Key.ToLower() && item._Key != "--Select Item ---") {
                             boolNewItem = true;
                             alHostsNew.Add(item);
                         }
@@ -3080,7 +3123,7 @@ namespace System.Windows.Forms.Samples {
                         }
                     }
                     foreach (ComboBoxPair item in alHostx) {
-                        if (strNewHostName != item._Key && item._Key != "--Select Item ---") {
+                        if (strNewHostName.ToLower() != item._Key.ToLower() && item._Key != "--Select Item ---") {
                             boolNewItem = true;
                             alHostsNew.Add(item);
                         }
@@ -3122,8 +3165,8 @@ namespace System.Windows.Forms.Samples {
 
         private void cbxCurrentPath_SelectedIndexChanged(object sender, EventArgs e) {
             Methods myActions = new Methods();
-            myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString(), cbxCurrentPath.SelectedText);
-
+            myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString(), ((ComboBoxPair)(cbxCurrentPath.SelectedItem))._Value);
+            
             RefreshDataGrid();
         }
 
@@ -3132,8 +3175,70 @@ namespace System.Windows.Forms.Samples {
         }
 
         private void cbxCurrentPath_Leave(object sender, EventArgs e) {
+            string strNewHostName = ((ComboBox)sender).Text;
             Methods myActions = new Methods();
-            myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString(), cbxCurrentPath.Text);
+            if (!Directory.Exists(strNewHostName)) {
+                System.Windows.Forms.DialogResult myResult = myActions.MessageBoxShowWithYesNo("I could not find folder " + strNewHostName + ". Do you want me to create it ? ");
+                if (myResult == System.Windows.Forms.DialogResult.Yes) {
+                    Directory.CreateDirectory(strNewHostName);
+                } else {
+                    return;
+                }
+            }
+                List<ComboBoxPair> alHosts = ((ComboBox)sender).Items.Cast<ComboBoxPair>().ToList();
+            List<ComboBoxPair> alHostsNew = new List<ComboBoxPair>();
+
+            ComboBoxPair myCbp = new ComboBoxPair(strNewHostName, strNewHostName);
+            bool boolNewItem = false;
+
+            alHostsNew.Add(myCbp);
+
+            foreach (ComboBoxPair item in alHosts) {
+                if (strNewHostName.ToLower() != item._Key.ToLower()) {
+                    boolNewItem = true;
+                    alHostsNew.Add(item);
+                }
+            }
+            if (alHostsNew.Count > 24) {
+                for (int i = alHostsNew.Count - 1; i > 0; i--) {
+                    if (alHostsNew[i]._Key.Trim() != "--Select Item ---") {
+                        alHostsNew.RemoveAt(i);
+                        break;
+                    }
+                }
+            }
+
+            string fileName = ((ComboBox)sender).Name + ".txt";
+
+     
+            string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
+            string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
+            string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
+            string settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPath(myNewProjectSourcePath));
+
+            string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
+            using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
+                foreach (ComboBoxPair item in alHostsNew) {
+                    if (item._Key != "") {
+                        objSWFile.WriteLine(item._Key + '^' + item._Value);
+                    }
+                }
+                objSWFile.Close();
+            }
+
+            //  alHosts = alHostsNew;
+            if (boolNewItem) {
+                ((ComboBox)sender).Items.Clear();
+                foreach (var item in alHostsNew) {
+                    ((ComboBox)sender).Items.Add(item);
+                }
+            }
+            string strCurrentPath = ((ComboBox)(sender)).Text;
+            
+           
+
+
+            myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString(), strCurrentPath);
 
             RefreshDataGrid();
         }
