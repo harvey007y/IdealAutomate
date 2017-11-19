@@ -81,8 +81,6 @@ namespace System.Windows.Forms.Samples
             this.favoritesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
             this.FileViewBindingSource2 = new System.Windows.Forms.BindingSource(this.components);
             this.FileViewBindingSource3 = new System.Windows.Forms.BindingSource(this.components);
             this.FileViewBindingSource4 = new System.Windows.Forms.BindingSource(this.components);
@@ -90,16 +88,22 @@ namespace System.Windows.Forms.Samples
             this.FileViewBindingSource6 = new System.Windows.Forms.BindingSource(this.components);
             this.cbxCurrentPath = new System.Windows.Forms.ComboBox();
             this.txtSearch = new System.Windows.Forms.TextBox();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource)).BeginInit();
             this.toolBar.SuspendLayout();
             this.mainMenu.SuspendLayout();
-            this.tabControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
+            this.tabControl1.SuspendLayout();
             this.SuspendLayout();
             // 
             // contextMenuStrip1
@@ -330,7 +334,7 @@ namespace System.Windows.Forms.Samples
             // 
             this.thumbnailsMenuItem.CheckOnClick = true;
             this.thumbnailsMenuItem.Name = "thumbnailsMenuItem";
-            this.thumbnailsMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.thumbnailsMenuItem.Size = new System.Drawing.Size(152, 22);
             this.thumbnailsMenuItem.Text = "Thumbnails";
             this.thumbnailsMenuItem.Click += new System.EventHandler(this.thumbnailsMenuItem_Click);
             // 
@@ -338,7 +342,7 @@ namespace System.Windows.Forms.Samples
             // 
             this.tilesMenuItem.CheckOnClick = true;
             this.tilesMenuItem.Name = "tilesMenuItem";
-            this.tilesMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.tilesMenuItem.Size = new System.Drawing.Size(152, 22);
             this.tilesMenuItem.Text = "Tiles";
             this.tilesMenuItem.Click += new System.EventHandler(this.tilesMenuItem_Click);
             // 
@@ -346,25 +350,25 @@ namespace System.Windows.Forms.Samples
             // 
             this.iconsMenuItem.CheckOnClick = true;
             this.iconsMenuItem.Name = "iconsMenuItem";
-            this.iconsMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.iconsMenuItem.Size = new System.Drawing.Size(152, 22);
             this.iconsMenuItem.Text = "Icons";
             this.iconsMenuItem.Click += new System.EventHandler(this.iconsMenuItem_Click);
             // 
             // listMenuItem
             // 
+            this.listMenuItem.Checked = true;
             this.listMenuItem.CheckOnClick = true;
+            this.listMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.listMenuItem.Name = "listMenuItem";
-            this.listMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.listMenuItem.Size = new System.Drawing.Size(152, 22);
             this.listMenuItem.Text = "List";
             this.listMenuItem.Click += new System.EventHandler(this.listMenuItem_Click);
             // 
             // detailsMenuItem
             // 
-            this.detailsMenuItem.Checked = true;
             this.detailsMenuItem.CheckOnClick = true;
-            this.detailsMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.detailsMenuItem.Name = "detailsMenuItem";
-            this.detailsMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.detailsMenuItem.Size = new System.Drawing.Size(152, 22);
             this.detailsMenuItem.Text = "Details";
             this.detailsMenuItem.Click += new System.EventHandler(this.detailsMenuItem_Click);
             // 
@@ -523,29 +527,6 @@ namespace System.Windows.Forms.Samples
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
             // 
-            // tabControl1
-            // 
-            this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 63);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.ShowToolTips = true;
-            this.tabControl1.Size = new System.Drawing.Size(856, 294);
-            this.tabControl1.TabIndex = 8;
-            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
-            // 
-            // tabPage3
-            // 
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(848, 268);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "    +";
-            this.tabPage3.ToolTipText = "Add New Tab";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
             // FileViewBindingSource2
             // 
             this.FileViewBindingSource2.DataSource = typeof(System.Windows.Forms.Samples.FileView);
@@ -584,13 +565,50 @@ namespace System.Windows.Forms.Samples
             this.txtSearch.Size = new System.Drawing.Size(183, 20);
             this.txtSearch.TabIndex = 10;
             // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 63);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.tabControl1);
+            this.splitContainer1.Size = new System.Drawing.Size(856, 500);
+            this.splitContainer1.SplitterDistance = 499;
+            this.splitContainer1.TabIndex = 11;
+            this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer1_SplitterMoved);
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.ShowToolTips = true;
+            this.tabControl1.Size = new System.Drawing.Size(499, 500);
+            this.tabControl1.TabIndex = 9;
+            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(491, 474);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "    +";
+            this.tabPage3.ToolTipText = "Add New Tab";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
             // ExplorerView
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.ClientSize = new System.Drawing.Size(856, 357);
+            this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.txtSearch);
             this.Controls.Add(this.cbxCurrentPath);
-            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.toolBar);
             this.Controls.Add(this.mainMenu);
             this.Name = "ExplorerView";
@@ -604,12 +622,15 @@ namespace System.Windows.Forms.Samples
             this.toolBar.PerformLayout();
             this.mainMenu.ResumeLayout(false);
             this.mainMenu.PerformLayout();
-            this.tabControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource6)).EndInit();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -623,11 +644,6 @@ namespace System.Windows.Forms.Samples
         private System.Windows.Forms.ToolStripButton upSplitButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripSplitButton viewSplitButton;
-        private System.Windows.Forms.ToolStripMenuItem thumbnailsMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem tilesMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem iconsMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem listMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem detailsMenuItem;
         private System.Windows.Forms.MenuStrip mainMenu;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
@@ -655,9 +671,7 @@ namespace System.Windows.Forms.Samples
         private ToolStripMenuItem wordPadToolStripMenuItem;
         private ToolStripMenuItem toolStripMenuItem4;
         private ToolStripMenuItem toolStripMenuItem5;
-        private TabControl tabControl1;
         private BindingSource FileViewBindingSource2;
-        private TabPage tabPage3;
         private BindingSource FileViewBindingSource3;
         private BindingSource FileViewBindingSource4;
         private BindingSource FileViewBindingSource5;
@@ -677,6 +691,14 @@ namespace System.Windows.Forms.Samples
         private ComboBox cbxCurrentPath;
         private TextBox txtSearch;
         private ToolStripMenuItem WindowsExplorerStripMenuItem2;
+        private SplitContainer splitContainer1;
+        private TabControl tabControl1;
+        private TabPage tabPage3;
+        private ToolStripMenuItem thumbnailsMenuItem;
+        private ToolStripMenuItem tilesMenuItem;
+        private ToolStripMenuItem iconsMenuItem;
+        private ToolStripMenuItem listMenuItem;
+        private ToolStripMenuItem detailsMenuItem;
     }
 }
 

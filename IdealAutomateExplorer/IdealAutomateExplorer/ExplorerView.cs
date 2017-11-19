@@ -16,6 +16,7 @@ using WindowsInput.Native;
 using System.Windows;
 using System.Linq;
 using System.Globalization;
+using System.Runtime.InteropServices;
 
 
 
@@ -42,8 +43,28 @@ namespace System.Windows.Forms.Samples {
         const int CLOSE_SPACE = 15;
         const int CLOSE_AREA = 15;
 
+        private const int SC_MAXIMIZE = 61488;
+        private const int WM_CLOSE = 16; //0x10
+        private const int WM_SYSCOMMAND = 274;
 
 
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern bool IsWindowVisible(IntPtr hWnd);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern bool MoveWindow(IntPtr hwnd, int x, int y, int cx, int cy, bool repaint);
+
+        [DllImport("user32.dll", EntryPoint = "PostMessageA", SetLastError = true)]
+        private static extern bool PostMessage(IntPtr hwnd, uint msg, long wParam, long lParam);
+
+        [DllImport("user32.dll")]
+        static extern IntPtr SendMessage(IntPtr hWnd, UInt32 msg, Int32 wParam, Int32 lParam);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern long SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
+
+        private IntPtr _appHandle;
+        Process _proc;
 
         public ExplorerView() {
             InitializeComponent();
@@ -109,7 +130,7 @@ namespace System.Windows.Forms.Samples {
             }
 
             e.Graphics.DrawString(this.tabControl1.TabPages[e.Index].Text, e.Font, new SolidBrush(Color.Black), e.Bounds.Left + LEADING_SPACE, e.Bounds.Top + 4);
-            
+
 
         }
 
@@ -120,9 +141,9 @@ namespace System.Windows.Forms.Samples {
             this.Icon = fv.Icon;
             cbxCurrentPath.Text = fv.FullName;
             cbxCurrentPath.SelectedValue = fv.FullName;
-           
- 
-           
+
+
+
             string[] strInitialDirectoryArray = new string[1];
             strInitialDirectoryArray[0] = fv.FullName;
             Methods myActions = new Methods();
@@ -180,7 +201,37 @@ namespace System.Windows.Forms.Samples {
         #region Event Handlers        
         private void ExplorerView_Load(object sender, EventArgs e) {
             _CurrentDataGridView.ClearSelection();
-            int intTotalSavingsForAllScripts = 0;          
+            splitContainer1.Width = ClientSize.Width;
+            splitContainer1.Height = ClientSize.Height - 50;
+            splitContainer1.Panel2Collapsed = true;
+
+
+            //tries to start the process 
+            try {
+                _proc = Process.Start(@"C:\Program Files\Windows NT\Accessories\wordpad.exe");
+            } catch (Exception) {
+                MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            //disables button and textbox
+            //txtProcess.Enabled = false;
+            //btnStart.Enabled = false;
+
+            //host the started process in the panel 
+            System.Threading.Thread.Sleep(500);
+            while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                System.Threading.Thread.Sleep(10);
+                _proc.Refresh();
+            }
+
+            _proc.WaitForInputIdle();
+            _appHandle = _proc.MainWindowHandle;
+
+            SetParent(_appHandle, splitContainer1.Panel2.Handle);
+            SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+            //SendMessage(proc.MainWindowHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+            int intTotalSavingsForAllScripts = 0;
             Methods myActions = new Methods();
             int numOfTabs = myActions.GetValueByKeyAsInt("NumOfTabs");
             // default to desktop if they have no tabs
@@ -206,14 +257,14 @@ namespace System.Windows.Forms.Samples {
 
                 // do not fill the directory because first time through
                 // we are just addding name and tooltip to each tab
-                _dir = new DirectoryView(strInitialDirectory,false);
-                    this._CurrentFileViewBindingSource.DataSource = _dir;
-                
-                    tabControl1.TabPages[i].Text = _dir.FileView.Name;
-                    tabControl1.TabPages[i].ToolTipText = _dir.FileView.FullName;                
-                    _CurrentIndex = i;
-                    AddDataGridToTab();
-                
+                _dir = new DirectoryView(strInitialDirectory, false);
+                this._CurrentFileViewBindingSource.DataSource = _dir;
+
+                tabControl1.TabPages[i].Text = _dir.FileView.Name;
+                tabControl1.TabPages[i].ToolTipText = _dir.FileView.FullName;
+                _CurrentIndex = i;
+                AddDataGridToTab();
+
 
             }
 
@@ -255,7 +306,7 @@ namespace System.Windows.Forms.Samples {
 
             // Set the title
             SetTitle(_dir.FileView);
-           
+
             string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
             string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
             string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
@@ -308,7 +359,7 @@ namespace System.Windows.Forms.Samples {
                 this._CurrentDataGridView.Rows[0].Cells[col.Index].Selected = true;
             }
             AddGlobalHotKeys();
-            
+
             myActions.SetValueByKey("ExpandCollapseAll", "");
         }
 
@@ -422,12 +473,14 @@ namespace System.Windows.Forms.Samples {
         private void listMenuItem_Click(object sender, EventArgs e) {
             if (DoActionRequired(sender)) {
                 MessageBox.Show("List View");
+                splitContainer1.Panel2Collapsed = true;
             }
         }
 
         private void detailsMenuItem_Click(object sender, EventArgs e) {
             if (DoActionRequired(sender)) {
                 MessageBox.Show("Details View");
+                splitContainer1.Panel2Collapsed = false;
             }
         }
 
@@ -891,7 +944,7 @@ namespace System.Windows.Forms.Samples {
             return processlist.FirstOrDefault(pr => pr.Id == id);
         }
 
-         private void categoryToolStripMenuItem_Click(object sender, EventArgs e) {
+        private void categoryToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             List<ControlEntity> myListControlEntity = new List<ControlEntity>();
 
@@ -972,7 +1025,7 @@ namespace System.Windows.Forms.Samples {
 
 
 
-       
+
 
         private void subCategoryToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
@@ -1040,6 +1093,7 @@ namespace System.Windows.Forms.Samples {
                 if (myCell.ColumnIndex == 0 && e.RowIndex > -1) {
                     // Call Active on DirectoryView
                     string fileName = ((DataGridView)sender).Rows[e.RowIndex].Cells[13].Value.ToString();
+
                     Methods myActions = new Methods();
                     string categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", fileName);
                     if (categoryState == "Expanded") {
@@ -1108,7 +1162,7 @@ namespace System.Windows.Forms.Samples {
             myControlEntity.ToolTipx = @"Here is an example: C:\Users\harve\Documents\GitHub";
             myControlEntity.ComboBoxIsEditable = true;
             myControlEntity.ColumnNumber = 1;
-            myControlEntity.ColumnSpan = 2;           
+            myControlEntity.ColumnSpan = 2;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
             myControlEntity.ControlEntitySetDefaults();
@@ -1364,6 +1418,89 @@ namespace System.Windows.Forms.Samples {
         }
 
         private void dataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e) {
+            if (e.ColumnIndex != -1 && e.RowIndex != -1 && e.Button == System.Windows.Forms.MouseButtons.Left) {
+                DataGridViewCell c = (sender as DataGridView)[e.ColumnIndex, e.RowIndex];
+                if (!c.Selected) {
+                    c.Selected = true;
+                    string fileName = ((DataGridView)sender).Rows[e.RowIndex].Cells[13].Value.ToString();
+                    if (fileName.EndsWith(".rtf") 
+                        || fileName.EndsWith(".odt")
+                        || fileName.EndsWith(".doc")
+                        || fileName.EndsWith(".docx")
+                        ) {
+                        //Close the running process
+                        if (_appHandle != IntPtr.Zero) {
+                            PostMessage(_appHandle, WM_CLOSE, 0, 0);
+                            System.Threading.Thread.Sleep(1000);
+                            _appHandle = IntPtr.Zero;
+                        }
+                        //tries to start the process 
+                        try {
+                            _proc = Process.Start(@"C:\Program Files\Windows NT\Accessories\wordpad.exe", "\"" + fileName + "\"");
+                        } catch (Exception) {
+                            MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+
+
+                        System.Threading.Thread.Sleep(500);
+                        while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                            System.Threading.Thread.Sleep(10);
+                            _proc.Refresh();
+                        }
+
+                        _proc.WaitForInputIdle();
+                        _appHandle = _proc.MainWindowHandle;
+
+                        SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                        SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+
+                    } else {
+                        if (fileName.EndsWith(".txt")
+                            || fileName.EndsWith(".bat")
+                            || fileName.EndsWith(".cs")
+                            || fileName.EndsWith(".xaml")
+                            || fileName.EndsWith(".sln")
+                            || fileName.EndsWith(".csproj")
+                            || fileName.EndsWith(".resx")
+                             || fileName.EndsWith(".js")
+                              || fileName.EndsWith(".css")
+                              || fileName.EndsWith(".html")
+                              || fileName.EndsWith(".htm")
+                              || fileName.EndsWith(".xml")
+                              || fileName.EndsWith(".sql")
+                              || fileName.EndsWith(".csv")) {
+                            //Close the running process
+                            if (_appHandle != IntPtr.Zero) {
+                                PostMessage(_appHandle, WM_CLOSE, 0, 0);
+                                System.Threading.Thread.Sleep(1000);
+                                _appHandle = IntPtr.Zero;
+                            }
+                            //tries to start the process 
+                            try {
+                                _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", fileName);
+                            } catch (Exception) {
+                                MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            }
+
+
+                            System.Threading.Thread.Sleep(500);
+                            while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                                System.Threading.Thread.Sleep(10);
+                                _proc.Refresh();
+                            }
+
+                            _proc.WaitForInputIdle();
+                            _appHandle = _proc.MainWindowHandle;
+
+                            SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                            SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+                        }
+                    }
+
+                }
+            }
             if (e.ColumnIndex != -1 && e.RowIndex != -1 && e.Button == System.Windows.Forms.MouseButtons.Right) {
                 DataGridViewCell c = (sender as DataGridView)[e.ColumnIndex, e.RowIndex];
                 if (!c.Selected) {
@@ -1372,6 +1509,7 @@ namespace System.Windows.Forms.Samples {
                     c.Selected = true;
                 }
             }
+
 
         }
 
@@ -1603,7 +1741,7 @@ namespace System.Windows.Forms.Samples {
             }
         }
 
-            private void DeleteStripMenuItem4_Click(object sender, EventArgs e) {
+        private void DeleteStripMenuItem4_Click(object sender, EventArgs e) {
             FileView myFileView;
             Methods myActions = new Methods();
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
@@ -1941,7 +2079,7 @@ namespace System.Windows.Forms.Samples {
             this.forwardSplitButton = new System.Windows.Forms.ToolStripDropDownButton();
             this.upSplitButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.viewSplitButton = new System.Windows.Forms.ToolStripSplitButton();
+            //this.viewSplitButton = new System.Windows.Forms.ToolStripSplitButton();
             this.thumbnailsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tilesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.iconsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -1955,7 +2093,7 @@ namespace System.Windows.Forms.Samples {
             this.subCategoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.folderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-         
+
             this.copyStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addHotKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeHotKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -2088,7 +2226,7 @@ namespace System.Windows.Forms.Samples {
             });
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(132, 70);
-                // toolStripMenuItem4
+            // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
             this.toolStripMenuItem4.Size = new System.Drawing.Size(131, 22);
@@ -2198,7 +2336,7 @@ namespace System.Windows.Forms.Samples {
             this.newToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
                 this.folderToolStripMenuItem1,
             this.toolStripMenuItem5,
-            this.textDocumentToolStripMenuItem,           
+            this.textDocumentToolStripMenuItem,
             this.wordPadToolStripMenuItem});
             this.newToolStripMenuItem1.Name = "newToolStripMenuItem1";
             this.newToolStripMenuItem1.Size = new System.Drawing.Size(131, 22);
@@ -2434,7 +2572,7 @@ namespace System.Windows.Forms.Samples {
                   diff.Hours,
                   diff.Minutes,
                   diff.Seconds);
-            
+
             MessageBox.Show("Total Savings shows total savings for current tab.\r\nTo see total savings for current tab, you need to use toolbar View\\ExpandAll and View\\Refresh prior to using View\\Total Savings.\r\nTotal Savings: " + formatted);
         }
 
@@ -2915,7 +3053,7 @@ namespace System.Windows.Forms.Samples {
                     ev_Process_File(myFileView.FullName.ToString());
                 }
 
-           }
+            }
         }
 
         private void favoritesToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -2998,70 +3136,70 @@ namespace System.Windows.Forms.Samples {
 
             myActions.SetValueByKey("cbxFavoriteFolderSelectedValue", strFolder);
 
-            if (strButtonPressed == "btnDeleteFolder") {                
-                    strFolder = myListControlEntity.Find(x => x.ID == "cbxFavoriteFolder").SelectedValue;
-                    string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
-                    string fileName = "cbxFavoriteFolder.txt";
-                    string strApplicationBinDebug = Application.StartupPath;
-                    string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
+            if (strButtonPressed == "btnDeleteFolder") {
+                strFolder = myListControlEntity.Find(x => x.ID == "cbxFavoriteFolder").SelectedValue;
+                string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
+                string fileName = "cbxFavoriteFolder.txt";
+                string strApplicationBinDebug = Application.StartupPath;
+                string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
 
-                    string settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPath(myNewProjectSourcePath));
-                    string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
-                    ArrayList alHosts = new ArrayList();
-                    cbp = new List<ComboBoxPair>();
-                    cbp.Clear();
-                    cbp.Add(new ComboBoxPair("--Select Item ---", "--Select Item ---"));
-                    ComboBox myComboBox = new ComboBox();
+                string settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPath(myNewProjectSourcePath));
+                string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
+                ArrayList alHosts = new ArrayList();
+                cbp = new List<ComboBoxPair>();
+                cbp.Clear();
+                cbp.Add(new ComboBoxPair("--Select Item ---", "--Select Item ---"));
+                ComboBox myComboBox = new ComboBox();
 
 
-                    if (!File.Exists(settingsPath)) {
-                        using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
-                            objSWFile.Close();
-                        }
-                    }
-                    using (StreamReader objSRFile = File.OpenText(settingsPath)) {
-                        string strReadLine = "";
-                        while ((strReadLine = objSRFile.ReadLine()) != null) {
-                            string[] keyvalue = strReadLine.Split('^');
-                            if (keyvalue[0] != "--Select Item ---") {
-                                cbp.Add(new ComboBoxPair(keyvalue[0], keyvalue[1]));
-                            }
-                        }
-                        objSRFile.Close();
-                    }
-                    string strNewHostName = myListControlEntity.Find(x => x.ID == "cbxFavoriteFolder").Text;
-                    List<ComboBoxPair> alHostx = cbp;
-                    List<ComboBoxPair> alHostsNew = new List<ComboBoxPair>();
-                    ComboBoxPair myCbp = new ComboBoxPair(strNewHostName, strNewHostName);
-                    bool boolNewItem = false;
-
-                    alHostsNew.Add(myCbp);
-                    if (alHostx.Count > 24) {
-                        for (int i = alHostx.Count - 1; i > 0; i--) {
-                            if (alHostx[i]._Key.Trim() != "--Select Item ---") {
-                                alHostx.RemoveAt(i);
-                                break;
-                            }
-                        }
-                    }
-                    foreach (ComboBoxPair item in alHostx) {
-                        if (strNewHostName.ToLower() != item._Key.ToLower() && item._Key != "--Select Item ---") {
-                            boolNewItem = true;
-                            alHostsNew.Add(item);
-                        }
-                    }
-
+                if (!File.Exists(settingsPath)) {
                     using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
-                    alHostsNew.OrderBy(x => x._Value);
-                        for (int i = 0; i < alHostsNew.Count; i++) {
-                            if (alHostsNew[i]._Key != "" && alHostsNew[i]._Key != strFolder) {
-                                objSWFile.WriteLine(alHostsNew[i]._Key + '^' + alHostsNew[i]._Value);
-                            }
-                        }
                         objSWFile.Close();
                     }
-                    goto DisplayWindowAgain;
-                
+                }
+                using (StreamReader objSRFile = File.OpenText(settingsPath)) {
+                    string strReadLine = "";
+                    while ((strReadLine = objSRFile.ReadLine()) != null) {
+                        string[] keyvalue = strReadLine.Split('^');
+                        if (keyvalue[0] != "--Select Item ---") {
+                            cbp.Add(new ComboBoxPair(keyvalue[0], keyvalue[1]));
+                        }
+                    }
+                    objSRFile.Close();
+                }
+                string strNewHostName = myListControlEntity.Find(x => x.ID == "cbxFavoriteFolder").Text;
+                List<ComboBoxPair> alHostx = cbp;
+                List<ComboBoxPair> alHostsNew = new List<ComboBoxPair>();
+                ComboBoxPair myCbp = new ComboBoxPair(strNewHostName, strNewHostName);
+                bool boolNewItem = false;
+
+                alHostsNew.Add(myCbp);
+                if (alHostx.Count > 24) {
+                    for (int i = alHostx.Count - 1; i > 0; i--) {
+                        if (alHostx[i]._Key.Trim() != "--Select Item ---") {
+                            alHostx.RemoveAt(i);
+                            break;
+                        }
+                    }
+                }
+                foreach (ComboBoxPair item in alHostx) {
+                    if (strNewHostName.ToLower() != item._Key.ToLower() && item._Key != "--Select Item ---") {
+                        boolNewItem = true;
+                        alHostsNew.Add(item);
+                    }
+                }
+
+                using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
+                    alHostsNew.OrderBy(x => x._Value);
+                    for (int i = 0; i < alHostsNew.Count; i++) {
+                        if (alHostsNew[i]._Key != "" && alHostsNew[i]._Key != strFolder) {
+                            objSWFile.WriteLine(alHostsNew[i]._Key + '^' + alHostsNew[i]._Value);
+                        }
+                    }
+                    objSWFile.Close();
+                }
+                goto DisplayWindowAgain;
+
             }
 
             if (strButtonPressed == "btnSelectFolder") {
@@ -3166,7 +3304,7 @@ namespace System.Windows.Forms.Samples {
         private void cbxCurrentPath_SelectedIndexChanged(object sender, EventArgs e) {
             Methods myActions = new Methods();
             myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString(), ((ComboBoxPair)(cbxCurrentPath.SelectedItem))._Value);
-            
+
             RefreshDataGrid();
         }
 
@@ -3185,7 +3323,7 @@ namespace System.Windows.Forms.Samples {
                     return;
                 }
             }
-                List<ComboBoxPair> alHosts = ((ComboBox)sender).Items.Cast<ComboBoxPair>().ToList();
+            List<ComboBoxPair> alHosts = ((ComboBox)sender).Items.Cast<ComboBoxPair>().ToList();
             List<ComboBoxPair> alHostsNew = new List<ComboBoxPair>();
 
             ComboBoxPair myCbp = new ComboBoxPair(strNewHostName, strNewHostName);
@@ -3210,7 +3348,7 @@ namespace System.Windows.Forms.Samples {
 
             string fileName = ((ComboBox)sender).Name + ".txt";
 
-     
+
             string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
             string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
             string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
@@ -3234,8 +3372,8 @@ namespace System.Windows.Forms.Samples {
                 }
             }
             string strCurrentPath = ((ComboBox)(sender)).Text;
-            
-           
+
+
 
 
             myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString(), strCurrentPath);
@@ -3253,6 +3391,23 @@ namespace System.Windows.Forms.Samples {
                 } else {
                     myActions.MessageBoxShow("You can only open directories with Windows Explorer");
                 }
+            }
+        }
+
+        private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e) {
+            //host the started process in the panel 
+            if (_proc != null) {
+                System.Threading.Thread.Sleep(500);
+                while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                    System.Threading.Thread.Sleep(10);
+                    _proc.Refresh();
+                }
+
+                _proc.WaitForInputIdle();
+                _appHandle = _proc.MainWindowHandle;
+
+                SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
             }
         }
     }
