@@ -87,10 +87,10 @@ namespace System.Windows.Forms.Samples
             this.FileViewBindingSource5 = new System.Windows.Forms.BindingSource(this.components);
             this.FileViewBindingSource6 = new System.Windows.Forms.BindingSource(this.components);
             this.cbxCurrentPath = new System.Windows.Forms.ComboBox();
-            this.txtSearch = new System.Windows.Forms.TextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource)).BeginInit();
             this.toolBar.SuspendLayout();
@@ -104,6 +104,7 @@ namespace System.Windows.Forms.Samples
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.tabControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // contextMenuStrip1
@@ -264,10 +265,6 @@ namespace System.Windows.Forms.Samples
             this.runToolStripMenuItem.Text = "Run";
             this.runToolStripMenuItem.Click += new System.EventHandler(this.runToolStripMenuItem_Click);
             // 
-            // FileViewBindingSource
-            // 
-            this.FileViewBindingSource.DataSource = typeof(System.Windows.Forms.Samples.FileView);
-            // 
             // toolBar
             // 
             this.toolBar.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
@@ -356,9 +353,7 @@ namespace System.Windows.Forms.Samples
             // 
             // listMenuItem
             // 
-            this.listMenuItem.Checked = true;
             this.listMenuItem.CheckOnClick = true;
-            this.listMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.listMenuItem.Name = "listMenuItem";
             this.listMenuItem.Size = new System.Drawing.Size(152, 22);
             this.listMenuItem.Text = "List";
@@ -366,7 +361,9 @@ namespace System.Windows.Forms.Samples
             // 
             // detailsMenuItem
             // 
+            this.detailsMenuItem.Checked = true;
             this.detailsMenuItem.CheckOnClick = true;
+            this.detailsMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.detailsMenuItem.Name = "detailsMenuItem";
             this.detailsMenuItem.Size = new System.Drawing.Size(152, 22);
             this.detailsMenuItem.Text = "Details";
@@ -527,43 +524,16 @@ namespace System.Windows.Forms.Samples
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
             // 
-            // FileViewBindingSource2
-            // 
-            this.FileViewBindingSource2.DataSource = typeof(System.Windows.Forms.Samples.FileView);
-            // 
-            // FileViewBindingSource3
-            // 
-            this.FileViewBindingSource3.DataSource = typeof(System.Windows.Forms.Samples.FileView);
-            // 
-            // FileViewBindingSource4
-            // 
-            this.FileViewBindingSource4.DataSource = typeof(System.Windows.Forms.Samples.FileView);
-            // 
-            // FileViewBindingSource5
-            // 
-            this.FileViewBindingSource5.DataSource = typeof(System.Windows.Forms.Samples.FileView);
-            // 
-            // FileViewBindingSource6
-            // 
-            this.FileViewBindingSource6.DataSource = typeof(System.Windows.Forms.Samples.FileView);
-            // 
             // cbxCurrentPath
             // 
             this.cbxCurrentPath.FormattingEnabled = true;
-            this.cbxCurrentPath.Location = new System.Drawing.Point(218, 36);
+            this.cbxCurrentPath.Location = new System.Drawing.Point(216, 35);
             this.cbxCurrentPath.Name = "cbxCurrentPath";
             this.cbxCurrentPath.Size = new System.Drawing.Size(337, 21);
             this.cbxCurrentPath.TabIndex = 9;
             this.cbxCurrentPath.SelectedIndexChanged += new System.EventHandler(this.cbxCurrentPath_SelectedIndexChanged);
             this.cbxCurrentPath.TextChanged += new System.EventHandler(this.cbxCurrentPath_TextChanged);
             this.cbxCurrentPath.Leave += new System.EventHandler(this.cbxCurrentPath_Leave);
-            // 
-            // txtSearch
-            // 
-            this.txtSearch.Location = new System.Drawing.Point(586, 36);
-            this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(183, 20);
-            this.txtSearch.TabIndex = 10;
             // 
             // splitContainer1
             // 
@@ -602,12 +572,22 @@ namespace System.Windows.Forms.Samples
             this.tabPage3.ToolTipText = "Add New Tab";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(569, 35);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(18, 22);
+            this.pictureBox1.TabIndex = 12;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.search_Click);
+            // 
             // ExplorerView
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.ClientSize = new System.Drawing.Size(856, 357);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.splitContainer1);
-            this.Controls.Add(this.txtSearch);
             this.Controls.Add(this.cbxCurrentPath);
             this.Controls.Add(this.toolBar);
             this.Controls.Add(this.mainMenu);
@@ -631,6 +611,7 @@ namespace System.Windows.Forms.Samples
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -689,7 +670,6 @@ namespace System.Windows.Forms.Samples
         private ToolStripMenuItem removeHotKeyToolStripMenuItem;
         private ToolStripMenuItem manualTimeStripMenuItem;
         private ComboBox cbxCurrentPath;
-        private TextBox txtSearch;
         private ToolStripMenuItem WindowsExplorerStripMenuItem2;
         private SplitContainer splitContainer1;
         private TabControl tabControl1;
@@ -699,6 +679,7 @@ namespace System.Windows.Forms.Samples
         private ToolStripMenuItem iconsMenuItem;
         private ToolStripMenuItem listMenuItem;
         private ToolStripMenuItem detailsMenuItem;
+        private PictureBox pictureBox1;
     }
 }
 

@@ -17,7 +17,8 @@ using System.Windows;
 using System.Linq;
 using System.Globalization;
 using System.Runtime.InteropServices;
-
+using System.Threading.Tasks;
+using System.Threading;
 
 
 
@@ -33,6 +34,7 @@ namespace System.Windows.Forms.Samples {
         DataGridView dataGridView3 = new DataGridView();
         BindingSource _CurrentFileViewBindingSource = new BindingSource();
         bool boolStopEvent = false;
+        bool _ignoreSelectedIndexChanged = false;
         Rectangle _IconRectangle = new Rectangle();
         List<HotKeyRecord> listHotKeyRecords = new List<HotKeyRecord>();
         Dictionary<string, VirtualKeyCode> dictVirtualKeyCodes = new Dictionary<string, VirtualKeyCode>();
@@ -65,6 +67,28 @@ namespace System.Windows.Forms.Samples {
 
         private IntPtr _appHandle;
         Process _proc;
+        public static string strPathToSearch = @"C:\SVNIA\trunk";
+
+        public static string strSearchPattern = @"*.*";
+
+        public static string strSearchExcludePattern = @"*.dll;*.exe;*.png;*.xml;*.cache;*.sln;*.suo;*.pdb;*.csproj;*.deploy";
+
+        public static string strSearchText = @"notepad";
+
+        public static string strLowerCaseSearchText = @"notepad";
+
+        public static int intHits;
+
+        public static bool boolMatchCase = false;
+
+        public static bool boolUseRegularExpression = false;
+
+        public static bool boolStringFoundInFile;
+        string strFindWhat = "";
+
+        public static List<MatchInfo> matchInfoList;
+        string _strFullFileName = "";
+
 
         public ExplorerView() {
             InitializeComponent();
@@ -80,6 +104,7 @@ namespace System.Windows.Forms.Samples {
             tabControl1.DrawItem += TabControl1_DrawItem;
             tabControl1.Padding = new Point(20, 3);
             tabControl1.MouseClick += TabControl1_MouseClick;
+                    
         }
 
 
@@ -201,38 +226,57 @@ namespace System.Windows.Forms.Samples {
         #region Event Handlers        
         private void ExplorerView_Load(object sender, EventArgs e) {
             _CurrentDataGridView.ClearSelection();
-            splitContainer1.Width = ClientSize.Width;
+            
             splitContainer1.Height = ClientSize.Height - 50;
-            splitContainer1.Panel2Collapsed = true;
-
-
-            //tries to start the process 
-            try {
-                _proc = Process.Start(@"C:\Program Files\Windows NT\Accessories\wordpad.exe");
-            } catch (Exception) {
-                MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            //disables button and textbox
-            //txtProcess.Enabled = false;
-            //btnStart.Enabled = false;
-
-            //host the started process in the panel 
-            System.Threading.Thread.Sleep(500);
-            while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
-                System.Threading.Thread.Sleep(10);
-                _proc.Refresh();
-            }
-
-            _proc.WaitForInputIdle();
-            _appHandle = _proc.MainWindowHandle;
-
-            SetParent(_appHandle, splitContainer1.Panel2.Handle);
-            SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
-            //SendMessage(proc.MainWindowHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
-            int intTotalSavingsForAllScripts = 0;
             Methods myActions = new Methods();
+            int splitContainer1Width = myActions.GetValueByKeyAsInt("SplitContainer1Width");
+           
+            string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
+            if (splitContainer1Width > 0) {
+                splitContainer1.SplitterDistance = splitContainer1Width;
+            } else {
+                splitContainer1.Width = ClientSize.Width;
+            }
+
+            if (detailsMenuItemChecked == "True") {
+                splitContainer1.Panel2Collapsed = false;
+                this.detailsMenuItem.Checked = true;
+                this.listMenuItem.Checked = false;
+                //tries to start the process 
+                try {
+                    _proc = Process.Start(@"C:\Program Files\Windows NT\Accessories\wordpad.exe");
+                } catch (Exception) {
+                    MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                //disables button and textbox
+                //txtProcess.Enabled = false;
+                //btnStart.Enabled = false;
+
+                //host the started process in the panel 
+                System.Threading.Thread.Sleep(500);
+                while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                    System.Threading.Thread.Sleep(10);
+                    _proc.Refresh();
+                }
+
+                _proc.WaitForInputIdle();
+                _appHandle = _proc.MainWindowHandle;
+
+                SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+                //SendMessage(proc.MainWindowHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+            } else {
+                splitContainer1.Panel2Collapsed = true;
+                this.detailsMenuItem.Checked = false;
+                this.listMenuItem.Checked = true;
+            }
+
+
+           
+            int intTotalSavingsForAllScripts = 0;
+            
             int numOfTabs = myActions.GetValueByKeyAsInt("NumOfTabs");
             // default to desktop if they have no tabs
             if (numOfTabs < 2) {
@@ -414,7 +458,11 @@ namespace System.Windows.Forms.Samples {
             string scriptName = ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Value.ToString();
             Methods myActions = new Methods();
             string categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToPublicPath(fileName) + "\\" + scriptName.Replace(".txt", "").Replace(".rtf", ""));
-            string strNestingLevel = ((DataGridView)sender).Rows[e.RowIndex].Cells[14].Value.ToString();
+            string strNestingLevel = "";
+            if (((DataGridView)sender).Rows.Count == 0) {
+                return;
+            }
+            strNestingLevel = ((DataGridView)sender).Rows[e.RowIndex].Cells[14].Value.ToString();
             int nestingLevel = 0;
             Int32.TryParse(strNestingLevel, out nestingLevel);
             int indent = nestingLevel * 20;
@@ -471,16 +519,43 @@ namespace System.Windows.Forms.Samples {
         }
 
         private void listMenuItem_Click(object sender, EventArgs e) {
-            if (DoActionRequired(sender)) {
-                MessageBox.Show("List View");
-                splitContainer1.Panel2Collapsed = true;
+            Methods myActions = new Methods();
+            if (DoActionRequired(sender)) {                
+                splitContainer1.Panel2Collapsed = true;                
+                myActions.SetValueByKey("DetailsMenuItemChecked","False");
             }
         }
 
         private void detailsMenuItem_Click(object sender, EventArgs e) {
-            if (DoActionRequired(sender)) {
-                MessageBox.Show("Details View");
+            Methods myActions = new Methods();
+            if (DoActionRequired(sender)) {               
                 splitContainer1.Panel2Collapsed = false;
+                myActions.SetValueByKey("DetailsMenuItemChecked", "True");
+                //tries to start the process 
+                try {
+                    _proc = Process.Start(@"C:\Program Files\Windows NT\Accessories\wordpad.exe");
+                } catch (Exception) {
+                    MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                //disables button and textbox
+                //txtProcess.Enabled = false;
+                //btnStart.Enabled = false;
+
+                //host the started process in the panel 
+                System.Threading.Thread.Sleep(500);
+                while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                    System.Threading.Thread.Sleep(10);
+                    _proc.Refresh();
+                }
+
+                _proc.WaitForInputIdle();
+                _appHandle = _proc.MainWindowHandle;
+
+                SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+                //SendMessage(proc.MainWindowHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
             }
         }
 
@@ -760,19 +835,22 @@ namespace System.Windows.Forms.Samples {
             Methods myActions = new Methods();
             ArrayList myArrayList = myActions.ReadAppDirectoryKeyToArrayListGlobal("ScriptInfo");
             ArrayList newArrayList = new ArrayList();
+            string strHotKey = "";
+            HotKeyRecord myHotKeyRecord = new HotKeyRecord();
+            bool boolHotKeysGood = true;
             foreach (var item in myArrayList) {
                 string[] myScriptInfoFields = item.ToString().Split('^');
                 string scriptName = myScriptInfoFields[0];
 
-                string strHotKey = myScriptInfoFields[1];
+                strHotKey = myScriptInfoFields[1];
                 if (strHotKey != "") {
 
                     string strHotKeyExecutable = myScriptInfoFields[5];
-                    HotKeyRecord myHotKeyRecord = new HotKeyRecord();
+                    myHotKeyRecord = new HotKeyRecord();
                     myHotKeyRecord.HotKeys = strHotKey.Split('+');
                     myHotKeyRecord.Executable = strHotKeyExecutable;
                     myHotKeyRecord.ExecuteContent = "";
-                    bool boolHotKeysGood = true;
+                    boolHotKeysGood = true;
                     foreach (string myHotKey in myHotKeyRecord.HotKeys) {
                         if (dictVirtualKeyCodes.ContainsKey(myHotKey)) {
                             MessageBox.Show("Invalid hotkey: " + myHotKey + " on script: " + scriptName);
@@ -786,7 +864,39 @@ namespace System.Windows.Forms.Samples {
 
 
             }
+            myHotKeyRecord = new HotKeyRecord();
+            strHotKey = "Ctrl+Alt+N";
+            myHotKeyRecord.HotKeys = strHotKey.Split('+');
+            myHotKeyRecord.Executable = @"OpenLineInNotepad";
+            myHotKeyRecord.ExecuteContent = null;
+            myHotKeyRecord.ScriptID = 0;
+            boolHotKeysGood = true;
+            foreach (string myHotKey in myHotKeyRecord.HotKeys) {
+                if (dictVirtualKeyCodes.ContainsKey(myHotKey)) {
+                    MessageBox.Show("Invalid hotkey: " + myHotKey);
+                    boolHotKeysGood = false;
+                }
+            }
+            if (boolHotKeysGood) {
+                listHotKeyRecords.Add(myHotKeyRecord);
+            }
 
+            myHotKeyRecord = new HotKeyRecord();
+            strHotKey = "Ctrl+Alt+E";
+            myHotKeyRecord.HotKeys = strHotKey.Split('+');
+            myHotKeyRecord.Executable = @"OpenLineInIAExplorer";
+            myHotKeyRecord.ExecuteContent = null;
+            myHotKeyRecord.ScriptID = 0;
+            boolHotKeysGood = true;
+            foreach (string myHotKey in myHotKeyRecord.HotKeys) {
+                if (dictVirtualKeyCodes.ContainsKey(myHotKey)) {
+                    MessageBox.Show("Invalid hotkey: " + myHotKey);
+                    boolHotKeysGood = false;
+                }
+            }
+            if (boolHotKeysGood) {
+                listHotKeyRecords.Add(myHotKeyRecord);
+            }
             dictVirtualKeyCodes.Add("Ctrl", VirtualKeyCode.CONTROL);
             dictVirtualKeyCodes.Add("Alt", VirtualKeyCode.MENU);
             dictVirtualKeyCodes.Add("Shift", VirtualKeyCode.SHIFT);
@@ -860,12 +970,294 @@ namespace System.Windows.Forms.Samples {
                     if (boolAllHotKeysPressed && boolStopEvent == false) {
                         boolStopEvent = true;
                         //TODO: increment number times executed
+                        if (myHotKeyRecord.Executable == "OpenLineInNotepad") {
+                            OpenLineInNotepad();
+                            break;
+                        }
+
+                        if (myHotKeyRecord.Executable == "OpenLineInIAExplorer") {
+                            OpenLineInIAExplorer();
+                            break;
+                        }
 
                         RunWaitTillStart(myHotKeyRecord.Executable, myHotKeyRecord.ExecuteContent ?? "");
                     }
                 }
             }
         }
+        private void OpenLineInNotepad() {
+            Methods myActions = new Methods();
+            myActions.TypeText("{RIGHT}", 500);
+            myActions.TypeText("{HOME}", 500);
+            myActions.TypeText("+({END})", 500);
+            myActions.TypeText("^(c)", 500);
+            myActions.Sleep(500);
+            string strCurrentLine = "";
+            RunAsSTAThread(
+            () => {
+                strCurrentLine = myActions.PutClipboardInEntity();
+            });
+            List<string> myBeginDelim = new List<string>();
+            List<string> myEndDelim = new List<string>();
+            myBeginDelim.Add("\"");
+            myEndDelim.Add("\"");
+            FindDelimitedTextParms delimParms = new FindDelimitedTextParms(myBeginDelim, myEndDelim);
+
+            string myQuote = "\"";
+            delimParms.lines[0] = strCurrentLine;
+
+
+            myActions.FindDelimitedText(delimParms);
+            int intLastSlash = delimParms.strDelimitedTextFound.LastIndexOf('\\');
+            if (intLastSlash < 1) {
+                myActions.MessageBoxShow("Could not find last slash in in EditPlusLine - aborting");
+                return;
+            }
+            string strPathOnly = delimParms.strDelimitedTextFound.SubstringBetweenIndexes(0, intLastSlash);
+            string strFileNameOnly = delimParms.strDelimitedTextFound.Substring(intLastSlash + 1);
+            string strFullFileName = delimParms.strDelimitedTextFound;
+            myBeginDelim.Clear();
+            myEndDelim.Clear();
+            myBeginDelim.Add("(");
+            myEndDelim.Add(",");
+            delimParms = new FindDelimitedTextParms(myBeginDelim, myEndDelim);
+            delimParms.lines[0] = strCurrentLine;
+            myActions.FindDelimitedText(delimParms);
+            string strLineNumber = delimParms.strDelimitedTextFound;
+            string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
+            string strContent = strFullFileName;
+            //Close the running process
+            if (_appHandle != IntPtr.Zero) {
+                PostMessage(_appHandle, WM_CLOSE, 0, 0);
+                System.Threading.Thread.Sleep(1000);
+                _appHandle = IntPtr.Zero;
+            }
+            //tries to start the process 
+            try {
+                _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
+            } catch (Exception) {
+                MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+
+            System.Threading.Thread.Sleep(500);
+            while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                System.Threading.Thread.Sleep(10);
+                _proc.Refresh();
+            }
+
+            _proc.WaitForInputIdle();
+            _appHandle = _proc.MainWindowHandle;
+
+            SetParent(_appHandle, splitContainer1.Panel2.Handle);
+            SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+            myActions.TypeText("^(g)", 2000);
+            myActions.TypeText(strLineNumber, 500);
+            myActions.TypeText("{ENTER}", 500);
+            myActions.TypeText("^(f)", 500);
+
+            string strFindWhatToUse = strFindWhat;
+            string blockText = strFindWhatToUse;
+            strFindWhatToUse = "";
+            char[] specialChars = { '{', '}', '(', ')', '+', '^' };
+
+            foreach (char letter in blockText) {
+                bool _specialCharFound = false;
+
+                for (int i = 0; i < specialChars.Length; i++) {
+                    if (letter == specialChars[i]) {
+                        _specialCharFound = true;
+                        break;
+                    }
+                }
+
+                if (_specialCharFound)
+                    strFindWhatToUse += "{" + letter.ToString() + "}";
+                else
+                    strFindWhatToUse += letter.ToString();
+            }
+            myActions.TypeText(strFindWhatToUse, 500);
+            myActions.TypeText("{ENTER}", 500);
+            myActions.TypeText("{ESC}", 500);
+            boolStopEvent = false;
+        }
+        static void RunAsSTAThread(Action goForIt) {
+            AutoResetEvent @event = new AutoResetEvent(false);
+            Thread thread = new Thread(
+                () => {
+                    goForIt();
+                    @event.Set();
+                });
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
+            @event.WaitOne();
+        }
+        private void OpenLineInIAExplorer() {
+           
+            Methods myActions = new Methods();          
+            myActions.TypeText("{RIGHT}", 500);
+            myActions.TypeText("{HOME}", 500);
+            myActions.TypeText("+({END})", 500);
+            myActions.TypeText("^(c)", 500);
+            myActions.Sleep(500);
+            string strCurrentLine = "";
+            RunAsSTAThread(
+            () => {               
+                strCurrentLine = myActions.PutClipboardInEntity();
+            });
+            List<string> myBeginDelim = new List<string>();
+            List<string> myEndDelim = new List<string>();
+            myBeginDelim.Add("\"");
+            myEndDelim.Add("\"");
+            FindDelimitedTextParms delimParms = new FindDelimitedTextParms(myBeginDelim, myEndDelim);
+
+            string myQuote = "\"";
+            delimParms.lines[0] = strCurrentLine;
+
+
+            myActions.FindDelimitedText(delimParms);
+            int intLastSlash = delimParms.strDelimitedTextFound.LastIndexOf('\\');
+            if (intLastSlash < 1) {
+                myActions.MessageBoxShow("Could not find last slash in in EditPlusLine - aborting");
+                return;
+            }
+            string strPathOnly = delimParms.strDelimitedTextFound.SubstringBetweenIndexes(0, intLastSlash);
+            string strFileNameOnly = delimParms.strDelimitedTextFound.Substring(intLastSlash + 1);
+            string strFullFileName = delimParms.strDelimitedTextFound;
+            
+
+           
+            myBeginDelim.Clear();
+            myEndDelim.Clear();
+            myBeginDelim.Add("(");
+            myEndDelim.Add(",");
+            delimParms = new FindDelimitedTextParms(myBeginDelim, myEndDelim);
+            delimParms.lines[0] = strCurrentLine;
+            myActions.FindDelimitedText(delimParms);
+            string strLineNumber = delimParms.strDelimitedTextFound;
+            string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
+            string strContent = strFullFileName;
+            //Close the running process
+            if (_appHandle != IntPtr.Zero) {
+                PostMessage(_appHandle, WM_CLOSE, 0, 0);
+                System.Threading.Thread.Sleep(1000);
+                _appHandle = IntPtr.Zero;
+            }
+            //tries to start the process 
+            try {
+                _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
+            } catch (Exception) {
+                MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+
+            System.Threading.Thread.Sleep(500);
+            while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                System.Threading.Thread.Sleep(10);
+                _proc.Refresh();
+            }
+
+            _proc.WaitForInputIdle();
+            _appHandle = _proc.MainWindowHandle;
+
+            try {
+                SetParent(_appHandle, splitContainer1.Panel2.Handle);
+            } catch (Exception) {
+
+                
+            }
+            SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+            myActions.TypeText("^(g)", 2000);
+            myActions.TypeText(strLineNumber, 500);
+            myActions.TypeText("{ENTER}", 500);
+            myActions.TypeText("^(f)", 500);
+
+            string strFindWhatToUse = strFindWhat;
+            string blockText = strFindWhatToUse;
+            strFindWhatToUse = "";
+            char[] specialChars = { '{', '}', '(', ')', '+', '^' };
+
+            foreach (char letter in blockText) {
+                bool _specialCharFound = false;
+
+                for (int i = 0; i < specialChars.Length; i++) {
+                    if (letter == specialChars[i]) {
+                        _specialCharFound = true;
+                        break;
+                    }
+                }
+
+                if (_specialCharFound)
+                    strFindWhatToUse += "{" + letter.ToString() + "}";
+                else
+                    strFindWhatToUse += letter.ToString();
+            }
+            myActions.TypeText(strFindWhatToUse, 500);
+            myActions.TypeText("{ENTER}", 500);
+            myActions.TypeText("{ESC}", 500);
+            boolStopEvent = false;
+            ////Close the running process
+            //if (_appHandle != IntPtr.Zero) {
+            //    PostMessage(_appHandle, WM_CLOSE, 0, 0);
+            //    System.Threading.Thread.Sleep(1000);
+            //    _appHandle = IntPtr.Zero;
+            //}
+            //// Open an existing file, or create a new one.
+
+            _strFullFileName = strFullFileName;
+
+            // Determine the full path of the file just created.
+            if (InvokeRequired) {
+                Invoke(new MethodInvoker(updateGUI));
+            } else {
+                // Do Something
+                updateGUI();
+            }
+            
+               
+    
+        }
+
+        private void updateGUI() {
+            Methods myActions = new Methods();
+            string strFullFileName = _strFullFileName;
+            FileInfo fi = new FileInfo(strFullFileName);
+            DirectoryInfo di = fi.Directory;
+            splitContainer1.Panel1.Focus();
+
+
+            _ignoreSelectedIndexChanged = true;
+            tabControl1.SelectedIndex = tabControl1.TabCount - 1;            
+            myActions.TypeText("{TAB}", 1500);
+            myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString(), di.FullName);
+           
+            _CurrentIndex = tabControl1.SelectedIndex;
+
+
+
+
+            AddDataGridToTab();
+
+            myActions.SetValueByKey("NumOfTabs", (tabControl1.TabCount).ToString());
+            strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            // Set Initial Directory to My Documents
+            string strSavedDirectory1 = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
+            if (Directory.Exists(strSavedDirectory1)) {
+                strInitialDirectory = strSavedDirectory1;
+            }
+            _dir = new DirectoryView(strInitialDirectory);
+            this._CurrentFileViewBindingSource.DataSource = _dir;
+            tabControl1.TabPages[tabControl1.SelectedIndex].Text = _dir.FileView.Name;
+            tabControl1.TabPages[tabControl1.SelectedIndex].ToolTipText = _dir.FileView.FullName;
+
+
+            _CurrentDataGridView = (DataGridView)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
+            _CurrentFileViewBindingSource = listBindingSource[tabControl1.SelectedIndex];
+            RefreshDataGrid();
+        }
+
         public void RunWaitTillStart(string myEntityForExecutable, string myEntityForContent) {
 
 
@@ -1828,6 +2220,10 @@ namespace System.Windows.Forms.Samples {
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e) {
+            if (_ignoreSelectedIndexChanged == true) {
+                _ignoreSelectedIndexChanged = false;
+                return;
+            }
             Methods myActions = new Methods();
             if (tabControl1.SelectedIndex == tabControl1.TabCount - 1) {
                 strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
@@ -3313,15 +3709,21 @@ namespace System.Windows.Forms.Samples {
         }
 
         private void cbxCurrentPath_Leave(object sender, EventArgs e) {
+            if (_ignoreSelectedIndexChanged == true) {
+                return;
+            }
             string strNewHostName = ((ComboBox)sender).Text;
             Methods myActions = new Methods();
+            System.Windows.Forms.DialogResult myResult;
             if (!Directory.Exists(strNewHostName)) {
-                System.Windows.Forms.DialogResult myResult = myActions.MessageBoxShowWithYesNo("I could not find folder " + strNewHostName + ". Do you want me to create it ? ");
-                if (myResult == System.Windows.Forms.DialogResult.Yes) {
-                    Directory.CreateDirectory(strNewHostName);
-                } else {
-                    return;
-                }
+
+                    myResult = myActions.MessageBoxShowWithYesNo("I could not find folder " + strNewHostName + ". Do you want me to create it ? ");
+                    if (myResult == System.Windows.Forms.DialogResult.Yes) {
+                        Directory.CreateDirectory(strNewHostName);
+                    } else {
+                        return;
+                    }
+                
             }
             List<ComboBoxPair> alHosts = ((ComboBox)sender).Items.Cast<ComboBoxPair>().ToList();
             List<ComboBoxPair> alHostsNew = new List<ComboBoxPair>();
@@ -3396,6 +3798,7 @@ namespace System.Windows.Forms.Samples {
 
         private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e) {
             //host the started process in the panel 
+
             if (_proc != null) {
                 System.Threading.Thread.Sleep(500);
                 while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
@@ -3408,8 +3811,609 @@ namespace System.Windows.Forms.Samples {
 
                 SetParent(_appHandle, splitContainer1.Panel2.Handle);
                 SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+                Methods myActions = new Methods();
+                myActions.SetValueByKey("SplitContainer1Width", e.X.ToString());
+            }
+
+
+        }
+
+        private void search_Click(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            myActions = new Methods();
+            splitContainer1.SplitterDistance = (int)(ClientSize.Width * .2);
+
+            string strSavedDomainName = myActions.GetValueByKey("DomainName");
+            if (strSavedDomainName == "") {
+                strSavedDomainName = System.Net.NetworkInformation.IPGlobalProperties.GetIPGlobalProperties().DomainName;
+            }
+            //InitializeComponent();
+            //this.Hide();
+
+
+            
+
+            
+
+           
+            DisplayFindTextInFilesWindow:
+            int intRowCtr = 0;
+            ControlEntity myControlEntity = new ControlEntity();
+            List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+            List<ComboBoxPair> cbp = new List<ComboBoxPair>();
+            List<ComboBoxPair> cbp1 = new List<ComboBoxPair>();
+            List<ComboBoxPair> cbp2 = new List<ComboBoxPair>();
+            List<ComboBoxPair> cbp3 = new List<ComboBoxPair>();
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Heading;
+            myControlEntity.ID = "lbl";
+            myControlEntity.Text = "Find Text In Files";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "lblFindWhat";
+            myControlEntity.Text = "FindWhat";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.Width = 150;
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            myControlEntity.SelectedValue = myActions.GetValueByKey("cbxFindWhatSelectedValue");
+            myControlEntity.ID = "cbxFindWhat";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            //foreach (var item in alcbxFindWhat) {
+            //    cbp.Add(new ComboBoxPair(item.ToString(), item.ToString()));
+            //}
+            //myControlEntity.ListOfKeyValuePairs = cbp;
+            myControlEntity.ComboBoxIsEditable = true;
+            myControlEntity.ColumnNumber = 1;
+
+            myControlEntity.ColumnSpan = 2;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "lblFileType";
+            myControlEntity.Text = "FileType";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.Width = 150;
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            myControlEntity.SelectedValue = myActions.GetValueByKey("cbxFileTypeSelectedValue");
+            myControlEntity.ID = "cbxFileType";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "Here is an example: *.*";
+            //foreach (var item in alcbxFileType) {
+            //    cbp1.Add(new ComboBoxPair(item.ToString(), item.ToString()));
+            //}
+            //myControlEntity.ListOfKeyValuePairs = cbp1;
+            myControlEntity.ComboBoxIsEditable = true;
+            myControlEntity.ColumnNumber = 1;
+            myControlEntity.ColumnSpan = 2;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "lblExclude";
+            myControlEntity.Text = "Exclude";
+            myControlEntity.Width = 150;
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            myControlEntity.SelectedValue = myActions.GetValueByKey("cbxExcludeSelectedValue");
+            myControlEntity.ID = "cbxExclude";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "Here is an example: *.dll;*.exe;*.png;*.xml;*.cache;*.sln;*.suo;*.pdb;*.csproj;*.deploy";
+            myControlEntity.ComboBoxIsEditable = true;
+            myControlEntity.ColumnNumber = 1;
+            myControlEntity.ColumnSpan = 2;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "lblFolder";
+            myControlEntity.Text = "Folder";
+            myControlEntity.Width = 150;
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            myControlEntity.SelectedValue = myActions.GetValueByKey("cbxFolderSelectedValue");
+            myControlEntity.ID = "cbxFolder";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = @"Here is an example: C:\Users\harve\Documents\GitHub";
+            myControlEntity.ComboBoxIsEditable = true;
+            myControlEntity.ColumnNumber = 1;
+            myControlEntity.ColumnSpan = 2;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Button;
+            myControlEntity.ID = "btnSelectFolder";
+            myControlEntity.Text = "Select Folder...";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 3;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.CheckBox;
+            myControlEntity.ID = "chkMatchCase";
+            myControlEntity.Text = "Match Case";
+            myControlEntity.Width = 150;
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            string strMatchCase = myActions.GetValueByKey("chkMatchCase");
+
+            if (strMatchCase.ToLower() == "true") {
+                myControlEntity.Checked = true;
+            } else {
+                myControlEntity.Checked = false;
+            }
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.CheckBox;
+            myControlEntity.ID = "chkUseRegularExpression";
+            myControlEntity.Text = "UseRegularExpression";
+            myControlEntity.Width = 150;
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            string strUseRegularExpression = myActions.GetValueByKey("chkUseRegularExpression");
+            if (strUseRegularExpression.ToLower() == "true") {
+                myControlEntity.Checked = true;
+            } else {
+                myControlEntity.Checked = false;
+            }
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            DisplayWindowAgain:
+            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 300, 1200, 100, 100);
+            LineAfterDisplayWindow:
+            if (strButtonPressed == "btnCancel") {
+                myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+               return;
+            }
+
+            boolMatchCase = myListControlEntity.Find(x => x.ID == "chkMatchCase").Checked;
+            boolUseRegularExpression = myListControlEntity.Find(x => x.ID == "chkUseRegularExpression").Checked;
+
+            strFindWhat = myListControlEntity.Find(x => x.ID == "cbxFindWhat").SelectedValue;
+            //  string strFindWhatKey = myListControlEntity.Find(x => x.ID == "cbxFindWhat").SelectedKey;
+
+            string strFileType = myListControlEntity.Find(x => x.ID == "cbxFileType").SelectedValue;
+            //     string strFileTypeKey = myListControlEntity.Find(x => x.ID == "cbxFileType").SelectedKey;
+
+            string strExclude = myListControlEntity.Find(x => x.ID == "cbxExclude").SelectedValue;
+            //      string strExcludeKey = myListControlEntity.Find(x => x.ID == "cbxExclude").SelectedKey;
+
+            string strFolder = myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedValue;
+            //     string strFolderKey = myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedKey;
+            myActions.SetValueByKey("chkMatchCase", boolMatchCase.ToString());
+            myActions.SetValueByKey("chkUseRegularExpression", boolUseRegularExpression.ToString());
+            myActions.SetValueByKey("cbxFindWhatSelectedValue", strFindWhat);
+            myActions.SetValueByKey("cbxFileTypeSelectedValue", strFileType);
+            myActions.SetValueByKey("cbxExcludeSelectedValue", strExclude);
+            myActions.SetValueByKey("cbxFolderSelectedValue", strFolder);
+            string settingsDirectory = "";
+            if (strButtonPressed == "btnSelectFolder") {
+                var dialog = new System.Windows.Forms.FolderBrowserDialog();
+                dialog.SelectedPath = myActions.GetValueByKey("LastSearchFolder");
+                string str = "LastSearchFolder";
+
+
+                System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+
+                if (result == System.Windows.Forms.DialogResult.OK && Directory.Exists(dialog.SelectedPath)) {
+                    myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedValue = dialog.SelectedPath;
+                    myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedKey = dialog.SelectedPath;
+                    myListControlEntity.Find(x => x.ID == "cbxFolder").Text = dialog.SelectedPath;
+                    myActions.SetValueByKey("LastSearchFolder", dialog.SelectedPath);
+                    strFolder = dialog.SelectedPath;
+                    myActions.SetValueByKey("cbxFolderSelectedValue", strFolder);
+                    string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
+                    string fileName = "cbxFolder.txt";
+                    string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
+                    string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
+                    settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPath(myNewProjectSourcePath));
+                    string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
+                    ArrayList alHosts = new ArrayList();
+                    cbp = new List<ComboBoxPair>();
+                    cbp.Clear();
+                    cbp.Add(new ComboBoxPair("--Select Item ---", "--Select Item ---"));
+                    ComboBox myComboBox = new ComboBox();
+
+
+                    if (!File.Exists(settingsPath)) {
+                        using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
+                            objSWFile.Close();
+                        }
+                    }
+                    using (StreamReader objSRFile = File.OpenText(settingsPath)) {
+                        string strReadLine = "";
+                        while ((strReadLine = objSRFile.ReadLine()) != null) {
+                            string[] keyvalue = strReadLine.Split('^');
+                            if (keyvalue[0] != "--Select Item ---") {
+                                cbp.Add(new ComboBoxPair(keyvalue[0], keyvalue[1]));
+                            }
+                        }
+                        objSRFile.Close();
+                    }
+                    string strNewHostName = dialog.SelectedPath;
+                    List<ComboBoxPair> alHostx = cbp;
+                    List<ComboBoxPair> alHostsNew = new List<ComboBoxPair>();
+                    ComboBoxPair myCbp = new ComboBoxPair(strNewHostName, strNewHostName);
+                    bool boolNewItem = false;
+
+                    alHostsNew.Add(myCbp);
+                    if (alHostx.Count > 14) {
+                        for (int i = alHostx.Count - 1; i > 0; i--) {
+                            if (alHostx[i]._Key.Trim() != "--Select Item ---") {
+                                alHostx.RemoveAt(i);
+                                break;
+                            }
+                        }
+                    }
+                    foreach (ComboBoxPair item in alHostx) {
+                        if (strNewHostName != item._Key && item._Key != "--Select Item ---") {
+                            boolNewItem = true;
+                            alHostsNew.Add(item);
+                        }
+                    }
+
+                    using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
+                        foreach (ComboBoxPair item in alHostsNew) {
+                            if (item._Key != "") {
+                                objSWFile.WriteLine(item._Key + '^' + item._Value);
+                            }
+                        }
+                        objSWFile.Close();
+                    }
+                    goto DisplayWindowAgain;
+                }
+            }
+            string strFindWhatToUse = "";
+            string strFileTypeToUse = "";
+            string strExcludeToUse = "";
+            string strFolderToUse = "";
+            if (strButtonPressed == "btnOkay") {
+                if ((strFindWhat == "--Select Item ---" || strFindWhat == "")) {
+                    myActions.MessageBoxShow("Please enter Find What or select Find What from ComboBox; else press Cancel to Exit");
+                    goto DisplayFindTextInFilesWindow;
+                }
+                if ((strFileType == "--Select Item ---" || strFileType == "")) {
+                    myActions.MessageBoxShow("Please enter File Type or select File Type from ComboBox; else press Cancel to Exit");
+                    goto DisplayFindTextInFilesWindow;
+                }
+                if ((strExclude == "--Select Item ---" || strExclude == "")) {
+                    myActions.MessageBoxShow("Please enter Exclude or select Exclude from ComboBox; else press Cancel to Exit");
+                    goto DisplayFindTextInFilesWindow;
+                }
+                if ((strFolder == "--Select Item ---" || strFolder == "")) {
+                    myActions.MessageBoxShow("Please enter Folder or select Folder from ComboBox; else press Cancel to Exit");
+                    goto DisplayFindTextInFilesWindow;
+                }
+
+
+
+                strFindWhatToUse = strFindWhat;
+
+                if (boolUseRegularExpression) {
+                    strFindWhatToUse = strFindWhatToUse.Replace(")", "\\)").Replace("(", "\\(");
+                }
+
+
+                strFileTypeToUse = strFileType;
+
+
+
+                strExcludeToUse = strExclude;
+
+
+                strFolderToUse = strFolder;
+
+
+            }
+
+
+            strPathToSearch = strFolderToUse;
+
+            strSearchPattern = strFileTypeToUse;
+
+            strSearchExcludePattern = strExcludeToUse;
+
+            strSearchText = strFindWhatToUse;
+
+            strLowerCaseSearchText = strFindWhatToUse.ToLower();
+            myActions.SetValueByKey("FindWhatToUse", strFindWhatToUse);
+
+            System.Diagnostics.Stopwatch st = new System.Diagnostics.Stopwatch();
+            st.Start();
+            intHits = 0;
+            int intLineCtr;
+            List<FileInfo> myFileList = TraverseTree(strSearchPattern, strPathToSearch);
+            int intFiles = 0;
+            matchInfoList = new List<MatchInfo>();
+            //         myFileList = myFileList.OrderBy(fi => fi.FullName).ToList();
+            Parallel.ForEach(myFileList, myFileInfo => {
+                intLineCtr = 0;
+                boolStringFoundInFile = false;
+                ReadFileToString(myFileInfo.FullName, intLineCtr, matchInfoList);
+                if (boolStringFoundInFile) {
+                    intFiles++;
+                }
+            });
+            matchInfoList = matchInfoList.Where(mi => mi != null).OrderBy(mi => mi.FullName).ThenBy(mi => mi.LineNumber).ToList();
+            List<string> lines = new List<string>();
+            foreach (var item in matchInfoList) {
+                lines.Add("\"" + item.FullName + "\"(" + item.LineNumber + "," + item.LinePosition + "): " + item.LineText.Length.ToString() + " " + item.LineText.Substring(0, item.LineText.Length > 5000 ? 5000 : item.LineText.Length));
+
+            }
+
+
+            string strApplicationBinDebug1 = System.Windows.Forms.Application.StartupPath;
+            string myNewProjectSourcePath1 = strApplicationBinDebug1.Replace("\\bin\\Debug", "");
+
+            settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPath(myNewProjectSourcePath1));
+            using (FileStream fs = new FileStream(settingsDirectory + @"\MatchInfo.txt", FileMode.Create)) {
+                StreamWriter file = new System.IO.StreamWriter(fs, Encoding.Default);
+
+                file.WriteLine(@"-- " + strSearchText + " in " + strPathToSearch + " from " + strSearchPattern + " excl  " + strSearchExcludePattern + " --");
+                foreach (var item in matchInfoList) {
+                    file.WriteLine("\"" + item.FullName + "\"(" + item.LineNumber + "," + item.LinePosition + "): " + item.LineText.Substring(0, item.LineText.Length > 5000 ? 5000 : item.LineText.Length));
+                }
+                int intUniqueFiles = matchInfoList.Select(x => x.FullName).Distinct().Count();
+                st.Stop();
+                // Get the elapsed time as a TimeSpan value.
+                TimeSpan ts = st.Elapsed;
+                // Format and display the TimeSpan value.
+                string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                    ts.Hours, ts.Minutes, ts.Seconds,
+                    ts.Milliseconds / 10);
+                file.WriteLine("RunTime " + elapsedTime);
+                file.WriteLine(intHits.ToString() + " hits");
+                // file.WriteLine(myFileList.Count().ToString() + " files");           
+                file.WriteLine(intUniqueFiles.ToString() + " files with hits");
+                file.Close();
+
+                myActions.KillAllProcessesByProcessName("notepad++");
+                // Get the elapsed time as a TimeSpan value.
+                ts = st.Elapsed;
+                // Format and display the TimeSpan value.
+                elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                   ts.Hours, ts.Minutes, ts.Seconds,
+                   ts.Milliseconds / 10);
+                Console.WriteLine("RunTime " + elapsedTime);
+                Console.WriteLine(intHits.ToString() + " hits");
+                // Console.WriteLine(myFileList.Count().ToString() + " files");
+                Console.WriteLine(intUniqueFiles.ToString() + " files with hits");
+                Console.ReadLine();
+                string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
+                string strContent = settingsDirectory + @"\MatchInfo.txt";
+                //Close the running process
+                if (_appHandle != IntPtr.Zero) {
+                    PostMessage(_appHandle, WM_CLOSE, 0, 0);
+                    System.Threading.Thread.Sleep(1000);
+                    _appHandle = IntPtr.Zero;
+                }
+                //tries to start the process 
+                try {
+                    _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
+                } catch (Exception) {
+                    MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+
+                System.Threading.Thread.Sleep(500);
+                while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                    System.Threading.Thread.Sleep(10);
+                    _proc.Refresh();
+                }
+
+                _proc.WaitForInputIdle();
+                _appHandle = _proc.MainWindowHandle;
+
+                SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);              
+                myActions.MessageBoxShow("RunTime: " + elapsedTime + "\n\r\n\rHits: " + intHits.ToString() + "\n\r\n\rFiles with hits: " + intUniqueFiles.ToString() + "\n\r\n\rPut Cursor on line and\n\r press Ctrl+Alt+N\n\rto view detail page. ");
+            }            
+        }
+        public static List<FileInfo> TraverseTree(string filterPattern, string root) {
+            string[] arrayExclusionPatterns = strSearchExcludePattern.Split(';');
+            for (int i = 0; i < arrayExclusionPatterns.Length; i++) {
+                arrayExclusionPatterns[i] = arrayExclusionPatterns[i].ToLower().ToString().Replace("*", "");
+            }
+            List<FileInfo> myFileList = new List<FileInfo>();
+            // Data structure to hold names of subfolders to be
+            // examined for files.
+            Stack<string> dirs = new Stack<string>(20);
+
+            if (!System.IO.Directory.Exists(root)) {
+                MessageBox.Show(root + " - folder did not exist");
+            }
+
+
+            dirs.Push(root);
+
+            while (dirs.Count > 0) {
+                string currentDir = dirs.Pop();
+                string[] subDirs;
+                try {
+                    subDirs = System.IO.Directory.GetDirectories(currentDir);
+                }
+                // An UnauthorizedAccessException exception will be thrown if we do not have
+                // discovery permission on a folder or file. It may or may not be acceptable 
+                // to ignore the exception and continue enumerating the remaining files and 
+                // folders. It is also possible (but unlikely) that a DirectoryNotFound exception 
+                // will be raised. This will happen if currentDir has been deleted by
+                // another application or thread after our call to Directory.Exists. The 
+                // choice of which exceptions to catch depends entirely on the specific task 
+                // you are intending to perform and also on how much you know with certainty 
+                // about the systems on which this code will run.
+                catch (UnauthorizedAccessException e) {
+                    Console.WriteLine(e.Message);
+                    continue;
+                } catch (System.IO.DirectoryNotFoundException e) {
+                    Console.WriteLine(e.Message);
+                    continue;
+                }
+
+                string[] files = null;
+                try {
+                    files = System.IO.Directory.GetFiles(currentDir, filterPattern);
+                } catch (UnauthorizedAccessException e) {
+
+                    Console.WriteLine(e.Message);
+                    continue;
+                } catch (System.IO.DirectoryNotFoundException e) {
+                    Console.WriteLine(e.Message);
+                    continue;
+                }
+
+                // Perform the required action on each file here.
+                // Modify this block to perform your required task.
+                foreach (string file in files) {
+                    try {
+                        // Perform whatever action is required in your scenario.
+                        System.IO.FileInfo fi = new System.IO.FileInfo(file);
+                        bool boolFileHasGoodExtension = true;
+                        foreach (var item in arrayExclusionPatterns) {
+                            if (fi.FullName.ToLower().Contains(item)) {
+                                boolFileHasGoodExtension = false;
+                            }
+                        }
+                        if (boolFileHasGoodExtension) {
+                            myFileList.Add(fi);
+                        }
+                        //    Console.WriteLine("{0}: {1}, {2}", fi.Name, fi.Length, fi.CreationTime);
+                    } catch (System.IO.FileNotFoundException e) {
+                        // If file was deleted by a separate application
+                        //  or thread since the call to TraverseTree()
+                        // then just continue.
+                        Console.WriteLine(e.Message);
+                        continue;
+                    }
+                }
+
+                // Push the subdirectories onto the stack for traversal.
+                // This could also be done before handing the files.
+                foreach (string str in subDirs)
+                    dirs.Push(str);
+            }
+            return myFileList;
+        }
+        public static void ReadFileToString(string fullFilePath, int intLineCtr, List<MatchInfo> matchInfoList) {
+            while (true) {
+                try {
+                    using (FileStream fs = new FileStream(fullFilePath, FileMode.Open)) {
+                        using (StreamReader sr = new StreamReader(fs, Encoding.Default)) {
+                            string s;
+                            string s_lower = "";
+                            while ((s = sr.ReadLine()) != null) {
+                                intLineCtr++;
+                                if (boolUseRegularExpression) {
+                                    if (boolMatchCase) {
+                                        if (System.Text.RegularExpressions.Regex.IsMatch(s, strSearchText, System.Text.RegularExpressions.RegexOptions.None)) {
+                                            intHits++;
+                                            boolStringFoundInFile = true;
+                                            MatchInfo myMatchInfo = new MatchInfo();
+                                            myMatchInfo.FullName = fullFilePath;
+                                            myMatchInfo.LineNumber = intLineCtr;
+                                            myMatchInfo.LinePosition = s.IndexOf(strSearchText) + 1;
+                                            myMatchInfo.LineText = s;
+                                            matchInfoList.Add(myMatchInfo);
+                                        }
+                                    } else {
+                                        s_lower = s.ToLower();
+                                        if (System.Text.RegularExpressions.Regex.IsMatch(s_lower, strLowerCaseSearchText, System.Text.RegularExpressions.RegexOptions.IgnoreCase)) {
+                                            intHits++;
+                                            boolStringFoundInFile = true;
+                                            MatchInfo myMatchInfo = new MatchInfo();
+                                            myMatchInfo.FullName = fullFilePath;
+                                            myMatchInfo.LineNumber = intLineCtr;
+                                            myMatchInfo.LinePosition = s_lower.IndexOf(strLowerCaseSearchText) + 1;
+                                            myMatchInfo.LineText = s;
+                                            matchInfoList.Add(myMatchInfo);
+                                        }
+                                    }
+                                } else {
+                                    if (boolMatchCase) {
+                                        if (s.Contains(strSearchText)) {
+                                            intHits++;
+                                            boolStringFoundInFile = true;
+                                            MatchInfo myMatchInfo = new MatchInfo();
+                                            myMatchInfo.FullName = fullFilePath;
+                                            myMatchInfo.LineNumber = intLineCtr;
+                                            myMatchInfo.LinePosition = s.IndexOf(strSearchText) + 1;
+                                            myMatchInfo.LineText = s;
+                                            matchInfoList.Add(myMatchInfo);
+                                        }
+                                    } else {
+                                        s_lower = s.ToLower();
+                                        if (s_lower.Contains(strLowerCaseSearchText)) {
+
+                                            intHits++;
+                                            boolStringFoundInFile = true;
+                                            MatchInfo myMatchInfo = new MatchInfo();
+                                            myMatchInfo.FullName = fullFilePath;
+                                            myMatchInfo.LineNumber = intLineCtr;
+                                            myMatchInfo.LinePosition = s_lower.IndexOf(strLowerCaseSearchText) + 1;
+                                            myMatchInfo.LineText = s;
+                                            matchInfoList.Add(myMatchInfo);
+                                        }
+                                    }
+                                }
+                            }
+                            return;
+                        }
+
+                    }
+                } catch (FileNotFoundException ex) {
+                    Console.WriteLine("Output file {0} not yet ready ({1})", fullFilePath, ex.Message);
+                    break;
+                } catch (IOException ex) {
+                    Console.WriteLine("Output file {0} not yet ready ({1})", fullFilePath, ex.Message);
+                    break;
+                } catch (UnauthorizedAccessException ex) {
+                    Console.WriteLine("Output file {0} not yet ready ({1})", fullFilePath, ex.Message);
+                    break;
+                }
             }
         }
+
     }
 
 }

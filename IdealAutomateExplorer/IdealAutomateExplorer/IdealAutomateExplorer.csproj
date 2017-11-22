@@ -73,6 +73,7 @@
     <Content Include="Images\icon_close.png" />
     <Content Include="Images\minus_a5g_icon.ico" />
     <Content Include="Images\plus_Pu6_icon.ico" />
+    <Content Include="Images\Oxygen-Icons.org-Oxygen-Actions-page-zoom.ico" />
     <Content Include="Resources\112_Minus_Grey.ico" />
     <Content Include="Images\112_Plus_Grey.ico" />
     <Content Include="MyNewProject\MyNewProject\App.xaml.cs">
@@ -85,6 +86,7 @@
     <Content Include="MyNewProject\MyNewProject\Properties\Resources.Designer.cs" />
     <Content Include="MyNewProject\MyNewProject\Properties\Settings.Designer.cs" />
     <Compile Include="HotKeyRecord.cs" />
+    <Compile Include="MatchInfo.cs" />
     <Compile Include="SortableBindingList.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="DirectoryView.cs" />
@@ -145,6 +147,7 @@
     <None Include="Resources\plus.ico" />
     <None Include="Resources\minus.ico" />
     <None Include="Resources\Plusx.ico" />
+    <None Include="Resources\Search.ico" />
     <Content Include="Text\InitialDirectory.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
