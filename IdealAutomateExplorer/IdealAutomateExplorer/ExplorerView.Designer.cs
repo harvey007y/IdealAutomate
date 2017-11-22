@@ -331,7 +331,7 @@ namespace System.Windows.Forms.Samples
             // 
             this.thumbnailsMenuItem.CheckOnClick = true;
             this.thumbnailsMenuItem.Name = "thumbnailsMenuItem";
-            this.thumbnailsMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.thumbnailsMenuItem.Size = new System.Drawing.Size(137, 22);
             this.thumbnailsMenuItem.Text = "Thumbnails";
             this.thumbnailsMenuItem.Click += new System.EventHandler(this.thumbnailsMenuItem_Click);
             // 
@@ -339,7 +339,7 @@ namespace System.Windows.Forms.Samples
             // 
             this.tilesMenuItem.CheckOnClick = true;
             this.tilesMenuItem.Name = "tilesMenuItem";
-            this.tilesMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.tilesMenuItem.Size = new System.Drawing.Size(137, 22);
             this.tilesMenuItem.Text = "Tiles";
             this.tilesMenuItem.Click += new System.EventHandler(this.tilesMenuItem_Click);
             // 
@@ -347,7 +347,7 @@ namespace System.Windows.Forms.Samples
             // 
             this.iconsMenuItem.CheckOnClick = true;
             this.iconsMenuItem.Name = "iconsMenuItem";
-            this.iconsMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.iconsMenuItem.Size = new System.Drawing.Size(137, 22);
             this.iconsMenuItem.Text = "Icons";
             this.iconsMenuItem.Click += new System.EventHandler(this.iconsMenuItem_Click);
             // 
@@ -355,7 +355,7 @@ namespace System.Windows.Forms.Samples
             // 
             this.listMenuItem.CheckOnClick = true;
             this.listMenuItem.Name = "listMenuItem";
-            this.listMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.listMenuItem.Size = new System.Drawing.Size(137, 22);
             this.listMenuItem.Text = "List";
             this.listMenuItem.Click += new System.EventHandler(this.listMenuItem_Click);
             // 
@@ -365,7 +365,7 @@ namespace System.Windows.Forms.Samples
             this.detailsMenuItem.CheckOnClick = true;
             this.detailsMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.detailsMenuItem.Name = "detailsMenuItem";
-            this.detailsMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.detailsMenuItem.Size = new System.Drawing.Size(137, 22);
             this.detailsMenuItem.Text = "Details";
             this.detailsMenuItem.Click += new System.EventHandler(this.detailsMenuItem_Click);
             // 
@@ -529,7 +529,7 @@ namespace System.Windows.Forms.Samples
             this.cbxCurrentPath.FormattingEnabled = true;
             this.cbxCurrentPath.Location = new System.Drawing.Point(216, 35);
             this.cbxCurrentPath.Name = "cbxCurrentPath";
-            this.cbxCurrentPath.Size = new System.Drawing.Size(337, 21);
+            this.cbxCurrentPath.Size = new System.Drawing.Size(564, 21);
             this.cbxCurrentPath.TabIndex = 9;
             this.cbxCurrentPath.SelectedIndexChanged += new System.EventHandler(this.cbxCurrentPath_SelectedIndexChanged);
             this.cbxCurrentPath.TextChanged += new System.EventHandler(this.cbxCurrentPath_TextChanged);
@@ -575,7 +575,7 @@ namespace System.Windows.Forms.Samples
             // pictureBox1
             // 
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(569, 35);
+            this.pictureBox1.Location = new System.Drawing.Point(798, 34);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(18, 22);
             this.pictureBox1.TabIndex = 12;
