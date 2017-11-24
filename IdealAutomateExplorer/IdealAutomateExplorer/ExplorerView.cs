@@ -112,7 +112,7 @@ namespace System.Windows.Forms.Samples {
             tabControl1.DrawItem += TabControl1_DrawItem;
             tabControl1.Padding = new System.Drawing.Point(20, 3);
             tabControl1.MouseClick += TabControl1_MouseClick;
-                    
+
         }
 
 
@@ -234,11 +234,11 @@ namespace System.Windows.Forms.Samples {
         #region Event Handlers        
         private void ExplorerView_Load(object sender, EventArgs e) {
             _CurrentDataGridView.ClearSelection();
-            
+
             splitContainer1.Height = ClientSize.Height - 50;
             Methods myActions = new Methods();
             int splitContainer1Width = myActions.GetValueByKeyAsInt("SplitContainer1Width");
-           
+
             string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
             if (splitContainer1Width > 0) {
                 splitContainer1.SplitterDistance = splitContainer1Width;
@@ -282,9 +282,9 @@ namespace System.Windows.Forms.Samples {
             }
 
 
-           
+
             int intTotalSavingsForAllScripts = 0;
-            
+
             int numOfTabs = myActions.GetValueByKeyAsInt("NumOfTabs");
             // default to desktop if they have no tabs
             if (numOfTabs < 2) {
@@ -528,15 +528,15 @@ namespace System.Windows.Forms.Samples {
 
         private void listMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
-            if (DoActionRequired(sender)) {                
-                splitContainer1.Panel2Collapsed = true;                
-                myActions.SetValueByKey("DetailsMenuItemChecked","False");
+            if (DoActionRequired(sender)) {
+                splitContainer1.Panel2Collapsed = true;
+                myActions.SetValueByKey("DetailsMenuItemChecked", "False");
             }
         }
 
         private void detailsMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
-            if (DoActionRequired(sender)) {               
+            if (DoActionRequired(sender)) {
                 splitContainer1.Panel2Collapsed = false;
                 myActions.SetValueByKey("DetailsMenuItemChecked", "True");
                 //tries to start the process 
@@ -1033,12 +1033,13 @@ namespace System.Windows.Forms.Samples {
             myActions.FindDelimitedText(delimParms);
             string strLineNumber = delimParms.strDelimitedTextFound;
             string strExecutable = "";
-                 if (strFullFileName.EndsWith(".doc") || strFullFileName.EndsWith(".docx")) {
+            if (strFullFileName.EndsWith(".doc") || strFullFileName.EndsWith(".docx")) {
                 strExecutable = @"C:\Program Files\Windows NT\Accessories\wordpad.exe";
             } else {
                 if (strFullFileName.EndsWith(".odt")) {
                     strExecutable = @"C:\Program Files\Windows NT\Accessories\wordpad.exe";
                 } else {
+                    myActions.KillAllProcessesByProcessName("notepad++");
                     strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
                 }
             }
@@ -1114,8 +1115,8 @@ namespace System.Windows.Forms.Samples {
             @event.WaitOne();
         }
         private void OpenLineInIAExplorer() {
-           
-            Methods myActions = new Methods();          
+
+            Methods myActions = new Methods();
             myActions.TypeText("{RIGHT}", 500);
             myActions.TypeText("{HOME}", 500);
             myActions.TypeText("+({END})", 500);
@@ -1123,7 +1124,7 @@ namespace System.Windows.Forms.Samples {
             myActions.Sleep(500);
             string strCurrentLine = "";
             RunAsSTAThread(
-            () => {               
+            () => {
                 strCurrentLine = myActions.PutClipboardInEntity();
             });
             List<string> myBeginDelim = new List<string>();
@@ -1145,9 +1146,9 @@ namespace System.Windows.Forms.Samples {
             string strPathOnly = delimParms.strDelimitedTextFound.SubstringBetweenIndexes(0, intLastSlash);
             string strFileNameOnly = delimParms.strDelimitedTextFound.Substring(intLastSlash + 1);
             string strFullFileName = delimParms.strDelimitedTextFound;
-            
 
-           
+
+
             myBeginDelim.Clear();
             myEndDelim.Clear();
             myBeginDelim.Add("(");
@@ -1164,10 +1165,11 @@ namespace System.Windows.Forms.Samples {
                 if (strFullFileName.EndsWith(".odt")) {
                     strExecutable = @"C:\Program Files\Windows NT\Accessories\wordpad.exe";
                 } else {
+                    myActions.KillAllProcessesByProcessName("notepad++");
                     strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
                 }
             }
-            
+
             string strContent = strFullFileName;
             //Close the running process
             if (_appHandle != IntPtr.Zero) {
@@ -1197,7 +1199,7 @@ namespace System.Windows.Forms.Samples {
                 SetParent(_appHandle, splitContainer1.Panel2.Handle);
             } catch (Exception) {
 
-                
+
             }
             SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
             if (strFullFileName.EndsWith(".doc") || strFullFileName.EndsWith(".docx") || strFullFileName.EndsWith(".odt")) {
@@ -1249,9 +1251,9 @@ namespace System.Windows.Forms.Samples {
                 // Do Something
                 updateGUI();
             }
-            
-               
-    
+
+
+
         }
 
         private void updateGUI() {
@@ -1263,10 +1265,10 @@ namespace System.Windows.Forms.Samples {
 
 
             _ignoreSelectedIndexChanged = true;
-            tabControl1.SelectedIndex = tabControl1.TabCount - 1;            
+            tabControl1.SelectedIndex = tabControl1.TabCount - 1;
             myActions.TypeText("{TAB}", 1500);
             myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString(), di.FullName);
-           
+
             _CurrentIndex = tabControl1.SelectedIndex;
 
 
@@ -1849,7 +1851,7 @@ namespace System.Windows.Forms.Samples {
                 if (!c.Selected) {
                     c.Selected = true;
                     string fileName = ((DataGridView)sender).Rows[e.RowIndex].Cells[13].Value.ToString();
-                    if (fileName.EndsWith(".rtf") 
+                    if (fileName.EndsWith(".rtf")
                         || fileName.EndsWith(".odt")
                         || fileName.EndsWith(".doc")
                         || fileName.EndsWith(".docx")
@@ -1904,6 +1906,8 @@ namespace System.Windows.Forms.Samples {
                             }
                             //tries to start the process 
                             try {
+                                Methods myActions = new Methods();
+                                myActions.KillAllProcessesByProcessName("notepad++");
                                 _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", fileName);
                             } catch (Exception) {
                                 MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -1944,6 +1948,7 @@ namespace System.Windows.Forms.Samples {
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
                 if (!myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
+                    myActions.KillAllProcessesByProcessName("notepad++");
                     string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
                     myActions.Run(strExecutable, "\"" + myFileView.FullName + "\"");
                 } else {
@@ -2005,7 +2010,7 @@ namespace System.Windows.Forms.Samples {
                     string strNewTextDocumentDir = Path.Combine(basePathForNewTextDocument, myNewTextDocumentName);
                     if (!File.Exists(strNewTextDocumentDir)) {
                         string newFolderScriptPath = basePathForNewTextDocument + "\\" + myNewTextDocumentName.Replace(".txt", "");
-                      //  myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
+                        //  myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
 
                         // File.Create(strNewTextDocumentDir);
 
@@ -2075,7 +2080,7 @@ namespace System.Windows.Forms.Samples {
                         SetParent(_appHandle, splitContainer1.Panel2.Handle);
                         SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                     }
-                    splitContainer1.SplitterDistance = (int)(ClientSize.Width * .2);                   
+                    splitContainer1.SplitterDistance = (int)(ClientSize.Width * .2);
 
                 } else {
                     myActions.MessageBoxShow("You can not create a text file inside a file; you need to select folder first");
@@ -2213,10 +2218,10 @@ namespace System.Windows.Forms.Samples {
                     string strNewTextDocumentDir = Path.Combine(basePathForNewTextDocument, myNewTextDocumentName);
                     if (!File.Exists(strNewTextDocumentDir)) {
                         string newFolderScriptPath = basePathForNewTextDocument + "\\" + myNewTextDocumentName.Replace(".rtf", "");
-                     //   myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
+                        //   myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
                         using (StreamWriter sw = new StreamWriter(strNewTextDocumentDir)) {
 
-                          
+
 
                         }
                         //   File.Create(strNewTextDocumentDir);
@@ -3878,13 +3883,13 @@ namespace System.Windows.Forms.Samples {
             System.Windows.Forms.DialogResult myResult;
             if (!Directory.Exists(strNewHostName)) {
 
-                    myResult = myActions.MessageBoxShowWithYesNo("I could not find folder " + strNewHostName + ". Do you want me to create it ? ");
-                    if (myResult == System.Windows.Forms.DialogResult.Yes) {
-                        Directory.CreateDirectory(strNewHostName);
-                    } else {
-                        return;
-                    }
-                
+                myResult = myActions.MessageBoxShowWithYesNo("I could not find folder " + strNewHostName + ". Do you want me to create it ? ");
+                if (myResult == System.Windows.Forms.DialogResult.Yes) {
+                    Directory.CreateDirectory(strNewHostName);
+                } else {
+                    return;
+                }
+
             }
             List<ComboBoxPair> alHosts = ((ComboBox)sender).Items.Cast<ComboBoxPair>().ToList();
             List<ComboBoxPair> alHostsNew = new List<ComboBoxPair>();
@@ -4024,11 +4029,11 @@ namespace System.Windows.Forms.Samples {
             //this.Hide();
 
 
-            
 
-            
 
-           
+
+
+
             DisplayFindTextInFilesWindow:
             int intRowCtr = 0;
             ControlEntity myControlEntity = new ControlEntity();
@@ -4197,7 +4202,7 @@ namespace System.Windows.Forms.Samples {
             LineAfterDisplayWindow:
             if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
-               return;
+                return;
             }
 
             boolMatchCase = myListControlEntity.Find(x => x.ID == "chkMatchCase").Checked;
@@ -4413,6 +4418,7 @@ namespace System.Windows.Forms.Samples {
                 // Console.WriteLine(myFileList.Count().ToString() + " files");
                 Console.WriteLine(intUniqueFiles.ToString() + " files with hits");
                 Console.ReadLine();
+                myActions.KillAllProcessesByProcessName("notepad++");
                 string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
                 string strContent = settingsDirectory + @"\MatchInfo.txt";
                 //Close the running process
@@ -4440,9 +4446,9 @@ namespace System.Windows.Forms.Samples {
                 _appHandle = _proc.MainWindowHandle;
 
                 SetParent(_appHandle, splitContainer1.Panel2.Handle);
-                SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);              
+                SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                 myActions.MessageBoxShow("RunTime: " + elapsedTime + "\n\r\n\rHits: " + intHits.ToString() + "\n\r\n\rFiles with hits: " + intUniqueFiles.ToString() + "\n\r\n\rPut Cursor on line and\n\r press Ctrl+Alt+N\n\rto view detail page. ");
-            }            
+            }
         }
         public static List<FileInfo> TraverseTree(string filterPattern, string root) {
             string[] arrayExclusionPatterns = strSearchExcludePattern.Split(';');
@@ -4530,7 +4536,7 @@ namespace System.Windows.Forms.Samples {
         }
         public static void ReadFileToString(string fullFilePath, int intLineCtr, List<MatchInfo> matchInfoList) {
             while (true) {
-                if (fullFilePath.EndsWith(".odt")  
+                if (fullFilePath.EndsWith(".odt")
                     ) {
                     if (FindTextInWordPad(strSearchText, fullFilePath)) {
                         intHits++;
@@ -4544,8 +4550,8 @@ namespace System.Windows.Forms.Samples {
                     }
                 }
                 if (fullFilePath.EndsWith(".doc") ||
-    fullFilePath.EndsWith(".docx") 
-   
+    fullFilePath.EndsWith(".docx")
+
     ) {
                     if (FindTextInWord(strSearchText, fullFilePath)) {
                         intHits++;
@@ -4669,12 +4675,12 @@ namespace System.Windows.Forms.Samples {
                     myActions.MessageBoxShow(ex.Message);
                 }
             }
-                if (sb.ToString().Contains(text)) {
+            if (sb.ToString().Contains(text)) {
                 return true;
             } else {
                 return false;
             }
-            
+
         }
 
         protected static bool FindTextInWord(string text, string flname) {
@@ -4704,7 +4710,275 @@ namespace System.Windows.Forms.Samples {
             }
         }
 
-    }
+        private void textFileToolStripMenuItem_Click(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            string basePathForNewFolder = _dir.FileView.FullName;
+            string basePathName = _dir.FileView.Name;
+            string basePathForNewTextDocument = "";
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
+                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
+                    basePathForNewTextDocument = myFileView.FullName;
+                    basePathName = myFileView.Name;
+                    basePathForNewFolder = myFileView.FullName;
+                }
+            }
+
+            List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+
+            ControlEntity myControlEntity = new ControlEntity();
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Heading;
+            myControlEntity.Text = "Create New TextDocument";
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "myLabel";
+            myControlEntity.Text = "Enter New TextDocument Name";
+            myControlEntity.RowNumber = 0;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "myTextBox";
+            myControlEntity.Text = "";
+            myControlEntity.RowNumber = 0;
+            myControlEntity.ColumnNumber = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            ReDisplayNewTextDocumentDialog:
+            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
+
+            if (strButtonPressed == "btnCancel") {
+                myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                return;
+            }
+  
+            string parentScriptPath = myActions.ConvertFullFileNameToPublicPath(basePathForNewTextDocument) + "\\" + basePathName;
+            string myNewTextDocumentName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
+            if (!myNewTextDocumentName.EndsWith(".txt")) {
+                myNewTextDocumentName = myNewTextDocumentName + ".txt";
+            }
+            string strNewTextDocumentDir = Path.Combine(basePathForNewTextDocument, myNewTextDocumentName);
+            if (!File.Exists(strNewTextDocumentDir)) {
+                string newFolderScriptPath = basePathForNewTextDocument + "\\" + myNewTextDocumentName.Replace(".txt", "");
+                //  myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
+
+                // File.Create(strNewTextDocumentDir);
+
+            }
+            string strExecutable = @"C:\Windows\system32\notepad.exe";
+
+            string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
+            if (detailsMenuItemChecked == "False") {
+                myActions.SetValueByKey("DetailsMenuItemChecked", "True");
+                splitContainer1.Panel2Collapsed = false;
+                this.detailsMenuItem.Checked = true;
+                this.listMenuItem.Checked = false;
+                //tries to start the process 
+                try {
+                    _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
+                } catch (Exception) {
+                    MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                //disables button and textbox
+                //txtProcess.Enabled = false;
+                //btnStart.Enabled = false;
+
+                //host the started process in the panel 
+                System.Threading.Thread.Sleep(500);
+                while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                    System.Threading.Thread.Sleep(10);
+                    _proc.Refresh();
+                }
+
+                _proc.WaitForInputIdle();
+                _appHandle = _proc.MainWindowHandle;
+
+                SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+                //SendMessage(proc.MainWindowHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+            } else {
+                //Close the running process
+                if (_appHandle != IntPtr.Zero) {
+                    PostMessage(_appHandle, WM_CLOSE, 0, 0);
+                    System.Threading.Thread.Sleep(1000);
+                    _appHandle = IntPtr.Zero;
+                }
+                //tries to start the process 
+                try {
+                    _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
+                } catch (Exception) {
+                    MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                //disables button and textbox
+                //txtProcess.Enabled = false;
+                //btnStart.Enabled = false;
+
+                //host the started process in the panel 
+                System.Threading.Thread.Sleep(500);
+                while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                    System.Threading.Thread.Sleep(10);
+                    _proc.Refresh();
+                }
+
+                _proc.WaitForInputIdle();
+                _appHandle = _proc.MainWindowHandle;
+
+                SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+            }        
+            splitContainer1.SplitterDistance = (int)(ClientSize.Width * .2);
+        
+                
+            
+        }
+
+        private void wordPadFileToolStripMenuItem_Click(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            string basePathForNewFolder = _dir.FileView.FullName;
+            string basePathName = _dir.FileView.Name;
+            string basePathForNewTextDocument = "";
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
+                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
+                    basePathForNewTextDocument = myFileView.FullName;
+                    basePathName = myFileView.Name;
+                    basePathForNewFolder = myFileView.FullName;
+                }
+            }
+
+            List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+
+                    ControlEntity myControlEntity = new ControlEntity();
+                    myControlEntity.ControlEntitySetDefaults();
+                    myControlEntity.ControlType = ControlType.Heading;
+                    myControlEntity.Text = "Create New TextDocument";
+                    myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+                    myControlEntity.ControlEntitySetDefaults();
+                    myControlEntity.ControlType = ControlType.Label;
+                    myControlEntity.ID = "myLabel";
+                    myControlEntity.Text = "Enter New TextDocument Name";
+                    myControlEntity.RowNumber = 0;
+                    myControlEntity.ColumnNumber = 0;
+                    myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+                    myControlEntity.ControlEntitySetDefaults();
+                    myControlEntity.ControlType = ControlType.TextBox;
+                    myControlEntity.ID = "myTextBox";
+                    myControlEntity.Text = "";
+                    myControlEntity.RowNumber = 0;
+                    myControlEntity.ColumnNumber = 1;
+                    myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+                    ReDisplayNewTextDocumentDialog:
+                    string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
+
+                    if (strButtonPressed == "btnCancel") {
+                        myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                        return;
+                    }
+
+
+                    string parentScriptPath = myActions.ConvertFullFileNameToPublicPath(basePathForNewTextDocument) + "\\" + basePathName;
+                    string myNewTextDocumentName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
+                    if (!myNewTextDocumentName.EndsWith(".rtf")) {
+                        myNewTextDocumentName = myNewTextDocumentName + ".rtf";
+                    }
+                    string strNewTextDocumentDir = Path.Combine(basePathForNewTextDocument, myNewTextDocumentName);
+                    if (!File.Exists(strNewTextDocumentDir)) {
+                        string newFolderScriptPath = basePathForNewTextDocument + "\\" + myNewTextDocumentName.Replace(".rtf", "");
+                        //   myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
+                        using (StreamWriter sw = new StreamWriter(strNewTextDocumentDir)) {
+
+
+
+                        }
+                        //   File.Create(strNewTextDocumentDir);
+
+                    }
+                    string strExecutable = @"C:\Program Files\Windows NT\Accessories\wordpad.exe";
+                    string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
+                    if (detailsMenuItemChecked == "False") {
+                        myActions.SetValueByKey("DetailsMenuItemChecked", "True");
+                        splitContainer1.Panel2Collapsed = false;
+                        this.detailsMenuItem.Checked = true;
+                        this.listMenuItem.Checked = false;
+                        //tries to start the process 
+                        try {
+                            _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
+                        } catch (Exception) {
+                            MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+
+                        //disables button and textbox
+                        //txtProcess.Enabled = false;
+                        //btnStart.Enabled = false;
+
+                        //host the started process in the panel 
+                        System.Threading.Thread.Sleep(500);
+                        while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                            System.Threading.Thread.Sleep(10);
+                            _proc.Refresh();
+                        }
+
+                        _proc.WaitForInputIdle();
+                        _appHandle = _proc.MainWindowHandle;
+
+                        SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                        SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+                        //SendMessage(proc.MainWindowHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+                    } else {
+                        //Close the running process
+                        if (_appHandle != IntPtr.Zero) {
+                            PostMessage(_appHandle, WM_CLOSE, 0, 0);
+                            System.Threading.Thread.Sleep(1000);
+                            _appHandle = IntPtr.Zero;
+                        }
+                        //tries to start the process 
+                        try {
+                            _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
+                        } catch (Exception) {
+                            MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+
+                        //disables button and textbox
+                        //txtProcess.Enabled = false;
+                        //btnStart.Enabled = false;
+
+                        //host the started process in the panel 
+                        System.Threading.Thread.Sleep(500);
+                        while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                            System.Threading.Thread.Sleep(10);
+                            _proc.Refresh();
+                        }
+
+                        _proc.WaitForInputIdle();
+                        _appHandle = _proc.MainWindowHandle;
+
+                        SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                        SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+                    }
+                    splitContainer1.SplitterDistance = (int)(ClientSize.Width * .2);
+
+                } 
+            }
+       
 
 }
 
