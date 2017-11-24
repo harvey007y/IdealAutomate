@@ -43,6 +43,15 @@
     <ApplicationIcon>Resources\folder.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AODL, Version=1.2.0.1, Culture=neutral">
+      <HintPath>..\packages\AODL.1.2.0.1\lib\AODL.dll</HintPath>
+    </Reference>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.7.2.0, Culture=neutral, PublicKeyToken=8fb06cb64d019a17, processorArchitecture=MSIL">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.7.2\lib\net40\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.84.0.0, Culture=neutral, PublicKeyToken=1b03e6acf1164f73">
+      <HintPath>..\packages\AODL.1.2.0.1\lib\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="IdealAutomateCore, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(APPDATA)\IdealAutomate\IdealAutomateCore.dll</HintPath>
@@ -54,10 +63,12 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="WindowsBase" />
     <Reference Include="WindowsInput, Version=1.0.4.0, Culture=neutral, PublicKeyToken=9b287f7dc5073cad, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\WrapSQLInQuotesForCS\WrapSQLInQuotesForCS\packages\InputSimulator.1.0.4.0\lib\net20\WindowsInput.dll</HintPath>
@@ -87,6 +98,7 @@
     <Content Include="MyNewProject\MyNewProject\Properties\Settings.Designer.cs" />
     <Compile Include="HotKeyRecord.cs" />
     <Compile Include="MatchInfo.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="SortableBindingList.cs" />
     <Compile Include="StringExtensions.cs" />
     <Compile Include="DirectoryView.cs" />
@@ -110,6 +122,7 @@
     <None Include="app.config" />
     <None Include="MyNewProject\MyNewProject\ClassDiagram1.cd" />
     <Content Include="MyNewProject\MyNewProject\Properties\Settings.settings" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -148,6 +161,9 @@
     <None Include="Resources\minus.ico" />
     <None Include="Resources\Plusx.ico" />
     <None Include="Resources\Search.ico" />
+    <Content Include="aodlread\settings.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Text\InitialDirectory.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -33,23 +33,23 @@ namespace System.Windows.Forms.Samples {
                 }
 
                 if (compareableInterface != null) {
-                    ParameterExpression x = Expression.Parameter(typeof(T), "x");
-                    ParameterExpression y = Expression.Parameter(typeof(T), "y");
+                    ParameterExpression x = System.Linq.Expressions.Expression.Parameter(typeof(T), "x");
+                    ParameterExpression y = System.Linq.Expressions.Expression.Parameter(typeof(T), "y");
 
-                    MemberExpression xProp = Expression.Property(x, property.Name);
-                    Expression yProp = Expression.Property(y, property.Name);
+                    MemberExpression xProp = System.Linq.Expressions.Expression.Property(x, property.Name);
+                    System.Linq.Expressions.Expression yProp = System.Linq.Expressions.Expression.Property(y, property.Name);
 
                     MethodInfo compareToMethodInfo = compareableInterface.GetMethod("CompareTo");
 
                     //If we are not using the generic version of the interface we need to 
                     // cast to object or we will fail when using structs.
                     if (usingNonGenericInterface) {
-                        yProp = Expression.TypeAs(yProp, typeof(object));
+                        yProp = System.Linq.Expressions.Expression.TypeAs(yProp, typeof(object));
                     }
 
-                    MethodCallExpression call = Expression.Call(xProp, compareToMethodInfo, yProp);
+                    MethodCallExpression call = System.Linq.Expressions.Expression.Call(xProp, compareToMethodInfo, yProp);
 
-                    Expression<Comparison<T>> lambada = Expression.Lambda<Comparison<T>>(call, x, y);
+                    Expression<Comparison<T>> lambada = System.Linq.Expressions.Expression.Lambda<Comparison<T>>(call, x, y);
                     PropertyLookup.Add(property.Name, lambada.Compile());
                 }
             }
@@ -92,12 +92,12 @@ namespace System.Windows.Forms.Samples {
         }
 
         private static Action<IList<T>, Comparison<T>> CreateSortDelegate(IList<T> list, MethodInfo sortMethod) {
-            ParameterExpression sourceList = Expression.Parameter(typeof(IList<T>));
-            ParameterExpression comparer = Expression.Parameter(typeof(Comparison<T>));
-            UnaryExpression castList = Expression.TypeAs(sourceList, list.GetType());
-            MethodCallExpression call = Expression.Call(castList, sortMethod, comparer);
+            ParameterExpression sourceList = System.Linq.Expressions.Expression.Parameter(typeof(IList<T>));
+            ParameterExpression comparer = System.Linq.Expressions.Expression.Parameter(typeof(Comparison<T>));
+            UnaryExpression castList = System.Linq.Expressions.Expression.TypeAs(sourceList, list.GetType());
+            MethodCallExpression call = System.Linq.Expressions.Expression.Call(castList, sortMethod, comparer);
             Expression<Action<IList<T>, Comparison<T>>> lambada =
-                Expression.Lambda<Action<IList<T>, Comparison<T>>>(call,
+                System.Linq.Expressions.Expression.Lambda<Action<IList<T>, Comparison<T>>>(call,
                     sourceList, comparer);
             Action<IList<T>, Comparison<T>> sortDelegate = lambada.Compile();
             return sortDelegate;

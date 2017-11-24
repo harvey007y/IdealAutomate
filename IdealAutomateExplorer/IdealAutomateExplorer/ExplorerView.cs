@@ -20,6 +20,14 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Threading;
 
+using AODL;
+using AODL.Document;
+using AODL.Document.TextDocuments;
+using System.Xml;
+using System.Xml.Linq;
+using AODL.Document.Content;
+using DocumentFormat.OpenXml.Packaging;
+
 
 
 
@@ -102,7 +110,7 @@ namespace System.Windows.Forms.Samples {
             tabControl1.HotTrack = true;
 
             tabControl1.DrawItem += TabControl1_DrawItem;
-            tabControl1.Padding = new Point(20, 3);
+            tabControl1.Padding = new System.Drawing.Point(20, 3);
             tabControl1.MouseClick += TabControl1_MouseClick;
                     
         }
@@ -1024,7 +1032,16 @@ namespace System.Windows.Forms.Samples {
             delimParms.lines[0] = strCurrentLine;
             myActions.FindDelimitedText(delimParms);
             string strLineNumber = delimParms.strDelimitedTextFound;
-            string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
+            string strExecutable = "";
+                 if (strFullFileName.EndsWith(".doc") || strFullFileName.EndsWith(".docx")) {
+                strExecutable = @"C:\Program Files\Windows NT\Accessories\wordpad.exe";
+            } else {
+                if (strFullFileName.EndsWith(".odt")) {
+                    strExecutable = @"C:\Program Files\Windows NT\Accessories\wordpad.exe";
+                } else {
+                    strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
+                }
+            }
             string strContent = strFullFileName;
             //Close the running process
             if (_appHandle != IntPtr.Zero) {
@@ -1034,7 +1051,7 @@ namespace System.Windows.Forms.Samples {
             }
             //tries to start the process 
             try {
-                _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
+                _proc = Process.Start(strExecutable, "\"" + strContent + "\"");
             } catch (Exception) {
                 MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -1052,9 +1069,12 @@ namespace System.Windows.Forms.Samples {
 
             SetParent(_appHandle, splitContainer1.Panel2.Handle);
             SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
-            myActions.TypeText("^(g)", 2000);
-            myActions.TypeText(strLineNumber, 500);
-            myActions.TypeText("{ENTER}", 500);
+            if (strFullFileName.EndsWith(".doc") || strFullFileName.EndsWith(".docx") || strFullFileName.EndsWith(".odt")) {
+            } else {
+                myActions.TypeText("^(g)", 2000);
+                myActions.TypeText(strLineNumber, 500);
+                myActions.TypeText("{ENTER}", 500);
+            }
             myActions.TypeText("^(f)", 500);
 
             string strFindWhatToUse = strFindWhat;
@@ -1136,7 +1156,18 @@ namespace System.Windows.Forms.Samples {
             delimParms.lines[0] = strCurrentLine;
             myActions.FindDelimitedText(delimParms);
             string strLineNumber = delimParms.strDelimitedTextFound;
-            string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
+            string strExecutable = "";
+
+            if (strFullFileName.EndsWith(".doc") || strFullFileName.EndsWith(".docx")) {
+                strExecutable = @"C:\Program Files\Windows NT\Accessories\wordpad.exe";
+            } else {
+                if (strFullFileName.EndsWith(".odt")) {
+                    strExecutable = @"C:\Program Files\Windows NT\Accessories\wordpad.exe";
+                } else {
+                    strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
+                }
+            }
+            
             string strContent = strFullFileName;
             //Close the running process
             if (_appHandle != IntPtr.Zero) {
@@ -1146,7 +1177,7 @@ namespace System.Windows.Forms.Samples {
             }
             //tries to start the process 
             try {
-                _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
+                _proc = Process.Start(strExecutable, "\"" + strContent + "\"");
             } catch (Exception) {
                 MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -1169,9 +1200,12 @@ namespace System.Windows.Forms.Samples {
                 
             }
             SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
-            myActions.TypeText("^(g)", 2000);
-            myActions.TypeText(strLineNumber, 500);
-            myActions.TypeText("{ENTER}", 500);
+            if (strFullFileName.EndsWith(".doc") || strFullFileName.EndsWith(".docx") || strFullFileName.EndsWith(".odt")) {
+            } else {
+                myActions.TypeText("^(g)", 2000);
+                myActions.TypeText(strLineNumber, 500);
+                myActions.TypeText("{ENTER}", 500);
+            }
             myActions.TypeText("^(f)", 500);
 
             string strFindWhatToUse = strFindWhat;
@@ -1275,7 +1309,7 @@ namespace System.Windows.Forms.Samples {
             var p = new Process();
             p.StartInfo.FileName = strExecutable;
             if (strContent != "") {
-                p.StartInfo.Arguments = string.Concat("", strContent, "");
+                p.StartInfo.Arguments = string.Concat("\"", strContent, "\"");
             }
             bool started = true;
             try {
@@ -1323,7 +1357,7 @@ namespace System.Windows.Forms.Samples {
                 Process.Start(strExecutable);
             } else {
                 try {
-                    Process.Start(strExecutable, string.Concat("", strContent, ""));
+                    Process.Start(strExecutable, string.Concat("\"", strContent, "\""));
                 } catch (Exception ex) {
 
                     MessageBox.Show(ex.ToString());
@@ -1802,7 +1836,7 @@ namespace System.Windows.Forms.Samples {
                 FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
                 if (!myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     string strExecutable = @"C:\Windows\system32\notepad.exe";
-                    myActions.Run(strExecutable, myFileView.FullName);
+                    myActions.Run(strExecutable, "\"" + myFileView.FullName + "\"");
                 } else {
                     myActions.MessageBoxShow("You cannot open folders with Notepad");
                 }
@@ -1911,7 +1945,7 @@ namespace System.Windows.Forms.Samples {
                 FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
                 if (!myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
-                    myActions.Run(strExecutable, myFileView.FullName);
+                    myActions.Run(strExecutable, "\"" + myFileView.FullName + "\"");
                 } else {
                     myActions.MessageBoxShow("You can not open folders with Notepad++");
                 }
@@ -1977,7 +2011,7 @@ namespace System.Windows.Forms.Samples {
 
                     }
                     string strExecutable = @"C:\Windows\system32\notepad.exe";
-                    myActions.Run(strExecutable, strNewTextDocumentDir);
+                    myActions.Run(strExecutable, "\"" + strNewTextDocumentDir + "\"");
 
                 } else {
                     myActions.MessageBoxShow("You can not create a text file inside a file; you need to select folder first");
@@ -2055,7 +2089,7 @@ namespace System.Windows.Forms.Samples {
                 FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
                 if (!myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     string strExecutable = @"C:\Program Files\Windows NT\Accessories\wordpad.exe";
-                    myActions.Run(strExecutable, myFileView.FullName);
+                    myActions.Run(strExecutable, "\"" + myFileView.FullName + "\"");
                 } else {
                     myActions.MessageBoxShow("You can not create a wordpad file inside a file; first select folder and then right click");
                 }
@@ -2125,7 +2159,7 @@ namespace System.Windows.Forms.Samples {
 
                     }
                     string strExecutable = @"C:\Program Files\Windows NT\Accessories\wordpad.exe";
-                    myActions.Run(strExecutable, strNewTextDocumentDir);
+                    myActions.Run(strExecutable, "\"" + strNewTextDocumentDir + "\"");
 
                 } else {
                     myActions.MessageBoxShow("You can not create a text document inside a file; first select folder and right click");
@@ -3789,7 +3823,7 @@ namespace System.Windows.Forms.Samples {
                 FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
                 if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     string strExecutable = @"C:\Windows\explorer.exe";
-                    myActions.Run(strExecutable, myFileView.FullName);
+                    myActions.Run(strExecutable, "\"" + myFileView.FullName + "\"");
                 } else {
                     myActions.MessageBoxShow("You can only open directories with Windows Explorer");
                 }
@@ -4369,6 +4403,34 @@ namespace System.Windows.Forms.Samples {
         }
         public static void ReadFileToString(string fullFilePath, int intLineCtr, List<MatchInfo> matchInfoList) {
             while (true) {
+                if (fullFilePath.EndsWith(".odt")  
+                    ) {
+                    if (FindTextInWordPad(strSearchText, fullFilePath)) {
+                        intHits++;
+                        boolStringFoundInFile = true;
+                        MatchInfo myMatchInfo = new MatchInfo();
+                        myMatchInfo.FullName = fullFilePath;
+                        myMatchInfo.LineNumber = 1;
+                        myMatchInfo.LinePosition = 1;
+                        myMatchInfo.LineText = strSearchText;
+                        matchInfoList.Add(myMatchInfo);
+                    }
+                }
+                if (fullFilePath.EndsWith(".doc") ||
+    fullFilePath.EndsWith(".docx") 
+   
+    ) {
+                    if (FindTextInWord(strSearchText, fullFilePath)) {
+                        intHits++;
+                        boolStringFoundInFile = true;
+                        MatchInfo myMatchInfo = new MatchInfo();
+                        myMatchInfo.FullName = fullFilePath;
+                        myMatchInfo.LineNumber = 1;
+                        myMatchInfo.LinePosition = 1;
+                        myMatchInfo.LineText = strSearchText;
+                        matchInfoList.Add(myMatchInfo);
+                    }
+                }
                 try {
                     using (FileStream fs = new FileStream(fullFilePath, FileMode.Open)) {
                         using (StreamReader sr = new StreamReader(fs, Encoding.Default)) {
@@ -4443,6 +4505,75 @@ namespace System.Windows.Forms.Samples {
                     Console.WriteLine("Output file {0} not yet ready ({1})", fullFilePath, ex.Message);
                     break;
                 }
+            }
+        }
+        protected static bool FindTextInWordPad(string text, string flname) {
+            Methods myActions = new Methods();
+            StringBuilder sb = new StringBuilder();
+            string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
+            if (!File.Exists(strApplicationBinDebug + "\\aodlread\\settings.xml")) {
+                if (!Directory.Exists(strApplicationBinDebug + "\\aodlread")) {
+                    Directory.CreateDirectory(strApplicationBinDebug + "\\aodlread");
+                }
+                File.Copy(strApplicationBinDebug.Replace("\\bin\\Debug", "") + "\\aodlread\\settings.xml", strApplicationBinDebug + "\\aodlread\\settings.xml");
+            }
+            try {
+                using (var doc = new TextDocument()) {
+                    doc.Load(flname);
+
+                    //The header and footer are in the DocumentStyles part. Grab the XML of this part
+                    XElement stylesPart = XElement.Parse(doc.DocumentStyles.Styles.OuterXml);
+                    //Take all headers and footers text, concatenated with return carriage
+                    string stylesText = string.Join("\r\n", stylesPart.Descendants().Where(x => x.Name.LocalName == "header" || x.Name.LocalName == "footer").Select(y => y.Value));
+
+                    //Main content
+                    var mainPart = doc.Content.Cast<IContent>();
+                    var mainText = String.Join("\r\n", mainPart.Select(x => x.Node.InnerText));
+
+                    //Append both text variables
+                    sb.Append(stylesText + "\r\n");
+
+                    sb.Append(mainText);
+                }
+            } catch (Exception ex) {
+                if (ex.InnerException != null) {
+                    myActions.MessageBoxShow(ex.InnerException.ToString());
+                } else {
+                    myActions.MessageBoxShow(ex.Message);
+                }
+            }
+                if (sb.ToString().Contains(text)) {
+                return true;
+            } else {
+                return false;
+            }
+            
+        }
+
+        protected static bool FindTextInWord(string text, string flname) {
+            Methods myActions = new Methods();
+            StringBuilder sb = new StringBuilder();
+            string docText = null;
+            try {
+                using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(flname, true)) {
+                    docText = null;
+                    using (StreamReader sr = new StreamReader(wordDoc.MainDocumentPart.GetStream())) {
+                        docText = sr.ReadToEnd();
+                    }
+                }
+
+            } catch (Exception ex) {
+                if (ex.InnerException != null) {
+                    myActions.MessageBoxShow(ex.InnerException.ToString());
+                } else {
+                    myActions.MessageBoxShow(ex.Message);
+                }
+            }
+
+            if (docText.Contains(text)) {
+                return true;
+            } else {
+                return false;
             }
         }
 
