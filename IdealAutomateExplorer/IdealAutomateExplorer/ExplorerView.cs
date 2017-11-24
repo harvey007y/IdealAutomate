@@ -2005,13 +2005,77 @@ namespace System.Windows.Forms.Samples {
                     string strNewTextDocumentDir = Path.Combine(basePathForNewTextDocument, myNewTextDocumentName);
                     if (!File.Exists(strNewTextDocumentDir)) {
                         string newFolderScriptPath = basePathForNewTextDocument + "\\" + myNewTextDocumentName.Replace(".txt", "");
-                        myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
+                      //  myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
 
                         // File.Create(strNewTextDocumentDir);
 
                     }
                     string strExecutable = @"C:\Windows\system32\notepad.exe";
-                    myActions.Run(strExecutable, "\"" + strNewTextDocumentDir + "\"");
+
+                    string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
+                    if (detailsMenuItemChecked == "False") {
+                        myActions.SetValueByKey("DetailsMenuItemChecked", "True");
+                        splitContainer1.Panel2Collapsed = false;
+                        this.detailsMenuItem.Checked = true;
+                        this.listMenuItem.Checked = false;
+                        //tries to start the process 
+                        try {
+                            _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
+                        } catch (Exception) {
+                            MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+
+                        //disables button and textbox
+                        //txtProcess.Enabled = false;
+                        //btnStart.Enabled = false;
+
+                        //host the started process in the panel 
+                        System.Threading.Thread.Sleep(500);
+                        while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                            System.Threading.Thread.Sleep(10);
+                            _proc.Refresh();
+                        }
+
+                        _proc.WaitForInputIdle();
+                        _appHandle = _proc.MainWindowHandle;
+
+                        SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                        SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+                        //SendMessage(proc.MainWindowHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+                    } else {
+                        //Close the running process
+                        if (_appHandle != IntPtr.Zero) {
+                            PostMessage(_appHandle, WM_CLOSE, 0, 0);
+                            System.Threading.Thread.Sleep(1000);
+                            _appHandle = IntPtr.Zero;
+                        }
+                        //tries to start the process 
+                        try {
+                            _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
+                        } catch (Exception) {
+                            MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+
+                        //disables button and textbox
+                        //txtProcess.Enabled = false;
+                        //btnStart.Enabled = false;
+
+                        //host the started process in the panel 
+                        System.Threading.Thread.Sleep(500);
+                        while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                            System.Threading.Thread.Sleep(10);
+                            _proc.Refresh();
+                        }
+
+                        _proc.WaitForInputIdle();
+                        _appHandle = _proc.MainWindowHandle;
+
+                        SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                        SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+                    }
+                    splitContainer1.SplitterDistance = (int)(ClientSize.Width * .2);                   
 
                 } else {
                     myActions.MessageBoxShow("You can not create a text file inside a file; you need to select folder first");
@@ -2149,17 +2213,80 @@ namespace System.Windows.Forms.Samples {
                     string strNewTextDocumentDir = Path.Combine(basePathForNewTextDocument, myNewTextDocumentName);
                     if (!File.Exists(strNewTextDocumentDir)) {
                         string newFolderScriptPath = basePathForNewTextDocument + "\\" + myNewTextDocumentName.Replace(".rtf", "");
-                        myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
+                     //   myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
                         using (StreamWriter sw = new StreamWriter(strNewTextDocumentDir)) {
 
-
+                          
 
                         }
                         //   File.Create(strNewTextDocumentDir);
 
                     }
                     string strExecutable = @"C:\Program Files\Windows NT\Accessories\wordpad.exe";
-                    myActions.Run(strExecutable, "\"" + strNewTextDocumentDir + "\"");
+                    string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
+                    if (detailsMenuItemChecked == "False") {
+                        myActions.SetValueByKey("DetailsMenuItemChecked", "True");
+                        splitContainer1.Panel2Collapsed = false;
+                        this.detailsMenuItem.Checked = true;
+                        this.listMenuItem.Checked = false;
+                        //tries to start the process 
+                        try {
+                            _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
+                        } catch (Exception) {
+                            MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+
+                        //disables button and textbox
+                        //txtProcess.Enabled = false;
+                        //btnStart.Enabled = false;
+
+                        //host the started process in the panel 
+                        System.Threading.Thread.Sleep(500);
+                        while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                            System.Threading.Thread.Sleep(10);
+                            _proc.Refresh();
+                        }
+
+                        _proc.WaitForInputIdle();
+                        _appHandle = _proc.MainWindowHandle;
+
+                        SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                        SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+                        //SendMessage(proc.MainWindowHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+                    } else {
+                        //Close the running process
+                        if (_appHandle != IntPtr.Zero) {
+                            PostMessage(_appHandle, WM_CLOSE, 0, 0);
+                            System.Threading.Thread.Sleep(1000);
+                            _appHandle = IntPtr.Zero;
+                        }
+                        //tries to start the process 
+                        try {
+                            _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
+                        } catch (Exception) {
+                            MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+
+                        //disables button and textbox
+                        //txtProcess.Enabled = false;
+                        //btnStart.Enabled = false;
+
+                        //host the started process in the panel 
+                        System.Threading.Thread.Sleep(500);
+                        while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                            System.Threading.Thread.Sleep(10);
+                            _proc.Refresh();
+                        }
+
+                        _proc.WaitForInputIdle();
+                        _appHandle = _proc.MainWindowHandle;
+
+                        SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                        SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+                    }
+                    splitContainer1.SplitterDistance = (int)(ClientSize.Width * .2);
 
                 } else {
                     myActions.MessageBoxShow("You can not create a text document inside a file; first select folder and right click");
