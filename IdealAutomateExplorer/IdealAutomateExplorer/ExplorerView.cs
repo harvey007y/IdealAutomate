@@ -2175,14 +2175,14 @@ namespace System.Windows.Forms.Samples {
                     ControlEntity myControlEntity = new ControlEntity();
                     myControlEntity.ControlEntitySetDefaults();
                     myControlEntity.ControlType = ControlType.Heading;
-                    myControlEntity.Text = "Create New TextDocument";
+                    myControlEntity.Text = "Create New WordPad Document";
                     myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
 
                     myControlEntity.ControlEntitySetDefaults();
                     myControlEntity.ControlType = ControlType.Label;
                     myControlEntity.ID = "myLabel";
-                    myControlEntity.Text = "Enter New TextDocument Name";
+                    myControlEntity.Text = "Enter New WordPad Document Name";
                     myControlEntity.RowNumber = 0;
                     myControlEntity.ColumnNumber = 0;
                     myListControlEntity.Add(myControlEntity.CreateControlEntity());
@@ -2609,6 +2609,8 @@ namespace System.Windows.Forms.Samples {
             this.buildStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.runToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.manualTimeStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.customStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.openWithToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hotKeysStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -2630,6 +2632,8 @@ namespace System.Windows.Forms.Samples {
             DataGridViewTextBoxColumn SizeCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             DataGridViewTextBoxColumn AvgExecutionTimeCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             DataGridViewTextBoxColumn ManualExecutionTimeCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            DataGridViewTextBoxColumn CustomCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            DataGridViewTextBoxColumn StatusCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             DataGridViewTextBoxColumn TotalSavingsCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             DataGridViewTextBoxColumn Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
             DataGridViewTextBoxColumn DateModifiedCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -2642,9 +2646,7 @@ namespace System.Windows.Forms.Samples {
             this.upSplitButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             //this.viewSplitButton = new System.Windows.Forms.ToolStripSplitButton();
-            this.thumbnailsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tilesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.iconsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+           
             this.listMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.detailsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenu = new System.Windows.Forms.MenuStrip();
@@ -2702,6 +2704,9 @@ namespace System.Windows.Forms.Samples {
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             myDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             myDataGridView.ColumnHeadersHeight = 22;
+            // #IMPORTANT: put new columns at end because
+            // columns are referred to by index in code and
+            // adding new columns in the middle will break code
             myDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             dataGridViewImageColumn1,
             NameCol,
@@ -2717,7 +2722,10 @@ namespace System.Windows.Forms.Samples {
              Type,
              DateModifiedCol,
              FullName,
-             NestingLevel});
+             NestingLevel,
+             CustomCol,
+             StatusCol
+            });
             //  myDataGridView.DataSource = this.FileViewBindingSource;
             dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Window;
@@ -2779,12 +2787,14 @@ namespace System.Windows.Forms.Samples {
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.buildStripMenuItem4,
             this.copyStripMenuItem,
+            this.customStripMenuItem,
             this.toolStripMenuItem4,
             this.hotKeysStripMenuItem,
             this.manualTimeStripMenuItem,
             this.newToolStripMenuItem1,
             this.openWithToolStripMenuItem,
-            this.runToolStripMenuItem
+            this.runToolStripMenuItem,
+            this.statusStripMenuItem
             });
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(132, 70);
@@ -2820,6 +2830,23 @@ namespace System.Windows.Forms.Samples {
             this.manualTimeStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.manualTimeStripMenuItem.Text = "Manual Time";
             this.manualTimeStripMenuItem.Click += new System.EventHandler(this.manualTimeStripMenuItem_Click);
+            // 
+            // 
+            // customStripMenuItem
+            // 
+            this.customStripMenuItem.Name = "customStripMenuItem";
+            this.customStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.customStripMenuItem.Text = "Custom";
+            this.customStripMenuItem.Click += new System.EventHandler(this.customStripMenuItem_Click);
+            // 
+            // 
+            // statusStripMenuItem
+            // 
+            this.statusStripMenuItem.Name = "statusStripMenuItem";
+            this.statusStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.statusStripMenuItem.Text = "Status";
+            this.statusStripMenuItem.Click += new System.EventHandler(this.statusStripMenuItem_Click);
+
             // 
             // hotKeysStripMenuItem
             // 
@@ -3027,6 +3054,26 @@ namespace System.Windows.Forms.Samples {
             DateModifiedCol.Name = "DateModifiedCol";
             DateModifiedCol.ReadOnly = true;
             DateModifiedCol.Width = 150;
+            // 
+            // StatusCol
+            // 
+            StatusCol.DataPropertyName = "Status";
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            StatusCol.DefaultCellStyle = dataGridViewCellStyle9;
+            StatusCol.HeaderText = "Status";
+            StatusCol.Name = "StatusCol";
+            StatusCol.ReadOnly = true;
+            StatusCol.Width = 75;
+            // 
+            // CustomCol
+            // 
+            CustomCol.DataPropertyName = "Custom";
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            CustomCol.DefaultCellStyle = dataGridViewCellStyle9;
+            CustomCol.HeaderText = "Custom";
+            CustomCol.Name = "CustomCol";
+            CustomCol.ReadOnly = true;
+            CustomCol.Width = 75;
             // 
             // FullName
             // 
@@ -3613,6 +3660,149 @@ namespace System.Windows.Forms.Samples {
 
                 } else {
                     ev_Process_File(myFileView.FullName.ToString());
+                }
+
+            }
+        }
+
+        private void customStripMenuItem_Click(object sender, EventArgs e) {
+            FileView myFileView;
+            Methods myActions = new Methods();
+            List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+
+            ControlEntity myControlEntity = new ControlEntity();
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Heading;
+            myControlEntity.Text = "Add Custom Field";
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            int intRowCtr = 0;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "lblCustom";
+            myControlEntity.Text = "Custom";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.Width = 150;
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            myControlEntity.SelectedValue = myActions.GetValueByKey("cbxCustomSelectedValue");
+            myControlEntity.ID = "cbxCustom";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            //foreach (var item in alcbxCustom) {
+            //    cbp.Add(new ComboBoxPair(item.ToString(), item.ToString()));
+            //}
+            //myControlEntity.ListOfKeyValuePairs = cbp;
+            myControlEntity.ComboBoxIsEditable = true;
+            myControlEntity.ColumnNumber = 1;
+
+            myControlEntity.ColumnSpan = 2;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            DisplayCustomWindow:
+            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
+
+            if (strButtonPressed == "btnCancel") {
+                myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                return;
+            }
+            
+            string strCustom = myListControlEntity.Find(x => x.ID == "cbxCustom").SelectedValue;
+            myActions.SetValueByKey("cbxCustomSelectedValue", strCustom);
+
+            if ((strCustom == "--Select Item ---" || strCustom == "")) {
+                myActions.MessageBoxShow("Please enter Find What or select Find What from ComboBox; else press Cancel to Exit");
+                goto DisplayCustomWindow;
+            }
+
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
+                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                //MessageBox.Show(myFileView.FullName.ToString());
+                if (myFileView.IsDirectory) {                    
+                            string fileFullName = myFileView.FullName;
+                            myActions.SetValueByKeyForNonCurrentScript("custom", strCustom, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
+                 } else {
+                    string fileFullName = myFileView.FullName;
+                    myActions.SetValueByKeyForNonCurrentScript("custom", strCustom, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
+                }
+
+            }
+        }
+
+        private void statusStripMenuItem_Click(object sender, EventArgs e) {
+            FileView myFileView;
+            Methods myActions = new Methods();
+            List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+
+            ControlEntity myControlEntity = new ControlEntity();
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Heading;
+            myControlEntity.Text = "Add Status";
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            int intRowCtr = 0;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "lblStatus";
+            myControlEntity.Text = "Status";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.Width = 150;
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            myControlEntity.SelectedValue = myActions.GetValueByKey("cbxStatusSelectedValue");
+            myControlEntity.ID = "cbxStatus";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            //foreach (var item in alcbxStatus) {
+            //    cbp.Add(new ComboBoxPair(item.ToString(), item.ToString()));
+            //}
+            //myControlEntity.ListOfKeyValuePairs = cbp;
+            myControlEntity.ComboBoxIsEditable = true;
+            myControlEntity.ColumnNumber = 1;
+
+            myControlEntity.ColumnSpan = 2;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            DisplayStatusWindow:
+            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
+
+            if (strButtonPressed == "btnCancel") {
+                myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                return;
+            }
+
+            string strStatus = myListControlEntity.Find(x => x.ID == "cbxStatus").SelectedValue;
+            myActions.SetValueByKey("cbxStatusSelectedValue", strStatus);
+
+            if ((strStatus == "--Select Item ---" || strStatus == "")) {
+                myActions.MessageBoxShow("Please enter Find What or select Find What from ComboBox; else press Cancel to Exit");
+                goto DisplayStatusWindow;
+            }
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
+                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                //MessageBox.Show(myFileView.FullName.ToString());
+                if (myFileView.IsDirectory) {                    
+                            string fileFullName = myFileView.FullName;
+                            myActions.SetValueByKeyForNonCurrentScript("status", strStatus, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
+                } else {
+                    string fileFullName = myFileView.FullName;
+                    myActions.SetValueByKeyForNonCurrentScript("status", strStatus, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
                 }
 
             }
@@ -4862,14 +5052,14 @@ namespace System.Windows.Forms.Samples {
                     ControlEntity myControlEntity = new ControlEntity();
                     myControlEntity.ControlEntitySetDefaults();
                     myControlEntity.ControlType = ControlType.Heading;
-                    myControlEntity.Text = "Create New TextDocument";
+                    myControlEntity.Text = "Create New WordPad Document";
                     myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
 
                     myControlEntity.ControlEntitySetDefaults();
                     myControlEntity.ControlType = ControlType.Label;
                     myControlEntity.ID = "myLabel";
-                    myControlEntity.Text = "Enter New TextDocument Name";
+                    myControlEntity.Text = "Enter New WordPad Document Name";
                     myControlEntity.RowNumber = 0;
                     myControlEntity.ColumnNumber = 0;
                     myListControlEntity.Add(myControlEntity.CreateControlEntity());
@@ -4976,8 +5166,10 @@ namespace System.Windows.Forms.Samples {
                     }
                     splitContainer1.SplitterDistance = (int)(ClientSize.Width * .2);
 
-                } 
-            }
+                }
+
+
+    }
        
 
 }

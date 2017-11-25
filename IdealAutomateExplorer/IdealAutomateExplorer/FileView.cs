@@ -35,6 +35,8 @@ namespace System.Windows.Forms.Samples
         private int _avgExecutionTime;
         private int _manualExecutionTime;
         private int _totalSavings;
+        private string _custom;
+        private string _status;
 
         public FileView(string path) : this(new FileInfo(path)) {        }
 
@@ -79,6 +81,8 @@ namespace System.Windows.Forms.Samples
             _lastExecuted = myActions.GetValueByKeyAsDateTimeForNonCurrentScript("ScriptStartDateTime",myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
             _avgExecutionTime = myActions.GetValueByKeyAsIntForNonCurrentScript("AvgSuccessfulExecutionTime", myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
             _manualExecutionTime = myActions.GetValueByKeyAsIntForNonCurrentScript("ManualExecutionTime", myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
+            _custom = myActions.GetValueByKeyForNonCurrentScript("custom", myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
+            _status = myActions.GetValueByKeyForNonCurrentScript("status", myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
             if (_manualExecutionTime == 0) {
                 _totalSavings = 0;
             } else {
@@ -242,6 +246,18 @@ namespace System.Windows.Forms.Samples
         public int ManualExecutionTime {
             get {
                 return _manualExecutionTime;
+            }
+        }
+
+        public string Custom {
+            get {
+                return _custom;
+            }
+        }
+
+        public string Status {
+            get {
+                return _status;
             }
         }
 
