@@ -2185,6 +2185,9 @@ namespace System.Windows.Forms.Samples {
 
         private void wordPadToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
+            string basePathForNewFolder = _dir.FileView.FullName;
+            string basePathName = _dir.FileView.Name;
+            string basePathForNewTextDocument = _dir.FileView.FullName;
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
                 if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
@@ -2222,8 +2225,8 @@ namespace System.Windows.Forms.Samples {
                         myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                         return;
                     }
-                    string basePathForNewTextDocument = _dir.FileView.FullName;
-                    string basePathName = _dir.FileView.Name;
+                    basePathForNewTextDocument = _dir.FileView.FullName;
+                    basePathName = _dir.FileView.Name;
 
                     basePathForNewTextDocument = myFileView.FullName;
                     basePathName = myFileView.Name;
@@ -3151,11 +3154,147 @@ namespace System.Windows.Forms.Samples {
         }
 
         private void selectIdealToolStripMenuItem_Click_1(object sender, EventArgs e) {
-            throw new NotImplementedException();
+            string fullFileName = "";
+            string fileNamea = "";
+            FileView myFileView;
+            bool isDirectory = false;
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
+                //if (myCell.ColumnIndex != 0 && myCell.RowIndex != 0) {
+                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                fullFileName = myFileView.FullName;
+                fileNamea = myFileView.Name;
+                if (myFileView.IsDirectory) {
+                    isDirectory = true;
+                }
+                //}
+
+            }
+            Methods myActions = new Methods();
+            if (fullFileName == "") {
+                myActions.MessageBoxShow("Please select a row to copy before selecting File/Copy");
+                return;
+            }
+
+            if (isDirectory) {
+                myActions.MessageBoxShow("Folders cannot be selected as ideal.txt");
+                return;
+            }
+
+            if (!Directory.Exists(@"C:\Data")) {
+                Directory.CreateDirectory(@"C:\Data");
+            }
+
+            FileInfo fi = new FileInfo(fullFileName);
+            DirectoryInfo target = new DirectoryInfo(@"C:\Data");
+            string newFile = Path.Combine(target.FullName, "ideal.txt");
+            fi.CopyTo(newFile, true);
+            //Close the running process
+            if (_appHandle != IntPtr.Zero) {
+                PostMessage(_appHandle, WM_CLOSE, 0, 0);
+                System.Threading.Thread.Sleep(1000);
+                _appHandle = IntPtr.Zero;
+            }
+            myActions.KillAllProcessesByProcessName("notepad++");
+            string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
+            string strContent = @"C:\Data\ideal.txt";
+            //Close the running process
+            if (_appHandle != IntPtr.Zero) {
+                PostMessage(_appHandle, WM_CLOSE, 0, 0);
+                System.Threading.Thread.Sleep(1000);
+                _appHandle = IntPtr.Zero;
+            }
+            //tries to start the process 
+            try {
+                _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
+            } catch (Exception) {
+                MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+
+            System.Threading.Thread.Sleep(500);
+            while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                System.Threading.Thread.Sleep(10);
+                _proc.Refresh();
+            }
+
+            _proc.WaitForInputIdle();
+            _appHandle = _proc.MainWindowHandle;
+
+            SetParent(_appHandle, splitContainer1.Panel2.Handle);
+            SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
         }
 
         private void selectActualToolStripMenuItem_Click_1(object sender, EventArgs e) {
-            throw new NotImplementedException();
+            string fullFileName = "";
+            string fileNamea = "";
+            FileView myFileView;
+            bool isDirectory = false;
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
+                //if (myCell.ColumnIndex != 0 && myCell.RowIndex != 0) {
+                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                fullFileName = myFileView.FullName;
+                fileNamea = myFileView.Name;
+                if (myFileView.IsDirectory) {
+                    isDirectory = true;
+                }
+                //}
+
+            }
+            Methods myActions = new Methods();
+            if (fullFileName == "") {
+                myActions.MessageBoxShow("Please select a row to copy before selecting File/Copy");
+                return;
+            }
+
+            if (isDirectory) {
+                myActions.MessageBoxShow("Folders cannot be selected as actual.txt");
+                return;
+            }
+
+            if (!Directory.Exists(@"C:\Data")) {
+                Directory.CreateDirectory(@"C:\Data");
+            }
+
+            FileInfo fi = new FileInfo(fullFileName);
+            DirectoryInfo target = new DirectoryInfo(@"C:\Data");
+            string newFile = Path.Combine(target.FullName, "Actual.txt");
+            fi.CopyTo(newFile, true);
+            //Close the running process
+            if (_appHandle != IntPtr.Zero) {
+                PostMessage(_appHandle, WM_CLOSE, 0, 0);
+                System.Threading.Thread.Sleep(1000);
+                _appHandle = IntPtr.Zero;
+            }
+            myActions.KillAllProcessesByProcessName("notepad++");
+            string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
+            string strContent =  @"C:\Data\Actual.txt";
+            //Close the running process
+            if (_appHandle != IntPtr.Zero) {
+                PostMessage(_appHandle, WM_CLOSE, 0, 0);
+                System.Threading.Thread.Sleep(1000);
+                _appHandle = IntPtr.Zero;
+            }
+            //tries to start the process 
+            try {
+                _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
+            } catch (Exception) {
+                MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+
+            System.Threading.Thread.Sleep(500);
+            while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                System.Threading.Thread.Sleep(10);
+                _proc.Refresh();
+            }
+
+            _proc.WaitForInputIdle();
+            _appHandle = _proc.MainWindowHandle;
+
+            SetParent(_appHandle, splitContainer1.Panel2.Handle);
+            SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
         }
 
         private void dataGridView1_DataError(object sender, DataGridViewDataErrorEventArgs e) {
@@ -4966,7 +5105,7 @@ namespace System.Windows.Forms.Samples {
             Methods myActions = new Methods();
             string basePathForNewFolder = _dir.FileView.FullName;
             string basePathName = _dir.FileView.Name;
-            string basePathForNewTextDocument = "";
+            string basePathForNewTextDocument = _dir.FileView.FullName;
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
                 if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
@@ -5034,7 +5173,7 @@ namespace System.Windows.Forms.Samples {
                 this.listMenuItem.Checked = false;
                 //tries to start the process 
                 try {
-                    _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
+                    _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");                    
                 } catch (Exception) {
                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
@@ -5099,7 +5238,7 @@ namespace System.Windows.Forms.Samples {
             Methods myActions = new Methods();
             string basePathForNewFolder = _dir.FileView.FullName;
             string basePathName = _dir.FileView.Name;
-            string basePathForNewTextDocument = "";
+            string basePathForNewTextDocument = _dir.FileView.FullName;
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
                 if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
