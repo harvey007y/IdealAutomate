@@ -14,7 +14,7 @@ Here is a screenshot of IdealAutomateExplorer in List View:<br/>
  <br/><br/>
  Here is a screenshot of IdealAutomateExplorer in Details View:<br/>
 <center>
-<a href="http://www.idealautomate.com/images/IdealAutomateExplorerDetailsView.PNG" target="_blank"><img src="http://www.idealautomate.com/images/IdealAutomateExplorerDetailsView.PNG" border="0" alt="Ideal Automate Explorer Details View" width="800px"/><br />(click to enlarge)</a>
+<a href="http://www.idealautomate.com/images/IdealAutomateExplorerDetailsView.PNG" target="_blank"><img src="http://www.idealautomate.com/images/IdealAutomateExplorerDetailsView.PNG" border="0" alt="Ideal Automate Explorer Details View" /><br />(click to enlarge)</a>
 
 </center><br/><br/>
 <center>
