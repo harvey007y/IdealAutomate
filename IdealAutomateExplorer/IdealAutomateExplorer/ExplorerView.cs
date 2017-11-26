@@ -1872,7 +1872,7 @@ namespace System.Windows.Forms.Samples {
                     if (fileName.EndsWith(".url")
                     
                      ) {
-                        //Close the running process
+                        //Close the running process.
                         if (_appHandle != IntPtr.Zero) {
                             PostMessage(_appHandle, WM_CLOSE, 0, 0);
                             System.Threading.Thread.Sleep(1000);
