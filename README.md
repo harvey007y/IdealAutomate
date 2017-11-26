@@ -5,11 +5,13 @@ The main project is Ideal Automate Explorer.  Here are three ways that you can u
 2. Knowledge Base<br/>
 3. ToDo List<br/><br/>
 
+Instead of having all of your information in some third-party software, Ideal Automate Explorer allows you to keep your info in word documents, pdfs, images, desktop shortcuts, etc. Ideal Automate Explorer gives you the ability to organize your knowledge, tasks, and applications in their original pristine state so that they can easily be shared with others.<br/><br/>
+
 Here is a screenshot of IdealAutomateExplorer in List View:<br/>
 <center>
 <img src="http://www.idealautomate.com/images/IdealAutomateExplorer.PNG" border="0" alt="Ideal Automate Explorer List View" />
  <br/><br/>
- Here is a screenshot of IdealAutomateExplorer in List View:<br/>
+ Here is a screenshot of IdealAutomateExplorer in Details View:<br/>
 <center>
 <img src="http://www.idealautomate.com/images/IdealAutomateExplorerDetailsView.PNG" border="0" alt="Ideal Automate Explorer List View" />
 
