@@ -5,9 +5,13 @@ The main project is Ideal Automate Explorer.  Here are three ways that you can u
 2. Knowledge Base<br/>
 3. ToDo List<br/><br/>
 
-Here is a screenshot of IdealAutomateExplorer:<br/>
+Here is a screenshot of IdealAutomateExplorer in List View:<br/>
 <center>
-<img src="http://www.idealautomate.com/images/IdealAutomateExplorer.PNG" border="0" alt="Ideal Automate Explorer" />
+<img src="http://www.idealautomate.com/images/IdealAutomateExplorer.PNG" border="0" alt="Ideal Automate Explorer List View" />
+ <br/><br/>
+ Here is a screenshot of IdealAutomateExplorer in List View:<br/>
+<center>
+<img src="http://www.idealautomate.com/images/IdealAutomateExplorerDetailsView.PNG" border="0" alt="Ideal Automate Explorer List View" />
 
 </center><br/><br/>
 <center>
