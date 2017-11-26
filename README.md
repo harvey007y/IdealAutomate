@@ -32,4 +32,8 @@ Here is a screenshot of IdealAutomateExplorer in List View:<br/>
 <b>9. Open Windows Explorer for folder</b> -  If you select a folder, you can use the "Open With Windows Explorer" context menu item to open the folder with Windows Explorer. <br/><br/>
 <b>10.Compare Files</b> -  If you select a file, you can use the "Compare" context menu item to open file in Notepad++ as Actual.txt file or Ideal.txt file for comparing two files.<br/><br/>
 <b>11. Add metadata and hotkeys to files</b> -  If you select a file or folder, you can add metadata for: Manual Execution Time, a Custom field, Status, or a HotKey. Manual Execution Time is used to enter how long in seconds that it takes you to do some process manually. Manual Execution Time is compared to Actual Execution Time when you have executables that automate some process to tell you how much time is saved by using the automated process. The Custom Field and Status metadata are particularly useful when you have a folder of files that represent a todo list. Hotkeys make it so that you can execute any program by pressing the hotkey for that program while IdealAutomate Explorer is running.<br/><br/>
+  
+Here is a video that illustrates some of the things that can be done with Ideal Automate. The video was created before Ideal Automate Explorer existed so the interface is different from the current one, but the same general principles apply.<br />
+        <br /><a href="https://youtu.be/EH-fuZQhrns" target="_blank"><img title="Ideal Automate 15-Minute Example"  src="http://idealprogrammer.com/wp-photos/IdealAutomateHelloWorld.PNG" alt="Ideal Automate 15-Minute Hello World Example" align="middle"/></a>    <br />
+    <br />
 
