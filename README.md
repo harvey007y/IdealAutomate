@@ -1,6 +1,6 @@
 # IdealAutomate
-Here are several C# WPF applications related to automating redundant tasks.
-The main project is IdealAutomateExplorer.  Ideal Automate Explorer is very similar to Windows Explorer, except Ideal Automate Explorer allows you to have multiple tabs so that you can have several different folders at your fingertips all at once. One way to use Ideal Automate Explorer is as a repository for a knowledge base because it allows you to easily group together documents, images, and links that are related to each other in some way. However, the primary purpose of Ideal Automate Explorer is that it gives you an easy way to modify and execute any C# WPF projects that you have written to automate redundant tasks.      <br/><br/>
+Ideal Automate is an open source development platform that allows C# developers to automate any repetitive task and to share what they have automated with other developers.<br/><br/>
+The main project is IdealAutomateExplorer.  Ideal Automate Explorer is very similar to Windows Explorer, except Ideal Automate Explorer allows you to have multiple tabs so that you can have several different folders at your fingertips all at once. One way to use Ideal Automate Explorer is as a repository for a knowledge base because it allows you to easily group together documents, images, and links that are related to each other in some way. Another way to use Ideal Automate Explorer is as a todo list. However, the primary purpose of Ideal Automate Explorer is that it gives you an easy way to modify and execute any C# WPF projects that you have written to automate redundant tasks.      <br/><br/>
 
 Here is a screenshot of IdealAutomateExplorer:<br/>
 <center>
