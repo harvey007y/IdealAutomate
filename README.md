@@ -9,12 +9,12 @@ Instead of requiring that you keep all of your information in some third-party s
 
 Here is a screenshot of IdealAutomateExplorer in List View:<br/>
 <center>
- <a href="http://www.idealautomate.com/images/IdealAutomateExplorer.PNG" target="_blank"><img src="http://www.idealautomate.com/images/IdealAutomateExplorer.PNG" border="0" alt="Ideal Automate Explorer List View" width="800px"/><br />(click to enlarge)</a>
-<img src="http://www.idealautomate.com/images/IdealAutomateExplorer.PNG" border="0" alt="Ideal Automate Explorer List View" />
+ <a href="http://www.idealautomate.com/images/IdealAutomateExplorer.PNG" target="_blank"><img src="http://www.idealautomate.com/images/IdealAutomateExplorer.PNG" border="0" alt="Ideal Automate Explorer List View" /><br />(click to enlarge)</a>
+
  <br/><br/>
  Here is a screenshot of IdealAutomateExplorer in Details View:<br/>
 <center>
-<img src="http://www.idealautomate.com/images/IdealAutomateExplorerDetailsView.PNG" border="0" alt="Ideal Automate Explorer List View" />
+<a href="http://www.idealautomate.com/images/IdealAutomateExplorerDetailsView.PNG" target="_blank"><img src="http://www.idealautomate.com/images/IdealAutomateExplorerDetailsView.PNG" border="0" alt="Ideal Automate Explorer Details View" width="800px"/><br />(click to enlarge)</a>
 
 </center><br/><br/>
 <center>
