@@ -9,6 +9,7 @@ Instead of requiring that you keep all of your information in some third-party s
 
 Here is a screenshot of IdealAutomateExplorer in List View:<br/>
 <center>
+ <a href="http://www.idealautomate.com/images/IdealAutomateExplorer.PNG" target="_blank"><img src="http://www.idealautomate.com/images/IdealAutomateExplorer.PNG" border="0" alt="Ideal Automate Explorer List View" width="800px"/><br />(click to enlarge)</a>
 <img src="http://www.idealautomate.com/images/IdealAutomateExplorer.PNG" border="0" alt="Ideal Automate Explorer List View" />
  <br/><br/>
  Here is a screenshot of IdealAutomateExplorer in Details View:<br/>
