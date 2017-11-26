@@ -233,10 +233,11 @@ namespace System.Windows.Forms.Samples {
 
         #region Event Handlers        
         private void ExplorerView_Load(object sender, EventArgs e) {
+            Methods myActions = new Methods();           
             _CurrentDataGridView.ClearSelection();
 
             splitContainer1.Height = ClientSize.Height - 50;
-            Methods myActions = new Methods();
+           
             int splitContainer1Width = myActions.GetValueByKeyAsInt("SplitContainer1Width");
 
             string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
@@ -329,6 +330,7 @@ namespace System.Windows.Forms.Samples {
             goto testskip;
             strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             // Set Initial Directory to My Documents
+
             string strSavedDirectory2 = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
             if (Directory.Exists(strSavedDirectory2)) {
                 strInitialDirectory = strSavedDirectory2;
@@ -340,7 +342,8 @@ namespace System.Windows.Forms.Samples {
             // AddDataGridToTab();
 
             testskip:
-
+            int currentIndex = myActions.GetValueByKeyAsInt("CurrentIndex");
+            tabControl1.SelectedIndex = currentIndex;
             _CurrentDataGridView = (DataGridView)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
             _CurrentFileViewBindingSource = listBindingSource[tabControl1.SelectedIndex];
 
@@ -2391,6 +2394,7 @@ namespace System.Windows.Forms.Samples {
                 return;
             }
             Methods myActions = new Methods();
+            myActions.SetValueByKey("CurrentIndex", tabControl1.SelectedIndex.ToString());
             if (tabControl1.SelectedIndex == tabControl1.TabCount - 1) {
                 strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
                 // Set Initial Directory to My Documents
@@ -2547,11 +2551,10 @@ namespace System.Windows.Forms.Samples {
 
                     strFolderToUse = strFolder;
                     myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString(), strFolder);
-                    _CurrentIndex = tabControl1.SelectedIndex;
-
+                    _CurrentIndex = tabControl1.SelectedIndex;                  
 
                 }
-
+                
                 AddDataGridToTab();
 
                 myActions.SetValueByKey("NumOfTabs", (tabControl1.TabCount).ToString());
