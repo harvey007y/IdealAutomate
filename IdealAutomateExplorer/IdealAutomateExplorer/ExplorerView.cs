@@ -1869,6 +1869,39 @@ namespace System.Windows.Forms.Samples {
                 if (!c.Selected) {
                     c.Selected = true;
                     string fileName = ((DataGridView)sender).Rows[e.RowIndex].Cells[13].Value.ToString();
+                    if (fileName.EndsWith(".url")
+                    
+                     ) {
+                        //Close the running process
+                        if (_appHandle != IntPtr.Zero) {
+                            PostMessage(_appHandle, WM_CLOSE, 0, 0);
+                            System.Threading.Thread.Sleep(1000);
+                            _appHandle = IntPtr.Zero;
+                        }
+                        //tries to start the process 
+                        try {
+                            Methods myActions = new Methods();
+                            myActions.KillAllProcessesByProcessName("iexplore");
+                            _proc = Process.Start(@"C:\Program Files\Internet Explorer\iexplore.exe", GetInternetShortcut(fileName));
+                        } catch (Exception) {
+                            MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+
+
+                        System.Threading.Thread.Sleep(500);
+                        while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                            System.Threading.Thread.Sleep(10);
+                            _proc.Refresh();
+                        }
+
+                        _proc.WaitForInputIdle();
+                        _appHandle = _proc.MainWindowHandle;
+
+                        SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                        SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+
+                    }
                     if (fileName.EndsWith(".rtf")
                         || fileName.EndsWith(".odt")
                         || fileName.EndsWith(".doc")
@@ -1959,6 +1992,25 @@ namespace System.Windows.Forms.Samples {
             }
 
 
+        }
+
+        public static string GetInternetShortcut(string filePath) {
+            string url = "";
+
+            using (TextReader reader = new StreamReader(filePath)) {
+                string line = "";
+                while ((line = reader.ReadLine()) != null) {
+                    if (line.StartsWith("URL=")) {
+                        string[] splitLine = line.Split('=');
+                        if (splitLine.Length > 0) {
+                            url = splitLine[1];
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return url;
         }
 
         private void notepadToolStripMenuItem1_Click(object sender, EventArgs e) {
