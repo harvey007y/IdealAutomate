@@ -1735,8 +1735,23 @@ namespace System.Windows.Forms.Samples {
 
         }
 
+        public static void CopyFile(string sourceFile, string targetDirectory) {
+            FileInfo fi = new FileInfo(sourceFile);
+            DirectoryInfo target = new DirectoryInfo(targetDirectory);
+            string newFile = Path.Combine(target.FullName, fi.Name);
+            if (File.Exists(newFile)) {
+                // TODO: need to check if newFile + "1" exists, etc
+                fi.CopyTo(newFile + "1", true);
+            } else {
+                fi.CopyTo(newFile, true);
+            }
+
+        }
+
         public static void CopyAll(DirectoryInfo source, DirectoryInfo target) {
-            Directory.CreateDirectory(target.FullName);
+            if (!Directory.Exists(target.FullName)) {
+                Directory.CreateDirectory(target.FullName);
+            }
 
             // Copy each file into the new directory.
             foreach (FileInfo fi in source.GetFiles()) {
@@ -2617,6 +2632,7 @@ namespace System.Windows.Forms.Samples {
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.openWithToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hotKeysStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.compareStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notepadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notepadToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.visualStudioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -2664,6 +2680,8 @@ namespace System.Windows.Forms.Samples {
             this.copyStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addHotKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeHotKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.selectActualToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.selectIdealToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -2789,6 +2807,7 @@ namespace System.Windows.Forms.Samples {
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.buildStripMenuItem4,
+            this.compareStripMenuItem,
             this.copyStripMenuItem,
             this.customStripMenuItem,
             this.toolStripMenuItem4,
@@ -2873,6 +2892,29 @@ namespace System.Windows.Forms.Samples {
             this.removeHotKeyToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
             this.removeHotKeyToolStripMenuItem.Text = "Remove HotKey";
             this.removeHotKeyToolStripMenuItem.Click += new System.EventHandler(this.removeHotKeyToolStripMenuItem_Click_1);
+            // 
+            // compareStripMenuItem
+            // 
+            this.compareStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.selectActualToolStripMenuItem,
+            this.selectIdealToolStripMenuItem});
+            this.compareStripMenuItem.Name = "compareStripMenuItem";
+            this.compareStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.compareStripMenuItem.Text = "Compare";
+            // 
+            // selectActualToolStripMenuItem
+            // 
+            this.selectActualToolStripMenuItem.Name = "selectActualToolStripMenuItem";
+            this.selectActualToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.selectActualToolStripMenuItem.Text = "Select Actual.txt";
+            this.selectActualToolStripMenuItem.Click += new System.EventHandler(this.selectActualToolStripMenuItem_Click_1);
+            // 
+            // selectIdealToolStripMenuItem
+            // 
+            this.selectIdealToolStripMenuItem.Name = "selectIdealToolStripMenuItem";
+            this.selectIdealToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.selectIdealToolStripMenuItem.Text = "Select Ideal.txt";
+            this.selectIdealToolStripMenuItem.Click += new System.EventHandler(this.selectIdealToolStripMenuItem_Click_1);
             // 
             // openWithToolStripMenuItem
             // 
@@ -3108,6 +3150,14 @@ namespace System.Windows.Forms.Samples {
             }
         }
 
+        private void selectIdealToolStripMenuItem_Click_1(object sender, EventArgs e) {
+            throw new NotImplementedException();
+        }
+
+        private void selectActualToolStripMenuItem_Click_1(object sender, EventArgs e) {
+            throw new NotImplementedException();
+        }
+
         private void dataGridView1_DataError(object sender, DataGridViewDataErrorEventArgs e) {
             Methods myActions = new Methods();
             strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
@@ -3235,12 +3285,16 @@ namespace System.Windows.Forms.Samples {
             string fullFileName = "";
             string fileNamea = "";
             FileView myFileView;
+            bool isDirectory = false;
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                if (myCell.ColumnIndex != 0 && myCell.RowIndex != 0) {
+                //if (myCell.ColumnIndex != 0 && myCell.RowIndex != 0) {
                     myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
                     fullFileName = myFileView.FullName;
                     fileNamea = myFileView.Name;
+                if (myFileView.IsDirectory) {
+                    isDirectory = true;
                 }
+                //}
 
             }
             Methods myActions = new Methods();
@@ -3405,7 +3459,12 @@ namespace System.Windows.Forms.Samples {
                 }
 
                 strFolderToUse = strFolder;
-                Copy(fullFileName, strFolder);
+                if (isDirectory) {
+                    Copy(fullFileName, strFolder);
+                } else {
+                    CopyFile(fullFileName, strFolder);
+                }
+
 
 
 
