@@ -1948,6 +1948,10 @@ namespace System.Windows.Forms.Samples {
                               || fileName.EndsWith(".htm")
                               || fileName.EndsWith(".xml")
                               || fileName.EndsWith(".sql")
+                              || fileName.EndsWith(".asp")
+                              || fileName.EndsWith(".inc")
+                              || fileName.EndsWith(".dinc")
+                                || fileName.EndsWith(".aspx")
                               || fileName.EndsWith(".csv")) {
                             //Close the running process
                             if (_appHandle != IntPtr.Zero) {
