@@ -2687,10 +2687,12 @@ namespace System.Windows.Forms.Samples {
             this.runToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.manualTimeStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.customStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.descriptionStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.openWithToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.hotKeysStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hotKeyStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.metadataStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.compareStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notepadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notepadToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -2703,6 +2705,7 @@ namespace System.Windows.Forms.Samples {
             this.textDocumentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.wordPadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             DataGridViewTextBoxColumn HotKeyCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            DataGridViewTextBoxColumn DescriptionCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             DataGridViewTextBoxColumn TotalExecutionsCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             DataGridViewTextBoxColumn SuccessfulExecutionsCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             DataGridViewTextBoxColumn PercentCorrectCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -2737,8 +2740,9 @@ namespace System.Windows.Forms.Samples {
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
 
             this.copyStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addHotKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.removeHotKeyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addHotKeyStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.descriptionStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeHotKeyStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.selectActualToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.selectIdealToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
@@ -2804,7 +2808,8 @@ namespace System.Windows.Forms.Samples {
              FullName,
              NestingLevel,
              CustomCol,
-             StatusCol
+             StatusCol,
+             DescriptionCol
             });
             //  myDataGridView.DataSource = this.FileViewBindingSource;
             dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -2868,14 +2873,15 @@ namespace System.Windows.Forms.Samples {
             this.buildStripMenuItem4,
             this.compareStripMenuItem,
             this.copyStripMenuItem,
-            this.customStripMenuItem,
+          //  this.customStripMenuItem,
             this.toolStripMenuItem4,
-            this.hotKeysStripMenuItem,
-            this.manualTimeStripMenuItem,
+       //     this.hotKeyStripMenuItem,
+       //     this.manualTimeStripMenuItem,
+            this.metadataStripMenuItem,
             this.newToolStripMenuItem1,
             this.openWithToolStripMenuItem,
-            this.runToolStripMenuItem,
-            this.statusStripMenuItem
+            this.runToolStripMenuItem 
+        //    this.statusStripMenuItem
             });
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(132, 70);
@@ -2921,6 +2927,14 @@ namespace System.Windows.Forms.Samples {
             this.customStripMenuItem.Click += new System.EventHandler(this.customStripMenuItem_Click);
             // 
             // 
+            // descriptionStripMenuItem
+            // 
+            this.descriptionStripMenuItem.Name = "descriptionStripMenuItem";
+            this.descriptionStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.descriptionStripMenuItem.Text = "Description";
+            this.descriptionStripMenuItem.Click += new System.EventHandler(this.descriptionStripMenuItem_Click);
+            // 
+            // 
             // statusStripMenuItem
             // 
             this.statusStripMenuItem.Name = "statusStripMenuItem";
@@ -2931,26 +2945,38 @@ namespace System.Windows.Forms.Samples {
             // 
             // hotKeysStripMenuItem
             // 
-            this.hotKeysStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addHotKeyToolStripMenuItem,
-            this.removeHotKeyToolStripMenuItem});
-            this.hotKeysStripMenuItem.Name = "hotKeysStripMenuItem";
-            this.hotKeysStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.hotKeysStripMenuItem.Text = "HotKeys";
+            this.hotKeyStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addHotKeyStripMenuItem,
+            this.removeHotKeyStripMenuItem});
+            this.hotKeyStripMenuItem.Name = "hotKeyStripMenuItem";
+            this.hotKeyStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.hotKeyStripMenuItem.Text = "HotKeys";
+            // 
+            // metadataStripMenuItem
+            // 
+            this.metadataStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.customStripMenuItem,
+            this.descriptionStripMenuItem,
+            this.hotKeyStripMenuItem,
+            this.manualTimeStripMenuItem,
+            this.statusStripMenuItem});
+            this.metadataStripMenuItem.Name = "metadataStripMenuItem";
+            this.metadataStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.metadataStripMenuItem.Text = "Metadata";
             // 
             // addHotKeyToolStripMenuItem
             // 
-            this.addHotKeyToolStripMenuItem.Name = "addHotKeyToolStripMenuItem";
-            this.addHotKeyToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
-            this.addHotKeyToolStripMenuItem.Text = "Add HotKey";
-            this.addHotKeyToolStripMenuItem.Click += new System.EventHandler(this.addHotKeyToolStripMenuItem_Click_1);
+            this.addHotKeyStripMenuItem.Name = "addHotKeyToolStripMenuItem";
+            this.addHotKeyStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.addHotKeyStripMenuItem.Text = "Add HotKey";
+            this.addHotKeyStripMenuItem.Click += new System.EventHandler(this.addHotKeyToolStripMenuItem_Click_1);
             // 
             // removeHotKeyToolStripMenuItem
             // 
-            this.removeHotKeyToolStripMenuItem.Name = "removeHotKeyToolStripMenuItem";
-            this.removeHotKeyToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
-            this.removeHotKeyToolStripMenuItem.Text = "Remove HotKey";
-            this.removeHotKeyToolStripMenuItem.Click += new System.EventHandler(this.removeHotKeyToolStripMenuItem_Click_1);
+            this.removeHotKeyStripMenuItem.Name = "removeHotKeyToolStripMenuItem";
+            this.removeHotKeyStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.removeHotKeyStripMenuItem.Text = "Remove HotKey";
+            this.removeHotKeyStripMenuItem.Click += new System.EventHandler(this.removeHotKeyToolStripMenuItem_Click_1);
             // 
             // compareStripMenuItem
             // 
@@ -3069,6 +3095,13 @@ namespace System.Windows.Forms.Samples {
             HotKeyCol.HeaderText = "HotKey";
             HotKeyCol.Name = "HotKeyCol";
             HotKeyCol.ReadOnly = true;
+            // 
+            // DescriptionCol
+            // 
+            DescriptionCol.DataPropertyName = "Description";
+            DescriptionCol.HeaderText = "Description";
+            DescriptionCol.Name = "DescriptionCol";
+            DescriptionCol.ReadOnly = true;
             // 
             // TotalExecutionsCol
             // 
@@ -3989,6 +4022,78 @@ namespace System.Windows.Forms.Samples {
                  } else {
                     string fileFullName = myFileView.FullName;
                     myActions.SetValueByKeyForNonCurrentScript("custom", strCustom, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
+                }
+
+            }
+        }
+
+        private void descriptionStripMenuItem_Click(object sender, EventArgs e) {
+            FileView myFileView;
+            Methods myActions = new Methods();
+            List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+
+            ControlEntity myControlEntity = new ControlEntity();
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Heading;
+            myControlEntity.Text = "Add description Field";
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            int intRowCtr = 0;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "lbldescription";
+            myControlEntity.Text = "description";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.Width = 150;
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            myControlEntity.SelectedValue = myActions.GetValueByKey("cbxdescriptionSelectedValue");
+            myControlEntity.ID = "cbxdescription";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            //foreach (var item in alcbxdescription) {
+            //    cbp.Add(new ComboBoxPair(item.ToString(), item.ToString()));
+            //}
+            //myControlEntity.ListOfKeyValuePairs = cbp;
+            myControlEntity.ComboBoxIsEditable = true;
+            myControlEntity.ColumnNumber = 1;
+
+            myControlEntity.ColumnSpan = 2;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            DisplaydescriptionWindow:
+            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
+
+            if (strButtonPressed == "btnCancel") {
+                myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                return;
+            }
+
+            string strdescription = myListControlEntity.Find(x => x.ID == "cbxdescription").SelectedValue;
+            myActions.SetValueByKey("cbxdescriptionSelectedValue", strdescription);
+
+            if ((strdescription == "--Select Item ---" || strdescription == "")) {
+                myActions.MessageBoxShow("Please enter Find What or select Find What from ComboBox; else press Cancel to Exit");
+                goto DisplaydescriptionWindow;
+            }
+
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
+                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                //MessageBox.Show(myFileView.FullName.ToString());
+                if (myFileView.IsDirectory) {
+                    string fileFullName = myFileView.FullName;
+                    myActions.SetValueByKeyForNonCurrentScript("description", strdescription, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
+                } else {
+                    string fileFullName = myFileView.FullName;
+                    myActions.SetValueByKeyForNonCurrentScript("description", strdescription, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
                 }
 
             }
