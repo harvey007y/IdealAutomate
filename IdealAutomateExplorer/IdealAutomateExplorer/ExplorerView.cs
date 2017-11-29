@@ -235,8 +235,8 @@ namespace System.Windows.Forms.Samples {
         private void ExplorerView_Load(object sender, EventArgs e) {
             Methods myActions = new Methods();           
             _CurrentDataGridView.ClearSelection();
-
-            splitContainer1.Height = ClientSize.Height - 50;
+      
+            splitContainer1.Height = Screen.PrimaryScreen.Bounds.Height - 175;
            
             int splitContainer1Width = myActions.GetValueByKeyAsInt("SplitContainer1Width");
 
@@ -244,7 +244,7 @@ namespace System.Windows.Forms.Samples {
             if (splitContainer1Width > 0) {
                 splitContainer1.SplitterDistance = splitContainer1Width;
             } else {
-                splitContainer1.Width = ClientSize.Width;
+                splitContainer1.Width = Screen.PrimaryScreen.Bounds.Width;
             }
 
             if (detailsMenuItemChecked == "True") {

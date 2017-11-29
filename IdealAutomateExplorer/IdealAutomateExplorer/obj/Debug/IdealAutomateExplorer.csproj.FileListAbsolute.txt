@@ -65,3 +65,9 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomat
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\aodlread\settings.xml
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\DocumentFormat.OpenXml.dll
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\DocumentFormat.OpenXml.xml
+C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\BuildProjects.bat
+C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\aodlread\settings.xml
+C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\AODL.dll
+C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\DocumentFormat.OpenXml.dll
+C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\ICSharpCode.SharpZipLib.dll
+C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\DocumentFormat.OpenXml.xml
