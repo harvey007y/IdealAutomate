@@ -18,17 +18,15 @@ The main project is Ideal Automate Explorer.  Here are three ways that you can u
 Instead of requiring that you keep all of your information in some third-party software, Ideal Automate Explorer allows you to keep your files in word documents, pdfs, images, desktop shortcuts, etc. Ideal Automate Explorer gives you the ability to organize your knowledge in its original pristine state in your ordinary windows folder structure so that it can easily be shared with others. If you have sensitive information, it can be easily segregated into separate storage in you roaming folder or into separate folders that you can keep in different tabs within the Explorer.<br /><br />
 
 
-<table style="color: #666; text-shadow: 1px 1px 0px #fff; background: #eaebec; margin: 20px; border: #ccc 1px solid; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; -moz-box-shadow: 0 1px 2px #d1d1d1; -webkit-box-shadow: 0 1px 2px #d1d1d1; box-shadow: 0 1px 2px #d1d1d1; width: 775px; text-align: left; ">
-            <!-- Table Header -->
-            <thead>
+<table>
+            
                 <tr>
-                    <th style="padding: 21px 25px 22px 25px; border-top: 1px solid #fafafa; border-bottom: 1px solid #e0e0e0; background: #ededed; background: -webkit-gradient(linear, left top, left bottom, from(#ededed), to(#ebebeb)); background: -moz-linear-gradient(top, #ededed, #ebebeb);font-size:24px" colspan="2">Benefits</th>
+                    <th>Benefits</th>
 
                 </tr>
-            </thead>
-            <!-- Table Header -->
+           
 
-            <tbody>
+          
                 <tr>
                     <td style="padding: 18px; border-top: 1px solid #ffffff; border-bottom: 1px solid #e0e0e0; border-left: 1px solid #e0e0e0; background: #fafafa; background: -webkit-gradient(linear, left top, left bottom, from(#fbfbfb), to(#fafafa)); background: -moz-linear-gradient(top, #fbfbfb, #fafafa);">
                         <img id="Image1" src="http://idealautomate.com/Library/img/32/greencheck_32x32.png" alt="scripting automation tools green check"/></td>
@@ -73,8 +71,7 @@ Instead of requiring that you keep all of your information in some third-party s
 </td>
                 </tr>
                 
-
-            </tbody>
+           
         </table>
     <br />
     <br />
