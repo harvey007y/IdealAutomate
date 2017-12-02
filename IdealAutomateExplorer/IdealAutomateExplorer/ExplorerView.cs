@@ -2684,11 +2684,8 @@ namespace System.Windows.Forms.Samples {
             DataGridViewTextBoxColumn NameCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.buildStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
-            this.runToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.manualTimeStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.customStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.descriptionStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.statusStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.runToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();           
+            this.descriptionStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();            
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.openWithToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hotKeyStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -2910,37 +2907,15 @@ namespace System.Windows.Forms.Samples {
             this.copyStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.copyStripMenuItem.Text = "Copy";
             this.copyStripMenuItem.Click += new System.EventHandler(this.copyStripMenuItem_Click);
-            // 
-            // manualTimeStripMenuItem
-            // 
-            this.manualTimeStripMenuItem.Name = "manualTimeStripMenuItem";
-            this.manualTimeStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.manualTimeStripMenuItem.Text = "Manual Time";
-            this.manualTimeStripMenuItem.Click += new System.EventHandler(this.manualTimeStripMenuItem_Click);
-            // 
-            // 
-            // customStripMenuItem
-            // 
-            this.customStripMenuItem.Name = "customStripMenuItem";
-            this.customStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.customStripMenuItem.Text = "Custom";
-            this.customStripMenuItem.Click += new System.EventHandler(this.customStripMenuItem_Click);
+           
             // 
             // 
             // descriptionStripMenuItem
             // 
             this.descriptionStripMenuItem.Name = "descriptionStripMenuItem";
             this.descriptionStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.descriptionStripMenuItem.Text = "Description";
+            this.descriptionStripMenuItem.Text = "Add Metadata";
             this.descriptionStripMenuItem.Click += new System.EventHandler(this.descriptionStripMenuItem_Click);
-            // 
-            // 
-            // statusStripMenuItem
-            // 
-            this.statusStripMenuItem.Name = "statusStripMenuItem";
-            this.statusStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.statusStripMenuItem.Text = "Status";
-            this.statusStripMenuItem.Click += new System.EventHandler(this.statusStripMenuItem_Click);
 
             // 
             // hotKeysStripMenuItem
@@ -2955,11 +2930,9 @@ namespace System.Windows.Forms.Samples {
             // metadataStripMenuItem
             // 
             this.metadataStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.customStripMenuItem,
             this.descriptionStripMenuItem,
-            this.hotKeyStripMenuItem,
-            this.manualTimeStripMenuItem,
-            this.statusStripMenuItem});
+            this.hotKeyStripMenuItem
+            });
             this.metadataStripMenuItem.Name = "metadataStripMenuItem";
             this.metadataStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.metadataStripMenuItem.Text = "Metadata";
@@ -4029,21 +4002,47 @@ namespace System.Windows.Forms.Samples {
 
         private void descriptionStripMenuItem_Click(object sender, EventArgs e) {
             FileView myFileView;
+            FileView myManualTimeFileView;
+            string fileFullName = "";
+            string fileManualTimeFullName = "";
             Methods myActions = new Methods();
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
+                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                //MessageBox.Show(myFileView.FullName.ToString());                
+                     fileFullName = myFileView.FullName;      
+            }
+
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
+                myManualTimeFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                //MessageBox.Show(myFileView.FullName.ToString());
+                if (myManualTimeFileView.IsDirectory) {
+                    // Call EnumerateFiles in a foreach-loop.
+                    foreach (string file in Directory.EnumerateFiles(myManualTimeFileView.FullName.ToString(),
+                       myManualTimeFileView.Name + ".exe",
+                        SearchOption.AllDirectories)) {
+                        // Display file path.
+                        if (file.Contains("bin\\Debug")) {
+                            fileManualTimeFullName = myManualTimeFileView.FullName;
+                           
+                        }
+                    }
+
+                } 
+
+            }
             List<ControlEntity> myListControlEntity = new List<ControlEntity>();
 
             ControlEntity myControlEntity = new ControlEntity();
             myControlEntity.ControlEntitySetDefaults();
             myControlEntity.ControlType = ControlType.Heading;
-            myControlEntity.Text = "Add description Field";
+            myControlEntity.Text = "Add Metadata Fields";
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
 
             int intRowCtr = 0;
             myControlEntity.ControlEntitySetDefaults();
             myControlEntity.ControlType = ControlType.Label;
-            myControlEntity.ID = "lbldescription";
-            myControlEntity.Text = "description";
+            myControlEntity.ID = "lblCustom";
+            myControlEntity.Text = "Custom";
             myControlEntity.RowNumber = intRowCtr;
             myControlEntity.Width = 150;
             myControlEntity.ColumnNumber = 0;
@@ -4054,8 +4053,42 @@ namespace System.Windows.Forms.Samples {
 
             myControlEntity.ControlEntitySetDefaults();
             myControlEntity.ControlType = ControlType.ComboBox;
-            myControlEntity.SelectedValue = myActions.GetValueByKey("cbxdescriptionSelectedValue");
-            myControlEntity.ID = "cbxdescription";
+            myControlEntity.SelectedValue = myActions.GetValueByKeyForNonCurrentScript("custom", myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
+            myControlEntity.ID = "cbxCustom";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            //foreach (var item in alcbxCustom) {
+            //    cbp.Add(new ComboBoxPair(item.ToString(), item.ToString()));
+            //}
+            //myControlEntity.ListOfKeyValuePairs = cbp;
+            myControlEntity.ComboBoxIsEditable = true;
+            myControlEntity.ColumnNumber = 1;
+
+            myControlEntity.ColumnSpan = 2;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "lbldescription";
+            myControlEntity.Text = "Description";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.Width = 150;
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.Text = myActions.GetValueByKeyForNonCurrentScript("description",  myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
+            myControlEntity.ID = "txtDescription";
+            myControlEntity.Multiline = true;
+            myControlEntity.Height = 200;
+            myControlEntity.TextWrap = true;
+            myControlEntity.Width = 650;
             myControlEntity.RowNumber = intRowCtr;
             myControlEntity.ToolTipx = "";
             //foreach (var item in alcbxdescription) {
@@ -4068,35 +4101,74 @@ namespace System.Windows.Forms.Samples {
             myControlEntity.ColumnSpan = 2;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "myLabel";
+            myControlEntity.Text = "Enter Manual Time in Seconds";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "myTextBox";
+            myControlEntity.Text = myActions.GetValueByKeyForNonCurrentScript("ManualExecutionTime", myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileManualTimeFullName));
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "lblStatus";
+            myControlEntity.Text = "Status";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.Width = 150;
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            myControlEntity.SelectedValue = myActions.GetValueByKeyForNonCurrentScript("status", myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
+            myControlEntity.ID = "cbxStatus";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            //foreach (var item in alcbxStatus) {
+            //    cbp.Add(new ComboBoxPair(item.ToString(), item.ToString()));
+            //}
+            //myControlEntity.ListOfKeyValuePairs = cbp;
+            myControlEntity.ComboBoxIsEditable = true;
+            myControlEntity.ColumnNumber = 1;
+
+            myControlEntity.ColumnSpan = 2;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
 
             DisplaydescriptionWindow:
-            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
+            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 800, 0, 0);
 
             if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                 return;
             }
+            string strCustom = myListControlEntity.Find(x => x.ID == "cbxCustom").SelectedValue;
+            myActions.SetValueByKey("cbxCustomSelectedValue", strCustom);
+            string strdescription = myListControlEntity.Find(x => x.ID == "txtDescription").Text;           
+            string myManualExecutionTime = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
+            string strStatus = myListControlEntity.Find(x => x.ID == "cbxStatus").SelectedValue;
+            myActions.SetValueByKey("cbxStatusSelectedValue", strStatus);
 
-            string strdescription = myListControlEntity.Find(x => x.ID == "cbxdescription").SelectedValue;
-            myActions.SetValueByKey("cbxdescriptionSelectedValue", strdescription);
+            myActions.SetValueByKeyForNonCurrentScript("custom", strCustom, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
+            myActions.SetValueByKeyForNonCurrentScript("description", strdescription, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
+            myActions.SetValueByKeyForNonCurrentScript("ManualExecutionTime", myManualExecutionTime, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileManualTimeFullName));
+            myActions.SetValueByKeyForNonCurrentScript("status", strStatus, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
 
-            if ((strdescription == "--Select Item ---" || strdescription == "")) {
-                myActions.MessageBoxShow("Please enter Find What or select Find What from ComboBox; else press Cancel to Exit");
-                goto DisplaydescriptionWindow;
-            }
 
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
-                //MessageBox.Show(myFileView.FullName.ToString());
-                if (myFileView.IsDirectory) {
-                    string fileFullName = myFileView.FullName;
-                    myActions.SetValueByKeyForNonCurrentScript("description", strdescription, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
-                } else {
-                    string fileFullName = myFileView.FullName;
-                    myActions.SetValueByKeyForNonCurrentScript("description", strdescription, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
-                }
-
-            }
         }
 
         private void statusStripMenuItem_Click(object sender, EventArgs e) {

@@ -36,6 +36,11 @@ namespace System.Windows.Forms.Samples
             this.selectIdealToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.selectActualToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.metadataStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.descriptionStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hotKeyStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addHotKeyStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeHotKeyStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.folderToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
@@ -89,14 +94,6 @@ namespace System.Windows.Forms.Samples
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.metadataStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.customStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.descriptionStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.hotKeyStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.manualTimeStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.statusStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addHotKeyStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.removeHotKeyStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource)).BeginInit();
             this.toolBar.SuspendLayout();
@@ -168,6 +165,42 @@ namespace System.Windows.Forms.Samples
             this.toolStripMenuItem4.Size = new System.Drawing.Size(131, 22);
             this.toolStripMenuItem4.Text = "Delete";
             this.toolStripMenuItem4.Click += new System.EventHandler(this.DeleteStripMenuItem4_Click);
+            // 
+            // metadataStripMenuItem
+            // 
+            this.metadataStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.descriptionStripMenuItem,
+            this.hotKeyStripMenuItem});
+            this.metadataStripMenuItem.Name = "metadataStripMenuItem";
+            this.metadataStripMenuItem.Size = new System.Drawing.Size(131, 22);
+            this.metadataStripMenuItem.Text = "Metadata";
+            // 
+            // descriptionStripMenuItem
+            // 
+            this.descriptionStripMenuItem.Name = "descriptionStripMenuItem";
+            this.descriptionStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.descriptionStripMenuItem.Text = "Add Metadata";
+            // 
+            // hotKeyStripMenuItem
+            // 
+            this.hotKeyStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addHotKeyStripMenuItem,
+            this.removeHotKeyStripMenuItem});
+            this.hotKeyStripMenuItem.Name = "hotKeyStripMenuItem";
+            this.hotKeyStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.hotKeyStripMenuItem.Text = "HotKey";
+            // 
+            // addHotKeyStripMenuItem
+            // 
+            this.addHotKeyStripMenuItem.Name = "addHotKeyStripMenuItem";
+            this.addHotKeyStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.addHotKeyStripMenuItem.Text = "Add HotKey";
+            // 
+            // removeHotKeyStripMenuItem
+            // 
+            this.removeHotKeyStripMenuItem.Name = "removeHotKeyStripMenuItem";
+            this.removeHotKeyStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.removeHotKeyStripMenuItem.Text = "Remove HotKey";
             // 
             // newToolStripMenuItem1
             // 
@@ -568,63 +601,6 @@ namespace System.Windows.Forms.Samples
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.search_Click);
             // 
-            // metadataStripMenuItem
-            // 
-            this.metadataStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.customStripMenuItem,
-            this.descriptionStripMenuItem,
-            this.hotKeyStripMenuItem,
-            this.manualTimeStripMenuItem,
-            this.statusStripMenuItem});
-            this.metadataStripMenuItem.Name = "metadataStripMenuItem";
-            this.metadataStripMenuItem.Size = new System.Drawing.Size(131, 22);
-            this.metadataStripMenuItem.Text = "Metadata";
-            // 
-            // customStripMenuItem
-            // 
-            this.customStripMenuItem.Name = "customStripMenuItem";
-            this.customStripMenuItem.Size = new System.Drawing.Size(144, 22);
-            this.customStripMenuItem.Text = "Custom";
-            // 
-            // descriptionStripMenuItem
-            // 
-            this.descriptionStripMenuItem.Name = "descriptionStripMenuItem";
-            this.descriptionStripMenuItem.Size = new System.Drawing.Size(144, 22);
-            this.descriptionStripMenuItem.Text = "Description";
-            // 
-            // hotKeyStripMenuItem
-            // 
-            this.hotKeyStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addHotKeyStripMenuItem,
-            this.removeHotKeyStripMenuItem});
-            this.hotKeyStripMenuItem.Name = "hotKeyStripMenuItem";
-            this.hotKeyStripMenuItem.Size = new System.Drawing.Size(144, 22);
-            this.hotKeyStripMenuItem.Text = "HotKey";
-            // 
-            // manualTimeStripMenuItem
-            // 
-            this.manualTimeStripMenuItem.Name = "manualTimeStripMenuItem";
-            this.manualTimeStripMenuItem.Size = new System.Drawing.Size(144, 22);
-            this.manualTimeStripMenuItem.Text = "Manual Time";
-            // 
-            // statusStripMenuItem
-            // 
-            this.statusStripMenuItem.Name = "statusStripMenuItem";
-            this.statusStripMenuItem.Size = new System.Drawing.Size(144, 22);
-            this.statusStripMenuItem.Text = "Status";
-            // 
-            // addHotKeyStripMenuItem
-            // 
-            this.addHotKeyStripMenuItem.Name = "addHotKeyStripMenuItem";
-            this.addHotKeyStripMenuItem.Size = new System.Drawing.Size(159, 22);
-            this.addHotKeyStripMenuItem.Text = "Add HotKey";
-            // 
-            // removeHotKeyStripMenuItem
-            // 
-            this.removeHotKeyStripMenuItem.Name = "removeHotKeyStripMenuItem";
-            this.removeHotKeyStripMenuItem.Size = new System.Drawing.Size(159, 22);
-            this.removeHotKeyStripMenuItem.Text = "Remove HotKey";
-            // 
             // ExplorerView
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
@@ -722,13 +698,10 @@ namespace System.Windows.Forms.Samples
         private ToolStripMenuItem selectIdealToolStripMenuItem;
         private ToolStripMenuItem selectActualToolStripMenuItem;
         private ToolStripMenuItem metadataStripMenuItem;
-        private ToolStripMenuItem customStripMenuItem;
         private ToolStripMenuItem descriptionStripMenuItem;
         private ToolStripMenuItem hotKeyStripMenuItem;
         private ToolStripMenuItem addHotKeyStripMenuItem;
         private ToolStripMenuItem removeHotKeyStripMenuItem;
-        private ToolStripMenuItem manualTimeStripMenuItem;
-        private ToolStripMenuItem statusStripMenuItem;
     }
 }
 
