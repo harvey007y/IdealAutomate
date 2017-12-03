@@ -5339,8 +5339,22 @@ namespace System.Windows.Forms.Samples {
             string basePathForNewFolder = _dir.FileView.FullName;
             string basePathName = _dir.FileView.Name;
             string basePathForNewTextDocument = _dir.FileView.FullName;
+            FileView myFileView;  
+            string fileFullName = "";
+ 
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
+                    basePathForNewTextDocument = myFileView.FullName;
+                    basePathName = myFileView.Name;
+                    basePathForNewFolder = myFileView.FullName;
+                }
+            }
+                        
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
+                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                //MessageBox.Show(myFileView.FullName.ToString());                
+                fileFullName = myFileView.FullName;
                 if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     basePathForNewTextDocument = myFileView.FullName;
                     basePathName = myFileView.Name;
@@ -5348,8 +5362,10 @@ namespace System.Windows.Forms.Samples {
                 }
             }
 
-            List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+          
 
+            List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+            int intRowCtr = 0;
             ControlEntity myControlEntity = new ControlEntity();
             myControlEntity.ControlEntitySetDefaults();
             myControlEntity.ControlType = ControlType.Heading;
@@ -5361,7 +5377,7 @@ namespace System.Windows.Forms.Samples {
             myControlEntity.ControlType = ControlType.Label;
             myControlEntity.ID = "myLabel";
             myControlEntity.Text = "Enter New TextDocument Name";
-            myControlEntity.RowNumber = 0;
+            myControlEntity.RowNumber = intRowCtr;
             myControlEntity.ColumnNumber = 0;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
@@ -5370,13 +5386,106 @@ namespace System.Windows.Forms.Samples {
             myControlEntity.ControlType = ControlType.TextBox;
             myControlEntity.ID = "myTextBox";
             myControlEntity.Text = "";
-            myControlEntity.RowNumber = 0;
+            myControlEntity.RowNumber = intRowCtr;
             myControlEntity.ColumnNumber = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "lblCustom";
+            myControlEntity.Text = "Custom";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.Width = 150;
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            myControlEntity.SelectedValue = "";
+            myControlEntity.ID = "cbxCustom";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            //foreach (var item in alcbxCustom) {
+            //    cbp.Add(new ComboBoxPair(item.ToString(), item.ToString()));
+            //}
+            //myControlEntity.ListOfKeyValuePairs = cbp;
+            myControlEntity.ComboBoxIsEditable = true;
+            myControlEntity.ColumnNumber = 1;
+
+            myControlEntity.ColumnSpan = 2;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "lbldescription";
+            myControlEntity.Text = "Description";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.Width = 150;
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.Text = "";
+            myControlEntity.ID = "txtDescription";
+            myControlEntity.Multiline = true;
+            myControlEntity.Height = 200;
+            myControlEntity.TextWrap = true;
+            myControlEntity.Width = 650;
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            //foreach (var item in alcbxdescription) {
+            //    cbp.Add(new ComboBoxPair(item.ToString(), item.ToString()));
+            //}
+            //myControlEntity.ListOfKeyValuePairs = cbp;
+            myControlEntity.ComboBoxIsEditable = true;
+            myControlEntity.ColumnNumber = 1;
+
+            myControlEntity.ColumnSpan = 2;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+       
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "lblStatus";
+            myControlEntity.Text = "Status";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.Width = 150;
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            myControlEntity.SelectedValue = "";
+            myControlEntity.ID = "cbxStatus";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            //foreach (var item in alcbxStatus) {
+            //    cbp.Add(new ComboBoxPair(item.ToString(), item.ToString()));
+            //}
+            //myControlEntity.ListOfKeyValuePairs = cbp;
+            myControlEntity.ComboBoxIsEditable = true;
+            myControlEntity.ColumnNumber = 1;
+
+            myControlEntity.ColumnSpan = 2;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
 
             ReDisplayNewTextDocumentDialog:
-            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
+            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 800, 0, 0);
 
             if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
@@ -5385,10 +5494,20 @@ namespace System.Windows.Forms.Samples {
   
             string parentScriptPath = myActions.ConvertFullFileNameToPublicPath(basePathForNewTextDocument) + "\\" + basePathName;
             string myNewTextDocumentName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
+            string strCustom = myListControlEntity.Find(x => x.ID == "cbxCustom").SelectedValue;
+            myActions.SetValueByKey("cbxCustomSelectedValue", strCustom);
+            string strdescription = myListControlEntity.Find(x => x.ID == "txtDescription").Text;            
+            string strStatus = myListControlEntity.Find(x => x.ID == "cbxStatus").SelectedValue;
+            myActions.SetValueByKey("cbxStatusSelectedValue", strStatus);
+
+            
             if (!myNewTextDocumentName.EndsWith(".txt")) {
                 myNewTextDocumentName = myNewTextDocumentName + ".txt";
             }
             string strNewTextDocumentDir = Path.Combine(basePathForNewTextDocument, myNewTextDocumentName);
+            myActions.SetValueByKeyForNonCurrentScript("custom", strCustom, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
+            myActions.SetValueByKeyForNonCurrentScript("description", strdescription, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
+            myActions.SetValueByKeyForNonCurrentScript("status", strStatus, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
             if (!File.Exists(strNewTextDocumentDir)) {
                 string newFolderScriptPath = basePathForNewTextDocument + "\\" + myNewTextDocumentName.Replace(".txt", "");
                 //  myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
@@ -5472,14 +5591,17 @@ namespace System.Windows.Forms.Samples {
             string basePathForNewFolder = _dir.FileView.FullName;
             string basePathName = _dir.FileView.Name;
             string basePathForNewTextDocument = _dir.FileView.FullName;
+            string fileFullName = "";
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
                 if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     basePathForNewTextDocument = myFileView.FullName;
                     basePathName = myFileView.Name;
                     basePathForNewFolder = myFileView.FullName;
+                    fileFullName = myFileView.FullName;
                 }
             }
+
 
             List<ControlEntity> myListControlEntity = new List<ControlEntity>();
 
@@ -5488,13 +5610,13 @@ namespace System.Windows.Forms.Samples {
                     myControlEntity.ControlType = ControlType.Heading;
                     myControlEntity.Text = "Create New WordPad Document";
                     myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
+            int intRowCtr = 0;
 
                     myControlEntity.ControlEntitySetDefaults();
                     myControlEntity.ControlType = ControlType.Label;
                     myControlEntity.ID = "myLabel";
                     myControlEntity.Text = "Enter New WordPad Document Name";
-                    myControlEntity.RowNumber = 0;
+                    myControlEntity.RowNumber = intRowCtr;
                     myControlEntity.ColumnNumber = 0;
                     myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
@@ -5503,27 +5625,131 @@ namespace System.Windows.Forms.Samples {
                     myControlEntity.ControlType = ControlType.TextBox;
                     myControlEntity.ID = "myTextBox";
                     myControlEntity.Text = "";
-                    myControlEntity.RowNumber = 0;
+                    myControlEntity.RowNumber = intRowCtr;
                     myControlEntity.ColumnNumber = 1;
                     myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "lblCustom";
+            myControlEntity.Text = "Custom";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.Width = 150;
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
-                    ReDisplayNewTextDocumentDialog:
-                    string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            myControlEntity.SelectedValue = "";
+            myControlEntity.ID = "cbxCustom";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            //foreach (var item in alcbxCustom) {
+            //    cbp.Add(new ComboBoxPair(item.ToString(), item.ToString()));
+            //}
+            //myControlEntity.ListOfKeyValuePairs = cbp;
+            myControlEntity.ComboBoxIsEditable = true;
+            myControlEntity.ColumnNumber = 1;
+
+            myControlEntity.ColumnSpan = 2;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "lbldescription";
+            myControlEntity.Text = "Description";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.Width = 150;
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.Text = "";
+            myControlEntity.ID = "txtDescription";
+            myControlEntity.Multiline = true;
+            myControlEntity.Height = 200;
+            myControlEntity.TextWrap = true;
+            myControlEntity.Width = 650;
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            //foreach (var item in alcbxdescription) {
+            //    cbp.Add(new ComboBoxPair(item.ToString(), item.ToString()));
+            //}
+            //myControlEntity.ListOfKeyValuePairs = cbp;
+            myControlEntity.ComboBoxIsEditable = true;
+            myControlEntity.ColumnNumber = 1;
+
+            myControlEntity.ColumnSpan = 2;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "lblStatus";
+            myControlEntity.Text = "Status";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.Width = 150;
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            myControlEntity.SelectedValue = "";
+            myControlEntity.ID = "cbxStatus";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            //foreach (var item in alcbxStatus) {
+            //    cbp.Add(new ComboBoxPair(item.ToString(), item.ToString()));
+            //}
+            //myControlEntity.ListOfKeyValuePairs = cbp;
+            myControlEntity.ComboBoxIsEditable = true;
+            myControlEntity.ColumnNumber = 1;
+
+            myControlEntity.ColumnSpan = 2;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            ReDisplayNewTextDocumentDialog:
+                    string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 800, 0, 0);
 
                     if (strButtonPressed == "btnCancel") {
                         myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                         return;
                     }
+            string strCustom = myListControlEntity.Find(x => x.ID == "cbxCustom").SelectedValue;
+            myActions.SetValueByKey("cbxCustomSelectedValue", strCustom);
+            string strdescription = myListControlEntity.Find(x => x.ID == "txtDescription").Text;
 
+            string strStatus = myListControlEntity.Find(x => x.ID == "cbxStatus").SelectedValue;
+            myActions.SetValueByKey("cbxStatusSelectedValue", strStatus);
 
-                    string parentScriptPath = myActions.ConvertFullFileNameToPublicPath(basePathForNewTextDocument) + "\\" + basePathName;
+           
+
+            string parentScriptPath = myActions.ConvertFullFileNameToPublicPath(basePathForNewTextDocument) + "\\" + basePathName;
                     string myNewTextDocumentName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
                     if (!myNewTextDocumentName.EndsWith(".rtf")) {
                         myNewTextDocumentName = myNewTextDocumentName + ".rtf";
                     }
                     string strNewTextDocumentDir = Path.Combine(basePathForNewTextDocument, myNewTextDocumentName);
-                    if (!File.Exists(strNewTextDocumentDir)) {
+            myActions.SetValueByKeyForNonCurrentScript("custom", strCustom, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
+            myActions.SetValueByKeyForNonCurrentScript("description", strdescription, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
+            myActions.SetValueByKeyForNonCurrentScript("status", strStatus, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
+            if (!File.Exists(strNewTextDocumentDir)) {
                         string newFolderScriptPath = basePathForNewTextDocument + "\\" + myNewTextDocumentName.Replace(".rtf", "");
                         //   myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
                         using (StreamWriter sw = new StreamWriter(strNewTextDocumentDir)) {
