@@ -432,6 +432,9 @@ namespace System.Windows.Forms.Samples {
         }
 
         private void dataGridView1_CellPainting(object sender, DataGridViewCellPaintingEventArgs e) {
+            if (e == null) {
+                return;
+            }
             Icon icon = (e.Value as Icon);
             if (e.Value == null) {
                 return;
@@ -462,6 +465,12 @@ namespace System.Windows.Forms.Samples {
         }
 
         private void dataGridView1_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e) {
+            if (e == null) {
+                return;
+            }
+            if (e.RowIndex > ((DataGridView)sender).Rows.Count - 1) {
+                return;
+            }
             if (e.RowIndex < 0 || ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Value == null) {
                 return;
             }
