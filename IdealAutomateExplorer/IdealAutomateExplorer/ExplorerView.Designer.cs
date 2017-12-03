@@ -615,6 +615,8 @@ namespace System.Windows.Forms.Samples
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.ExplorerView_Load);
             this.ClientSizeChanged += new System.EventHandler(this.ExplorerView_ClientSizeChanged);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ExplorerView_KeyUp);
+            this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.ExplorerView_PreviewKeyDown);
             this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource)).EndInit();
             this.toolBar.ResumeLayout(false);

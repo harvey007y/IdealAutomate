@@ -966,6 +966,10 @@ namespace System.Windows.Forms.Samples {
         private void OnTimedEvent(object sender, System.Timers.ElapsedEventArgs e) {
             InputSimulator myInputSimulator = new InputSimulator();
 
+            if (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.ESCAPE)) {
+                _CurrentDataGridView.ClearSelection();
+            }
+
             if (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.CONTROL) || myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.MENU)) {
                 foreach (HotKeyRecord myHotKeyRecord in listHotKeyRecords) {
                     bool boolAllHotKeysPressed = true;
@@ -2914,7 +2918,7 @@ namespace System.Windows.Forms.Samples {
             // 
             this.descriptionStripMenuItem.Name = "descriptionStripMenuItem";
             this.descriptionStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.descriptionStripMenuItem.Text = "Add Metadata";
+            this.descriptionStripMenuItem.Text = "Modify Metadata";
             this.descriptionStripMenuItem.Click += new System.EventHandler(this.descriptionStripMenuItem_Click);
 
             // 
@@ -5829,6 +5833,20 @@ namespace System.Windows.Forms.Samples {
                 }
 
 
+
+        private void ExplorerView_KeyUp(object sender, KeyEventArgs e) {
+  
+                if (e.KeyCode == Keys.Escape) {
+                _CurrentDataGridView.ClearSelection();
+            }
+           
+        }
+
+        private void ExplorerView_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e) {
+            if (e.KeyCode == Keys.Escape) {
+                _CurrentDataGridView.ClearSelection();
+            }
+        }
     }
        
 
