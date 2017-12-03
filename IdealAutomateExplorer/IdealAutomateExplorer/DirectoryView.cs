@@ -166,7 +166,7 @@ namespace System.Windows.Forms.Samples
 
             // Resume ListChanged events
             _suspend = false;
-
+            
             // Reset
             ResetBindings();
         }

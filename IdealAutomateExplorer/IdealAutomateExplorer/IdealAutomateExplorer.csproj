@@ -96,6 +96,12 @@
     <Content Include="MyNewProject\MyNewProject\Properties\AssemblyInfo.cs" />
     <Content Include="MyNewProject\MyNewProject\Properties\Resources.Designer.cs" />
     <Content Include="MyNewProject\MyNewProject\Properties\Settings.Designer.cs" />
+    <Compile Include="DataGridViewExt.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DataGridViewExt.Designer.cs">
+      <DependentUpon>DataGridViewExt.cs</DependentUpon>
+    </Compile>
     <Compile Include="HotKeyRecord.cs" />
     <Compile Include="MatchInfo.cs" />
     <Compile Include="Settings.cs" />

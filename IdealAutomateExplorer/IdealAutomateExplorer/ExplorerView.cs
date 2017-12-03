@@ -38,8 +38,8 @@ namespace System.Windows.Forms.Samples {
         private DirectoryView _dir;
         string strInitialDirectory = "";
         int _CurrentIndex = 0;
-        DataGridView _CurrentDataGridView = new DataGridView();
-        DataGridView dataGridView3 = new DataGridView();
+        DataGridViewExt _CurrentDataGridView = new DataGridViewExt();
+        DataGridViewExt dataGridView3 = new DataGridViewExt();
         BindingSource _CurrentFileViewBindingSource = new BindingSource();
         bool boolStopEvent = false;
         bool _ignoreSelectedIndexChanged = false;
@@ -104,7 +104,7 @@ namespace System.Windows.Forms.Samples {
                 BindingSource myNewBindingSource = new BindingSource();
                 listBindingSource.Add(myNewBindingSource);
             }
-            _CurrentDataGridView = new DataGridView();
+            _CurrentDataGridView = new DataGridViewExt();
             _CurrentFileViewBindingSource = FileViewBindingSource;
             tabControl1.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
             tabControl1.HotTrack = true;
@@ -344,7 +344,7 @@ namespace System.Windows.Forms.Samples {
             testskip:
             int currentIndex = myActions.GetValueByKeyAsInt("CurrentIndex");
             tabControl1.SelectedIndex = currentIndex;
-            _CurrentDataGridView = (DataGridView)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
+            _CurrentDataGridView = (DataGridViewExt)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
             _CurrentFileViewBindingSource = listBindingSource[tabControl1.SelectedIndex];
 
             RefreshDataGrid();
@@ -1305,7 +1305,7 @@ namespace System.Windows.Forms.Samples {
             tabControl1.TabPages[tabControl1.SelectedIndex].ToolTipText = _dir.FileView.FullName;
 
 
-            _CurrentDataGridView = (DataGridView)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
+            _CurrentDataGridView = (DataGridViewExt)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
             _CurrentFileViewBindingSource = listBindingSource[tabControl1.SelectedIndex];
             RefreshDataGrid();
         }
@@ -2657,7 +2657,7 @@ namespace System.Windows.Forms.Samples {
                 tabControl1.TabPages[tabControl1.SelectedIndex].ToolTipText = _dir.FileView.FullName;
 
             }
-            _CurrentDataGridView = (DataGridView)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
+            _CurrentDataGridView = (DataGridViewExt)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
             _CurrentFileViewBindingSource = listBindingSource[tabControl1.SelectedIndex];
 
             RefreshDataGrid();
@@ -2665,7 +2665,7 @@ namespace System.Windows.Forms.Samples {
 
         private void AddDataGridToTab() {
             tabControl1.TabPages.Insert(_CurrentIndex + 1, "    +");
-            DataGridView myDataGridView = new DataGridView();
+            DataGridViewExt myDataGridView = new DataGridViewExt();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
