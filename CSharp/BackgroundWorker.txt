@@ -1,0 +1,97 @@
+   BackgroundWorker backgroundWorker1 = new BackgroundWorker();
+        bool boolCancelBtnPressed = false;
+
+   private void HandleEsc(object sender, KeyEventArgs e)
+        {
+
+            if (e.Key == Key.Escape)
+            {
+                backgroundWorker1.CancelAsync();
+                return;
+            }
+
+        }
+
+        public LocalScripts(string pScheduledScriptName)
+        {
+            this.PreviewKeyDown += new KeyEventHandler(HandleEsc);
+
+            strScheduledScriptName = pScheduledScriptName;
+            tempTicks = MainWindow.myStopwatch.ElapsedTicks;
+            ticks = tempTicks - prevElapsedTicks;
+            prevElapsedTicks = tempTicks;
+            duration = new TimeSpan(ticks);
+            seconds = duration.TotalSeconds;
+            Console.WriteLine("IdealAutomater Constructor;" + seconds);
+            InitializeComponent();
+            backgroundWorker1.WorkerSupportsCancellation = true;
+            backgroundWorker1.WorkerReportsProgress = true;
+            backgroundWorker1.DoWork += backgroundWorker1_DoWork;
+            backgroundWorker1.RunWorkerCompleted += backgroundWorker1_RunWorkerCompleted;
+            backgroundWorker1.ProgressChanged += backgroundWorker1_ProgressChanged;
+
+        }
+
+        private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            //progressBar1.Value = e.ProgressPercentage;
+        }
+
+        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+}
+
+       private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+            DoScriptActions(selectedScript, e);
+        }
+        private void btnRunScript_Click_1(object sender, System.Windows.RoutedEventArgs e)
+        {
+            try
+            {
+                listResults = new List<Result>();
+                boolCancelBtnPressed = false;
+                selectedScript = (Script)scriptDataGrid.SelectedItems[0];
+                if (!backgroundWorker1.IsBusy)
+                {
+                    backgroundWorker1.RunWorkerAsync();
+                }
+                else
+                {
+                    MessageBox.Show("Sorry - Background Worker is busy; Can't run the worker twice!");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Result oResulty = new Result();
+                oResulty.strResult = "EXCEPTION: " + ex.Message;
+                Console.WriteLine(oResulty.strResult);
+                oResulty.dtNow = System.DateTime.Now;
+                listResults.Add(oResulty);
+                MessageBox.Show(ex.Message);
+            }
+
+
+        }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+
+            boolCancelBtnPressed = true;
+            backgroundWorker1.CancelAsync();
+        }
+
+                            int iProgressPercentage = 0;
+
+                            // update the progress bar
+                            backgroundWorker1.ReportProgress(iProgressPercentage);
+                            if (backgroundWorker1.CancellationPending)
+                            {
+                                e.Cancel = true;
+                                return;
+                            }
+
+        public void DoScriptActions(Script selectedScript, DoWorkEventArgs e)
+        {
+}
