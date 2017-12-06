@@ -5296,11 +5296,11 @@ new DataGridViewDataErrorEventHandler(dataGridView1_DataError);
         string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
         string strContent = settingsDirectory + @"\MatchInfo.txt";
         //Close the running process
-        if (_appHandle != IntPtr.Zero) {
-          PostMessage(_appHandle, WM_CLOSE, 0, 0);
-          System.Threading.Thread.Sleep(1000);
-          _appHandle = IntPtr.Zero;
-        }
+        //if (_appHandle != IntPtr.Zero) {
+        //  PostMessage(_appHandle, WM_CLOSE, 0, 0);
+        //  System.Threading.Thread.Sleep(1000);
+        //  _appHandle = IntPtr.Zero;
+        //}
         //tries to start the process 
         //try {
         //    _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
