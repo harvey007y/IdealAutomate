@@ -5292,7 +5292,7 @@ new DataGridViewDataErrorEventHandler(dataGridView1_DataError);
         // Console.WriteLine(myFileList.Count().ToString() + " files");
         Console.WriteLine(intUniqueFiles.ToString() + " files with hits");
         Console.ReadLine();
-        myActions.KillAllProcessesByProcessName("notepad++");
+      //  myActions.KillAllProcessesByProcessName("notepad++");
         string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
         string strContent = settingsDirectory + @"\MatchInfo.txt";
         //Close the running process
