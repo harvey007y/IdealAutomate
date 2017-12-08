@@ -1061,31 +1061,32 @@ namespace System.Windows.Forms.Samples {
       }
       string strContent = strFullFileName;
       //Close the running process
-      if (_appHandle != IntPtr.Zero) {
-        PostMessage(_appHandle, WM_CLOSE, 0, 0);
-        System.Threading.Thread.Sleep(1000);
-        _appHandle = IntPtr.Zero;
-      }
+      //if (_appHandle != IntPtr.Zero) {
+      //  PostMessage(_appHandle, WM_CLOSE, 0, 0);
+      //  System.Threading.Thread.Sleep(1000);
+      //  _appHandle = IntPtr.Zero;
+      //}
       //tries to start the process 
-      try {
-        _proc = Process.Start(strExecutable, "\"" + strContent + "\"");
-      } catch (Exception) {
-        MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        return;
-      }
+      //try {
+      //  _proc = Process.Start(strExecutable, "\"" + strContent + "\"");
+      //} catch (Exception) {
+      //  MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+      //  return;
+      //}
 
 
-      System.Threading.Thread.Sleep(500);
-      while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
-        System.Threading.Thread.Sleep(10);
-        _proc.Refresh();
-      }
+      //System.Threading.Thread.Sleep(500);
+      //while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+      //  System.Threading.Thread.Sleep(10);
+      //  _proc.Refresh();
+      //}
 
-      _proc.WaitForInputIdle();
-      _appHandle = _proc.MainWindowHandle;
+      //_proc.WaitForInputIdle();
+      //_appHandle = _proc.MainWindowHandle;
 
-      SetParent(_appHandle, splitContainer1.Panel2.Handle);
-      SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+      //SetParent(_appHandle, splitContainer1.Panel2.Handle);
+      //SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+      myActions.Run(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
       if (strFullFileName.EndsWith(".doc") || strFullFileName.EndsWith(".docx") || strFullFileName.EndsWith(".odt")) {
       } else {
         myActions.TypeText("^(g)", 2000);
