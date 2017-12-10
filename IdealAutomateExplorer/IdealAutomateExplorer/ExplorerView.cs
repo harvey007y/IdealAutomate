@@ -346,7 +346,7 @@ namespace System.Windows.Forms.Samples {
             tabControl1.SelectedIndex = currentIndex;
             _CurrentDataGridView = (DataGridViewExt)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
             _CurrentFileViewBindingSource = listBindingSource[tabControl1.SelectedIndex];
-
+            
             RefreshDataGrid();
             strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             // Set Initial Directory to My Documents
@@ -415,7 +415,13 @@ namespace System.Windows.Forms.Samples {
             }
             AddGlobalHotKeys();
 
-            myActions.SetValueByKey("ExpandCollapseAll", "");
+            myActions.SetValueByKey("ExpandCollapseAll", ""); 
+        //    RefreshDataGrid();
+        //    myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString(), tabControl1.TabPages[tabControl1.SelectedIndex].Text);
+
+
+
+
         }
 
         private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e) {
@@ -468,36 +474,36 @@ namespace System.Windows.Forms.Samples {
             if (e == null) {
                 return;
             }
-            if (e.RowIndex > ((DataGridView)sender).Rows.Count - 1) {
+            if (e.RowIndex > ((DataGridViewExt)sender).Rows.Count - 1) {
                 return;
             }
-            if (e.RowIndex < 0 || ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Value == null) {
+            if (e.RowIndex < 0 || ((DataGridViewExt)sender).Rows[e.RowIndex].Cells[1].Value == null) {
                 return;
             }
-            string fileName = ((DataGridView)sender).Rows[e.RowIndex].Cells[13].Value.ToString();
-            string scriptName = ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Value.ToString();
+            string fileName = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells[13].Value.ToString();
+            string scriptName = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells[1].Value.ToString();
             Methods myActions = new Methods();
             string categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToPublicPath(fileName) + "\\" + scriptName.Replace(".txt", "").Replace(".rtf", ""));
             string strNestingLevel = "";
-            if (((DataGridView)sender).Rows.Count == 0) {
+            if (((DataGridViewExt)sender).Rows.Count == 0) {
                 return;
             }
-            strNestingLevel = ((DataGridView)sender).Rows[e.RowIndex].Cells[14].Value.ToString();
+            strNestingLevel = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells[14].Value.ToString();
             int nestingLevel = 0;
             Int32.TryParse(strNestingLevel, out nestingLevel);
             int indent = nestingLevel * 20;
             if (categoryState == "Collapsed" || categoryState == "Expanded") {
-                ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Style.Font = new Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold);
-                ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Style.Padding = new Padding(indent, 0, 0, 0);
+                ((DataGridViewExt)sender).Rows[e.RowIndex].Cells[1].Style.Font = new Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold);
+                ((DataGridViewExt)sender).Rows[e.RowIndex].Cells[1].Style.Padding = new Padding(indent, 0, 0, 0);
             } else {
-                ((DataGridView)sender).Rows[e.RowIndex].Cells[1].Style.Padding = new Padding(indent, 0, 0, 0);
-                DataGridViewCell iconCell = ((DataGridView)sender).Rows[e.RowIndex].Cells[0];
+                ((DataGridViewExt)sender).Rows[e.RowIndex].Cells[1].Style.Padding = new Padding(indent, 0, 0, 0);
+                DataGridViewCell iconCell = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells[0];
             }
         }
 
         private void dataGridView1_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e) {
             // Call Active on DirectoryView
-            string fileName = ((DataGridView)sender).Rows[e.RowIndex].Cells[13].Value.ToString();
+            string fileName = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells[13].Value.ToString();
             Methods myActions = new Methods();
             // fileName = fileName;
             string categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", fileName);
@@ -514,7 +520,7 @@ namespace System.Windows.Forms.Samples {
             try {
                 _dir.Activate(this._CurrentFileViewBindingSource[e.RowIndex] as FileView);
                 SetTitle(_dir.FileView);
-                RefreshDataGrid();
+             //   RefreshDataGrid();
             } catch (Exception ex) {
                 MessageBox.Show(ex.Message);
             }
@@ -1534,12 +1540,14 @@ namespace System.Windows.Forms.Samples {
         }
 
         private void dataGridView1_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e) {
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
+            Methods myActions = new Methods();
+        //    DataGridViewCell myCell = _CurrentDataGridView.SelectedCells[0];
+           foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 if (myCell.ColumnIndex == 0 && e.RowIndex > -1) {
                     // Call Active on DirectoryView
-                    string fileName = ((DataGridView)sender).Rows[e.RowIndex].Cells[13].Value.ToString();
+                    string fileName = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells[13].Value.ToString();
 
-                    Methods myActions = new Methods();
+                   
                     string categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", fileName);
                     if (categoryState == "Expanded") {
                         myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Collapsed", fileName);
@@ -1560,6 +1568,8 @@ namespace System.Windows.Forms.Samples {
                     }
                 }
             }
+            
+            
         }
 
         private void openStripMenuItem3_Click(object sender, EventArgs e) {
@@ -1878,96 +1888,18 @@ namespace System.Windows.Forms.Samples {
         }
 
         private void dataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e) {
-            if (e.ColumnIndex != -1 && e.RowIndex != -1 && e.Button == System.Windows.Forms.MouseButtons.Left) {
-                DataGridViewCell c = (sender as DataGridView)[e.ColumnIndex, e.RowIndex];
-                if (!c.Selected) {
-                    c.Selected = true;
-                    string fileName = ((DataGridView)sender).Rows[e.RowIndex].Cells[13].Value.ToString();
-                    if (fileName.EndsWith(".url")
+            Methods myActions = new Methods();
+            string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
+            if (detailsMenuItemChecked == "True") {
+                if (e.ColumnIndex != -1 && e.RowIndex != -1 && e.Button == System.Windows.Forms.MouseButtons.Left) {
+                    DataGridViewCell c = (sender as DataGridView)[e.ColumnIndex, e.RowIndex];
+                    if (!c.Selected) {
+                        c.Selected = true;
+                        string fileName = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells[13].Value.ToString();
+                        if (fileName.EndsWith(".url")
 
-                     ) {
-                        //Close the running process.
-                        if (_appHandle != IntPtr.Zero) {
-                            PostMessage(_appHandle, WM_CLOSE, 0, 0);
-                            System.Threading.Thread.Sleep(1000);
-                            _appHandle = IntPtr.Zero;
-                        }
-                        //tries to start the process 
-                        try {
-                            Methods myActions = new Methods();
-                            myActions.KillAllProcessesByProcessName("iexplore");
-                            _proc = Process.Start(@"C:\Program Files\Internet Explorer\iexplore.exe", GetInternetShortcut(fileName));
-                        } catch (Exception) {
-                            MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return;
-                        }
-
-
-                        System.Threading.Thread.Sleep(500);
-                        while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
-                            System.Threading.Thread.Sleep(10);
-                            _proc.Refresh();
-                        }
-
-                        _proc.WaitForInputIdle();
-                        _appHandle = _proc.MainWindowHandle;
-
-                        SetParent(_appHandle, splitContainer1.Panel2.Handle);
-                        SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
-
-                    }
-                    if (fileName.EndsWith(".rtf")
-                        || fileName.EndsWith(".odt")
-                        || fileName.EndsWith(".doc")
-                        || fileName.EndsWith(".docx")
-                        ) {
-                        //Close the running process
-                        if (_appHandle != IntPtr.Zero) {
-                            PostMessage(_appHandle, WM_CLOSE, 0, 0);
-                            System.Threading.Thread.Sleep(1000);
-                            _appHandle = IntPtr.Zero;
-                        }
-                        //tries to start the process 
-                        try {
-                            _proc = Process.Start(@"C:\Program Files\Windows NT\Accessories\wordpad.exe", "\"" + fileName + "\"");
-                        } catch (Exception) {
-                            MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return;
-                        }
-
-
-                        System.Threading.Thread.Sleep(500);
-                        while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
-                            System.Threading.Thread.Sleep(10);
-                            _proc.Refresh();
-                        }
-
-                        _proc.WaitForInputIdle();
-                        _appHandle = _proc.MainWindowHandle;
-
-                        SetParent(_appHandle, splitContainer1.Panel2.Handle);
-                        SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
-
-                    } else {
-                        if (fileName.EndsWith(".txt")
-                            || fileName.EndsWith(".bat")
-                            || fileName.EndsWith(".cs")
-                            || fileName.EndsWith(".xaml")
-                            || fileName.EndsWith(".sln")
-                            || fileName.EndsWith(".csproj")
-                            || fileName.EndsWith(".resx")
-                             || fileName.EndsWith(".js")
-                              || fileName.EndsWith(".css")
-                              || fileName.EndsWith(".html")
-                              || fileName.EndsWith(".htm")
-                              || fileName.EndsWith(".xml")
-                              || fileName.EndsWith(".sql")
-                              || fileName.EndsWith(".asp")
-                              || fileName.EndsWith(".inc")
-                              || fileName.EndsWith(".dinc")
-                                || fileName.EndsWith(".aspx")
-                              || fileName.EndsWith(".csv")) {
-                            //Close the running process
+                         ) {
+                            //Close the running process.
                             if (_appHandle != IntPtr.Zero) {
                                 PostMessage(_appHandle, WM_CLOSE, 0, 0);
                                 System.Threading.Thread.Sleep(1000);
@@ -1975,9 +1907,8 @@ namespace System.Windows.Forms.Samples {
                             }
                             //tries to start the process 
                             try {
-                                Methods myActions = new Methods();
-                                myActions.KillAllProcessesByProcessName("notepad++");
-                                _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", fileName);
+                                myActions.KillAllProcessesByProcessName("iexplore");
+                                _proc = Process.Start(@"C:\Program Files\Internet Explorer\iexplore.exe", GetInternetShortcut(fileName));
                             } catch (Exception) {
                                 MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 return;
@@ -1995,9 +1926,91 @@ namespace System.Windows.Forms.Samples {
 
                             SetParent(_appHandle, splitContainer1.Panel2.Handle);
                             SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
-                        }
-                    }
 
+                        }
+                        if (fileName.EndsWith(".rtf")
+                            || fileName.EndsWith(".odt")
+                            || fileName.EndsWith(".doc")
+                            || fileName.EndsWith(".docx")
+                            ) {
+                            //Close the running process
+                            if (_appHandle != IntPtr.Zero) {
+                                PostMessage(_appHandle, WM_CLOSE, 0, 0);
+                                System.Threading.Thread.Sleep(1000);
+                                _appHandle = IntPtr.Zero;
+                            }
+                            //tries to start the process 
+                            try {
+                                _proc = Process.Start(@"C:\Program Files\Windows NT\Accessories\wordpad.exe", "\"" + fileName + "\"");
+                            } catch (Exception) {
+                                MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            }
+
+
+                            System.Threading.Thread.Sleep(500);
+                            while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                                System.Threading.Thread.Sleep(10);
+                                _proc.Refresh();
+                            }
+
+                            _proc.WaitForInputIdle();
+                            _appHandle = _proc.MainWindowHandle;
+
+                            SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                            SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+                            //  SetTitle(_dir.FileView);
+                        } else {
+                            if (fileName.EndsWith(".txt")
+                                || fileName.EndsWith(".bat")
+                                || fileName.EndsWith(".cs")
+                                || fileName.EndsWith(".xaml")
+                                || fileName.EndsWith(".sln")
+                                || fileName.EndsWith(".csproj")
+                                || fileName.EndsWith(".resx")
+                                 || fileName.EndsWith(".js")
+                                  || fileName.EndsWith(".css")
+                                  || fileName.EndsWith(".html")
+                                  || fileName.EndsWith(".htm")
+                                  || fileName.EndsWith(".xml")
+                                  || fileName.EndsWith(".sql")
+                                  || fileName.EndsWith(".asp")
+                                  || fileName.EndsWith(".inc")
+                                  || fileName.EndsWith(".dinc")
+                                    || fileName.EndsWith(".aspx")
+                                  || fileName.EndsWith(".csv")) {
+                                //Close the running process
+                                if (_appHandle != IntPtr.Zero) {
+                                    PostMessage(_appHandle, WM_CLOSE, 0, 0);
+                                    System.Threading.Thread.Sleep(1000);
+                                    _appHandle = IntPtr.Zero;
+                                }
+                                //tries to start the process 
+                                try {
+                                    myActions.KillAllProcessesByProcessName("notepad++");
+                                    _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", fileName);
+                                } catch (Exception) {
+                                    MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    return;
+                                }
+
+
+                                //    System.Threading.Thread.Sleep(500);
+                                while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                                    System.Threading.Thread.Sleep(10);
+                                    _proc.Refresh();
+                                }
+
+                                _proc.WaitForInputIdle();
+                                _appHandle = _proc.MainWindowHandle;
+
+                                SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                                SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+                                SetTitle(_dir.FileView);
+                            }
+                        }
+
+                    }
                 }
             }
             if (e.ColumnIndex != -1 && e.RowIndex != -1 && e.Button == System.Windows.Forms.MouseButtons.Right) {
@@ -2008,7 +2021,6 @@ namespace System.Windows.Forms.Samples {
                     c.Selected = true;
                 }
             }
-
 
         }
 
@@ -4929,12 +4941,12 @@ namespace System.Windows.Forms.Samples {
             }
             string strCurrentPath = ((ComboBox)(sender)).Text;
 
-
-
+            if (strCurrentPath != myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString())) {
+                RefreshDataGrid();
+            }
 
             myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString(), strCurrentPath);
-
-            RefreshDataGrid();
+            
         }
 
         private void WindowsExplorerStripMenuItem2_Click(object sender, EventArgs e) {
