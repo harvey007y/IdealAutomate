@@ -31,6 +31,7 @@ using DocumentFormat.OpenXml.Packaging;
 
 
 
+
 #endregion
 
 namespace System.Windows.Forms.Samples {
@@ -96,10 +97,26 @@ namespace System.Windows.Forms.Samples {
 
         public static List<MatchInfo> matchInfoList;
         string _strFullFileName = "";
+        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripButton toolStripButton2;
+        private System.Windows.Forms.ToolStripComboBox toolStripComboBox1;
+        private System.Windows.Forms.ToolStripButton toolStripButton3;
+        private System.Windows.Forms.ToolStripButton toolStripButton4;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.WebBrowser webBrowser1;
+        private System.Windows.Forms.ToolStripButton toolStripButton5;
+        private System.Windows.Forms.ToolStripButton toolStripButton6;
+        String Url = string.Empty;
 
 
         public ExplorerView() {
             InitializeComponent();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExplorerView));
+        
+
             for (int i = 0; i < 20; i++) {
                 BindingSource myNewBindingSource = new BindingSource();
                 listBindingSource.Add(myNewBindingSource);
@@ -1905,28 +1922,49 @@ namespace System.Windows.Forms.Samples {
                                 System.Threading.Thread.Sleep(1000);
                                 _appHandle = IntPtr.Zero;
                             }
-                            //tries to start the process 
-                            try {
-                                myActions.KillAllProcessesByProcessName("iexplore");
-                                _proc = Process.Start(@"C:\Program Files\Internet Explorer\iexplore.exe", GetInternetShortcut(fileName));
-                            } catch (Exception) {
-                                MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                return;
-                            }
+                            ////tries to start the process 
+                            //try {                               
+                            //    myActions.KillAllProcessesByProcessName("iexplore");
+                            //    _proc = Process.Start(@"C:\Program Files\Internet Explorer\iexplore.exe", GetInternetShortcut(fileName));
+                            //} catch (Exception) {
+                            //    MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            //    return;
+                            //}
 
 
-                            System.Threading.Thread.Sleep(500);
-                            while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
-                                System.Threading.Thread.Sleep(10);
-                                _proc.Refresh();
-                            }
+                            //try {
+                            //    System.Threading.Thread.Sleep(500);
+                            //    while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                            //        System.Threading.Thread.Sleep(10);
+                            //        _proc.Refresh();
+                            //    }
 
-                            _proc.WaitForInputIdle();
-                            _appHandle = _proc.MainWindowHandle;
+                            //    _proc.WaitForInputIdle();
+                            //    _appHandle = _proc.MainWindowHandle;
 
-                            SetParent(_appHandle, splitContainer1.Panel2.Handle);
-                            SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
 
+
+                            //SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                            //SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+                            //} catch (Exception ex) {
+
+                            //    MessageBox.Show(ex.Message);
+                            //}
+                            //if (toolStripComboBox1.Text != "")
+                            //    Url = toolStripComboBox1.Text;
+                            Url = GetInternetShortcut(fileName);
+                            InitializeComponentWebBrowser();
+                            webBrowser1.ScriptErrorsSuppressed = true;
+                            webBrowser1.Navigate(Url);
+                            splitContainer1.Panel2.Controls.Clear();
+                           splitContainer1.Panel2.Controls.Add(toolStrip1);
+                            splitContainer1.Panel2.Controls.Add(webBrowser1);
+                            splitContainer1.Panel2.Controls.Add(statusStrip1);
+                            webBrowser1.ProgressChanged += new WebBrowserProgressChangedEventHandler(webpage_ProgressChanged);
+                            webBrowser1.DocumentTitleChanged += new EventHandler(webpage_DocumentTitleChanged);
+                            webBrowser1.StatusTextChanged += new EventHandler(webpage_StatusTextChanged);
+                            webBrowser1.Navigated += new WebBrowserNavigatedEventHandler(webpage_Navigated);
+                            webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webpage_DocumentCompleted);
                         }
                         if (fileName.EndsWith(".rtf")
                             || fileName.EndsWith(".odt")
@@ -1934,6 +1972,7 @@ namespace System.Windows.Forms.Samples {
                             || fileName.EndsWith(".docx")
                             ) {
                             //Close the running process
+                            splitContainer1.Panel2.Controls.Clear();
                             if (_appHandle != IntPtr.Zero) {
                                 PostMessage(_appHandle, WM_CLOSE, 0, 0);
                                 System.Threading.Thread.Sleep(1000);
@@ -1980,6 +2019,7 @@ namespace System.Windows.Forms.Samples {
                                     || fileName.EndsWith(".aspx")
                                   || fileName.EndsWith(".csv")) {
                                 //Close the running process
+                                splitContainer1.Panel2.Controls.Clear();
                                 if (_appHandle != IntPtr.Zero) {
                                     PostMessage(_appHandle, WM_CLOSE, 0, 0);
                                     System.Threading.Thread.Sleep(1000);
@@ -2022,6 +2062,64 @@ namespace System.Windows.Forms.Samples {
                 }
             }
 
+        }
+        private void webpage_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e) {
+            if (webBrowser1.CanGoBack) toolStripButton1.Enabled = true;
+            else toolStripButton1.Enabled = false;
+
+            if (webBrowser1.CanGoForward) toolStripButton2.Enabled = true;
+            else toolStripButton2.Enabled = false;
+            toolStripStatusLabel1.Text = "Done";
+        }
+
+        private void toolStripButton3_Click(object sender, EventArgs e) {
+            myBrowser();
+        }
+
+        private void myBrowser() {
+            if (toolStripComboBox1.Text != "")
+                Url = toolStripComboBox1.Text;
+            webBrowser1.Navigate(Url);
+            webBrowser1.ProgressChanged += new WebBrowserProgressChangedEventHandler(webpage_ProgressChanged);
+            webBrowser1.DocumentTitleChanged += new EventHandler(webpage_DocumentTitleChanged);
+            webBrowser1.StatusTextChanged += new EventHandler(webpage_StatusTextChanged);
+            webBrowser1.Navigated += new WebBrowserNavigatedEventHandler(webpage_Navigated);
+            webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webpage_DocumentCompleted);
+        }
+        private void webpage_DocumentTitleChanged(object sender, EventArgs e) {
+            this.Text = webBrowser1.DocumentTitle.ToString();
+        }
+        private void webpage_StatusTextChanged(object sender, EventArgs e) {
+            toolStripStatusLabel1.Text = webBrowser1.StatusText;
+        }
+
+        private void webpage_ProgressChanged(object sender, WebBrowserProgressChangedEventArgs e) {
+            toolStripProgressBar1.Maximum = (int)e.MaximumProgress;
+            toolStripProgressBar1.Value = ((int)e.CurrentProgress < 0 || (int)e.MaximumProgress < (int)e.CurrentProgress) ? (int)e.MaximumProgress : (int)e.CurrentProgress;
+        }
+
+        private void webpage_Navigated(object sender, WebBrowserNavigatedEventArgs e) {
+            toolStripComboBox1.Text = webBrowser1.Url.ToString();
+        }
+
+        private void toolStripButton4_Click(object sender, EventArgs e) {
+            webBrowser1.Refresh();
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e) {
+            webBrowser1.GoForward();
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e) {
+            webBrowser1.GoBack();
+        }
+
+        private void toolStripButton5_Click(object sender, EventArgs e) {
+            webBrowser1.GoHome();
+        }
+
+        private void toolStripButton6_Click(object sender, EventArgs e) {
+            webBrowser1.ShowPrintPreviewDialog();
         }
 
         public static string GetInternetShortcut(string filePath) {
@@ -6337,6 +6435,158 @@ namespace System.Windows.Forms.Samples {
             }            
             splitContainer1.SplitterDistance = (int)(ClientSize.Width * .2);
 
+        }
+
+        private void InitializeComponentWebBrowser() {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExplorerView));
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton5 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton4 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton6 = new System.Windows.Forms.ToolStripButton();
+            this.toolStrip1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // toolStrip1
+            // 
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButton1,
+            this.toolStripButton5,
+            this.toolStripButton2,
+            this.toolStripComboBox1,
+            this.toolStripButton3,
+            this.toolStripButton4,
+            this.toolStripButton6});
+            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(971, 25);
+            this.toolStrip1.TabIndex = 0;
+            this.toolStrip1.Text = "toolStrip1";
+            // 
+            // toolStripComboBox1
+            // 
+            this.toolStripComboBox1.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.toolStripComboBox1.Name = "toolStripComboBox1";
+            this.toolStripComboBox1.Size = new System.Drawing.Size(700, 25);
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripProgressBar1,
+            this.toolStripStatusLabel1});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 391);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(971, 22);
+            this.statusStrip1.TabIndex = 1;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripProgressBar1
+            // 
+            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
+            this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 16);
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(0, 17);
+            // 
+            // webBrowser1
+            // 
+            this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.webBrowser1.Location = new System.Drawing.Point(0, 25);
+            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowser1.Name = "webBrowser1";
+            this.webBrowser1.Size = new System.Drawing.Size(971, 366);
+            this.webBrowser1.TabIndex = 2;
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.Image = global::System.Windows.Forms.Samples.Properties.Resources.prev;
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton1.Text = "toolStripButton1";
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            // 
+            // toolStripButton5
+            // 
+            this.toolStripButton5.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton5.Image = global::System.Windows.Forms.Samples.Properties.Resources.home;
+            this.toolStripButton5.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton5.Name = "toolStripButton5";
+            this.toolStripButton5.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton5.Text = "toolStripButton5";
+            this.toolStripButton5.Click += new System.EventHandler(this.toolStripButton5_Click);
+            // 
+            // toolStripButton2
+            // 
+            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton2.Image = global::System.Windows.Forms.Samples.Properties.Resources.next;
+            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton2.Name = "toolStripButton2";
+            this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton2.Text = "toolStripButton2";
+            this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
+            // 
+            // toolStripButton3
+            // 
+            this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton3.Image = global::System.Windows.Forms.Samples.Properties.Resources.GoSign;
+            this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton3.Name = "toolStripButton3";
+            this.toolStripButton3.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton3.Text = "toolStripButton3";
+            this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
+            // 
+            // toolStripButton4
+            // 
+            this.toolStripButton4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton4.Image = global::System.Windows.Forms.Samples.Properties.Resources.refresh;
+            this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton4.Name = "toolStripButton4";
+            this.toolStripButton4.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton4.Text = "toolStripButton4";
+            this.toolStripButton4.Click += new System.EventHandler(this.toolStripButton4_Click);
+            // 
+            // toolStripButton6
+            // 
+            this.toolStripButton6.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton6.Image = global::System.Windows.Forms.Samples.Properties.Resources.printButton;
+            this.toolStripButton6.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton6.Name = "toolStripButton6";
+            this.toolStripButton6.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton6.Text = "toolStripButton6";
+            this.toolStripButton6.Click += new System.EventHandler(this.toolStripButton6_Click);
+
+            // 
+            // ExplorerView
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(971, 413);
+            this.Controls.Add(this.webBrowser1);
+            this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.toolStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "ExplorerView";
+            this.Text = "ExplorerView";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.ExplorerView_Load);
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
+            this.ResumeLayout(false);
+            this.PerformLayout();
         }
     }
 

@@ -59,7 +59,6 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomat
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\IdealAutomateExplorer.csproj.GenerateResource.Cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\IdealAutomateExplorer.exe
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\IdealAutomateExplorer.pdb
-C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\IdealAutomateExplorer.csprojResolveAssemblyReference.cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\AODL.dll
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\ICSharpCode.SharpZipLib.dll
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\aodlread\settings.xml
@@ -71,3 +70,4 @@ C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateExplorer\IdealAutomateExp
 C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\DocumentFormat.OpenXml.dll
 C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\ICSharpCode.SharpZipLib.dll
 C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\DocumentFormat.OpenXml.xml
+C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\IdealAutomateExplorer.csprojResolveAssemblyReference.cache

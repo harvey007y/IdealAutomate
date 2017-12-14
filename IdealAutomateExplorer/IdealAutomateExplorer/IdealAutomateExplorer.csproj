@@ -170,6 +170,19 @@
     <Content Include="aodlread\settings.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\favicon.ico" />
+    <None Include="Resources\GoSign.png" />
+    <None Include="Resources\GoSign1.png" />
+    <None Include="Resources\home.png" />
+    <None Include="Resources\home1.png" />
+    <None Include="Resources\next.png" />
+    <None Include="Resources\next1.png" />
+    <None Include="Resources\prev.png" />
+    <None Include="Resources\prev1.png" />
+    <None Include="Resources\printButton.png" />
+    <None Include="Resources\printButton1.png" />
+    <None Include="Resources\refresh.png" />
+    <None Include="Resources\refresh1.png" />
     <Content Include="Text\InitialDirectory.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

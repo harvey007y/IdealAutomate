@@ -45,6 +45,7 @@ namespace System.Windows.Forms.Samples
             this.folderToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
             this.textDocumentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.urlShortcutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.wordPadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openWithToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.notepadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -95,7 +96,6 @@ namespace System.Windows.Forms.Samples
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.urlShortcutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource)).BeginInit();
             this.toolBar.SuspendLayout();
@@ -236,6 +236,12 @@ namespace System.Windows.Forms.Samples
             this.textDocumentToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.textDocumentToolStripMenuItem.Text = "Text Document";
             this.textDocumentToolStripMenuItem.Click += new System.EventHandler(this.textDocumentToolStripMenuItem_Click);
+            // 
+            // urlShortcutToolStripMenuItem
+            // 
+            this.urlShortcutToolStripMenuItem.Name = "urlShortcutToolStripMenuItem";
+            this.urlShortcutToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.urlShortcutToolStripMenuItem.Text = "Url Shortcut";
             // 
             // wordPadToolStripMenuItem
             // 
@@ -414,79 +420,79 @@ namespace System.Windows.Forms.Samples
             this.urlShortcutFileToolStripMenuItem,
             this.wordPadFileToolStripMenuItem});
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.newToolStripMenuItem.Text = "New";
             // 
             // categoryToolStripMenuItem
             // 
             this.categoryToolStripMenuItem.Name = "categoryToolStripMenuItem";
-            this.categoryToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.categoryToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.categoryToolStripMenuItem.Text = "Category";
             this.categoryToolStripMenuItem.Click += new System.EventHandler(this.categoryToolStripMenuItem_Click);
             // 
             // projectToolStripMenuItem
             // 
             this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
-            this.projectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.projectToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.projectToolStripMenuItem.Text = "Project";
             this.projectToolStripMenuItem.Click += new System.EventHandler(this.projectToolStripMenuItem_Click);
             // 
             // subCategoryToolStripMenuItem
             // 
             this.subCategoryToolStripMenuItem.Name = "subCategoryToolStripMenuItem";
-            this.subCategoryToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.subCategoryToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.subCategoryToolStripMenuItem.Text = "SubCategory";
             this.subCategoryToolStripMenuItem.Click += new System.EventHandler(this.subCategoryToolStripMenuItem_Click);
             // 
             // folderToolStripMenuItem
             // 
             this.folderToolStripMenuItem.Name = "folderToolStripMenuItem";
-            this.folderToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.folderToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.folderToolStripMenuItem.Text = "Folder";
             this.folderToolStripMenuItem.Click += new System.EventHandler(this.folderToolStripMenuItem_Click);
             // 
             // textFileToolStripMenuItem
             // 
             this.textFileToolStripMenuItem.Name = "textFileToolStripMenuItem";
-            this.textFileToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.textFileToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.textFileToolStripMenuItem.Text = "Text File";
             this.textFileToolStripMenuItem.Click += new System.EventHandler(this.textFileToolStripMenuItem_Click);
             // 
             // urlShortcutFileToolStripMenuItem
             // 
             this.urlShortcutFileToolStripMenuItem.Name = "urlShortcutFileToolStripMenuItem";
-            this.urlShortcutFileToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.urlShortcutFileToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.urlShortcutFileToolStripMenuItem.Text = "Url Shortcut";
             this.urlShortcutFileToolStripMenuItem.Click += new System.EventHandler(this.urlShortcutFileToolStripMenuItem_Click);
             // 
             // wordPadFileToolStripMenuItem
             // 
             this.wordPadFileToolStripMenuItem.Name = "wordPadFileToolStripMenuItem";
-            this.wordPadFileToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.wordPadFileToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
             this.wordPadFileToolStripMenuItem.Text = "WordPad File";
             this.wordPadFileToolStripMenuItem.Click += new System.EventHandler(this.wordPadFileToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(149, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(100, 6);
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(103, 22);
             this.toolStripMenuItem3.Text = "Open";
             this.toolStripMenuItem3.Click += new System.EventHandler(this.openStripMenuItem3_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(100, 6);
             // 
             // closeToolStripMenuItem
             // 
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.closeToolStripMenuItem.Text = "Close";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
@@ -611,12 +617,6 @@ namespace System.Windows.Forms.Samples
             this.pictureBox1.TabIndex = 12;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.search_Click);
-            // 
-            // urlShortcutToolStripMenuItem
-            // 
-            this.urlShortcutToolStripMenuItem.Name = "urlShortcutToolStripMenuItem";
-            this.urlShortcutToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
-            this.urlShortcutToolStripMenuItem.Text = "Url Shortcut";
             // 
             // ExplorerView
             // 
