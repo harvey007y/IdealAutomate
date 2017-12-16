@@ -59,6 +59,7 @@ namespace System.Windows.Forms.Samples {
         private const int WM_SYSCOMMAND = 274;
         private bool _Panel2KeyPress = false;
         private bool _WordPadLoaded = false;
+        private bool _WebBrowserLoaded = false;
 
 
         [DllImport("user32.dll", SetLastError = true)]
@@ -1946,6 +1947,7 @@ namespace System.Windows.Forms.Samples {
                     if (!c.Selected) {
                         c.Selected = true;
                         _WordPadLoaded = false;
+                        _WebBrowserLoaded = false;
                         string fileName = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells[13].Value.ToString();
                         if (fileName.EndsWith(".url")
 
@@ -1986,14 +1988,23 @@ namespace System.Windows.Forms.Samples {
                             //}
                             //if (toolStripComboBox1.Text != "")
                             //    Url = toolStripComboBox1.Text;
+                            _WebBrowserLoaded = true;
                             Url = GetInternetShortcut(fileName);
                             InitializeComponentWebBrowser();
                             webBrowser1.ScriptErrorsSuppressed = true;
                             webBrowser1.Navigate(Url);
-                            splitContainer1.Panel2.Controls.Clear();
-                            splitContainer1.Panel2.Controls.Add(toolStrip1);
-                            splitContainer1.Panel2.Controls.Add(webBrowser1);
-                            splitContainer1.Panel2.Controls.Add(statusStrip1);
+                            
+                            splitContainer1.Panel2.Controls.Clear();                            
+                           FlowLayoutPanel flp = new FlowLayoutPanel();
+                            flp.Dock = DockStyle.Fill;
+                            
+                            flp.Controls.Add(toolStrip1);
+                            flp.Controls.Add(webBrowser1);
+                            webBrowser1.Size = new System.Drawing.Size(splitContainer1.Panel2.ClientSize.Width, splitContainer1.Panel2.Height - 50);
+
+                            flp.Controls.Add(statusStrip1);
+                            splitContainer1.Panel2.Controls.Add(flp);
+                          
                             webBrowser1.ProgressChanged += new WebBrowserProgressChangedEventHandler(webpage_ProgressChanged);
                             webBrowser1.DocumentTitleChanged += new EventHandler(webpage_DocumentTitleChanged);
                             webBrowser1.StatusTextChanged += new EventHandler(webpage_StatusTextChanged);
@@ -5099,17 +5110,21 @@ namespace System.Windows.Forms.Samples {
             //host the started process in the panel 
 
             if (_proc != null) {
-                System.Threading.Thread.Sleep(500);
-                while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
-                    System.Threading.Thread.Sleep(10);
-                    _proc.Refresh();
+                if (_WebBrowserLoaded) {
+                    webBrowser1.Size = new System.Drawing.Size(splitContainer1.Panel2.ClientSize.Width, splitContainer1.Panel2.Height - 50);
+                } else { 
+                    System.Threading.Thread.Sleep(500);
+                    while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                        System.Threading.Thread.Sleep(10);
+                        _proc.Refresh();
+                    }
+
+                    _proc.WaitForInputIdle();
+                    _appHandle = _proc.MainWindowHandle;
+
+                    SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                    SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                 }
-
-                _proc.WaitForInputIdle();
-                _appHandle = _proc.MainWindowHandle;
-
-                SetParent(_appHandle, splitContainer1.Panel2.Handle);
-                SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                 Methods myActions = new Methods();
                 myActions.SetValueByKey("SplitContainer1Width", e.X.ToString());
             }
@@ -6535,7 +6550,7 @@ namespace System.Windows.Forms.Samples {
             // 
             // webBrowser1
             // 
-            this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
+          //  this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;          
             this.webBrowser1.Location = new System.Drawing.Point(0, 25);
             this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser1.Name = "webBrowser1";
