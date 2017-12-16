@@ -57,6 +57,8 @@ namespace System.Windows.Forms.Samples {
         private const int SC_MAXIMIZE = 61488;
         private const int WM_CLOSE = 16; //0x10
         private const int WM_SYSCOMMAND = 274;
+        private bool _Panel2KeyPress = false;
+        private bool _WordPadLoaded = false;
 
 
         [DllImport("user32.dll", SetLastError = true)]
@@ -73,6 +75,14 @@ namespace System.Windows.Forms.Samples {
 
         [DllImport("user32.dll", SetLastError = true)]
         private static extern long SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
+
+        [DllImport("user32.dll")]
+        static extern int GetKeyNameText(int lParam, [Out] StringBuilder lpString,
+   int nSize);
+
+        [DllImport("user32.dll", EntryPoint = "GetKeyboardState", SetLastError = true)]
+        private static extern bool NativeGetKeyboardState([Out] byte[] keyStates);
+
 
         private IntPtr _appHandle;
         Process _proc;
@@ -115,7 +125,7 @@ namespace System.Windows.Forms.Samples {
         public ExplorerView() {
             InitializeComponent();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExplorerView));
-        
+
 
             for (int i = 0; i < 20; i++) {
                 BindingSource myNewBindingSource = new BindingSource();
@@ -363,7 +373,7 @@ namespace System.Windows.Forms.Samples {
             tabControl1.SelectedIndex = currentIndex;
             _CurrentDataGridView = (DataGridViewExt)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
             _CurrentFileViewBindingSource = listBindingSource[tabControl1.SelectedIndex];
-            
+
             RefreshDataGrid();
             strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             // Set Initial Directory to My Documents
@@ -432,9 +442,9 @@ namespace System.Windows.Forms.Samples {
             }
             AddGlobalHotKeys();
 
-            myActions.SetValueByKey("ExpandCollapseAll", ""); 
-        //    RefreshDataGrid();
-        //    myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString(), tabControl1.TabPages[tabControl1.SelectedIndex].Text);
+            myActions.SetValueByKey("ExpandCollapseAll", "");
+            //    RefreshDataGrid();
+            //    myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString(), tabControl1.TabPages[tabControl1.SelectedIndex].Text);
 
 
 
@@ -537,7 +547,7 @@ namespace System.Windows.Forms.Samples {
             try {
                 _dir.Activate(this._CurrentFileViewBindingSource[e.RowIndex] as FileView);
                 SetTitle(_dir.FileView);
-             //   RefreshDataGrid();
+                //   RefreshDataGrid();
             } catch (Exception ex) {
                 MessageBox.Show(ex.Message);
             }
@@ -993,13 +1003,36 @@ namespace System.Windows.Forms.Samples {
             // Start the timer
             aTimer.Enabled = true;
         }
+        private static bool GetKeyboardState(byte[] keyStates) {
+            if (keyStates == null)
+                throw new ArgumentNullException("keyState");
+            if (keyStates.Length != 256)
+                throw new ArgumentException("The buffer must be 256 bytes long.", "keyState");
+            return NativeGetKeyboardState(keyStates);
+        }
 
+        private static byte[] GetKeyboardState() {
+            byte[] keyStates = new byte[256];
+            if (!GetKeyboardState(keyStates))
+                throw new Win32Exception(Marshal.GetLastWin32Error());
+            return keyStates;
+        }
+
+        private static bool AnyKeyPressed() {
+            byte[] keyState = GetKeyboardState();
+            // skip the mouse buttons
+            return keyState.Skip(8).Any(state => (state & 0x80) != 0);
+        }
 
         private void OnTimedEvent(object sender, System.Timers.ElapsedEventArgs e) {
             InputSimulator myInputSimulator = new InputSimulator();
 
             if (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.ESCAPE)) {
                 _CurrentDataGridView.ClearSelection();
+            }
+
+            if (AnyKeyPressed()) {
+                _Panel2KeyPress = true;
             }
 
             if (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.CONTROL) || myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.MENU)) {
@@ -1558,13 +1591,13 @@ namespace System.Windows.Forms.Samples {
 
         private void dataGridView1_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e) {
             Methods myActions = new Methods();
-        //    DataGridViewCell myCell = _CurrentDataGridView.SelectedCells[0];
-           foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
+            //    DataGridViewCell myCell = _CurrentDataGridView.SelectedCells[0];
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 if (myCell.ColumnIndex == 0 && e.RowIndex > -1) {
                     // Call Active on DirectoryView
                     string fileName = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells[13].Value.ToString();
 
-                   
+
                     string categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", fileName);
                     if (categoryState == "Expanded") {
                         myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Collapsed", fileName);
@@ -1585,8 +1618,8 @@ namespace System.Windows.Forms.Samples {
                     }
                 }
             }
-            
-            
+
+
         }
 
         private void openStripMenuItem3_Click(object sender, EventArgs e) {
@@ -1912,6 +1945,7 @@ namespace System.Windows.Forms.Samples {
                     DataGridViewCell c = (sender as DataGridView)[e.ColumnIndex, e.RowIndex];
                     if (!c.Selected) {
                         c.Selected = true;
+                        _WordPadLoaded = false;
                         string fileName = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells[13].Value.ToString();
                         if (fileName.EndsWith(".url")
 
@@ -1957,7 +1991,7 @@ namespace System.Windows.Forms.Samples {
                             webBrowser1.ScriptErrorsSuppressed = true;
                             webBrowser1.Navigate(Url);
                             splitContainer1.Panel2.Controls.Clear();
-                           splitContainer1.Panel2.Controls.Add(toolStrip1);
+                            splitContainer1.Panel2.Controls.Add(toolStrip1);
                             splitContainer1.Panel2.Controls.Add(webBrowser1);
                             splitContainer1.Panel2.Controls.Add(statusStrip1);
                             webBrowser1.ProgressChanged += new WebBrowserProgressChangedEventHandler(webpage_ProgressChanged);
@@ -1971,6 +2005,7 @@ namespace System.Windows.Forms.Samples {
                             || fileName.EndsWith(".doc")
                             || fileName.EndsWith(".docx")
                             ) {
+                            _WordPadLoaded = true;
                             //Close the running process
                             splitContainer1.Panel2.Controls.Clear();
                             if (_appHandle != IntPtr.Zero) {
@@ -2798,7 +2833,7 @@ namespace System.Windows.Forms.Samples {
                     myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
                     ReDisplayNewTextDocumentDialog:
-                    
+
                     string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
 
                     if (strButtonPressed == "btnCancel") {
@@ -5044,7 +5079,7 @@ namespace System.Windows.Forms.Samples {
             }
 
             myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString(), strCurrentPath);
-            
+
         }
 
         private void WindowsExplorerStripMenuItem2_Click(object sender, EventArgs e) {
@@ -6406,18 +6441,18 @@ namespace System.Windows.Forms.Samples {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                 return;
             }
-            
+
             string strShortcutName = myListControlEntity.Find(x => x.ID == "txtShortcutName").Text;
             string strShortcutUrl = myListControlEntity.Find(x => x.ID == "txtShortcutUrl").Text;
 
-            
+
             string parentScriptPath = myActions.ConvertFullFileNameToPublicPath(basePathForNewTextDocument) + "\\" + basePathName;
             string myNewTextDocumentName = myListControlEntity.Find(x => x.ID == "txtShortcutName").Text;
             if (!myNewTextDocumentName.EndsWith(".url")) {
                 myNewTextDocumentName = myNewTextDocumentName + ".url";
             }
             string strNewTextDocumentDir = Path.Combine(basePathForNewTextDocument, myNewTextDocumentName);
-           
+
             myActions.SetValueByKeyForNonCurrentScript("shortcutName", strShortcutName, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
             myActions.SetValueByKeyForNonCurrentScript("shortcutUrl", strShortcutUrl, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
             if (!File.Exists(strNewTextDocumentDir)) {
@@ -6432,7 +6467,7 @@ namespace System.Windows.Forms.Samples {
                     writer.Flush();
 
                 }
-            }            
+            }
             splitContainer1.SplitterDistance = (int)(ClientSize.Width * .2);
 
         }
@@ -6588,8 +6623,41 @@ namespace System.Windows.Forms.Samples {
             this.ResumeLayout(false);
             this.PerformLayout();
         }
-    }
 
+
+
+        private void splitContainer1_MouseLeave(object sender, EventArgs e) {
+            if (_Panel2KeyPress && _WordPadLoaded) {
+                Methods myActions = new Methods();
+                myActions.TypeText("^(s)", 200);
+                _Panel2KeyPress = false;
+            }
+        }
+
+        private void toolBar_MouseEnter(object sender, EventArgs e) {
+            if (_Panel2KeyPress && _WordPadLoaded) {
+                Methods myActions = new Methods();
+                myActions.TypeText("^(s)", 200);
+                _Panel2KeyPress = false;
+            }
+        }
+
+        private void toolBar_MouseLeave(object sender, EventArgs e) {
+            if (_Panel2KeyPress && _WordPadLoaded) {
+                Methods myActions = new Methods();
+                myActions.TypeText("^(s)", 200);
+                _Panel2KeyPress = false;
+            }
+        }
+
+        private void splitContainer1_MouseEnter(object sender, EventArgs e) {
+            if (_Panel2KeyPress && _WordPadLoaded) {
+                Methods myActions = new Methods();
+                myActions.TypeText("^(s)", 200);
+                _Panel2KeyPress = false;
+            }
+        }
+    }
 
 }
 

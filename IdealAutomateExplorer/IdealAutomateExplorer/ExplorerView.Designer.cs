@@ -319,6 +319,8 @@ namespace System.Windows.Forms.Samples
             this.toolBar.Size = new System.Drawing.Size(856, 39);
             this.toolBar.TabIndex = 0;
             this.toolBar.Text = "toolStrip1";
+            this.toolBar.MouseEnter += new System.EventHandler(this.toolBar_MouseEnter);
+            this.toolBar.MouseLeave += new System.EventHandler(this.toolBar_MouseLeave);
             // 
             // backSplitButton
             // 
@@ -584,6 +586,8 @@ namespace System.Windows.Forms.Samples
             this.splitContainer1.SplitterDistance = 499;
             this.splitContainer1.TabIndex = 11;
             this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer1_SplitterMoved);
+            this.splitContainer1.MouseEnter += new System.EventHandler(this.splitContainer1_MouseEnter);
+            this.splitContainer1.MouseLeave += new System.EventHandler(this.splitContainer1_MouseLeave);
             // 
             // tabControl1
             // 
@@ -632,7 +636,6 @@ namespace System.Windows.Forms.Samples
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.ExplorerView_Load);
             this.ClientSizeChanged += new System.EventHandler(this.ExplorerView_ClientSizeChanged);
-            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ExplorerView_KeyUp);
             this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.ExplorerView_PreviewKeyDown);
             this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource)).EndInit();
