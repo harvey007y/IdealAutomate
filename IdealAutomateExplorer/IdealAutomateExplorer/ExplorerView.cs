@@ -2368,17 +2368,18 @@ namespace System.Windows.Forms.Samples {
 
                     string parentScriptPath = myActions.ConvertFullFileNameToPublicPath(basePathForNewTextDocument) + "\\" + basePathName;
                     string myNewTextDocumentName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
-                    string strCustom = myListControlEntity.Find(x => x.ID == "cbxCustom").SelectedValue;
-                    myActions.SetValueByKey("cbxCustomSelectedValue", strCustom);
+                    string strCustom = myListControlEntity.Find(x => x.ID == "cbxCustom").SelectedValue;                    
                     string strdescription = myListControlEntity.Find(x => x.ID == "txtDescription").Text;
                     string strStatus = myListControlEntity.Find(x => x.ID == "cbxStatus").SelectedValue;
                     myActions.SetValueByKey("cbxStatusSelectedValue", strStatus);
+                    
+
                     if (!myNewTextDocumentName.EndsWith(".txt")) {
                         myNewTextDocumentName = myNewTextDocumentName + ".txt";
                     }
                     string strNewTextDocumentDir = Path.Combine(basePathForNewTextDocument, myNewTextDocumentName);
-
-                    myActions.SetValueByKeyForNonCurrentScript("custom", strCustom, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
+                    myActions.SetValueByPublicKeyInCurrentFolder("cbxCustomSelectedValue", strCustom, strNewTextDocumentDir);
+                    myActions.SetValueByPublicKeyInCurrentFolder("custom", strCustom, strNewTextDocumentDir);
                     myActions.SetValueByKeyForNonCurrentScript("description", strdescription, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
                     myActions.SetValueByKeyForNonCurrentScript("status", strStatus, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
 
@@ -2681,7 +2682,6 @@ namespace System.Windows.Forms.Samples {
                         return;
                     }
                     string strCustom = myListControlEntity.Find(x => x.ID == "cbxCustom").SelectedValue;
-                    myActions.SetValueByKey("cbxCustomSelectedValue", strCustom);
                     string strdescription = myListControlEntity.Find(x => x.ID == "txtDescription").Text;
 
                     string strStatus = myListControlEntity.Find(x => x.ID == "cbxStatus").SelectedValue;
@@ -2699,7 +2699,8 @@ namespace System.Windows.Forms.Samples {
                         myNewTextDocumentName = myNewTextDocumentName + ".rtf";
                     }
                     string strNewTextDocumentDir = Path.Combine(basePathForNewTextDocument, myNewTextDocumentName);
-                    myActions.SetValueByKeyForNonCurrentScript("custom", strCustom, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
+                    myActions.SetValueByPublicKeyInCurrentFolder("cbxCustomSelectedValue", strCustom, strNewTextDocumentDir);
+                    myActions.SetValueByPublicKeyInCurrentFolder("custom", strCustom, strNewTextDocumentDir);
                     myActions.SetValueByKeyForNonCurrentScript("description", strdescription, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
                     myActions.SetValueByKeyForNonCurrentScript("status", strStatus, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
 
@@ -4451,79 +4452,6 @@ namespace System.Windows.Forms.Samples {
 
             }
         }
-
-        private void customStripMenuItem_Click(object sender, EventArgs e) {
-            FileView myFileView;
-            Methods myActions = new Methods();
-            List<ControlEntity> myListControlEntity = new List<ControlEntity>();
-
-            ControlEntity myControlEntity = new ControlEntity();
-            myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.Heading;
-            myControlEntity.Text = "Add Custom Field";
-            myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-
-            int intRowCtr = 0;
-            myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.Label;
-            myControlEntity.ID = "lblCustom";
-            myControlEntity.Text = "Custom";
-            myControlEntity.RowNumber = intRowCtr;
-            myControlEntity.Width = 150;
-            myControlEntity.ColumnNumber = 0;
-            myControlEntity.ColumnSpan = 1;
-            myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-
-
-            myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.ComboBox;
-            myControlEntity.SelectedValue = myActions.GetValueByKey("cbxCustomSelectedValue");
-            myControlEntity.ID = "cbxCustom";
-            myControlEntity.RowNumber = intRowCtr;
-            myControlEntity.ToolTipx = "";
-            //foreach (var item in alcbxCustom) {
-            //    cbp.Add(new ComboBoxPair(item.ToString(), item.ToString()));
-            //}
-            //myControlEntity.ListOfKeyValuePairs = cbp;
-            myControlEntity.ComboBoxIsEditable = true;
-            myControlEntity.ColumnNumber = 1;
-
-            myControlEntity.ColumnSpan = 2;
-            myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-
-            DisplayCustomWindow:
-            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
-
-            if (strButtonPressed == "btnCancel") {
-                myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
-                return;
-            }
-
-            string strCustom = myListControlEntity.Find(x => x.ID == "cbxCustom").SelectedValue;
-            myActions.SetValueByKey("cbxCustomSelectedValue", strCustom);
-
-            if ((strCustom == "--Select Item ---" || strCustom == "")) {
-                myActions.MessageBoxShow("Please enter Find What or select Find What from ComboBox; else press Cancel to Exit");
-                goto DisplayCustomWindow;
-            }
-
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
-                //MessageBox.Show(myFileView.FullName.ToString());
-                if (myFileView.IsDirectory) {
-                    string fileFullName = myFileView.FullName;
-                    myActions.SetValueByKeyForNonCurrentScript("custom", strCustom, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
-                } else {
-                    string fileFullName = myFileView.FullName;
-                    myActions.SetValueByKeyForNonCurrentScript("custom", strCustom, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
-                }
-
-            }
-        }
-
         private void descriptionStripMenuItem_Click(object sender, EventArgs e) {
             FileView myFileView;
             FileView myManualTimeFileView;
@@ -4577,7 +4505,7 @@ namespace System.Windows.Forms.Samples {
 
             myControlEntity.ControlEntitySetDefaults();
             myControlEntity.ControlType = ControlType.ComboBox;
-            myControlEntity.SelectedValue = myActions.GetValueByKeyForNonCurrentScript("custom", myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
+            myControlEntity.SelectedValue = myActions.GetValueByPublicKeyInCurrentFolder("custom", fileFullName);
             myControlEntity.ID = "cbxCustom";
             myControlEntity.RowNumber = intRowCtr;
             myControlEntity.ToolTipx = "";
@@ -4681,89 +4609,17 @@ namespace System.Windows.Forms.Samples {
                 return;
             }
             string strCustom = myListControlEntity.Find(x => x.ID == "cbxCustom").SelectedValue;
-            myActions.SetValueByKey("cbxCustomSelectedValue", strCustom);
-            string strdescription = myListControlEntity.Find(x => x.ID == "txtDescription").Text;
+             string strdescription = myListControlEntity.Find(x => x.ID == "txtDescription").Text;
             string myManualExecutionTime = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
             string strStatus = myListControlEntity.Find(x => x.ID == "cbxStatus").SelectedValue;
             myActions.SetValueByKey("cbxStatusSelectedValue", strStatus);
-
-            myActions.SetValueByKeyForNonCurrentScript("custom", strCustom, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
+            myActions.SetValueByPublicKeyInCurrentFolder("cbxCustomSelectedValue", strCustom, fileFullName);
+            myActions.SetValueByPublicKeyInCurrentFolder("custom", strCustom, fileFullName);
             myActions.SetValueByKeyForNonCurrentScript("description", strdescription, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
             myActions.SetValueByKeyForNonCurrentScript("ManualExecutionTime", myManualExecutionTime, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileManualTimeFullName));
             myActions.SetValueByKeyForNonCurrentScript("status", strStatus, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
 
 
-        }
-
-        private void statusStripMenuItem_Click(object sender, EventArgs e) {
-            FileView myFileView;
-            Methods myActions = new Methods();
-            List<ControlEntity> myListControlEntity = new List<ControlEntity>();
-
-            ControlEntity myControlEntity = new ControlEntity();
-            myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.Heading;
-            myControlEntity.Text = "Add Status";
-            myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-
-            int intRowCtr = 0;
-            myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.Label;
-            myControlEntity.ID = "lblStatus";
-            myControlEntity.Text = "Status";
-            myControlEntity.RowNumber = intRowCtr;
-            myControlEntity.Width = 150;
-            myControlEntity.ColumnNumber = 0;
-            myControlEntity.ColumnSpan = 1;
-            myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-
-
-            myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.ComboBox;
-            myControlEntity.SelectedValue = myActions.GetValueByKey("cbxStatusSelectedValue");
-            myControlEntity.ID = "cbxStatus";
-            myControlEntity.RowNumber = intRowCtr;
-            myControlEntity.ToolTipx = "";
-            //foreach (var item in alcbxStatus) {
-            //    cbp.Add(new ComboBoxPair(item.ToString(), item.ToString()));
-            //}
-            //myControlEntity.ListOfKeyValuePairs = cbp;
-            myControlEntity.ComboBoxIsEditable = true;
-            myControlEntity.ColumnNumber = 1;
-
-            myControlEntity.ColumnSpan = 2;
-            myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-
-            DisplayStatusWindow:
-            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
-
-            if (strButtonPressed == "btnCancel") {
-                myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
-                return;
-            }
-
-            string strStatus = myListControlEntity.Find(x => x.ID == "cbxStatus").SelectedValue;
-            myActions.SetValueByKey("cbxStatusSelectedValue", strStatus);
-
-            if ((strStatus == "--Select Item ---" || strStatus == "")) {
-                myActions.MessageBoxShow("Please enter Find What or select Find What from ComboBox; else press Cancel to Exit");
-                goto DisplayStatusWindow;
-            }
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
-                //MessageBox.Show(myFileView.FullName.ToString());
-                if (myFileView.IsDirectory) {
-                    string fileFullName = myFileView.FullName;
-                    myActions.SetValueByKeyForNonCurrentScript("status", strStatus, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
-                } else {
-                    string fileFullName = myFileView.FullName;
-                    myActions.SetValueByKeyForNonCurrentScript("status", strStatus, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
-                }
-
-            }
         }
 
         private void favoritesToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -6024,7 +5880,7 @@ namespace System.Windows.Forms.Samples {
             string parentScriptPath = myActions.ConvertFullFileNameToPublicPath(basePathForNewTextDocument) + "\\" + basePathName;
             string myNewTextDocumentName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
             string strCustom = myListControlEntity.Find(x => x.ID == "cbxCustom").SelectedValue;
-            myActions.SetValueByKey("cbxCustomSelectedValue", strCustom);
+            
             string strdescription = myListControlEntity.Find(x => x.ID == "txtDescription").Text;
             string strStatus = myListControlEntity.Find(x => x.ID == "cbxStatus").SelectedValue;
             myActions.SetValueByKey("cbxStatusSelectedValue", strStatus);
@@ -6034,7 +5890,8 @@ namespace System.Windows.Forms.Samples {
                 myNewTextDocumentName = myNewTextDocumentName + ".txt";
             }
             string strNewTextDocumentDir = Path.Combine(basePathForNewTextDocument, myNewTextDocumentName);
-            myActions.SetValueByKeyForNonCurrentScript("custom", strCustom, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
+            myActions.SetValueByPublicKeyInCurrentFolder("custom", strCustom, strNewTextDocumentDir);
+            myActions.SetValueByPublicKeyInCurrentFolder("cbxCustomSelectedValue", strCustom, strNewTextDocumentDir);
             myActions.SetValueByKeyForNonCurrentScript("description", strdescription, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
             myActions.SetValueByKeyForNonCurrentScript("status", strStatus, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
             if (!File.Exists(strNewTextDocumentDir)) {
@@ -6261,7 +6118,6 @@ namespace System.Windows.Forms.Samples {
                 return;
             }
             string strCustom = myListControlEntity.Find(x => x.ID == "cbxCustom").SelectedValue;
-            myActions.SetValueByKey("cbxCustomSelectedValue", strCustom);
             string strdescription = myListControlEntity.Find(x => x.ID == "txtDescription").Text;
 
             string strStatus = myListControlEntity.Find(x => x.ID == "cbxStatus").SelectedValue;
@@ -6275,7 +6131,9 @@ namespace System.Windows.Forms.Samples {
                 myNewTextDocumentName = myNewTextDocumentName + ".rtf";
             }
             string strNewTextDocumentDir = Path.Combine(basePathForNewTextDocument, myNewTextDocumentName);
-            myActions.SetValueByKeyForNonCurrentScript("custom", strCustom, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
+            myActions.SetValueByPublicKeyInCurrentFolder("cbxCustomSelectedValue", strCustom, strNewTextDocumentDir);
+            myActions.SetValueByPublicKeyInCurrentFolder("custom", strCustom, strNewTextDocumentDir);
+
             myActions.SetValueByKeyForNonCurrentScript("description", strdescription, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
             myActions.SetValueByKeyForNonCurrentScript("status", strStatus, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
             if (!File.Exists(strNewTextDocumentDir)) {

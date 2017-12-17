@@ -2415,6 +2415,57 @@ namespace IdealAutomate.Core {
             return strValueRead;
         }
 
+        public string GetValueByPublicKeyInCurrentFolder(string strKey, string strFullFileName) {
+            string strValueRead = "";
+            string fileName = strKey + ".txt";
+            StreamReader file = null;
+            string settingsDirectory = "";
+            string fileNamePartOfFullPath = "";
+            bool isDirectory = false;
+            if (File.Exists(strFullFileName)) {
+
+                // path is a file.
+                settingsDirectory = ConvertFullFileNameToPublicPath(strFullFileName);
+                fileNamePartOfFullPath = Path.GetFileName(strFullFileName);
+
+            } else if (Directory.Exists(strFullFileName)) {
+
+                // path is a directory.
+                settingsDirectory = strFullFileName;
+                isDirectory = true;
+
+            } else {
+                // file does not exist yet...so we make assumption that it is a file if it contains period
+                if (strFullFileName.Contains(".")) {
+                    // path is a file.
+                    settingsDirectory = ConvertFullFileNameToPublicPath(strFullFileName);
+                    fileNamePartOfFullPath = Path.GetFileName(strFullFileName);
+                } else {
+                    // path is a directory.
+                    settingsDirectory = strFullFileName;
+                    isDirectory = true;
+                }
+
+
+            }
+
+            settingsDirectory = Path.Combine(settingsDirectory, "..IdealAutomate");
+            if (!isDirectory) {
+                if (fileNamePartOfFullPath.Contains(".")) {
+                    settingsDirectory = Path.Combine(settingsDirectory, fileNamePartOfFullPath.Substring(0, fileNamePartOfFullPath.IndexOf(".")));
+                } else {
+                    settingsDirectory = Path.Combine(settingsDirectory, fileNamePartOfFullPath);
+                }
+            }
+            string settingsPath = Path.Combine(settingsDirectory, fileName);
+            if (File.Exists(settingsPath)) {
+                file = File.OpenText(settingsPath);
+                strValueRead = file.ReadToEnd();
+                file.Close();
+            }
+            return strValueRead;
+        }
+
         public double GetValueByKeyAsDouble(string strKey) {
             string fileName = strKey + ".txt";
             StreamReader file = null;
@@ -2588,6 +2639,60 @@ namespace IdealAutomate.Core {
             writer.Close();
         }
 
+        public void SetValueByPublicKeyInCurrentFolder(string strKey, string strValueToWrite, string strFullFileName) {
+            string fileName = strKey + ".txt";
+            StreamWriter writer = null;
+            string settingsDirectory = "";
+            string fileNamePartOfFullPath = "";
+            bool isDirectory = false;
+            if (File.Exists(strFullFileName)) {
+
+                // path is a file.
+                settingsDirectory = ConvertFullFileNameToPublicPath(strFullFileName);
+                fileNamePartOfFullPath = Path.GetFileName(strFullFileName);
+
+            } else if (Directory.Exists(strFullFileName)) {
+
+                // path is a directory.
+                settingsDirectory = strFullFileName;
+                isDirectory = true;
+
+            } else {
+                // file does not exist yet...so we make assumption that it is a file if it contains period
+                if (strFullFileName.Contains(".")) {
+                    // path is a file.
+                    settingsDirectory = ConvertFullFileNameToPublicPath(strFullFileName);
+                    fileNamePartOfFullPath = Path.GetFileName(strFullFileName);
+                } else {
+                    // path is a directory.
+                    settingsDirectory = strFullFileName;
+                    isDirectory = true;
+                }
+
+
+            }
+           
+            settingsDirectory = Path.Combine(settingsDirectory, "..IdealAutomate");
+            if (!Directory.Exists(settingsDirectory)) {
+                Directory.CreateDirectory(settingsDirectory);
+            }
+            if (!isDirectory) {
+                if (fileNamePartOfFullPath.Contains(".")) {
+                    settingsDirectory = Path.Combine(settingsDirectory, fileNamePartOfFullPath.Substring(0,fileNamePartOfFullPath.IndexOf(".")));
+                } else {
+                    settingsDirectory = Path.Combine(settingsDirectory, fileNamePartOfFullPath);
+                }
+                if (!Directory.Exists(settingsDirectory)) {
+                    Directory.CreateDirectory(settingsDirectory);
+                }
+            }
+            string settingsPath = Path.Combine(settingsDirectory, fileName);
+            // Hook a write to the text file.
+            writer = new StreamWriter(settingsPath);
+            // Rewrite the entire value of s to the file
+            writer.Write(strValueToWrite);
+            writer.Close();
+        }
         /// <summary>
         /// <para>GetValueByKeyGlobal takes a key and adds .txt to it in order to create</para>
         /// <para>a file name. It gets the app data path and adds \IdealAutomate\yourscriptname</para>
