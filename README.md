@@ -11,7 +11,7 @@ Here is a screenshot of IdealAutomateExplorer in List View:<br />
 </center><br /><br />           
 Ideal Automate is an open source development platform that allows C# developers to automate any repetitive task and to share what they have automated with other developers.<br /><br />
 The main project is Ideal Automate Explorer.  Here are three ways that you can use Ideal Automate Explorer:<br /><br />
-1. Launch Applications from Cental Repository<br />
+1. Launch Applications from Central Repository<br />
 2. Knowledge Base<br />
 3. ToDo List<br /><br />
 
