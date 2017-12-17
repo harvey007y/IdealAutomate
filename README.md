@@ -11,7 +11,7 @@ Here is a screenshot of IdealAutomateExplorer in List View:<br />
 </center><br /><br />           
 Ideal Automate is an open source development platform that allows C# developers to automate any repetitive task and to share what they have automated with other developers.<br /><br />
 The main project is Ideal Automate Explorer.  Here are three ways that you can use Ideal Automate Explorer:<br /><br />
-1. Central Repository for AI/Automation Applications<br />
+1. Launch Applications from Cental Repository<br />
 2. Knowledge Base<br />
 3. ToDo List<br /><br />
 
@@ -31,7 +31,7 @@ Instead of requiring that you keep all of your information in some third-party s
 Here is a video that illustrates some of the things that can be done with Ideal Automate. The video was created before Ideal Automate Explorer existed so the interface is different from the current one, but the same general principles apply.<br />
         <br /><a href="https://youtu.be/EH-fuZQhrns" target="_blank"><img title="Ideal Automate 15-Minute Example"  src="http://idealprogrammer.com/wp-photos/IdealAutomateHelloWorld.PNG" alt="Ideal Automate 15-Minute Hello World Example" align="middle"/></a>   <br /><br />
 
-<b>Tags:</b> Windows Explorer with Tabs; Artificial Intelligence; ToDo List; Knowledge Base; Automation Scripts; HotKeys; File Comparison; Search; Add Metadata to files; cheat sheets<br /><br />
+<b>Tags:</b> Windows Explorer with Tabs; Artificial Intelligence; ToDoList; Knowledge Base; Automation Scripts; HotKeys; File Comparison; Search; Add Metadata to files; cheat sheets<br /><br />
   <br />
     <br />
 
