@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading;
 using IdealAutomate.Core;
+using System.Collections;
 
 #endregion
 
@@ -23,9 +24,11 @@ namespace System.Windows.Forms.Samples
         //public DirectoryView() : this(Environment.GetFolderPath(Environment.SpecialFolder.Personal)) { }
 
         private AsyncOperation _oper = null;
+        private ArrayList _myArrayList;
 
-        public DirectoryView(string dir)
+        public DirectoryView(string dir, ArrayList myArrayList)
         {
+            _myArrayList = myArrayList;
             // Setup Async
             _oper = AsyncOperationManager.CreateOperation(null);
 
@@ -46,7 +49,8 @@ namespace System.Windows.Forms.Samples
             WriteDebugThreadInfo("DirectoryView");
         }
 
-        public DirectoryView(string dir, bool fillDir) {
+        public DirectoryView(string dir, bool fillDir, ArrayList myArrayList ) {
+            _myArrayList = myArrayList;
             // Setup Async
             _oper = AsyncOperationManager.CreateOperation(null);
 
@@ -81,15 +85,15 @@ namespace System.Windows.Forms.Samples
             DirectoryInfo info = new DirectoryInfo(dir);
 
             // Set the current directory
-            _directory = new FileView(info);
+            _directory = new FileView(info, _myArrayList);
 
             // Load child files and directories
             try {
                 if (fillDir) {
                     foreach (FileSystemInfo di in info.GetDirectories()) {
                       //  if (di.Name != "..IdealAutomate") {
-                            this.Add(new FileView(di));
-                            FileView myFileView = new FileView(di);
+                            this.Add(new FileView(di, _myArrayList));
+                            FileView myFileView = new FileView(di, _myArrayList);
 
                             if (myFileView.CategoryState == "Expanded") {
                                 _nestingLevel++;
@@ -98,8 +102,8 @@ namespace System.Windows.Forms.Samples
                                 foreach (FileSystemInfo di2 in info2.GetDirectories()) {
                                   //  if (di2.Name != "..IdealAutomate") {
                                         string categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToPublicPath(di2.FullName));
-                                        this.Add(new FileView(di2));
-                                        FileView myFileView2 = new FileView(di2);
+                                        this.Add(new FileView(di2, _myArrayList));
+                                        FileView myFileView2 = new FileView(di2, _myArrayList);
                                         if (myFileView2.CategoryState == "Expanded") {
                                             _nestingLevel++;
                                             myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
@@ -107,8 +111,8 @@ namespace System.Windows.Forms.Samples
                                             foreach (FileSystemInfo di3 in info3.GetDirectories()) {
                                                // if (di3.Name != "..IdealAutomate") {
                                                     categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToPublicPath(di3.FullName));
-                                                    this.Add(new FileView(di3));
-                                                    FileView myFileView3 = new FileView(di3);
+                                                    this.Add(new FileView(di3, _myArrayList));
+                                                    FileView myFileView3 = new FileView(di3, _myArrayList);
                                                     if (myFileView3.CategoryState == "Expanded") {
                                                         DirectoryInfo info4 = new DirectoryInfo(di3.FullName);
                                                         _nestingLevel++;
@@ -116,12 +120,12 @@ namespace System.Windows.Forms.Samples
                                                         foreach (FileSystemInfo di4 in info4.GetDirectories()) {
                                                            // if (di4.Name != "..IdealAutomate") {
                                                                 categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToPublicPath(di4.FullName));
-                                                                this.Add(new FileView(di4));
-                                                                FileView myFileView4 = new FileView(di4);
+                                                                this.Add(new FileView(di4, _myArrayList));
+                                                                FileView myFileView4 = new FileView(di4, _myArrayList);
                                                                 if (myFileView4.CategoryState == "Expanded") {
                                                                     DirectoryInfo info5 = new DirectoryInfo(di4.FullName);
                                                                     foreach (FileSystemInfo fi in info5.GetFiles()) {
-                                                                        this.Add(new FileView(fi));
+                                                                        this.Add(new FileView(fi, _myArrayList));
                                                                     }
                                                                     _nestingLevel--;
                                                                     myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
@@ -130,7 +134,7 @@ namespace System.Windows.Forms.Samples
                                                         }
 
                                                         foreach (FileSystemInfo fi in info4.GetFiles()) {
-                                                            this.Add(new FileView(fi));
+                                                            this.Add(new FileView(fi, _myArrayList));
                                                         }
                                                         _nestingLevel--;
                                                         myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
@@ -138,7 +142,7 @@ namespace System.Windows.Forms.Samples
                                               //  }
                                             }
                                             foreach (FileSystemInfo fi in info3.GetFiles()) {
-                                                this.Add(new FileView(fi));
+                                                this.Add(new FileView(fi, _myArrayList));
                                             }
                                             _nestingLevel--;
                                             myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
@@ -147,7 +151,7 @@ namespace System.Windows.Forms.Samples
                                 }
 
                                 foreach (FileSystemInfo fi in info2.GetFiles()) {
-                                    this.Add(new FileView(fi));
+                                    this.Add(new FileView(fi, _myArrayList));
                                 }
                                 _nestingLevel--;
                                 myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
@@ -156,7 +160,7 @@ namespace System.Windows.Forms.Samples
                     }
 
                     foreach (FileSystemInfo fi in info.GetFiles()) {
-                        this.Add(new FileView(fi));
+                        this.Add(new FileView(fi, _myArrayList));
                     }
                 }
             } catch (Exception ex) {
@@ -245,7 +249,7 @@ namespace System.Windows.Forms.Samples
 
         void FileSystem_Created(object sender, FileSystemEventArgs e)
         {
-            this.Add(new FileView(GetFileSystemInfo(e.FullPath)));
+            this.Add(new FileView(GetFileSystemInfo(e.FullPath), _myArrayList));
         }
 
         void FileSystem_Deleted(object sender, FileSystemEventArgs e)

@@ -38,11 +38,13 @@ namespace System.Windows.Forms.Samples
         private string _custom;
         private string _description;
         private string _status;
+        private ArrayList _myArrayList;
 
-        public FileView(string path) : this(new FileInfo(path)) {        }
+        //public FileView(string path) : this(new FileInfo(path)) {        }
 
-        public FileView(FileSystemInfo fileInfo)
+        public FileView(FileSystemInfo fileInfo, ArrayList myArrayList)
         {
+            _myArrayList = myArrayList;
             SetState(fileInfo);
         }
 
@@ -79,7 +81,7 @@ namespace System.Windows.Forms.Samples
                 decimal decPercentSuccessful = ((decimal)_successfulExecutions / (decimal)_totalExecutions) * 100;
                 _percentSuccesful = Decimal.ToInt32(decPercentSuccessful);
             }
-            _lastExecuted = myActions.GetValueByKeyAsDateTimeForNonCurrentScript("ScriptStartDateTime",myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
+            _lastExecuted = myActions.GetValueByKeyAsDateTimeForNonCurrentScript("ScriptStartDateTime", myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
             _avgExecutionTime = myActions.GetValueByKeyAsIntForNonCurrentScript("AvgSuccessfulExecutionTime", myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
             _manualExecutionTime = myActions.GetValueByKeyAsIntForNonCurrentScript("ManualExecutionTime", myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
             _custom = myActions.GetValueByKeyForNonCurrentScript("custom", myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
@@ -90,9 +92,10 @@ namespace System.Windows.Forms.Samples
             } else {
                 _totalSavings = _successfulExecutions * (_manualExecutionTime - _avgExecutionTime);
             }
-
-            ArrayList myArrayList = myActions.ReadAppDirectoryKeyToArrayListGlobal("ScriptInfo");
-            foreach (var item in myArrayList) {
+            
+            // TODO: move the populate of arrayList to higher level
+             _myArrayList = myActions.ReadAppDirectoryKeyToArrayListGlobal("ScriptInfo");
+            foreach (var item in _myArrayList) {
                 string[] myScriptInfoFields = item.ToString().Split('^');
                 string scriptName = myScriptInfoFields[0];
                 if (scriptName == myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName)) {
@@ -157,8 +160,8 @@ namespace System.Windows.Forms.Samples
 
             try
             {
-                _icon = System.Drawing.Icon.FromHandle(info.hIcon);               
-                string scriptName = myActions.ConvertFullFileNameToPublicPath(fileInfo.FullName) + "\\" + fileInfo.Name; 
+                _icon = System.Drawing.Icon.FromHandle(info.hIcon);
+                string scriptName = myActions.ConvertFullFileNameToPublicPath(fileInfo.FullName) + "\\" + fileInfo.Name;
                 string categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", scriptName);
                 string expandCollapseAll = myActions.GetValueByKey("ExpandCollapseAll");
 
@@ -172,7 +175,7 @@ namespace System.Windows.Forms.Samples
                         myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Collapsed", scriptName);
                     }
                     CategoryState = categoryState;
-                    _icon = new Icon(Properties.Resources._112_Plus_Grey,16,16);
+                    _icon = new Icon(Properties.Resources._112_Plus_Grey, 16, 16);
                 }
                 if (categoryState == "Expanded") {
                     if (expandCollapseAll == "Expand") {
@@ -187,7 +190,7 @@ namespace System.Windows.Forms.Samples
                     _icon = new Icon(Properties.Resources._112_Minus_Grey, 16, 16);
                 }
                 if (categoryState == "Child") {
-                    CategoryState = categoryState;                   
+                    CategoryState = categoryState;
                 }
             }
             catch (Exception ex)

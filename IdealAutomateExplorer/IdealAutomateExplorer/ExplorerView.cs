@@ -60,6 +60,7 @@ namespace System.Windows.Forms.Samples {
         private bool _Panel2KeyPress = false;
         private bool _WordPadLoaded = false;
         private bool _WebBrowserLoaded = false;
+        ArrayList _myArrayList;
 
 
         [DllImport("user32.dll", SetLastError = true)]
@@ -100,6 +101,8 @@ namespace System.Windows.Forms.Samples {
         public static int intHits;
 
         public static bool boolMatchCase = false;
+
+        public ArrayList ArrayHotKeys;
 
         public static bool boolUseRegularExpression = false;
 
@@ -338,7 +341,7 @@ namespace System.Windows.Forms.Samples {
 
                 // do not fill the directory because first time through
                 // we are just addding name and tooltip to each tab
-                _dir = new DirectoryView(strInitialDirectory, false);
+                _dir = new DirectoryView(strInitialDirectory, false, _myArrayList);
                 this._CurrentFileViewBindingSource.DataSource = _dir;
 
                 tabControl1.TabPages[i].Text = _dir.FileView.Name;
@@ -363,7 +366,7 @@ namespace System.Windows.Forms.Samples {
             if (Directory.Exists(strSavedDirectory2)) {
                 strInitialDirectory = strSavedDirectory2;
             }
-            _dir = new DirectoryView(strInitialDirectory);
+            _dir = new DirectoryView(strInitialDirectory, _myArrayList);
             this._CurrentFileViewBindingSource.DataSource = _dir;
             tabControl1.TabPages[tabControl1.SelectedIndex].Text = _dir.FileView.Name;
             _CurrentIndex = tabControl1.SelectedIndex;
@@ -375,7 +378,8 @@ namespace System.Windows.Forms.Samples {
             _CurrentDataGridView = (DataGridViewExt)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
             _CurrentFileViewBindingSource = listBindingSource[tabControl1.SelectedIndex];
 
-            RefreshDataGrid();
+           RefreshDataGrid();
+            goto skipSecondLoad;
             strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             // Set Initial Directory to My Documents
             string strSavedDirectory = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
@@ -384,12 +388,12 @@ namespace System.Windows.Forms.Samples {
             if (Directory.Exists(strSavedDirectory)) {
                 strInitialDirectory = strSavedDirectory;
             }
-            _dir = new DirectoryView(strInitialDirectory);
+            _dir = new DirectoryView(strInitialDirectory, _myArrayList);
             this._CurrentFileViewBindingSource.DataSource = _dir;
 
             // Set the title
             SetTitle(_dir.FileView);
-
+            skipSecondLoad:
             string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
             string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
             string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
@@ -887,12 +891,12 @@ namespace System.Windows.Forms.Samples {
 
         private void AddGlobalHotKeys() {
             Methods myActions = new Methods();
-            ArrayList myArrayList = myActions.ReadAppDirectoryKeyToArrayListGlobal("ScriptInfo");
+            _myArrayList = myActions.ReadAppDirectoryKeyToArrayListGlobal("ScriptInfo");
             ArrayList newArrayList = new ArrayList();
             string strHotKey = "";
             HotKeyRecord myHotKeyRecord = new HotKeyRecord();
             bool boolHotKeysGood = true;
-            foreach (var item in myArrayList) {
+            foreach (var item in _myArrayList) {
                 string[] myScriptInfoFields = item.ToString().Split('^');
                 string scriptName = myScriptInfoFields[0];
 
@@ -1357,7 +1361,7 @@ namespace System.Windows.Forms.Samples {
             if (Directory.Exists(strSavedDirectory1)) {
                 strInitialDirectory = strSavedDirectory1;
             }
-            _dir = new DirectoryView(strInitialDirectory);
+            _dir = new DirectoryView(strInitialDirectory, _myArrayList);
             this._CurrentFileViewBindingSource.DataSource = _dir;
             tabControl1.TabPages[tabControl1.SelectedIndex].Text = _dir.FileView.Name;
             tabControl1.TabPages[tabControl1.SelectedIndex].ToolTipText = _dir.FileView.FullName;
@@ -1515,7 +1519,7 @@ namespace System.Windows.Forms.Samples {
                 strInitialDirectory = strSavedDirectory;
                 myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString(), strSavedDirectory);
             }
-            _dir = new DirectoryView(strInitialDirectory);
+            _dir = new DirectoryView(strInitialDirectory, _myArrayList);
             this._CurrentFileViewBindingSource.DataSource = _dir;
 
             // Set the title
@@ -3149,7 +3153,7 @@ namespace System.Windows.Forms.Samples {
                 if (Directory.Exists(strSavedDirectory1)) {
                     strInitialDirectory = strSavedDirectory1;
                 }
-                _dir = new DirectoryView(strInitialDirectory);
+                _dir = new DirectoryView(strInitialDirectory, _myArrayList);
                 this._CurrentFileViewBindingSource.DataSource = _dir;
                 tabControl1.TabPages[tabControl1.SelectedIndex].Text = _dir.FileView.Name;
                 tabControl1.TabPages[tabControl1.SelectedIndex].ToolTipText = _dir.FileView.FullName;
@@ -3889,7 +3893,7 @@ namespace System.Windows.Forms.Samples {
             if (Directory.Exists(strSavedDirectory)) {
                 strInitialDirectory = strSavedDirectory;
             }
-            _dir = new DirectoryView(strInitialDirectory);
+            _dir = new DirectoryView(strInitialDirectory, _myArrayList);
             this._CurrentFileViewBindingSource.DataSource = _dir;
 
             // Set the title
@@ -4318,7 +4322,7 @@ namespace System.Windows.Forms.Samples {
             if (Directory.Exists(strSavedDirectory)) {
                 strInitialDirectory = strSavedDirectory;
             }
-            _dir = new DirectoryView(strInitialDirectory);
+            _dir = new DirectoryView(strInitialDirectory, _myArrayList);
             this._CurrentFileViewBindingSource.DataSource = _dir;
 
             // Set the title
@@ -4376,7 +4380,7 @@ namespace System.Windows.Forms.Samples {
             if (Directory.Exists(strSavedDirectory)) {
                 strInitialDirectory = strSavedDirectory;
             }
-            _dir = new DirectoryView(strInitialDirectory);
+            _dir = new DirectoryView(strInitialDirectory, _myArrayList);
             this._CurrentFileViewBindingSource.DataSource = _dir;
 
             // Set the title
