@@ -2371,7 +2371,6 @@ namespace System.Windows.Forms.Samples {
                     string strCustom = myListControlEntity.Find(x => x.ID == "cbxCustom").SelectedValue;                    
                     string strdescription = myListControlEntity.Find(x => x.ID == "txtDescription").Text;
                     string strStatus = myListControlEntity.Find(x => x.ID == "cbxStatus").SelectedValue;
-                    myActions.SetValueByKey("cbxStatusSelectedValue", strStatus);
                     
 
                     if (!myNewTextDocumentName.EndsWith(".txt")) {
@@ -2380,8 +2379,10 @@ namespace System.Windows.Forms.Samples {
                     string strNewTextDocumentDir = Path.Combine(basePathForNewTextDocument, myNewTextDocumentName);
                     myActions.SetValueByPublicKeyInCurrentFolder("cbxCustomSelectedValue", strCustom, strNewTextDocumentDir);
                     myActions.SetValueByPublicKeyInCurrentFolder("custom", strCustom, strNewTextDocumentDir);
-                    myActions.SetValueByKeyForNonCurrentScript("description", strdescription, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
-                    myActions.SetValueByKeyForNonCurrentScript("status", strStatus, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
+                    myActions.SetValueByPublicKeyInCurrentFolder("description", strdescription, strNewTextDocumentDir);
+                    myActions.SetValueByPublicKeyInCurrentFolder("status", strStatus, strNewTextDocumentDir);
+                    myActions.SetValueByPublicKeyInCurrentFolder("cbxStatusSelectedValue", strStatus, strNewTextDocumentDir);
+
 
                     if (!File.Exists(strNewTextDocumentDir)) {
                         string newFolderScriptPath = basePathForNewTextDocument + "\\" + myNewTextDocumentName.Replace(".txt", "");
@@ -2685,8 +2686,7 @@ namespace System.Windows.Forms.Samples {
                     string strdescription = myListControlEntity.Find(x => x.ID == "txtDescription").Text;
 
                     string strStatus = myListControlEntity.Find(x => x.ID == "cbxStatus").SelectedValue;
-                    myActions.SetValueByKey("cbxStatusSelectedValue", strStatus);
-
+               
                     basePathForNewTextDocument = _dir.FileView.FullName;
                     basePathName = _dir.FileView.Name;
 
@@ -2701,8 +2701,9 @@ namespace System.Windows.Forms.Samples {
                     string strNewTextDocumentDir = Path.Combine(basePathForNewTextDocument, myNewTextDocumentName);
                     myActions.SetValueByPublicKeyInCurrentFolder("cbxCustomSelectedValue", strCustom, strNewTextDocumentDir);
                     myActions.SetValueByPublicKeyInCurrentFolder("custom", strCustom, strNewTextDocumentDir);
-                    myActions.SetValueByKeyForNonCurrentScript("description", strdescription, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
-                    myActions.SetValueByKeyForNonCurrentScript("status", strStatus, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
+                    myActions.SetValueByPublicKeyInCurrentFolder("description", strdescription, strNewTextDocumentDir);
+                    myActions.SetValueByPublicKeyInCurrentFolder("status", strStatus, strNewTextDocumentDir);
+                    myActions.SetValueByPublicKeyInCurrentFolder("cbxStatusSelectedValue", strStatus, strNewTextDocumentDir);
 
                     if (!File.Exists(strNewTextDocumentDir)) {
                         string newFolderScriptPath = basePathForNewTextDocument + "\\" + myNewTextDocumentName.Replace(".rtf", "");
@@ -4535,7 +4536,7 @@ namespace System.Windows.Forms.Samples {
 
             myControlEntity.ControlEntitySetDefaults();
             myControlEntity.ControlType = ControlType.TextBox;
-            myControlEntity.Text = myActions.GetValueByKeyForNonCurrentScript("description", myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
+            myControlEntity.Text = myActions.GetValueByPublicKeyInCurrentFolder("description", fileFullName);
             myControlEntity.ID = "txtDescription";
             myControlEntity.Multiline = true;
             myControlEntity.Height = 200;
@@ -4586,7 +4587,7 @@ namespace System.Windows.Forms.Samples {
 
             myControlEntity.ControlEntitySetDefaults();
             myControlEntity.ControlType = ControlType.ComboBox;
-            myControlEntity.SelectedValue = myActions.GetValueByKeyForNonCurrentScript("status", myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
+            myControlEntity.SelectedValue = myActions.GetValueByPublicKeyInCurrentFolder("status", fileFullName);
             myControlEntity.ID = "cbxStatus";
             myControlEntity.RowNumber = intRowCtr;
             myControlEntity.ToolTipx = "";
@@ -4612,12 +4613,13 @@ namespace System.Windows.Forms.Samples {
              string strdescription = myListControlEntity.Find(x => x.ID == "txtDescription").Text;
             string myManualExecutionTime = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
             string strStatus = myListControlEntity.Find(x => x.ID == "cbxStatus").SelectedValue;
-            myActions.SetValueByKey("cbxStatusSelectedValue", strStatus);
-            myActions.SetValueByPublicKeyInCurrentFolder("cbxCustomSelectedValue", strCustom, fileFullName);
+             myActions.SetValueByPublicKeyInCurrentFolder("cbxCustomSelectedValue", strCustom, fileFullName);
             myActions.SetValueByPublicKeyInCurrentFolder("custom", strCustom, fileFullName);
-            myActions.SetValueByKeyForNonCurrentScript("description", strdescription, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
+            myActions.SetValueByPublicKeyInCurrentFolder("description", strdescription, fileFullName);
+            myActions.SetValueByPublicKeyInCurrentFolder("status", strStatus, fileFullName);
+            myActions.SetValueByPublicKeyInCurrentFolder("cbxStatusSelectedValue", strStatus, fileFullName);
             myActions.SetValueByKeyForNonCurrentScript("ManualExecutionTime", myManualExecutionTime, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileManualTimeFullName));
-            myActions.SetValueByKeyForNonCurrentScript("status", strStatus, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
+            
 
 
         }
@@ -5883,7 +5885,6 @@ namespace System.Windows.Forms.Samples {
             
             string strdescription = myListControlEntity.Find(x => x.ID == "txtDescription").Text;
             string strStatus = myListControlEntity.Find(x => x.ID == "cbxStatus").SelectedValue;
-            myActions.SetValueByKey("cbxStatusSelectedValue", strStatus);
 
 
             if (!myNewTextDocumentName.EndsWith(".txt")) {
@@ -5892,8 +5893,9 @@ namespace System.Windows.Forms.Samples {
             string strNewTextDocumentDir = Path.Combine(basePathForNewTextDocument, myNewTextDocumentName);
             myActions.SetValueByPublicKeyInCurrentFolder("custom", strCustom, strNewTextDocumentDir);
             myActions.SetValueByPublicKeyInCurrentFolder("cbxCustomSelectedValue", strCustom, strNewTextDocumentDir);
-            myActions.SetValueByKeyForNonCurrentScript("description", strdescription, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
-            myActions.SetValueByKeyForNonCurrentScript("status", strStatus, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
+            myActions.SetValueByPublicKeyInCurrentFolder("description", strdescription, strNewTextDocumentDir);
+            myActions.SetValueByPublicKeyInCurrentFolder("status", strStatus, strNewTextDocumentDir);
+            myActions.SetValueByPublicKeyInCurrentFolder("cbxStatusSelectedValue", strStatus, strNewTextDocumentDir);
             if (!File.Exists(strNewTextDocumentDir)) {
                 string newFolderScriptPath = basePathForNewTextDocument + "\\" + myNewTextDocumentName.Replace(".txt", "");
                 //  myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
@@ -6121,7 +6123,7 @@ namespace System.Windows.Forms.Samples {
             string strdescription = myListControlEntity.Find(x => x.ID == "txtDescription").Text;
 
             string strStatus = myListControlEntity.Find(x => x.ID == "cbxStatus").SelectedValue;
-            myActions.SetValueByKey("cbxStatusSelectedValue", strStatus);
+           
 
 
 
@@ -6133,9 +6135,10 @@ namespace System.Windows.Forms.Samples {
             string strNewTextDocumentDir = Path.Combine(basePathForNewTextDocument, myNewTextDocumentName);
             myActions.SetValueByPublicKeyInCurrentFolder("cbxCustomSelectedValue", strCustom, strNewTextDocumentDir);
             myActions.SetValueByPublicKeyInCurrentFolder("custom", strCustom, strNewTextDocumentDir);
+            myActions.SetValueByPublicKeyInCurrentFolder("description", strdescription, strNewTextDocumentDir);
+            myActions.SetValueByPublicKeyInCurrentFolder("status", strStatus, strNewTextDocumentDir);
+            myActions.SetValueByPublicKeyInCurrentFolder("cbxStatusSelectedValue", strStatus, strNewTextDocumentDir);
 
-            myActions.SetValueByKeyForNonCurrentScript("description", strdescription, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
-            myActions.SetValueByKeyForNonCurrentScript("status", strStatus, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
             if (!File.Exists(strNewTextDocumentDir)) {
                 string newFolderScriptPath = basePathForNewTextDocument + "\\" + myNewTextDocumentName.Replace(".rtf", "");
                 //   myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);

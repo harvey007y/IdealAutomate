@@ -85,8 +85,8 @@ namespace System.Windows.Forms.Samples
             _avgExecutionTime = myActions.GetValueByKeyAsIntForNonCurrentScript("AvgSuccessfulExecutionTime", myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
             _manualExecutionTime = myActions.GetValueByKeyAsIntForNonCurrentScript("ManualExecutionTime", myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
             _custom = myActions.GetValueByPublicKeyInCurrentFolder("custom",fileFullName);
-            _description = myActions.GetValueByKeyForNonCurrentScript("description", myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
-            _status = myActions.GetValueByKeyForNonCurrentScript("status", myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
+            _description = myActions.GetValueByPublicKeyInCurrentFolder("description", fileFullName);
+            _status = myActions.GetValueByPublicKeyInCurrentFolder("status", fileFullName);
             if (_manualExecutionTime == 0) {
                 _totalSavings = 0;
             } else {
