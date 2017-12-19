@@ -5708,10 +5708,10 @@ namespace System.Windows.Forms.Samples {
 
             } catch (Exception ex) {
                 if (ex.InnerException != null) {
-                    myActions.MessageBoxShow(ex.InnerException.ToString());
+                    myActions.MessageBoxShow(ex.InnerException.ToString() + " filename is:"  + flname);
                 } else {
-                    myActions.MessageBoxShow(ex.Message);
-                }
+                    myActions.MessageBoxShow(ex.Message + " filename is:" + flname);
+        }
             }
 
             if (docText != null && docText.Contains(text)) {
