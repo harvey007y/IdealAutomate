@@ -5714,7 +5714,7 @@ namespace System.Windows.Forms.Samples {
                 }
             }
 
-            if (docText.Contains(text)) {
+            if (docText != null && docText.Contains(text)) {
                 return true;
             } else {
                 return false;
