@@ -2,6 +2,7 @@ Imports System.Runtime.InteropServices
 Imports System.Text
 Imports System.Management
 Imports System.IO
+Imports IdealAutomate.Core
 
 Public Class Form1
 
@@ -52,7 +53,13 @@ Public Class Form1
 
 
     Private Sub timerActiveWindowCheck_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
-
+        ' When timer tick occurs every 100 milliseconds,
+        ' get the following info for the foreground window:
+        ' handle, windows title, pid of the app that owns
+        ' window, and the actual process that is running 
+        ' window
+        ' if the window info is new, start a new row; else,
+        ' add to existing row
         '----- Get the Handle to the Current Forground Window ----- -12345
         TextBox1.Text = intKeyCtr.ToString
         Dim hWnd As IntPtr = GetForegroundWindow()
@@ -392,6 +399,8 @@ Public Class Form1
                 writer.WriteLine(line)
             Next
         End Using
+        Dim myActions As New Methods()
+        myActions.Run("C:\Program Files (x86)\Notepad++\notepad++.exe", "myfile.txt")
     End Sub
 
     Private Sub btnPause_Click(sender As Object, e As EventArgs) Handles btnPause.Click
@@ -425,8 +434,13 @@ Public Class Form1
     Private Sub btnClickMouseOnImage_Click(sender As Object, e As EventArgs) Handles btnClickMouseOnImage.Click
 
     End Sub
+
+    Private Sub btnActivateWindowByTitle_Click(sender As Object, e As EventArgs) Handles btnActivateWindowByTitle.Click
+
+    End Sub
 End Class
 Module Keyboard
+    Public myClip As String = ""
     <DllImport("kernel32.dll", CharSet:=CharSet.Auto)>
     Public Function GetModuleHandle(ByVal lpModuleName As String) As IntPtr
     End Function
@@ -828,6 +842,32 @@ Module Keyboard
                         Form1.boolKeyPressHandled = True
                     End If
 
+                    ' if they put something in the clipboard,
+                    ' we do not know what they highlighted
+                    ' since we are not monitoring the mouse.
+                    ' As a result, we just grab what is in
+                    ' their clipboard, and type it out when
+                    ' they do a paste.
+                    If Not CBool(GetAsyncKeyState(VK_CONTROL)) _
+                        And Form1.boolControlOn = True Then
+                        Form1.sbg.Append(")")
+                        If Form1.sbg.ToString() = "^(c)" Then
+                            Dim myActions As New Methods()
+                            myClip = myActions.PutClipboardInEntity()
+                            Form1.listActions.Add("// This text was put into clipboard" & myClip)
+                            Form1.sbg.Length = 0
+                        End If
+                        If Form1.sbg.ToString() = "^(v)" Or Form1.sbg.ToString() = "^(cv)" Then
+                            Form1.sbg.Length = 0
+                            If myClip.Length > 0 Then
+                                Form1.listActions.Add("// The text in the next typetext statement was pasted from clipboard")
+                                Form1.listActions.Add("myActions.TypeText(""" & myClip & """);")
+                            End If
+
+                        End If
+                        Form1.boolControlOn = False
+                        Form1.boolKeyPressHandled = True
+                    End If
                     If CBool(GetAsyncKeyState(VK_BACK)) Then
                         If Form1.sbg.Length > 0 Then
                             Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
@@ -837,9 +877,9 @@ Module Keyboard
                         Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
                         Form1.sbg.Length = 0
                         Form1.boolKeyPressHandled = True
-                    End If
+                        End If
 
-                    If CBool(GetAsyncKeyState(VK_DOWN)) Then
+                        If CBool(GetAsyncKeyState(VK_DOWN)) Then
                         If Form1.sbg.Length > 0 Then
                             Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
                             Form1.sbg.Length = 0
@@ -986,20 +1026,29 @@ Module Keyboard
                         'Form1.boolKeyPressHandled = True
                     End If
 
-                    If Not CBool(GetAsyncKeyState(VK_CONTROL)) _
-                        And Form1.boolControlOn = True Then
-                        Form1.sbg.Append(")")
-                        Form1.boolControlOn = False
-                        'Form1.boolKeyPressHandled = True
-                    End If
+                    ' if they put something in the clipboard,
+                    ' we do not know what they highlighted
+                    ' since we are not monitoring the mouse.
+                    ' As a result, we just grab what is in
+                    ' their clipboard, and type it out when
+                    ' they do a paste.
+
 
                     If CBool(GetAsyncKeyState(VK_MENU)) And Not Form1.boolAltOn Then
+                        If Form1.sbg.Length > 0 Then
+                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                        End If
+                        Form1.sbg.Length = 0
                         Form1.sbg.Append("%(")
                         Form1.boolAltOn = True
                     End If
 
                     If CBool(GetAsyncKeyState(VK_CONTROL)) _
                         And Not Form1.boolControlOn Then
+                        If Form1.sbg.Length > 0 Then
+                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                        End If
+                        Form1.sbg.Length = 0
                         Form1.sbg.Append("^(")
                         Form1.boolControlOn = True
                     End If

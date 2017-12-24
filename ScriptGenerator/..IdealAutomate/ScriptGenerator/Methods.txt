@@ -1,0 +1,34 @@
+Method^Category
+ActivateWindowByTitle^Window
+ClickImageIfExists^Image
+FindDelimitedText^Search
+GetActiveWindowTitle^Window
+GetValueByKey^Database
+GetWindowTitlesByProcessName^Window
+KillAllProcessesByProcessName^Processes
+LeftClick^Mouse
+MessageBoxShow^MessageBox
+MessageBoxShowWithYesNo^MessageBox
+PositionCursor^Mouse
+PutAll^Image
+PutCaretPositionInArray^Caret Position
+PutClipboardInEntity^Clipboard
+PutCursorPosition^Mouse
+PutEntityInClipboard^Clipboard
+PutInternetExplorerTabTitleInEntity^Internet Explorer
+PutInternetExplorerTabURLContainingStringInEntity^Internet Explorer
+PutWindowTitleInEntity^Window
+RestartService^Service
+RightClick^Mouse
+Run^Run
+RunSync^Run
+SetValueByKey^Database
+ShiftClick^Mouse
+Sleep^Sleep
+StartService^Service
+StopService^Service
+TypeText^TypeText
+IEGoToURL^Internet Explorer
+WindowMultipleControls^Window
+WindowMultipleControlsMinimized^Window
+WindowShape^Window

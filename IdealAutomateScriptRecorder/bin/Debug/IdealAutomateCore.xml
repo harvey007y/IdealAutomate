@@ -457,15 +457,6 @@
             <param name="strKey">Unique key within the script application</param>
             <returns>ArrayList that was in application directory for that key</returns>
         </member>
-        <member name="M:IdealAutomate.Core.Methods.ReadPublicKeyToArrayList(System.String,System.String)">
-            <summary>
-            <para>ReadPublicKeyToArrayList takes a key and adds .txt to it in order to create</para>
-            <para>a file name. It gets the parent folder of the full filename that is passed in</para>
-            <para>to it. It creates a folder with the path for the fullfilename in ..\IdealAutomate folder,</para>
-            </summary>
-            <param name="strKey">Unique key within the script application</param>
-            <returns>ArrayList that was in parent folder ..IdealAutomate for that key</returns>
-        </member>
         <member name="M:IdealAutomate.Core.Methods.WriteArrayListToAppDirectoryKey(System.String,System.Collections.ArrayList)">
             <summary>
             <para>WriteArrayListToAppDirectoryKey takes a key and adds .txt to it in order to create</para>

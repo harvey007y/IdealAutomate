@@ -1,0 +1,7 @@
+myActions.TypeText("{DELETE}");
+myActions.TypeText("testing123");
+// This text was put into clipboardtesting123
+myActions.TypeText("{RETURN}");
+// The text in the next typetext statement was pasted from clipboard
+myActions.TypeText("testing123");
+myActions.TypeText("{RETURN}");
