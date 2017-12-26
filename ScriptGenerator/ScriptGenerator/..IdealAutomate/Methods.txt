@@ -1,4 +1,3 @@
-Method^Category
 PutCaretPositionInArray^Caret Position
 PutClipboardInEntity^Clipboard
 PutEntityInClipboard^Clipboard

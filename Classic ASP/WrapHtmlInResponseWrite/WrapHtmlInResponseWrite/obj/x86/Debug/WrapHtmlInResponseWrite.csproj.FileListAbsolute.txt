@@ -1,0 +1,54 @@
+C:\SVN\ReleaseIndependent\Developers\Wade\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\bin\Debug\Images\112_UpArrowShort_Green.ico
+C:\SVN\ReleaseIndependent\Developers\Wade\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\bin\Debug\Images\imgPatch16.PNG
+C:\SVN\ReleaseIndependent\Developers\Wade\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\bin\Debug\Images\imgPatch17.PNG
+C:\SVN\ReleaseIndependent\Developers\Wade\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\bin\Debug\Images\imgPatch2015_08.PNG
+C:\SVN\ReleaseIndependent\Developers\Wade\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\bin\Debug\Images\imgPatch2015_08_Home.PNG
+C:\SVN\ReleaseIndependent\Developers\Wade\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\bin\Debug\Images\imgSVNUpdate.PNG
+C:\SVN\ReleaseIndependent\Developers\Wade\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\bin\Debug\Images\imgSVNUpdate_Home.PNG
+C:\SVN\ReleaseIndependent\Developers\Wade\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\bin\Debug\Images\imgUpdateLogOK.PNG
+C:\SVN\ReleaseIndependent\Developers\Wade\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\bin\Debug\Images\imgUpdateLogOK_Home.PNG
+C:\SVN\ReleaseIndependent\Developers\Wade\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\bin\Debug\WrapHtmlInResponseWrite.exe
+C:\SVN\ReleaseIndependent\Developers\Wade\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\bin\Debug\WrapHtmlInResponseWrite.pdb
+C:\SVN\ReleaseIndependent\Developers\Wade\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\bin\Debug\IdealAutomateCore.dll
+C:\SVN\ReleaseIndependent\Developers\Wade\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\bin\Debug\WindowsInput.dll
+C:\SVN\ReleaseIndependent\Developers\Wade\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\bin\Debug\IdealAutomateCore.pdb
+C:\SVN\ReleaseIndependent\Developers\Wade\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\bin\Debug\IdealAutomateCore.xml
+C:\SVN\ReleaseIndependent\Developers\Wade\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\bin\Debug\WindowsInput.xml
+C:\SVN\ReleaseIndependent\Developers\Wade\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\obj\x86\Debug\WrapHtmlInResponseWrite.csprojResolveAssemblyReference.cache
+C:\SVN\ReleaseIndependent\Developers\Wade\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\obj\x86\Debug\MainWindow.baml
+C:\SVN\ReleaseIndependent\Developers\Wade\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\obj\x86\Debug\MainWindow.g.cs
+C:\SVN\ReleaseIndependent\Developers\Wade\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\obj\x86\Debug\App.g.cs
+C:\SVN\ReleaseIndependent\Developers\Wade\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\obj\x86\Debug\WrapHtmlInResponseWrite_Content.g.cs
+C:\SVN\ReleaseIndependent\Developers\Wade\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\obj\x86\Debug\WrapHtmlInResponseWrite_MarkupCompile.cache
+C:\SVN\ReleaseIndependent\Developers\Wade\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\obj\x86\Debug\WrapHtmlInResponseWrite.g.resources
+C:\SVN\ReleaseIndependent\Developers\Wade\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\obj\x86\Debug\WrapHtmlInResponseWrite.Properties.Resources.resources
+C:\SVN\ReleaseIndependent\Developers\Wade\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\obj\x86\Debug\WrapHtmlInResponseWrite.csproj.GenerateResource.Cache
+C:\SVN\ReleaseIndependent\Developers\Wade\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\obj\x86\Debug\WrapHtmlInResponseWrite.exe
+C:\SVN\ReleaseIndependent\Developers\Wade\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\obj\x86\Debug\WrapHtmlInResponseWrite.pdb
+C:\SVN\ReleaseIndependent\Developers\Wade\Classic ASP\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\bin\Debug\Images\112_UpArrowShort_Green.ico
+C:\SVN\ReleaseIndependent\Developers\Wade\Classic ASP\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\bin\Debug\Images\imgPatch16.PNG
+C:\SVN\ReleaseIndependent\Developers\Wade\Classic ASP\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\bin\Debug\Images\imgPatch17.PNG
+C:\SVN\ReleaseIndependent\Developers\Wade\Classic ASP\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\bin\Debug\Images\imgPatch2015_08.PNG
+C:\SVN\ReleaseIndependent\Developers\Wade\Classic ASP\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\bin\Debug\Images\imgPatch2015_08_Home.PNG
+C:\SVN\ReleaseIndependent\Developers\Wade\Classic ASP\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\bin\Debug\Images\imgSVNUpdate.PNG
+C:\SVN\ReleaseIndependent\Developers\Wade\Classic ASP\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\bin\Debug\Images\imgSVNUpdate_Home.PNG
+C:\SVN\ReleaseIndependent\Developers\Wade\Classic ASP\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\bin\Debug\Images\imgUpdateLogOK.PNG
+C:\SVN\ReleaseIndependent\Developers\Wade\Classic ASP\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\bin\Debug\Images\imgUpdateLogOK_Home.PNG
+C:\SVN\ReleaseIndependent\Developers\Wade\Classic ASP\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\bin\Debug\WrapHtmlInResponseWrite.exe
+C:\SVN\ReleaseIndependent\Developers\Wade\Classic ASP\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\bin\Debug\WrapHtmlInResponseWrite.pdb
+C:\SVN\ReleaseIndependent\Developers\Wade\Classic ASP\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\bin\Debug\IdealAutomateCore.dll
+C:\SVN\ReleaseIndependent\Developers\Wade\Classic ASP\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\bin\Debug\WindowsInput.dll
+C:\SVN\ReleaseIndependent\Developers\Wade\Classic ASP\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\bin\Debug\IdealAutomateCore.pdb
+C:\SVN\ReleaseIndependent\Developers\Wade\Classic ASP\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\bin\Debug\IdealAutomateCore.xml
+C:\SVN\ReleaseIndependent\Developers\Wade\Classic ASP\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\bin\Debug\WindowsInput.xml
+C:\SVN\ReleaseIndependent\Developers\Wade\Classic ASP\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\obj\x86\Debug\WrapHtmlInResponseWrite.csprojResolveAssemblyReference.cache
+C:\SVN\ReleaseIndependent\Developers\Wade\Classic ASP\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\obj\x86\Debug\MainWindow.baml
+C:\SVN\ReleaseIndependent\Developers\Wade\Classic ASP\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\obj\x86\Debug\MainWindow.g.cs
+C:\SVN\ReleaseIndependent\Developers\Wade\Classic ASP\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\obj\x86\Debug\App.g.cs
+C:\SVN\ReleaseIndependent\Developers\Wade\Classic ASP\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\obj\x86\Debug\WrapHtmlInResponseWrite_Content.g.cs
+C:\SVN\ReleaseIndependent\Developers\Wade\Classic ASP\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\obj\x86\Debug\WrapHtmlInResponseWrite_MarkupCompile.cache
+C:\SVN\ReleaseIndependent\Developers\Wade\Classic ASP\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\obj\x86\Debug\WrapHtmlInResponseWrite.g.resources
+C:\SVN\ReleaseIndependent\Developers\Wade\Classic ASP\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\obj\x86\Debug\WrapHtmlInResponseWrite.Properties.Resources.resources
+C:\SVN\ReleaseIndependent\Developers\Wade\Classic ASP\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\obj\x86\Debug\WrapHtmlInResponseWrite.csproj.GenerateResource.Cache
+C:\SVN\ReleaseIndependent\Developers\Wade\Classic ASP\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\obj\x86\Debug\WrapHtmlInResponseWrite.exe
+C:\SVN\ReleaseIndependent\Developers\Wade\Classic ASP\WrapHtmlInResponseWrite\WrapHtmlInResponseWrite\obj\x86\Debug\WrapHtmlInResponseWrite.pdb

@@ -6515,12 +6515,31 @@ namespace System.Windows.Forms.Samples {
         }
 
 
+        private void Popup() {
 
+            Thread th = new Thread(() =>
+            {
+                try {
+                    Open();
+                } catch (Exception) {
+
+                }
+            });
+            th.Start();
+            Thread.Sleep(500);   //you can update this time as your requirement
+            th.Abort();
+        }
+
+        private void Open() {
+            Saved frm = new Saved();
+            frm.ShowDialog();   // frm.Show(); if MDI Parent form            
+        }
         private void splitContainer1_MouseLeave(object sender, EventArgs e) {
             if (_Panel2KeyPress && _WordPadLoaded) {
                 Methods myActions = new Methods();
                 myActions.TypeText("^(s)", 200);
                 _Panel2KeyPress = false;
+                Popup();
             }
         }
 
@@ -6529,6 +6548,7 @@ namespace System.Windows.Forms.Samples {
                 Methods myActions = new Methods();
                 myActions.TypeText("^(s)", 200);
                 _Panel2KeyPress = false;
+                Popup();
             }
         }
 
@@ -6537,6 +6557,7 @@ namespace System.Windows.Forms.Samples {
                 Methods myActions = new Methods();
                 myActions.TypeText("^(s)", 200);
                 _Panel2KeyPress = false;
+                Popup();
             }
         }
 
@@ -6545,6 +6566,7 @@ namespace System.Windows.Forms.Samples {
                 Methods myActions = new Methods();
                 myActions.TypeText("^(s)", 200);
                 _Panel2KeyPress = false;
+                Popup();
             }
         }
     }

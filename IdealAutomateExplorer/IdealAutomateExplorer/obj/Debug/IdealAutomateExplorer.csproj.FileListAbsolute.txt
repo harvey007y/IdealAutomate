@@ -71,3 +71,4 @@ C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateExplorer\IdealAutomateExp
 C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\ICSharpCode.SharpZipLib.dll
 C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\DocumentFormat.OpenXml.xml
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\IdealAutomateExplorer.csprojResolveAssemblyReference.cache
+C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\System.Windows.Forms.Samples.Saved.resources

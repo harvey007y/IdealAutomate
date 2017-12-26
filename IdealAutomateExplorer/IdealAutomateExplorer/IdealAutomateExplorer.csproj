@@ -79,6 +79,9 @@
     <Content Include="BuildProjects.bat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Saved.resx">
+      <DependentUpon>Saved.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Images\plus.png" />
     <None Include="Images\minus.png" />
     <Content Include="Images\icon_close.png" />
@@ -104,6 +107,12 @@
     </Compile>
     <Compile Include="HotKeyRecord.cs" />
     <Compile Include="MatchInfo.cs" />
+    <Compile Include="Saved.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Saved.Designer.cs">
+      <DependentUpon>Saved.cs</DependentUpon>
+    </Compile>
     <Compile Include="Settings.cs" />
     <Compile Include="SortableBindingList.cs" />
     <Compile Include="StringExtensions.cs" />

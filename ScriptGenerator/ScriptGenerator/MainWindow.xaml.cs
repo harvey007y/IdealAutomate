@@ -147,70 +147,70 @@ namespace ScriptGenerator {
                 }
 
 
-                myControlEntity.ControlEntitySetDefaults();
-                myControlEntity.ControlType = ControlType.Label;
-                myControlEntity.ID = "lblCreateVSProject";
-                myControlEntity.Text = "Create New VS Project";
-                myControlEntity.RowNumber = intRow;
-                myControlEntity.ColumnNumber = intCol;
-                myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
-                myControlEntity.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
-                myListControlEntity.Add(myControlEntity.CreateControlEntity());
+                //myControlEntity.ControlEntitySetDefaults();
+                //myControlEntity.ControlType = ControlType.Label;
+                //myControlEntity.ID = "lblCreateVSProject";
+                //myControlEntity.Text = "Create New VS Project";
+                //myControlEntity.RowNumber = intRow;
+                //myControlEntity.ColumnNumber = intCol;
+                //myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
+                //myControlEntity.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
+                //myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
-                intRow++;
-                myControlEntity.ControlEntitySetDefaults();
-                myControlEntity.ControlType = ControlType.Button;
-                myControlEntity.ID = "myButtonCreateVSProject";
-                myControlEntity.Text = "CreateNewVSProject";
-                myControlEntity.RowNumber = intRow;
-                myControlEntity.ColumnNumber = intCol;
-                //    myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
-                //   myControlEntity.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
-                myListControlEntity.Add(myControlEntity.CreateControlEntity());
+                //intRow++;
+                //myControlEntity.ControlEntitySetDefaults();
+                //myControlEntity.ControlType = ControlType.Button;
+                //myControlEntity.ID = "myButtonCreateVSProject";
+                //myControlEntity.Text = "CreateNewVSProject";
+                //myControlEntity.RowNumber = intRow;
+                //myControlEntity.ColumnNumber = intCol;
+                ////    myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
+                ////   myControlEntity.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
+                //myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
-                intRow++;
-                myControlEntity.ControlEntitySetDefaults();
-                myControlEntity.ControlType = ControlType.Label;
-                myControlEntity.ID = "lblDeclareVariable";
-                myControlEntity.Text = "Declare A Variable";
-                myControlEntity.RowNumber = intRow;
-                myControlEntity.ColumnNumber = intCol;
-                myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
-                myControlEntity.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
-                myListControlEntity.Add(myControlEntity.CreateControlEntity());
+                //intRow++;
+                //myControlEntity.ControlEntitySetDefaults();
+                //myControlEntity.ControlType = ControlType.Label;
+                //myControlEntity.ID = "lblDeclareVariable";
+                //myControlEntity.Text = "Declare A Variable";
+                //myControlEntity.RowNumber = intRow;
+                //myControlEntity.ColumnNumber = intCol;
+                //myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
+                //myControlEntity.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
+                //myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
-                intRow++;
-                myControlEntity.ControlEntitySetDefaults();
-                myControlEntity.ControlType = ControlType.Button;
-                myControlEntity.ID = "myButtonDeclareAVariable";
-                myControlEntity.Text = "Declare Variable";
-                myControlEntity.RowNumber = intRow;
-                myControlEntity.ColumnNumber = intCol;
-                //    myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
-                //   myControlEntity.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
-                myListControlEntity.Add(myControlEntity.CreateControlEntity());
+                //intRow++;
+                //myControlEntity.ControlEntitySetDefaults();
+                //myControlEntity.ControlType = ControlType.Button;
+                //myControlEntity.ID = "myButtonDeclareAVariable";
+                //myControlEntity.Text = "Declare Variable";
+                //myControlEntity.RowNumber = intRow;
+                //myControlEntity.ColumnNumber = intCol;
+                ////    myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
+                ////   myControlEntity.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
+                //myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
-                intRow++;
-                myControlEntity.ControlEntitySetDefaults();
-                myControlEntity.ControlType = ControlType.Label;
-                myControlEntity.ID = "lblCopyVSProjectToIA";
-                myControlEntity.Text = "Copy VS Project to IA";
-                myControlEntity.RowNumber = intRow;
-                myControlEntity.ColumnNumber = intCol;
-                myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
-                myControlEntity.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
-                myListControlEntity.Add(myControlEntity.CreateControlEntity());
+                //intRow++;
+                //myControlEntity.ControlEntitySetDefaults();
+                //myControlEntity.ControlType = ControlType.Label;
+                //myControlEntity.ID = "lblCopyVSProjectToIA";
+                //myControlEntity.Text = "Copy VS Project to IA";
+                //myControlEntity.RowNumber = intRow;
+                //myControlEntity.ColumnNumber = intCol;
+                //myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
+                //myControlEntity.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
+                //myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
-                intRow++;
-                myControlEntity.ControlEntitySetDefaults();
-                myControlEntity.ControlType = ControlType.Button;
-                myControlEntity.ID = "myButtonCopyVSProjectToIA";
-                myControlEntity.Text = "Copy VS Project to IA";
-                myControlEntity.RowNumber = intRow;
-                myControlEntity.ColumnNumber = intCol;
-                //    myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
-                //   myControlEntity.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
-                myListControlEntity.Add(myControlEntity.CreateControlEntity());
+                //intRow++;
+                //myControlEntity.ControlEntitySetDefaults();
+                //myControlEntity.ControlType = ControlType.Button;
+                //myControlEntity.ID = "myButtonCopyVSProjectToIA";
+                //myControlEntity.Text = "Copy VS Project to IA";
+                //myControlEntity.RowNumber = intRow;
+                //myControlEntity.ColumnNumber = intCol;
+                ////    myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
+                ////   myControlEntity.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
+                //myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
                 string strScripts = "";
                 string strVariables = "";
@@ -420,7 +420,7 @@ namespace ScriptGenerator {
                             strGeneratedLinex = "myActions.IEGoToURL(myActions, " + strWebsiteURLToUse + ", " + strUseNewTab + ");";
 
                             myActions.PutEntityInClipboard(strGeneratedLinex);
-                            myActions.MessageBoxShow(strGeneratedLinex);
+                            myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard" );
                         }
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
                         strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
@@ -631,7 +631,7 @@ namespace ScriptGenerator {
                             strGeneratedLinex = "myActions.WindowShape(\"" + strShape + "\", \"" + strOrientation + "\", \"" + strTitlex + "\", \"" + strContentx + "\"," + strTopx + ", " + strLeftx + ");";
 
                             myActions.PutEntityInClipboard(strGeneratedLinex);
-                            myActions.MessageBoxShow(strGeneratedLinex);
+                            myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard" );
                         }
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
                         strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
@@ -805,7 +805,7 @@ namespace ScriptGenerator {
                             strGeneratedLinex = "myActions.StopService(" + strServiceNameToUse + "," + strTimeoutMilliseconds + ");";
 
                             myActions.PutEntityInClipboard(strGeneratedLinex);
-                            myActions.MessageBoxShow(strGeneratedLinex);
+                            myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard" );
                         }
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
                         strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
@@ -979,7 +979,7 @@ namespace ScriptGenerator {
                             strGeneratedLinex = "myActions.StartService(" + strServiceNameToUse + "," + strTimeoutMilliseconds + ");";
 
                             myActions.PutEntityInClipboard(strGeneratedLinex);
-                            myActions.MessageBoxShow(strGeneratedLinex);
+                            myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard" );
                         }
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
                         strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
@@ -1132,7 +1132,7 @@ namespace ScriptGenerator {
                             strGeneratedLinex = "myActions.Sleep(" + strMillisecondsToSleepToUse + ");";
 
                             myActions.PutEntityInClipboard(strGeneratedLinex);
-                            myActions.MessageBoxShow(strGeneratedLinex);
+                            myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard" );
                         }
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
                         strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
@@ -1326,7 +1326,7 @@ namespace ScriptGenerator {
                             strGeneratedLinex = "myActions.ShiftClick(" + strmyArrayToUse + ");";
 
                             myActions.PutEntityInClipboard(strGeneratedLinex);
-                            myActions.MessageBoxShow(strGeneratedLinex);
+                            myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard" );
                         }
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
                         strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
@@ -1571,7 +1571,7 @@ namespace ScriptGenerator {
                             strGeneratedLinex = "myActions.SetValueByKey(" + strKeyToUse + ", " + strValueToUse + ", \"IdealAutomateDB\");";
 
                             myActions.PutEntityInClipboard(strGeneratedLinex);
-                            myActions.MessageBoxShow(strGeneratedLinex);
+                            myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard" );
                         }
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
                         strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
@@ -1816,7 +1816,7 @@ namespace ScriptGenerator {
                             strGeneratedLinex = "myActions.RunSync(" + strExecutableToUse + ", " + strContentToUse + ");";
 
                             myActions.PutEntityInClipboard(strGeneratedLinex);
-                            myActions.MessageBoxShow(strGeneratedLinex);
+                            myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard" );
                         }
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
                         strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
@@ -2061,7 +2061,7 @@ namespace ScriptGenerator {
                             strGeneratedLinex = "myActions.Run(" + strExecutableToUse + ", " + strContentToUse + ");";
 
                             myActions.PutEntityInClipboard(strGeneratedLinex);
-                            myActions.MessageBoxShow(strGeneratedLinex);
+                            myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard" );
                         }
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
                         strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
@@ -2255,7 +2255,7 @@ namespace ScriptGenerator {
                             strGeneratedLinex = "myActions.RightClick(" + strmyArrayToUse + ");";
 
                             myActions.PutEntityInClipboard(strGeneratedLinex);
-                            myActions.MessageBoxShow(strGeneratedLinex);
+                            myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard" );
                         }
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
                         strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
@@ -2429,7 +2429,7 @@ namespace ScriptGenerator {
                             strGeneratedLinex = "myActions.RestartService(" + strServiceNameToUse + "," + strTimeoutMilliseconds + ");";
 
                             myActions.PutEntityInClipboard(strGeneratedLinex);
-                            myActions.MessageBoxShow(strGeneratedLinex);
+                            myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard" );
                         }
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
                         strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
@@ -2586,7 +2586,7 @@ namespace ScriptGenerator {
                             strGeneratedLinex = strResultValueToUse + " = myActions.PutWindowTitleInEntity();";
 
                             myActions.PutEntityInClipboard(strGeneratedLinex);
-                            myActions.MessageBoxShow(strGeneratedLinex);
+                            myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard" );
                         }
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
                         strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
@@ -2848,7 +2848,7 @@ namespace ScriptGenerator {
                             strGeneratedLinex = strResultURLToUse + " = myActions.PutInternetExplorerTabURLContainingStringInEntity(" + strSearchStringToUse + ");";
 
                             myActions.PutEntityInClipboard(strGeneratedLinex);
-                            myActions.MessageBoxShow(strGeneratedLinex);
+                            myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard" );
                         }
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
                         strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
@@ -3005,7 +3005,7 @@ namespace ScriptGenerator {
                             strGeneratedLinex = strResultValueToUse + " = myActions.PutInternetExplorerTabTitleInEntity();";
 
                             myActions.PutEntityInClipboard(strGeneratedLinex);
-                            myActions.MessageBoxShow(strGeneratedLinex);
+                            myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard" );
                         }
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
                         strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
@@ -3159,7 +3159,7 @@ namespace ScriptGenerator {
                             strGeneratedLinex = "myActions.PutEntityInClipboard(" + strmyEntityToUse + ");";
 
                             myActions.PutEntityInClipboard(strGeneratedLinex);
-                            myActions.MessageBoxShow(strGeneratedLinex);
+                            myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard" );
                         }
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
                         strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
@@ -3316,7 +3316,7 @@ namespace ScriptGenerator {
                             strGeneratedLinex = strResultValueToUse + " = myActions.PutCursorPosition();";
 
                             myActions.PutEntityInClipboard(strGeneratedLinex);
-                            myActions.MessageBoxShow(strGeneratedLinex);
+                            myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard" );
                         }
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
                         strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
@@ -3474,7 +3474,7 @@ namespace ScriptGenerator {
                             strGeneratedLinex = strResultValueToUse + " = myActions.PutClipboardInEntity();";
 
                             myActions.PutEntityInClipboard(strGeneratedLinex);
-                            myActions.MessageBoxShow(strGeneratedLinex);
+                            myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard" );
                         }
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
                         strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
@@ -3633,7 +3633,7 @@ namespace ScriptGenerator {
                             strGeneratedLinex = "int[,] " + strResultValueToUse + " = myActions.PutCaretPositionInArray();";
 
                             myActions.PutEntityInClipboard(strGeneratedLinex);
-                            myActions.MessageBoxShow(strGeneratedLinex);
+                            myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard" );
                         }
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
                         strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
@@ -4234,7 +4234,7 @@ namespace ScriptGenerator {
                             strGeneratedLinex = "myActions.PositionCursor(" + strmyArrayToUse + ");";
 
                             myActions.PutEntityInClipboard(strGeneratedLinex);
-                            myActions.MessageBoxShow(strGeneratedLinex);
+                            myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard" );
                         }
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
                         strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
@@ -4520,7 +4520,7 @@ namespace ScriptGenerator {
                             strGeneratedLinex = strResultYesNoToUse + " = myActions.GetValueByKey(" + strMessageToUse + ", \"IdealAutomateDB\");";
 
                             myActions.PutEntityInClipboard(strGeneratedLinex);
-                            myActions.MessageBoxShow(strGeneratedLinex);
+                            myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard" );
                         }
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
                         strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
@@ -4673,7 +4673,7 @@ namespace ScriptGenerator {
                             strGeneratedLinex = "myActions.MessageBoxShow(" + strMessageToUse + ");";
 
                             myActions.PutEntityInClipboard(strGeneratedLinex);
-                            myActions.MessageBoxShow(strGeneratedLinex);
+                            myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard" );
                         }
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
                         strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
@@ -4867,7 +4867,7 @@ namespace ScriptGenerator {
                             strGeneratedLinex = "myActions.LeftClick(" + strmyArrayToUse + ");";
 
                             myActions.PutEntityInClipboard(strGeneratedLinex);
-                            myActions.MessageBoxShow(strGeneratedLinex);
+                            myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard" );
                         }
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
                         strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
@@ -5020,7 +5020,7 @@ namespace ScriptGenerator {
                             strGeneratedLinex = "myActions.KillAllProcessesByProcessName(" + strProcessNameToUse + ");";
 
                             myActions.PutEntityInClipboard(strGeneratedLinex);
-                            myActions.MessageBoxShow(strGeneratedLinex);
+                            myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard" );
                         }
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
                         strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
@@ -5281,7 +5281,7 @@ namespace ScriptGenerator {
                             strGeneratedLinex = strValueToUse + " = myActions.GetWindowTitlesByProcessName(" + strKeyToUse + ");";
 
                             myActions.PutEntityInClipboard(strGeneratedLinex);
-                            myActions.MessageBoxShow(strGeneratedLinex);
+                            myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard" );
                         }
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
                         strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
@@ -5542,7 +5542,7 @@ namespace ScriptGenerator {
                             strGeneratedLinex = strValueToUse + " = myActions.GetValueByKey(" + strKeyToUse + ", \"IdealAutomateDB\");";
 
                             myActions.PutEntityInClipboard(strGeneratedLinex);
-                            myActions.MessageBoxShow(strGeneratedLinex);
+                            myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard" );
                         }
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
                         strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
@@ -5699,7 +5699,7 @@ namespace ScriptGenerator {
                             strGeneratedLinex = strResultValueToUse + " = myActions.GetActiveWindowTitle();";
 
                             myActions.PutEntityInClipboard(strGeneratedLinex);
-                            myActions.MessageBoxShow(strGeneratedLinex);
+                            myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard" );
                         }
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
                         strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
@@ -6526,7 +6526,7 @@ namespace ScriptGenerator {
                                 strGeneratedLinex = "myActions.ActivateWindowByTitle(" + strWindowTitleToUse + "," + strShowOption + ");";
                             }
                             myActions.PutEntityInClipboard(strGeneratedLinex);
-                            myActions.MessageBoxShow(strGeneratedLinex);
+                            myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard" );
                         }
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
                         strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
