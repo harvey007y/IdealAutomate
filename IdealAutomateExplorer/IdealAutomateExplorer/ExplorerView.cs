@@ -60,6 +60,7 @@ namespace System.Windows.Forms.Samples {
         private bool _Panel2KeyPress = false;
         private bool _WordPadLoaded = false;
         private bool _WebBrowserLoaded = false;
+        private bool _NotepadppLoaded = false;
         ArrayList _myArrayList;
 
 
@@ -1148,6 +1149,7 @@ namespace System.Windows.Forms.Samples {
 
             //SetParent(_appHandle, splitContainer1.Panel2.Handle);
             //SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+            _NotepadppLoaded = true;
             myActions.Run(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
             if (strFullFileName.EndsWith(".doc") || strFullFileName.EndsWith(".docx") || strFullFileName.EndsWith(".odt")) {
             } else {
@@ -1935,7 +1937,8 @@ namespace System.Windows.Forms.Samples {
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
                 if (!myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
-                    string strExecutable = @"C:\Windows\system32\notepad.exe";
+                    _NotepadppLoaded = true;
+                    string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
                     myActions.Run(strExecutable, "\"" + myFileView.FullName + "\"");
                 } else {
                     myActions.MessageBoxShow("You cannot open folders with Notepad");
@@ -1950,9 +1953,7 @@ namespace System.Windows.Forms.Samples {
                 if (e.ColumnIndex != -1 && e.RowIndex != -1 && e.Button == System.Windows.Forms.MouseButtons.Left) {
                     DataGridViewCell c = (sender as DataGridView)[e.ColumnIndex, e.RowIndex];
                     if (!c.Selected) {
-                        c.Selected = true;
-                        _WordPadLoaded = false;
-                        _WebBrowserLoaded = false;
+                        c.Selected = true;                        
                         string fileName = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells[13].Value.ToString();
                         if (fileName.EndsWith(".url")
 
@@ -1993,6 +1994,8 @@ namespace System.Windows.Forms.Samples {
                             //}
                             //if (toolStripComboBox1.Text != "")
                             //    Url = toolStripComboBox1.Text;
+                            _WordPadLoaded = false;
+                            _NotepadppLoaded = false;
                             _WebBrowserLoaded = true;
                             Url = GetInternetShortcut(fileName);
                             InitializeComponentWebBrowser();
@@ -2021,6 +2024,8 @@ namespace System.Windows.Forms.Samples {
                             || fileName.EndsWith(".doc")
                             || fileName.EndsWith(".docx")
                             ) {
+                            _NotepadppLoaded = false;
+                            _WebBrowserLoaded = false;
                             _WordPadLoaded = true;
                             //Close the running process
                             splitContainer1.Panel2.Controls.Clear();
@@ -2067,8 +2072,11 @@ namespace System.Windows.Forms.Samples {
                                   || fileName.EndsWith(".asp")
                                   || fileName.EndsWith(".inc")
                                   || fileName.EndsWith(".dinc")
-                                    || fileName.EndsWith(".aspx")
+                                  || fileName.EndsWith(".aspx")
                                   || fileName.EndsWith(".csv")) {
+                                _WordPadLoaded = false;
+                                _NotepadppLoaded = true;
+                                _WebBrowserLoaded = false;
                                 //Close the running process
                                 splitContainer1.Panel2.Controls.Clear();
                                 if (_appHandle != IntPtr.Zero) {
@@ -2198,6 +2206,7 @@ namespace System.Windows.Forms.Samples {
                 FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
                 if (!myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     myActions.KillAllProcessesByProcessName("notepad++");
+                    _NotepadppLoaded = true;
                     string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
                     myActions.Run(strExecutable, "\"" + myFileView.FullName + "\"");
                 } else {
@@ -2374,7 +2383,7 @@ namespace System.Windows.Forms.Samples {
                     string strStatus = myListControlEntity.Find(x => x.ID == "cbxStatus").SelectedValue;
 
 
-                    if (!myNewTextDocumentName.EndsWith(".txt")) {
+                    if (!myNewTextDocumentName.Contains(".")) {
                         myNewTextDocumentName = myNewTextDocumentName + ".txt";
                     }
                     string strNewTextDocumentDir = Path.Combine(basePathForNewTextDocument, myNewTextDocumentName);
@@ -2392,7 +2401,8 @@ namespace System.Windows.Forms.Samples {
                         // File.Create(strNewTextDocumentDir);
 
                     }
-                    string strExecutable = @"C:\Windows\system32\notepad.exe";
+                    _NotepadppLoaded = true;
+                    string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
 
                     string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
                     if (detailsMenuItemChecked == "False") {
@@ -2535,6 +2545,7 @@ namespace System.Windows.Forms.Samples {
                 FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
                 if (!myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     string strExecutable = @"C:\Program Files\Windows NT\Accessories\wordpad.exe";
+                    _WordPadLoaded = true;
                     myActions.Run(strExecutable, "\"" + myFileView.FullName + "\"");
                 } else {
                     myActions.MessageBoxShow("You can not create a wordpad file inside a file; first select folder and then right click");
@@ -2696,7 +2707,7 @@ namespace System.Windows.Forms.Samples {
 
                     string parentScriptPath = myActions.ConvertFullFileNameToPublicPath(basePathForNewTextDocument) + "\\" + basePathName;
                     string myNewTextDocumentName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
-                    if (!myNewTextDocumentName.EndsWith(".rtf")) {
+                    if (!myNewTextDocumentName.Contains(".")) {
                         myNewTextDocumentName = myNewTextDocumentName + ".rtf";
                     }
                     string strNewTextDocumentDir = Path.Combine(basePathForNewTextDocument, myNewTextDocumentName);
@@ -2717,6 +2728,7 @@ namespace System.Windows.Forms.Samples {
                         //   File.Create(strNewTextDocumentDir);
 
                     }
+                    _WordPadLoaded = true;
                     string strExecutable = @"C:\Program Files\Windows NT\Accessories\wordpad.exe";
                     string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
                     if (detailsMenuItemChecked == "False") {
@@ -5913,7 +5925,8 @@ namespace System.Windows.Forms.Samples {
                 // File.Create(strNewTextDocumentDir);
 
             }
-            string strExecutable = @"C:\Windows\system32\notepad.exe";
+            _NotepadppLoaded = true;
+            string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
 
             string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
             if (detailsMenuItemChecked == "False") {
@@ -6160,6 +6173,7 @@ namespace System.Windows.Forms.Samples {
                 //   File.Create(strNewTextDocumentDir);
 
             }
+            _WordPadLoaded = true;
             string strExecutable = @"C:\Program Files\Windows NT\Accessories\wordpad.exe";
             string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
             if (detailsMenuItemChecked == "False") {
@@ -6516,18 +6530,18 @@ namespace System.Windows.Forms.Samples {
 
 
         private void Popup() {
+            if (_Panel2KeyPress) {
+                Thread th = new Thread(() => {
+                    try {
+                        Open();
+                    } catch (Exception) {
 
-            Thread th = new Thread(() =>
-            {
-                try {
-                    Open();
-                } catch (Exception) {
-
-                }
-            });
-            th.Start();
-            Thread.Sleep(500);   //you can update this time as your requirement
-            th.Abort();
+                    }
+                });
+                th.Start();
+                Thread.Sleep(500);   //you can update this time as your requirement
+                th.Abort();
+            }
         }
 
         private void Open() {
@@ -6535,38 +6549,38 @@ namespace System.Windows.Forms.Samples {
             frm.ShowDialog();   // frm.Show(); if MDI Parent form            
         }
         private void splitContainer1_MouseLeave(object sender, EventArgs e) {
-            if (_Panel2KeyPress && _WordPadLoaded) {
+            if (_Panel2KeyPress && (_WordPadLoaded || _NotepadppLoaded)) {
                 Methods myActions = new Methods();
-                myActions.TypeText("^(s)", 200);
-                _Panel2KeyPress = false;
+                myActions.TypeText("^(s)", 200);               
                 Popup();
+                _Panel2KeyPress = false;
             }
         }
 
         private void toolBar_MouseEnter(object sender, EventArgs e) {
-            if (_Panel2KeyPress && _WordPadLoaded) {
+            if (_Panel2KeyPress && (_WordPadLoaded || _NotepadppLoaded)) {
                 Methods myActions = new Methods();
-                myActions.TypeText("^(s)", 200);
-                _Panel2KeyPress = false;
+                myActions.TypeText("^(s)", 200);                
                 Popup();
+                _Panel2KeyPress = false;
             }
         }
 
         private void toolBar_MouseLeave(object sender, EventArgs e) {
-            if (_Panel2KeyPress && _WordPadLoaded) {
+            if (_Panel2KeyPress && (_WordPadLoaded || _NotepadppLoaded)) {
                 Methods myActions = new Methods();
-                myActions.TypeText("^(s)", 200);
-                _Panel2KeyPress = false;
+                myActions.TypeText("^(s)", 200);                
                 Popup();
+                _Panel2KeyPress = false;
             }
         }
 
         private void splitContainer1_MouseEnter(object sender, EventArgs e) {
-            if (_Panel2KeyPress && _WordPadLoaded) {
+            if (_Panel2KeyPress && (_WordPadLoaded || _NotepadppLoaded)) {
                 Methods myActions = new Methods();
-                myActions.TypeText("^(s)", 200);
-                _Panel2KeyPress = false;
+                myActions.TypeText("^(s)", 200);                
                 Popup();
+                _Panel2KeyPress = false;
             }
         }
     }

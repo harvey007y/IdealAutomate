@@ -62,23 +62,7 @@ namespace ScriptGenerator {
             myControlEntity.Text = "Script Generator";
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
-
-            //myControlEntity.ControlEntitySetDefaults();
-            //myControlEntity.ControlType = ControlType.Label;
-            //myControlEntity.ID = "myLabelMethods";
-            //myControlEntity.Text = "IdealAutomateCore Methods";
-            //myControlEntity.RowNumber = 0;
-            //myControlEntity.ColumnNumber = 0;
-            //myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-            //myControlEntity.ControlEntitySetDefaults();
-            //myControlEntity.ControlType = ControlType.Label;
-            //myControlEntity.ID = "myLabelCashManagement";
-            //myControlEntity.Text = "More IdealAutomateCore Methods";
-            //myControlEntity.RowNumber = 0;
-            //myControlEntity.ColumnNumber = 1;
-            //myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
+            // get project folder
             string directory = AppDomain.CurrentDomain.BaseDirectory;
             directory = directory.Replace("\\bin\\Debug\\", "");
             int intLastSlashIndex = directory.LastIndexOf("\\");
@@ -87,17 +71,17 @@ namespace ScriptGenerator {
             ArrayList myArrayList = myActions.ReadPublicKeyToArrayList("Methods", directory);
 
 
-            //SqlConnection con = new SqlConnection("Server=(local)\\SQLEXPRESS;Initial Catalog=IdealAutomateDB;Integrated Security=SSPI");
-
-            //SqlCommand cmd = new SqlCommand();
-
-            //cmd.CommandText = "SELECT * FROM Methods order by Category, Method";
-            //cmd.Connection = con;
             int intCol = 0;
             int intRow = 0;
             string strPreviousCategory = "";
 
-
+            // Loop thru array of categories and methods
+            // When you encounter new category, write red label; else write grey button
+            // The name for each button is myButton followed by method name
+            // If there are more than 20 rows, start a new column
+            // If there are more than 18 rows, and you encounter a new category, start
+            // new column so you do not have category at the bottom without any methods
+            // below it
             foreach (var item in myArrayList) {
                 string[] myArrayFields = item.ToString().Split('^');
                 {
@@ -146,71 +130,7 @@ namespace ScriptGenerator {
                     intCol++;
                 }
 
-
-                //myControlEntity.ControlEntitySetDefaults();
-                //myControlEntity.ControlType = ControlType.Label;
-                //myControlEntity.ID = "lblCreateVSProject";
-                //myControlEntity.Text = "Create New VS Project";
-                //myControlEntity.RowNumber = intRow;
-                //myControlEntity.ColumnNumber = intCol;
-                //myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
-                //myControlEntity.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
-                //myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-                //intRow++;
-                //myControlEntity.ControlEntitySetDefaults();
-                //myControlEntity.ControlType = ControlType.Button;
-                //myControlEntity.ID = "myButtonCreateVSProject";
-                //myControlEntity.Text = "CreateNewVSProject";
-                //myControlEntity.RowNumber = intRow;
-                //myControlEntity.ColumnNumber = intCol;
-                ////    myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
-                ////   myControlEntity.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
-                //myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-                //intRow++;
-                //myControlEntity.ControlEntitySetDefaults();
-                //myControlEntity.ControlType = ControlType.Label;
-                //myControlEntity.ID = "lblDeclareVariable";
-                //myControlEntity.Text = "Declare A Variable";
-                //myControlEntity.RowNumber = intRow;
-                //myControlEntity.ColumnNumber = intCol;
-                //myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
-                //myControlEntity.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
-                //myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-                //intRow++;
-                //myControlEntity.ControlEntitySetDefaults();
-                //myControlEntity.ControlType = ControlType.Button;
-                //myControlEntity.ID = "myButtonDeclareAVariable";
-                //myControlEntity.Text = "Declare Variable";
-                //myControlEntity.RowNumber = intRow;
-                //myControlEntity.ColumnNumber = intCol;
-                ////    myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
-                ////   myControlEntity.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
-                //myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-                //intRow++;
-                //myControlEntity.ControlEntitySetDefaults();
-                //myControlEntity.ControlType = ControlType.Label;
-                //myControlEntity.ID = "lblCopyVSProjectToIA";
-                //myControlEntity.Text = "Copy VS Project to IA";
-                //myControlEntity.RowNumber = intRow;
-                //myControlEntity.ColumnNumber = intCol;
-                //myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
-                //myControlEntity.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
-                //myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-                //intRow++;
-                //myControlEntity.ControlEntitySetDefaults();
-                //myControlEntity.ControlType = ControlType.Button;
-                //myControlEntity.ID = "myButtonCopyVSProjectToIA";
-                //myControlEntity.Text = "Copy VS Project to IA";
-                //myControlEntity.RowNumber = intRow;
-                //myControlEntity.ColumnNumber = intCol;
-                ////    myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
-                ////   myControlEntity.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
-                //myListControlEntity.Add(myControlEntity.CreateControlEntity());
+                
 
                 string strScripts = "";
                 string strVariables = "";
@@ -234,11 +154,6 @@ namespace ScriptGenerator {
                     goto myExit;
                 }
 
-
-                //myActions.TypeText("%(d)", 1500); // select address bar
-                //myActions.TypeText("{ESC}", 1500);
-                //myActions.TypeText("%({ENTER})", 1500); // Alt enter while in address bar opens new tab
-
                 string strFilePath = "";
                 switch (strButtonPressed) {
                     case "myButtonIEGoToURL":
@@ -246,6 +161,9 @@ namespace ScriptGenerator {
                         myControlEntity1 = new ControlEntity();
                         myListControlEntity1 = new List<ControlEntity>();
                         cbp = new List<ComboBoxPair>();
+                   
+                    // Row 0 is heading that says:
+                    // IE Go To URL
                         intRowCtr = 0;
                         myControlEntity1.ControlEntitySetDefaults();
                         myControlEntity1.ControlType = ControlType.Heading;
@@ -255,7 +173,9 @@ namespace ScriptGenerator {
                         myControlEntity1.RowNumber = 0;
                         myControlEntity1.ColumnNumber = 0;
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
-
+                  
+                    // Row 1 has label Syntax and textbox that contains syntax
+                    // The syntax is hard-coded inline
                         intRowCtr++;
                         myControlEntity1.ControlEntitySetDefaults();
                         myControlEntity1.ControlType = ControlType.Label;
@@ -274,6 +194,7 @@ namespace ScriptGenerator {
                         myControlEntity1.ColumnNumber = 1;
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
+                    // Row 2 has label Input
                         intRowCtr++;
                         myControlEntity1.ControlEntitySetDefaults();
                         myControlEntity1.ControlType = ControlType.Label;
@@ -284,7 +205,10 @@ namespace ScriptGenerator {
                         myControlEntity1.ColumnNumber = 0;
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
-                        intRowCtr++;
+                    // Row 3 has label Website URL 
+                    // and textbox that contains Website URL
+                    // The value for Website URL comes from roaming folder for script
+                    intRowCtr++;
                         myControlEntity1.ControlEntitySetDefaults();
                         myControlEntity1.ControlType = ControlType.Label;
                         myControlEntity1.ID = "lblWebsiteURL";
@@ -344,8 +268,9 @@ namespace ScriptGenerator {
                             myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables");
                             myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                         }
-
-                        intRowCtr++;
+                    // Row 4 has label Use New Tab 
+                    // and textbox that contains UseNewTab
+                    intRowCtr++;
                         myControlEntity1.ControlEntitySetDefaults();
                         myControlEntity1.ControlType = ControlType.Label;
                         myControlEntity1.ID = "lblUseNewTab";
@@ -376,8 +301,8 @@ namespace ScriptGenerator {
                         myControlEntity1.RowNumber = intRowCtr;
                         myControlEntity1.ColumnNumber = 2;
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
-
-                        intRowCtr++;
+                    // Row 5 has button for refreshing combobox 
+                    intRowCtr++;
                         myControlEntity1.ControlEntitySetDefaults();
                         myControlEntity1.ControlType = ControlType.Button;
                         myControlEntity1.ID = "btnDDLRefresh";
@@ -385,9 +310,11 @@ namespace ScriptGenerator {
                         myControlEntity1.RowNumber = intRowCtr;
                         myControlEntity1.ColumnNumber = 0;
                         myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
-
+                        // Get saved position of window from roaming..
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
+                        // Display input dialog
                         strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 400, 700, intWindowTop, intWindowLeft);
+                        // Get Values from input dialog and save to roaming
                         strScripts = myListControlEntity1.Find(x => x.ID == "Scripts").SelectedValue;
                         if (myListControlEntity1.Find(x => x.ID == "Variables") != null) {
                             strVariables = myListControlEntity1.Find(x => x.ID == "Variables").SelectedKey;
@@ -404,6 +331,8 @@ namespace ScriptGenerator {
                             goto DisplayIEGoToURLWindow;
                         }
 
+                        // if okay button pressed, validate inputs; place inputs into syntax; put generated 
+                        // code into clipboard and display generated code
                         if (strButtonPressed == "btnOkay") {
                             if (strWebsiteURLx == "" && strVariables == "--Select Item ---") {
                                 myActions.MessageBoxShow("Please enter Website URL or select script variable; else press Cancel to Exit");
@@ -423,6 +352,8 @@ namespace ScriptGenerator {
                             myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard" );
                         }
                         GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
+                        // Display main menu and go back to where you 
+                        // process input from main menu
                         strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 800, intWindowTop, intWindowLeft);
                         goto DisplayWindowAgain;
                         break;

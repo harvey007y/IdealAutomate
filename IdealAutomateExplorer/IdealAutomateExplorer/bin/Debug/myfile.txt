@@ -15,4 +15,4 @@ if (myWindowTitles1.Count > 0) {
 // P R O C E S S   H A S   B E E N   S T A R T E D:  chrome
 //
 myActions.TypeText("HELLO WORLD", 500);
-myActions.TypeText("{ENTER}", 500);
+myActions.TypeText("{ENTER}", 500);;
