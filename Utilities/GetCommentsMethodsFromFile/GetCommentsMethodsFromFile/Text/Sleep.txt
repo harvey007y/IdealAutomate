@@ -1,0 +1,19 @@
+D e s c r i p t i o n:
+ <summary>
+ Sleep receives an integer that indicates the number of milliseconds that you want the program to wait.
+ </summary>
+ <param name="intSleep">integer that indicates the number of milliseconds that you want the program to wait.</param>
+ Category::Sleep
+ 
+P a r a m e t e r s:
+int intSleep
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+Sleep
+ 
+O r i g i n a l  M e t h o d:
+public void Sleep(int intSleep) 
+================================39

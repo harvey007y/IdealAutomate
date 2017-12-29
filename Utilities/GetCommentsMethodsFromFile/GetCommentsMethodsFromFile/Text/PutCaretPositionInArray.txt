@@ -1,0 +1,20 @@
+D e s c r i p t i o n:
+ <summary>
+ PutCaretPositionInArray provides a way to save the caret position
+ in an array so you can come back to it later without having to find 
+ the original position again.
+ </summary>
+ <returns></returns>
+ Category::Mouse
+ 
+P a r a m e t e r s:
+ 
+R e t u r n  T y p e:
+int[,] RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+PutCaretPositionInArray
+ 
+O r i g i n a l  M e t h o d:
+public int[,] PutCaretPositionInArray() 
+================================8

@@ -1,0 +1,16 @@
+D e s c r i p t i o n:
+ Category::Storage>Private
+ 
+P a r a m e t e r s:
+string strKey
+string intIncrementValue
+ 
+R e t u r n  T y p e:
+int RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+IncrementValueByKeyByValueGlobal
+ 
+O r i g i n a l  M e t h o d:
+public int IncrementValueByKeyByValueGlobal(string strKey, int intIncrementValue) 
+================================57

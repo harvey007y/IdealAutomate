@@ -1,0 +1,15 @@
+D e s c r i p t i o n:
+ Category::Directory
+ 
+P a r a m e t e r s:
+string fullFileName
+ 
+R e t u r n  T y p e:
+string RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+ConvertFullFileNameToPublicPath
+ 
+O r i g i n a l  M e t h o d:
+public string ConvertFullFileNameToPublicPath(string fullFileName) 
+================================73

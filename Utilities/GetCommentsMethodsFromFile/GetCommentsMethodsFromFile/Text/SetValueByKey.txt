@@ -1,0 +1,28 @@
+D e s c r i p t i o n:
+ <summary>
+ SetValueByKey takes a key and adds .txt to it in order to create
+ a file name. It gets the app data path and adds \IdealAutomate\yourscriptname
+ to it. By combining that path to the file name,
+ it can write a value to the key that is unique to your script application.
+ The AppDirectory allows you to store personal settings and
+ information that you want to keep private (like passwords) in a location
+ outside of your script on in the application directory
+ </summary>
+ <param name="strKey">Unique key within the script application</param>
+ <param name="strValueToWrite">Value to write to the Unique key 
+ within the script application</param>
+ Category::Storage>Private
+ 
+P a r a m e t e r s:
+string strKey
+string strValueToWrite
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+SetValueByKey
+ 
+O r i g i n a l  M e t h o d:
+public void SetValueByKey(string strKey, string strValueToWrite) 
+================================58

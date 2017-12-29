@@ -1,0 +1,28 @@
+D e s c r i p t i o n:
+ <summary>
+ SW_HIDE = 0;
+ SW_SHOWNORMAL = 1;
+ SW_SHOWMINIMIZED = 2;
+ SW_SHOWMAXIMIZED = 3;
+ SW_SHOWNOACTIVATE = 4;
+ SW_RESTORE = 9;
+ SW_SHOWDEFAULT = 10;
+ </summary>
+ <param name="myTitle"></param>
+ <param name="myShowOption"></param>
+ <returns></returns>
+ Category::Window
+ 
+P a r a m e t e r s:
+string myTitle
+string myShowOption
+ 
+R e t u r n  T y p e:
+bool RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+ActivateWindowByTitle
+ 
+O r i g i n a l  M e t h o d:
+public bool ActivateWindowByTitle(string myTitle, int myShowOption) 
+================================3

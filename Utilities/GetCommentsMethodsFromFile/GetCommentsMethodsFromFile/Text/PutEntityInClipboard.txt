@@ -1,0 +1,19 @@
+D e s c r i p t i o n:
+ <summary>
+ PutEntityInClipboard takes the input parameter string and puts it in the clipboard
+ </summary>
+ <param name="myEntity">string that you want to put into the clipboard</param>
+ Category::Clipboard
+ 
+P a r a m e t e r s:
+string myEntity
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+PutEntityInClipboard
+ 
+O r i g i n a l  M e t h o d:
+public void PutEntityInClipboard(string myEntity) 
+================================18

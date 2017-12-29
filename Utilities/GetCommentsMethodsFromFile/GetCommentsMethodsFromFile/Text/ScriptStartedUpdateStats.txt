@@ -1,0 +1,18 @@
+D e s c r i p t i o n:
+ <summary>
+ At beginning of template, Write StartTime, StartDate, Add 1 to total executions. 
+ 
+ </summary>
+ Category::Stats
+ 
+P a r a m e t e r s:
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+ScriptStartedUpdateStats
+ 
+O r i g i n a l  M e t h o d:
+public void ScriptStartedUpdateStats() 
+================================70

@@ -1,0 +1,23 @@
+D e s c r i p t i o n:
+ <summary>
+ This method combinates both previous methods. It tries to stop the service (and waits until it's stopped) 
+ then it begins to start the service (and waits until the service is running). The specified timeout is used 
+ for both operations together.
+ </summary>
+ <param name="serviceName"></param>
+ <param name="timeoutMilliseconds"></param>
+ Category::Service
+ 
+P a r a m e t e r s:
+string serviceName
+string timeoutMilliseconds
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+RestartService
+ 
+O r i g i n a l  M e t h o d:
+public void RestartService(string serviceName, int timeoutMilliseconds) 
+================================37

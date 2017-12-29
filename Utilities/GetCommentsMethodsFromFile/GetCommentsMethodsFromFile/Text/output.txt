@@ -1,0 +1,1634 @@
+D e s c r i p t i o n:
+ 
+V a r i a b l e s:
+ 
+R e t u r n  T y p e:
+ RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+Methods
+ 
+O r i g i n a l  M e t h o d:
+public Methods() 
+================================1
+D e s c r i p t i o n:
+ 
+V a r i a b l e s:
+string myTitle
+ 
+R e t u r n  T y p e:
+bool RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+ActivateWindowByTitle
+ 
+O r i g i n a l  M e t h o d:
+public bool ActivateWindowByTitle(string myTitle) 
+================================2
+D e s c r i p t i o n:
+ <summary>
+ SW_HIDE = 0;
+ SW_SHOWNORMAL = 1;
+ SW_SHOWMINIMIZED = 2;
+ SW_SHOWMAXIMIZED = 3;
+ SW_SHOWNOACTIVATE = 4;
+ SW_RESTORE = 9;
+ SW_SHOWDEFAULT = 10;
+ </summary>
+ <param name="myTitle"></param>
+ <param name="myShowOption"></param>
+ <returns></returns>
+ Category::Window
+ 
+V a r i a b l e s:
+string myTitle
+string myShowOption
+ 
+R e t u r n  T y p e:
+bool RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+ActivateWindowByTitle
+ 
+O r i g i n a l  M e t h o d:
+public bool ActivateWindowByTitle(string myTitle, int myShowOption) 
+================================3
+D e s c r i p t i o n:
+ <summary>
+ GetWindowTitlesByProcessName allows you to get a list of all the WindowTitles
+ for a process name. ProcessNames are called image names in task manager.
+ You can find all of the iexplore or devenv and activate each one to see if it 
+ is the one you want
+ </summary>
+ <param name="myProcessName"></param>
+ <returns></returns>
+ Category::Window
+ 
+V a r i a b l e s:
+string myProcessName
+ 
+R e t u r n  T y p e:
+List<string> RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+GetWindowTitlesByProcessName
+ 
+O r i g i n a l  M e t h o d:
+public List<string> GetWindowTitlesByProcessName(string myProcessName) 
+================================4
+D e s c r i p t i o n:
+ Category::Processes
+ 
+V a r i a b l e s:
+string myProcessName
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+KillAllProcessesByProcessName
+ 
+O r i g i n a l  M e t h o d:
+public void KillAllProcessesByProcessName(string myProcessName) 
+================================5
+D e s c r i p t i o n:
+ <summary>
+ PutAll receives an ImageEntity object and returns
+ an integer array of all of x,y coordinates of where the
+ image was found
+ Images are used to locate a specific area of the screen. The Windows Snipping Tool is very useful for saving image files to your images folder. If you are not familiar with the Windows Snipping Tool, you should google it to learn about it as it is very helpful. There is a trick to taking snapshots of popup windows. The trick involves clicking on the new option in the snipping tool to cause it to make the entire screen go out of focus. Then, you hit the escape key to remove opacity cloud that prevent you from accessing your screen. At this point, you can activate your popup or dropdown window. Next, you press the control key plus the print key to cause the opacity cloud to appear without removing the popup or dropdown window. You can now drag the Windows Snipping Tool around the window to get a snapshot of it without it disappearing. The Image Tabs has these columns:
+ 1. ImageFile
+ The imageFile is the file path where the image resides.
+ 2. Attempts
+ If Attempts is specified, it must be defined as an integer (int). The default value is 1. Sometimes an image will not be found on the first attempt because your computer may be running slowly, and the window may not be fully loaded when the script is looking for it. By specifying an Attempts value of 10, for example, the script will try to find the image up to 10 times before moving on to the next action. In this example, if the image was found on the third attempt, it would not continue looking for the other 7 times since the image was already found.
+ 3. Occurrence
+ If Occurrence is specified, it must be defined  as an integer (int). If you are only interested in locating a specific occurrence of an image, for example - the second occurrence, you can specify that number as the value of the primitive that is specified in this column.
+ 4. Sleep
+ If Sleep is specified, it must be defined as an integer (int). If you are only interested in locating a specific occurrence of an image, for example - the second occurrence, you can specify that number as the value of the primitive that is specified in this column.
+ 5. RelativeX
+ If RelativeX is specified, it must be defined  as an integer (int). The default value for RelativeX is 0. When an image is found, the position of the upper-left corner is returned. You can specify a RelativeX value of pixels to be added to the original X value returned to realign the pixel that you want to click on to the left or to the right.
+ 6. RelativeY
+ If RelativeY is specified, it must be defined as an integer (int). The default value for RelativeY is 0. When an image is found, the position of the upper-left corner is returned. You can specify a RelativeY value of pixels to be added to the original Y value returned to realign the pixel that you want to click on to be higher or lower.
+ 7. UseGrayScale
+ If UseGrayScale is true, it attempts to ignore color when looking for the image. GreyScale is created by add the RGB values for a pixel together and dividing that sum by three so color is still a factor, but it is just not as sensitive.
+ 8. Tolerance
+ The default value for Tolerance is 90. Tolerance specifies the percent of pixels that must match in order for an image to be considered found. When searching for images, the application starts by comparing the least frequent occurrence of a pattern of 10 pixels to every location on the screen in order speed up the process. If there is no match on the least frequent pattern of 10 pixels in the smaller image, it will try to match the second to least most popular pattern of 10 pixels. If there is no match on that second-least frequently occurring pattern, the image will not be found even though there may be more than a 90 percent match between the smaller image and an area on the screen. Sometimes, it helps to try to cut and paste a different image if you are having trouble finding a particular image.
+ </summary>
+ <param name="myImage">ImageEntity object</param>
+ <returns>an integer array of all of x,y coordinates of where the image was found</returns>
+ Category::Image
+ 
+V a r i a b l e s:
+ImageEntity myImage
+ 
+R e t u r n  T y p e:
+int[,] RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+PutAll
+ 
+O r i g i n a l  M e t h o d:
+public int[,] PutAll(ImageEntity myImage) 
+================================6
+D e s c r i p t i o n:
+ <summary>
+ PutCursorPosition provides a way to save the cursor position in
+ an array so you can come back to it later without having to find
+ the original image again.
+ </summary>
+ <returns></returns>
+ Category::Cursor
+ 
+V a r i a b l e s:
+ 
+R e t u r n  T y p e:
+int[,] RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+PutCursorPosition
+ 
+O r i g i n a l  M e t h o d:
+public int[,] PutCursorPosition() 
+================================7
+D e s c r i p t i o n:
+ <summary>
+ PutCaretPositionInArray provides a way to save the caret position
+ in an array so you can come back to it later without having to find 
+ the original position again.
+ </summary>
+ <returns></returns>
+ Category::Mouse
+ 
+V a r i a b l e s:
+ 
+R e t u r n  T y p e:
+int[,] RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+PutCaretPositionInArray
+ 
+O r i g i n a l  M e t h o d:
+public int[,] PutCaretPositionInArray() 
+================================8
+D e s c r i p t i o n:
+ <summary>
+ ClickImageIfExists is similar to PutAll, but it left clicks on the 
+ best match for the image and does not return an array containing the position. 
+ Images are used to locate a specific area of the screen. The Windows Snipping Tool is very useful for saving image files to your images folder. If you are not familiar with the Windows Snipping Tool, you should google it to learn about it as it is very helpful. There is a trick to taking snapshots of popup windows. The trick involves clicking on the new option in the snipping tool to cause it to make the entire screen go out of focus. Then, you hit the escape key to remove opacity cloud that prevent you from accessing your screen. At this point, you can activate your popup or dropdown window. Next, you press the control key plus the print key to cause the opacity cloud to appear without removing the popup or dropdown window. You can now drag the Windows Snipping Tool around the window to get a snapshot of it without it disappearing. The Image Tabs has these columns:
+ 1. ImageFile
+ The imageFile is the file path where the image resides.
+ 2. Attempts
+ If Attempts is specified, it must be defined as an integer (int). The default value is 1. Sometimes an image will not be found on the first attempt because your computer may be running slowly, and the window may not be fully loaded when the script is looking for it. By specifying an Attempts value of 10, for example, the script will try to find the image up to 10 times before moving on to the next action. In this example, if the image was found on the third attempt, it would not continue looking for the other 7 times since the image was already found.
+ 3. Occurrence
+ If Occurrence is specified, it must be defined  as an integer (int). If you are only interested in locating a specific occurrence of an image, for example - the second occurrence, you can specify that number as the value of the primitive that is specified in this column.
+ 4. Sleep
+ If Sleep is specified, it must be defined as an integer (int). If you are only interested in locating a specific occurrence of an image, for example - the second occurrence, you can specify that number as the value of the primitive that is specified in this column.
+ 5. RelativeX
+ If RelativeX is specified, it must be defined  as an integer (int). The default value for RelativeX is 0. When an image is found, the position of the upper-left corner is returned. You can specify a RelativeX value of pixels to be added to the original X value returned to realign the pixel that you want to click on to the left or to the right.
+ 6. RelativeY
+ If RelativeY is specified, it must be defined as an integer (int). The default value for RelativeY is 0. When an image is found, the position of the upper-left corner is returned. You can specify a RelativeY value of pixels to be added to the original Y value returned to realign the pixel that you want to click on to be higher or lower.
+ 7. UseGrayScale
+ If UseGrayScale is true, it attempts to ignore color when looking for the image. GreyScale is created by add the RGB values for a pixel together and dividing that sum by three so color is still a factor, but it is just not as sensitive.
+ 8. Tolerance
+ The default value for Tolerance is 90. Tolerance specifies the percent of pixels that must match in order for an image to be considered found. When searching for images, the application starts by comparing the least frequent occurrence of a pattern of 10 pixels to every location on the screen in order speed up the process. If there is no match on the least frequent pattern of 10 pixels in the smaller image, it will try to match the second to least most popular pattern of 10 pixels. If there is no match on that second-least frequently occurring pattern, the image will not be found even though there may be more than a 90 percent match between the smaller image and an area on the screen. Sometimes, it helps to try to cut and paste a different image if you are having trouble finding a particular image.
+ </summary>
+ <param name="myImage"></param>
+ Category::Image
+ 
+V a r i a b l e s:
+ImageEntity myImage
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+ClickImageIfExists
+ 
+O r i g i n a l  M e t h o d:
+public void ClickImageIfExists(ImageEntity myImage) 
+================================9
+D e s c r i p t i o n:
+ <summary>
+ LeftClick allows you to left-click on the X and Y coordinates of an int array passed into the method.
+ </summary>
+ <param name="myArray">int array containing X and Y coordinates of position on screen to click</param>
+ Category::Mouse
+ 
+V a r i a b l e s:
+int[ int
+int[ myArray
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+LeftClick
+ 
+O r i g i n a l  M e t h o d:
+public void LeftClick(int[,] myArray) 
+================================10
+D e s c r i p t i o n:
+ <summary>
+ ShiftClick allows you to shift-click on the X and Y coordinates of an int array passed into the method.
+ </summary>
+ <param name="myArray">int array containing X and Y coordinates of position on screen to click</param>
+ Category::Mouse
+ 
+V a r i a b l e s:
+int[ int
+int[ myArray
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+ShiftClick
+ 
+O r i g i n a l  M e t h o d:
+public void ShiftClick(int[,] myArray) 
+================================11
+D e s c r i p t i o n:
+ <summary>
+ RightClick allows you to right-click on the X and Y coordinates of an int array passed into the method.
+ </summary>
+ <param name="myArray">int array containing X and Y coordinates of position on screen to click</param>
+ Category::Mouse
+ 
+V a r i a b l e s:
+int[ int
+int[ myArray
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+RightClick
+ 
+O r i g i n a l  M e t h o d:
+public void RightClick(int[,] myArray) 
+================================12
+D e s c r i p t i o n:
+ <summary>
+ PositionCursor allows you to move the cursor to the X and Y coordinates of an int array passed into the method.
+ </summary>
+ <param name="myArray">int array containing X and Y coordinates of position on screen to click</param>
+ Category::Cursor
+ 
+V a r i a b l e s:
+int[ int
+int[ myArray
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+PositionCursor
+ 
+O r i g i n a l  M e t h o d:
+public void PositionCursor(int[,] myArray) 
+================================13
+D e s c r i p t i o n:
+ <summary>
+ PutClipboardInEntity returns a string that contains the text in the clipboard.
+ </summary>
+ <returns>string that contains the text in the clipboard</returns>
+ Category::Clipboard
+ 
+V a r i a b l e s:
+ 
+R e t u r n  T y p e:
+string RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+PutClipboardInEntity
+ 
+O r i g i n a l  M e t h o d:
+public string PutClipboardInEntity() 
+================================14
+D e s c r i p t i o n:
+ <summary>
+ PutWindowTitleInEntity returns a string that contains the title of the Active Window
+ </summary>
+ <returns>string that contains the title of the Active Window</returns>
+ Category::Window
+ 
+V a r i a b l e s:
+ 
+R e t u r n  T y p e:
+string RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+PutWindowTitleInEntity
+ 
+O r i g i n a l  M e t h o d:
+public string PutWindowTitleInEntity() 
+================================15
+D e s c r i p t i o n:
+ <summary>
+ PutInternetExplorerTabTitleInEntity returns a string that contains the Title for the active tab in internet explorer
+ </summary>
+ <returns>string that contains the Title for the active tab in internet explorer</returns>
+ Category::Internet Explorer
+ 
+V a r i a b l e s:
+ 
+R e t u r n  T y p e:
+string RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+PutInternetExplorerTabTitleInEntity
+ 
+O r i g i n a l  M e t h o d:
+public string PutInternetExplorerTabTitleInEntity() 
+================================16
+D e s c r i p t i o n:
+ <summary>
+ PutInternetExplorerTabTitleInEntity returns a string that contains the url in the address bar for the active tab in internet explorer
+ </summary>
+ <returns>string that contains the url for the address bar for the active tab in internet explorer</returns>
+ Category::Internet Explorer
+ 
+V a r i a b l e s:
+string myEntity
+ 
+R e t u r n  T y p e:
+string RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+PutInternetExplorerTabURLContainingStringInEntity
+ 
+O r i g i n a l  M e t h o d:
+public string PutInternetExplorerTabURLContainingStringInEntity(string myEntity) 
+================================17
+D e s c r i p t i o n:
+ <summary>
+ PutEntityInClipboard takes the input parameter string and puts it in the clipboard
+ </summary>
+ <param name="myEntity">string that you want to put into the clipboard</param>
+ Category::Clipboard
+ 
+V a r i a b l e s:
+string myEntity
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+PutEntityInClipboard
+ 
+O r i g i n a l  M e t h o d:
+public void PutEntityInClipboard(string myEntity) 
+================================18
+D e s c r i p t i o n:
+ <summary>
+ TypeText - The visual basic SendKeys function is used to mimic 
+ pressing special keys (like the enter or alt keys). This means you 
+ need to use the Shortcut Keys help file in the IdealAutomate application 
+ or google in order to learn what characters can be used to represent
+ special keys. For example, the ^ character is used to represent the 
+ control key and here is how you indicate the enter key is pressed: 
+ {ENTER}. You will also need to learn how to "escape" special characters
+ (like the bracket character). If you are trying to type a lot of special
+ characters, it may be easier to create a string primitive with the 
+ text you want to type and use the PutEntityInClipboard verb to copy 
+ the string into the clipboard. After the string is in the clipboard,
+ you can use the TypeText verb with control v to paste what is in the
+ clipboard to where you want it.
+ </summary>
+ <param name="myEntity">string representing the keys you want to press</param>
+ <param name="intSleep">integer representing the number of milliseconds to wait before sending the text</param>
+ Category::Keyboard
+ 
+V a r i a b l e s:
+string myEntity
+string intSleep
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+TypeText
+ 
+O r i g i n a l  M e t h o d:
+public void TypeText(string myEntity, int intSleep) 
+================================19
+D e s c r i p t i o n:
+ <summary>
+ CloseApplicationAltFx accepts an input integer to indicate how long
+ to wait before sending text Alt(F)x to close an application
+ </summary>
+ <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
+ Category::Keyboard
+ 
+V a r i a b l e s:
+int intSleep
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+CloseApplicationAltFx
+ 
+O r i g i n a l  M e t h o d:
+public void CloseApplicationAltFx(int intSleep) 
+================================20
+D e s c r i p t i o n:
+ <summary>
+ CloseApplicationAltFc accepts an input integer to indicate how many milliseconds
+ to wait before sending text Alt(F)c to close an application
+ </summary>
+ <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
+ Category::Keyboard
+ 
+V a r i a b l e s:
+int intSleep
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+CloseApplicationAltFc
+ 
+O r i g i n a l  M e t h o d:
+public void CloseApplicationAltFc(int intSleep) 
+================================21
+D e s c r i p t i o n:
+ <summary>
+ SelectAllCopy accepts an input integer to indicate how many milliseconds
+ to wait before sending text Ctrl(a) and Ctrl(c). This will put
+ all of the input into the clipboard
+ </summary>
+ <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
+ Category::Clipboard
+ 
+V a r i a b l e s:
+int intSleep
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+SelectAllCopy
+ 
+O r i g i n a l  M e t h o d:
+public void SelectAllCopy(int intSleep) 
+================================22
+D e s c r i p t i o n:
+ <summary>
+ SelectAllCopyIntoEntity accepts an input integer to indicate how many milliseconds
+ to wait before sending text Ctrl(a) and Ctrl(c). This will put
+ all of the input into the clipboard and then it will return
+ what is in the clipboard as a string
+ </summary>
+ <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
+ Category::Clipboard
+ 
+V a r i a b l e s:
+int intSleep
+ 
+R e t u r n  T y p e:
+string RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+SelectAllCopyIntoEntity
+ 
+O r i g i n a l  M e t h o d:
+public string SelectAllCopyIntoEntity(int intSleep) 
+================================23
+D e s c r i p t i o n:
+ <summary>
+ SelectAllPaste accepts an input integer to indicate how many milliseconds
+ to wait before sending text Ctrl(a) and Ctrl(v). This will select
+ all of the input on the screen and replace it with what is in the clipboard
+ </summary>
+ <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
+ Category::Clipboard
+ 
+V a r i a b l e s:
+int intSleep
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+SelectAllPaste
+ 
+O r i g i n a l  M e t h o d:
+public void SelectAllPaste(int intSleep) 
+================================24
+D e s c r i p t i o n:
+ <summary>
+ SelectAllPasteFromEntity accepts a string to paste and an 
+ input integer to indicate how many milliseconds
+ to wait before sending text Ctrl(a) and Ctrl(v). This will select
+ all of the input on the screen and replace it with what is in input string
+ </summary>
+ <param name="myEntity">string that you want to paste</param>
+ <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
+ Category::Clipboard
+ 
+V a r i a b l e s:
+string myEntity
+string intSleep
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+SelectAllPasteFromEntity
+ 
+O r i g i n a l  M e t h o d:
+public void SelectAllPasteFromEntity(string myEntity, int intSleep) 
+================================25
+D e s c r i p t i o n:
+ <summary>
+ SelectAllDelete accepts an input integer to indicate how many milliseconds
+ to wait before sending text Ctrl(a) and {DELETE}. This will delete
+ what is in the input field on the screen    
+ </summary>
+ <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
+ Category::Keyboard
+ 
+V a r i a b l e s:
+int intSleep
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+SelectAllDelete
+ 
+O r i g i n a l  M e t h o d:
+public void SelectAllDelete(int intSleep) 
+================================26
+D e s c r i p t i o n:
+ <summary>
+ WindowMultipleControls takes a list of ControlEntity objects
+ and positions them in a window. When the user presses the 
+ okay button on the screen, the list of ControlEntity objects
+ are updated with the values the user entered.  This provides
+ an easy way to receive multiple values from the user
+ A string is returned with the name of the button that was pressed
+ Here is an example of setting background color for a button:
+ myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
+ </summary>
+ <param name="myListControlEntity">list of ControlEntity objects</param>
+ <param name="intWindowHeight">integer indicating height of window</param>
+ <param name="intWindowWidth">integer indicating width of window</param>
+ <param name="intWindowTop">integer indicating number of pixels from top of screen to display window</param>
+ <param name="intWindowLeft">integer indicating number of pixels from left side of screen to display window</param>
+ <returns>System.Windows.Forms.DialogResult to indicate if okay button was pressed</returns>
+ Category::Window
+ 
+V a r i a b l e s:
+ref List<ControlEntity>
+ref myListControlEntity
+ref intWindowHeight
+ref intWindowWidth
+ref intWindowTop
+ref intWindowLeft
+ 
+R e t u r n  T y p e:
+string RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+WindowMultipleControls
+ 
+O r i g i n a l  M e t h o d:
+public string WindowMultipleControls(ref List<ControlEntity> myListControlEntity, int intWindowHeight, int intWindowWidth, int intWindowTop, int intWindowLeft) 
+================================27
+D e s c r i p t i o n:
+ <summary>
+ WindowMultipleControls takes a list of ControlEntity objects
+ and positions them in a window. When the user presses the 
+ okay button on the screen, the list of ControlEntity objects
+ are updated with the values the user entered.  This provides
+ an easy way to receive multiple values from the user
+ A string is returned with the name of the button that was pressed
+ Here is an example of setting background color for a button:
+ myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
+ </summary>
+ <param name="myListControlEntity">list of ControlEntity objects</param>
+ <param name="intWindowHeight">integer indicating height of window</param>
+ <param name="intWindowWidth">integer indicating width of window</param>
+ <param name="intWindowTop">integer indicating number of pixels from top of screen to display window</param>
+ <param name="intWindowLeft">integer indicating number of pixels from left side of screen to display window</param>
+ <returns>System.Windows.Forms.DialogResult to indicate if okay button was pressed</returns>
+ Category::Window
+ 
+V a r i a b l e s:
+ref List<ControlEntity>
+ref myListControlEntity
+ref intWindowHeight
+ref intWindowWidth
+ref intWindowTop
+ref intWindowLeft
+ 
+R e t u r n  T y p e:
+string RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+WindowMultipleControlsMinimized
+ 
+O r i g i n a l  M e t h o d:
+public string WindowMultipleControlsMinimized(ref List<ControlEntity> myListControlEntity, int intWindowHeight, int intWindowWidth, int intWindowTop, int intWindowLeft) 
+================================28
+D e s c r i p t i o n:
+ <summary>
+ WindowComboBox receives an IEnumerable of objects (ComboBoxPair) 
+ and a string for the label for the combobox. It returns the
+ selected ComboBoxPair
+ </summary>
+ <param name="myEntity">IEnumerable of objects</param>
+ <param name="myEntity2">String for the label for the combobox</param>
+ <returns>Selected ComboBoxPair</returns>
+ <summary>
+ WindowShape allows you to display info to the user and to position that 
+ the window on the screen
+ </summary>
+ <param name="myShape">string "Box" or "Arrow"</param>
+ <param name="myOrientation">string "Left","Right","Up","Down",""</param>
+ <param name="myTitle">string title for window</param>
+ <param name="myContent">string content for window</param>
+ <param name="intTop">integer indicating number of pixels from top of screen to display window</param>
+ <param name="intLeft">integer indicating number of pixels from left of screen to display window</param>
+ Category::Window
+ 
+V a r i a b l e s:
+string myShape
+string myOrientation
+string myTitle
+string myContent
+string intTop
+string intLeft
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+WindowShape
+ 
+O r i g i n a l  M e t h o d:
+public void WindowShape(string myShape, string myOrientation, string myTitle, string myContent, int intTop, int intLeft) 
+================================29
+D e s c r i p t i o n:
+ <summary>
+ MessageBoxShow receives an input string and displays it in a messagebox
+ </summary>
+ <param name="myEntity">string that you want to display in messagebox</param>
+ Category::MessageBox
+ 
+V a r i a b l e s:
+string myEntity
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+MessageBoxShow
+ 
+O r i g i n a l  M e t h o d:
+public void MessageBoxShow(string myEntity) 
+================================30
+D e s c r i p t i o n:
+ <summary>
+ MessageBoxShowWithYesNo receives an input string and displays it in a messagebox with Yes and No Buttons
+ </summary>
+ <param name="myEntity">string that you want to display in messagebox</param>
+ <returns>System.Windows.Forms.DialogResult</returns>
+ Category::MessageBox
+ 
+V a r i a b l e s:
+string myEntity
+ 
+R e t u r n  T y p e:
+System.Windows.Forms.DialogResult RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+MessageBoxShowWithYesNo
+ 
+O r i g i n a l  M e t h o d:
+public System.Windows.Forms.DialogResult MessageBoxShowWithYesNo(string myEntity) 
+================================31
+D e s c r i p t i o n:
+ <summary>
+ Run receives two input strings. The first is the path to the executable.
+ The second is optional and it is the content you want to open with the executable.
+ Run starts the executable as a thread and continues to the next statement
+ without waiting the the thread to complete.
+ </summary>
+ <param name="myEntityForExecutable">string for the path of the executable</param>
+ <param name="myEntityForContent">string for the content for the executable to open</param>
+ Category::Run
+ 
+V a r i a b l e s:
+string myEntityForExecutable
+string myEntityForContent
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+Run
+ 
+O r i g i n a l  M e t h o d:
+public void Run(string myEntityForExecutable, string myEntityForContent) 
+================================32
+D e s c r i p t i o n:
+ Category::Process
+ 
+V a r i a b l e s:
+string exeName
+string parameters
+ 
+R e t u r n  T y p e:
+int RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+RunProcessAsAdmin
+ 
+O r i g i n a l  M e t h o d:
+public int RunProcessAsAdmin(string exeName, string parameters) 
+================================33
+D e s c r i p t i o n:
+ <summary>
+ RunSync receives two input strings. The first is the path to the executable.
+ The second is optional and it is the content you want to open with the executable.
+ Run starts the executable as a thread and continues to the next statement
+ AFTER the thread completes
+ </summary>
+ <param name="myEntityForExecutable">string for the path of the executable</param>
+ <param name="myEntityForContent">string for the content for the executable to open</param>
+ Category::Run
+ 
+V a r i a b l e s:
+string myEntityForExecutable
+string myEntityForContent
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+RunSync
+ 
+O r i g i n a l  M e t h o d:
+public void RunSync(string myEntityForExecutable, string myEntityForContent) 
+================================34
+D e s c r i p t i o n:
+ <summary>
+ The following method tries to start a service specified by a service name. Then it waits until the service 
+ is running or a timeout occurs.
+ </summary>
+ <param name="serviceName"></param>
+ <param name="timeoutMilliseconds"></param>
+ Category::Service
+ 
+V a r i a b l e s:
+string serviceName
+string timeoutMilliseconds
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+StartService
+ 
+O r i g i n a l  M e t h o d:
+public void StartService(string serviceName, int timeoutMilliseconds) 
+================================35
+D e s c r i p t i o n:
+ <summary>
+ The following method tries to stop the specified service and it waits until the service is stopped or a timeout occurs.
+ </summary>
+ <param name="serviceName"></param>
+ <param name="timeoutMilliseconds"></param>
+ Category::Service
+ 
+V a r i a b l e s:
+string serviceName
+string timeoutMilliseconds
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+StopService
+ 
+O r i g i n a l  M e t h o d:
+public void StopService(string serviceName, int timeoutMilliseconds) 
+================================36
+D e s c r i p t i o n:
+ <summary>
+ This method combinates both previous methods. It tries to stop the service (and waits until it's stopped) 
+ then it begins to start the service (and waits until the service is running). The specified timeout is used 
+ for both operations together.
+ </summary>
+ <param name="serviceName"></param>
+ <param name="timeoutMilliseconds"></param>
+ Category::Service
+ 
+V a r i a b l e s:
+string serviceName
+string timeoutMilliseconds
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+RestartService
+ 
+O r i g i n a l  M e t h o d:
+public void RestartService(string serviceName, int timeoutMilliseconds) 
+================================37
+D e s c r i p t i o n:
+ Category::Window
+ 
+V a r i a b l e s:
+ 
+R e t u r n  T y p e:
+string RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+GetActiveWindowTitle
+ 
+O r i g i n a l  M e t h o d:
+public string GetActiveWindowTitle() 
+================================38
+D e s c r i p t i o n:
+ <summary>
+ Sleep receives an integer that indicates the number of milliseconds that you want the program to wait.
+ </summary>
+ <param name="intSleep">integer that indicates the number of milliseconds that you want the program to wait.</param>
+ Category::Sleep
+ 
+V a r i a b l e s:
+int intSleep
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+Sleep
+ 
+O r i g i n a l  M e t h o d:
+public void Sleep(int intSleep) 
+================================39
+D e s c r i p t i o n:
+ Category::Search
+ 
+V a r i a b l e s:
+FindDelimitedTextParms myParms
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+FindDelimitedText
+ 
+O r i g i n a l  M e t h o d:
+public void FindDelimitedText(FindDelimitedTextParms myParms) 
+================================40
+D e s c r i p t i o n:
+ Category::Internet Explorer
+ 
+V a r i a b l e s:
+Methods myActions
+Methods myWebSite
+Methods boolUseNewTab
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+IEGoToURL
+ 
+O r i g i n a l  M e t h o d:
+public void IEGoToURL(Methods myActions, string myWebSite, bool boolUseNewTab) 
+================================41
+D e s c r i p t i o n:
+ <summary>
+ GetAppDirectoryForScript gets the application 
+ data folder and adds \IdealAutomate\yourscriptname to it.
+ The AppDirectory allows you to store personal settings and
+ information that you want to keep private (like passwords) in a location
+ outside of your script on in the application directory
+ </summary>
+ <returns>string that is the app_data/roaming directory path for the script</returns>
+ Category::Directory
+ 
+V a r i a b l e s:
+ 
+R e t u r n  T y p e:
+string RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+GetAppDirectoryForScript
+ 
+O r i g i n a l  M e t h o d:
+public string GetAppDirectoryForScript() 
+================================42
+D e s c r i p t i o n:
+ <summary>
+ GetAppDirectoryForIdealAutomate gets the application 
+ data folder and adds \IdealAutomate\yourscriptname to it.
+ The AppDirectory allows you to store personal settings and
+ information that you want to keep private (like passwords) in a location
+ outside of your script on in the application directory
+ </summary>
+ <returns>string that is the app_data/roaming directory path for the script</returns>
+ Category::Directory
+ 
+V a r i a b l e s:
+ 
+R e t u r n  T y p e:
+string RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+GetAppDirectoryForIdealAutomate
+ 
+O r i g i n a l  M e t h o d:
+public string GetAppDirectoryForIdealAutomate() 
+================================43
+D e s c r i p t i o n:
+ <summary>
+ GetValueByKey takes a key and adds .txt to it in order to create
+ a file name. It gets the app data path and adds \IdealAutomate\yourscriptname
+ to it. By combining that path to the file name created from the key,
+ it can retrieve a value from the key that is unique to your script application.
+  The AppDirectory allows you to store personal settings and
+ information that you want to keep private (like passwords) in a location
+ outside of your script on in the application directory
+ </summary>
+ <param name="strKey">Unique key within the script application</param>
+ <returns>string that was in application directory for that key</returns>
+ Category::Storage>Private
+ 
+V a r i a b l e s:
+string strKey
+ 
+R e t u r n  T y p e:
+string RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+GetValueByKey
+ 
+O r i g i n a l  M e t h o d:
+public string GetValueByKey(string strKey) 
+================================44
+D e s c r i p t i o n:
+ Category::Storage>Private
+ 
+V a r i a b l e s:
+string strKey
+ 
+R e t u r n  T y p e:
+int RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+GetValueByKeyAsInt
+ 
+O r i g i n a l  M e t h o d:
+public int GetValueByKeyAsInt(string strKey) 
+================================45
+D e s c r i p t i o n:
+ Category::Storage>Private
+ 
+V a r i a b l e s:
+string strKey
+string strScriptName
+ 
+R e t u r n  T y p e:
+int RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+GetValueByKeyAsIntForNonCurrentScript
+ 
+O r i g i n a l  M e t h o d:
+public int GetValueByKeyAsIntForNonCurrentScript(string strKey, string strScriptName) 
+================================46
+D e s c r i p t i o n:
+ Category::Storage>Public
+ 
+V a r i a b l e s:
+string strKey
+string strFullFolderPath
+ 
+R e t u r n  T y p e:
+int RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+GetValueByPublicKeyAsIntForNonCurrentScript
+ 
+O r i g i n a l  M e t h o d:
+public int GetValueByPublicKeyAsIntForNonCurrentScript(string strKey, string strFullFolderPath) 
+================================47
+D e s c r i p t i o n:
+ Category::Storage>Private
+ 
+V a r i a b l e s:
+string strKey
+string strScriptName
+ 
+R e t u r n  T y p e:
+string RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+GetValueByKeyForNonCurrentScript
+ 
+O r i g i n a l  M e t h o d:
+public string GetValueByKeyForNonCurrentScript(string strKey, string strScriptName) 
+================================48
+D e s c r i p t i o n:
+ Category::Storage>Public
+ 
+V a r i a b l e s:
+string strKey
+string strFullFolderPath
+ 
+R e t u r n  T y p e:
+string RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+GetValueByPublicKeyForNonCurrentScript
+ 
+O r i g i n a l  M e t h o d:
+public string GetValueByPublicKeyForNonCurrentScript(string strKey, string strFullFolderPath) 
+================================49
+D e s c r i p t i o n:
+ Category::Storage>Public
+ 
+V a r i a b l e s:
+string strKey
+string strFullFileName
+ 
+R e t u r n  T y p e:
+string RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+GetValueByPublicKeyInCurrentFolder
+ 
+O r i g i n a l  M e t h o d:
+public string GetValueByPublicKeyInCurrentFolder(string strKey, string strFullFileName) 
+================================50
+D e s c r i p t i o n:
+ Category::Storage>Private
+ 
+V a r i a b l e s:
+string strKey
+ 
+R e t u r n  T y p e:
+double RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+GetValueByKeyAsDouble
+ 
+O r i g i n a l  M e t h o d:
+public double GetValueByKeyAsDouble(string strKey) 
+================================51
+D e s c r i p t i o n:
+ Category::Storage>Private
+ 
+V a r i a b l e s:
+string strKey
+ 
+R e t u r n  T y p e:
+DateTime RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+GetValueByKeyAsDateTime
+ 
+O r i g i n a l  M e t h o d:
+public DateTime GetValueByKeyAsDateTime(string strKey) 
+================================52
+D e s c r i p t i o n:
+ Category::Storage>Private
+ 
+V a r i a b l e s:
+string strKey
+string strScriptName
+ 
+R e t u r n  T y p e:
+DateTime RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+GetValueByKeyAsDateTimeForNonCurrentScript
+ 
+O r i g i n a l  M e t h o d:
+public DateTime GetValueByKeyAsDateTimeForNonCurrentScript(string strKey, string strScriptName) 
+================================53
+D e s c r i p t i o n:
+ Category::Storage>Private
+ 
+V a r i a b l e s:
+string strKey
+string strFullFolderPath
+ 
+R e t u r n  T y p e:
+DateTime RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+GetValueByPublicKeyAsDateTimeForNonCurrentScript
+ 
+O r i g i n a l  M e t h o d:
+public DateTime GetValueByPublicKeyAsDateTimeForNonCurrentScript(string strKey, string strFullFolderPath) 
+================================54
+D e s c r i p t i o n:
+ Category::Storage>Private
+ 
+V a r i a b l e s:
+string strKey
+ 
+R e t u r n  T y p e:
+int RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+GetValueByKeyAsIntGlobal
+ 
+O r i g i n a l  M e t h o d:
+public int GetValueByKeyAsIntGlobal(string strKey) 
+================================55
+D e s c r i p t i o n:
+ Category::Storage>Private
+ 
+V a r i a b l e s:
+string strKey
+string intIncrementValue
+ 
+R e t u r n  T y p e:
+int RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+IncrementValueByKeyByValue
+ 
+O r i g i n a l  M e t h o d:
+public int IncrementValueByKeyByValue(string strKey, int intIncrementValue) 
+================================56
+D e s c r i p t i o n:
+ Category::Storage>Private
+ 
+V a r i a b l e s:
+string strKey
+string intIncrementValue
+ 
+R e t u r n  T y p e:
+int RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+IncrementValueByKeyByValueGlobal
+ 
+O r i g i n a l  M e t h o d:
+public int IncrementValueByKeyByValueGlobal(string strKey, int intIncrementValue) 
+================================57
+D e s c r i p t i o n:
+ <summary>
+ SetValueByKey takes a key and adds .txt to it in order to create
+ a file name. It gets the app data path and adds \IdealAutomate\yourscriptname
+ to it. By combining that path to the file name,
+ it can write a value to the key that is unique to your script application.
+ The AppDirectory allows you to store personal settings and
+ information that you want to keep private (like passwords) in a location
+ outside of your script on in the application directory
+ </summary>
+ <param name="strKey">Unique key within the script application</param>
+ <param name="strValueToWrite">Value to write to the Unique key 
+ within the script application</param>
+ Category::Storage>Private
+ 
+V a r i a b l e s:
+string strKey
+string strValueToWrite
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+SetValueByKey
+ 
+O r i g i n a l  M e t h o d:
+public void SetValueByKey(string strKey, string strValueToWrite) 
+================================58
+D e s c r i p t i o n:
+ Category::Storage>Private
+ 
+V a r i a b l e s:
+string strKey
+string strValueToWrite
+string strScriptName
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+SetValueByKeyForNonCurrentScript
+ 
+O r i g i n a l  M e t h o d:
+public void SetValueByKeyForNonCurrentScript(string strKey, string strValueToWrite, string strScriptName) 
+================================59
+D e s c r i p t i o n:
+ Category::Storage>Public
+ 
+V a r i a b l e s:
+string strKey
+string strValueToWrite
+string strFullFolderPath
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+SetValueByPublicKeyForNonCurrentScript
+ 
+O r i g i n a l  M e t h o d:
+public void SetValueByPublicKeyForNonCurrentScript(string strKey, string strValueToWrite, string strFullFolderPath) 
+================================60
+D e s c r i p t i o n:
+ Category::Storage>Public
+ 
+V a r i a b l e s:
+string strKey
+string strValueToWrite
+string strFullFileName
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+SetValueByPublicKeyInCurrentFolder
+ 
+O r i g i n a l  M e t h o d:
+public void SetValueByPublicKeyInCurrentFolder(string strKey, string strValueToWrite, string strFullFileName) 
+================================61
+D e s c r i p t i o n:
+ <summary>
+ GetValueByKeyGlobal takes a key and adds .txt to it in order to create
+ a file name. It gets the app data path and adds \IdealAutomate\yourscriptname
+ to it. By combining that path to the file name created from the key,
+ it can retrieve a value from the key that is unique to your script application.
+  The AppDirectory allows you to store personal settings and
+ information that you want to keep private (like passwords) in a location
+ outside of your script on in the application directory
+ </summary>
+ <param name="strKey">Unique key within the script application</param>
+ <returns>string that was in application directory for that key</returns>
+ Category::Storage>Private
+ 
+V a r i a b l e s:
+string strKey
+ 
+R e t u r n  T y p e:
+string RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+GetValueByKeyGlobal
+ 
+O r i g i n a l  M e t h o d:
+public string GetValueByKeyGlobal(string strKey) 
+================================62
+D e s c r i p t i o n:
+ <summary>
+ SetValueByKeyGlobal takes a key and adds .txt to it in order to create
+ a file name. It gets the app data path and adds \IdealAutomate\yourscriptname
+ to it. By combining that path to the file name,
+ it can write a value to the key that is unique to your script application.
+ The AppDirectory allows you to store personal settings and
+ information that you want to keep private (like passwords) in a location
+ outside of your script on in the application directory
+ </summary>
+ <param name="strKey">Unique key within the script application</param>
+ <param name="strValueToWrite">Value to write to the Unique key 
+ within the script application</param>
+ Category::Storage>Private
+ 
+V a r i a b l e s:
+string strKey
+string strValueToWrite
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+SetValueByKeyGlobal
+ 
+O r i g i n a l  M e t h o d:
+public void SetValueByKeyGlobal(string strKey, string strValueToWrite) 
+================================63
+D e s c r i p t i o n:
+ <summary>
+ ReadAppDirectoryKeyToArrayList takes a key and adds .txt to it in order to create
+ a file name. It gets the app data path and adds \IdealAutomate\yourscriptname
+ to it. By combining that path to the file name created from the key,
+ it can retrieve an arraylist that is unique to your script application.
+ The AppDirectory allows you to store personal settings and
+ information that you want to keep private (like passwords) in a location
+ outside of your script on in the application directory
+ </summary>
+ <param name="strKey">Unique key within the script application</param>
+ <returns>ArrayList that was in application directory for that key</returns>
+ Category::Storage>Private
+ 
+V a r i a b l e s:
+string strKey
+ 
+R e t u r n  T y p e:
+ArrayList RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+ReadAppDirectoryKeyToArrayList
+ 
+O r i g i n a l  M e t h o d:
+public ArrayList ReadAppDirectoryKeyToArrayList(string strKey) 
+================================64
+D e s c r i p t i o n:
+ <summary>
+ ReadPublicKeyToArrayList takes a key and adds .txt to it in order to create
+ a file name. It gets the parent folder of the full filename that is passed in
+ to it. It creates a folder with the path for the fullfilename in ..\IdealAutomate folder,
+ </summary>
+ <param name="strKey">Unique key within the script application</param>
+ <returns>ArrayList that was in parent folder ..IdealAutomate for that key</returns>
+ Category::Storage>Public
+ 
+V a r i a b l e s:
+string strKey
+string strFullFileName
+ 
+R e t u r n  T y p e:
+ArrayList RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+ReadPublicKeyToArrayList
+ 
+O r i g i n a l  M e t h o d:
+public ArrayList ReadPublicKeyToArrayList(string strKey, string strFullFileName) 
+================================65
+D e s c r i p t i o n:
+ <summary>
+ WriteArrayListToAppDirectoryKey takes a key and adds .txt to it in order to create
+ a file name. It gets the app data path and adds \IdealAutomate\yourscriptname
+ to it. By combining that path to the file name created from the key,
+ it can write an arraylist to the key filename is unique to your script application.
+ The AppDirectory allows you to store personal settings and
+ information that you want to keep private (like passwords) in a location
+ outside of your script on in the application directory
+ </summary>
+ <param name="strKey">Unique key within the script application</param>
+ <param name="arrayListToWrite">ArrayList that is to written to the application directory for that key</param>
+ Category::Storage>Private
+ 
+V a r i a b l e s:
+string strKey
+string arrayListToWrite
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+WriteArrayListToAppDirectoryKey
+ 
+O r i g i n a l  M e t h o d:
+public void WriteArrayListToAppDirectoryKey(string strKey, ArrayList arrayListToWrite) 
+================================66
+D e s c r i p t i o n:
+ Category::Storage>Public
+ 
+V a r i a b l e s:
+string strKey
+string arrayListToWrite
+string strFullFileName
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+WriteArrayListToPublicKey
+ 
+O r i g i n a l  M e t h o d:
+public void WriteArrayListToPublicKey(string strKey, ArrayList arrayListToWrite, string strFullFileName) 
+================================67
+D e s c r i p t i o n:
+ <summary>
+ ReadAppDirectoryKeyToArrayList takes a key and adds .txt to it in order to create
+ a file name. It gets the app data path and adds \IdealAutomate\yourscriptname
+ to it. By combining that path to the file name created from the key,
+ it can retrieve an arraylist that is unique to your script application.
+ The AppDirectory allows you to store personal settings and
+ information that you want to keep private (like passwords) in a location
+ outside of your script on in the application directory
+ </summary>
+ <param name="strKey">Unique key within the script application</param>
+ <returns>ArrayList that was in application directory for that key</returns>
+ Category::Storage>Private
+ 
+V a r i a b l e s:
+string strKey
+ 
+R e t u r n  T y p e:
+ArrayList RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+ReadAppDirectoryKeyToArrayListGlobal
+ 
+O r i g i n a l  M e t h o d:
+public ArrayList ReadAppDirectoryKeyToArrayListGlobal(string strKey) 
+================================68
+D e s c r i p t i o n:
+ <summary>
+ WriteArrayListToAppDirectoryKey takes a key and adds .txt to it in order to create
+ a file name. It gets the app data path and adds \IdealAutomate\yourscriptname
+ to it. By combining that path to the file name created from the key,
+ it can write an arraylist to the key filename is unique to your script application.
+ The AppDirectory allows you to store personal settings and
+ information that you want to keep private (like passwords) in a location
+ outside of your script on in the application directory
+ </summary>
+ <param name="strKey">Unique key within the script application</param>
+ <param name="arrayListToWrite">ArrayList that is to written to the application directory for that key</param>
+ Category::Storage>Private
+ 
+V a r i a b l e s:
+string strKey
+string arrayListToWrite
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+WriteArrayListToAppDirectoryKeyGlobal
+ 
+O r i g i n a l  M e t h o d:
+public void WriteArrayListToAppDirectoryKeyGlobal(string strKey, ArrayList arrayListToWrite) 
+================================69
+D e s c r i p t i o n:
+ <summary>
+ At beginning of template, Write StartTime, StartDate, Add 1 to total executions. 
+ 
+ </summary>
+ Category::Stats
+ 
+V a r i a b l e s:
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+ScriptStartedUpdateStats
+ 
+O r i g i n a l  M e t h o d:
+public void ScriptStartedUpdateStats() 
+================================70
+D e s c r i p t i o n:
+ <summary>
+ ScriptEndedSuccessfullyUpdateStats - At end of template, Subtract start time and start date
+ from Current date and time, add 1 to successful executions. 
+ (avg successful execution time * 
+ (total successful executions - 1)) + current successful execution time) / total successful executions. 
+ Write PercentSuccessful = (SuccessfulExecutions / TotalExecutions) * 100. 
+ CurrentSavedExecutionTime = CurrentExecutionTime - ManualExecutionTime.
+ ScriptTotalSavedExecutionTime += CurrentSavedExecutionTime
+  StartDate is the LastExecutedDate.
+ </summary>
+ Category::Stats
+ 
+V a r i a b l e s:
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+ScriptEndedSuccessfullyUpdateStats
+ 
+O r i g i n a l  M e t h o d:
+public void ScriptEndedSuccessfullyUpdateStats() 
+================================71
+D e s c r i p t i o n:
+ Category::Directory
+ 
+V a r i a b l e s:
+string fullFileName
+ 
+R e t u r n  T y p e:
+string RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+ConvertFullFileNameToScriptPath
+ 
+O r i g i n a l  M e t h o d:
+public string ConvertFullFileNameToScriptPath(string fullFileName) 
+================================72
+D e s c r i p t i o n:
+ Category::Directory
+ 
+V a r i a b l e s:
+string fullFileName
+ 
+R e t u r n  T y p e:
+string RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+ConvertFullFileNameToPublicPath
+ 
+O r i g i n a l  M e t h o d:
+public string ConvertFullFileNameToPublicPath(string fullFileName) 
+================================73
+D e s c r i p t i o n:
+ Category::Directory
+ 
+V a r i a b l e s:
+string fullFileName
+ 
+R e t u r n  T y p e:
+string RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+ConvertFullFileNameToScriptPathWithoutRemoveLastLevel
+ 
+O r i g i n a l  M e t h o d:
+public string ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(string fullFileName) 
+================================74
+D e s c r i p t i o n:
+ Category::Directory
+ 
+V a r i a b l e s:
+ 
+R e t u r n  T y p e:
+string RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+GetPathForScriptNoBinDebug
+ 
+O r i g i n a l  M e t h o d:
+public string GetPathForScriptNoBinDebug() 
+================================75
+Category::Clipboard^PutClipboardInEntity
+Category::Clipboard^PutEntityInClipboard
+Category::Clipboard^SelectAllCopy
+Category::Clipboard^SelectAllCopyIntoEntity
+Category::Clipboard^SelectAllPaste
+Category::Clipboard^SelectAllPasteFromEntity
+Category::Cursor^PositionCursor
+Category::Cursor^PutCursorPosition
+Category::Directory^ConvertFullFileNameToPublicPath
+Category::Directory^ConvertFullFileNameToScriptPath
+Category::Directory^ConvertFullFileNameToScriptPathWithoutRemoveLastLevel
+Category::Directory^GetAppDirectoryForIdealAutomate
+Category::Directory^GetAppDirectoryForScript
+Category::Directory^GetPathForScriptNoBinDebug
+Category::Image^ClickImageIfExists
+Category::Image^PutAll
+Category::Internet Explorer^IEGoToURL
+Category::Internet Explorer^PutInternetExplorerTabTitleInEntity
+Category::Internet Explorer^PutInternetExplorerTabURLContainingStringInEntity
+Category::Keyboard^CloseApplicationAltFc
+Category::Keyboard^CloseApplicationAltFx
+Category::Keyboard^SelectAllDelete
+Category::Keyboard^TypeText
+Category::MessageBox^MessageBoxShow
+Category::MessageBox^MessageBoxShowWithYesNo
+Category::Mouse^LeftClick
+Category::Mouse^PutCaretPositionInArray
+Category::Mouse^RightClick
+Category::Mouse^ShiftClick
+Category::Process^RunProcessAsAdmin
+Category::Processes^KillAllProcessesByProcessName
+Category::Run^Run
+Category::Run^RunSync
+Category::Search^FindDelimitedText
+Category::Service^RestartService
+Category::Service^StartService
+Category::Service^StopService
+Category::Sleep^Sleep
+Category::Stats^ScriptEndedSuccessfullyUpdateStats
+Category::Stats^ScriptStartedUpdateStats
+Category::Storage_Private^GetValueByKey
+Category::Storage_Private^GetValueByKeyAsDateTime
+Category::Storage_Private^GetValueByKeyAsDateTimeForNonCurrentScript
+Category::Storage_Private^GetValueByKeyAsDouble
+Category::Storage_Private^GetValueByKeyAsInt
+Category::Storage_Private^GetValueByKeyAsIntForNonCurrentScript
+Category::Storage_Private^GetValueByKeyAsIntGlobal
+Category::Storage_Private^GetValueByKeyForNonCurrentScript
+Category::Storage_Private^GetValueByKeyGlobal
+Category::Storage_Private^GetValueByPublicKeyAsDateTimeForNonCurrentScript
+Category::Storage_Private^IncrementValueByKeyByValue
+Category::Storage_Private^IncrementValueByKeyByValueGlobal
+Category::Storage_Private^ReadAppDirectoryKeyToArrayList
+Category::Storage_Private^ReadAppDirectoryKeyToArrayListGlobal
+Category::Storage_Private^SetValueByKey
+Category::Storage_Private^SetValueByKeyForNonCurrentScript
+Category::Storage_Private^SetValueByKeyGlobal
+Category::Storage_Private^WriteArrayListToAppDirectoryKey
+Category::Storage_Private^WriteArrayListToAppDirectoryKeyGlobal
+Category::Storage_Public^GetValueByPublicKeyAsIntForNonCurrentScript
+Category::Storage_Public^GetValueByPublicKeyForNonCurrentScript
+Category::Storage_Public^GetValueByPublicKeyInCurrentFolder
+Category::Storage_Public^ReadPublicKeyToArrayList
+Category::Storage_Public^SetValueByPublicKeyForNonCurrentScript
+Category::Storage_Public^SetValueByPublicKeyInCurrentFolder
+Category::Storage_Public^WriteArrayListToPublicKey
+Category::Window^ActivateWindowByTitle
+Category::Window^GetActiveWindowTitle
+Category::Window^GetWindowTitlesByProcessName
+Category::Window^PutWindowTitleInEntity
+Category::Window^WindowMultipleControls
+Category::Window^WindowMultipleControlsMinimized
+Category::Window^WindowShape

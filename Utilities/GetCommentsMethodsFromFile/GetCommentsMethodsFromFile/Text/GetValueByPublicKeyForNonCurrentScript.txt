@@ -1,0 +1,16 @@
+D e s c r i p t i o n:
+ Category::Storage>Public
+ 
+P a r a m e t e r s:
+string strKey
+string strFullFolderPath
+ 
+R e t u r n  T y p e:
+string RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+GetValueByPublicKeyForNonCurrentScript
+ 
+O r i g i n a l  M e t h o d:
+public string GetValueByPublicKeyForNonCurrentScript(string strKey, string strFullFolderPath) 
+================================49

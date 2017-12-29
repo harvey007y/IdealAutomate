@@ -1,0 +1,26 @@
+D e s c r i p t i o n:
+ <summary>
+ GetValueByKeyGlobal takes a key and adds .txt to it in order to create
+ a file name. It gets the app data path and adds \IdealAutomate\yourscriptname
+ to it. By combining that path to the file name created from the key,
+ it can retrieve a value from the key that is unique to your script application.
+  The AppDirectory allows you to store personal settings and
+ information that you want to keep private (like passwords) in a location
+ outside of your script on in the application directory
+ </summary>
+ <param name="strKey">Unique key within the script application</param>
+ <returns>string that was in application directory for that key</returns>
+ Category::Storage>Private
+ 
+P a r a m e t e r s:
+string strKey
+ 
+R e t u r n  T y p e:
+string RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+GetValueByKeyGlobal
+ 
+O r i g i n a l  M e t h o d:
+public string GetValueByKeyGlobal(string strKey) 
+================================62

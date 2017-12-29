@@ -1,0 +1,23 @@
+D e s c r i p t i o n:
+ <summary>
+ ReadPublicKeyToArrayList takes a key and adds .txt to it in order to create
+ a file name. It gets the parent folder of the full filename that is passed in
+ to it. It creates a folder with the path for the fullfilename in ..\IdealAutomate folder,
+ </summary>
+ <param name="strKey">Unique key within the script application</param>
+ <returns>ArrayList that was in parent folder ..IdealAutomate for that key</returns>
+ Category::Storage>Public
+ 
+P a r a m e t e r s:
+string strKey
+string strFullFileName
+ 
+R e t u r n  T y p e:
+ArrayList RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+ReadPublicKeyToArrayList
+ 
+O r i g i n a l  M e t h o d:
+public ArrayList ReadPublicKeyToArrayList(string strKey, string strFullFileName) 
+================================65

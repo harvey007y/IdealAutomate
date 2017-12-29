@@ -1,0 +1,21 @@
+D e s c r i p t i o n:
+ <summary>
+ SelectAllPaste accepts an input integer to indicate how many milliseconds
+ to wait before sending text Ctrl(a) and Ctrl(v). This will select
+ all of the input on the screen and replace it with what is in the clipboard
+ </summary>
+ <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
+ Category::Clipboard
+ 
+P a r a m e t e r s:
+int intSleep
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+SelectAllPaste
+ 
+O r i g i n a l  M e t h o d:
+public void SelectAllPaste(int intSleep) 
+================================24

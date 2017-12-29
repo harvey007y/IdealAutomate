@@ -1,0 +1,22 @@
+D e s c r i p t i o n:
+ <summary>
+ SelectAllCopyIntoEntity accepts an input integer to indicate how many milliseconds
+ to wait before sending text Ctrl(a) and Ctrl(c). This will put
+ all of the input into the clipboard and then it will return
+ what is in the clipboard as a string
+ </summary>
+ <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
+ Category::Clipboard
+ 
+P a r a m e t e r s:
+int intSleep
+ 
+R e t u r n  T y p e:
+string RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+SelectAllCopyIntoEntity
+ 
+O r i g i n a l  M e t h o d:
+public string SelectAllCopyIntoEntity(int intSleep) 
+================================23

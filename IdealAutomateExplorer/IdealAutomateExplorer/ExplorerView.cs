@@ -5513,7 +5513,7 @@ namespace System.Windows.Forms.Samples {
                     Console.WriteLine(e.Message);
                     continue;
                 } catch (System.ArgumentException e) {
-                    MessageBox.Show(e.Message + " CurrentDir = " + currentDir);
+              //      MessageBox.Show(e.Message + " CurrentDir = " + currentDir);
                     continue;
                 }
 

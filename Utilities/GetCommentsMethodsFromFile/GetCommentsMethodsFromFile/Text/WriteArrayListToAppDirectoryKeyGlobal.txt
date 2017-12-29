@@ -1,0 +1,27 @@
+D e s c r i p t i o n:
+ <summary>
+ WriteArrayListToAppDirectoryKey takes a key and adds .txt to it in order to create
+ a file name. It gets the app data path and adds \IdealAutomate\yourscriptname
+ to it. By combining that path to the file name created from the key,
+ it can write an arraylist to the key filename is unique to your script application.
+ The AppDirectory allows you to store personal settings and
+ information that you want to keep private (like passwords) in a location
+ outside of your script on in the application directory
+ </summary>
+ <param name="strKey">Unique key within the script application</param>
+ <param name="arrayListToWrite">ArrayList that is to written to the application directory for that key</param>
+ Category::Storage>Private
+ 
+P a r a m e t e r s:
+string strKey
+string arrayListToWrite
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+WriteArrayListToAppDirectoryKeyGlobal
+ 
+O r i g i n a l  M e t h o d:
+public void WriteArrayListToAppDirectoryKeyGlobal(string strKey, ArrayList arrayListToWrite) 
+================================69

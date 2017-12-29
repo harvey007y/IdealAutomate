@@ -1,0 +1,20 @@
+D e s c r i p t i o n:
+ <summary>
+ RightClick allows you to right-click on the X and Y coordinates of an int array passed into the method.
+ </summary>
+ <param name="myArray">int array containing X and Y coordinates of position on screen to click</param>
+ Category::Mouse
+ 
+P a r a m e t e r s:
+int[ int
+int[ myArray
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+RightClick
+ 
+O r i g i n a l  M e t h o d:
+public void RightClick(int[,] myArray) 
+================================12

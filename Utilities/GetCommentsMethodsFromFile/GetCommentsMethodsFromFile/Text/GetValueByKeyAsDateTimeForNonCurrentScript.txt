@@ -1,0 +1,16 @@
+D e s c r i p t i o n:
+ Category::Storage>Private
+ 
+P a r a m e t e r s:
+string strKey
+string strScriptName
+ 
+R e t u r n  T y p e:
+DateTime RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+GetValueByKeyAsDateTimeForNonCurrentScript
+ 
+O r i g i n a l  M e t h o d:
+public DateTime GetValueByKeyAsDateTimeForNonCurrentScript(string strKey, string strScriptName) 
+================================53

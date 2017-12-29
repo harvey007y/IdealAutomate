@@ -688,7 +688,7 @@ fAltTab);
         /// the original position again.
         /// </summary>
         /// <returns></returns>
-        /// Category::Caret
+        /// Category::Mouse
         public int[,] PutCaretPositionInArray() {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "PutCaretPositionInArray");

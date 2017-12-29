@@ -1,0 +1,38 @@
+D e s c r i p t i o n:
+ <summary>
+ WindowComboBox receives an IEnumerable of objects (ComboBoxPair) 
+ and a string for the label for the combobox. It returns the
+ selected ComboBoxPair
+ </summary>
+ <param name="myEntity">IEnumerable of objects</param>
+ <param name="myEntity2">String for the label for the combobox</param>
+ <returns>Selected ComboBoxPair</returns>
+ <summary>
+ WindowShape allows you to display info to the user and to position that 
+ the window on the screen
+ </summary>
+ <param name="myShape">string "Box" or "Arrow"</param>
+ <param name="myOrientation">string "Left","Right","Up","Down",""</param>
+ <param name="myTitle">string title for window</param>
+ <param name="myContent">string content for window</param>
+ <param name="intTop">integer indicating number of pixels from top of screen to display window</param>
+ <param name="intLeft">integer indicating number of pixels from left of screen to display window</param>
+ Category::Window
+ 
+P a r a m e t e r s:
+string myShape
+string myOrientation
+string myTitle
+string myContent
+string intTop
+string intLeft
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+WindowShape
+ 
+O r i g i n a l  M e t h o d:
+public void WindowShape(string myShape, string myOrientation, string myTitle, string myContent, int intTop, int intLeft) 
+================================29

@@ -1,0 +1,23 @@
+D e s c r i p t i o n:
+ <summary>
+ GetWindowTitlesByProcessName allows you to get a list of all the WindowTitles
+ for a process name. ProcessNames are called image names in task manager.
+ You can find all of the iexplore or devenv and activate each one to see if it 
+ is the one you want
+ </summary>
+ <param name="myProcessName"></param>
+ <returns></returns>
+ Category::Window
+ 
+P a r a m e t e r s:
+string myProcessName
+ 
+R e t u r n  T y p e:
+List<string> RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+GetWindowTitlesByProcessName
+ 
+O r i g i n a l  M e t h o d:
+public List<string> GetWindowTitlesByProcessName(string myProcessName) 
+================================4
