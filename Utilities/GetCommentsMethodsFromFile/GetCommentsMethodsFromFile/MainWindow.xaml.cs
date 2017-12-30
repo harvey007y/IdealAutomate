@@ -74,6 +74,8 @@ namespace GetCommentsMethodsFromFile {
         int intPageSize = 80;
         int intColumnWidth = 250;
         string strPreviousCategory = "";
+        string strApplicationBinDebug = "";
+        string myNewProjectSourcePath = "";
         public MainWindow() {
             bool boolRunningFromHome = false;
 
@@ -98,8 +100,18 @@ namespace GetCommentsMethodsFromFile {
                 myActions.TypeText("%(\" \"n)", 1000); // minimize visual studio
             }
             myActions.Sleep(1000);
+            string strApplicationBinDebug1 = System.Windows.Forms.Application.StartupPath;
+            string myNewProjectSourcePath1 = strApplicationBinDebug1.Replace("\\bin\\Debug", "");
+      
 
-            
+
+            System.IO.DirectoryInfo di = new DirectoryInfo(Path.Combine(myNewProjectSourcePath1, @"Text"));
+
+            foreach (FileInfo file in di.GetFiles()) {
+                if (file.Name != "Reserved_Words_CS.txt" && file.Name != "Type_Words_CS.txt") {
+                    file.Delete();
+                }
+            }
             strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             // Set Initial Directory to My Documents
             string strSavedDirectory = myActions.GetValueByKey("InitialDirectory");
@@ -917,6 +929,18 @@ namespace GetCommentsMethodsFromFile {
             goto DisplayWindowAgain;
             
             myExit:
+            string strApplicationBinDebug2 = System.Windows.Forms.Application.StartupPath;
+            string myNewProjectSourcePath2 = strApplicationBinDebug2.Replace("\\bin\\Debug", "");
+
+
+
+            System.IO.DirectoryInfo di2 = new DirectoryInfo(Path.Combine(myNewProjectSourcePath2, @"Text"));
+
+            foreach (FileInfo file in di2.GetFiles()) {
+                if (file.Name != "Reserved_Words_CS.txt" && file.Name != "Type_Words_CS.txt") {
+                    file.Delete();
+                }
+            }
             myActions.ScriptEndedSuccessfullyUpdateStats();
             Application.Current.Shutdown();
         }
