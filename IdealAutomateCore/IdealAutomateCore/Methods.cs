@@ -988,7 +988,7 @@ fAltTab);
           //thread.Start();
           //thread.Join();
         } catch (Exception ex1) {
-          MessageBox.Show(ex1.Message);
+          MessageBox.Show(ex1.Message + "Line 991 in Methods");
         }
       }
 
@@ -1732,8 +1732,8 @@ fAltTab);
         process.WaitForExit();
         return process.ExitCode;
       } catch (Win32Exception ex) {
-        MessageBox.Show(ex.ToString());
-        switch (ex.NativeErrorCode) {
+        MessageBox.Show(ex.ToString() + "Line 1735 in Methods");
+                switch (ex.NativeErrorCode) {
           case 1223:
             return ex.NativeErrorCode;
           default:
@@ -1741,8 +1741,8 @@ fAltTab);
         }
 
       } catch (Exception ex) {
-        MessageBox.Show(ex.ToString());
-        return 7777;
+        MessageBox.Show(ex.ToString() + "Line 1744 in Methods");
+                return 7777;
       }
     }
         /// <summary>

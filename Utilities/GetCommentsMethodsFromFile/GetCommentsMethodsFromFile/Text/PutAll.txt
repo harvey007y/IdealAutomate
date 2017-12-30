@@ -36,4 +36,4 @@ PutAll
  
 O r i g i n a l  M e t h o d:
 public int[,] PutAll(ImageEntity myImage) 
-================================6
+================================26

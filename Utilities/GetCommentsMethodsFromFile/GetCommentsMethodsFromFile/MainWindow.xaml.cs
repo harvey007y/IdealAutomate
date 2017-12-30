@@ -7,6 +7,8 @@ using System.Text.RegularExpressions;
 using System.Linq;
 using System.Text;
 using System.Windows.Media;
+using System.Collections;
+using System.Windows.Controls;
 
 namespace GetCommentsMethodsFromFile {
     /// <summary>
@@ -59,6 +61,19 @@ namespace GetCommentsMethodsFromFile {
         List<string> listComments = new List<string>();
         List<string> listMethod = new List<string>();
         SortedList<string, string> listCategoryMethod = new SortedList<string, string>();
+
+        string strInitialDirectory = "";
+        int intRowCtr = 0;
+        List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+        ControlEntity myControlEntity = new ControlEntity();
+        int intCol = 0;
+        int intRow = 0;
+        int intStartPageMethod = 0;
+        int intEndPageMethod = 0;
+        int intTotalMethods = 0;
+        int intPageSize = 80;
+        int intColumnWidth = 250;
+        string strPreviousCategory = "";
         public MainWindow() {
             bool boolRunningFromHome = false;
 
@@ -83,10 +98,171 @@ namespace GetCommentsMethodsFromFile {
                 myActions.TypeText("%(\" \"n)", 1000); // minimize visual studio
             }
             myActions.Sleep(1000);
-            // Read in lines from ReservedWords txt file.
-            // Read in lines from ReservedWords txt file.
+
+            
+            strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            // Set Initial Directory to My Documents
+            string strSavedDirectory = myActions.GetValueByKey("InitialDirectory");
+
+
+            if (Directory.Exists(strSavedDirectory)) {
+                strInitialDirectory = strSavedDirectory;
+            }
+            DisplaySelectFolderWindow:
+            intRowCtr = 0;
+            ControlEntity myControlEntity = new ControlEntity();
+            List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+            List<ComboBoxPair> cbp = new List<ComboBoxPair>();
+            List<ComboBoxPair> cbp1 = new List<ComboBoxPair>();
+            List<ComboBoxPair> cbp2 = new List<ComboBoxPair>();
+            List<ComboBoxPair> cbp3 = new List<ComboBoxPair>();
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Heading;
+            myControlEntity.ID = "lbl";
+            myControlEntity.Text = "Open Folder";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "lblFolder";
+            myControlEntity.Text = "Folder";
+            myControlEntity.Width = 150;
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            myControlEntity.SelectedValue = myActions.GetValueByKey("cbxFolderSelectedValue");
+            myControlEntity.ID = "cbxFolder";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = @"Here is an example: C:\Users\harve\Documents\GitHub";
+            myControlEntity.ComboBoxIsEditable = true;
+            myControlEntity.ColumnNumber = 1;
+            myControlEntity.ColumnSpan = 2;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Button;
+            myControlEntity.ID = "btnSelectFolder";
+            myControlEntity.Text = "Select Folder...";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 3;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+
+            DisplaySelectFolderWindowAgain:
+            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 300, 1200, 100, 100);
+            LineAfterDisplayWindow:
+            if (strButtonPressed == "btnCancel") {
+                myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                return;
+            }
+
+
+            string strFolder = myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedValue;
+            //     string strFolderKey = myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedKey;
             string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
             string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
+            myActions.SetValueByKey("cbxFolderSelectedValue", strFolder);
+
+            if (strButtonPressed == "btnSelectFolder") {
+                var dialog = new System.Windows.Forms.FolderBrowserDialog();
+                dialog.SelectedPath = myActions.GetValueByKey("LastSearchFolder");
+
+
+                System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+                if (result == System.Windows.Forms.DialogResult.OK && Directory.Exists(dialog.SelectedPath)) {
+                    myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedValue = dialog.SelectedPath;
+                    myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedKey = dialog.SelectedPath;
+                    myListControlEntity.Find(x => x.ID == "cbxFolder").Text = dialog.SelectedPath;
+
+                    myActions.SetValueByKey("LastSearchFolder", dialog.SelectedPath);
+                    strFolder = dialog.SelectedPath;
+                    myActions.SetValueByKey("cbxFolderSelectedValue", strFolder);
+                    string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
+                    string fileName = "cbxFolder.txt";
+
+
+                    string settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPath(myNewProjectSourcePath));
+                    string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
+                    ArrayList alHosts = new ArrayList();
+                    cbp = new List<ComboBoxPair>();
+                    cbp.Clear();
+                    cbp.Add(new ComboBoxPair("--Select Item ---", "--Select Item ---"));
+                    ComboBox myComboBox = new ComboBox();
+
+
+                    if (!File.Exists(settingsPath)) {
+                        using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
+                            objSWFile.Close();
+                        }
+                    }
+                    using (StreamReader objSRFile = File.OpenText(settingsPath)) {
+                        string strReadLine = "";
+                        while ((strReadLine = objSRFile.ReadLine()) != null) {
+                            string[] keyvalue = strReadLine.Split('^');
+                            if (keyvalue[0] != "--Select Item ---") {
+                                cbp.Add(new ComboBoxPair(keyvalue[0], keyvalue[1]));
+                            }
+                        }
+                        objSRFile.Close();
+                    }
+                    string strNewHostName = dialog.SelectedPath;
+                    List<ComboBoxPair> alHostx = cbp;
+                    List<ComboBoxPair> alHostsNew = new List<ComboBoxPair>();
+                    ComboBoxPair myCbp = new ComboBoxPair(strNewHostName, strNewHostName);
+                    bool boolNewItem = false;
+
+                    alHostsNew.Add(myCbp);
+                    if (alHostx.Count > 24) {
+                        for (int i = alHostx.Count - 1; i > 0; i--) {
+                            if (alHostx[i]._Key.Trim() != "--Select Item ---") {
+                                alHostx.RemoveAt(i);
+                                break;
+                            }
+                        }
+                    }
+                    foreach (ComboBoxPair item in alHostx) {
+                        if (strNewHostName.ToLower() != item._Key.ToLower() && item._Key != "--Select Item ---") {
+                            boolNewItem = true;
+                            alHostsNew.Add(item);
+                        }
+                    }
+
+                    using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
+                        foreach (ComboBoxPair item in alHostsNew) {
+                            if (item._Key != "") {
+                                objSWFile.WriteLine(item._Key + '^' + item._Value);
+                            }
+                        }
+                        objSWFile.Close();
+                    }
+                    goto DisplaySelectFolderWindowAgain;
+                }
+            }
+
+            string strFolderToUse = "";
+            if (strButtonPressed == "btnOkay") {
+
+                if ((strFolder == "--Select Item ---" || strFolder == "")) {
+                    myActions.MessageBoxShow("Please enter Folder or select Folder from ComboBox; else press Cancel to Exit");
+                    goto DisplaySelectFolderWindow;
+                }
+
+                strFolderToUse = strFolder;
+                myActions.SetValueByKey("InitialDirectory", strFolder);              
+               
+            }
+                                  
+            // Read in lines from ReservedWords txt file.
+             strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
+             myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
             foreach (string line in File.ReadLines(Path.Combine(myNewProjectSourcePath, @"Text\Reserved_Words_CS.txt"))) {
                 listReservedWords.Add(line.Trim());
             }
@@ -123,7 +299,24 @@ namespace GetCommentsMethodsFromFile {
              * 5. If the cleaned statement is an action statement, 
              *    we write the tracelog after writing the action statement
              */
-            myFile = @"C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateCore\IdealAutomateCore\Methods.cs";
+            string[] files = null;
+            try {
+                files = System.IO.Directory.GetFiles(strFolder, "*.cs");
+            } catch (UnauthorizedAccessException e) {
+
+                Console.WriteLine(e.Message);                
+            } catch (System.IO.DirectoryNotFoundException e) {
+                Console.WriteLine(e.Message);                
+            } catch (System.IO.PathTooLongException e) {
+                Console.WriteLine(e.Message);                
+            } catch (Exception e) {
+                Console.WriteLine(e.Message);                
+            }
+
+            // Perform the required action on each file here.
+            // Modify this block to perform your required task.
+            foreach (string myFile in files) {
+                  //  myFile = @"C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateCore\IdealAutomateCore\Methods.cs";
             System.IO.StreamReader file =
                new System.IO.StreamReader(myFile);
             while ((strInputLineOrig = file.ReadLine()) != null) {
@@ -309,6 +502,8 @@ namespace GetCommentsMethodsFromFile {
 
 
             }
+            }
+            
 
 
 
@@ -326,23 +521,16 @@ namespace GetCommentsMethodsFromFile {
             int intWindowLeft = 0;
             string strWindowTop = "";
             string strWindowLeft = "";
-            int intRowCtr = 0;
-            int intCol = 0;
-            int intRow = 0;
-            int intStartPageMethod = 0;
-            int intEndPageMethod = listCategoryMethod.Count();
-            int intTotalMethods = 0;
-            int intPageSize = 80;
-            int intColumnWidth = 250;
-            string strPreviousCategory = "";
+            intRowCtr = 0;
+  
             StringBuilder sb = new StringBuilder(); // this is for creating the controls in the window
 
-
+            intEndPageMethod = listCategoryMethod.Count();
             intTotalMethods = listCategoryMethod.Count();
             BuildMenuDialogPage:
-            List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+            myListControlEntity = new List<ControlEntity>();
 
-            ControlEntity myControlEntity = new ControlEntity();
+            myControlEntity = new ControlEntity();
             intCol = 0;
             intRow = 0;
             intRowCtr = 0;
@@ -447,7 +635,7 @@ namespace GetCommentsMethodsFromFile {
             int intWidth = (intCol + 1) * intColumnWidth;
 
             GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, intWidth, intWindowTop, intWindowLeft);
+            strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, intWidth, intWindowTop, intWindowLeft);
             DisplayWindowAgain:
 
             if (strButtonPressed == "btnCancel") {
@@ -548,8 +736,8 @@ namespace GetCommentsMethodsFromFile {
             }
             ControlEntity myControlEntity1 = new ControlEntity();
             List<ControlEntity> myListControlEntity1 = new List<ControlEntity>();
-            List<ComboBoxPair> cbp = new List<ComboBoxPair>();
-            List<ComboBoxPair> cbp1 = new List<ComboBoxPair>();
+            cbp = new List<ComboBoxPair>();
+            cbp1 = new List<ComboBoxPair>();
             DisplayIEGoToURLWindow:
             myControlEntity1 = new ControlEntity();
             myListControlEntity1 = new List<ControlEntity>();
@@ -749,10 +937,19 @@ namespace GetCommentsMethodsFromFile {
             //string strLine = "";
             //using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Path.Combine(myNewProjectSourcePath, @"Text\output.txt"))) {
             listOutput.Add("D e s c r i p t i o n:");
+            bool boolCategoryFound = false;
             foreach (var item in listComments) {
                 listOutput.Add(item);
                 if (item.Contains(@"Category::")) {
-                    listCategoryMethod.Add(item.Trim().Replace(">","_") + "^" + strMethod, item + "^" + strMethod);
+                    boolCategoryFound = true;
+                    if (!listCategoryMethod.ContainsKey(item.Trim().Replace(">", "_") + "^" + strMethod)) {
+                        listCategoryMethod.Add(item.Trim().Replace(">", "_") + "^" + strMethod, item + "^" + strMethod);
+                    }                    
+                }
+            }
+            if (boolCategoryFound == false) {
+                if (!listCategoryMethod.ContainsKey("_UnCategorized" + "^" + strMethod)) {
+                    listCategoryMethod.Add("_UnCategorized" + "^" + strMethod, "_UnCategorized" + "^" + strMethod);
                 }
             }
             int i = 0;
@@ -1410,6 +1607,14 @@ namespace GetCommentsMethodsFromFile {
                 boolFoundOpenBracket = false;
             }
 
+        }
+        public string GetAppDirectoryForScript(string strScriptName) {
+            string settingsDirectory =
+      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\" + strScriptName;
+            if (!Directory.Exists(settingsDirectory)) {
+                Directory.CreateDirectory(settingsDirectory);
+            }
+            return settingsDirectory;
         }
     }
 }

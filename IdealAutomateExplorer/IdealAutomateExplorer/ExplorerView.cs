@@ -497,7 +497,7 @@ namespace System.Windows.Forms.Samples {
                     e.Graphics.DrawIcon(icon, myX, myY);
                 } catch (Exception ex) {
 
-                    MessageBox.Show(ex.Message);
+                    MessageBox.Show(ex.Message + " - Line 500 in ExplorerView");
                 } finally {
                     e.Handled = true;
                 }
@@ -556,7 +556,7 @@ namespace System.Windows.Forms.Samples {
                 SetTitle(_dir.FileView);
                 //   RefreshDataGrid();
             } catch (Exception ex) {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message + " - Line 559 in ExplorerView");
             }
         }
 
@@ -1443,7 +1443,7 @@ namespace System.Windows.Forms.Samples {
                     Process.Start(strExecutable, string.Concat("\"", strContent, "\""));
                 } catch (Exception ex) {
 
-                    MessageBox.Show(ex.ToString());
+                    MessageBox.Show(ex.ToString() + " - Line 1446 in ExplorerView");
                 }
             }
 
@@ -1622,7 +1622,7 @@ namespace System.Windows.Forms.Samples {
                         SetTitle(_dir.FileView);
                         RefreshDataGrid();
                     } catch (Exception ex) {
-                        MessageBox.Show(ex.Message);
+                       MessageBox.Show(ex.Message + " - Line 1625 in ExplorerView");
                     }
                 }
             }
@@ -5703,9 +5703,9 @@ namespace System.Windows.Forms.Samples {
                 }
             } catch (Exception ex) {
                 if (ex.InnerException != null) {
-                    myActions.MessageBoxShow(ex.InnerException.ToString());
+                    myActions.MessageBoxShow(ex.InnerException.ToString() + " - Line 5706 in ExplorerView");
                 } else {
-                    myActions.MessageBoxShow(ex.Message);
+                  //  myActions.MessageBoxShow(ex.Message + " - Line 5708 in ExplorerView");
                 }
             }
             if (sb.ToString().Contains(text)) {
@@ -5730,9 +5730,9 @@ namespace System.Windows.Forms.Samples {
 
             } catch (Exception ex) {
                 if (ex.InnerException != null) {
-                    myActions.MessageBoxShow(ex.InnerException.ToString() + " filename is:" + flname);
+                    myActions.MessageBoxShow(ex.InnerException.ToString() + " filename is:" + flname + " - Line 5733 in ExplorerView");
                 } else {
-                    myActions.MessageBoxShow(ex.Message + " filename is:" + flname);
+                    myActions.MessageBoxShow(ex.Message + " filename is:" + flname + " - Line 5735 in ExplorerView");
                 }
             }
 

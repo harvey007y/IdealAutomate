@@ -19,4 +19,4 @@ SelectAllCopyIntoEntity
  
 O r i g i n a l  M e t h o d:
 public string SelectAllCopyIntoEntity(int intSleep) 
-================================23
+================================43

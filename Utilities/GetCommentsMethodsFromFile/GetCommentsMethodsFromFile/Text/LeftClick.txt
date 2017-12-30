@@ -17,4 +17,4 @@ LeftClick
  
 O r i g i n a l  M e t h o d:
 public void LeftClick(int[,] myArray) 
-================================10
+================================30

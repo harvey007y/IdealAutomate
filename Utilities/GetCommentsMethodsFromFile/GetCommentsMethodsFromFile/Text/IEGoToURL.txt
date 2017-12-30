@@ -14,4 +14,4 @@ IEGoToURL
  
 O r i g i n a l  M e t h o d:
 public void IEGoToURL(Methods myActions, string myWebSite, bool boolUseNewTab) 
-================================41
+================================61

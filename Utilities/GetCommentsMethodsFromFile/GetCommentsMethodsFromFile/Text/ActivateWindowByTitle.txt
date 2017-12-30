@@ -25,4 +25,4 @@ ActivateWindowByTitle
  
 O r i g i n a l  M e t h o d:
 public bool ActivateWindowByTitle(string myTitle, int myShowOption) 
-================================3
+================================23

@@ -33,4 +33,4 @@ WindowMultipleControlsMinimized
  
 O r i g i n a l  M e t h o d:
 public string WindowMultipleControlsMinimized(ref List<ControlEntity> myListControlEntity, int intWindowHeight, int intWindowWidth, int intWindowTop, int intWindowLeft) 
-================================28
+================================48

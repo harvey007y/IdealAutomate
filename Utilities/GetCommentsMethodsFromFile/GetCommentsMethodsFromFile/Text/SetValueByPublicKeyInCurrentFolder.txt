@@ -14,4 +14,4 @@ SetValueByPublicKeyInCurrentFolder
  
 O r i g i n a l  M e t h o d:
 public void SetValueByPublicKeyInCurrentFolder(string strKey, string strValueToWrite, string strFullFileName) 
-================================61
+================================81

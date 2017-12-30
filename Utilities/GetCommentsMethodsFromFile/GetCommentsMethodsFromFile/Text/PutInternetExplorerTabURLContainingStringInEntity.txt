@@ -16,4 +16,4 @@ PutInternetExplorerTabURLContainingStringInEntity
  
 O r i g i n a l  M e t h o d:
 public string PutInternetExplorerTabURLContainingStringInEntity(string myEntity) 
-================================17
+================================37

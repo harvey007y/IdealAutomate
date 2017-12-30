@@ -21,4 +21,4 @@ SelectAllPasteFromEntity
  
 O r i g i n a l  M e t h o d:
 public void SelectAllPasteFromEntity(string myEntity, int intSleep) 
-================================25
+================================45

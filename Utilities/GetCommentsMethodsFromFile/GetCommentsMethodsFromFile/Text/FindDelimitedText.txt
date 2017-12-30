@@ -12,4 +12,4 @@ FindDelimitedText
  
 O r i g i n a l  M e t h o d:
 public void FindDelimitedText(FindDelimitedTextParms myParms) 
-================================40
+================================60

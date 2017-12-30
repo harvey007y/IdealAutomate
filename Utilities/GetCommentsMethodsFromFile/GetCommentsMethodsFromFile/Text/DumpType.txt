@@ -1,0 +1,19 @@
+D e s c r i p t i o n:
+ 
+P a r a m e t e r s:
+string InitialStr
+string sb
+string obj
+string level
+string t
+string maxlevel
+ 
+R e t u r n  T y p e:
+static void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+DumpType
+ 
+O r i g i n a l  M e t h o d:
+public static void DumpType(string InitialStr, StringBuilder sb, object obj, int level, System.Type t, int maxlevel) 
+================================17

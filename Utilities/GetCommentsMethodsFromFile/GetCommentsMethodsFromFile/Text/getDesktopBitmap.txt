@@ -1,0 +1,21 @@
+D e s c r i p t i o n:
+ <summary>
+ Initialize global data structures
+ </summary>
+ <remarks>
+ The bitmap returned is in PixelFormat.Format24bppRgb.
+ </remarks>
+ <returns>Current screen image</returns>
+ 
+P a r a m e t e r s:
+bool UseGrayScale
+ 
+R e t u r n  T y p e:
+static Bitmap RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+getDesktopBitmap
+ 
+O r i g i n a l  M e t h o d:
+public static Bitmap getDesktopBitmap(bool UseGrayScale) 
+================================111

@@ -16,4 +16,4 @@ PutEntityInClipboard
  
 O r i g i n a l  M e t h o d:
 public void PutEntityInClipboard(string myEntity) 
-================================18
+================================38

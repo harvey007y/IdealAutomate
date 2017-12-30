@@ -12,4 +12,4 @@ GetValueByKeyAsInt
  
 O r i g i n a l  M e t h o d:
 public int GetValueByKeyAsInt(string strKey) 
-================================45
+================================65

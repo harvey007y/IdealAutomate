@@ -1,0 +1,25 @@
+D e s c r i p t i o n:
+ <summary>
+ ReplaceFirst provides an easy way to only replace the first occurrence of a string
+ Example: myOriginalString = myOriginalString.ReplaceFirst(mySearchString,myReplacementString)
+ </summary>
+ <param name="text"></param>
+ <param name="search"></param>
+ <param name="replace"></param>
+ <returns></returns>
+ 
+P a r a m e t e r s:
+this string
+this text
+this search
+this replace
+ 
+R e t u r n  T y p e:
+static string RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+ReplaceFirst
+ 
+O r i g i n a l  M e t h o d:
+public static string ReplaceFirst(this string text, string search, string replace) 
+================================113

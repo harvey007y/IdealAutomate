@@ -12,4 +12,4 @@ GetValueByKeyAsIntGlobal
  
 O r i g i n a l  M e t h o d:
 public int GetValueByKeyAsIntGlobal(string strKey) 
-================================55
+================================75

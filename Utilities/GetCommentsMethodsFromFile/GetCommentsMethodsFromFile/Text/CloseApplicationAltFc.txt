@@ -17,4 +17,4 @@ CloseApplicationAltFc
  
 O r i g i n a l  M e t h o d:
 public void CloseApplicationAltFc(int intSleep) 
-================================21
+================================41

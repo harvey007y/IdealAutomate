@@ -13,4 +13,4 @@ GetValueByPublicKeyForNonCurrentScript
  
 O r i g i n a l  M e t h o d:
 public string GetValueByPublicKeyForNonCurrentScript(string strKey, string strFullFolderPath) 
-================================49
+================================69

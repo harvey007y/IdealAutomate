@@ -17,4 +17,4 @@ CloseApplicationAltFx
  
 O r i g i n a l  M e t h o d:
 public void CloseApplicationAltFx(int intSleep) 
-================================20
+================================40

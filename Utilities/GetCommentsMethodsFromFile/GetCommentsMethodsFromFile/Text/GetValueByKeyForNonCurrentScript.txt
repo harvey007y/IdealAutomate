@@ -13,4 +13,4 @@ GetValueByKeyForNonCurrentScript
  
 O r i g i n a l  M e t h o d:
 public string GetValueByKeyForNonCurrentScript(string strKey, string strScriptName) 
-================================48
+================================68

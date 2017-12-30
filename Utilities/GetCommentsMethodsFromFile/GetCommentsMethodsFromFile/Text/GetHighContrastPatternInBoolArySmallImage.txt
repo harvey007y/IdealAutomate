@@ -1,0 +1,19 @@
+D e s c r i p t i o n:
+ 
+P a r a m e t e r s:
+int x
+int y
+int bool
+int myBoolArySmallImage
+int smallWidth
+int smallHeight
+ 
+R e t u r n  T y p e:
+static MyPattern RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+GetHighContrastPatternInBoolArySmallImage
+ 
+O r i g i n a l  M e t h o d:
+public static MyPattern GetHighContrastPatternInBoolArySmallImage(int x, int y, bool[,] myBoolArySmallImage, int smallWidth, int smallHeight) 
+================================105

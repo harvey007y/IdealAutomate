@@ -25,4 +25,4 @@ SetValueByKeyGlobal
  
 O r i g i n a l  M e t h o d:
 public void SetValueByKeyGlobal(string strKey, string strValueToWrite) 
-================================63
+================================83

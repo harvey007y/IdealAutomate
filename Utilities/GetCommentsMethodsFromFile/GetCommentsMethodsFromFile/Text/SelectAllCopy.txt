@@ -18,4 +18,4 @@ SelectAllCopy
  
 O r i g i n a l  M e t h o d:
 public void SelectAllCopy(int intSleep) 
-================================22
+================================42

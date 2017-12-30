@@ -18,4 +18,4 @@ SelectAllPaste
  
 O r i g i n a l  M e t h o d:
 public void SelectAllPaste(int intSleep) 
-================================24
+================================44

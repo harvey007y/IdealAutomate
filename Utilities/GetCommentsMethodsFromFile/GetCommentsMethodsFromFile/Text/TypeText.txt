@@ -30,4 +30,4 @@ TypeText
  
 O r i g i n a l  M e t h o d:
 public void TypeText(string myEntity, int intSleep) 
-================================19
+================================39

@@ -110,7 +110,7 @@
             the original position again.
             </summary>
             <returns></returns>
-            Category::Caret
+            Category::Mouse
         </member>
         <!-- Badly formed XML comment ignored for member "M:IdealAutomate.Core.Methods.ClickImageIfExists(IdealAutomate.Core.ImageEntity)" -->
         <member name="M:IdealAutomate.Core.Methods.LeftClick(System.Int32[0:,0:])">
@@ -582,6 +582,10 @@
             </summary>
             <param name="strKey">Unique key within the script application</param>
             <param name="arrayListToWrite">ArrayList that is to written to the application directory for that key</param>
+            Category::Storage>Private
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.WriteArrayListToPublicKey(System.String,System.Collections.ArrayList,System.String)">
+            Category::Storage>Public
         </member>
         <member name="M:IdealAutomate.Core.Methods.ReadAppDirectoryKeyToArrayListGlobal(System.String)">
             <summary>
@@ -595,6 +599,7 @@
             </summary>
             <param name="strKey">Unique key within the script application</param>
             <returns>ArrayList that was in application directory for that key</returns>
+            Category::Storage>Private
         </member>
         <member name="M:IdealAutomate.Core.Methods.WriteArrayListToAppDirectoryKeyGlobal(System.String,System.Collections.ArrayList)">
             <summary>
@@ -608,12 +613,14 @@
             </summary>
             <param name="strKey">Unique key within the script application</param>
             <param name="arrayListToWrite">ArrayList that is to written to the application directory for that key</param>
+            Category::Storage>Private
         </member>
         <member name="M:IdealAutomate.Core.Methods.ScriptStartedUpdateStats">
             <summary>
             At beginning of template, Write StartTime, StartDate, Add 1 to total executions. 
             
             </summary>
+            Category::Stats
         </member>
         <member name="M:IdealAutomate.Core.Methods.ScriptEndedSuccessfullyUpdateStats">
             <summary>
@@ -626,6 +633,19 @@
             ScriptTotalSavedExecutionTime += CurrentSavedExecutionTime
              StartDate is the LastExecutedDate.
             </summary>
+            Category::Stats
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.ConvertFullFileNameToScriptPath(System.String)">
+            Category::Directory
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.ConvertFullFileNameToPublicPath(System.String)">
+            Category::Directory
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(System.String)">
+            Category::Directory
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.GetPathForScriptNoBinDebug">
+            Category::Directory
         </member>
         <member name="T:IdealAutomate.Core.Position_Cursor.Point">
             <summary>

@@ -13,4 +13,4 @@ GetValueByPublicKeyInCurrentFolder
  
 O r i g i n a l  M e t h o d:
 public string GetValueByPublicKeyInCurrentFolder(string strKey, string strFullFileName) 
-================================50
+================================70
