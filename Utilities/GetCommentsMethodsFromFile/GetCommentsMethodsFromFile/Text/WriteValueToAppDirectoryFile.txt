@@ -1,0 +1,16 @@
+D e s c r i p t i o n:
+ 
+P a r a m e t e r s:
+string settingsDirectory
+string fileName
+string strValueToWrite
+ 
+R e t u r n  T y p e:
+void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+WriteValueToAppDirectoryFile
+ 
+O r i g i n a l  M e t h o d:
+public void WriteValueToAppDirectoryFile(string settingsDirectory, string fileName, string strValueToWrite) 
+================================191

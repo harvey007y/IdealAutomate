@@ -301,7 +301,7 @@ namespace GetCommentsMethodsFromFile {
              */
             string[] files = null;
             try {
-                files = System.IO.Directory.GetFiles(strFolder, "*.cs");
+                files = System.IO.Directory.GetFiles(strFolder, "*.cs",SearchOption.AllDirectories);
             } catch (UnauthorizedAccessException e) {
 
                 Console.WriteLine(e.Message);                

@@ -1,0 +1,16 @@
+D e s c r i p t i o n:
+ 
+P a r a m e t e r s:
+string fullFilePath
+string intLineCtr
+string matchInfoList
+ 
+R e t u r n  T y p e:
+static void RETURNED VARIABLE TYPE
+ 
+M e t h o d:
+ReadFileToString
+ 
+O r i g i n a l  M e t h o d:
+public static void ReadFileToString(string fullFilePath, int intLineCtr, List<MatchInfo> matchInfoList) 
+================================146
