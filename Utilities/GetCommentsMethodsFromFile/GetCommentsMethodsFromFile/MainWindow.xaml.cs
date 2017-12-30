@@ -329,15 +329,33 @@ namespace GetCommentsMethodsFromFile {
             int intRowCtr = 0;
             int intCol = 0;
             int intRow = 0;
+            int intStartPageMethod = 0;
+            int intEndPageMethod = listCategoryMethod.Count();
             int intTotalMethods = 0;
+            int intPageSize = 80;
+            int intColumnWidth = 250;
             string strPreviousCategory = "";
             StringBuilder sb = new StringBuilder(); // this is for creating the controls in the window
 
+
+            intTotalMethods = listCategoryMethod.Count();
+            BuildMenuDialogPage:
             List<ControlEntity> myListControlEntity = new List<ControlEntity>();
 
             ControlEntity myControlEntity = new ControlEntity();
-            foreach (var item in listCategoryMethod) {
-                intTotalMethods++;
+            intCol = 0;
+            intRow = 0;
+            intRowCtr = 0;
+            if (intStartPageMethod < 0) {
+                intStartPageMethod = 0;
+            }
+            intEndPageMethod = intStartPageMethod + intPageSize;
+            if (intEndPageMethod > intTotalMethods) {
+                intEndPageMethod = intTotalMethods;
+            }
+            for (int i = intStartPageMethod; i < intEndPageMethod; i++) {
+
+                var item = listCategoryMethod.ToList()[i];
                 string[] myArrayFields = item.Key.Replace("Category::","").ToString().Split('^');
                 {
                     intRow++;
@@ -380,20 +398,43 @@ namespace GetCommentsMethodsFromFile {
 
 
             intRow++;
-            if (intRow > 20) {
+            if (intRow > 18) {
                 intRow = 1;
                 intCol++;
             }
             myControlEntity.ControlEntitySetDefaults();
             myControlEntity.ControlType = ControlType.Label;
             myControlEntity.ID = "myLabel";
-            myControlEntity.Text = "Total Methods: " + intTotalMethods.ToString();
+            myControlEntity.Text = "(" + intStartPageMethod.ToString() + " to " + intEndPageMethod.ToString() + ") of Total Methods: " + intTotalMethods.ToString();
             myControlEntity.RowNumber = intRow;
             myControlEntity.FontFamilyx = new FontFamily("Segoe UI Bold"); 
             myControlEntity.ColumnNumber = intCol;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
+            if (intStartPageMethod > 0) {
+                intRow++;
+                myControlEntity.ControlEntitySetDefaults();
+                myControlEntity.ControlType = ControlType.Button;
+                myControlEntity.ID = "btnPrev";
+                myControlEntity.Text = "Prev";
+                myControlEntity.RowNumber = intRow;
+                myControlEntity.ColumnNumber = intCol;
+                //    myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
+                //   myControlEntity.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
+                myListControlEntity.Add(myControlEntity.CreateControlEntity());
+            }
 
-
+            if (intEndPageMethod < intTotalMethods) {
+                intRow++;
+                myControlEntity.ControlEntitySetDefaults();
+                myControlEntity.ControlType = ControlType.Button;
+                myControlEntity.ID = "btnNext";
+                myControlEntity.Text = "Next";
+                myControlEntity.RowNumber = intRow;
+                myControlEntity.ColumnNumber = intCol;
+                //    myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
+                //   myControlEntity.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
+                myListControlEntity.Add(myControlEntity.CreateControlEntity());
+            }
             string strScripts = "";
             string strVariables = "";
             string strVariablesValue = "";
@@ -403,8 +444,10 @@ namespace GetCommentsMethodsFromFile {
             string strVariables2 = "";
             string strVariables1Value = "";
             string strVariables2Value = "";
+            int intWidth = (intCol + 1) * intColumnWidth;
+
             GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
-            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 1200, intWindowTop, intWindowLeft);
+            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, intWidth, intWindowTop, intWindowLeft);
             DisplayWindowAgain:
 
             if (strButtonPressed == "btnCancel") {
@@ -414,6 +457,18 @@ namespace GetCommentsMethodsFromFile {
             if (strButtonPressed == "btnOkay") {
                 //  myActions.MessageBoxShow(strButtonPressed);
                 goto myExit;
+            }
+            if (strButtonPressed == "btnPrev") {
+                //  myActions.MessageBoxShow(strButtonPressed);
+                intStartPageMethod = intStartPageMethod - intPageSize;
+                goto BuildMenuDialogPage;
+            }
+            if (strButtonPressed == "btnNext") {
+                //  myActions.MessageBoxShow(strButtonPressed);
+                if (intStartPageMethod + intPageSize < intTotalMethods) {
+                    intStartPageMethod = intStartPageMethod + intPageSize;
+                }
+                goto BuildMenuDialogPage;
             }
             strMethod = strButtonPressed.Replace("myButton", "");
             bool boolDescription = false;
@@ -475,7 +530,7 @@ namespace GetCommentsMethodsFromFile {
 
                 }
             }
-            if (strReturnType.ToUpper() != "Void" && strReturnType != "") {
+            if (strReturnType.ToUpper() != "VOID" && strReturnType.Trim() != "") {
                 sb.Append(strReturnType + " " + "[[result]] = ");
             }
             sb.Append("myActions.");
@@ -487,6 +542,10 @@ namespace GetCommentsMethodsFromFile {
             }
             sb.Append(");");
             string strSyntax = sb.ToString().Replace(",)", ")");
+            StringBuilder sb1 = new StringBuilder();
+            foreach (var item in listComments) {
+                sb1.AppendLine(item);
+            }
             ControlEntity myControlEntity1 = new ControlEntity();
             List<ControlEntity> myListControlEntity1 = new List<ControlEntity>();
             List<ComboBoxPair> cbp = new List<ComboBoxPair>();
@@ -522,162 +581,143 @@ namespace GetCommentsMethodsFromFile {
             myControlEntity1.ControlEntitySetDefaults();
             myControlEntity1.ControlType = ControlType.TextBox;
             myControlEntity1.ID = "txtSyntax2";
-            myControlEntity1.Text = strSyntax;
+            myControlEntity1.Text = strSyntax;            
             myControlEntity1.ColumnSpan = 4;
             myControlEntity1.RowNumber = intRowCtr;
             myControlEntity1.ColumnNumber = 1;
             myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
-            // Row 2 has label Input
-            intRowCtr++;
-            myControlEntity1.ControlEntitySetDefaults();
-            myControlEntity1.ControlType = ControlType.Label;
-            myControlEntity1.ID = "lblInput";
-            myControlEntity1.Text = "Input:";
-            myControlEntity1.FontFamilyx = new FontFamily("Segoe UI Bold");
-            myControlEntity1.RowNumber = intRowCtr;
-            myControlEntity1.ColumnNumber = 0;
-            myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
-
+            // Row 2 has label Parameters
+            if (listParameters.Count > 0) {
+                intRowCtr++;
+                myControlEntity1.ControlEntitySetDefaults();
+                myControlEntity1.ControlType = ControlType.Label;
+                myControlEntity1.ID = "lblParameters";
+                myControlEntity1.Text = "Parameters:";
+                myControlEntity1.FontFamilyx = new FontFamily("Segoe UI Bold");
+                myControlEntity1.RowNumber = intRowCtr;
+                myControlEntity1.ColumnNumber = 0;
+                myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+            }
             // Row 3 has label Website URL 
             // and textbox that contains Website URL
             // The value for Website URL comes from roaming folder for script
+            foreach (var item in listParameters) {
+                string[] arrayParameters = item.Split(' ');
+                intRowCtr++;
+                myControlEntity1.ControlEntitySetDefaults();
+                myControlEntity1.ControlType = ControlType.Label;
+                myControlEntity1.ID = "lbl" + arrayParameters[1];
+                myControlEntity1.Text = arrayParameters[0] + " [[" + arrayParameters[1] + "]]:";
+                myControlEntity1.RowNumber = intRowCtr;
+                myControlEntity1.ColumnNumber = 0;
+                myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                myControlEntity1.ControlEntitySetDefaults();
+                myControlEntity1.ControlType = ControlType.TextBox;
+                myControlEntity1.ID = "txt" + arrayParameters[1];
+                myControlEntity1.Text = myActions.GetValueByKey("txt" + strMethod + arrayParameters[1]);
+                myControlEntity1.RowNumber = intRowCtr;
+                myControlEntity1.ColumnNumber = 1;
+                myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+            }
+
+            if (strReturnType.ToUpper() != "VOID" && strReturnType.Trim() != "") {
+                intRowCtr++;
+                myControlEntity1.ControlEntitySetDefaults();
+                myControlEntity1.ControlType = ControlType.Label;
+                myControlEntity1.ID = "lblReturnType";
+                myControlEntity1.Text = "Returned Result:";
+                myControlEntity1.FontFamilyx = new FontFamily("Segoe UI Bold");
+                myControlEntity1.RowNumber = intRowCtr;
+                myControlEntity1.ColumnNumber = 0;
+                myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+                intRowCtr++;
+                myControlEntity1.ControlEntitySetDefaults();
+                myControlEntity1.ControlType = ControlType.Label;
+                myControlEntity1.ID = "lblResult";
+                myControlEntity1.Text = strReturnType + " [[Result]]:";
+                myControlEntity1.RowNumber = intRowCtr;
+                myControlEntity1.ColumnNumber = 0;
+                myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+                myControlEntity1.ControlEntitySetDefaults();
+                myControlEntity1.ControlType = ControlType.TextBox;
+                myControlEntity1.ID = "txt" + strMethod + "Result";
+                myControlEntity1.Text = myActions.GetValueByKey("txt" + strMethod + "Result");
+                myControlEntity1.RowNumber = intRowCtr;
+                myControlEntity1.ColumnNumber = 1;
+                myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+            }
+
+   
             intRowCtr++;
             myControlEntity1.ControlEntitySetDefaults();
             myControlEntity1.ControlType = ControlType.Label;
-            myControlEntity1.ID = "lblWebsiteURL";
-            myControlEntity1.Text = "Website URL:";
+            myControlEntity1.ID = "lblDescription";
+            myControlEntity1.Text = "Description:";
             myControlEntity1.RowNumber = intRowCtr;
             myControlEntity1.ColumnNumber = 0;
             myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
             myControlEntity1.ControlEntitySetDefaults();
             myControlEntity1.ControlType = ControlType.TextBox;
-            myControlEntity1.ID = "txtWebsiteURL";
-            myControlEntity1.Text = myActions.GetValueByKey("ScriptGeneratorWebsiteURLx");
+            myControlEntity1.ID = "txtDescription";
+            myControlEntity1.Height = 200;
+            myControlEntity1.Text = sb1.ToString();
             myControlEntity1.RowNumber = intRowCtr;
             myControlEntity1.ColumnNumber = 1;
+            myControlEntity1.ColumnSpan = 4;
             myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
-            myControlEntity1.ControlEntitySetDefaults();
-            myControlEntity1.ControlType = ControlType.Label;
-            myControlEntity1.ID = "lblScripts";
-            myControlEntity1.Text = "Script:";
-            myControlEntity1.Width = 150;
-            myControlEntity1.RowNumber = intRowCtr;
-            myControlEntity1.ColumnNumber = 2;
-            myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
-
-            myControlEntity1.ControlEntitySetDefaults();
-            myControlEntity1.ControlType = ControlType.ComboBox;
-            myControlEntity1.ID = "Scripts";
-            myControlEntity1.Text = "Drop Down Items";
-            myControlEntity1.Width = 150;
-            myControlEntity1.RowNumber = intRowCtr;
-            myControlEntity1.ColumnNumber = 3;
-            myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptsDefaultValue");
-            strScripts = myActions.GetValueByKey("ScriptsDefaultValue");
-            myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
-
-            if (strScripts != "--Select Item ---") {
-                myControlEntity1.ControlEntitySetDefaults();
-                myControlEntity1.ControlType = ControlType.Label;
-                myControlEntity1.ID = "lblVariable";
-                myControlEntity1.Text = "Variable:";
-                myControlEntity1.Width = 150;
-                myControlEntity1.RowNumber = intRowCtr;
-                myControlEntity1.ColumnNumber = 4;
-                myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
-
-                myControlEntity1.ControlEntitySetDefaults();
-                myControlEntity1.ControlType = ControlType.ComboBox;
-                myControlEntity1.ID = "Variables";
-                myControlEntity1.Text = "Drop Down Items";
-                myControlEntity1.Width = 150;
-                myControlEntity1.RowNumber = intRowCtr;
-                myControlEntity1.ColumnNumber = 5;
-                int intScripts = 0;
-                Int32.TryParse(strScripts, out intScripts);
-                myControlEntity1.ParentLkDDLNamesItemsInc = intScripts;
-                myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorVariables");
-                myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
-            }
-            // Row 4 has label Use New Tab 
-            // and textbox that contains UseNewTab
-            intRowCtr++;
-            myControlEntity1.ControlEntitySetDefaults();
-            myControlEntity1.ControlType = ControlType.Label;
-            myControlEntity1.ID = "lblUseNewTab";
-            myControlEntity1.Text = "Use New Tab:";
-            myControlEntity1.RowNumber = intRowCtr;
-            myControlEntity1.ColumnNumber = 0;
-            myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
-
-            myControlEntity1.ControlEntitySetDefaults();
-            myControlEntity1.ControlType = ControlType.ComboBox;
-            cbp.Clear();
-            cbp.Add(new ComboBoxPair("true", "true"));
-            cbp.Add(new ComboBoxPair("false", "false"));
-            myControlEntity1.ListOfKeyValuePairs = cbp;
-            myControlEntity1.SelectedValue = myControlEntity1.SelectedValue = myActions.GetValueByKey("ScriptGeneratorUseNewTab");
-            if (myControlEntity1.SelectedValue == null) {
-                myControlEntity1.SelectedValue = "--Select Item ---";
-            }
-            myControlEntity1.ID = "cbxUseNewTab";
-            myControlEntity1.RowNumber = intRowCtr;
-            myControlEntity1.ColumnNumber = 1;
-            myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
-
-            myControlEntity1.ControlEntitySetDefaults();
-            myControlEntity1.ControlType = ControlType.Label;
-            myControlEntity1.ID = "lblUseNewTab";
-            myControlEntity1.Text = "(Optional)";
-            myControlEntity1.RowNumber = intRowCtr;
-            myControlEntity1.ColumnNumber = 2;
-            myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
-            // Row 5 has button for refreshing combobox 
-            intRowCtr++;
-            myControlEntity1.ControlEntitySetDefaults();
-            myControlEntity1.ControlType = ControlType.Button;
-            myControlEntity1.ID = "btnDDLRefresh";
-            myControlEntity1.Text = "ComboBox Refresh";
-            myControlEntity1.RowNumber = intRowCtr;
-            myControlEntity1.ColumnNumber = 0;
-            myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
             // Get saved position of window from roaming..
             GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
             // Display input dialog
-            strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 800, 1200, intWindowTop, intWindowLeft);
+            strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 700, 1200, intWindowTop, intWindowLeft);
             // Get Values from input dialog and save to roaming
-            strScripts = myListControlEntity1.Find(x => x.ID == "Scripts").SelectedValue;
-            if (myListControlEntity1.Find(x => x.ID == "Variables") != null) {
-                strVariables = myListControlEntity1.Find(x => x.ID == "Variables").SelectedKey;
-                strVariablesValue = myListControlEntity1.Find(x => x.ID == "Variables").SelectedValue;
+            
+           
+            
+            foreach (var item in listParameters) {
+                string[] arrayParameters = item.Split(' ');
+                string myParameterValue = myListControlEntity1.Find(x => x.ID == "txt" + arrayParameters[1]).Text;
+                myActions.SetValueByKey("txt" + strMethod + arrayParameters[1], myParameterValue);
             }
-            string strWebsiteURLx = myListControlEntity1.Find(x => x.ID == "txtWebsiteURL").Text;
-            string strUseNewTab = myListControlEntity1.Find(x => x.ID == "cbxUseNewTab").SelectedValue;
-            myActions.SetValueByKey("ScriptsDefaultValue", strScripts);
-            myActions.SetValueByKey("ScriptGeneratorVariables", strVariablesValue);
-            myActions.SetValueByKey("ScriptGeneratorWebsiteURLx", strWebsiteURLx);
-            myActions.SetValueByKey("ScriptGeneratorUseNewTab", strUseNewTab);
+            if (strReturnType.ToUpper() != "VOID" && strReturnType.Trim() != "") {
+                string myResultValue = myListControlEntity1.Find(x => x.ID == "txt" + strMethod + "Result").Text;
+                myActions.SetValueByKey("txt" + strMethod + "Result", myResultValue);
+            }
 
 
             // if okay button pressed, validate inputs; place inputs into syntax; put generated 
             // code into clipboard and display generated code
             if (strButtonPressed == "btnOkay") {
-                if (strWebsiteURLx == "" && strVariables == "--Select Item ---") {
-                    myActions.MessageBoxShow("Please enter Website URL or select script variable; else press Cancel to Exit");
-                    goto DisplayIEGoToURLWindow;
-                }
-                string strWebsiteURLToUse = "";
-                if (strWebsiteURLx.Trim() == "") {
-                    strWebsiteURLToUse = strVariables;
-                } else {
-                    strWebsiteURLToUse = "\"" + strWebsiteURLx.Trim() + "\"";
-                }
-                string strGeneratedLinex = "";
+                //if (strWebsiteURLx == "" && strVariables == "--Select Item ---") {
+                //    myActions.MessageBoxShow("Please enter Website URL or select script variable; else press Cancel to Exit");
+                //    goto DisplayIEGoToURLWindow;
+                //}
+                //string strWebsiteURLToUse = "";
+                //if (strWebsiteURLx.Trim() == "") {
+                //    strWebsiteURLToUse = strVariables;
+                //} else {
+                //    strWebsiteURLToUse = "\"" + strWebsiteURLx.Trim() + "\"";
+                //}
+                string strGeneratedLinex = strSyntax;
 
-                strGeneratedLinex = "myActions.IEGoToURL(myActions, " + strWebsiteURLToUse + ", " + strUseNewTab + ");";
+                foreach (var item in listParameters) {
+                    string[] arrayParameters = item.Split(' ');                    
+                    string searchTerm = "[[" + arrayParameters[1] + "]]";
+                    string replacementValue = myListControlEntity1.Find(x => x.ID == "txt" + arrayParameters[1]).Text;
+                    strGeneratedLinex = strGeneratedLinex.Replace(searchTerm, replacementValue);
+                }
+
+                if (strReturnType.ToUpper() != "VOID" && strReturnType.Trim() != "") {
+                    string searchTerm = "[[Result]]";
+                    string replacementValue = myListControlEntity1.Find(x => x.ID == "txt" + strMethod + "Result").Text;
+                    strGeneratedLinex = strGeneratedLinex.Replace(searchTerm, replacementValue);
+                }
+
+                //strGeneratedLinex = "myActions.IEGoToURL(myActions, " + strWebsiteURLToUse + ", " + strUseNewTab + ");";
 
                 myActions.PutEntityInClipboard(strGeneratedLinex);
                 myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard");
