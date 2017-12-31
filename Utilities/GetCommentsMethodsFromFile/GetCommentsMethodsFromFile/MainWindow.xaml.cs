@@ -16,16 +16,16 @@ namespace GetCommentsMethodsFromFile {
     /// </summary>
     public partial class MainWindow : Window {
         Dictionary<string, string> dict = new Dictionary<string, string>();
-        bool boolNamespace = false;
-        bool boolCommentsContinued = false;
-        bool boolFirstMethodFound = false;
-        bool boolFirstStatementInMethod = true;
-        bool boolLineProcessed;
-        bool boolMethod = false;
-        bool boolClass = false;
-        bool boolMultipleStatementsPossible = false;
-        bool boolFoundOpenBracket = false;
-        bool boolTraceLoggingOn = true;
+        bool _boolNamespace = false;
+        bool _boolCommentsContinued = false;
+        bool _boolFirstMethodFound = false;
+        bool _boolFirstStatementInMethod = true;
+        bool _boolLineProcessed;
+        bool _boolMethod = false;
+        bool _boolClass = false;
+        bool _boolMultipleStatementsPossible = false;
+        bool _boolFoundOpenBracket = false;
+        bool _boolTraceLoggingOn = true;
         string strMethod = "";
         string strMethodOrig = "";
         string strParameters = "";
@@ -49,6 +49,8 @@ namespace GetCommentsMethodsFromFile {
         int idxGlobalVariable = 0;
         int idxLocalVariable = 0;
         int idxLocalVariableNesting = 0;
+        int intMethodLineNum = 0;
+        string strCurrentFile = "";
         int intBegin = 0;
         int intEnd = 0;
         int intInLine = 0;
@@ -59,6 +61,7 @@ namespace GetCommentsMethodsFromFile {
         int intMethodCtr = 0;
         int[] strLocalVariableNestingArray;
         List<string> listComments = new List<string>();
+        List<string> listMethodSourceCode = new List<string>();
         List<string> listMethod = new List<string>();
         SortedList<string, string> listCategoryMethod = new SortedList<string, string>();
 
@@ -71,11 +74,31 @@ namespace GetCommentsMethodsFromFile {
         int intStartPageMethod = 0;
         int intEndPageMethod = 0;
         int intTotalMethods = 0;
-        int intPageSize = 80;
+        int intPageSize = 75;
         int intColumnWidth = 250;
         string strPreviousCategory = "";
         string strApplicationBinDebug = "";
         string myNewProjectSourcePath = "";
+        public static string strPathToSearch = @"C:\SVNIA\trunk";
+
+        public static string strSearchPattern = @"*.*";
+
+        public static string strSearchExcludePattern = @"*.dll;*.exe;*.png;*.xml;*.cache;*.sln;*.suo;*.pdb;*.csproj;*.deploy";
+
+        public static string strSearchText = @"notepad";
+
+        public static string strLowerCaseSearchText = @"notepad";
+
+        public static int intHits;
+
+        public static bool _boolMatchCase = false;
+
+        public ArrayList ArrayHotKeys;
+
+        public static bool _boolUseRegularExpression = false;
+
+        public static bool _boolStringFoundInFile;
+        string strFindWhat = "";
         public MainWindow() {
             bool boolRunningFromHome = false;
 
@@ -100,9 +123,32 @@ namespace GetCommentsMethodsFromFile {
                 myActions.TypeText("%(\" \"n)", 1000); // minimize visual studio
             }
             myActions.Sleep(1000);
+            SearchDialog:
+            listCategoryMethod.Clear();
+            intCol = 0;
+            intRow = 0;
+            intStartPageMethod = 0;
+            intEndPageMethod = 0;
+            intTotalMethods = 0;
+            intPageSize = 75;
+            intColumnWidth = 250;
+            strPreviousCategory = "";
+            strApplicationBinDebug = "";
+            myNewProjectSourcePath = "";
+            strPathToSearch = @"C:\SVNIA\trunk";
+            strSearchPattern = @"*.*";
+            strSearchExcludePattern = @"*.dll;*.exe;*.png;*.xml;*.cache;*.sln;*.suo;*.pdb;*.csproj;*.deploy";
+            strSearchText = @"notepad";
+            strLowerCaseSearchText = @"notepad";
+            intHits = 0;
+            _boolMatchCase = false;
+            _boolUseRegularExpression = false;
+            _boolStringFoundInFile = false;
+            strFindWhat = "";
+            //
             string strApplicationBinDebug1 = System.Windows.Forms.Application.StartupPath;
             string myNewProjectSourcePath1 = strApplicationBinDebug1.Replace("\\bin\\Debug", "");
-      
+
 
 
             System.IO.DirectoryInfo di = new DirectoryInfo(Path.Combine(myNewProjectSourcePath1, @"Text"));
@@ -112,16 +158,8 @@ namespace GetCommentsMethodsFromFile {
                     file.Delete();
                 }
             }
-            strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-            // Set Initial Directory to My Documents
-            string strSavedDirectory = myActions.GetValueByKey("InitialDirectory");
-
-
-            if (Directory.Exists(strSavedDirectory)) {
-                strInitialDirectory = strSavedDirectory;
-            }
             DisplaySelectFolderWindow:
-            intRowCtr = 0;
+            int intRowCtr = 0;
             ControlEntity myControlEntity = new ControlEntity();
             List<ControlEntity> myListControlEntity = new List<ControlEntity>();
             List<ComboBoxPair> cbp = new List<ComboBoxPair>();
@@ -131,10 +169,92 @@ namespace GetCommentsMethodsFromFile {
             myControlEntity.ControlEntitySetDefaults();
             myControlEntity.ControlType = ControlType.Heading;
             myControlEntity.ID = "lbl";
-            myControlEntity.Text = "Open Folder";
+            myControlEntity.Text = "Find Text In Files";
             myControlEntity.RowNumber = intRowCtr;
             myControlEntity.ColumnNumber = 0;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "lblFindWhat";
+            myControlEntity.Text = "FindWhat";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.Width = 150;
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            myControlEntity.SelectedValue = myActions.GetValueByKey("cbxFindWhatSelectedValue");
+            myControlEntity.ID = "cbxFindWhat";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "";
+            //foreach (var item in alcbxFindWhat) {
+            //    cbp.Add(new ComboBoxPair(item.ToString(), item.ToString()));
+            //}
+            //myControlEntity.ListOfKeyValuePairs = cbp;
+            myControlEntity.ComboBoxIsEditable = true;
+            myControlEntity.ColumnNumber = 1;
+
+            myControlEntity.ColumnSpan = 2;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "lblFileType";
+            myControlEntity.Text = "FileType";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.Width = 150;
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            myControlEntity.SelectedValue = myActions.GetValueByKey("cbxFileTypeSelectedValue");
+            myControlEntity.ID = "cbxFileType";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "Here is an example: *.*";
+            //foreach (var item in alcbxFileType) {
+            //    cbp1.Add(new ComboBoxPair(item.ToString(), item.ToString()));
+            //}
+            //myControlEntity.ListOfKeyValuePairs = cbp1;
+            myControlEntity.ComboBoxIsEditable = true;
+            myControlEntity.ColumnNumber = 1;
+            myControlEntity.ColumnSpan = 2;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "lblExclude";
+            myControlEntity.Text = "Exclude";
+            myControlEntity.Width = 150;
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            myControlEntity.SelectedValue = myActions.GetValueByKey("cbxExcludeSelectedValue");
+            myControlEntity.ID = "cbxExclude";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = "Here is an example: *.dll;*.exe;*.png;*.xml;*.cache;*.sln;*.suo;*.pdb;*.csproj;*.deploy";
+            myControlEntity.ComboBoxIsEditable = true;
+            myControlEntity.ColumnNumber = 1;
+            myControlEntity.ColumnSpan = 2;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
 
             intRowCtr++;
             myControlEntity.ControlEntitySetDefaults();
@@ -166,42 +286,90 @@ namespace GetCommentsMethodsFromFile {
             myControlEntity.ColumnNumber = 3;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.CheckBox;
+            myControlEntity.ID = "chkMatchCase";
+            myControlEntity.Text = "Match Case";
+            myControlEntity.Width = 150;
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            string strMatchCase = myActions.GetValueByKey("chkMatchCase");
 
+            if (strMatchCase.ToLower() == "true") {
+                myControlEntity.Checked = true;
+            } else {
+                myControlEntity.Checked = false;
+            }
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.CheckBox;
+            myControlEntity.ID = "chkUseRegularExpression";
+            myControlEntity.Text = "UseRegularExpression";
+            myControlEntity.Width = 150;
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            string strUseRegularExpression = myActions.GetValueByKey("chkUseRegularExpression");
+            if (strUseRegularExpression.ToLower() == "true") {
+                myControlEntity.Checked = true;
+            } else {
+                myControlEntity.Checked = false;
+            }
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
             DisplaySelectFolderWindowAgain:
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 300, 1200, 100, 100);
             LineAfterDisplayWindow:
             if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
-                return;
+                goto myExit;
             }
 
+            _boolMatchCase = myListControlEntity.Find(x => x.ID == "chkMatchCase").Checked;
+            _boolUseRegularExpression = myListControlEntity.Find(x => x.ID == "chkUseRegularExpression").Checked;
+
+            strFindWhat = myListControlEntity.Find(x => x.ID == "cbxFindWhat").SelectedValue;
+            //  string strFindWhatKey = myListControlEntity.Find(x => x.ID == "cbxFindWhat").SelectedKey;
+
+            string strFileType = myListControlEntity.Find(x => x.ID == "cbxFileType").SelectedValue;
+            //     string strFileTypeKey = myListControlEntity.Find(x => x.ID == "cbxFileType").SelectedKey;
+
+            string strExclude = myListControlEntity.Find(x => x.ID == "cbxExclude").SelectedValue;
+            //      string strExcludeKey = myListControlEntity.Find(x => x.ID == "cbxExclude").SelectedKey;
 
             string strFolder = myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedValue;
             //     string strFolderKey = myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedKey;
-            string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
-            string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
+            myActions.SetValueByKey("chkMatchCase", _boolMatchCase.ToString());
+            myActions.SetValueByKey("chkUseRegularExpression", _boolUseRegularExpression.ToString());
+            myActions.SetValueByKey("cbxFindWhatSelectedValue", strFindWhat);
+            myActions.SetValueByKey("cbxFileTypeSelectedValue", strFileType);
+            myActions.SetValueByKey("cbxExcludeSelectedValue", strExclude);
             myActions.SetValueByKey("cbxFolderSelectedValue", strFolder);
-
+            string settingsDirectory = "";
             if (strButtonPressed == "btnSelectFolder") {
                 var dialog = new System.Windows.Forms.FolderBrowserDialog();
                 dialog.SelectedPath = myActions.GetValueByKey("LastSearchFolder");
+                string str = "LastSearchFolder";
 
 
                 System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+
                 if (result == System.Windows.Forms.DialogResult.OK && Directory.Exists(dialog.SelectedPath)) {
                     myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedValue = dialog.SelectedPath;
                     myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedKey = dialog.SelectedPath;
                     myListControlEntity.Find(x => x.ID == "cbxFolder").Text = dialog.SelectedPath;
-
                     myActions.SetValueByKey("LastSearchFolder", dialog.SelectedPath);
                     strFolder = dialog.SelectedPath;
                     myActions.SetValueByKey("cbxFolderSelectedValue", strFolder);
                     string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
                     string fileName = "cbxFolder.txt";
-
-
-                    string settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPath(myNewProjectSourcePath));
+                    string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
+                    string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
+                    settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPath(myNewProjectSourcePath));
                     string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
                     ArrayList alHosts = new ArrayList();
                     cbp = new List<ComboBoxPair>();
@@ -241,7 +409,7 @@ namespace GetCommentsMethodsFromFile {
                         }
                     }
                     foreach (ComboBoxPair item in alHostx) {
-                        if (strNewHostName.ToLower() != item._Key.ToLower() && item._Key != "--Select Item ---") {
+                        if (strNewHostName != item._Key && item._Key != "--Select Item ---") {
                             boolNewItem = true;
                             alHostsNew.Add(item);
                         }
@@ -258,23 +426,64 @@ namespace GetCommentsMethodsFromFile {
                     goto DisplaySelectFolderWindowAgain;
                 }
             }
-
+            string strFindWhatToUse = "";
+            string strFileTypeToUse = "";
+            string strExcludeToUse = "";
             string strFolderToUse = "";
             if (strButtonPressed == "btnOkay") {
-
+                //if ((strFindWhat == "--Select Item ---" || strFindWhat == "")) {
+                //    myActions.MessageBoxShow("Please enter Find What or select Find What from ComboBox; else press Cancel to Exit");
+                //    goto DisplaySelectFolderWindow;
+                //}
+                if ((strFileType == "--Select Item ---" || strFileType == "")) {
+                    myActions.MessageBoxShow("Please enter File Type or select File Type from ComboBox; else press Cancel to Exit");
+                    goto DisplaySelectFolderWindow;
+                }
+                if ((strExclude == "--Select Item ---" || strExclude == "")) {
+                    myActions.MessageBoxShow("Please enter Exclude or select Exclude from ComboBox; else press Cancel to Exit");
+                    goto DisplaySelectFolderWindow;
+                }
                 if ((strFolder == "--Select Item ---" || strFolder == "")) {
                     myActions.MessageBoxShow("Please enter Folder or select Folder from ComboBox; else press Cancel to Exit");
                     goto DisplaySelectFolderWindow;
                 }
 
+
+
+                strFindWhatToUse = strFindWhat;
+
+                if (_boolUseRegularExpression) {
+                    strFindWhatToUse = strFindWhatToUse.Replace(")", "\\)").Replace("(", "\\(");
+                }
+
+
+                strFileTypeToUse = strFileType;
+
+
+
+                strExcludeToUse = strExclude;
+
+
                 strFolderToUse = strFolder;
-                myActions.SetValueByKey("InitialDirectory", strFolder);              
-               
+
+
             }
-                                  
+
+
+            strPathToSearch = strFolderToUse;
+
+            strSearchPattern = strFileTypeToUse;
+
+            strSearchExcludePattern = strExcludeToUse;
+
+            strSearchText = strFindWhatToUse;
+
+            strLowerCaseSearchText = strFindWhatToUse.ToLower();
+            myActions.SetValueByKey("FindWhatToUse", strFindWhatToUse);
+
             // Read in lines from ReservedWords txt file.
-             strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
-             myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
+            strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
+            myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
             foreach (string line in File.ReadLines(Path.Combine(myNewProjectSourcePath, @"Text\Reserved_Words_CS.txt"))) {
                 listReservedWords.Add(line.Trim());
             }
@@ -313,214 +522,218 @@ namespace GetCommentsMethodsFromFile {
              */
             string[] files = null;
             try {
-                files = System.IO.Directory.GetFiles(strFolder, "*.cs",SearchOption.AllDirectories);
+                files = System.IO.Directory.GetFiles(strFolder, "*.cs", SearchOption.AllDirectories);
             } catch (UnauthorizedAccessException e) {
 
-                Console.WriteLine(e.Message);                
+                Console.WriteLine(e.Message);
             } catch (System.IO.DirectoryNotFoundException e) {
-                Console.WriteLine(e.Message);                
+                Console.WriteLine(e.Message);
             } catch (System.IO.PathTooLongException e) {
-                Console.WriteLine(e.Message);                
+                Console.WriteLine(e.Message);
             } catch (Exception e) {
-                Console.WriteLine(e.Message);                
+                Console.WriteLine(e.Message);
             }
 
             // Perform the required action on each file here.
             // Modify this block to perform your required task.
             foreach (string myFile in files) {
-                  //  myFile = @"C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateCore\IdealAutomateCore\Methods.cs";
-            System.IO.StreamReader file =
-               new System.IO.StreamReader(myFile);
-            while ((strInputLineOrig = file.ReadLine()) != null) {
-                intInLine = intInLine + 1;
-                intBegin = intInLine;
-                strInputLineCleaned = "";
-                strInputLineCleaned = RemoveLiteralsComments(strInputLineOrig);
-                // we need to check for continued lines and put them all on the same cleaned line
-                if (strInputLineCleaned.StartsWith("namespace ")) {
-                    while (file.EndOfStream == false && strInputLineCleaned.IndexOf("{") == -1) {
-                        ReadCleanConcatCodeRec(file);
+                strCurrentFile = myFile;
+                //  myFile = @"C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateCore\IdealAutomateCore\Methods.cs";
+                System.IO.StreamReader file =
+                   new System.IO.StreamReader(myFile);
+                while ((strInputLineOrig = file.ReadLine()) != null) {
+                    if (_boolMethod) {
+                        listMethodSourceCode.Add(strInputLineOrig);
                     }
-                } else if (strInputLineCleaned.StartsWith("class ") || strInputLineCleaned.Contains(" class ")) {
-                    while (file.EndOfStream == false && strInputLineCleaned.IndexOf("{") == -1) {
-                        ReadCleanConcatCodeRec(file);
-                    }
-                } else if ((strInputLineCleaned.StartsWith("public ") ||
-                          strInputLineCleaned.StartsWith("private ") ||
-                      strInputLineCleaned.StartsWith("static ") ||
-                      strInputLineCleaned.StartsWith("protected ") ||
-                      strInputLineCleaned.StartsWith("internal ")) &&
-                      strInputLineCleaned.IndexOf("(") > -1) {
-                    while (file.EndOfStream == false && strInputLineCleaned.IndexOf("{") == -1) {
-                        ReadCleanConcatCodeRec(file);
-                    }
-
-                } //switch, throw, try, catch, finally, do, for, foreach, while
-                  else if ((strInputLineCleaned.StartsWith("if ") ||
-                            strInputLineCleaned.StartsWith("else ") ||
-                          strInputLineCleaned.StartsWith("switch ") ||
-                          strInputLineCleaned.StartsWith("throw ") ||
-                          strInputLineCleaned.StartsWith("try ") ||
-                          strInputLineCleaned.StartsWith("catch ") ||
-                          strInputLineCleaned.StartsWith("finally ") ||
-                          strInputLineCleaned.StartsWith("do ") ||
-                          strInputLineCleaned.StartsWith("for ") ||
-                          strInputLineCleaned.StartsWith("foreach ") ||
-                          strInputLineCleaned.StartsWith("foreach(") ||
-                          strInputLineCleaned.StartsWith("while ") ||
-                          strInputLineCleaned.Contains(" if ") ||
-                          strInputLineCleaned.Contains(" else ") ||
-                          strInputLineCleaned.Contains(" switch ") ||
-                          strInputLineCleaned.Contains(" throw ") ||
-                          strInputLineCleaned.Contains(" try ") ||
-                          strInputLineCleaned.Contains(" catch ") ||
-                          strInputLineCleaned.Contains(" finally ") ||
-                          strInputLineCleaned.Contains(" do ") ||
-                          strInputLineCleaned.Contains(" for ") ||
-                          strInputLineCleaned.Contains(" foreach ") ||
-                          strInputLineCleaned.Contains(" foreach(") ||
-                          strInputLineCleaned.Contains(" while ") ||
-                          strInputLineCleaned.Contains(";if ") ||
-                          strInputLineCleaned.Contains(";else ") ||
-                          strInputLineCleaned.Contains(";switch ") ||
-                          strInputLineCleaned.Contains(";throw ") ||
-                          strInputLineCleaned.Contains(";try ") ||
-                          strInputLineCleaned.Contains(";catch ") ||
-                          strInputLineCleaned.Contains(";finally ") ||
-                          strInputLineCleaned.Contains(";do ") ||
-                          strInputLineCleaned.Contains(";for ") ||
-                          strInputLineCleaned.Contains(";foreach ") ||
-                          strInputLineCleaned.Contains(";while ")) &&
+                    intInLine = intInLine + 1;
+                    intBegin = intInLine;
+                    strInputLineCleaned = "";
+                    strInputLineCleaned = RemoveLiteralsComments(strInputLineOrig);
+                    // we need to check for continued lines and put them all on the same cleaned line
+                    if (strInputLineCleaned.StartsWith("namespace ")) {
+                        while (file.EndOfStream == false && strInputLineCleaned.IndexOf("{") == -1) {
+                            ReadCleanConcatCodeRec(file);
+                        }
+                    } else if (strInputLineCleaned.StartsWith("class ") || strInputLineCleaned.Contains(" class ")) {
+                        while (file.EndOfStream == false && strInputLineCleaned.IndexOf("{") == -1) {
+                            ReadCleanConcatCodeRec(file);
+                        }
+                    } else if ((strInputLineCleaned.StartsWith("public ") ||
+                              strInputLineCleaned.StartsWith("private ") ||
+                          strInputLineCleaned.StartsWith("static ") ||
+                          strInputLineCleaned.StartsWith("protected ") ||
+                          strInputLineCleaned.StartsWith("internal ")) &&
                           strInputLineCleaned.IndexOf("(") > -1) {
-                    //we need to continue until we find and equal number of opening and closing
-                    // parentheses
-                    int intParens = CountParens(strInputLineCleaned);
+                        while (file.EndOfStream == false && strInputLineCleaned.IndexOf("{") == -1) {
+                            ReadCleanConcatCodeRec(file);
+                        }
 
-                    while (file.EndOfStream == false && intParens != 0) {
-                        ReadCleanConcatCodeRec(file);
-                        intParens = CountParens(strInputLineCleaned);
-                    }
+                    } //switch, throw, try, catch, finally, do, for, foreach, while
+                      else if ((strInputLineCleaned.StartsWith("if ") ||
+                                strInputLineCleaned.StartsWith("else ") ||
+                              strInputLineCleaned.StartsWith("switch ") ||
+                              strInputLineCleaned.StartsWith("throw ") ||
+                              strInputLineCleaned.StartsWith("try ") ||
+                              strInputLineCleaned.StartsWith("catch ") ||
+                              strInputLineCleaned.StartsWith("finally ") ||
+                              strInputLineCleaned.StartsWith("do ") ||
+                              strInputLineCleaned.StartsWith("for ") ||
+                              strInputLineCleaned.StartsWith("foreach ") ||
+                              strInputLineCleaned.StartsWith("foreach(") ||
+                              strInputLineCleaned.StartsWith("while ") ||
+                              strInputLineCleaned.Contains(" if ") ||
+                              strInputLineCleaned.Contains(" else ") ||
+                              strInputLineCleaned.Contains(" switch ") ||
+                              strInputLineCleaned.Contains(" throw ") ||
+                              strInputLineCleaned.Contains(" try ") ||
+                              strInputLineCleaned.Contains(" catch ") ||
+                              strInputLineCleaned.Contains(" finally ") ||
+                              strInputLineCleaned.Contains(" do ") ||
+                              strInputLineCleaned.Contains(" for ") ||
+                              strInputLineCleaned.Contains(" foreach ") ||
+                              strInputLineCleaned.Contains(" foreach(") ||
+                              strInputLineCleaned.Contains(" while ") ||
+                              strInputLineCleaned.Contains(";if ") ||
+                              strInputLineCleaned.Contains(";else ") ||
+                              strInputLineCleaned.Contains(";switch ") ||
+                              strInputLineCleaned.Contains(";throw ") ||
+                              strInputLineCleaned.Contains(";try ") ||
+                              strInputLineCleaned.Contains(";catch ") ||
+                              strInputLineCleaned.Contains(";finally ") ||
+                              strInputLineCleaned.Contains(";do ") ||
+                              strInputLineCleaned.Contains(";for ") ||
+                              strInputLineCleaned.Contains(";foreach ") ||
+                              strInputLineCleaned.Contains(";while ")) &&
+                              strInputLineCleaned.IndexOf("(") > -1) {
+                        //we need to continue until we find and equal number of opening and closing
+                        // parentheses
+                        int intParens = CountParens(strInputLineCleaned);
 
-                } else if (strInputLineCleaned != "") {
-                    Regex rgx = new Regex(@"#Comment(\d+)>>");
-                    while (file.EndOfStream == false
-                        && strInputLineCleaned.IndexOf(";") == -1
-                         && strInputLineCleaned.IndexOf("{") == -1
-                          && strInputLineCleaned.IndexOf("}") == -1
-                           && strInputLineCleaned.IndexOf(":") == -1
-                           && rgx.IsMatch(strInputLineCleaned) == false
-                        ) {
-                        ReadCleanConcatCodeRec(file);
-                    }
-                }
-                intEnd = intInLine;
+                        while (file.EndOfStream == false && intParens != 0) {
+                            ReadCleanConcatCodeRec(file);
+                            intParens = CountParens(strInputLineCleaned);
+                        }
 
-                // if input lines were continued, they are all on one line in strInputLineCleaned now
-                //
-                // now we need to see if cleaned contains any brackets and put each bracket
-                // on a line by itself.
-
-                int intOpenBracket = strInputLineCleaned.IndexOf('{');
-                int intClosedBracket = strInputLineCleaned.IndexOf('}');
-                int intSemicolon = strInputLineCleaned.IndexOf(';');
-                int intMin = 999999;
-                int intLastBracket = -1;
-                if (intOpenBracket == -1) intOpenBracket = 999999;
-                if (intClosedBracket == -1) intClosedBracket = 999999;
-                if (intSemicolon == -1) intSemicolon = 999999;
-                intMin = Math.Min(intOpenBracket, intMin);
-                intMin = Math.Min(intClosedBracket, intMin);
-                intMin = Math.Min(intSemicolon, intMin);
-                if (intMin == 999999) {
-                    intMin = -1;
-                }
-
-                while (intMin != -1) {
-                    // We need to write what is before the bracket (if anything) to one line
-                    if (intMin > 0) {
-                        if (strInputLineCleaned.Contains("#Comment") == false) {
-                            if (strInputLineCleaned.StartsWith("for ") == false && strInputLineCleaned.StartsWith("for(") == false) {
-                                if (intMin == intSemicolon && intSemicolon != -1) {
-                                    //we need to handle a semicolon by writing up to and including semicolon
-                                    strCleaned = strInputLineCleaned.Substring(0, intMin + 1);
-                                    ProcessCleaned();
-                                } else {
-                                    strCleaned = strInputLineCleaned.Substring(0, intMin);
-                                    ProcessCleaned();
-                                }
-                            } else {
-                                // we need to find where open and close parens are equal and write that substring
-                                // TODO: this will not work when close paren is not on same line
-                                int intCloseParen;
-                                intCloseParen = strInputLineCleaned.LastIndexOf(")");
-                                if (intCloseParen > -1) {
-                                    intMin = intCloseParen + 1;
-                                    //strCleaned = strInputLineCleaned.Substring(0, intMin);
-                                    //ProcessCleaned();
-
-                                }
-
-                            }
-                        } else {
-                            // we need to find where open and close parens are equal and write that substring
-                            // TODO: this will not work when close paren is not on same line
-                            int intCloseParen;
-                            intCloseParen = strInputLineCleaned.LastIndexOf(">>");
-                            if (intCloseParen > -1) {
-                                intMin = intCloseParen + 2;
-                                //strCleaned = strInputLineCleaned.Substring(0, intMin);
-                                //ProcessCleaned();                                
-                            }
+                    } else if (strInputLineCleaned != "") {
+                        Regex rgx = new Regex(@"#Comment(\d+)>>");
+                        while (file.EndOfStream == false
+                            && strInputLineCleaned.IndexOf(";") == -1
+                             && strInputLineCleaned.IndexOf("{") == -1
+                              && strInputLineCleaned.IndexOf("}") == -1
+                               && strInputLineCleaned.IndexOf(":") == -1
+                               && rgx.IsMatch(strInputLineCleaned) == false
+                            ) {
+                            ReadCleanConcatCodeRec(file);
                         }
                     }
-                    if (intMin < strInputLineCleaned.Length) {
-                        intLastBracket = intMin;
-                        // We need to write out the bracket to a new line
-                        if (strInputLineCleaned.Substring(intMin, 1) != ";") {
-                            strCleaned = strInputLineCleaned.Substring(intMin, 1);
-                            ProcessCleaned();
+                    intEnd = intInLine;
 
+                    // if input lines were continued, they are all on one line in strInputLineCleaned now
+                    //
+                    // now we need to see if cleaned contains any brackets and put each bracket
+                    // on a line by itself.
 
-                        }
-                    }
-
-                    // D.
-                    // Increment the index.
-                    if (intMin == strInputLineCleaned.Length || (intMin + 1 == strInputLineCleaned.Length && strInputLineCleaned.EndsWith(";"))) {
-                        break;
-                    } else {
-                        strInputLineCleaned = strInputLineCleaned.Substring(intMin + 1);
-                    }
-                    intOpenBracket = strInputLineCleaned.IndexOf('{');
-                    intClosedBracket = strInputLineCleaned.IndexOf('}');
-                    intSemicolon = strInputLineCleaned.IndexOf(';');
-                    intMin = 999999;
-
+                    int intOpenBracket = strInputLineCleaned.IndexOf('{');
+                    int intClosedBracket = strInputLineCleaned.IndexOf('}');
+                    int intSemicolon = strInputLineCleaned.IndexOf(';');
+                    int intMin = 999999;
+                    int intLastBracket = -1;
                     if (intOpenBracket == -1) intOpenBracket = 999999;
                     if (intClosedBracket == -1) intClosedBracket = 999999;
                     if (intSemicolon == -1) intSemicolon = 999999;
                     intMin = Math.Min(intOpenBracket, intMin);
                     intMin = Math.Min(intClosedBracket, intMin);
                     intMin = Math.Min(intSemicolon, intMin);
-                    if (intMin == 999999) intMin = -1;
+                    if (intMin == 999999) {
+                        intMin = -1;
+                    }
+
+                    while (intMin != -1) {
+                        // We need to write what is before the bracket (if anything) to one line
+                        if (intMin > 0) {
+                            if (strInputLineCleaned.Contains("#Comment") == false) {
+                                if (strInputLineCleaned.StartsWith("for ") == false && strInputLineCleaned.StartsWith("for(") == false) {
+                                    if (intMin == intSemicolon && intSemicolon != -1) {
+                                        //we need to handle a semicolon by writing up to and including semicolon
+                                        strCleaned = strInputLineCleaned.Substring(0, intMin + 1);
+                                        ProcessCleaned();
+                                    } else {
+                                        strCleaned = strInputLineCleaned.Substring(0, intMin);
+                                        ProcessCleaned();
+                                    }
+                                } else {
+                                    // we need to find where open and close parens are equal and write that substring
+                                    // TODO: this will not work when close paren is not on same line
+                                    int intCloseParen;
+                                    intCloseParen = strInputLineCleaned.LastIndexOf(")");
+                                    if (intCloseParen > -1) {
+                                        intMin = intCloseParen + 1;
+                                        //strCleaned = strInputLineCleaned.Substring(0, intMin);
+                                        //ProcessCleaned();
+
+                                    }
+
+                                }
+                            } else {
+                                // we need to find where open and close parens are equal and write that substring
+                                // TODO: this will not work when close paren is not on same line
+                                int intCloseParen;
+                                intCloseParen = strInputLineCleaned.LastIndexOf(">>");
+                                if (intCloseParen > -1) {
+                                    intMin = intCloseParen + 2;
+                                    //strCleaned = strInputLineCleaned.Substring(0, intMin);
+                                    //ProcessCleaned();                                
+                                }
+                            }
+                        }
+                        if (intMin < strInputLineCleaned.Length) {
+                            intLastBracket = intMin;
+                            // We need to write out the bracket to a new line
+                            if (strInputLineCleaned.Substring(intMin, 1) != ";") {
+                                strCleaned = strInputLineCleaned.Substring(intMin, 1);
+                                ProcessCleaned();
+
+
+                            }
+                        }
+
+                        // D.
+                        // Increment the index.
+                        if (intMin == strInputLineCleaned.Length || (intMin + 1 == strInputLineCleaned.Length && strInputLineCleaned.EndsWith(";"))) {
+                            break;
+                        } else {
+                            strInputLineCleaned = strInputLineCleaned.Substring(intMin + 1);
+                        }
+                        intOpenBracket = strInputLineCleaned.IndexOf('{');
+                        intClosedBracket = strInputLineCleaned.IndexOf('}');
+                        intSemicolon = strInputLineCleaned.IndexOf(';');
+                        intMin = 999999;
+
+                        if (intOpenBracket == -1) intOpenBracket = 999999;
+                        if (intClosedBracket == -1) intClosedBracket = 999999;
+                        if (intSemicolon == -1) intSemicolon = 999999;
+                        intMin = Math.Min(intOpenBracket, intMin);
+                        intMin = Math.Min(intClosedBracket, intMin);
+                        intMin = Math.Min(intSemicolon, intMin);
+                        if (intMin == 999999) intMin = -1;
+                    }
+                    if (intLastBracket == -1) {
+                        strCleaned = strInputLineCleaned;
+                        ProcessCleaned();
+                    } else if (intLastBracket + 1 < strInputLineCleaned.Length) {
+                        strCleaned = strInputLineCleaned.Substring(intLastBracket + 1);
+                        ProcessCleaned();
+                    }
+
+
                 }
-                if (intLastBracket == -1) {
-                    strCleaned = strInputLineCleaned;
-                    ProcessCleaned();
-                } else if (intLastBracket + 1 < strInputLineCleaned.Length) {
-                    strCleaned = strInputLineCleaned.Substring(intLastBracket + 1);
-                    ProcessCleaned();
-                }
-
-
             }
-            }
-            
 
 
 
 
-            
+
+
 
             // Loop thru array of categories and methods
             // When you encounter new category, write red label; else write grey button
@@ -534,7 +747,7 @@ namespace GetCommentsMethodsFromFile {
             string strWindowTop = "";
             string strWindowLeft = "";
             intRowCtr = 0;
-  
+
             StringBuilder sb = new StringBuilder(); // this is for creating the controls in the window
 
             intEndPageMethod = listCategoryMethod.Count();
@@ -556,7 +769,7 @@ namespace GetCommentsMethodsFromFile {
             for (int i = intStartPageMethod; i < intEndPageMethod; i++) {
 
                 var item = listCategoryMethod.ToList()[i];
-                string[] myArrayFields = item.Key.Replace("Category::","").ToString().Split('^');
+                string[] myArrayFields = item.Key.Replace("Category::", "").ToString().Split('^');
                 {
                     intRow++;
                     if (intRow > 20) {
@@ -573,7 +786,7 @@ namespace GetCommentsMethodsFromFile {
                         }
                         myControlEntity.ControlEntitySetDefaults();
                         myControlEntity.ControlType = ControlType.Label;
-                        myControlEntity.ID = "lbl" + strCategory.Replace(" ", "");
+                        myControlEntity.ID = "lbl" + strCategory.Replace(" ", "").Replace("<","").Replace(">","");
                         myControlEntity.Text = strCategory;
                         myControlEntity.RowNumber = intRow;
                         myControlEntity.ColumnNumber = intCol;
@@ -585,7 +798,7 @@ namespace GetCommentsMethodsFromFile {
                     }
                     myControlEntity.ControlEntitySetDefaults();
                     myControlEntity.ControlType = ControlType.Button;
-                    myControlEntity.ID = "myButton" + strMethodName.Replace(" ", "");
+                    myControlEntity.ID = "myButton" + strMethodName.Replace(" ", "").Replace("<","").Replace(">","");
                     myControlEntity.Text = strMethodName;
                     myControlEntity.RowNumber = intRow;
                     myControlEntity.ColumnNumber = intCol;
@@ -598,7 +811,7 @@ namespace GetCommentsMethodsFromFile {
 
 
             intRow++;
-            if (intRow > 18) {
+            if (intRow > 17) {
                 intRow = 1;
                 intCol++;
             }
@@ -607,7 +820,7 @@ namespace GetCommentsMethodsFromFile {
             myControlEntity.ID = "myLabel";
             myControlEntity.Text = "(" + intStartPageMethod.ToString() + " to " + intEndPageMethod.ToString() + ") of Total Methods: " + intTotalMethods.ToString();
             myControlEntity.RowNumber = intRow;
-            myControlEntity.FontFamilyx = new FontFamily("Segoe UI Bold"); 
+            myControlEntity.FontFamilyx = new FontFamily("Segoe UI Bold");
             myControlEntity.ColumnNumber = intCol;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
             if (intStartPageMethod > 0) {
@@ -635,6 +848,19 @@ namespace GetCommentsMethodsFromFile {
                 //   myControlEntity.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
                 myListControlEntity.Add(myControlEntity.CreateControlEntity());
             }
+
+
+            intRow++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Button;
+            myControlEntity.ID = "btnSearch";
+            myControlEntity.Text = "Search";
+            myControlEntity.RowNumber = intRow;
+            myControlEntity.ColumnNumber = intCol;
+            //    myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
+            //   myControlEntity.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
             string strScripts = "";
             string strVariables = "";
             string strVariablesValue = "";
@@ -670,65 +896,96 @@ namespace GetCommentsMethodsFromFile {
                 }
                 goto BuildMenuDialogPage;
             }
+            if (strButtonPressed == "btnSearch") {
+                //  myActions.MessageBoxShow(strButtonPressed);
+                goto SearchDialog;
+            }
             strMethod = strButtonPressed.Replace("myButton", "");
             bool boolDescription = false;
             bool boolParameters = false;
             bool boolReturnType = false;
             bool boolMethod = false;
             bool boolOriginalMethod = false;
+            bool boolFileName = false;
+            bool boolSourceCode = false;
             string strReturnType = "";
             string strOriginalMethod = "";
+            string strFileName = "";
             listComments.Clear();
             listParameters.Clear();
+            listMethodSourceCode.Clear();
             sb.Length = 0;
-            using (System.IO.StreamReader sr = new System.IO.StreamReader(Path.Combine(myNewProjectSourcePath, @"Text\" + strMethod + ".txt"))) {
-                while ((strInputLineOrig = sr.ReadLine()) != null) {
-                    if (strInputLineOrig == "D e s c r i p t i o n:") {
-                        boolDescription = true;
-                        continue;
-                    }
-                    if (strInputLineOrig == "P a r a m e t e r s:") {
-                        boolDescription = false;
-                        boolParameters = true;
-                        continue;
-                    }
-                    if (strInputLineOrig == "R e t u r n  T y p e:") {                        
-                        boolParameters = false;
-                        boolReturnType = true;
-                        continue;
-                    }
-                    if (strInputLineOrig == "M e t h o d:") {
-                        boolReturnType = false;
-                        boolMethod = true;
-                        continue;
-                    }
-                    if (strInputLineOrig == "O r i g i n a l  M e t h o d:") {
-                        boolMethod = false;
-                        boolOriginalMethod = true;
-                        continue;
-                    }
-                    if (boolDescription) {
-                        listComments.Add(strInputLineOrig);
-                        continue;
-                    }
-                    if (boolParameters && strInputLineOrig.Trim() != "") {
-                        listParameters.Add(strInputLineOrig);
-                        continue;
-                    }
-                    if (boolReturnType && strInputLineOrig.Trim() != "") {
-                        strReturnType = strInputLineOrig.Substring(0, strInputLineOrig.IndexOf(" "));
-                        continue;
-                    }
-                    if (boolMethod && strInputLineOrig.Trim() != "") {
-                        strMethod = strInputLineOrig;
-                        continue;
-                    }
-                    if (boolOriginalMethod && strInputLineOrig.Trim() != "") {
-                        strOriginalMethod = strInputLineOrig;
-                        continue;
-                    }
+            try {
+                using (System.IO.StreamReader sr = new System.IO.StreamReader(Path.Combine(myNewProjectSourcePath, @"Text\" + strMethod + ".txt"))) {
+                    while ((strInputLineOrig = sr.ReadLine()) != null) {
+                        if (strInputLineOrig == "D e s c r i p t i o n:") {
+                            boolDescription = true;
+                            continue;
+                        }
+                        if (strInputLineOrig == "P a r a m e t e r s:") {
+                            boolDescription = false;
+                            boolParameters = true;
+                            continue;
+                        }
+                        if (strInputLineOrig == "R e t u r n  T y p e:") {
+                            boolParameters = false;
+                            boolReturnType = true;
+                            continue;
+                        }
+                        if (strInputLineOrig == "M e t h o d:") {
+                            boolReturnType = false;
+                            boolMethod = true;
+                            continue;
+                        }
+                        if (strInputLineOrig == "O r i g i n a l  M e t h o d:") {
+                            boolMethod = false;
+                            boolOriginalMethod = true;
+                            continue;
+                        }
+                        if (strInputLineOrig == "F i l e  N a m e:") {
+                            boolOriginalMethod = false;
+                            boolFileName = true;
+                            continue;
+                        }
+                        if (strInputLineOrig == "S o u r c e  C o d e:") {
+                            boolFileName = false;
+                            boolSourceCode = true;
+                            continue;
+                        }
+                        if (boolDescription) {
+                            listComments.Add(strInputLineOrig);
+                            continue;
+                        }
+                        if (boolParameters && strInputLineOrig.Trim() != "") {
+                            listParameters.Add(strInputLineOrig);
+                            continue;
+                        }
+                        if (boolReturnType && strInputLineOrig.Trim() != "") {
+                            strReturnType = strInputLineOrig.Substring(0, strInputLineOrig.IndexOf(" "));
+                            continue;
+                        }
+                        if (boolMethod && strInputLineOrig.Trim() != "") {
+                            strMethod = strInputLineOrig;
+                            continue;
+                        }
+                        if (boolOriginalMethod && strInputLineOrig.Trim() != "") {
+                            strOriginalMethod = strInputLineOrig;
+                            continue;
+                        }
+                        if (boolFileName && strInputLineOrig.Trim() != "") {
+                            strFileName = strInputLineOrig.Replace("<","").Replace(">","");
+                            continue;
+                        }
+                        if (boolSourceCode) {
+                            listMethodSourceCode.Add(strInputLineOrig);
+                            continue;
+                        }
 
+                    }
                 }
+            } catch (Exception e) {
+
+                myActions.MessageBoxShow(e.Message + " - Line 988 in MainWindow.cs");
             }
             if (strReturnType.ToUpper() != "VOID" && strReturnType.Trim() != "") {
                 sb.Append(strReturnType + " " + "[[result]] = ");
@@ -746,6 +1003,10 @@ namespace GetCommentsMethodsFromFile {
             foreach (var item in listComments) {
                 sb1.AppendLine(item);
             }
+            StringBuilder sb2 = new StringBuilder();
+            foreach (var item in listMethodSourceCode) {
+                sb2.AppendLine(item);
+            }
             ControlEntity myControlEntity1 = new ControlEntity();
             List<ControlEntity> myListControlEntity1 = new List<ControlEntity>();
             cbp = new List<ComboBoxPair>();
@@ -760,11 +1021,38 @@ namespace GetCommentsMethodsFromFile {
             intRowCtr = 0;
             myControlEntity1.ControlEntitySetDefaults();
             myControlEntity1.ControlType = ControlType.Heading;
-            myControlEntity1.ID = "lbl" + strMethod;
+            myControlEntity1.ID = "lbl" + strMethod.Replace("<","").Replace(">","");
             myControlEntity1.Text = strMethod;
             myControlEntity1.Width = 300;
             myControlEntity1.RowNumber = 0;
             myControlEntity1.ColumnNumber = 0;
+            myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+            intRowCtr++;
+            myControlEntity1.ControlEntitySetDefaults();
+            myControlEntity1.ControlType = ControlType.Label;
+            myControlEntity1.ID = "lblCategory";
+            myControlEntity1.Text = "Category (optional):";
+            myControlEntity1.RowNumber = intRowCtr;         
+            myControlEntity1.ColumnNumber = 0;        
+            myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+
+
+            myControlEntity1.ControlEntitySetDefaults();
+            myControlEntity1.ControlType = ControlType.ComboBox;
+            myControlEntity1.SelectedValue = myActions.GetValueByKey("cbxCategory" + strMethod + "SelectedValue");
+            myControlEntity1.ID = "cbxCategory";
+            myControlEntity1.RowNumber = intRowCtr;
+            myControlEntity1.ToolTipx = "";
+            //foreach (var item in alcbxFindWhat) {
+            //    cbp.Add(new ComboBoxPair(item.ToString(), item.ToString()));
+            //}
+            //myControlEntity1.ListOfKeyValuePairs = cbp;
+            myControlEntity1.ComboBoxIsEditable = true;
+            myControlEntity1.ColumnNumber = 1;
+
+            myControlEntity1.ColumnSpan = 2;
             myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
             // Row 1 has label Syntax and textbox that contains syntax
@@ -781,7 +1069,7 @@ namespace GetCommentsMethodsFromFile {
             myControlEntity1.ControlEntitySetDefaults();
             myControlEntity1.ControlType = ControlType.TextBox;
             myControlEntity1.ID = "txtSyntax2";
-            myControlEntity1.Text = strSyntax;            
+            myControlEntity1.Text = strSyntax;
             myControlEntity1.ColumnSpan = 4;
             myControlEntity1.RowNumber = intRowCtr;
             myControlEntity1.ColumnNumber = 1;
@@ -807,7 +1095,7 @@ namespace GetCommentsMethodsFromFile {
                 intRowCtr++;
                 myControlEntity1.ControlEntitySetDefaults();
                 myControlEntity1.ControlType = ControlType.Label;
-                myControlEntity1.ID = "lbl" + arrayParameters[1];
+                myControlEntity1.ID = "lbl" + arrayParameters[1].Replace("<", "").Replace(">", "");
                 myControlEntity1.Text = arrayParameters[0] + " [[" + arrayParameters[1] + "]]:";
                 myControlEntity1.RowNumber = intRowCtr;
                 myControlEntity1.ColumnNumber = 0;
@@ -815,7 +1103,7 @@ namespace GetCommentsMethodsFromFile {
 
                 myControlEntity1.ControlEntitySetDefaults();
                 myControlEntity1.ControlType = ControlType.TextBox;
-                myControlEntity1.ID = "txt" + arrayParameters[1];
+                myControlEntity1.ID = "txt" + arrayParameters[1].Replace("<", "").Replace(">", "");
                 myControlEntity1.Text = myActions.GetValueByKey("txt" + strMethod + arrayParameters[1]);
                 myControlEntity1.RowNumber = intRowCtr;
                 myControlEntity1.ColumnNumber = 1;
@@ -843,14 +1131,14 @@ namespace GetCommentsMethodsFromFile {
                 myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                 myControlEntity1.ControlEntitySetDefaults();
                 myControlEntity1.ControlType = ControlType.TextBox;
-                myControlEntity1.ID = "txt" + strMethod + "Result";
-                myControlEntity1.Text = myActions.GetValueByKey("txt" + strMethod + "Result");
+                myControlEntity1.ID = "txt" + strMethod.Replace("<", "").Replace(">", "") + "Result";
+                myControlEntity1.Text = myActions.GetValueByKey("txt" + strMethod.Replace("<", "").Replace(">", "") + "Result");
                 myControlEntity1.RowNumber = intRowCtr;
                 myControlEntity1.ColumnNumber = 1;
                 myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
             }
 
-   
+
             intRowCtr++;
             myControlEntity1.ControlEntitySetDefaults();
             myControlEntity1.ControlType = ControlType.Label;
@@ -870,22 +1158,61 @@ namespace GetCommentsMethodsFromFile {
             myControlEntity1.ColumnSpan = 4;
             myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
+
+            intRowCtr++;
+            myControlEntity1.ControlEntitySetDefaults();
+            myControlEntity1.ControlType = ControlType.Label;
+            myControlEntity1.ID = "lblFileName";
+            myControlEntity1.Text = "File Name:";
+            myControlEntity1.RowNumber = intRowCtr;
+            myControlEntity1.ColumnNumber = 0;
+            myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+            myControlEntity1.ControlEntitySetDefaults();
+            myControlEntity1.ControlType = ControlType.TextBox;
+            myControlEntity1.ID = "txtFileName";
+            
+            myControlEntity1.Text = strFileName;
+            myControlEntity1.RowNumber = intRowCtr;
+            myControlEntity1.ColumnNumber = 1;
+            myControlEntity1.ColumnSpan = 4;
+            myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+            intRowCtr++;
+            myControlEntity1.ControlEntitySetDefaults();
+            myControlEntity1.ControlType = ControlType.Label;
+            myControlEntity1.ID = "lblSourceCode";
+            myControlEntity1.Text = "Source Code:";
+            myControlEntity1.RowNumber = intRowCtr;
+            myControlEntity1.ColumnNumber = 0;
+            myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+            myControlEntity1.ControlEntitySetDefaults();
+            myControlEntity1.ControlType = ControlType.TextBox;
+            myControlEntity1.ID = "txtSourceCode";
+            myControlEntity1.Height = 200;
+            myControlEntity1.Text = sb2.ToString();
+            myControlEntity1.RowNumber = intRowCtr;
+            myControlEntity1.ColumnNumber = 1;
+            myControlEntity1.ColumnSpan = 4;
+            myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
             // Get saved position of window from roaming..
             GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
             // Display input dialog
             strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 700, 1200, intWindowTop, intWindowLeft);
             // Get Values from input dialog and save to roaming
-            
-           
-            
+
+
+
             foreach (var item in listParameters) {
                 string[] arrayParameters = item.Split(' ');
-                string myParameterValue = myListControlEntity1.Find(x => x.ID == "txt" + arrayParameters[1]).Text;
-                myActions.SetValueByKey("txt" + strMethod + arrayParameters[1], myParameterValue);
+                string myParameterValue = myListControlEntity1.Find(x => x.ID == "txt" + arrayParameters[1].Replace("<", "").Replace(">", "")).Text;
+                myActions.SetValueByKey("txt" + strMethod.Replace("<", "").Replace(">", "") + arrayParameters[1].Replace("<", "").Replace(">", ""), myParameterValue);
             }
             if (strReturnType.ToUpper() != "VOID" && strReturnType.Trim() != "") {
-                string myResultValue = myListControlEntity1.Find(x => x.ID == "txt" + strMethod + "Result").Text;
-                myActions.SetValueByKey("txt" + strMethod + "Result", myResultValue);
+                string myResultValue = myListControlEntity1.Find(x => x.ID == "txt" + strMethod.Replace("<", "").Replace(">", "") + "Result").Text;
+                myActions.SetValueByKey("txt" + strMethod.Replace("<", "").Replace(">", "") + "Result", myResultValue);
             }
 
 
@@ -902,18 +1229,21 @@ namespace GetCommentsMethodsFromFile {
                 //} else {
                 //    strWebsiteURLToUse = "\"" + strWebsiteURLx.Trim() + "\"";
                 //}
+                string strCategory = myListControlEntity1.Find(x => x.ID == "cbxCategory").SelectedValue;
+               
+                myActions.SetValueByKey("cbxCategory" + strMethod.Replace("<", "").Replace(">", "") + "SelectedValue", strCategory);
                 string strGeneratedLinex = strSyntax;
 
                 foreach (var item in listParameters) {
-                    string[] arrayParameters = item.Split(' ');                    
+                    string[] arrayParameters = item.Split(' ');
                     string searchTerm = "[[" + arrayParameters[1] + "]]";
-                    string replacementValue = myListControlEntity1.Find(x => x.ID == "txt" + arrayParameters[1]).Text;
+                    string replacementValue = myListControlEntity1.Find(x => x.ID == "txt" + arrayParameters[1].Replace("<", "").Replace(">", "")).Text;
                     strGeneratedLinex = strGeneratedLinex.Replace(searchTerm, replacementValue);
                 }
 
                 if (strReturnType.ToUpper() != "VOID" && strReturnType.Trim() != "") {
                     string searchTerm = "[[Result]]";
-                    string replacementValue = myListControlEntity1.Find(x => x.ID == "txt" + strMethod + "Result").Text;
+                    string replacementValue = myListControlEntity1.Find(x => x.ID == "txt" + strMethod.Replace("<", "").Replace(">", "") + "Result").Text;
                     strGeneratedLinex = strGeneratedLinex.Replace(searchTerm, replacementValue);
                 }
 
@@ -925,9 +1255,10 @@ namespace GetCommentsMethodsFromFile {
             GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
             // Display main menu and go back to where you 
             // process input from main menu
-            strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, 1200, intWindowTop, intWindowLeft);
+            intWidth = (intCol + 1) * intColumnWidth;
+            strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 650, intWidth, intWindowTop, intWindowLeft);
             goto DisplayWindowAgain;
-            
+
             myExit:
             string strApplicationBinDebug2 = System.Windows.Forms.Application.StartupPath;
             string myNewProjectSourcePath2 = strApplicationBinDebug2.Replace("\\bin\\Debug", "");
@@ -964,21 +1295,23 @@ namespace GetCommentsMethodsFromFile {
             bool boolCategoryFound = false;
             foreach (var item in listComments) {
                 listOutput.Add(item);
-                if (item.Contains(@"Category::")) {
-                    boolCategoryFound = true;
-                    if (!listCategoryMethod.ContainsKey(item.Trim().Replace(">", "_") + "^" + strMethod)) {
-                        listCategoryMethod.Add(item.Trim().Replace(">", "_") + "^" + strMethod, item + "^" + strMethod);
-                    }                    
-                }
+                //if (item.Contains(@"Category::") && strSearchText.Trim() == "") {
+                //    boolCategoryFound = true;
+                //    if (!listCategoryMethod.ContainsKey(item.Trim().Replace(">", "_") + "^" + strMethod)) {
+                //        listCategoryMethod.Add(item.Trim().Replace(">", "_") + "^" + strMethod, item + "^" + strMethod);
+                //    }
+                //}
             }
-            if (boolCategoryFound == false) {
-                if (!listCategoryMethod.ContainsKey("_UnCategorized" + "^" + strMethod)) {
-                    listCategoryMethod.Add("_UnCategorized" + "^" + strMethod, "_UnCategorized" + "^" + strMethod);
+            Methods myActions = new Methods();
+            string strMyCategory = myActions.GetValueByKey("cbxCategory" + strMethod.Replace("<", "").Replace(">", "") + "SelectedValue");
+            if (strSearchText.Trim() == "") {
+                if (!listCategoryMethod.ContainsKey(strMyCategory + "^" + strMethod)) {
+                    listCategoryMethod.Add(strMyCategory + "^" + strMethod, strMyCategory + "^" + strMethod.Replace("<", "").Replace(">", ""));
                 }
             }
             int i = 0;
             listOutput.Add(" ");
-           listOutput.Add("P a r a m e t e r s:");
+            listOutput.Add("P a r a m e t e r s:");
             foreach (var item in strLocalVariableArray) {
 
                 listOutput.Add(strLocalVariableTypeArray[i] + " " + item);
@@ -990,22 +1323,107 @@ namespace GetCommentsMethodsFromFile {
             listOutput.Add(" ");
             listOutput.Add("R e t u r n  T y p e:");
 
-          listOutput.Add(strReturnType + " " + "RETURNED VARIABLE TYPE");
+            listOutput.Add(strReturnType + " " + "RETURNED VARIABLE TYPE");
             listOutput.Add(" ");
             listOutput.Add("M e t h o d:");
             listOutput.Add(strMethod);
             listOutput.Add(" ");
             listOutput.Add("O r i g i n a l  M e t h o d:");
             listOutput.Add(strMethodOrig);
-            intMethodCtr++;
-            listOutput.Add("================================" + intMethodCtr.ToString());
+            listOutput.Add(" ");
+            listOutput.Add("F i l e  N a m e:");
+            listOutput.Add("\"" + strCurrentFile + "\" (" + intInLine.ToString() + ",0):");
+            listOutput.Add(" "); 
+          
+        }
+
+        private void ProcessMethodContinued() {
+            
+            listOutput.Add("S o u r c e  C o d e:");
+            foreach (var item in listMethodSourceCode) {
+
+                listOutput.Add(item);
+                // sw.WriteLine(strLine);
+            }
+            intMethodCtr++;          
             listComments.Clear();
             //}
+            _boolStringFoundInFile = true;
+            if (strSearchText.Trim() != "") {
+                _boolStringFoundInFile = false;
+                string s_lower = "";
+                foreach (var s in listOutput) {
+                    if (s == "S o u r c e  C o d e:") {
+                        break;
+                    }
+                    if (_boolUseRegularExpression) {
+                        if (_boolMatchCase) {
+                            if (System.Text.RegularExpressions.Regex.IsMatch(s, strSearchText, System.Text.RegularExpressions.RegexOptions.None)) {
+                                intHits++;
+                                _boolStringFoundInFile = true;
+                                //MatchInfo myMatchInfo = new MatchInfo();
+                                //myMatchInfo.FullName = fullFilePath;
+                                //myMatchInfo.LineNumber = intLineCtr;
+                                //myMatchInfo.LinePosition = s.IndexOf(strSearchText) + 1;
+                                //myMatchInfo.LineText = s;
+                                //matchInfoList.Add(myMatchInfo);
+                            }
+                        } else {
+                            s_lower = s.ToLower();
+                            if (System.Text.RegularExpressions.Regex.IsMatch(s_lower, strLowerCaseSearchText, System.Text.RegularExpressions.RegexOptions.IgnoreCase)) {
+                                intHits++;
+                                _boolStringFoundInFile = true;
+                                //MatchInfo myMatchInfo = new MatchInfo();
+                                //myMatchInfo.FullName = fullFilePath;
+                                //myMatchInfo.LineNumber = intLineCtr;
+                                //myMatchInfo.LinePosition = s_lower.IndexOf(strLowerCaseSearchText) + 1;
+                                //myMatchInfo.LineText = s;
+                                //matchInfoList.Add(myMatchInfo);
+                            }
+                        }
+                    } else {
+                        if (_boolMatchCase) {
+                            if (s.Contains(strSearchText)) {
+                                intHits++;
+                                _boolStringFoundInFile = true;
+                                //MatchInfo myMatchInfo = new MatchInfo();
+                                //myMatchInfo.FullName = fullFilePath;
+                                //myMatchInfo.LineNumber = intLineCtr;
+                                //myMatchInfo.LinePosition = s.IndexOf(strSearchText) + 1;
+                                //myMatchInfo.LineText = s;
+                                //matchInfoList.Add(myMatchInfo);
+                            }
+                        } else {
+                            s_lower = s.ToLower();
+                            if (s_lower.Contains(strLowerCaseSearchText)) {
+
+                                intHits++;
+                                _boolStringFoundInFile = true;
+                                //MatchInfo myMatchInfo = new MatchInfo();
+                                //myMatchInfo.FullName = fullFilePath;
+                                //myMatchInfo.LineNumber = intLineCtr;
+                                //myMatchInfo.LinePosition = s_lower.IndexOf(strLowerCaseSearchText) + 1;
+                                //myMatchInfo.LineText = s;
+                                //matchInfoList.Add(myMatchInfo);
+                            }
+                        }
+                    }
+                }
+            }
             string strLine = "";
-            using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Path.Combine(myNewProjectSourcePath, @"Text\" + strMethod + ".txt"))) {
-                foreach (var item in listOutput) {
-                    strLine = item;
-                    sw.WriteLine(strLine);
+            Methods myActions = new Methods();
+            if (_boolStringFoundInFile) {
+                if (strSearchText.Trim() != "") {
+                    string myCategory = myActions.GetValueByKey("cbxCategory" + strMethod + "SelectedValue");
+                    if (!listCategoryMethod.ContainsKey(myCategory + "^" + strMethod.Replace("<", "").Replace(">", ""))) {
+                        listCategoryMethod.Add(myCategory + "^" + strMethod.Replace("<", "").Replace(">", ""), myCategory + "^" + strMethod.Replace("<", "").Replace(">", ""));
+                    }
+                }
+                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Path.Combine(myNewProjectSourcePath, @"Text\" + strMethod + ".txt"))) {
+                    foreach (var item in listOutput) {
+                        strLine = item;
+                        sw.WriteLine(strLine);
+                    }
                 }
             }
             listOutput.Clear();
@@ -1016,9 +1434,9 @@ namespace GetCommentsMethodsFromFile {
                 strCleaned.ToUpper().Trim().Contains(" CLASS ")
                 ) {
                 // write inherits line
-                boolClass = true;
+                _boolClass = true;
 
-                boolLineProcessed = true;
+                _boolLineProcessed = true;
 
                 strClass = strCleaned.Trim().Substring(strCleaned.ToUpper().IndexOf("CLASS ") + 6);
                 int myIndex = 0;
@@ -1049,7 +1467,9 @@ namespace GetCommentsMethodsFromFile {
                 strMethodOrig = strCleaned;
 
 
-                boolMethod = true;
+                _boolMethod = true;
+                listMethodSourceCode.Clear();
+                listMethodSourceCode.Add(strInputLineOrig);
                 // we are putting method name and parameters in strMethod
                 strMethod = strCleaned.Substring(0, strCleaned.ToUpper().IndexOf("("));
                 strMethod = strCleaned.Substring(strMethod.LastIndexOf(" ") + 1);
@@ -1061,6 +1481,9 @@ namespace GetCommentsMethodsFromFile {
                 strParameters = strMethod.Substring(strMethod.IndexOf("("), strMethod.LastIndexOf(")") - strMethod.IndexOf("(") + 1);
 
                 strMethod = strMethod.Substring(0, strMethod.IndexOf("("));
+                if (strMethod.Contains("<")) {
+                    strMethod = strMethod.Substring(0, strMethod.IndexOf("<"));
+                }
                 listMethod.Add(strMethod);
                 Array.Resize(ref strLocalVariableArray, 0);
                 Array.Resize(ref strLocalVariableTypeArray, 0);
@@ -1071,12 +1494,12 @@ namespace GetCommentsMethodsFromFile {
                     ParseParameters(strParameters);
                 }
                 strCleanedHold = strCleaned;
-                boolFirstStatementInMethod = true;
-                boolLineProcessed = true;
+                _boolFirstStatementInMethod = true;
+                _boolLineProcessed = true;
 
             }
 
-            if (strClass == "" && boolFirstMethodFound == false) {
+            if (strClass == "" && _boolFirstMethodFound == false) {
                 CheckForApplicationVariables(strCleaned);
             }
 
@@ -1192,7 +1615,7 @@ namespace GetCommentsMethodsFromFile {
             while (rgx.IsMatch(strInputLineOrig)) {
                 ReplaceLiteralWithDictValue();
             }
-            boolLineProcessed = false;
+            _boolLineProcessed = false;
 
             // strCleaned only has markers for quoted strings and comments
             // strInputLineOrig has the quoted strings and comments in it
@@ -1201,40 +1624,40 @@ namespace GetCommentsMethodsFromFile {
 
             if (strCleaned.Contains("new ") && strCleaned.Contains("char")) {
 
-                boolTraceLoggingOn = false;
+                _boolTraceLoggingOn = false;
                 return;
             }
-            if (boolTraceLoggingOn == false && strCleaned.Contains("}") == false) {
+            if (_boolTraceLoggingOn == false && strCleaned.Contains("}") == false) {
 
                 return;
             }
-            if (boolTraceLoggingOn == false && strCleaned.Contains("}") == true) {
+            if (_boolTraceLoggingOn == false && strCleaned.Contains("}") == true) {
                 //  outputfile.WriteLine("};");
-                boolTraceLoggingOn = true;
+                _boolTraceLoggingOn = true;
                 return;
             }
             int Count = CountBrackets(strCleaned);
             intNestingLevel = intNestingLevel + Count;
 
-            if (boolNamespace == true && intNestingLevel == 0) {
+            if (_boolNamespace == true && intNestingLevel == 0) {
                 intClassLevel = 0;
                 intMethodLevel = 1;
-                boolNamespace = false;
+                _boolNamespace = false;
             }
 
             if (strCleaned.StartsWith("namespace")) {
                 intClassLevel = 1;
                 intMethodLevel = 2;
-                boolNamespace = true;
+                _boolNamespace = true;
             }
 
             CheckForComments();
-            if (boolLineProcessed) {
+            if (_boolLineProcessed) {
                 return;
             }
 
             CheckForClass();
-            if (boolLineProcessed) {
+            if (_boolLineProcessed) {
                 listComments.Clear();
                 return;
             }
@@ -1245,28 +1668,37 @@ namespace GetCommentsMethodsFromFile {
             //if (boolLineProcessed) return;
 
             CheckForMethodOrFunction();
-            if (boolLineProcessed) {
+            if (_boolLineProcessed) {
                 ProcessMethod();
                 return;
             }
 
             listComments.Clear();
-            if (boolMethod == true) {
+            if (_boolMethod == true) {
                 CheckForNewMethodBeforeEnd();
-                if (boolLineProcessed) return;
+                if (_boolLineProcessed) {
+                    ProcessMethodContinued();
+                    return;
+                }
 
                 CheckForMethodEnd();
-                if (boolLineProcessed) return;
+                if (_boolLineProcessed) {
+                    ProcessMethodContinued();
+                    return;
+                }
 
 
                 CheckForMethodBodyStatement();
-                if (boolLineProcessed) return;
+                if (_boolLineProcessed) {
+                    
+                    return;
+                }
             }
 
             //This is for the inherits statement
-            if (boolLineProcessed == false) {
+            if (_boolLineProcessed == false) {
 
-                boolLineProcessed = true;
+                _boolLineProcessed = true;
             }
         }
         private void ReadCleanConcatCodeRec(System.IO.StreamReader file) {
@@ -1393,7 +1825,7 @@ namespace GetCommentsMethodsFromFile {
             // sb and clear out strInputLineUnclean because we are done
             if (intCommentPosition > -1)  // starts on this line
             {
-                boolCommentsContinued = true;
+                _boolCommentsContinued = true;
 
                 intEndComment = strInputLineUncleanHold.IndexOf("*/");
                 if (intEndComment == -1) // Only starts on this line
@@ -1405,7 +1837,7 @@ namespace GetCommentsMethodsFromFile {
                     intLit = intLit + 1;
                 } else // starts and ends on this line
                   {
-                    boolCommentsContinued = false;
+                    _boolCommentsContinued = false;
                     int intLength = (intEndComment - intCommentPosition) + 2;
                     string strComment = strInputLineUnclean.Substring(intCommentPosition, intLength);
                     strInputLineUnclean = strInputLineUnclean.Substring(0, intCommentPosition);
@@ -1416,16 +1848,16 @@ namespace GetCommentsMethodsFromFile {
             } else // comment did not start on this line
               {
                 intCommentPosition = strInputLineUncleanHold.IndexOf("*/");
-                if (boolCommentsContinued == true && intCommentPosition > -1) // comment ends on this line
+                if (_boolCommentsContinued == true && intCommentPosition > -1) // comment ends on this line
                 {
-                    boolCommentsContinued = false;
+                    _boolCommentsContinued = false;
                     string strComment = strInputLineUnclean.Substring(0, intCommentPosition + 2);
                     strInputLineUnclean = strInputLineUnclean.Substring(intCommentPosition + 2);
                     strInputLineUnclean = "#Comment" + intLit.ToString() + ">>" + strInputLineUnclean;
                     dict.Add("#Comment" + intLit.ToString() + ">>", strComment);
                     intLit = intLit + 1;
                 } else {
-                    if (boolCommentsContinued == true) // simply a continued comment
+                    if (_boolCommentsContinued == true) // simply a continued comment
                     {
                         string strComment = strInputLineUnclean;
                         strInputLineUnclean = "";
@@ -1460,11 +1892,11 @@ namespace GetCommentsMethodsFromFile {
                 // we are not throwing away comments
                 //           WriteOrig(strInputLineOrig);
 
-                boolLineProcessed = true;
+                _boolLineProcessed = true;
             }
             if (strCleaned.Contains("#Comment")) {
                 listComments.Add(strInputLineOrig.Replace("<para>", "").Replace("</para>", "").Replace("///", "").Replace("//", ""));
-                boolLineProcessed = true;
+                _boolLineProcessed = true;
             }
         }
         private int CountBrackets(string strInputLine) {
@@ -1478,17 +1910,17 @@ namespace GetCommentsMethodsFromFile {
             if (intNestingLevel < intMethodLevel + 1
                 && strCleaned.Contains("}")) {
                 //set boolMethod to false and write line
-                boolMethod = false;
+                _boolMethod = false;
 
 
                 //  WriteInputToTracelog();
 
                 //  WriteOrig(strInputLineOrig);
-                boolLineProcessed = true;
+                _boolLineProcessed = true;
             }
         }
         private void CheckForNewMethodBeforeEnd() {
-            if (boolFirstMethodFound == false
+            if (_boolFirstMethodFound == false
                 && (strCleaned.ToUpper().IndexOf("(") > -1
                 && strCleaned.ToUpper().EndsWith(";") == false
                 && (strCleaned.ToUpper().Trim().StartsWith("VOID ")
@@ -1498,7 +1930,9 @@ namespace GetCommentsMethodsFromFile {
                 || strCleaned.ToUpper().Trim().StartsWith("PROTECTED ")
                 || strCleaned.ToUpper().Trim().StartsWith("STATIC ")))) {
                 //set boolMethod to true and write line
-                boolMethod = true;
+                _boolMethod = true;
+                listMethodSourceCode.Clear();
+                listMethodSourceCode.Add(strInputLineOrig);
 
                 // WriteOrig(strInputLineOrig);
 
@@ -1515,31 +1949,34 @@ namespace GetCommentsMethodsFromFile {
                     strMethod = strCleaned.Substring(strMethod.LastIndexOf(" ") + 1);
                     // we are removing the parameters
                     strMethod = strMethod.Substring(0, strMethod.ToUpper().IndexOf("("));
+                    if (strMethod.Contains("<")) {
+                        strMethod = strMethod.Substring(0, strMethod.ToUpper().IndexOf("<"));
+                    }
                 }
 
-                boolLineProcessed = true;
+                _boolLineProcessed = true;
             }
         }
         private void CheckForMethodBodyStatement() {
             if (strCleaned.Contains("{")) {
-                boolFoundOpenBracket = true;
+                _boolFoundOpenBracket = true;
             }
-            if (boolMultipleStatementsPossible
-                && boolFoundOpenBracket == false
+            if (_boolMultipleStatementsPossible
+                && _boolFoundOpenBracket == false
                 && strCleaned.Contains(";")
                 ) {
                 //  outputfile.WriteLine("{");
                 //WriteOrig(strInputLineOrig);
                 //WriteInputToTracelog();
                 //   outputfile.WriteLine("}");
-                boolMultipleStatementsPossible = false;
-                boolFoundOpenBracket = false;
+                _boolMultipleStatementsPossible = false;
+                _boolFoundOpenBracket = false;
                 return;
             }
-            if (strCleaned.StartsWith("{") == true && boolFirstStatementInMethod == true) {
+            if (strCleaned.StartsWith("{") == true && _boolFirstStatementInMethod == true) {
                 //WriteOrig(strInputLineOrig);
                 strCleaned = strCleanedHold;
-                if (boolFirstMethodFound == false) {
+                if (_boolFirstMethodFound == false) {
                     // write general declarations
 
                     //outputfile.WriteLine(@"#region TraceOn Begin 3");
@@ -1553,12 +1990,12 @@ namespace GetCommentsMethodsFromFile {
                     //write the input line
 
 
-                    boolFirstMethodFound = true;
+                    _boolFirstMethodFound = true;
                 }
 
 
                 //WriteInputToTracelog();
-                boolLineProcessed = true;
+                _boolLineProcessed = true;
                 return;
             }
 
@@ -1605,7 +2042,7 @@ namespace GetCommentsMethodsFromFile {
 
 
 
-            boolLineProcessed = true;
+            _boolLineProcessed = true;
 
             // boolMultipleStatementsPossible
             // boolFoundOpenBracket
@@ -1622,13 +2059,13 @@ namespace GetCommentsMethodsFromFile {
                 || (strCleaned.ToUpper().Trim().StartsWith("WHILE ") && strCleaned.Contains(";") == false)
                 || (strCleaned.ToUpper().Trim().StartsWith("WHILE(") && strCleaned.Contains(";") == false)
                 ) {
-                boolMultipleStatementsPossible = true;
-                boolFoundOpenBracket = false;
+                _boolMultipleStatementsPossible = true;
+                _boolFoundOpenBracket = false;
             }
 
-            if (strCleaned == "{" && boolMultipleStatementsPossible == true) {
-                boolMultipleStatementsPossible = false;
-                boolFoundOpenBracket = false;
+            if (strCleaned == "{" && _boolMultipleStatementsPossible == true) {
+                _boolMultipleStatementsPossible = false;
+                _boolFoundOpenBracket = false;
             }
 
         }

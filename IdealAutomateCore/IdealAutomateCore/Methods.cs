@@ -2362,7 +2362,13 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
       StreamReader file = null;
       string strValueRead = "";
       string settingsDirectory = GetAppDirectoryForScript();
-      string settingsPath = Path.Combine(settingsDirectory, fileName);
+            string settingsPath = "";
+            try {
+                settingsPath = Path.Combine(settingsDirectory, fileName);
+            } catch (Exception e) {
+
+                MessageBoxShow(e.Message + " - filename = " + fileName + " - Line 2369 in Methods.cs");
+            }
       if (File.Exists(settingsPath)) {
         file = File.OpenText(settingsPath);
         strValueRead = file.ReadToEnd();
