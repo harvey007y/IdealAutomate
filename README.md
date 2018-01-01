@@ -1,5 +1,10 @@
 # IdealAutomate
-
+ <p align="center">
+ <a href="http://shareasale.com/r.cfm?b=1066970&u=228350&m=53701&urllink=&afftrack=" target="_blank" style="color:white;font-weight:bold;text-decoration:none;">Save 15% On Pluralsight - Annual Subscription Only $299</a>
+<br />
+<a target="_blank" href="http://shareasale.com/r.cfm?b=978796&u=228350&m=53701&urllink=&afftrack="><img src="http://static.shareasale.com/image/53701/5011-16_Banners_B2CCartAbandon-300x250.jpg" border="0" height="300"/></a> <a target="_blank" href="http://payscale.com"><img src="http://www.payscale.com/images/llb/payscale_banner_120x240.gif" border="0" height="300" /></a> <a target="_blank" href="http://shareasale.com/r.cfm?b=978789&u=228350&m=53701&urllink=&afftrack="><img src="http://idealprogrammer.com/wp-photos/SoftwareDeveloper300.png" border="0" height="300" /></a>
+ </p>
+                             <br /><br />
 Here is a screenshot of IdealAutomateExplorer in List View:<br />
 <center>
 <a href="http://www.idealautomate.com/images/IdealAutomateExplorer.PNG" target="_blank"><img src="http://www.idealautomate.com/images/IdealAutomateExplorer.PNG" border="0" alt="Ideal Automate Explorer List View" width="800px"/><br />(click to enlarge)</a>

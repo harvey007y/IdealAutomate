@@ -64,6 +64,7 @@ Partial Class Form1
         Me.btnInsertUserInputDialog = New System.Windows.Forms.Button()
         Me.btnRun = New System.Windows.Forms.Button()
         Me.btnRunAsync = New System.Windows.Forms.Button()
+        Me.btnScriptGenerator = New System.Windows.Forms.Button()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -184,7 +185,7 @@ Partial Class Form1
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(20, 83)
+        Me.Label3.Location = New System.Drawing.Point(23, 82)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(71, 13)
         Me.Label3.TabIndex = 13
@@ -421,11 +422,21 @@ Partial Class Form1
         Me.btnRunAsync.Text = "Run Async"
         Me.btnRunAsync.UseVisualStyleBackColor = True
         '
+        'btnScriptGenerator
+        '
+        Me.btnScriptGenerator.Location = New System.Drawing.Point(401, 39)
+        Me.btnScriptGenerator.Name = "btnScriptGenerator"
+        Me.btnScriptGenerator.Size = New System.Drawing.Size(103, 23)
+        Me.btnScriptGenerator.TabIndex = 40
+        Me.btnScriptGenerator.Text = "Script Generator"
+        Me.btnScriptGenerator.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(698, 702)
+        Me.Controls.Add(Me.btnScriptGenerator)
         Me.Controls.Add(Me.btnRunAsync)
         Me.Controls.Add(Me.btnRun)
         Me.Controls.Add(Me.btnInsertUserInputDialog)
@@ -515,4 +526,5 @@ Partial Class Form1
     Friend WithEvents btnInsertUserInputDialog As Button
     Friend WithEvents btnRun As Button
     Friend WithEvents btnRunAsync As Button
+    Friend WithEvents btnScriptGenerator As Button
 End Class

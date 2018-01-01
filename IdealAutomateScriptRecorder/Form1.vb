@@ -2,6 +2,7 @@ Imports System.Runtime.InteropServices
 Imports System.Text
 Imports System.Management
 Imports System.IO
+Imports IdealAutomate.Core
 
 Public Class Form1
 
@@ -28,7 +29,7 @@ Public Class Form1
     Public boolPause = False
     Public listActions As List(Of String) = New List(Of String)
 
-
+    Private _NewVariableCtr As Int32 = 0
 
 
     Public dtStartDateTime As DateTime = System.DateTime.Now
@@ -52,7 +53,13 @@ Public Class Form1
 
 
     Private Sub timerActiveWindowCheck_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
-
+        ' When timer tick occurs every 100 milliseconds,
+        ' get the following info for the foreground window:
+        ' handle, windows title, pid of the app that owns
+        ' window, and the actual process that is running 
+        ' window
+        ' if the window info is new, start a new row; else,
+        ' add to existing row
         '----- Get the Handle to the Current Forground Window ----- -12345
         TextBox1.Text = intKeyCtr.ToString
         Dim hWnd As IntPtr = GetForegroundWindow()
@@ -92,9 +99,12 @@ Public Class Form1
         Dim boolKeepCountingLocal As Boolean = False
         Dim boolNewProcess As Boolean = False
 
-        If txtProcessName.Text <> proc.ProcessName Or
-            txtProcessTitle.Text <> proc.MainWindowTitle Or
-            txtProcessID.Text <> pid.ToString() Then
+        'txtProcessTitle.Text <> proc.MainWindowTitle Or
+        If proc.ProcessName <> "ScriptGenerator" And
+            proc.ProcessName <> "IdealAutomateScriptRecorder" And
+             proc.ProcessName <> "IdealAutomateExplorer" And
+            (txtProcessName.Text <> proc.ProcessName Or
+            txtProcessID.Text <> pid.ToString()) Then
             boolNewProcess = True
         Else
             boolKeepCountingLocal = True
@@ -103,6 +113,36 @@ Public Class Form1
 
 
         If boolNewProcess Then
+            If proc.ProcessName <> "IdealAutomateScriptRecorder" Then
+                _NewVariableCtr = _NewVariableCtr + 1
+                ' TODO: may need to do more logic
+                ' to check for control, alt etc.
+                If sbg.Length > 0 And _NewVariableCtr <> 1 Then
+                    listActions.Add("myActions.TypeText(""" & sbg.ToString() & """, 500);")
+                    sbg.Length = 0
+                End If
+                Dim myActions As Methods = New Methods()
+                listActions.Add("//")
+                listActions.Add("// S T A R T   N E W   P R O C E S S:  " + proc.ProcessName)
+                listActions.Add("//")
+                listActions.Add("List<string> myWindowTitles" + _NewVariableCtr.ToString() + " = myActions.GetWindowTitlesByProcessName(""" + proc.ProcessName + """); ")
+                listActions.Add("myWindowTitles" + _NewVariableCtr.ToString() + ".RemoveAll(item => item == """"); ")
+                listActions.Add("if (!myWindowTitles" + _NewVariableCtr.ToString() + "[0].StartsWith(@""" + myActions.GetActiveWindowTitle() + """)) {  ")
+                listActions.Add("  // You may need to manually add content parameter as second parameter for run???")
+                listActions.Add("  myActions.Run(@""" + GetMainModuleFilepath(proc.Id) + """,""""); ")
+                listActions.Add("  myActions.Sleep(1000); ")
+                listActions.Add("} ")
+                listActions.Add("if (myWindowTitles" + _NewVariableCtr.ToString() + ".Count > 0) { ")
+                listActions.Add("  myActions.ActivateWindowByTitle(myWindowTitles" + _NewVariableCtr.ToString() + "[0], (int)WindowShowEnum.SW_SHOWMAXIMIZED); ")
+                listActions.Add("}   ")
+                listActions.Add("//")
+                listActions.Add("// P R O C E S S   H A S   B E E N   S T A R T E D:  " + proc.ProcessName)
+                listActions.Add("//")
+                If sbg.Length > 0 And _NewVariableCtr = 1 Then
+                    listActions.Add("myActions.TypeText(""" & sbg.ToString() & """, 500);")
+                    sbg.Length = 0
+                End If
+            End If
             'txtProcessName is old process and we need to find it in table and update the info
             Dim i As Integer
             Dim myProcess As clsProcess
@@ -110,8 +150,8 @@ Public Class Form1
                 myProcess = list.Item(i)
                 'close out old process
                 If myProcess.ProcessName = txtProcessName.Text And
-                    myProcess.ProcessTitle = txtProcessTitle.Text And
-                    myProcess.ProcessID = txtProcessID.Text Then
+                myProcess.ProcessTitle = txtProcessTitle.Text And
+                myProcess.ProcessID = txtProcessID.Text Then
 
                     ' This next statement must come before the update of EndDateTime because we are using EndDateTime
                     ' as LastModifiedDateTime........................but you can call me mr. harvey
@@ -128,8 +168,9 @@ Public Class Form1
                 End If
                 'open new process
                 If myProcess.ProcessName = proc.ProcessName And
-                    myProcess.ProcessTitle = proc.MainWindowTitle And
-                    myProcess.ProcessID = pid.ToString() Then
+                myProcess.ProcessTitle = proc.MainWindowTitle And
+                myProcess.ProcessID = pid.ToString() Then
+
                     boolFoundApp = True
                     boolKeepCountingLocal = True
                     ' This next statement must come before the update of EndDateTime because we are using EndDateTime
@@ -147,8 +188,12 @@ Public Class Form1
 
             Next
         End If
-        txtProcessName.Text = proc.ProcessName
-        txtProcessID.Text = pid.ToString
+        If proc.ProcessName <> "ScriptGenerator" And
+            proc.ProcessName <> "IdealAutomateScriptRecorder" And
+             proc.ProcessName <> "IdealAutomateExplorer" Then
+            txtProcessName.Text = proc.ProcessName
+            txtProcessID.Text = pid.ToString
+        End If
 
         'For Each item In clbGoodApps.Items
         '    If txtProcessName.Text = item Then
@@ -186,97 +231,7 @@ Public Class Form1
 
 
         Dim intElapsedSeconds As Integer
-        '***********************************
-        'Start checking to see if we need to display anything
-        '***********************************
-        Dim sb As New StringBuilder
-        sb.Length = 0
 
-        Dim boolNeedToDisplay As Boolean = False
-        intElapsedSeconds = DateDiff(DateInterval.Second, dtStartDateTime, System.DateTime.Now)
-        Dim intElapsedMinutes As Integer
-        intElapsedMinutes = intElapsedSeconds / 60
-        Dim intMinutesRemainder = intElapsedMinutes Mod 2
-
-        Dim intMinutesRemainderBreak = intElapsedMinutes Mod 5
-        If intMinutesRemainderBreak = 4 Then
-            boolReminderDisplayed = False
-        End If
-        If intMinutesRemainderBreak = 0 And boolReminderDisplayed = False Then
-            boolReminderDisplayed = True
-            sb.Append("Do You Want to take a break?" + vbCrLf)
-            txtReminder.ForeColor = Color.Red
-            boolNeedToDisplay = True
-        End If
-
-        txtElapsedTime.Text = intElapsedMinutes.ToString()
-        Dim intRemainder As Integer = intElapsedSeconds Mod 60
-        Dim intCurrentAverageKeysPerMinute As Integer = 0
-        If intRemainder = 0 And intPrevElapsedSeconds <> intElapsedSeconds Then
-            intOverallAverageKeysPerMinute = intKeyCtr / (intElapsedSeconds / 60)
-            txtAvgPerMin.Text = intOverallAverageKeysPerMinute.ToString()
-            intCurrentAverageKeysPerMinute = intKeyCtr - intPrevKeyCtr
-            txtCurrMinKeys.Text = intCurrentAverageKeysPerMinute.ToString()
-            intPrevKeyCtr = intKeyCtr
-            intPrevElapsedSeconds = intElapsedSeconds
-            Dim intPct As Integer
-            If intOverallAverageKeysPerMinute = 0 Then
-                intPct = 0
-                sb.Append("You do not have any keystrokes yet " _
-                    + vbCrLf + "Have you selected the applications to monitor? " + vbCrLf)
-                txtReminder.ForeColor = Color.Red
-                boolNeedToDisplay = True
-            Else
-                intPct = ((intCurrentAverageKeysPerMinute - intOverallAverageKeysPerMinute) / intOverallAverageKeysPerMinute) * 100
-            End If
-
-            'This will show window if keystrokes for the last minute is less than 90% of overall average
-            If intCurrentAverageKeysPerMinute < intOverallAverageKeysPerMinute * 0.9 Then
-                sb.Append("Your current keystrokes = " + intCurrentAverageKeysPerMinute.ToString() _
-                    + vbCrLf + "Your average keystrokes = " + intOverallAverageKeysPerMinute.ToString() _
-                    + vbCrLf + "The difference is " + intPct.ToString() + "%")
-                txtReminder.ForeColor = Color.Red
-                boolNeedToDisplay = True
-            End If
-            If intCurrentAverageKeysPerMinute > intOverallAverageKeysPerMinute * 1.1 Then
-                sb.Append("Your current keystrokes = " + intCurrentAverageKeysPerMinute.ToString() _
-                    + vbCrLf + "Your average keystrokes = " + intOverallAverageKeysPerMinute.ToString() _
-                    + vbCrLf + "The difference is " + intPct.ToString() + "%")
-                txtReminder.ForeColor = Color.Green
-                boolNeedToDisplay = True
-            End If
-        End If
-        '**********************,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-        'End checking for need to display
-        '***************************
-        'If boolNeedToDisplay Then
-        '    'This was causing a messagebox to popup with name of active window
-        '    'Dim tl As Integer = SendMessage(hWnd, WM_GETTEXTLENGTH, 0, 0)
-        '    'Dim t As New String(" ", tl)
-        '    'tl = SendMessage(hWnd, WM_GETTEXT, tl + 1, t)
-        '    'MsgBox(t)
-        '    Debug.WriteLine("Timer need to display myhWnd: " & myhWnd.ToString())
-        '    Dim bs As New BindingSource(list, "")
-        '    DataGridView1.DataSource = bs
-        '    bs.ResetBindings(False)
-        '    DataGridView1.AutoResizeColumns()
-        '    sb.Append(vbCrLf + System.DateTime.Now)
-        '    txtReminder.Text = sb.ToString()
-        '    ShowWindow(myhWnd, SW_SHOWNOACTIVATE)
-        '    SetWindowPos(myhWnd.ToInt32(), HWND_TOPMOST, Me.Left, Me.Top, Me.Width, Me.Height,
-        '    SWP_NOACTIVATE)
-        '    intStartShowElapsedSeconds = intElapsedSeconds
-        '    boolNeedToDisplay = False
-        'End If
-
-        ''This will minimize window after it has shown for 5 seconds
-        'If intStartShowElapsedSeconds > 0 Then
-        '    If intElapsedSeconds - intStartShowElapsedSeconds > 5 Then
-        '        Debug.WriteLine("Timer need to minimize myhWnd: " & myhWnd.ToString())
-        '        ShowWindow(myhWnd, SW_SHOWMINNOACTIVE)
-        '        intStartShowElapsedSeconds = 0
-        '    End If
-        'End If
 
 
     End Sub
@@ -384,7 +339,7 @@ Public Class Form1
             boolAltOn = False
             boolControlOn = False
             sbg.Append(")")
-            listActions.Add("myActions.TypeText(""" & sbg.ToString() & """);")
+            listActions.Add("myActions.TypeText(""" & sbg.ToString() & """, 500);")
         End If
         Using writer As StreamWriter =
     New StreamWriter("myfile.txt")
@@ -392,6 +347,8 @@ Public Class Form1
                 writer.WriteLine(line)
             Next
         End Using
+        Dim myActions As New Methods()
+        myActions.Run("C:\Program Files (x86)\Notepad++\notepad++.exe", "myfile.txt")
     End Sub
 
     Private Sub btnPause_Click(sender As Object, e As EventArgs) Handles btnPause.Click
@@ -415,9 +372,9 @@ Public Class Form1
             boolAltOn = False
             boolControlOn = False
             sbg.Append(")")
-            listActions.Add("myActions.TypeText(""" & sbg.ToString() & """);")
+            listActions.Add("myActions.TypeText(""" & sbg.ToString() & """, 500);")
         Else
-            listActions.Add("myActions.TypeText(""" & sbg.ToString() & """);")
+            listActions.Add("myActions.TypeText(""" & sbg.ToString() & """, 500);")
         End If
         sbg.Length = 0
     End Sub
@@ -425,8 +382,32 @@ Public Class Form1
     Private Sub btnClickMouseOnImage_Click(sender As Object, e As EventArgs) Handles btnClickMouseOnImage.Click
 
     End Sub
+
+    Private Sub btnActivateWindowByTitle_Click(sender As Object, e As EventArgs) Handles btnActivateWindowByTitle.Click
+
+    End Sub
+
+    Private Sub btnScriptGenerator_Click(sender As Object, e As EventArgs) Handles btnScriptGenerator.Click
+        Dim myActions As New Methods()
+        boolPause = True
+        boolResume = False
+        If sbg.Length > 0 Then
+            listActions.Add("myActions.TypeText(""" & sbg.ToString() & """, 500);")
+            sbg.Length = 0
+        End If
+        myClip = ""
+        myActions.RunSync("C:\Users\harve\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\bin\Debug\ScriptGenerator.exe", "")
+        myClip = myActions.PutClipboardInEntity()
+        If myClip.Length > 0 Then
+            listActions.Add(myClip)
+            myClip = ""
+        End If
+        boolResume = True
+        boolPause = False
+    End Sub
 End Class
 Module Keyboard
+    Public myClip As String = ""
     <DllImport("kernel32.dll", CharSet:=CharSet.Auto)>
     Public Function GetModuleHandle(ByVal lpModuleName As String) As IntPtr
     End Function
@@ -819,154 +800,180 @@ Module Keyboard
                 If Form1.boolStart And Form1.boolPause = False And Form1.boolStop = False Then
                     If CBool(GetAsyncKeyState(VK_DELETE)) Then
                         If Form1.sbg.Length > 0 Then
-                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """, 500);")
                             Form1.sbg.Length = 0
                         End If
                         Form1.sbg.Append("{DELETE}")
-                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """, 500);")
                         Form1.sbg.Length = 0
                         Form1.boolKeyPressHandled = True
                     End If
 
+                    ' if they put something in the clipboard,
+                    ' we do not know what they highlighted
+                    ' since we are not monitoring the mouse.
+                    ' As a result, we just grab what is in
+                    ' their clipboard, and type it out when
+                    ' they do a paste.
+                    If Not CBool(GetAsyncKeyState(VK_CONTROL)) _
+                        And Form1.boolControlOn = True Then
+                        Form1.sbg.Append(")")
+                        If Form1.sbg.ToString() = "^(c)" Then
+                            Dim myActions As New Methods()
+                            myClip = myActions.PutClipboardInEntity()
+                            Form1.listActions.Add("// This text was put into clipboard: " & myClip)
+                            Form1.sbg.Length = 0
+                        End If
+                        If Form1.sbg.ToString() = "^(v)" Or Form1.sbg.ToString() = "^(cv)" Then
+                            Form1.sbg.Length = 0
+                            If myClip.Length > 0 Then
+                                Form1.listActions.Add("// The text in the next typetext statement was pasted from clipboard")
+                                Form1.listActions.Add("myActions.TypeText(""" & myClip & """, 500);")
+                            End If
+
+                        End If
+                        Form1.boolControlOn = False
+                        Form1.boolKeyPressHandled = True
+                    End If
                     If CBool(GetAsyncKeyState(VK_BACK)) Then
                         If Form1.sbg.Length > 0 Then
-                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """, 500);")
                             Form1.sbg.Length = 0
                         End If
                         Form1.sbg.Append("{BACKSPACE}")
-                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """, 500);")
                         Form1.sbg.Length = 0
                         Form1.boolKeyPressHandled = True
                     End If
 
                     If CBool(GetAsyncKeyState(VK_DOWN)) Then
                         If Form1.sbg.Length > 0 Then
-                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """, 500);")
                             Form1.sbg.Length = 0
                         End If
                         Form1.sbg.Append("{DOWN}")
-                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """, 500);")
                         Form1.sbg.Length = 0
                         Form1.boolKeyPressHandled = True
                     End If
 
                     If CBool(GetAsyncKeyState(VK_UP)) Then
                         If Form1.sbg.Length > 0 Then
-                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """, 500);")
                             Form1.sbg.Length = 0
                         End If
                         Form1.sbg.Append("{UP}")
-                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """, 500);")
                         Form1.sbg.Length = 0
                         Form1.boolKeyPressHandled = True
                     End If
 
                     If CBool(GetAsyncKeyState(VK_RIGHT)) Then
                         If Form1.sbg.Length > 0 Then
-                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """, 500);")
                             Form1.sbg.Length = 0
                         End If
                         Form1.sbg.Append("{RIGHT}")
-                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """, 500);")
                         Form1.sbg.Length = 0
                         Form1.boolKeyPressHandled = True
                     End If
 
                     If CBool(GetAsyncKeyState(VK_LEFT)) Then
                         If Form1.sbg.Length > 0 Then
-                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """, 500);")
                             Form1.sbg.Length = 0
                         End If
                         Form1.sbg.Append("{LEFT}")
-                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """, 500);")
                         Form1.sbg.Length = 0
                         Form1.boolKeyPressHandled = True
                     End If
 
                     If CBool(GetAsyncKeyState(VK_END)) Then
                         If Form1.sbg.Length > 0 Then
-                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """, 500);")
                             Form1.sbg.Length = 0
                         End If
                         Form1.sbg.Append("{END}")
-                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """, 500);")
                         Form1.sbg.Length = 0
                         Form1.boolKeyPressHandled = True
                     End If
 
                     If CBool(GetAsyncKeyState(VK_ESCAPE)) Then
                         If Form1.sbg.Length > 0 Then
-                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """, 500);")
                             Form1.sbg.Length = 0
                         End If
                         Form1.sbg.Append("{ESC}")
-                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """, 500);")
                         Form1.sbg.Length = 0
                         Form1.boolKeyPressHandled = True
                     End If
 
                     If CBool(GetAsyncKeyState(VK_HOME)) Then
                         If Form1.sbg.Length > 0 Then
-                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """, 500);")
                             Form1.sbg.Length = 0
                         End If
                         Form1.sbg.Append("{HOME}")
-                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """, 500);")
                         Form1.sbg.Length = 0
                         Form1.boolKeyPressHandled = True
                     End If
 
                     If CBool(GetAsyncKeyState(VK_INSERT)) Then
                         If Form1.sbg.Length > 0 Then
-                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """, 500);")
                             Form1.sbg.Length = 0
                         End If
                         Form1.sbg.Append("{INSERT}")
-                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """, 500);")
                         Form1.sbg.Length = 0
                         Form1.boolKeyPressHandled = True
                     End If
 
                     If CBool(GetAsyncKeyState(VK_NEXT)) Then
                         If Form1.sbg.Length > 0 Then
-                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """, 500);")
                             Form1.sbg.Length = 0
                         End If
                         Form1.sbg.Append("{PGDN}")
-                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """, 500);")
                         Form1.sbg.Length = 0
                         Form1.boolKeyPressHandled = True
                     End If
 
                     If CBool(GetAsyncKeyState(VK_PRIOR)) Then
                         If Form1.sbg.Length > 0 Then
-                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """, 500);")
                             Form1.sbg.Length = 0
                         End If
                         Form1.sbg.Append("{PGUP}")
-                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """, 500);")
                         Form1.sbg.Length = 0
                         Form1.boolKeyPressHandled = True
                     End If
 
                     If CBool(GetAsyncKeyState(VK_TAB)) Then
                         If Form1.sbg.Length > 0 Then
-                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """, 500);")
                             Form1.sbg.Length = 0
                         End If
                         Form1.sbg.Append("{TAB}")
-                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """, 500);")
                         Form1.sbg.Length = 0
                         Form1.boolKeyPressHandled = True
                     End If
 
                     If CBool(GetAsyncKeyState(VK_RETURN)) Then
                         If Form1.sbg.Length > 0 Then
-                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """, 500);")
                             Form1.sbg.Length = 0
                         End If
-                        Form1.sbg.Append("{RETURN}")
-                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """);")
+                        Form1.sbg.Append("{ENTER}")
+                        Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """, 500);")
                         Form1.sbg.Length = 0
                         Form1.boolKeyPressHandled = True
                     End If
@@ -986,20 +993,29 @@ Module Keyboard
                         'Form1.boolKeyPressHandled = True
                     End If
 
-                    If Not CBool(GetAsyncKeyState(VK_CONTROL)) _
-                        And Form1.boolControlOn = True Then
-                        Form1.sbg.Append(")")
-                        Form1.boolControlOn = False
-                        'Form1.boolKeyPressHandled = True
-                    End If
+                    ' if they put something in the clipboard,
+                    ' we do not know what they highlighted
+                    ' since we are not monitoring the mouse.
+                    ' As a result, we just grab what is in
+                    ' their clipboard, and type it out when
+                    ' they do a paste.
+
 
                     If CBool(GetAsyncKeyState(VK_MENU)) And Not Form1.boolAltOn Then
+                        If Form1.sbg.Length > 0 Then
+                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """, 500);")
+                        End If
+                        Form1.sbg.Length = 0
                         Form1.sbg.Append("%(")
                         Form1.boolAltOn = True
                     End If
 
                     If CBool(GetAsyncKeyState(VK_CONTROL)) _
                         And Not Form1.boolControlOn Then
+                        If Form1.sbg.Length > 0 Then
+                            Form1.listActions.Add("myActions.TypeText(""" & Form1.sbg.ToString() & """, 500);")
+                        End If
+                        Form1.sbg.Length = 0
                         Form1.sbg.Append("^(")
                         Form1.boolControlOn = True
                     End If

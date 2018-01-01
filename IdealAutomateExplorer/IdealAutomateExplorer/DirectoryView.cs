@@ -165,7 +165,7 @@ namespace System.Windows.Forms.Samples
                 }
             } catch (Exception ex) {
 
-                MessageBox.Show(ex.Message);
+               // MessageBox.Show(ex.Message);
             }
 
             // Resume ListChanged events

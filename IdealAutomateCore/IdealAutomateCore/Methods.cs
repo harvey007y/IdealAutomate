@@ -151,7 +151,8 @@ fAltTab);
     static extern uint GetWindowThreadProcessId(IntPtr hWnd, IntPtr ProcessId);
     [DllImport("User32.DLL")]
     private static extern int AttachThreadInput(int CurrentForegroundThread, int MakeThisThreadForegrouond, bool boolAttach);
-    public bool ActivateWindowByTitle(string myTitle) {
+// Category::Window
+        public bool ActivateWindowByTitle(string myTitle) {
 
       //Find the window, using the CORRECT Window Title, for example, Notepad
       int hWnd = FindWindow(null, myTitle);
@@ -180,6 +181,7 @@ fAltTab);
     /// <param name="myTitle"></param>
     /// <param name="myShowOption"></param>
     /// <returns></returns>
+    /// Category::Window
     public bool ActivateWindowByTitle(string myTitle, int myShowOption) {
 
       if (fbDebugMode) {
@@ -202,15 +204,16 @@ fAltTab);
       }
 
     }
-    /// <summary>
-    /// GetWindowTitlesByProcessName allows you to get a list of all the WindowTitles
-    /// for a process name. ProcessNames are called image names in task manager.
-    /// You can find all of the iexplore or devenv and activate each one to see if it 
-    /// is the one you want
-    /// </summary>
-    /// <param name="myProcessName"></param>
-    /// <returns></returns>
-    public List<string> GetWindowTitlesByProcessName(string myProcessName) {
+        /// <summary>
+        /// GetWindowTitlesByProcessName allows you to get a list of all the WindowTitles
+        /// for a process name. ProcessNames are called image names in task manager.
+        /// You can find all of the iexplore or devenv and activate each one to see if it 
+        /// is the one you want
+        /// </summary>
+        /// <param name="myProcessName"></param>
+        /// <returns></returns>
+        /// Category::Window
+        public List<string> GetWindowTitlesByProcessName(string myProcessName) {
       List<string> lstWindowTitles = new List<string>();
       var processes = from proc in System.Diagnostics.Process.GetProcesses() orderby proc.ProcessName ascending select proc;
       foreach (var item in processes) {
@@ -221,7 +224,8 @@ fAltTab);
       return lstWindowTitles;
 
     }
-    public void KillAllProcessesByProcessName(string myProcessName) {
+        /// Category::Processes
+        public void KillAllProcessesByProcessName(string myProcessName) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "KillAllProcessesByProcessName: myProcessName=" + myProcessName);
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "KillAllProcessesByProcessName: myProcessName = " + myProcessName);
@@ -398,31 +402,32 @@ fAltTab);
       // Start the timer
       aTimer.Enabled = true;
     }
-    /// <summary>
-    /// <para>PutAll receives an ImageEntity object and returns</para>
-    /// <para>an integer array of all of x,y coordinates of where the</para>
-    /// <para>image was found</para>
-    /// <para>Images are used to locate a specific area of the screen. The Windows Snipping Tool is very useful for saving image files to your images folder. If you are not familiar with the Windows Snipping Tool, you should google it to learn about it as it is very helpful. There is a trick to taking snapshots of popup windows. The trick involves clicking on the new option in the snipping tool to cause it to make the entire screen go out of focus. Then, you hit the escape key to remove opacity cloud that prevent you from accessing your screen. At this point, you can activate your popup or dropdown window. Next, you press the control key plus the print key to cause the opacity cloud to appear without removing the popup or dropdown window. You can now drag the Windows Snipping Tool around the window to get a snapshot of it without it disappearing. The Image Tabs has these columns:</para>
-    /// <para>1. ImageFile</para>
-    /// <para>The imageFile is the file path where the image resides.</para>
-    /// <para>2. Attempts</para>
-    /// <para>If Attempts is specified, it must be defined as an integer (int). The default value is 1. Sometimes an image will not be found on the first attempt because your computer may be running slowly, and the window may not be fully loaded when the script is looking for it. By specifying an Attempts value of 10, for example, the script will try to find the image up to 10 times before moving on to the next action. In this example, if the image was found on the third attempt, it would not continue looking for the other 7 times since the image was already found.</para>
-    /// <para>3. Occurrence</para>
-    /// <para>If Occurrence is specified, it must be defined  as an integer (int). If you are only interested in locating a specific occurrence of an image, for example - the second occurrence, you can specify that number as the value of the primitive that is specified in this column.</para>
-    /// <para>4. Sleep</para>
-    /// <para>If Sleep is specified, it must be defined as an integer (int). If you are only interested in locating a specific occurrence of an image, for example - the second occurrence, you can specify that number as the value of the primitive that is specified in this column.</para>
-    /// <para>5. RelativeX</para>
-    /// <para>If RelativeX is specified, it must be defined  as an integer (int). The default value for RelativeX is 0. When an image is found, the position of the upper-left corner is returned. You can specify a RelativeX value of pixels to be added to the original X value returned to realign the pixel that you want to click on to the left or to the right.</para>
-    /// <para>6. RelativeY</para>
-    /// <para>If RelativeY is specified, it must be defined as an integer (int). The default value for RelativeY is 0. When an image is found, the position of the upper-left corner is returned. You can specify a RelativeY value of pixels to be added to the original Y value returned to realign the pixel that you want to click on to be higher or lower.</para>
-    /// <para>7. UseGrayScale</para>
-    /// <para>If UseGrayScale is true, it attempts to ignore color when looking for the image. GreyScale is created by add the RGB values for a pixel together and dividing that sum by three so color is still a factor, but it is just not as sensitive.</para>
-    /// <para>8. Tolerance</para>
-    /// <para>The default value for Tolerance is 90. Tolerance specifies the percent of pixels that must match in order for an image to be considered found. When searching for images, the application starts by comparing the least frequent occurrence of a pattern of 10 pixels to every location on the screen in order speed up the process. If there is no match on the least frequent pattern of 10 pixels in the smaller image, it will try to match the second to least most popular pattern of 10 pixels. If there is no match on that second-least frequently occurring pattern, the image will not be found even though there may be more than a 90 percent match between the smaller image and an area on the screen. Sometimes, it helps to try to cut and paste a different image if you are having trouble finding a particular image.</para>
-    /// </summary>
-    /// <param name="myImage">ImageEntity object</param>
-    /// <returns>an integer array of all of x,y coordinates of where the image was found</returns>
-    public int[,] PutAll(ImageEntity myImage) {
+        /// <summary>
+        /// <para>PutAll receives an ImageEntity object and returns</para>
+        /// <para>an integer array of all of x,y coordinates of where the</para>
+        /// <para>image was found</para>
+        /// <para>Images are used to locate a specific area of the screen. The Windows Snipping Tool is very useful for saving image files to your images folder. If you are not familiar with the Windows Snipping Tool, you should google it to learn about it as it is very helpful. There is a trick to taking snapshots of popup windows. The trick involves clicking on the new option in the snipping tool to cause it to make the entire screen go out of focus. Then, you hit the escape key to remove opacity cloud that prevent you from accessing your screen. At this point, you can activate your popup or dropdown window. Next, you press the control key plus the print key to cause the opacity cloud to appear without removing the popup or dropdown window. You can now drag the Windows Snipping Tool around the window to get a snapshot of it without it disappearing. The Image Tabs has these columns:</para>
+        /// <para>1. ImageFile</para>
+        /// <para>The imageFile is the file path where the image resides.</para>
+        /// <para>2. Attempts</para>
+        /// <para>If Attempts is specified, it must be defined as an integer (int). The default value is 1. Sometimes an image will not be found on the first attempt because your computer may be running slowly, and the window may not be fully loaded when the script is looking for it. By specifying an Attempts value of 10, for example, the script will try to find the image up to 10 times before moving on to the next action. In this example, if the image was found on the third attempt, it would not continue looking for the other 7 times since the image was already found.</para>
+        /// <para>3. Occurrence</para>
+        /// <para>If Occurrence is specified, it must be defined  as an integer (int). If you are only interested in locating a specific occurrence of an image, for example - the second occurrence, you can specify that number as the value of the primitive that is specified in this column.</para>
+        /// <para>4. Sleep</para>
+        /// <para>If Sleep is specified, it must be defined as an integer (int). If you are only interested in locating a specific occurrence of an image, for example - the second occurrence, you can specify that number as the value of the primitive that is specified in this column.</para>
+        /// <para>5. RelativeX</para>
+        /// <para>If RelativeX is specified, it must be defined  as an integer (int). The default value for RelativeX is 0. When an image is found, the position of the upper-left corner is returned. You can specify a RelativeX value of pixels to be added to the original X value returned to realign the pixel that you want to click on to the left or to the right.</para>
+        /// <para>6. RelativeY</para>
+        /// <para>If RelativeY is specified, it must be defined as an integer (int). The default value for RelativeY is 0. When an image is found, the position of the upper-left corner is returned. You can specify a RelativeY value of pixels to be added to the original Y value returned to realign the pixel that you want to click on to be higher or lower.</para>
+        /// <para>7. UseGrayScale</para>
+        /// <para>If UseGrayScale is true, it attempts to ignore color when looking for the image. GreyScale is created by add the RGB values for a pixel together and dividing that sum by three so color is still a factor, but it is just not as sensitive.</para>
+        /// <para>8. Tolerance</para>
+        /// <para>The default value for Tolerance is 90. Tolerance specifies the percent of pixels that must match in order for an image to be considered found. When searching for images, the application starts by comparing the least frequent occurrence of a pattern of 10 pixels to every location on the screen in order speed up the process. If there is no match on the least frequent pattern of 10 pixels in the smaller image, it will try to match the second to least most popular pattern of 10 pixels. If there is no match on that second-least frequently occurring pattern, the image will not be found even though there may be more than a 90 percent match between the smaller image and an area on the screen. Sometimes, it helps to try to cut and paste a different image if you are having trouble finding a particular image.</para>
+        /// </summary>
+        /// <param name="myImage">ImageEntity object</param>
+        /// <returns>an integer array of all of x,y coordinates of where the image was found</returns>
+        /// Category::Image
+        public int[,] PutAll(ImageEntity myImage) {
 
       PutAllBegin:
       if (fbDebugMode) {
@@ -660,13 +665,14 @@ fAltTab);
         }
       }
     }
-    /// <summary>
-    /// <para>PutCursorPosition provides a way to save the cursor position in</para>
-    /// <para>an array so you can come back to it later without having to find</para>
-    /// <para>the original image again.</para>
-    /// </summary>
-    /// <returns></returns>
-    public int[,] PutCursorPosition() {
+        /// <summary>
+        /// <para>PutCursorPosition provides a way to save the cursor position in</para>
+        /// <para>an array so you can come back to it later without having to find</para>
+        /// <para>the original image again.</para>
+        /// </summary>
+        /// <returns></returns>
+        /// Category::Cursor
+        public int[,] PutCursorPosition() {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "PutCursorPosition");
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "PutCursorPosition");
@@ -676,13 +682,14 @@ fAltTab);
       myArray[0, 1] = System.Windows.Forms.Cursor.Position.Y;
       return myArray;
     }
-    /// <summary>
-    /// <para>PutCaretPositionInArray provides a way to save the caret position</para>
-    /// <para>in an array so you can come back to it later without having to find </para>
-    /// the original position again.
-    /// </summary>
-    /// <returns></returns>
-    public int[,] PutCaretPositionInArray() {
+        /// <summary>
+        /// <para>PutCaretPositionInArray provides a way to save the caret position</para>
+        /// <para>in an array so you can come back to it later without having to find </para>
+        /// the original position again.
+        /// </summary>
+        /// <returns></returns>
+        /// Category::Mouse
+        public int[,] PutCaretPositionInArray() {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "PutCaretPositionInArray");
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "PutCaretPositionInArray");
@@ -706,30 +713,31 @@ fAltTab);
 
 
     }
-    /// <summary>
-    /// <para>ClickImageIfExists is similar to PutAll, but it left clicks on the </para>
-    /// <para>best match for the image and does not return an array containing the position. </para>
-    /// <para>Images are used to locate a specific area of the screen. The Windows Snipping Tool is very useful for saving image files to your images folder. If you are not familiar with the Windows Snipping Tool, you should google it to learn about it as it is very helpful. There is a trick to taking snapshots of popup windows. The trick involves clicking on the new option in the snipping tool to cause it to make the entire screen go out of focus. Then, you hit the escape key to remove opacity cloud that prevent you from accessing your screen. At this point, you can activate your popup or dropdown window. Next, you press the control key plus the print key to cause the opacity cloud to appear without removing the popup or dropdown window. You can now drag the Windows Snipping Tool around the window to get a snapshot of it without it disappearing. The Image Tabs has these columns:</para>
-    /// <para>1. ImageFile</para>
-    /// <para>The imageFile is the file path where the image resides.</para>
-    /// <para>2. Attempts</para>
-    /// <para>If Attempts is specified, it must be defined as an integer (int). The default value is 1. Sometimes an image will not be found on the first attempt because your computer may be running slowly, and the window may not be fully loaded when the script is looking for it. By specifying an Attempts value of 10, for example, the script will try to find the image up to 10 times before moving on to the next action. In this example, if the image was found on the third attempt, it would not continue looking for the other 7 times since the image was already found.</para>
-    /// <para>3. Occurrence</para>
-    /// <para>If Occurrence is specified, it must be defined  as an integer (int). If you are only interested in locating a specific occurrence of an image, for example - the second occurrence, you can specify that number as the value of the primitive that is specified in this column.</para>
-    /// <para>4. Sleep</para>
-    /// <para>If Sleep is specified, it must be defined as an integer (int). If you are only interested in locating a specific occurrence of an image, for example - the second occurrence, you can specify that number as the value of the primitive that is specified in this column.</para>
-    /// <para>5. RelativeX</para>
-    /// <para>If RelativeX is specified, it must be defined  as an integer (int). The default value for RelativeX is 0. When an image is found, the position of the upper-left corner is returned. You can specify a RelativeX value of pixels to be added to the original X value returned to realign the pixel that you want to click on to the left or to the right.</para>
-    /// <para>6. RelativeY</para>
-    /// <para>If RelativeY is specified, it must be defined as an integer (int). The default value for RelativeY is 0. When an image is found, the position of the upper-left corner is returned. You can specify a RelativeY value of pixels to be added to the original Y value returned to realign the pixel that you want to click on to be higher or lower.</para>
-    /// <para>7. UseGrayScale</para>
-    /// <para>If UseGrayScale is true, it attempts to ignore color when looking for the image. GreyScale is created by add the RGB values for a pixel together and dividing that sum by three so color is still a factor, but it is just not as sensitive.</para>
-    /// <para>8. Tolerance</para>
-    /// <para>The default value for Tolerance is 90. Tolerance specifies the percent of pixels that must match in order for an image to be considered found. When searching for images, the application starts by comparing the least frequent occurrence of a pattern of 10 pixels to every location on the screen in order speed up the process. If there is no match on the least frequent pattern of 10 pixels in the smaller image, it will try to match the second to least most popular pattern of 10 pixels. If there is no match on that second-least frequently occurring pattern, the image will not be found even though there may be more than a 90 percent match between the smaller image and an area on the screen. Sometimes, it helps to try to cut and paste a different image if you are having trouble finding a particular image.</para>
+        /// <summary>
+        /// <para>ClickImageIfExists is similar to PutAll, but it left clicks on the </para>
+        /// <para>best match for the image and does not return an array containing the position. </para>
+        /// <para>Images are used to locate a specific area of the screen. The Windows Snipping Tool is very useful for saving image files to your images folder. If you are not familiar with the Windows Snipping Tool, you should google it to learn about it as it is very helpful. There is a trick to taking snapshots of popup windows. The trick involves clicking on the new option in the snipping tool to cause it to make the entire screen go out of focus. Then, you hit the escape key to remove opacity cloud that prevent you from accessing your screen. At this point, you can activate your popup or dropdown window. Next, you press the control key plus the print key to cause the opacity cloud to appear without removing the popup or dropdown window. You can now drag the Windows Snipping Tool around the window to get a snapshot of it without it disappearing. The Image Tabs has these columns:</para>
+        /// <para>1. ImageFile</para>
+        /// <para>The imageFile is the file path where the image resides.</para>
+        /// <para>2. Attempts</para>
+        /// <para>If Attempts is specified, it must be defined as an integer (int). The default value is 1. Sometimes an image will not be found on the first attempt because your computer may be running slowly, and the window may not be fully loaded when the script is looking for it. By specifying an Attempts value of 10, for example, the script will try to find the image up to 10 times before moving on to the next action. In this example, if the image was found on the third attempt, it would not continue looking for the other 7 times since the image was already found.</para>
+        /// <para>3. Occurrence</para>
+        /// <para>If Occurrence is specified, it must be defined  as an integer (int). If you are only interested in locating a specific occurrence of an image, for example - the second occurrence, you can specify that number as the value of the primitive that is specified in this column.</para>
+        /// <para>4. Sleep</para>
+        /// <para>If Sleep is specified, it must be defined as an integer (int). If you are only interested in locating a specific occurrence of an image, for example - the second occurrence, you can specify that number as the value of the primitive that is specified in this column.</para>
+        /// <para>5. RelativeX</para>
+        /// <para>If RelativeX is specified, it must be defined  as an integer (int). The default value for RelativeX is 0. When an image is found, the position of the upper-left corner is returned. You can specify a RelativeX value of pixels to be added to the original X value returned to realign the pixel that you want to click on to the left or to the right.</para>
+        /// <para>6. RelativeY</para>
+        /// <para>If RelativeY is specified, it must be defined as an integer (int). The default value for RelativeY is 0. When an image is found, the position of the upper-left corner is returned. You can specify a RelativeY value of pixels to be added to the original Y value returned to realign the pixel that you want to click on to be higher or lower.</para>
+        /// <para>7. UseGrayScale</para>
+        /// <para>If UseGrayScale is true, it attempts to ignore color when looking for the image. GreyScale is created by add the RGB values for a pixel together and dividing that sum by three so color is still a factor, but it is just not as sensitive.</para>
+        /// <para>8. Tolerance</para>
+        /// <para>The default value for Tolerance is 90. Tolerance specifies the percent of pixels that must match in order for an image to be considered found. When searching for images, the application starts by comparing the least frequent occurrence of a pattern of 10 pixels to every location on the screen in order speed up the process. If there is no match on the least frequent pattern of 10 pixels in the smaller image, it will try to match the second to least most popular pattern of 10 pixels. If there is no match on that second-least frequently occurring pattern, the image will not be found even though there may be more than a 90 percent match between the smaller image and an area on the screen. Sometimes, it helps to try to cut and paste a different image if you are having trouble finding a particular image.</para>
 
-    /// </summary>
-    /// <param name="myImage"></param>
-    public void ClickImageIfExists(ImageEntity myImage) {
+        /// </summary>
+        /// <param name="myImage"></param>
+        /// Category::Image
+        public void ClickImageIfExists(ImageEntity myImage) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "ClickImageIfExists:");
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "ClickImageIfExists:");
@@ -775,11 +783,12 @@ fAltTab);
         //  boolUseGrayScaleDB = false; // !boolUseGrayScaleDB;
       }
     }
-    /// <summary>
-    /// LeftClick allows you to left-click on the X and Y coordinates of an int array passed into the method.
-    /// </summary>
-    /// <param name="myArray">int array containing X and Y coordinates of position on screen to click</param>
-    public void LeftClick(int[,] myArray) {
+        /// <summary>
+        /// LeftClick allows you to left-click on the X and Y coordinates of an int array passed into the method.
+        /// </summary>
+        /// <param name="myArray">int array containing X and Y coordinates of position on screen to click</param>
+        /// Category::Mouse
+        public void LeftClick(int[,] myArray) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "LeftClick:");
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "LeftClick:");
@@ -803,12 +812,12 @@ fAltTab);
       UInt32 myY1 = Convert.ToUInt32(RelY);
       Position_Cursor.DoMouseClick(myX1, myY1);
     }
-    /// <summary>
-    /// ShiftClick allows you to shift-click on the X and Y coordinates of an int array passed into the method.
-    /// </summary>
-    /// <param name="myArray">int array containing X and Y coordinates of position on screen to click</param>
-
-    public void ShiftClick(int[,] myArray) {
+        /// <summary>
+        /// ShiftClick allows you to shift-click on the X and Y coordinates of an int array passed into the method.
+        /// </summary>
+        /// <param name="myArray">int array containing X and Y coordinates of position on screen to click</param>
+        /// Category::Mouse
+        public void ShiftClick(int[,] myArray) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "ShiftClick:");
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "ShiftClick:");
@@ -832,12 +841,12 @@ fAltTab);
       UInt32 myY1 = Convert.ToUInt32(RelY);
       Position_Cursor.DoMouseShiftClick(myX1, myY1);
     }
-    /// <summary>
-    /// RightClick allows you to right-click on the X and Y coordinates of an int array passed into the method.
-    /// </summary>
-    /// <param name="myArray">int array containing X and Y coordinates of position on screen to click</param>
-
-    public void RightClick(int[,] myArray) {
+        /// <summary>
+        /// RightClick allows you to right-click on the X and Y coordinates of an int array passed into the method.
+        /// </summary>
+        /// <param name="myArray">int array containing X and Y coordinates of position on screen to click</param>
+        /// Category::Mouse
+        public void RightClick(int[,] myArray) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "RightClick:");
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "RightClick:");
@@ -861,12 +870,12 @@ fAltTab);
       UInt32 myY1 = Convert.ToUInt32(RelY);
       Position_Cursor.DoMouseRightClick(myX1, myY1);
     }
-    /// <summary>
-    /// PositionCursor allows you to move the cursor to the X and Y coordinates of an int array passed into the method.
-    /// </summary>
-    /// <param name="myArray">int array containing X and Y coordinates of position on screen to click</param>
-
-    public void PositionCursor(int[,] myArray) {
+        /// <summary>
+        /// PositionCursor allows you to move the cursor to the X and Y coordinates of an int array passed into the method.
+        /// </summary>
+        /// <param name="myArray">int array containing X and Y coordinates of position on screen to click</param>
+        /// Category::Cursor
+        public void PositionCursor(int[,] myArray) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "PositionCursor:");
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "PositionCursor:");
@@ -885,11 +894,12 @@ fAltTab);
       }
       Position_Cursor.MoveMouse(myArray[0, 0], myArray[0, 1]);
     }
-    /// <summary>
-    /// PutClipboardInEntity returns a string that contains the text in the clipboard.
-    /// </summary>
-    /// <returns>string that contains the text in the clipboard</returns>
-    public string PutClipboardInEntity() {
+        /// <summary>
+        /// PutClipboardInEntity returns a string that contains the text in the clipboard.
+        /// </summary>
+        /// <returns>string that contains the text in the clipboard</returns>
+        /// Category::Clipboard
+        public string PutClipboardInEntity() {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "PutClipboardInEntity: ");
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "PutClipboardInEntity: ");
@@ -978,7 +988,7 @@ fAltTab);
           //thread.Start();
           //thread.Join();
         } catch (Exception ex1) {
-          MessageBox.Show(ex1.Message);
+          MessageBox.Show(ex1.Message + "Line 991 in Methods");
         }
       }
 
@@ -987,11 +997,12 @@ fAltTab);
 
       return myEntity;
     }
-    /// <summary>
-    /// PutWindowTitleInEntity returns a string that contains the title of the Active Window
-    /// </summary>
-    /// <returns>string that contains the title of the Active Window</returns>
-    public string PutWindowTitleInEntity() {
+        /// <summary>
+        /// PutWindowTitleInEntity returns a string that contains the title of the Active Window
+        /// </summary>
+        /// <returns>string that contains the title of the Active Window</returns>
+        /// Category::Window
+        public string PutWindowTitleInEntity() {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "PutWindowTitleInEntity");
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "PutWindowTitleInEntity");
@@ -1006,11 +1017,12 @@ fAltTab);
       }
       return myEntity;
     }
-    /// <summary>
-    /// PutInternetExplorerTabTitleInEntity returns a string that contains the Title for the active tab in internet explorer
-    /// </summary>
-    /// <returns>string that contains the Title for the active tab in internet explorer</returns>
-    public string PutInternetExplorerTabTitleInEntity() {
+        /// <summary>
+        /// PutInternetExplorerTabTitleInEntity returns a string that contains the Title for the active tab in internet explorer
+        /// </summary>
+        /// <returns>string that contains the Title for the active tab in internet explorer</returns>
+        /// Category::Internet Explorer
+        public string PutInternetExplorerTabTitleInEntity() {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "PutInternetExplorerTabTitleInEntity");
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "PutInternetExplorerTabTitleInEntity");
@@ -1026,12 +1038,12 @@ fAltTab);
       return strPageTitle;
 
     }
-    /// <summary>
-    /// PutInternetExplorerTabTitleInEntity returns a string that contains the url in the address bar for the active tab in internet explorer
-    /// </summary>
-    /// <returns>string that contains the url for the address bar for the active tab in internet explorer</returns>
-
-    public string PutInternetExplorerTabURLContainingStringInEntity(string myEntity) {
+        /// <summary>
+        /// PutInternetExplorerTabTitleInEntity returns a string that contains the url in the address bar for the active tab in internet explorer
+        /// </summary>
+        /// <returns>string that contains the url for the address bar for the active tab in internet explorer</returns>
+        /// Category::Internet Explorer
+        public string PutInternetExplorerTabURLContainingStringInEntity(string myEntity) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "PutInternetExplorerTabURLContainingStringInEntity: myEntity=" + myEntity);
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "PutInternetExplorerTabURLContainingStringInEntity: myEntity=" + myEntity);
@@ -1087,12 +1099,12 @@ fAltTab);
       return strCurrentTabURL;
 
     }
-    /// <summary>
-    /// PutEntityInClipboard takes the input parameter string and puts it in the clipboard
-    /// </summary>
-    /// <param name="myEntity">string that you want to put into the clipboard</param>
-
-    public void PutEntityInClipboard(string myEntity) {
+        /// <summary>
+        /// PutEntityInClipboard takes the input parameter string and puts it in the clipboard
+        /// </summary>
+        /// <param name="myEntity">string that you want to put into the clipboard</param>
+        /// Category::Clipboard
+        public void PutEntityInClipboard(string myEntity) {
       if (fbDebugMode) {
 
         Console.WriteLine("PutEntityInClipboard: myEntity=" + myEntity);
@@ -1128,24 +1140,25 @@ fAltTab);
         MessageBox.Show("Here is an exception thrown in PutEntityInClipboard method in IdealAutomateCore for myEntity " + myEntity + ": " + ex.Message);
       }
     }
-    /// <summary>
-    /// <para>TypeText - The visual basic SendKeys function is used to mimic </para>
-    /// <para>pressing special keys (like the enter or alt keys). This means you </para>
-    /// <para>need to use the Shortcut Keys help file in the IdealAutomate application </para>
-    /// <para>or google in order to learn what characters can be used to represent</para>
-    /// <para>special keys. For example, the ^ character is used to represent the </para>
-    /// <para>control key and here is how you indicate the enter key is pressed: </para>
-    /// <para>{ENTER}. You will also need to learn how to "escape" special characters</para>
-    /// <para>(like the bracket character). If you are trying to type a lot of special</para>
-    /// <para>characters, it may be easier to create a string primitive with the </para>
-    /// <para>text you want to type and use the PutEntityInClipboard verb to copy </para>
-    /// <para>the string into the clipboard. After the string is in the clipboard,</para>
-    /// <para>you can use the TypeText verb with control v to paste what is in the</para>
-    /// clipboard to where you want it.
-    /// </summary>
-    /// <param name="myEntity">string representing the keys you want to press</param>
-    /// <param name="intSleep">integer representing the number of milliseconds to wait before sending the text</param>
-    public void TypeText(string myEntity, int intSleep) {
+        /// <summary>
+        /// <para>TypeText - The visual basic SendKeys function is used to mimic </para>
+        /// <para>pressing special keys (like the enter or alt keys). This means you </para>
+        /// <para>need to use the Shortcut Keys help file in the IdealAutomate application </para>
+        /// <para>or google in order to learn what characters can be used to represent</para>
+        /// <para>special keys. For example, the ^ character is used to represent the </para>
+        /// <para>control key and here is how you indicate the enter key is pressed: </para>
+        /// <para>{ENTER}. You will also need to learn how to "escape" special characters</para>
+        /// <para>(like the bracket character). If you are trying to type a lot of special</para>
+        /// <para>characters, it may be easier to create a string primitive with the </para>
+        /// <para>text you want to type and use the PutEntityInClipboard verb to copy </para>
+        /// <para>the string into the clipboard. After the string is in the clipboard,</para>
+        /// <para>you can use the TypeText verb with control v to paste what is in the</para>
+        /// clipboard to where you want it.
+        /// </summary>
+        /// <param name="myEntity">string representing the keys you want to press</param>
+        /// <param name="intSleep">integer representing the number of milliseconds to wait before sending the text</param>
+        /// Category::Keyboard
+        public void TypeText(string myEntity, int intSleep) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "TypeText: myEntity=" + myEntity + " intSleep=" + intSleep.ToString());
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "TypeText: myEntity=" + myEntity + " intSleep=" + intSleep.ToString());
@@ -1297,12 +1310,13 @@ fAltTab);
         System.Windows.Forms.SendKeys.SendWait(myEntity);
       }
     }
-    /// <summary>
-    /// <para>CloseApplicationAltFx accepts an input integer to indicate how long</para>
-    /// <para>to wait before sending text Alt(F)x to close an application</para>
-    /// </summary>
-    /// <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
-    public void CloseApplicationAltFx(int intSleep) {
+        /// <summary>
+        /// <para>CloseApplicationAltFx accepts an input integer to indicate how long</para>
+        /// <para>to wait before sending text Alt(F)x to close an application</para>
+        /// </summary>
+        /// <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
+        /// Category::Keyboard
+        public void CloseApplicationAltFx(int intSleep) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "CloseInternetExplorer: intSleep=" + intSleep.ToString());
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "CloseInternetExplorer: intSleep=" + intSleep.ToString());
@@ -1315,13 +1329,13 @@ fAltTab);
       System.Threading.Thread.Sleep(200);
       InputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_X);
     }
-    /// <summary>
-    /// <para>CloseApplicationAltFc accepts an input integer to indicate how many milliseconds</para>
-    /// <para>to wait before sending text Alt(F)c to close an application</para>
-    /// </summary>
-    /// <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
-
-    public void CloseApplicationAltFc(int intSleep) {
+        /// <summary>
+        /// <para>CloseApplicationAltFc accepts an input integer to indicate how many milliseconds</para>
+        /// <para>to wait before sending text Alt(F)c to close an application</para>
+        /// </summary>
+        /// <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
+        /// Category::Keyboard
+        public void CloseApplicationAltFc(int intSleep) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "CloseInternetExplorer: intSleep=" + intSleep.ToString());
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "CloseInternetExplorer: intSleep=" + intSleep.ToString());
@@ -1334,13 +1348,14 @@ fAltTab);
       System.Threading.Thread.Sleep(200);
       InputSimulator.Keyboard.KeyPress(VirtualKeyCode.VK_C);
     }
-    /// <summary>
-    /// <para>SelectAllCopy accepts an input integer to indicate how many milliseconds</para>
-    /// <para>to wait before sending text Ctrl(a) and Ctrl(c). This will put</para>
-    /// <para>all of the input into the clipboard</para>
-    /// </summary>
-    /// <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
-    public void SelectAllCopy(int intSleep) {
+        /// <summary>
+        /// <para>SelectAllCopy accepts an input integer to indicate how many milliseconds</para>
+        /// <para>to wait before sending text Ctrl(a) and Ctrl(c). This will put</para>
+        /// <para>all of the input into the clipboard</para>
+        /// </summary>
+        /// <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
+        /// Category::Clipboard
+        public void SelectAllCopy(int intSleep) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "SelectAllCopy: intSleep=" + intSleep.ToString());
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "SelectAllCopy: intSleep=" + intSleep.ToString());
@@ -1353,15 +1368,15 @@ fAltTab);
       System.Threading.Thread.Sleep(200);
       InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_C);
     }
-    /// <summary>
-    /// <para>SelectAllCopyIntoEntity accepts an input integer to indicate how many milliseconds</para>
-    /// <para>to wait before sending text Ctrl(a) and Ctrl(c). This will put</para>
-    /// <para>all of the input into the clipboard and then it will return</para>
-    /// <para>what is in the clipboard as a string</para>
-    /// </summary>
-    /// <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
-
-    public string SelectAllCopyIntoEntity(int intSleep) {
+        /// <summary>
+        /// <para>SelectAllCopyIntoEntity accepts an input integer to indicate how many milliseconds</para>
+        /// <para>to wait before sending text Ctrl(a) and Ctrl(c). This will put</para>
+        /// <para>all of the input into the clipboard and then it will return</para>
+        /// <para>what is in the clipboard as a string</para>
+        /// </summary>
+        /// <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
+        /// Category::Clipboard
+        public string SelectAllCopyIntoEntity(int intSleep) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "SelectAllCopy: intSleep=" + intSleep.ToString());
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "SelectAllCopy: intSleep=" + intSleep.ToString());
@@ -1379,14 +1394,14 @@ fAltTab);
       InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_C);
       return PutClipboardInEntity();
     }
-    /// <summary>
-    /// <para>SelectAllPaste accepts an input integer to indicate how many milliseconds</para>
-    /// <para>to wait before sending text Ctrl(a) and Ctrl(v). This will select</para>
-    /// <para>all of the input on the screen and replace it with what is in the clipboard</para>
-    /// </summary>
-    /// <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
-
-    public void SelectAllPaste(int intSleep) {
+        /// <summary>
+        /// <para>SelectAllPaste accepts an input integer to indicate how many milliseconds</para>
+        /// <para>to wait before sending text Ctrl(a) and Ctrl(v). This will select</para>
+        /// <para>all of the input on the screen and replace it with what is in the clipboard</para>
+        /// </summary>
+        /// <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
+        /// Category::Clipboard
+        public void SelectAllPaste(int intSleep) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "SelectAllPaste: intSleep=" + intSleep.ToString());
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "SelectAllPaste: intSleep=" + intSleep.ToString());
@@ -1402,16 +1417,16 @@ fAltTab);
       }
       InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_V);
     }
-    /// <summary>
-    /// <para>SelectAllPasteFromEntity accepts a string to paste and an </para>
-    /// <para>input integer to indicate how many milliseconds</para>
-    /// <para>to wait before sending text Ctrl(a) and Ctrl(v). This will select</para>
-    /// <para>all of the input on the screen and replace it with what is in input string</para>
-    /// </summary>
-    /// <param name="myEntity">string that you want to paste</param>
-    /// <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
-
-    public void SelectAllPasteFromEntity(string myEntity, int intSleep) {
+        /// <summary>
+        /// <para>SelectAllPasteFromEntity accepts a string to paste and an </para>
+        /// <para>input integer to indicate how many milliseconds</para>
+        /// <para>to wait before sending text Ctrl(a) and Ctrl(v). This will select</para>
+        /// <para>all of the input on the screen and replace it with what is in input string</para>
+        /// </summary>
+        /// <param name="myEntity">string that you want to paste</param>
+        /// <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
+        /// Category::Clipboard
+        public void SelectAllPasteFromEntity(string myEntity, int intSleep) {
       PutEntityInClipboard(myEntity);
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "SelectAllPaste: intSleep=" + intSleep.ToString());
@@ -1425,13 +1440,14 @@ fAltTab);
       System.Threading.Thread.Sleep(200);
       InputSimulator.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_V);
     }
-    /// <summary>
-    /// <para>SelectAllDelete accepts an input integer to indicate how many milliseconds</para>
-    /// <para>to wait before sending text Ctrl(a) and {DELETE}. This will delete</para>
-    /// <para>what is in the input field on the screen</para>    
-    /// </summary>
-    /// <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
-    public void SelectAllDelete(int intSleep) {
+        /// <summary>
+        /// <para>SelectAllDelete accepts an input integer to indicate how many milliseconds</para>
+        /// <para>to wait before sending text Ctrl(a) and {DELETE}. This will delete</para>
+        /// <para>what is in the input field on the screen</para>    
+        /// </summary>
+        /// <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
+        /// Category::Keyboard
+        public void SelectAllDelete(int intSleep) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "SelectAllDelete: intSleep=" + intSleep.ToString());
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "SelectAllDelete: intSleep=" + intSleep.ToString());
@@ -1444,23 +1460,24 @@ fAltTab);
       System.Threading.Thread.Sleep(200);
       InputSimulator.Keyboard.KeyPress(VirtualKeyCode.DELETE);
     }
-    /// <summary>
-    /// <para>WindowMultipleControls takes a list of ControlEntity objects</para>
-    /// <para>and positions them in a window. When the user presses the </para>
-    /// <para>okay button on the screen, the list of ControlEntity objects</para>
-    /// <para>are updated with the values the user entered.  This provides</para>
-    /// <para>an easy way to receive multiple values from the user</para>
-    /// <para>A string is returned with the name of the button that was pressed</para>
-    /// <para>Here is an example of setting background color for a button:</para>
-    /// <para>myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);</para>
-    /// </summary>
-    /// <param name="myListControlEntity">list of ControlEntity objects</param>
-    /// <param name="intWindowHeight">integer indicating height of window</param>
-    /// <param name="intWindowWidth">integer indicating width of window</param>
-    /// <param name="intWindowTop">integer indicating number of pixels from top of screen to display window</param>
-    /// <param name="intWindowLeft">integer indicating number of pixels from left side of screen to display window</param>
-    /// <returns>System.Windows.Forms.DialogResult to indicate if okay button was pressed</returns>
-    public string WindowMultipleControls(ref List<ControlEntity> myListControlEntity, int intWindowHeight, int intWindowWidth, int intWindowTop, int intWindowLeft) {
+        /// <summary>
+        /// <para>WindowMultipleControls takes a list of ControlEntity objects</para>
+        /// <para>and positions them in a window. When the user presses the </para>
+        /// <para>okay button on the screen, the list of ControlEntity objects</para>
+        /// <para>are updated with the values the user entered.  This provides</para>
+        /// <para>an easy way to receive multiple values from the user</para>
+        /// <para>A string is returned with the name of the button that was pressed</para>
+        /// <para>Here is an example of setting background color for a button:</para>
+        /// <para>myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);</para>
+        /// </summary>
+        /// <param name="myListControlEntity">list of ControlEntity objects</param>
+        /// <param name="intWindowHeight">integer indicating height of window</param>
+        /// <param name="intWindowWidth">integer indicating width of window</param>
+        /// <param name="intWindowTop">integer indicating number of pixels from top of screen to display window</param>
+        /// <param name="intWindowLeft">integer indicating number of pixels from left side of screen to display window</param>
+        /// <returns>System.Windows.Forms.DialogResult to indicate if okay button was pressed</returns>
+        /// Category::Window
+        public string WindowMultipleControls(ref List<ControlEntity> myListControlEntity, int intWindowHeight, int intWindowWidth, int intWindowTop, int intWindowLeft) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "WindowMultipleControls");
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "WindowMultipleControls");
@@ -1476,23 +1493,24 @@ fAltTab);
 
 
     }
-    /// <summary>
-    /// <para>WindowMultipleControls takes a list of ControlEntity objects</para>
-    /// <para>and positions them in a window. When the user presses the </para>
-    /// <para>okay button on the screen, the list of ControlEntity objects</para>
-    /// <para>are updated with the values the user entered.  This provides</para>
-    /// <para>an easy way to receive multiple values from the user</para>
-    /// <para>A string is returned with the name of the button that was pressed</para>
-    /// <para>Here is an example of setting background color for a button:</para>
-    /// <para>myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);</para>
-    /// </summary>
-    /// <param name="myListControlEntity">list of ControlEntity objects</param>
-    /// <param name="intWindowHeight">integer indicating height of window</param>
-    /// <param name="intWindowWidth">integer indicating width of window</param>
-    /// <param name="intWindowTop">integer indicating number of pixels from top of screen to display window</param>
-    /// <param name="intWindowLeft">integer indicating number of pixels from left side of screen to display window</param>
-    /// <returns>System.Windows.Forms.DialogResult to indicate if okay button was pressed</returns>
-    public string WindowMultipleControlsMinimized(ref List<ControlEntity> myListControlEntity, int intWindowHeight, int intWindowWidth, int intWindowTop, int intWindowLeft) {
+        /// <summary>
+        /// <para>WindowMultipleControls takes a list of ControlEntity objects</para>
+        /// <para>and positions them in a window. When the user presses the </para>
+        /// <para>okay button on the screen, the list of ControlEntity objects</para>
+        /// <para>are updated with the values the user entered.  This provides</para>
+        /// <para>an easy way to receive multiple values from the user</para>
+        /// <para>A string is returned with the name of the button that was pressed</para>
+        /// <para>Here is an example of setting background color for a button:</para>
+        /// <para>myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);</para>
+        /// </summary>
+        /// <param name="myListControlEntity">list of ControlEntity objects</param>
+        /// <param name="intWindowHeight">integer indicating height of window</param>
+        /// <param name="intWindowWidth">integer indicating width of window</param>
+        /// <param name="intWindowTop">integer indicating number of pixels from top of screen to display window</param>
+        /// <param name="intWindowLeft">integer indicating number of pixels from left side of screen to display window</param>
+        /// <returns>System.Windows.Forms.DialogResult to indicate if okay button was pressed</returns>
+        /// Category::Window
+        public string WindowMultipleControlsMinimized(ref List<ControlEntity> myListControlEntity, int intWindowHeight, int intWindowWidth, int intWindowTop, int intWindowLeft) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "WindowMultipleControls");
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "WindowMultipleControls");
@@ -1509,27 +1527,28 @@ fAltTab);
 
 
     }
-    /// <summary>
-    /// <para>WindowComboBox receives an IEnumerable of objects (ComboBoxPair) </para>
-    /// <para>and a string for the label for the combobox. It returns the</para>
-    /// <para>selected ComboBoxPair</para>
-    /// </summary>
-    /// <param name="myEntity">IEnumerable of objects</param>
-    /// <param name="myEntity2">String for the label for the combobox</param>
-    /// <returns>Selected ComboBoxPair</returns>
+        /// <summary>
+        /// <para>WindowComboBox receives an IEnumerable of objects (ComboBoxPair) </para>
+        /// <para>and a string for the label for the combobox. It returns the</para>
+        /// <para>selected ComboBoxPair</para>
+        /// </summary>
+        /// <param name="myEntity">IEnumerable of objects</param>
+        /// <param name="myEntity2">String for the label for the combobox</param>
+        /// <returns>Selected ComboBoxPair</returns>
 
 
-    /// <summary>
-    /// <para>WindowShape allows you to display info to the user and to position that </para>
-    /// <para>the window on the screen</para>
-    /// </summary>
-    /// <param name="myShape">string "Box" or "Arrow"</param>
-    /// <param name="myOrientation">string "Left","Right","Up","Down",""</param>
-    /// <param name="myTitle">string title for window</param>
-    /// <param name="myContent">string content for window</param>
-    /// <param name="intTop">integer indicating number of pixels from top of screen to display window</param>
-    /// <param name="intLeft">integer indicating number of pixels from left of screen to display window</param>
-    public void WindowShape(string myShape, string myOrientation, string myTitle, string myContent, int intTop, int intLeft) {
+        /// <summary>
+        /// <para>WindowShape allows you to display info to the user and to position that </para>
+        /// <para>the window on the screen</para>
+        /// </summary>
+        /// <param name="myShape">string "Box" or "Arrow"</param>
+        /// <param name="myOrientation">string "Left","Right","Up","Down",""</param>
+        /// <param name="myTitle">string title for window</param>
+        /// <param name="myContent">string content for window</param>
+        /// <param name="intTop">integer indicating number of pixels from top of screen to display window</param>
+        /// <param name="intLeft">integer indicating number of pixels from left of screen to display window</param>
+        /// Category::Window
+        public void WindowShape(string myShape, string myOrientation, string myTitle, string myContent, int intTop, int intLeft) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "WindowShape: myEntity=" + myTitle);
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "WindowShape: myEntity=" + myTitle);
@@ -1541,11 +1560,12 @@ fAltTab);
       dlg.ShowDialog();
       return;
     }
-    /// <summary>
-    /// MessageBoxShow receives an input string and displays it in a messagebox
-    /// </summary>
-    /// <param name="myEntity">string that you want to display in messagebox</param>
-    public void MessageBoxShow(string myEntity) {
+        /// <summary>
+        /// MessageBoxShow receives an input string and displays it in a messagebox
+        /// </summary>
+        /// <param name="myEntity">string that you want to display in messagebox</param>
+        /// Category::MessageBox
+        public void MessageBoxShow(string myEntity) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "MessageBoxShow: myEntity=" + myEntity);
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "MessageBoxShow: myEntity=" + myEntity);
@@ -1553,13 +1573,14 @@ fAltTab);
       System.Windows.Forms.MessageBox.Show(myEntity, "Header", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.None,
     System.Windows.Forms.MessageBoxDefaultButton.Button1, (System.Windows.Forms.MessageBoxOptions)0x40000);  // MB_TOPMOST
     }
-    /// <summary>
-    /// MessageBoxShowWithYesNo receives an input string and displays it in a messagebox with Yes and No Buttons
-    /// </summary>
-    /// <param name="myEntity">string that you want to display in messagebox</param>
+        /// <summary>
+        /// MessageBoxShowWithYesNo receives an input string and displays it in a messagebox with Yes and No Buttons
+        /// </summary>
+        /// <param name="myEntity">string that you want to display in messagebox</param>
 
-    /// <returns>System.Windows.Forms.DialogResult</returns>
-    public System.Windows.Forms.DialogResult MessageBoxShowWithYesNo(string myEntity) {
+        /// <returns>System.Windows.Forms.DialogResult</returns>
+        /// Category::MessageBox
+        public System.Windows.Forms.DialogResult MessageBoxShowWithYesNo(string myEntity) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "MessageBoxShow: myEntity=" + myEntity);
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "MessageBoxShow: myEntity=" + myEntity);
@@ -1569,15 +1590,16 @@ fAltTab);
     System.Windows.Forms.MessageBoxDefaultButton.Button1, (System.Windows.Forms.MessageBoxOptions)0x40000);  // MB_TOPMOST
       return _dialogResult;
     }
-    /// <summary>
-    /// <para>Run receives two input strings. The first is the path to the executable.</para>
-    /// <para>The second is optional and it is the content you want to open with the executable.</para>
-    /// <para>Run starts the executable as a thread and continues to the next statement</para>
-    /// <para>without waiting the the thread to complete.</para>
-    /// </summary>
-    /// <param name="myEntityForExecutable">string for the path of the executable</param>
-    /// <param name="myEntityForContent">string for the content for the executable to open</param>
-    public void Run(string myEntityForExecutable, string myEntityForContent) {
+        /// <summary>
+        /// <para>Run receives two input strings. The first is the path to the executable.</para>
+        /// <para>The second is optional and it is the content you want to open with the executable.</para>
+        /// <para>Run starts the executable as a thread and continues to the next statement</para>
+        /// <para>without waiting the the thread to complete.</para>
+        /// </summary>
+        /// <param name="myEntityForExecutable">string for the path of the executable</param>
+        /// <param name="myEntityForContent">string for the content for the executable to open</param>
+        /// Category::Run
+        public void Run(string myEntityForExecutable, string myEntityForContent) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "Run: myEntityForExecutable=" + myEntityForExecutable + " myEntityForContent=" + myEntityForContent);
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "Run: myEntityForExecutable=" + myEntityForExecutable + " myEntityForContent=" + myEntityForContent);
@@ -1694,7 +1716,8 @@ fAltTab);
         }
       }
     }
-    public int RunProcessAsAdmin(string exeName, string parameters) {
+        /// Category::Process
+        public int RunProcessAsAdmin(string exeName, string parameters) {
       try {
         System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
         startInfo.UseShellExecute = true;
@@ -1709,8 +1732,8 @@ fAltTab);
         process.WaitForExit();
         return process.ExitCode;
       } catch (Win32Exception ex) {
-        MessageBox.Show(ex.ToString());
-        switch (ex.NativeErrorCode) {
+        MessageBox.Show(ex.ToString() + "Line 1735 in Methods");
+                switch (ex.NativeErrorCode) {
           case 1223:
             return ex.NativeErrorCode;
           default:
@@ -1718,20 +1741,20 @@ fAltTab);
         }
 
       } catch (Exception ex) {
-        MessageBox.Show(ex.ToString());
-        return 7777;
+        MessageBox.Show(ex.ToString() + "Line 1744 in Methods");
+                return 7777;
       }
     }
-    /// <summary>
-    /// <para>RunSync receives two input strings. The first is the path to the executable.</para>
-    /// <para>The second is optional and it is the content you want to open with the executable.</para>
-    /// <para>Run starts the executable as a thread and continues to the next statement</para>
-    /// <para>AFTER the thread completes</para>
-    /// </summary>
-    /// <param name="myEntityForExecutable">string for the path of the executable</param>
-    /// <param name="myEntityForContent">string for the content for the executable to open</param>
-
-    public void RunSync(string myEntityForExecutable, string myEntityForContent) {
+        /// <summary>
+        /// <para>RunSync receives two input strings. The first is the path to the executable.</para>
+        /// <para>The second is optional and it is the content you want to open with the executable.</para>
+        /// <para>Run starts the executable as a thread and continues to the next statement</para>
+        /// <para>AFTER the thread completes</para>
+        /// </summary>
+        /// <param name="myEntityForExecutable">string for the path of the executable</param>
+        /// <param name="myEntityForContent">string for the content for the executable to open</param>
+        /// Category::Run
+        public void RunSync(string myEntityForExecutable, string myEntityForContent) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "RunSync: myEntityForExecutable=" + myEntityForExecutable + " myEntityForContent=" + myEntityForContent);
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "RunSync: myEntityForExecutable=" + myEntityForExecutable + " myEntityForContent=" + myEntityForContent);
@@ -1853,13 +1876,14 @@ fAltTab);
       }
 
     }
-    /// <summary>
-    /// <para>The following method tries to start a service specified by a service name. Then it waits until the service </para>
-    /// <para>is running or a timeout occurs.</para>
-    /// </summary>
-    /// <param name="serviceName"></param>
-    /// <param name="timeoutMilliseconds"></param>
-    public void StartService(string serviceName, int timeoutMilliseconds) {
+        /// <summary>
+        /// <para>The following method tries to start a service specified by a service name. Then it waits until the service </para>
+        /// <para>is running or a timeout occurs.</para>
+        /// </summary>
+        /// <param name="serviceName"></param>
+        /// <param name="timeoutMilliseconds"></param>
+        /// Category::Service
+        public void StartService(string serviceName, int timeoutMilliseconds) {
       ServiceController service = new ServiceController(serviceName);
 
       try {
@@ -1873,12 +1897,13 @@ fAltTab);
         return;
       }
     }
-    /// <summary>
-    /// <para>The following method tries to stop the specified service and it waits until the service is stopped or a timeout occurs.</para>
-    /// </summary>
-    /// <param name="serviceName"></param>
-    /// <param name="timeoutMilliseconds"></param>
-    public void StopService(string serviceName, int timeoutMilliseconds) {
+        /// <summary>
+        /// <para>The following method tries to stop the specified service and it waits until the service is stopped or a timeout occurs.</para>
+        /// </summary>
+        /// <param name="serviceName"></param>
+        /// <param name="timeoutMilliseconds"></param>
+        /// Category::Service
+        public void StopService(string serviceName, int timeoutMilliseconds) {
       ServiceController service = new ServiceController(serviceName);
       try {
         TimeSpan timeout = TimeSpan.FromMilliseconds(timeoutMilliseconds);
@@ -1891,14 +1916,15 @@ fAltTab);
         return;
       }
     }
-    /// <summary>
-    /// <para>This method combinates both previous methods. It tries to stop the service (and waits until it's stopped) </para>
-    /// <para>then it begins to start the service (and waits until the service is running). The specified timeout is used </para>
-    /// for both operations together.
-    /// </summary>
-    /// <param name="serviceName"></param>
-    /// <param name="timeoutMilliseconds"></param>
-    public void RestartService(string serviceName, int timeoutMilliseconds) {
+        /// <summary>
+        /// <para>This method combinates both previous methods. It tries to stop the service (and waits until it's stopped) </para>
+        /// <para>then it begins to start the service (and waits until the service is running). The specified timeout is used </para>
+        /// for both operations together.
+        /// </summary>
+        /// <param name="serviceName"></param>
+        /// <param name="timeoutMilliseconds"></param>
+        /// Category::Service
+        public void RestartService(string serviceName, int timeoutMilliseconds) {
       ServiceController service = new ServiceController(serviceName);
       try {
         int millisec1 = Environment.TickCount;
@@ -1919,7 +1945,8 @@ fAltTab);
         return;
       }
     }
-    public string GetActiveWindowTitle() {
+        /// Category::Window
+        public string GetActiveWindowTitle() {
       const int nChars = 256;
       StringBuilder Buff = new StringBuilder(nChars);
       IntPtr hwnd = GetForegroundWindow();
@@ -1934,11 +1961,12 @@ fAltTab);
       Process[] processlist = Process.GetProcesses();
       return processlist.FirstOrDefault(pr => pr.Id == id);
     }
-    /// <summary>
-    /// Sleep receives an integer that indicates the number of milliseconds that you want the program to wait.
-    /// </summary>
-    /// <param name="intSleep">integer that indicates the number of milliseconds that you want the program to wait.</param>
-    public void Sleep(int intSleep) {
+        /// <summary>
+        /// Sleep receives an integer that indicates the number of milliseconds that you want the program to wait.
+        /// </summary>
+        /// <param name="intSleep">integer that indicates the number of milliseconds that you want the program to wait.</param>
+        /// Category::Sleep
+        public void Sleep(int intSleep) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "Sleep:  intSleep=" + intSleep.ToString());
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "Sleep:  intSleep=" + intSleep.ToString());
@@ -1946,8 +1974,8 @@ fAltTab);
       System.Threading.Thread.Sleep(intSleep);
     }
 
-
-    public void FindDelimitedText(FindDelimitedTextParms myParms) {
+        /// Category::Search
+        public void FindDelimitedText(FindDelimitedTextParms myParms) {
       // set defaults of not found and empty string
       myParms.intDelimFound = -1;
       myParms.strDelimitedTextFound = "";
@@ -2050,8 +2078,8 @@ fAltTab);
         goto ExamineALine;
       }
     }
-
-    public void IEGoToURL(Methods myActions, string myWebSite, bool boolUseNewTab) {
+        /// Category::Internet Explorer
+        public void IEGoToURL(Methods myActions, string myWebSite, bool boolUseNewTab) {
 
       if (boolUseNewTab == true) {
         List<string> myWindowTitles = myActions.GetWindowTitlesByProcessName("iexplore");
@@ -2269,15 +2297,16 @@ fAltTab);
       return String.Empty;
     }
 
-    /// <summary>
-    /// <para>GetAppDirectoryForScript gets the application </para>
-    /// <para>data folder and adds \IdealAutomate\yourscriptname to it.</para>
-    /// <para>The AppDirectory allows you to store personal settings and</para>
-    /// <para>information that you want to keep private (like passwords) in a location</para>
-    /// <para>outside of your script on in the application directory</para>
-    /// </summary>
-    /// <returns>string that is the app_data/roaming directory path for the script</returns>
-    public string GetAppDirectoryForScript() {
+        /// <summary>
+        /// <para>GetAppDirectoryForScript gets the application </para>
+        /// <para>data folder and adds \IdealAutomate\yourscriptname to it.</para>
+        /// <para>The AppDirectory allows you to store personal settings and</para>
+        /// <para>information that you want to keep private (like passwords) in a location</para>
+        /// <para>outside of your script on in the application directory</para>
+        /// </summary>
+        /// <returns>string that is the app_data/roaming directory path for the script</returns>
+        /// Category::Directory
+        public string GetAppDirectoryForScript() {
 
       string directory = AppDomain.CurrentDomain.BaseDirectory;
       directory = directory.Replace("\\bin\\Debug\\", "");
@@ -2292,15 +2321,16 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
       return settingsDirectory;
     }
 
-    /// <summary>
-    /// <para>GetAppDirectoryForIdealAutomate gets the application </para>
-    /// <para>data folder and adds \IdealAutomate\yourscriptname to it.</para>
-    /// <para>The AppDirectory allows you to store personal settings and</para>
-    /// <para>information that you want to keep private (like passwords) in a location</para>
-    /// <para>outside of your script on in the application directory</para>
-    /// </summary>
-    /// <returns>string that is the app_data/roaming directory path for the script</returns>
-    public string GetAppDirectoryForIdealAutomate() {
+        /// <summary>
+        /// <para>GetAppDirectoryForIdealAutomate gets the application </para>
+        /// <para>data folder and adds \IdealAutomate\yourscriptname to it.</para>
+        /// <para>The AppDirectory allows you to store personal settings and</para>
+        /// <para>information that you want to keep private (like passwords) in a location</para>
+        /// <para>outside of your script on in the application directory</para>
+        /// </summary>
+        /// <returns>string that is the app_data/roaming directory path for the script</returns>
+        /// Category::Directory
+        public string GetAppDirectoryForIdealAutomate() {
       string directory = AppDomain.CurrentDomain.BaseDirectory;
       directory = directory.Replace("\\bin\\Debug\\", "");
       int intLastSlashIndex = directory.LastIndexOf("\\");
@@ -2315,23 +2345,30 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
     }
 
 
-    /// <summary>
-    /// <para>ReadValueFromAppDataKey takes a key and adds .txt to it in order to create</para>
-    /// <para>a file name. It gets the app data path and adds \IdealAutomate\yourscriptname</para>
-    /// <para>to it. By combining that path to the file name created from the key,</para>
-    /// <para>it can retrieve a value from the key that is unique to your script application.</para>
-    ///  <para>The AppDirectory allows you to store personal settings and</para>
-    /// <para>information that you want to keep private (like passwords) in a location</para>
-    /// <para>outside of your script on in the application directory</para>
-    /// </summary>
-    /// <param name="strKey">Unique key within the script application</param>
-    /// <returns>string that was in application directory for that key</returns>
-    public string GetValueByKey(string strKey) {
+        /// <summary>
+        /// <para>GetValueByKey takes a key and adds .txt to it in order to create</para>
+        /// <para>a file name. It gets the app data path and adds \IdealAutomate\yourscriptname</para>
+        /// <para>to it. By combining that path to the file name created from the key,</para>
+        /// <para>it can retrieve a value from the key that is unique to your script application.</para>
+        ///  <para>The AppDirectory allows you to store personal settings and</para>
+        /// <para>information that you want to keep private (like passwords) in a location</para>
+        /// <para>outside of your script on in the application directory</para>
+        /// </summary>
+        /// <param name="strKey">Unique key within the script application</param>
+        /// <returns>string that was in application directory for that key</returns>
+        /// Category::Storage>Private
+        public string GetValueByKey(string strKey) {
       string fileName = strKey + ".txt";
       StreamReader file = null;
       string strValueRead = "";
       string settingsDirectory = GetAppDirectoryForScript();
-      string settingsPath = Path.Combine(settingsDirectory, fileName);
+            string settingsPath = "";
+            try {
+                settingsPath = Path.Combine(settingsDirectory, fileName);
+            } catch (Exception e) {
+
+                MessageBoxShow(e.Message + " - filename = " + fileName + " - Line 2369 in Methods.cs");
+            }
       if (File.Exists(settingsPath)) {
         file = File.OpenText(settingsPath);
         strValueRead = file.ReadToEnd();
@@ -2339,8 +2376,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
       }
       return strValueRead;
     }
-
-    public int GetValueByKeyAsInt(string strKey) {
+        /// Category::Storage>Private
+        public int GetValueByKeyAsInt(string strKey) {
       string fileName = strKey + ".txt";
       StreamReader file = null;
       string strValueRead = "";
@@ -2355,8 +2392,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
       Int32.TryParse(strValueRead, out intValue);
       return intValue;
     }
-
-    public int GetValueByKeyAsIntForNonCurrentScript(string strKey, string strScriptName) {
+        /// Category::Storage>Private
+        public int GetValueByKeyAsIntForNonCurrentScript(string strKey, string strScriptName) {
       string fileName = strKey + ".txt";
       StreamReader file = null;
       string strValueRead = "";
@@ -2372,8 +2409,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
       Int32.TryParse(strValueRead, out intValue);
       return intValue;
     }
-
-    public int GetValueByPublicKeyAsIntForNonCurrentScript(string strKey, string strFullFolderPath) {
+        /// Category::Storage>Public
+        public int GetValueByPublicKeyAsIntForNonCurrentScript(string strKey, string strFullFolderPath) {
       string fileName = strKey + ".txt";
       StreamReader file = null;
       string strValueRead = "";
@@ -2389,8 +2426,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
       Int32.TryParse(strValueRead, out intValue);
       return intValue;
     }
-
-    public string GetValueByKeyForNonCurrentScript(string strKey, string strScriptName) {
+        /// Category::Storage>Private
+        public string GetValueByKeyForNonCurrentScript(string strKey, string strScriptName) {
       string fileName = strKey + ".txt";
       StreamReader file = null;
       string strValueRead = "";
@@ -2404,8 +2441,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
       }
       return strValueRead;
     }
-
-    public string GetValueByPublicKeyForNonCurrentScript(string strKey, string strFullFolderPath) {
+        /// Category::Storage>Public
+        public string GetValueByPublicKeyForNonCurrentScript(string strKey, string strFullFolderPath) {
       string fileName = strKey + ".txt";
       StreamReader file = null;
       string strValueRead = "";
@@ -2419,8 +2456,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
       }
       return strValueRead;
     }
-
-    public string GetValueByPublicKeyInCurrentFolder(string strKey, string strFullFileName) {
+        /// Category::Storage>Public
+        public string GetValueByPublicKeyInCurrentFolder(string strKey, string strFullFileName) {
       string strValueRead = "";
       string fileName = strKey + ".txt";
       StreamReader file = null;
@@ -2470,8 +2507,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
       }
       return strValueRead;
     }
-
-    public double GetValueByKeyAsDouble(string strKey) {
+        /// Category::Storage>Private
+        public double GetValueByKeyAsDouble(string strKey) {
       string fileName = strKey + ".txt";
       StreamReader file = null;
       string strValueRead = "";
@@ -2486,7 +2523,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
       double.TryParse(strValueRead, out intValue);
       return intValue;
     }
-    public DateTime GetValueByKeyAsDateTime(string strKey) {
+        /// Category::Storage>Private
+        public DateTime GetValueByKeyAsDateTime(string strKey) {
       string fileName = strKey + ".txt";
       StreamReader file = null;
       string strValueRead = "";
@@ -2501,8 +2539,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
       bool boolDTSuccessful = DateTime.TryParse(strValueRead, out dtScriptStartDateTime);
       return dtScriptStartDateTime;
     }
-
-    public DateTime GetValueByKeyAsDateTimeForNonCurrentScript(string strKey, string strScriptName) {
+        /// Category::Storage>Private
+        public DateTime GetValueByKeyAsDateTimeForNonCurrentScript(string strKey, string strScriptName) {
       string fileName = strKey + ".txt";
       StreamReader file = null;
       string strValueRead = "";
@@ -2518,8 +2556,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
       bool boolDTSuccessful = DateTime.TryParse(strValueRead, out dtScriptStartDateTime);
       return dtScriptStartDateTime;
     }
-
-    public DateTime GetValueByPublicKeyAsDateTimeForNonCurrentScript(string strKey, string strFullFolderPath) {
+        /// Category::Storage>Private
+        public DateTime GetValueByPublicKeyAsDateTimeForNonCurrentScript(string strKey, string strFullFolderPath) {
       string fileName = strKey + ".txt";
       StreamReader file = null;
       string strValueRead = "";
@@ -2535,8 +2573,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
       bool boolDTSuccessful = DateTime.TryParse(strValueRead, out dtScriptStartDateTime);
       return dtScriptStartDateTime;
     }
-
-    public int GetValueByKeyAsIntGlobal(string strKey) {
+        /// Category::Storage>Private
+        public int GetValueByKeyAsIntGlobal(string strKey) {
       string fileName = strKey + ".txt";
       StreamReader file = null;
       string strValueRead = "";
@@ -2551,8 +2589,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
       Int32.TryParse(strValueRead, out intValue);
       return intValue;
     }
-
-    public int IncrementValueByKeyByValue(string strKey, int intIncrementValue) {
+        /// Category::Storage>Private
+        public int IncrementValueByKeyByValue(string strKey, int intIncrementValue) {
       string fileName = strKey + ".txt";
       StreamReader file = null;
       string strValueRead = "";
@@ -2569,8 +2607,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
       SetValueByKey(strKey, intResult.ToString());
       return intResult;
     }
-
-    public int IncrementValueByKeyByValueGlobal(string strKey, int intIncrementValue) {
+        /// Category::Storage>Private
+        public int IncrementValueByKeyByValueGlobal(string strKey, int intIncrementValue) {
       string fileName = strKey + ".txt";
       StreamReader file = null;
       string strValueRead = "";
@@ -2588,19 +2626,20 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
       return intResult;
     }
 
-    /// <summary>
-    /// <para>SetValueByKey takes a key and adds .txt to it in order to create</para>
-    /// <para>a file name. It gets the app data path and adds \IdealAutomate\yourscriptname</para>
-    /// <para>to it. By combining that path to the file name,</para>
-    /// <para>it can write a value to the key that is unique to your script application.</para>
-    /// <para>The AppDirectory allows you to store personal settings and</para>
-    /// <para>information that you want to keep private (like passwords) in a location</para>
-    /// <para>outside of your script on in the application directory</para>
-    /// </summary>
-    /// <param name="strKey">Unique key within the script application</param>
-    /// <param name="strValueToWrite">Value to write to the Unique key 
-    /// within the script application</param>
-    public void SetValueByKey(string strKey, string strValueToWrite) {
+        /// <summary>
+        /// <para>SetValueByKey takes a key and adds .txt to it in order to create</para>
+        /// <para>a file name. It gets the app data path and adds \IdealAutomate\yourscriptname</para>
+        /// <para>to it. By combining that path to the file name,</para>
+        /// <para>it can write a value to the key that is unique to your script application.</para>
+        /// <para>The AppDirectory allows you to store personal settings and</para>
+        /// <para>information that you want to keep private (like passwords) in a location</para>
+        /// <para>outside of your script on in the application directory</para>
+        /// </summary>
+        /// <param name="strKey">Unique key within the script application</param>
+        /// <param name="strValueToWrite">Value to write to the Unique key 
+        /// within the script application</param>
+        /// Category::Storage>Private
+        public void SetValueByKey(string strKey, string strValueToWrite) {
       string fileName = strKey + ".txt";
       StreamWriter writer = null;
       string settingsDirectory = GetAppDirectoryForScript();
@@ -2611,8 +2650,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
       writer.Write(strValueToWrite);
       writer.Close();
     }
-
-    public void SetValueByKeyForNonCurrentScript(string strKey, string strValueToWrite, string strScriptName) {
+        /// Category::Storage>Private
+        public void SetValueByKeyForNonCurrentScript(string strKey, string strValueToWrite, string strScriptName) {
       string fileName = strKey + ".txt";
       StreamWriter writer = null;
       string settingsDirectory = GetAppDirectoryForIdealAutomate();
@@ -2627,8 +2666,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
       writer.Write(strValueToWrite);
       writer.Close();
     }
-
-    public void SetValueByPublicKeyForNonCurrentScript(string strKey, string strValueToWrite, string strFullFolderPath) {
+        /// Category::Storage>Public
+        public void SetValueByPublicKeyForNonCurrentScript(string strKey, string strValueToWrite, string strFullFolderPath) {
       string fileName = strKey + ".txt";
       StreamWriter writer = null;
       string settingsDirectory = strFullFolderPath;
@@ -2643,8 +2682,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
       writer.Write(strValueToWrite);
       writer.Close();
     }
-
-    public void SetValueByPublicKeyInCurrentFolder(string strKey, string strValueToWrite, string strFullFileName) {
+        /// Category::Storage>Public
+        public void SetValueByPublicKeyInCurrentFolder(string strKey, string strValueToWrite, string strFullFileName) {
       string fileName = strKey + ".txt";
       StreamWriter writer = null;
       string settingsDirectory = "";
@@ -2698,18 +2737,19 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
       writer.Write(strValueToWrite);
       writer.Close();
     }
-    /// <summary>
-    /// <para>GetValueByKeyGlobal takes a key and adds .txt to it in order to create</para>
-    /// <para>a file name. It gets the app data path and adds \IdealAutomate\yourscriptname</para>
-    /// <para>to it. By combining that path to the file name created from the key,</para>
-    /// <para>it can retrieve a value from the key that is unique to your script application.</para>
-    ///  <para>The AppDirectory allows you to store personal settings and</para>
-    /// <para>information that you want to keep private (like passwords) in a location</para>
-    /// <para>outside of your script on in the application directory</para>
-    /// </summary>
-    /// <param name="strKey">Unique key within the script application</param>
-    /// <returns>string that was in application directory for that key</returns>
-    public string GetValueByKeyGlobal(string strKey) {
+        /// <summary>
+        /// <para>GetValueByKeyGlobal takes a key and adds .txt to it in order to create</para>
+        /// <para>a file name. It gets the app data path and adds \IdealAutomate\yourscriptname</para>
+        /// <para>to it. By combining that path to the file name created from the key,</para>
+        /// <para>it can retrieve a value from the key that is unique to your script application.</para>
+        ///  <para>The AppDirectory allows you to store personal settings and</para>
+        /// <para>information that you want to keep private (like passwords) in a location</para>
+        /// <para>outside of your script on in the application directory</para>
+        /// </summary>
+        /// <param name="strKey">Unique key within the script application</param>
+        /// <returns>string that was in application directory for that key</returns>
+        /// Category::Storage>Private
+        public string GetValueByKeyGlobal(string strKey) {
       string fileName = strKey + ".txt";
       StreamReader file = null;
       string strValueRead = "";
@@ -2723,19 +2763,20 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
       return strValueRead;
     }
 
-    /// <summary>
-    /// <para>SetValueByKeyGlobal takes a key and adds .txt to it in order to create</para>
-    /// <para>a file name. It gets the app data path and adds \IdealAutomate\yourscriptname</para>
-    /// <para>to it. By combining that path to the file name,</para>
-    /// <para>it can write a value to the key that is unique to your script application.</para>
-    /// <para>The AppDirectory allows you to store personal settings and</para>
-    /// <para>information that you want to keep private (like passwords) in a location</para>
-    /// <para>outside of your script on in the application directory</para>
-    /// </summary>
-    /// <param name="strKey">Unique key within the script application</param>
-    /// <param name="strValueToWrite">Value to write to the Unique key 
-    /// within the script application</param>
-    public void SetValueByKeyGlobal(string strKey, string strValueToWrite) {
+        /// <summary>
+        /// <para>SetValueByKeyGlobal takes a key and adds .txt to it in order to create</para>
+        /// <para>a file name. It gets the app data path and adds \IdealAutomate\yourscriptname</para>
+        /// <para>to it. By combining that path to the file name,</para>
+        /// <para>it can write a value to the key that is unique to your script application.</para>
+        /// <para>The AppDirectory allows you to store personal settings and</para>
+        /// <para>information that you want to keep private (like passwords) in a location</para>
+        /// <para>outside of your script on in the application directory</para>
+        /// </summary>
+        /// <param name="strKey">Unique key within the script application</param>
+        /// <param name="strValueToWrite">Value to write to the Unique key 
+        /// within the script application</param>
+        /// Category::Storage>Private
+        public void SetValueByKeyGlobal(string strKey, string strValueToWrite) {
       string fileName = strKey + ".txt";
       StreamWriter writer = null;
       string settingsDirectory = GetAppDirectoryForIdealAutomate();
@@ -2747,18 +2788,19 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
       writer.Close();
     }
 
-    /// <summary>
-    /// <para>ReadAppDirectoryKeyToArrayList takes a key and adds .txt to it in order to create</para>
-    /// <para>a file name. It gets the app data path and adds \IdealAutomate\yourscriptname</para>
-    /// <para>to it. By combining that path to the file name created from the key,</para>
-    /// <para>it can retrieve an arraylist that is unique to your script application.</para>
-    /// <para>The AppDirectory allows you to store personal settings and</para>
-    /// <para>information that you want to keep private (like passwords) in a location</para>
-    /// <para>outside of your script on in the application directory</para>
-    /// </summary>
-    /// <param name="strKey">Unique key within the script application</param>
-    /// <returns>ArrayList that was in application directory for that key</returns>
-    public ArrayList ReadAppDirectoryKeyToArrayList(string strKey) {
+        /// <summary>
+        /// <para>ReadAppDirectoryKeyToArrayList takes a key and adds .txt to it in order to create</para>
+        /// <para>a file name. It gets the app data path and adds \IdealAutomate\yourscriptname</para>
+        /// <para>to it. By combining that path to the file name created from the key,</para>
+        /// <para>it can retrieve an arraylist that is unique to your script application.</para>
+        /// <para>The AppDirectory allows you to store personal settings and</para>
+        /// <para>information that you want to keep private (like passwords) in a location</para>
+        /// <para>outside of your script on in the application directory</para>
+        /// </summary>
+        /// <param name="strKey">Unique key within the script application</param>
+        /// <returns>ArrayList that was in application directory for that key</returns>
+        /// Category::Storage>Private
+        public ArrayList ReadAppDirectoryKeyToArrayList(string strKey) {
       string fileName = strKey + ".txt";
       ArrayList myArrayList = new ArrayList();
       string settingsDirectory = GetAppDirectoryForScript();
@@ -2780,18 +2822,88 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
       return myArrayList;
     }
 
-    /// <summary>
-    /// <para>WriteArrayListToAppDirectoryKey takes a key and adds .txt to it in order to create</para>
-    /// <para>a file name. It gets the app data path and adds \IdealAutomate\yourscriptname</para>
-    /// <para>to it. By combining that path to the file name created from the key,</para>
-    /// <para>it can write an arraylist to the key filename is unique to your script application.</para>
-    /// <para>The AppDirectory allows you to store personal settings and</para>
-    /// <para>information that you want to keep private (like passwords) in a location</para>
-    /// <para>outside of your script on in the application directory</para>
-    /// </summary>
-    /// <param name="strKey">Unique key within the script application</param>
-    /// <param name="arrayListToWrite">ArrayList that is to written to the application directory for that key</param>
-    public void WriteArrayListToAppDirectoryKey(string strKey, ArrayList arrayListToWrite) {
+        /// <summary>
+        /// <para>ReadPublicKeyToArrayList takes a key and adds .txt to it in order to create</para>
+        /// <para>a file name. It gets the parent folder of the full filename that is passed in</para>
+        /// <para>to it. It creates a folder with the path for the fullfilename in ..\IdealAutomate folder,</para>
+        /// </summary>
+        /// <param name="strKey">Unique key within the script application</param>
+        /// <returns>ArrayList that was in parent folder ..IdealAutomate for that key</returns>
+        /// Category::Storage>Public
+        public ArrayList ReadPublicKeyToArrayList(string strKey, string strFullFileName) {
+            ArrayList myArrayList = new ArrayList();
+            string strValueRead = "";
+            string fileName = strKey + ".txt";
+            StreamReader file = null;
+            string settingsDirectory = "";
+            string fileNamePartOfFullPath = "";
+            bool isDirectory = false;
+            if (File.Exists(strFullFileName)) {
+
+                // path is a file.
+                settingsDirectory = ConvertFullFileNameToPublicPath(strFullFileName);
+                fileNamePartOfFullPath = Path.GetFileName(strFullFileName);
+
+            } else if (Directory.Exists(strFullFileName)) {
+
+                // path is a directory.
+                settingsDirectory = strFullFileName;
+                isDirectory = true;
+
+            } else {
+                // file does not exist yet...so we make assumption that it is a file if it contains period
+                if (strFullFileName.Contains(".")) {
+                    // path is a file.
+                    settingsDirectory = ConvertFullFileNameToPublicPath(strFullFileName);
+                    fileNamePartOfFullPath = Path.GetFileName(strFullFileName);
+                } else {
+                    // path is a directory.
+                    settingsDirectory = strFullFileName;
+                    isDirectory = true;
+                }
+
+
+            }
+
+            settingsDirectory = Path.Combine(settingsDirectory, "..IdealAutomate");
+            if (!isDirectory) {
+                if (fileNamePartOfFullPath.Contains(".")) {
+                    settingsDirectory = Path.Combine(settingsDirectory, fileNamePartOfFullPath.Substring(0, fileNamePartOfFullPath.IndexOf(".")));
+                } else {
+                    settingsDirectory = Path.Combine(settingsDirectory, fileNamePartOfFullPath);
+                }
+            }
+            string settingsPath = Path.Combine(settingsDirectory, fileName);
+            if (File.Exists(settingsPath)) {
+                try {
+                    StreamReader reader = File.OpenText(settingsPath);
+                    while (!reader.EndOfStream) {
+                        string myLine = reader.ReadLine();
+                        myArrayList.Add(myLine);
+                    }
+                    reader.Close();
+                } catch (Exception ex) {
+
+                    string message = "Error - Reading  " + fileName + " " + ex.Message + " " + ex.InnerException; // +"; EntityName is: " + myEntityForExecutable.EntityName;
+                    MessageBox.Show(message);
+                }
+            }
+            return myArrayList;
+        }
+
+        /// <summary>
+        /// <para>WriteArrayListToAppDirectoryKey takes a key and adds .txt to it in order to create</para>
+        /// <para>a file name. It gets the app data path and adds \IdealAutomate\yourscriptname</para>
+        /// <para>to it. By combining that path to the file name created from the key,</para>
+        /// <para>it can write an arraylist to the key filename is unique to your script application.</para>
+        /// <para>The AppDirectory allows you to store personal settings and</para>
+        /// <para>information that you want to keep private (like passwords) in a location</para>
+        /// <para>outside of your script on in the application directory</para>
+        /// </summary>
+        /// <param name="strKey">Unique key within the script application</param>
+        /// <param name="arrayListToWrite">ArrayList that is to written to the application directory for that key</param>
+        /// Category::Storage>Private
+        public void WriteArrayListToAppDirectoryKey(string strKey, ArrayList arrayListToWrite) {
       string fileName = strKey + ".txt";
       StreamWriter writer = null;
       string settingsDirectory = GetAppDirectoryForScript();
@@ -2804,19 +2916,77 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
       }
       writer.Close();
     }
+        /// Category::Storage>Public
+        public void WriteArrayListToPublicKey(string strKey, ArrayList arrayListToWrite, string strFullFileName) {
+            string fileName = strKey + ".txt";
+            StreamWriter writer = null;
+            string settingsDirectory = "";
+            string fileNamePartOfFullPath = "";
+            bool isDirectory = false;
+            if (File.Exists(strFullFileName)) {
 
-    /// <summary>
-    /// <para>ReadAppDirectoryKeyToArrayList takes a key and adds .txt to it in order to create</para>
-    /// <para>a file name. It gets the app data path and adds \IdealAutomate\yourscriptname</para>
-    /// <para>to it. By combining that path to the file name created from the key,</para>
-    /// <para>it can retrieve an arraylist that is unique to your script application.</para>
-    /// <para>The AppDirectory allows you to store personal settings and</para>
-    /// <para>information that you want to keep private (like passwords) in a location</para>
-    /// <para>outside of your script on in the application directory</para>
-    /// </summary>
-    /// <param name="strKey">Unique key within the script application</param>
-    /// <returns>ArrayList that was in application directory for that key</returns>
-    public ArrayList ReadAppDirectoryKeyToArrayListGlobal(string strKey) {
+                // path is a file.
+                settingsDirectory = ConvertFullFileNameToPublicPath(strFullFileName);
+                fileNamePartOfFullPath = Path.GetFileName(strFullFileName);
+
+            } else if (Directory.Exists(strFullFileName)) {
+
+                // path is a directory.
+                settingsDirectory = strFullFileName;
+                isDirectory = true;
+
+            } else {
+                // file does not exist yet...so we make assumption that it is a file if it contains period
+                if (strFullFileName.Contains(".")) {
+                    // path is a file.
+                    settingsDirectory = ConvertFullFileNameToPublicPath(strFullFileName);
+                    fileNamePartOfFullPath = Path.GetFileName(strFullFileName);
+                } else {
+                    // path is a directory.
+                    settingsDirectory = strFullFileName;
+                    isDirectory = true;
+                }
+
+
+            }
+
+            settingsDirectory = Path.Combine(settingsDirectory, "..IdealAutomate");
+            if (!Directory.Exists(settingsDirectory)) {
+                Directory.CreateDirectory(settingsDirectory);
+            }
+            if (!isDirectory) {
+                if (fileNamePartOfFullPath.Contains(".")) {
+                    settingsDirectory = Path.Combine(settingsDirectory, fileNamePartOfFullPath.Substring(0, fileNamePartOfFullPath.IndexOf(".")));
+                } else {
+                    settingsDirectory = Path.Combine(settingsDirectory, fileNamePartOfFullPath);
+                }
+                if (!Directory.Exists(settingsDirectory)) {
+                    Directory.CreateDirectory(settingsDirectory);
+                }
+            }
+            string settingsPath = Path.Combine(settingsDirectory, fileName);
+            // Hook a write to the text file.
+            writer = new StreamWriter(settingsPath);
+            // Rewrite the entire value of s to the file
+            foreach (var item in arrayListToWrite) {
+                writer.WriteLine(item.ToString());
+            }
+            writer.Close();
+        }
+
+        /// <summary>
+        /// <para>ReadAppDirectoryKeyToArrayList takes a key and adds .txt to it in order to create</para>
+        /// <para>a file name. It gets the app data path and adds \IdealAutomate\yourscriptname</para>
+        /// <para>to it. By combining that path to the file name created from the key,</para>
+        /// <para>it can retrieve an arraylist that is unique to your script application.</para>
+        /// <para>The AppDirectory allows you to store personal settings and</para>
+        /// <para>information that you want to keep private (like passwords) in a location</para>
+        /// <para>outside of your script on in the application directory</para>
+        /// </summary>
+        /// <param name="strKey">Unique key within the script application</param>
+        /// <returns>ArrayList that was in application directory for that key</returns>
+        /// Category::Storage>Private
+        public ArrayList ReadAppDirectoryKeyToArrayListGlobal(string strKey) {
       string fileName = strKey + ".txt";
       ArrayList myArrayList = new ArrayList();
       string settingsDirectory = GetAppDirectoryForIdealAutomate();
@@ -2838,18 +3008,19 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
       return myArrayList;
     }
 
-    /// <summary>
-    /// <para>WriteArrayListToAppDirectoryKey takes a key and adds .txt to it in order to create</para>
-    /// <para>a file name. It gets the app data path and adds \IdealAutomate\yourscriptname</para>
-    /// <para>to it. By combining that path to the file name created from the key,</para>
-    /// <para>it can write an arraylist to the key filename is unique to your script application.</para>
-    /// <para>The AppDirectory allows you to store personal settings and</para>
-    /// <para>information that you want to keep private (like passwords) in a location</para>
-    /// <para>outside of your script on in the application directory</para>
-    /// </summary>
-    /// <param name="strKey">Unique key within the script application</param>
-    /// <param name="arrayListToWrite">ArrayList that is to written to the application directory for that key</param>
-    public void WriteArrayListToAppDirectoryKeyGlobal(string strKey, ArrayList arrayListToWrite) {
+        /// <summary>
+        /// <para>WriteArrayListToAppDirectoryKey takes a key and adds .txt to it in order to create</para>
+        /// <para>a file name. It gets the app data path and adds \IdealAutomate\yourscriptname</para>
+        /// <para>to it. By combining that path to the file name created from the key,</para>
+        /// <para>it can write an arraylist to the key filename is unique to your script application.</para>
+        /// <para>The AppDirectory allows you to store personal settings and</para>
+        /// <para>information that you want to keep private (like passwords) in a location</para>
+        /// <para>outside of your script on in the application directory</para>
+        /// </summary>
+        /// <param name="strKey">Unique key within the script application</param>
+        /// <param name="arrayListToWrite">ArrayList that is to written to the application directory for that key</param>
+        /// Category::Storage>Private
+        public void WriteArrayListToAppDirectoryKeyGlobal(string strKey, ArrayList arrayListToWrite) {
       string fileName = strKey + ".txt";
       StreamWriter writer = null;
       string settingsDirectory = GetAppDirectoryForIdealAutomate();
@@ -2862,27 +3033,29 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
       }
       writer.Close();
     }
-    /// <summary>
-    /// At beginning of template, Write StartTime, StartDate, Add 1 to total executions. 
-    /// 
-    /// </summary>
-    public void ScriptStartedUpdateStats() {
+        /// <summary>
+        /// At beginning of template, Write StartTime, StartDate, Add 1 to total executions. 
+        /// 
+        /// </summary>
+        /// Category::Stats
+        public void ScriptStartedUpdateStats() {
       SetValueByKey("ScriptStartDateTime", System.DateTime.Now.ToString());
       IncrementValueByKeyByValue("ScriptTotalExecutions", 1);
 
     }
 
-    /// <summary>
-    /// ScriptEndedSuccessfullyUpdateStats - At end of template, Subtract start time and start date
-    /// from Current date and time, add 1 to successful executions. 
-    /// (avg successful execution time * 
-    /// (total successful executions - 1)) + current successful execution time) / total successful executions. 
-    /// Write PercentSuccessful = (SuccessfulExecutions / TotalExecutions) * 100. 
-    /// CurrentSavedExecutionTime = CurrentExecutionTime - ManualExecutionTime.
-    /// ScriptTotalSavedExecutionTime += CurrentSavedExecutionTime
-    ///  StartDate is the LastExecutedDate.
-    /// </summary>
-    public void ScriptEndedSuccessfullyUpdateStats() {
+        /// <summary>
+        /// ScriptEndedSuccessfullyUpdateStats - At end of template, Subtract start time and start date
+        /// from Current date and time, add 1 to successful executions. 
+        /// (avg successful execution time * 
+        /// (total successful executions - 1)) + current successful execution time) / total successful executions. 
+        /// Write PercentSuccessful = (SuccessfulExecutions / TotalExecutions) * 100. 
+        /// CurrentSavedExecutionTime = CurrentExecutionTime - ManualExecutionTime.
+        /// ScriptTotalSavedExecutionTime += CurrentSavedExecutionTime
+        ///  StartDate is the LastExecutedDate.
+        /// </summary>
+        /// Category::Stats
+        public void ScriptEndedSuccessfullyUpdateStats() {
       DateTime dtScriptStartDateTime = GetValueByKeyAsDateTime("ScriptStartDateTime");
 
 
@@ -2916,7 +3089,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
 
     }
-    public string ConvertFullFileNameToScriptPath(string fullFileName) {
+        /// Category::Directory
+        public string ConvertFullFileNameToScriptPath(string fullFileName) {
       int intIndex = fullFileName.LastIndexOf(@"\");
       if (intIndex > -1) {
         fullFileName = fullFileName.Substring(0, intIndex);
@@ -2925,8 +3099,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
       scriptPath = scriptPath.Replace(":", "+").Replace(@"\", "-");
       return scriptPath;
     }
-
-    public string ConvertFullFileNameToPublicPath(string fullFileName) {
+        /// Category::Directory
+        public string ConvertFullFileNameToPublicPath(string fullFileName) {
       int intIndex = fullFileName.LastIndexOf(@"\");
       if (intIndex > -1) {
         fullFileName = fullFileName.Substring(0, intIndex);
@@ -2934,14 +3108,14 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
       string scriptPath = fullFileName;
       return scriptPath;
     }
-
-    public string ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(string fullFileName) {
+        /// Category::Directory
+        public string ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(string fullFileName) {
       string scriptPath = fullFileName;
       scriptPath = scriptPath.Replace(":", "+").Replace(@"\", "-");
       return scriptPath;
     }
-
-    public string GetPathForScriptNoBinDebug() {
+        /// Category::Directory
+        public string GetPathForScriptNoBinDebug() {
       string directory = AppDomain.CurrentDomain.BaseDirectory;
       directory = directory.Replace("\\bin\\Debug\\", "");
       return directory;
