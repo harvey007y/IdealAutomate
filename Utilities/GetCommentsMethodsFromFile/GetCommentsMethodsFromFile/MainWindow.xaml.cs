@@ -539,6 +539,11 @@ namespace GetCommentsMethodsFromFile {
 
             // Perform the required action on each file here.
             // Modify this block to perform your required task.
+            if (files == null) {
+                myActions.MessageBoxShow("No files found");
+                goto DisplaySelectFolderWindowAgain;
+            }
+
             foreach (string myFile in files) {
                 strCurrentFile = myFile;
                 //  myFile = @"C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateCore\IdealAutomateCore\Methods.cs";
@@ -1053,7 +1058,9 @@ namespace GetCommentsMethodsFromFile {
                 var debug = true;
             }
             myControlEntity1.SelectedValue = myActions.GetValueByKey("cbxCategory" + strMethod + "SelectedValue");
-            myControlEntity1.ID = "cbxCategory";
+            string myFolder = myActions.GetValueByKey("cbxFolderSelectedValue");
+
+            myControlEntity1.ID = "cbxCategory_" + GetSafeFilename(myFolder);
             myControlEntity1.RowNumber = intRowCtr;
             myControlEntity1.ToolTipx = "";
             //foreach (var item in alcbxFindWhat) {
@@ -1243,7 +1250,10 @@ namespace GetCommentsMethodsFromFile {
                 //} else {
                 //    strWebsiteURLToUse = "\"" + strWebsiteURLx.Trim() + "\"";
                 //}
-                string strCategory = myListControlEntity1.Find(x => x.ID == "cbxCategory").SelectedValue;
+                myFolder = myActions.GetValueByKey("cbxFolderSelectedValue");
+
+
+                string strCategory = myListControlEntity1.Find(x => x.ID == "cbxCategory_" + GetSafeFilename(myFolder)).SelectedValue;
 
                 myActions.SetValueByKey("cbxCategory" + strMethod.Replace("<", "").Replace(">", "") + "SelectedValue", strCategory);
                 string strGeneratedLinex = strSyntax;
@@ -2136,6 +2146,11 @@ namespace GetCommentsMethodsFromFile {
                 Directory.CreateDirectory(settingsDirectory);
             }
             return settingsDirectory;
+        }
+        public string GetSafeFilename(string filename) {
+
+            return string.Join("_", filename.Split(Path.GetInvalidFileNameChars()));
+
         }
     }
 }
