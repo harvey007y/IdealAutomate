@@ -794,7 +794,7 @@ namespace GetCommentsMethodsFromFile {
                         }
                         myControlEntity.ControlEntitySetDefaults();
                         myControlEntity.ControlType = ControlType.Label;
-                        myControlEntity.ID = "lbl" + strCategory.Replace(" ", "").Replace("<","").Replace(">","");
+                        myControlEntity.ID = "lbl" + strCategory.Replace(" ", "").Replace("<", "").Replace(">", "").Replace("#", "");
                         myControlEntity.Text = strCategory;
                         myControlEntity.RowNumber = intRow;
                         myControlEntity.ColumnNumber = intCol;
@@ -806,7 +806,7 @@ namespace GetCommentsMethodsFromFile {
                     }
                     myControlEntity.ControlEntitySetDefaults();
                     myControlEntity.ControlType = ControlType.Button;
-                    myControlEntity.ID = "myButton" + strMethodName.Replace(" ", "").Replace("<","").Replace(">","");
+                    myControlEntity.ID = "myButton" + strMethodName.Replace(" ", "").Replace("<", "").Replace(">", "").Replace("=", "").Replace("!", "").Replace("#", "");
                     myControlEntity.Text = strMethodName;
                     myControlEntity.RowNumber = intRow;
                     myControlEntity.ColumnNumber = intCol;
@@ -981,7 +981,7 @@ namespace GetCommentsMethodsFromFile {
                             continue;
                         }
                         if (boolFileName && strInputLineOrig.Trim() != "") {
-                            strFileName = strInputLineOrig.Replace("<","").Replace(">","");
+                            strFileName = strInputLineOrig.Replace("<", "").Replace(">", "");
                             continue;
                         }
                         if (boolSourceCode) {
@@ -1014,7 +1014,7 @@ namespace GetCommentsMethodsFromFile {
             StringBuilder sb2 = new StringBuilder();
             foreach (var item in listMethodSourceCode) {
                 sb2.AppendLine(item);
-            }   
+            }
             ControlEntity myControlEntity1 = new ControlEntity();
             List<ControlEntity> myListControlEntity1 = new List<ControlEntity>();
             cbp = new List<ComboBoxPair>();
@@ -1029,7 +1029,7 @@ namespace GetCommentsMethodsFromFile {
             intRowCtr = 0;
             myControlEntity1.ControlEntitySetDefaults();
             myControlEntity1.ControlType = ControlType.Heading;
-            myControlEntity1.ID = "lbl" + strMethod.Replace("<","").Replace(">","");
+            myControlEntity1.ID = "lbl" + strMethod.Replace("<", "").Replace(">", "");
             myControlEntity1.Text = strMethod;
             myControlEntity1.Width = 300;
             myControlEntity1.RowNumber = 0;
@@ -1041,8 +1041,8 @@ namespace GetCommentsMethodsFromFile {
             myControlEntity1.ControlType = ControlType.Label;
             myControlEntity1.ID = "lblCategory";
             myControlEntity1.Text = "Category (optional):";
-            myControlEntity1.RowNumber = intRowCtr;         
-            myControlEntity1.ColumnNumber = 0;        
+            myControlEntity1.RowNumber = intRowCtr;
+            myControlEntity1.ColumnNumber = 0;
             myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
 
@@ -1106,7 +1106,7 @@ namespace GetCommentsMethodsFromFile {
                 intRowCtr++;
                 myControlEntity1.ControlEntitySetDefaults();
                 myControlEntity1.ControlType = ControlType.Label;
-                myControlEntity1.ID = "lbl" + arrayParameters[1].Replace("<", "").Replace(">", "");
+                myControlEntity1.ID = "lbl" + arrayParameters[1].Replace("<", "").Replace(">", "").Replace("#", "");
                 myControlEntity1.Text = arrayParameters[0] + " [[" + arrayParameters[1] + "]]:";
                 myControlEntity1.RowNumber = intRowCtr;
                 myControlEntity1.ColumnNumber = 0;
@@ -1114,7 +1114,7 @@ namespace GetCommentsMethodsFromFile {
 
                 myControlEntity1.ControlEntitySetDefaults();
                 myControlEntity1.ControlType = ControlType.TextBox;
-                myControlEntity1.ID = "txt" + arrayParameters[1].Replace("<", "").Replace(">", "");
+                myControlEntity1.ID = "txt" + arrayParameters[1].Replace("<", "").Replace(">", "").Replace("#", "");
                 if (strMethod.StartsWith("Window")) {
                     var debug = true;
                 }
@@ -1145,7 +1145,7 @@ namespace GetCommentsMethodsFromFile {
                 myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
                 myControlEntity1.ControlEntitySetDefaults();
                 myControlEntity1.ControlType = ControlType.TextBox;
-                myControlEntity1.ID = "txt" + strMethod.Replace("<", "").Replace(">", "") + "Result";
+                myControlEntity1.ID = "txt" + strMethod.Replace("<", "").Replace(">", "").Replace("!", "") + "Result";
                 myControlEntity1.Text = myActions.GetValueByKey("txt" + strMethod.Replace("<", "").Replace(">", "") + "Result");
                 myControlEntity1.RowNumber = intRowCtr;
                 myControlEntity1.ColumnNumber = 1;
@@ -1185,7 +1185,7 @@ namespace GetCommentsMethodsFromFile {
             myControlEntity1.ControlEntitySetDefaults();
             myControlEntity1.ControlType = ControlType.TextBox;
             myControlEntity1.ID = "txtFileName";
-            
+
             myControlEntity1.Text = strFileName;
             myControlEntity1.RowNumber = intRowCtr;
             myControlEntity1.ColumnNumber = 1;
@@ -1221,7 +1221,7 @@ namespace GetCommentsMethodsFromFile {
 
             foreach (var item in listParameters) {
                 string[] arrayParameters = item.Split(' ');
-                string myParameterValue = myListControlEntity1.Find(x => x.ID == "txt" + arrayParameters[1].Replace("<", "").Replace(">", "")).Text;
+                string myParameterValue = myListControlEntity1.Find(x => x.ID == "txt" + arrayParameters[1].Replace("<", "").Replace(">", "").Replace("#", "")).Text;
                 myActions.SetValueByKey("txt" + strMethod.Replace("<", "").Replace(">", "") + arrayParameters[1].Replace("<", "").Replace(">", ""), myParameterValue);
             }
             if (strReturnType.ToUpper() != "VOID" && strReturnType.Trim() != "") {
@@ -1244,7 +1244,7 @@ namespace GetCommentsMethodsFromFile {
                 //    strWebsiteURLToUse = "\"" + strWebsiteURLx.Trim() + "\"";
                 //}
                 string strCategory = myListControlEntity1.Find(x => x.ID == "cbxCategory").SelectedValue;
-               
+
                 myActions.SetValueByKey("cbxCategory" + strMethod.Replace("<", "").Replace(">", "") + "SelectedValue", strCategory);
                 string strGeneratedLinex = strSyntax;
 
@@ -1351,18 +1351,18 @@ namespace GetCommentsMethodsFromFile {
             listOutput.Add("F i l e  N a m e:");
             listOutput.Add("\"" + strCurrentFile + "\" (" + intInLine.ToString() + ",0):");
             listOutput.Add(" ");
-            
+
         }
 
         private void ProcessMethodContinued() {
-            
+
             listOutput.Add("S o u r c e  C o d e:");
             foreach (var item in listMethodSourceCode) {
 
                 listOutput.Add(item);
                 // sw.WriteLine(strLine);
             }
-            intMethodCtr++;          
+            intMethodCtr++;
             listComments.Clear();
             //}
             _boolStringFoundInFile = true;
@@ -1443,7 +1443,7 @@ namespace GetCommentsMethodsFromFile {
                     foreach (var item in listOutput) {
                         strLine = item;
                         sw.WriteLine(strLine);
-                    }                    
+                    }
                 }
             }
             listOutput.Clear();
@@ -1509,7 +1509,7 @@ namespace GetCommentsMethodsFromFile {
                 || strCleaned.ToUpper().Trim().StartsWith("STATIC "))) {
                 //intNestingLevel = 0;
                 strMethodOrig = strCleaned;
-                
+
 
                 _boolMethod = true;
                 listMethodSourceCode.Clear();
@@ -1523,9 +1523,12 @@ namespace GetCommentsMethodsFromFile {
                 }
 
                 string strParameters = "";
+                int intLastParen = strMethod.LastIndexOf(")");
+                if (intLastParen < 0) {
+                    intLastParen = strMethod.Length - 1;
+                }
 
-
-                strParameters = strMethod.Substring(strMethod.IndexOf("("), strMethod.LastIndexOf(")") - strMethod.IndexOf("(") + 1);
+                strParameters = strMethod.Substring(strMethod.IndexOf("("), intLastParen - strMethod.IndexOf("(") + 1);
                 strMethod = strMethod.Substring(0, strMethod.IndexOf("("));
                 if (strMethod.Contains("<")) {
                     strMethod = strMethod.Substring(0, strMethod.IndexOf("<"));
@@ -1747,7 +1750,7 @@ namespace GetCommentsMethodsFromFile {
 
                 CheckForMethodBodyStatement();
                 if (_boolLineProcessed) {
-                    
+
                     return;
                 }
             }
@@ -1782,7 +1785,7 @@ namespace GetCommentsMethodsFromFile {
             bool boolContinueSearch = true;
             string strVerbatim;
             intStartVerbatim = strInputLineUnclean.IndexOf("@\"");
-            if (intStartVerbatim > -1) // we found possible start
+            if (intStartVerbatim > 0) // we found possible start
             {
                 if (strInputLineUnclean.Substring(intStartVerbatim - 1, 1) != "//") //we have start
                 {
