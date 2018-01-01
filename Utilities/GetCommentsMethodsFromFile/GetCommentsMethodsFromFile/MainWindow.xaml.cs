@@ -23,6 +23,7 @@ namespace GetCommentsMethodsFromFile {
         bool _boolLineProcessed;
         bool _boolMethod = false;
         bool _boolClass = false;
+        bool _boolStruct = false;
         bool _boolMultipleStatementsPossible = false;
         bool _boolFoundOpenBracket = false;
         bool _boolTraceLoggingOn = true;
@@ -36,6 +37,7 @@ namespace GetCommentsMethodsFromFile {
         List<string> listParameters = new List<string>();
         string myFile = "";
         string strClass = "";
+        string strStruct = "";
 
         string strCleanedHold;
         string strInputLineCleaned;
@@ -57,7 +59,8 @@ namespace GetCommentsMethodsFromFile {
         int intLit = 0;
         int intNestingLevel = 0;
         int intClassLevel = 0;
-        int intMethodLevel = 1;
+        int intStructLevel = 1;
+        int intMethodLevel = 2;
         int intMethodCtr = 0;
         int[] strLocalVariableNestingArray;
         List<string> listComments = new List<string>();
@@ -541,6 +544,7 @@ namespace GetCommentsMethodsFromFile {
                 //  myFile = @"C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateCore\IdealAutomateCore\Methods.cs";
                 System.IO.StreamReader file =
                    new System.IO.StreamReader(myFile);
+                intInLine = 0;
                 while ((strInputLineOrig = file.ReadLine()) != null) {
                     if (_boolMethod) {
                         listMethodSourceCode.Add(strInputLineOrig);
@@ -555,6 +559,10 @@ namespace GetCommentsMethodsFromFile {
                             ReadCleanConcatCodeRec(file);
                         }
                     } else if (strInputLineCleaned.StartsWith("class ") || strInputLineCleaned.Contains(" class ")) {
+                        while (file.EndOfStream == false && strInputLineCleaned.IndexOf("{") == -1) {
+                            ReadCleanConcatCodeRec(file);
+                        }
+                    } else if (strInputLineCleaned.StartsWith("struct ") || strInputLineCleaned.Contains(" struct ")) {
                         while (file.EndOfStream == false && strInputLineCleaned.IndexOf("{") == -1) {
                             ReadCleanConcatCodeRec(file);
                         }
@@ -1006,7 +1014,7 @@ namespace GetCommentsMethodsFromFile {
             StringBuilder sb2 = new StringBuilder();
             foreach (var item in listMethodSourceCode) {
                 sb2.AppendLine(item);
-            }
+            }   
             ControlEntity myControlEntity1 = new ControlEntity();
             List<ControlEntity> myListControlEntity1 = new List<ControlEntity>();
             cbp = new List<ComboBoxPair>();
@@ -1041,6 +1049,9 @@ namespace GetCommentsMethodsFromFile {
 
             myControlEntity1.ControlEntitySetDefaults();
             myControlEntity1.ControlType = ControlType.ComboBox;
+            if (strMethod.StartsWith("Window")) {
+                var debug = true;
+            }
             myControlEntity1.SelectedValue = myActions.GetValueByKey("cbxCategory" + strMethod + "SelectedValue");
             myControlEntity1.ID = "cbxCategory";
             myControlEntity1.RowNumber = intRowCtr;
@@ -1104,7 +1115,10 @@ namespace GetCommentsMethodsFromFile {
                 myControlEntity1.ControlEntitySetDefaults();
                 myControlEntity1.ControlType = ControlType.TextBox;
                 myControlEntity1.ID = "txt" + arrayParameters[1].Replace("<", "").Replace(">", "");
-                myControlEntity1.Text = myActions.GetValueByKey("txt" + strMethod + arrayParameters[1]);
+                if (strMethod.StartsWith("Window")) {
+                    var debug = true;
+                }
+                myControlEntity1.Text = myActions.GetValueByKey("txt" + strMethod + arrayParameters[1].Replace("<", "").Replace(">", ""));
                 myControlEntity1.RowNumber = intRowCtr;
                 myControlEntity1.ColumnNumber = 1;
                 myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
@@ -1318,8 +1332,11 @@ namespace GetCommentsMethodsFromFile {
                 // sw.WriteLine(strLine);
             }
 
-            string strReturnType = strMethodOrig.Substring(7);
+            string strReturnType = strMethodOrig;
             strReturnType = strReturnType.Substring(0, strReturnType.IndexOf(strMethod)).Trim();
+            if (strReturnType.Contains(" ")) {
+                strReturnType = strReturnType.Substring(strReturnType.LastIndexOf(" ")).Trim();
+            }
             listOutput.Add(" ");
             listOutput.Add("R e t u r n  T y p e:");
 
@@ -1333,8 +1350,8 @@ namespace GetCommentsMethodsFromFile {
             listOutput.Add(" ");
             listOutput.Add("F i l e  N a m e:");
             listOutput.Add("\"" + strCurrentFile + "\" (" + intInLine.ToString() + ",0):");
-            listOutput.Add(" "); 
-          
+            listOutput.Add(" ");
+            
         }
 
         private void ProcessMethodContinued() {
@@ -1412,6 +1429,9 @@ namespace GetCommentsMethodsFromFile {
             }
             string strLine = "";
             Methods myActions = new Methods();
+            if (strMethod.StartsWith("Window")) {
+                var debug = true;
+            }
             if (_boolStringFoundInFile) {
                 if (strSearchText.Trim() != "") {
                     string myCategory = myActions.GetValueByKey("cbxCategory" + strMethod + "SelectedValue");
@@ -1419,11 +1439,11 @@ namespace GetCommentsMethodsFromFile {
                         listCategoryMethod.Add(myCategory + "^" + strMethod.Replace("<", "").Replace(">", ""), myCategory + "^" + strMethod.Replace("<", "").Replace(">", ""));
                     }
                 }
-                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Path.Combine(myNewProjectSourcePath, @"Text\" + strMethod + ".txt"))) {
+                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Path.Combine(myNewProjectSourcePath, @"Text\" + strMethod.Replace("<", "").Replace(">", "") + ".txt"))) {
                     foreach (var item in listOutput) {
                         strLine = item;
                         sw.WriteLine(strLine);
-                    }
+                    }                    
                 }
             }
             listOutput.Clear();
@@ -1452,6 +1472,30 @@ namespace GetCommentsMethodsFromFile {
                 }
             }
         }
+
+        private void CheckForStruct() {
+            if (strCleaned.ToUpper().Trim().StartsWith("STRUCT ") ||
+                strCleaned.ToUpper().Trim().Contains(" STRUCT ")
+                ) {
+                // write inherits line
+                _boolStruct = true;
+
+                _boolLineProcessed = true;
+
+                strStruct = strCleaned.Trim().Substring(strCleaned.ToUpper().IndexOf("STRUCT ") + 6);
+                int myIndex = 0;
+                if (strStruct.IndexOf(" ") > -1) { myIndex = strStruct.IndexOf(" "); }
+                if (myIndex > 0) {
+                    strStruct = strStruct.Substring(0, strStruct.IndexOf(" "));
+                }
+
+                myIndex = 0;
+                if (strStruct.IndexOf(":") > -1) { myIndex = strStruct.IndexOf(":"); }
+                if (myIndex > 0) {
+                    strStruct = strStruct.Substring(0, strStruct.IndexOf(":"));
+                }
+            }
+        }
         private void CheckForMethodOrFunction() {
 
 
@@ -1465,21 +1509,23 @@ namespace GetCommentsMethodsFromFile {
                 || strCleaned.ToUpper().Trim().StartsWith("STATIC "))) {
                 //intNestingLevel = 0;
                 strMethodOrig = strCleaned;
-
+                
 
                 _boolMethod = true;
                 listMethodSourceCode.Clear();
                 listMethodSourceCode.Add(strInputLineOrig);
+                listMethodSourceCode.Add("{");
                 // we are putting method name and parameters in strMethod
                 strMethod = strCleaned.Substring(0, strCleaned.ToUpper().IndexOf("("));
                 strMethod = strCleaned.Substring(strMethod.LastIndexOf(" ") + 1);
-
+                if (strMethod.StartsWith("From")) {
+                    var debug = true;
+                }
 
                 string strParameters = "";
 
 
                 strParameters = strMethod.Substring(strMethod.IndexOf("("), strMethod.LastIndexOf(")") - strMethod.IndexOf("(") + 1);
-
                 strMethod = strMethod.Substring(0, strMethod.IndexOf("("));
                 if (strMethod.Contains("<")) {
                     strMethod = strMethod.Substring(0, strMethod.IndexOf("<"));
@@ -1641,13 +1687,15 @@ namespace GetCommentsMethodsFromFile {
 
             if (_boolNamespace == true && intNestingLevel == 0) {
                 intClassLevel = 0;
-                intMethodLevel = 1;
+                intStructLevel = 1;
+                intMethodLevel = 2;
                 _boolNamespace = false;
             }
 
             if (strCleaned.StartsWith("namespace")) {
                 intClassLevel = 1;
-                intMethodLevel = 2;
+                intStructLevel = 2;
+                intMethodLevel = 3;
                 _boolNamespace = true;
             }
 
@@ -1657,6 +1705,12 @@ namespace GetCommentsMethodsFromFile {
             }
 
             CheckForClass();
+            if (_boolLineProcessed) {
+                listComments.Clear();
+                return;
+            }
+
+            CheckForStruct();
             if (_boolLineProcessed) {
                 listComments.Clear();
                 return;
@@ -1674,6 +1728,9 @@ namespace GetCommentsMethodsFromFile {
             }
 
             listComments.Clear();
+            if (strMethod.StartsWith("From")) {
+                var debug = true;
+            }
             if (_boolMethod == true) {
                 CheckForNewMethodBeforeEnd();
                 if (_boolLineProcessed) {
