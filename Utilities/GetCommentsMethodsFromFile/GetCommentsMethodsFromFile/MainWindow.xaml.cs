@@ -207,57 +207,7 @@ namespace GetCommentsMethodsFromFile {
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
 
-            intRowCtr++;
-            myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.Label;
-            myControlEntity.ID = "lblFileType";
-            myControlEntity.Text = "FileType";
-            myControlEntity.RowNumber = intRowCtr;
-            myControlEntity.Width = 150;
-            myControlEntity.ColumnNumber = 0;
-            myControlEntity.ColumnSpan = 1;
-            myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-
-            myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.ComboBox;
-            myControlEntity.SelectedValue = myActions.GetValueByKey("cbxFileTypeSelectedValue");
-            myControlEntity.ID = "cbxFileType";
-            myControlEntity.RowNumber = intRowCtr;
-            myControlEntity.ToolTipx = "Here is an example: *.*";
-            //foreach (var item in alcbxFileType) {
-            //    cbp1.Add(new ComboBoxPair(item.ToString(), item.ToString()));
-            //}
-            //myControlEntity.ListOfKeyValuePairs = cbp1;
-            myControlEntity.ComboBoxIsEditable = true;
-            myControlEntity.ColumnNumber = 1;
-            myControlEntity.ColumnSpan = 2;
-            myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-
-            intRowCtr++;
-            myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.Label;
-            myControlEntity.ID = "lblExclude";
-            myControlEntity.Text = "Exclude";
-            myControlEntity.Width = 150;
-            myControlEntity.RowNumber = intRowCtr;
-            myControlEntity.ColumnNumber = 0;
-            myControlEntity.ColumnSpan = 1;
-            myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-
-            myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.ComboBox;
-            myControlEntity.SelectedValue = myActions.GetValueByKey("cbxExcludeSelectedValue");
-            myControlEntity.ID = "cbxExclude";
-            myControlEntity.RowNumber = intRowCtr;
-            myControlEntity.ToolTipx = "Here is an example: *.dll;*.exe;*.png;*.xml;*.cache;*.sln;*.suo;*.pdb;*.csproj;*.deploy";
-            myControlEntity.ComboBoxIsEditable = true;
-            myControlEntity.ColumnNumber = 1;
-            myControlEntity.ColumnSpan = 2;
-            myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
+          
 
             intRowCtr++;
             myControlEntity.ControlEntitySetDefaults();
@@ -338,19 +288,12 @@ namespace GetCommentsMethodsFromFile {
             strFindWhat = myListControlEntity.Find(x => x.ID == "cbxFindWhat").SelectedValue;
             //  string strFindWhatKey = myListControlEntity.Find(x => x.ID == "cbxFindWhat").SelectedKey;
 
-            string strFileType = myListControlEntity.Find(x => x.ID == "cbxFileType").SelectedValue;
-            //     string strFileTypeKey = myListControlEntity.Find(x => x.ID == "cbxFileType").SelectedKey;
-
-            string strExclude = myListControlEntity.Find(x => x.ID == "cbxExclude").SelectedValue;
-            //      string strExcludeKey = myListControlEntity.Find(x => x.ID == "cbxExclude").SelectedKey;
 
             string strFolder = myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedValue;
             //     string strFolderKey = myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedKey;
             myActions.SetValueByKey("chkMatchCase", _boolMatchCase.ToString());
             myActions.SetValueByKey("chkUseRegularExpression", _boolUseRegularExpression.ToString());
             myActions.SetValueByKey("cbxFindWhatSelectedValue", strFindWhat);
-            myActions.SetValueByKey("cbxFileTypeSelectedValue", strFileType);
-            myActions.SetValueByKey("cbxExcludeSelectedValue", strExclude);
             myActions.SetValueByKey("cbxFolderSelectedValue", strFolder);
             string settingsDirectory = "";
             if (strButtonPressed == "btnSelectFolder") {
@@ -438,14 +381,7 @@ namespace GetCommentsMethodsFromFile {
                 //    myActions.MessageBoxShow("Please enter Find What or select Find What from ComboBox; else press Cancel to Exit");
                 //    goto DisplaySelectFolderWindow;
                 //}
-                if ((strFileType == "--Select Item ---" || strFileType == "")) {
-                    myActions.MessageBoxShow("Please enter File Type or select File Type from ComboBox; else press Cancel to Exit");
-                    goto DisplaySelectFolderWindow;
-                }
-                if ((strExclude == "--Select Item ---" || strExclude == "")) {
-                    myActions.MessageBoxShow("Please enter Exclude or select Exclude from ComboBox; else press Cancel to Exit");
-                    goto DisplaySelectFolderWindow;
-                }
+ 
                 if ((strFolder == "--Select Item ---" || strFolder == "")) {
                     myActions.MessageBoxShow("Please enter Folder or select Folder from ComboBox; else press Cancel to Exit");
                     goto DisplaySelectFolderWindow;
@@ -460,11 +396,7 @@ namespace GetCommentsMethodsFromFile {
                 }
 
 
-                strFileTypeToUse = strFileType;
 
-
-
-                strExcludeToUse = strExclude;
 
 
                 strFolderToUse = strFolder;
