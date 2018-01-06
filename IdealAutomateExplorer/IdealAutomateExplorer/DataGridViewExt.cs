@@ -10,11 +10,14 @@ namespace System.Windows.Forms.Samples {
 
 	[Description("DataGridView that Saves Column Order, Width and Visibility to user.config")]
 	[ToolboxBitmap(typeof(System.Windows.Forms.DataGridView))]
-	public class DataGridViewExt : DataGridView
+	public partial class DataGridViewExt : DataGridView
 	{
         string _InitialDirectory = "myInitialDirectory";
         public DataGridViewExt(string InitialDirectory) {
             _InitialDirectory = InitialDirectory;
+        }
+        public DataGridViewExt() {
+
         }
 		private void SetColumnOrder()
 		{

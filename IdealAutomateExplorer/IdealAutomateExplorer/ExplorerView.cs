@@ -130,13 +130,14 @@ namespace System.Windows.Forms.Samples {
         public ExplorerView() {
             InitializeComponent();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExplorerView));
+
             Methods myActions = new Methods();
 
             for (int i = 0; i < 20; i++) {
                 BindingSource myNewBindingSource = new BindingSource();
                 listBindingSource.Add(myNewBindingSource);
             }
-           // _CurrentDataGridView = new DataGridViewExt(myActions.GetValueByKey("InitialDirectory" + i.ToString()));
+            // _CurrentDataGridView = new DataGridViewExt(myActions.GetValueByKey("InitialDirectory" + i.ToString()));
             _CurrentFileViewBindingSource = FileViewBindingSource;
             tabControl1.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
             tabControl1.HotTrack = true;
@@ -1622,7 +1623,7 @@ namespace System.Windows.Forms.Samples {
                         SetTitle(_dir.FileView);
                         RefreshDataGrid();
                     } catch (Exception ex) {
-                       MessageBox.Show(ex.Message + " - Line 1625 in ExplorerView");
+                        MessageBox.Show(ex.Message + " - Line 1625 in ExplorerView");
                     }
                 }
             }
@@ -1953,7 +1954,7 @@ namespace System.Windows.Forms.Samples {
                 if (e.ColumnIndex != -1 && e.RowIndex != -1 && e.Button == System.Windows.Forms.MouseButtons.Left) {
                     DataGridViewCell c = (sender as DataGridView)[e.ColumnIndex, e.RowIndex];
                     if (!c.Selected) {
-                        c.Selected = true;                        
+                        c.Selected = true;
                         string fileName = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["FullName"].Value.ToString();
                         if (fileName.EndsWith(".url")
 
@@ -3352,7 +3353,9 @@ namespace System.Windows.Forms.Samples {
              TotalSavingsCol,
              Type,
              DateModifiedCol,
-             FullName,             
+
+
+             FullName,
              CustomCol,
              StatusCol,
              DescriptionCol,
@@ -3760,7 +3763,7 @@ namespace System.Windows.Forms.Samples {
             if (DataGridViewExtSetting.Default.ColumnOrder.ContainsKey(pstrInitialDirectory)) {
 
 
-                List <ColumnOrderItem> columnOrder =
+                List<ColumnOrderItem> columnOrder =
                     DataGridViewExtSetting.Default.ColumnOrder[pstrInitialDirectory];
 
                 if (columnOrder != null) {
@@ -5547,7 +5550,7 @@ namespace System.Windows.Forms.Samples {
                     Console.WriteLine(e.Message);
                     continue;
                 } catch (System.ArgumentException e) {
-              //      MessageBox.Show(e.Message + " CurrentDir = " + currentDir);
+                    //      MessageBox.Show(e.Message + " CurrentDir = " + currentDir);
                     continue;
                 }
 
@@ -5739,7 +5742,7 @@ namespace System.Windows.Forms.Samples {
                 if (ex.InnerException != null) {
                     myActions.MessageBoxShow(ex.InnerException.ToString() + " - Line 5706 in ExplorerView");
                 } else {
-                  //  myActions.MessageBoxShow(ex.Message + " - Line 5708 in ExplorerView");
+                    //  myActions.MessageBoxShow(ex.Message + " - Line 5708 in ExplorerView");
                 }
             }
             if (sb.ToString().Contains(text)) {
@@ -6585,7 +6588,7 @@ namespace System.Windows.Forms.Samples {
         private void splitContainer1_MouseLeave(object sender, EventArgs e) {
             if (_Panel2KeyPress && (_WordPadLoaded || _NotepadppLoaded)) {
                 Methods myActions = new Methods();
-                myActions.TypeText("^(s)", 200);               
+                myActions.TypeText("^(s)", 200);
                 Popup();
                 _Panel2KeyPress = false;
             }
@@ -6594,7 +6597,7 @@ namespace System.Windows.Forms.Samples {
         private void toolBar_MouseEnter(object sender, EventArgs e) {
             if (_Panel2KeyPress && (_WordPadLoaded || _NotepadppLoaded)) {
                 Methods myActions = new Methods();
-                myActions.TypeText("^(s)", 200);                
+                myActions.TypeText("^(s)", 200);
                 Popup();
                 _Panel2KeyPress = false;
             }
@@ -6603,7 +6606,7 @@ namespace System.Windows.Forms.Samples {
         private void toolBar_MouseLeave(object sender, EventArgs e) {
             if (_Panel2KeyPress && (_WordPadLoaded || _NotepadppLoaded)) {
                 Methods myActions = new Methods();
-                myActions.TypeText("^(s)", 200);                
+                myActions.TypeText("^(s)", 200);
                 Popup();
                 _Panel2KeyPress = false;
             }
@@ -6612,7 +6615,7 @@ namespace System.Windows.Forms.Samples {
         private void splitContainer1_MouseEnter(object sender, EventArgs e) {
             if (_Panel2KeyPress && (_WordPadLoaded || _NotepadppLoaded)) {
                 Methods myActions = new Methods();
-                myActions.TypeText("^(s)", 200);                
+                myActions.TypeText("^(s)", 200);
                 Popup();
                 _Panel2KeyPress = false;
             }
