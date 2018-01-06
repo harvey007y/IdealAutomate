@@ -39,8 +39,8 @@ namespace System.Windows.Forms.Samples {
         private DirectoryView _dir;
         string strInitialDirectory = "";
         int _CurrentIndex = 0;
-        DataGridViewExt _CurrentDataGridView = new DataGridViewExt();
-        DataGridViewExt dataGridView3 = new DataGridViewExt();
+        DataGridViewExt _CurrentDataGridView;
+        DataGridViewExt dataGridView3;
         BindingSource _CurrentFileViewBindingSource = new BindingSource();
         bool boolStopEvent = false;
         bool _ignoreSelectedIndexChanged = false;
@@ -130,13 +130,13 @@ namespace System.Windows.Forms.Samples {
         public ExplorerView() {
             InitializeComponent();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExplorerView));
-
+            Methods myActions = new Methods();
 
             for (int i = 0; i < 20; i++) {
                 BindingSource myNewBindingSource = new BindingSource();
                 listBindingSource.Add(myNewBindingSource);
             }
-            _CurrentDataGridView = new DataGridViewExt();
+           // _CurrentDataGridView = new DataGridViewExt(myActions.GetValueByKey("InitialDirectory" + i.ToString()));
             _CurrentFileViewBindingSource = FileViewBindingSource;
             tabControl1.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
             tabControl1.HotTrack = true;
@@ -266,7 +266,7 @@ namespace System.Windows.Forms.Samples {
         #region Event Handlers        
         private void ExplorerView_Load(object sender, EventArgs e) {
             Methods myActions = new Methods();
-            _CurrentDataGridView.ClearSelection();
+            //_CurrentDataGridView.ClearSelection();
 
             splitContainer1.Height = Screen.PrimaryScreen.Bounds.Height - 175;
 
@@ -349,7 +349,7 @@ namespace System.Windows.Forms.Samples {
                 tabControl1.TabPages[i].Text = _dir.FileView.Name;
                 tabControl1.TabPages[i].ToolTipText = _dir.FileView.FullName;
                 _CurrentIndex = i;
-                AddDataGridToTab();
+                AddDataGridToTab(strInitialDirectory);
 
 
             }
@@ -511,33 +511,33 @@ namespace System.Windows.Forms.Samples {
             if (e.RowIndex > ((DataGridViewExt)sender).Rows.Count - 1) {
                 return;
             }
-            if (e.RowIndex < 0 || ((DataGridViewExt)sender).Rows[e.RowIndex].Cells[1].Value == null) {
+            if (e.RowIndex < 0 || ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["NameCol"].Value == null) {
                 return;
             }
-            string fileName = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells[13].Value.ToString();
-            string scriptName = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells[1].Value.ToString();
+            string fileName = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["FullName"].Value.ToString();
+            string scriptName = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["NameCol"].Value.ToString();
             Methods myActions = new Methods();
             string categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToPublicPath(fileName) + "\\" + scriptName.Replace(".txt", "").Replace(".rtf", ""));
             string strNestingLevel = "";
             if (((DataGridViewExt)sender).Rows.Count == 0) {
                 return;
             }
-            strNestingLevel = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells[14].Value.ToString();
+            strNestingLevel = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["NestingLevel"].Value.ToString();
             int nestingLevel = 0;
             Int32.TryParse(strNestingLevel, out nestingLevel);
             int indent = nestingLevel * 20;
             if (categoryState == "Collapsed" || categoryState == "Expanded") {
-                ((DataGridViewExt)sender).Rows[e.RowIndex].Cells[1].Style.Font = new Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold);
-                ((DataGridViewExt)sender).Rows[e.RowIndex].Cells[1].Style.Padding = new Padding(indent, 0, 0, 0);
+                ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["NameCol"].Style.Font = new Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold);
+                ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["NameCol"].Style.Padding = new Padding(indent, 0, 0, 0);
             } else {
-                ((DataGridViewExt)sender).Rows[e.RowIndex].Cells[1].Style.Padding = new Padding(indent, 0, 0, 0);
-                DataGridViewCell iconCell = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells[0];
+                ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["NameCol"].Style.Padding = new Padding(indent, 0, 0, 0);
+                DataGridViewCell iconCell = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["dataGridViewImageColumn1"];
             }
         }
 
         private void dataGridView1_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e) {
             // Call Active on DirectoryView
-            string fileName = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells[13].Value.ToString();
+            string fileName = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["FullName"].Value.ToString();
             Methods myActions = new Methods();
             // fileName = fileName;
             string categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", fileName);
@@ -1355,7 +1355,7 @@ namespace System.Windows.Forms.Samples {
 
 
 
-            AddDataGridToTab();
+            AddDataGridToTab(strInitialDirectory);
 
             myActions.SetValueByKey("NumOfTabs", (tabControl1.TabCount).ToString());
             strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
@@ -1603,7 +1603,7 @@ namespace System.Windows.Forms.Samples {
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 if (myCell.ColumnIndex == 0 && e.RowIndex > -1) {
                     // Call Active on DirectoryView
-                    string fileName = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells[13].Value.ToString();
+                    string fileName = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["FullName"].Value.ToString();
 
 
                     string categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", fileName);
@@ -1954,7 +1954,7 @@ namespace System.Windows.Forms.Samples {
                     DataGridViewCell c = (sender as DataGridView)[e.ColumnIndex, e.RowIndex];
                     if (!c.Selected) {
                         c.Selected = true;                        
-                        string fileName = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells[13].Value.ToString();
+                        string fileName = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["FullName"].Value.ToString();
                         if (fileName.EndsWith(".url")
 
                          ) {
@@ -3159,7 +3159,7 @@ namespace System.Windows.Forms.Samples {
 
                 }
 
-                AddDataGridToTab();
+                AddDataGridToTab(strInitialDirectory);
 
                 myActions.SetValueByKey("NumOfTabs", (tabControl1.TabCount).ToString());
                 strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
@@ -3180,9 +3180,9 @@ namespace System.Windows.Forms.Samples {
             RefreshDataGrid();
         }
 
-        private void AddDataGridToTab() {
+        private void AddDataGridToTab(string pstrInitialDirectory) {
             tabControl1.TabPages.Insert(_CurrentIndex + 1, "    +");
-            DataGridViewExt myDataGridView = new DataGridViewExt();
+            DataGridViewExt myDataGridView = new DataGridViewExt(pstrInitialDirectory);
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -3319,6 +3319,25 @@ namespace System.Windows.Forms.Samples {
             // #IMPORTANT: put new columns at end because
             // columns are referred to by index in code and
             // adding new columns in the middle will break code
+            // Index  Column                      DataPropertyName
+            // 0       dataGridViewImageColumn1,  Icon
+            // 1       NameCol,                   Name
+            // 2       HotKeyCol,                 HotKey
+            // 3       TotalExecutionsCol,        TotalExecutions
+            // 4       SuccessfulExecutionsCol,   SuccessfulExecutions
+            // 5       PercentCorrectCol,         PercentCorrect
+            // 6       LastExecutedCol,           LastExecuted
+            // 7       SizeCol,                   Size 
+            // 8       AvgExecutionTimeCol,       AvgExecutionTime
+            // 9       ManualExecutionTimeCol,    ManualExecutionTime
+            // 10      TotalSavingsCol,           TotalSavings
+            // 11      Type,                      Type
+            // 12      DateModifiedCol,           DateModified
+            // 13      FullName,                  FullName             
+            // 14      CustomCol,                 Custom
+            // 15      StatusCol,                 Status
+            // 16      DescriptionCol,            Description
+            // 17      NestingLevel               NestingLevel
             myDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             dataGridViewImageColumn1,
             NameCol,
@@ -3333,11 +3352,11 @@ namespace System.Windows.Forms.Samples {
              TotalSavingsCol,
              Type,
              DateModifiedCol,
-             FullName,
-             NestingLevel,
+             FullName,             
              CustomCol,
              StatusCol,
-             DescriptionCol
+             DescriptionCol,
+             NestingLevel
             });
             //  myDataGridView.DataSource = this.FileViewBindingSource;
             dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -3738,6 +3757,21 @@ namespace System.Windows.Forms.Samples {
             NestingLevel.HeaderText = "NestingLevel";
             NestingLevel.Name = "NestingLevel";
             NestingLevel.Visible = false;
+            if (DataGridViewExtSetting.Default.ColumnOrder.ContainsKey(pstrInitialDirectory)) {
+
+
+                List <ColumnOrderItem> columnOrder =
+                    DataGridViewExtSetting.Default.ColumnOrder[pstrInitialDirectory];
+
+                if (columnOrder != null) {
+                    var sorted = columnOrder.OrderBy(i => i.DisplayIndex);
+                    foreach (var item in sorted) {
+                        myDataGridView.Columns[item.ColumnIndex].DisplayIndex = item.DisplayIndex;
+                        myDataGridView.Columns[item.ColumnIndex].Visible = item.Visible;
+                        myDataGridView.Columns[item.ColumnIndex].Width = item.Width;
+                    }
+                }
+            }
             this.contextMenuStrip1.ResumeLayout(false);
             // 
             // FileViewBindingSource
@@ -5299,7 +5333,7 @@ namespace System.Windows.Forms.Samples {
                     bool boolNewItem = false;
 
                     alHostsNew.Add(myCbp);
-                    if (alHostx.Count > 14) {
+                    if (alHostx.Count > 24) {
                         for (int i = alHostx.Count - 1; i > 0; i--) {
                             if (alHostx[i]._Key.Trim() != "--Select Item ---") {
                                 alHostx.RemoveAt(i);
