@@ -87,8 +87,8 @@ namespace HotKeysMenu {
 
         public static string strSearchPattern = @"*.*";
 
-        public static string strSearchExcludePattern = @"*.dll;*.exe;*.png;*.xml;*.cache;*.sln;*.suo;*.pdb;*.csproj;*.deploy";
-
+    //    public static string strSearchExcludePattern = @"*.dll;*.exe;*.png;*.xml;*.cache;*.sln;*.suo;*.pdb;*.csproj;*.deploy";
+        public static string strSearchExcludePattern = @"";
         public static string strSearchText = @"notepad";
 
         public static string strLowerCaseSearchText = @"notepad";
@@ -150,9 +150,16 @@ namespace HotKeysMenu {
             string[] files = null;
             if (strHotkeysOnly == "All Executables") {
                 try {
+                    //List<FileInfo> myFileList = TraverseTree("*.exe", strFolder);
+                    //Array.Resize(ref files, myFileList.Count);
+                    //for (int i = 0; i < myFileList.Count; i++) {
+                    //    var item = myFileList[i];
+
+                    //    files[i] = item.FullName; 
+                    //}
                     files = System.IO.Directory.GetFiles(strFolder, "*.exe", SearchOption.AllDirectories);
                 } catch (UnauthorizedAccessException e) {
-
+                    myActions.MessageBoxShow(e.Message + " - line 162 in HotKeysMenu");
                     Console.WriteLine(e.Message);
                 } catch (System.IO.DirectoryNotFoundException e) {
                     Console.WriteLine(e.Message);
@@ -529,7 +536,7 @@ namespace HotKeysMenu {
             myNewProjectSourcePath = "";
             strPathToSearch = @"C:\SVNIA\trunk";
             strSearchPattern = @"*.*";
-            strSearchExcludePattern = @"*.dll;*.exe;*.png;*.xml;*.cache;*.sln;*.suo;*.pdb;*.csproj;*.deploy";
+            strSearchExcludePattern = @"";
             strSearchText = @"notepad";
             strLowerCaseSearchText = @"notepad";
             intHits = 0;
@@ -853,5 +860,99 @@ namespace HotKeysMenu {
             strLowerCaseSearchText = strFindWhatToUse.ToLower();
             myActions.SetValueByKey("FindWhatToUse", strFindWhatToUse);
         }
+        public static List<FileInfo> TraverseTree(string filterPattern, string root) {
+            string[] arrayExclusionPatterns = strSearchExcludePattern.Split(';');
+            for (int i = 0; i < arrayExclusionPatterns.Length; i++) {
+                arrayExclusionPatterns[i] = arrayExclusionPatterns[i].ToLower().ToString().Replace("*", "");
+            }
+            List<FileInfo> myFileList = new List<FileInfo>();
+            // Data structure to hold names of subfolders to be
+            // examined for files.
+            Stack<string> dirs = new Stack<string>(20);
+
+            if (!System.IO.Directory.Exists(root)) {
+                MessageBox.Show(root + " - folder did not exist");
+            }
+
+
+            dirs.Push(root);
+
+            while (dirs.Count > 0) {
+                string currentDir = dirs.Pop();
+                string[] subDirs;
+                try {
+                    subDirs = System.IO.Directory.GetDirectories(currentDir);
+                }
+                // An UnauthorizedAccessException exception will be thrown if we do not have
+                // discovery permission on a folder or file. It may or may not be acceptable 
+                // to ignore the exception and continue enumerating the remaining files and 
+                // folders. It is also possible (but unlikely) that a DirectoryNotFound exception 
+                // will be raised. This will happen if currentDir has been deleted by
+                // another application or thread after our call to Directory.Exists. The 
+                // choice of which exceptions to catch depends entirely on the specific task 
+                // you are intending to perform and also on how much you know with certainty 
+                // about the systems on which this code will run.
+                catch (UnauthorizedAccessException e) {
+                    Console.WriteLine(e.Message);
+                    continue;
+                } catch (System.IO.DirectoryNotFoundException e) {
+                    Console.WriteLine(e.Message);
+                    continue;
+                } catch (System.ArgumentException e) {
+                    //      MessageBox.Show(e.Message + " CurrentDir = " + currentDir);
+                    continue;
+                }
+
+                string[] files = null;
+                try {
+                    files = System.IO.Directory.GetFiles(currentDir, filterPattern);
+                } catch (UnauthorizedAccessException e) {
+
+                    Console.WriteLine(e.Message);
+                    continue;
+                } catch (System.IO.DirectoryNotFoundException e) {
+                    Console.WriteLine(e.Message);
+                    continue;
+                } catch (System.IO.PathTooLongException e) {
+                    Console.WriteLine(e.Message);
+                    continue;
+                } catch (Exception e) {
+                    Console.WriteLine(e.Message);
+                    continue;
+                }
+
+                // Perform the required action on each file here.
+                // Modify this block to perform your required task.
+                foreach (string file in files) {
+                    try {
+                        // Perform whatever action is required in your scenario.
+                        System.IO.FileInfo fi = new System.IO.FileInfo(file);
+                        bool boolFileHasGoodExtension = true;
+                        //foreach (var item in arrayExclusionPatterns) {
+                        //    if (fi.FullName.ToLower().Contains(item)) {
+                        //        boolFileHasGoodExtension = false;
+                        //    }
+                        //}
+                        if (boolFileHasGoodExtension) {
+                            myFileList.Add(fi);
+                        }
+                        //    Console.WriteLine("{0}: {1}, {2}", fi.Name, fi.Length, fi.CreationTime);
+                    } catch (System.IO.FileNotFoundException e) {
+                        // If file was deleted by a separate application
+                        //  or thread since the call to TraverseTree()
+                        // then just continue.
+                        Console.WriteLine(e.Message);
+                        continue;
+                    }
+                }
+
+                // Push the subdirectories onto the stack for traversal.
+                // This could also be done before handing the files.
+                foreach (string str in subDirs)
+                    dirs.Push(str);
+            }
+            return myFileList;
+        }
+
     }
 }

@@ -133,7 +133,7 @@ namespace IdealAutomate.Core {
                             button.ToolTip = item.ToolTipx;
                         }
                         button.Click += new System.Windows.RoutedEventHandler(button_Click);
-                        button.Name = item.ID.Replace("Category::","");
+                        button.Name = item.ID.Replace("Category::","").Replace(".", "");
                         button.Content = item.Text;
                         if (item.BackgroundColor != null) {
                             button.Background = new SolidColorBrush(item.BackgroundColor ?? Color.FromRgb(00, 00, 00));
