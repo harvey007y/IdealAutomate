@@ -96,6 +96,7 @@ namespace System.Windows.Forms.Samples
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.showHideColumnsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource)).BeginInit();
             this.toolBar.SuspendLayout();
@@ -510,7 +511,8 @@ namespace System.Windows.Forms.Samples
             this.collapseAllToolStripMenuItem,
             this.expandAllToolStripMenuItem,
             this.refreshToolStripMenuItem,
-            this.totalSavingsToolStripMenuItem});
+            this.totalSavingsToolStripMenuItem,
+            this.showHideColumnsToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.viewToolStripMenuItem.Text = "View";
@@ -518,28 +520,28 @@ namespace System.Windows.Forms.Samples
             // collapseAllToolStripMenuItem
             // 
             this.collapseAllToolStripMenuItem.Name = "collapseAllToolStripMenuItem";
-            this.collapseAllToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.collapseAllToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.collapseAllToolStripMenuItem.Text = "Collapse All";
             this.collapseAllToolStripMenuItem.Click += new System.EventHandler(this.collapseAllToolStripMenuItem_Click);
             // 
             // expandAllToolStripMenuItem
             // 
             this.expandAllToolStripMenuItem.Name = "expandAllToolStripMenuItem";
-            this.expandAllToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.expandAllToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.expandAllToolStripMenuItem.Text = "Expand All";
             this.expandAllToolStripMenuItem.Click += new System.EventHandler(this.expandAllToolStripMenuItem_Click);
             // 
             // refreshToolStripMenuItem
             // 
             this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
-            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.refreshToolStripMenuItem.Text = "Refresh";
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
             // totalSavingsToolStripMenuItem
             // 
             this.totalSavingsToolStripMenuItem.Name = "totalSavingsToolStripMenuItem";
-            this.totalSavingsToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.totalSavingsToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.totalSavingsToolStripMenuItem.Text = "Total Savings";
             this.totalSavingsToolStripMenuItem.Click += new System.EventHandler(this.totalSavingsToolStripMenuItem_Click);
             // 
@@ -622,6 +624,13 @@ namespace System.Windows.Forms.Samples
             this.pictureBox1.TabIndex = 12;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.search_Click);
+            // 
+            // showHideColumnsToolStripMenuItem
+            // 
+            this.showHideColumnsToolStripMenuItem.Name = "showHideColumnsToolStripMenuItem";
+            this.showHideColumnsToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.showHideColumnsToolStripMenuItem.Text = "Show/Hide Columns";
+            this.showHideColumnsToolStripMenuItem.Click += new System.EventHandler(this.showHideColumnsToolStripMenuItem_Click);
             // 
             // ExplorerView
             // 
@@ -727,6 +736,7 @@ namespace System.Windows.Forms.Samples
         private ToolStripMenuItem removeHotKeyStripMenuItem;
         private ToolStripMenuItem urlShortcutFileToolStripMenuItem;
         private ToolStripMenuItem urlShortcutToolStripMenuItem;
+        private ToolStripMenuItem showHideColumnsToolStripMenuItem;
     }
 }
 

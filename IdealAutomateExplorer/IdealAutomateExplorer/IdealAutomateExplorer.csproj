@@ -99,6 +99,7 @@
     <Content Include="MyNewProject\MyNewProject\Properties\AssemblyInfo.cs" />
     <Content Include="MyNewProject\MyNewProject\Properties\Resources.Designer.cs" />
     <Content Include="MyNewProject\MyNewProject\Properties\Settings.Designer.cs" />
+    <Compile Include="DataGridViewColumnSelector.cs" />
     <Compile Include="DataGridViewExt.cs">
       <SubType>Component</SubType>
     </Compile>

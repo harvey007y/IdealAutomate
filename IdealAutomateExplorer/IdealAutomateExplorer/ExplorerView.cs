@@ -1531,6 +1531,10 @@ namespace System.Windows.Forms.Samples {
             _CurrentDataGridView.DataSource = null;
             _CurrentDataGridView.DataSource = _CurrentFileViewBindingSource;
             //   this._CurrentDataGridView.Sort(_CurrentDataGridView.Columns[1], ListSortDirection.Ascending);
+            // Use of the DataGridViewColumnSelector
+            DataGridViewColumnSelector cs = new DataGridViewColumnSelector(_CurrentDataGridView);
+            cs.MaxHeight = 100;
+            cs.Width = 110;
         }
 
 
@@ -6619,6 +6623,13 @@ namespace System.Windows.Forms.Samples {
                 Popup();
                 _Panel2KeyPress = false;
             }
+        }
+
+        private void showHideColumnsToolStripMenuItem_Click(object sender, EventArgs e) {
+            DataGridViewColumnSelector cs = new DataGridViewColumnSelector(_CurrentDataGridView);
+            cs.MaxHeight = 100;
+            cs.Width = 110;
+            cs.ShowHideColumns();
         }
     }
 
