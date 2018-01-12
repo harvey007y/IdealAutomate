@@ -32,6 +32,7 @@ using DocumentFormat.OpenXml.Packaging;
 
 
 
+
 #endregion
 
 namespace System.Windows.Forms.Samples {
@@ -3236,6 +3237,7 @@ namespace System.Windows.Forms.Samples {
             this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
             this.textDocumentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.urlShortcutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fileShortcutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.wordPadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             DataGridViewTextBoxColumn HotKeyCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
             DataGridViewTextBoxColumn DescriptionCol = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -3587,7 +3589,8 @@ namespace System.Windows.Forms.Samples {
             this.toolStripMenuItem5,
             this.textDocumentToolStripMenuItem,
             this.urlShortcutToolStripMenuItem,
-            this.wordPadToolStripMenuItem});
+            this.wordPadToolStripMenuItem,
+            this.fileShortcutToolStripMenuItem});
             this.newToolStripMenuItem1.Name = "newToolStripMenuItem1";
             this.newToolStripMenuItem1.Size = new System.Drawing.Size(131, 22);
             this.newToolStripMenuItem1.Text = "New";
@@ -3626,6 +3629,13 @@ namespace System.Windows.Forms.Samples {
             this.urlShortcutToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.urlShortcutToolStripMenuItem.Text = "Url Shortcut";
             this.urlShortcutToolStripMenuItem.Click += new System.EventHandler(this.urlShortcutToolStripMenuItem_Click);
+            // 
+            // fileShortcutToolStripMenuItem
+            // 
+            this.fileShortcutToolStripMenuItem.Name = "fileShortcutToolStripMenuItem";
+            this.fileShortcutToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.fileShortcutToolStripMenuItem.Text = "File Shortcut";
+            this.fileShortcutToolStripMenuItem.Click += new System.EventHandler(this.fileShortcutToolStripMenuItem_Click);
             // 
             // HotKeyCol
             // 
@@ -6630,6 +6640,221 @@ namespace System.Windows.Forms.Samples {
             cs.MaxHeight = 100;
             cs.Width = 110;
             cs.ShowHideColumns();
+        }
+
+     
+
+        private void fileShortcutFileToolStripMenuItem_Click(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            string basePathForNewFolder = _dir.FileView.FullName;
+            string basePathName = _dir.FileView.Name;
+            string basePathForNewTextDocument = _dir.FileView.FullName;
+            string fileFullName = "";
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
+                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
+                    basePathForNewTextDocument = myFileView.FullName;
+                    basePathName = myFileView.Name;
+                    basePathForNewFolder = myFileView.FullName;
+                    fileFullName = myFileView.FullName;
+                }
+            }
+
+
+            List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+
+            ControlEntity myControlEntity = new ControlEntity();
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Heading;
+            myControlEntity.Text = "Create New File Shortcut";
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+            int intRowCtr = 0;
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "myLabel";
+            myControlEntity.Text = "Enter New File Shortcut Name";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "txtShortcutName";
+            myControlEntity.Text = "";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "lblShortcutFile";
+            myControlEntity.Text = "Shortcut File";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.Width = 150;
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "txtShortcutFile";
+            myControlEntity.Text = "";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            ReDisplayNewTextDocumentDialog:
+            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
+
+            if (strButtonPressed == "btnCancel") {
+                myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                return;
+            }
+
+            string strShortcutName = myListControlEntity.Find(x => x.ID == "txtShortcutName").Text;
+            string strShortcutFile = myListControlEntity.Find(x => x.ID == "txtShortcutFile").Text;
+
+
+            string parentScriptPath = myActions.ConvertFullFileNameToPublicPath(basePathForNewTextDocument) + "\\" + basePathName;
+            string myNewTextDocumentName = myListControlEntity.Find(x => x.ID == "txtShortcutName").Text;
+            if (!myNewTextDocumentName.EndsWith(".lnk")) {
+                myNewTextDocumentName = myNewTextDocumentName + ".lnk";
+            }
+            string strNewTextDocumentDir = Path.Combine(basePathForNewTextDocument, myNewTextDocumentName);
+
+            myActions.SetValueByKeyForNonCurrentScript("shortcutName", strShortcutName, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
+            myActions.SetValueByKeyForNonCurrentScript("shortcutFile", strShortcutFile, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
+
+            if (!File.Exists(strNewTextDocumentDir)) {
+                Type t = Type.GetTypeFromCLSID(new Guid("72C24DD5-D70A-438B-8A42-98424B88AFB8")); //Windows Script Host Shell Object
+                dynamic shell = Activator.CreateInstance(t);
+                try {
+                    var lnk = shell.CreateShortcut(strNewTextDocumentDir);
+                    try {
+                        lnk.TargetPath = strShortcutFile;
+                        lnk.IconLocation = "shell32.dll, 1";
+                        lnk.Save();
+                    } finally {
+                        Marshal.FinalReleaseComObject(lnk);
+                    }
+                } finally {
+                    Marshal.FinalReleaseComObject(shell);
+                }               
+            }
+            splitContainer1.SplitterDistance = (int)(ClientSize.Width * .2);
+
+        }
+        private void fileShortcutToolStripMenuItem_Click(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            string basePathForNewFolder = _dir.FileView.FullName;
+            string basePathName = _dir.FileView.Name;
+            string basePathForNewTextDocument = _dir.FileView.FullName;
+            string fileFullName = "";
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
+                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
+                    basePathForNewTextDocument = myFileView.FullName;
+                    basePathName = myFileView.Name;
+                    basePathForNewFolder = myFileView.FullName;
+                    fileFullName = myFileView.FullName;
+                    List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+
+                    ControlEntity myControlEntity = new ControlEntity();
+                    myControlEntity.ControlEntitySetDefaults();
+                    myControlEntity.ControlType = ControlType.Heading;
+                    myControlEntity.Text = "Create New File Shortcut";
+                    myListControlEntity.Add(myControlEntity.CreateControlEntity());
+                    int intRowCtr = 0;
+
+                    myControlEntity.ControlEntitySetDefaults();
+                    myControlEntity.ControlType = ControlType.Label;
+                    myControlEntity.ID = "myLabel";
+                    myControlEntity.Text = "Enter New File Shortcut Name";
+                    myControlEntity.RowNumber = intRowCtr;
+                    myControlEntity.ColumnNumber = 0;
+                    myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+                    myControlEntity.ControlEntitySetDefaults();
+                    myControlEntity.ControlType = ControlType.TextBox;
+                    myControlEntity.ID = "txtShortcutName";
+                    myControlEntity.Text = "";
+                    myControlEntity.RowNumber = intRowCtr;
+                    myControlEntity.ColumnNumber = 1;
+                    myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                    intRowCtr++;
+                    myControlEntity.ControlEntitySetDefaults();
+                    myControlEntity.ControlType = ControlType.Label;
+                    myControlEntity.ID = "lblShortcutFile";
+                    myControlEntity.Text = "Shortcut File";
+                    myControlEntity.RowNumber = intRowCtr;
+                    myControlEntity.Width = 150;
+                    myControlEntity.ColumnNumber = 0;
+                    myControlEntity.ColumnSpan = 1;
+                    myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+
+                    myControlEntity.ControlEntitySetDefaults();
+                    myControlEntity.ControlType = ControlType.TextBox;
+                    myControlEntity.ID = "txtShortcutFile";
+                    myControlEntity.Text = "";
+                    myControlEntity.RowNumber = intRowCtr;
+                    myControlEntity.ColumnNumber = 1;
+                    myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                    ReDisplayNewTextDocumentDialog:
+
+                    string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
+
+                    if (strButtonPressed == "btnCancel") {
+                        myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                        return;
+                    }
+
+                    string strShortcutName = myListControlEntity.Find(x => x.ID == "txtShortcutName").Text;
+                    string strShortcutFile = myListControlEntity.Find(x => x.ID == "txtShortcutFile").Text;
+
+
+                    string parentScriptPath = myActions.ConvertFullFileNameToPublicPath(basePathForNewTextDocument) + "\\" + basePathName;
+                    string myNewTextDocumentName = myListControlEntity.Find(x => x.ID == "txtShortcutName").Text;
+                    if (!myNewTextDocumentName.EndsWith(".lnk")) {
+                        myNewTextDocumentName = myNewTextDocumentName + ".lnk";
+                    }
+                    string strNewTextDocumentDir = Path.Combine(basePathForNewTextDocument, myNewTextDocumentName);
+
+                    myActions.SetValueByKeyForNonCurrentScript("shortcutName", strShortcutName, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
+                    myActions.SetValueByKeyForNonCurrentScript("shortcutFile", strShortcutFile, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
+                    if (!File.Exists(strNewTextDocumentDir)) {
+                        Type t = Type.GetTypeFromCLSID(new Guid("72C24DD5-D70A-438B-8A42-98424B88AFB8")); //Windows Script Host Shell Object
+                        dynamic shell = Activator.CreateInstance(t);
+                        try {
+                            var lnk = shell.CreateShortcut(strNewTextDocumentDir);
+                            try {
+                                lnk.TargetPath = strShortcutFile;
+                                lnk.IconLocation = "shell32.dll, 1";
+                                lnk.Save();
+                            } finally {
+                                Marshal.FinalReleaseComObject(lnk);
+                            }
+                        } finally {
+                            Marshal.FinalReleaseComObject(shell);
+                        }
+                    }
+                    splitContainer1.SplitterDistance = (int)(ClientSize.Width * .2);
+
+                } else {
+                    myActions.MessageBoxShow("You can not create a shortcut inside a file; first select folder and right click");
+                }
+
+            }
         }
     }
 

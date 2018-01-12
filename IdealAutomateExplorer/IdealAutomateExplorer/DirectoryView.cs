@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Threading;
 using IdealAutomate.Core;
 using System.Collections;
+using Shell32;
 
 #endregion
 
@@ -191,10 +192,30 @@ namespace System.Windows.Forms.Samples
             {
                 Process process = new Process();
                 process.StartInfo.FileName = fv.FullName;
+                if (fv.FullName.EndsWith(".lnk")) {
+                    process.StartInfo.FileName = GetShortcutTargetFile(fv.FullName);
+
+                }
                 process.StartInfo.Verb = "Open";
                 process.Start();
             }
         }
+        public static string GetShortcutTargetFile(string shortcutFilename) {
+            string pathOnly = System.IO.Path.GetDirectoryName(shortcutFilename);
+            string filenameOnly = System.IO.Path.GetFileName(shortcutFilename);
+
+            Shell32.Shell shell = new Shell32.Shell();
+            Folder folder = shell.NameSpace(pathOnly);
+            FolderItem folderItem = folder.ParseName(filenameOnly);
+            if (folderItem != null) {
+                Shell32.ShellLinkObject link = (Shell32.ShellLinkObject)folderItem.GetLink;
+                return link.Path;
+            }
+
+            return string.Empty;
+        }
+
+
 
         public void Up()
         {

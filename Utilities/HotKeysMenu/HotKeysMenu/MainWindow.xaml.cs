@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Text;
 using System.Linq;
 using System.Windows.Media;
+using Shell32;
 
 namespace HotKeysMenu {
     /// <summary>
@@ -116,6 +117,9 @@ namespace HotKeysMenu {
         List<ComboBoxPair> cbp1 = new List<ComboBoxPair>();
 
     string strButtonPressed = "";
+        private static string[] GetFiles(string sourceFolder, string filters, System.IO.SearchOption searchOption) {
+            return filters.Split('|').SelectMany(filter => System.IO.Directory.GetFiles(sourceFolder, filter, searchOption)).ToArray();
+        }
         public MainWindow() {
             bool boolRunningFromHome = false;
             var window = new Window() //make sure the window is invisible
@@ -157,7 +161,7 @@ namespace HotKeysMenu {
 
                     //    files[i] = item.FullName; 
                     //}
-                    files = System.IO.Directory.GetFiles(strFolder, "*.exe", SearchOption.AllDirectories);
+                    files = GetFiles(strFolder, "*.exe|*.lnk", SearchOption.AllDirectories);
                 } catch (UnauthorizedAccessException e) {
                     myActions.MessageBoxShow(e.Message + " - line 162 in HotKeysMenu");
                     Console.WriteLine(e.Message);
@@ -246,7 +250,7 @@ namespace HotKeysMenu {
                         }
                         myControlEntity.ControlEntitySetDefaults();
                         myControlEntity.ControlType = ControlType.Label;
-                        myControlEntity.ID = "lbl" + strCategory.Replace(" ", "").Replace("<", "").Replace(">", "").Replace("#", "");
+                        myControlEntity.ID = "lbl" + strCategory.Replace(" ", "").Replace("<", "").Replace(">", "").Replace("#", "").Replace("+", "");
                         myControlEntity.Text = strCategory;
                         myControlEntity.RowNumber = intRow;
                         myControlEntity.ColumnNumber = intCol;
@@ -258,7 +262,7 @@ namespace HotKeysMenu {
                     }
                     myControlEntity.ControlEntitySetDefaults();
                     myControlEntity.ControlType = ControlType.Button;
-                    myControlEntity.ID = "myButton" + strMethodName.Replace(" ", "").Replace("<", "").Replace(">", "").Replace("=", "").Replace("!", "").Replace("#", "");
+                    myControlEntity.ID = "myButton" + strMethodName.Replace(" ", "").Replace("<", "").Replace(">", "").Replace("=", "").Replace("!", "").Replace("#", "").Replace("+", "");
                     myControlEntity.Text = strMethodName;
                     myControlEntity.ToolTipx = strExecutable;
 
@@ -370,14 +374,19 @@ namespace HotKeysMenu {
                 foreach (var item in listCategoryMethod) {
                     string[] myArrayFields = item.Key.Replace("Category::", "").ToString().Split('^');
 
-                    string strMethodName = myArrayFields[1];
+                    string strMethodName = myArrayFields[1].Replace(" ","");
                     string strCategory = myArrayFields[0];
                     if (strMethod == strMethodName) {
                         strExecutablex = myArrayFields[2];
                     }
                 }
                 if (strExecutablex != "") {
-                    myActions.Run(strExecutablex, "");
+                    if (strExecutablex.EndsWith(".lnk")) {
+                        
+                             myActions.Run(GetShortcutTargetFile(strExecutablex), "");
+                    } else {
+                        myActions.Run(strExecutablex, "");
+                    }
                     myActions.Sleep(1000);
           GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
           // Display main menu and go back to where you 
@@ -401,7 +410,7 @@ namespace HotKeysMenu {
                 intRowCtr = 0;
                 myControlEntity1.ControlEntitySetDefaults();
                 myControlEntity1.ControlType = ControlType.Heading;
-                myControlEntity1.ID = "lbl" + strMethod.Replace("<", "").Replace(">", "");
+                myControlEntity1.ID = "lbl" + strMethod.Replace("<", "").Replace(">", "").Replace("+", "");
                 myControlEntity1.Text = strMethod;
                 myControlEntity1.Width = 300;
                 myControlEntity1.RowNumber = 0;
@@ -470,7 +479,7 @@ namespace HotKeysMenu {
 
                     string strCategory = myListControlEntity1.Find(x => x.ID == "cbxCategory_" + GetSafeFilename(myFolder)).SelectedValue;
 
-                    myActions.SetValueByKey("cbxCategory" + strMethod.Replace("<", "").Replace(">", "") + "SelectedValue", strCategory);
+                    myActions.SetValueByKey("cbxCategory" + strMethod.Replace("<", "").Replace(">", "").Replace("+", "") + "SelectedValue", strCategory);
 
                 }
                 GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
@@ -513,7 +522,7 @@ namespace HotKeysMenu {
                 myActions.MessageBoxShow("Could not find last slash in in EditPlusLine - aborting");
                 return;
             }
-            string strFileNameOnly = myFile.Substring(intLastSlash + 1).Replace(".exe", "");
+            string strFileNameOnly = myFile.Substring(intLastSlash + 1).Replace(".exe", "").Replace(".lnk", "");
             string strMyCategory = myActions.GetValueByKey("cbxCategory" + strFileNameOnly + "SelectedValue");
             if (strSearchText.Trim() == "") {
                 if (!listCategoryMethod.ContainsKey(strMyCategory + "^" + strFileNameOnly + "^" + myFile)) {
@@ -957,6 +966,20 @@ namespace HotKeysMenu {
                     dirs.Push(str);
             }
             return myFileList;
+        }
+        public static string GetShortcutTargetFile(string shortcutFilename) {
+            string pathOnly = System.IO.Path.GetDirectoryName(shortcutFilename);
+            string filenameOnly = System.IO.Path.GetFileName(shortcutFilename);
+
+            Shell32.Shell shell = new Shell32.Shell();
+            Folder folder = shell.NameSpace(pathOnly);
+            FolderItem folderItem = folder.ParseName(filenameOnly);
+            if (folderItem != null) {
+                Shell32.ShellLinkObject link = (Shell32.ShellLinkObject)folderItem.GetLink;
+                return link.Path;
+            }
+
+            return string.Empty;
         }
 
     }
