@@ -51,6 +51,7 @@
             <param name="myTitle"></param>
             <param name="myShowOption"></param>
             <returns></returns>
+            Category::Window
         </member>
         <member name="M:IdealAutomate.Core.Methods.GetWindowTitlesByProcessName(System.String)">
             <summary>
@@ -61,6 +62,10 @@
             </summary>
             <param name="myProcessName"></param>
             <returns></returns>
+            Category::Window
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.KillAllProcessesByProcessName(System.String)">
+            Category::Processes
         </member>
         <member name="M:IdealAutomate.Core.Methods.PutAll(IdealAutomate.Core.ImageEntity)">
             <summary>
@@ -87,6 +92,7 @@
             </summary>
             <param name="myImage">ImageEntity object</param>
             <returns>an integer array of all of x,y coordinates of where the image was found</returns>
+            Category::Image
         </member>
         <member name="M:IdealAutomate.Core.Methods.PutCursorPosition">
             <summary>
@@ -95,6 +101,7 @@
             <para>the original image again.</para>
             </summary>
             <returns></returns>
+            Category::Cursor
         </member>
         <member name="M:IdealAutomate.Core.Methods.PutCaretPositionInArray">
             <summary>
@@ -103,6 +110,7 @@
             the original position again.
             </summary>
             <returns></returns>
+            Category::Mouse
         </member>
         <!-- Badly formed XML comment ignored for member "M:IdealAutomate.Core.Methods.ClickImageIfExists(IdealAutomate.Core.ImageEntity)" -->
         <member name="M:IdealAutomate.Core.Methods.LeftClick(System.Int32[0:,0:])">
@@ -110,54 +118,63 @@
             LeftClick allows you to left-click on the X and Y coordinates of an int array passed into the method.
             </summary>
             <param name="myArray">int array containing X and Y coordinates of position on screen to click</param>
+            Category::Mouse
         </member>
         <member name="M:IdealAutomate.Core.Methods.ShiftClick(System.Int32[0:,0:])">
             <summary>
             ShiftClick allows you to shift-click on the X and Y coordinates of an int array passed into the method.
             </summary>
             <param name="myArray">int array containing X and Y coordinates of position on screen to click</param>
+            Category::Mouse
         </member>
         <member name="M:IdealAutomate.Core.Methods.RightClick(System.Int32[0:,0:])">
             <summary>
             RightClick allows you to right-click on the X and Y coordinates of an int array passed into the method.
             </summary>
             <param name="myArray">int array containing X and Y coordinates of position on screen to click</param>
+            Category::Mouse
         </member>
         <member name="M:IdealAutomate.Core.Methods.PositionCursor(System.Int32[0:,0:])">
             <summary>
             PositionCursor allows you to move the cursor to the X and Y coordinates of an int array passed into the method.
             </summary>
             <param name="myArray">int array containing X and Y coordinates of position on screen to click</param>
+            Category::Cursor
         </member>
         <member name="M:IdealAutomate.Core.Methods.PutClipboardInEntity">
             <summary>
             PutClipboardInEntity returns a string that contains the text in the clipboard.
             </summary>
             <returns>string that contains the text in the clipboard</returns>
+            Category::Clipboard
         </member>
         <member name="M:IdealAutomate.Core.Methods.PutWindowTitleInEntity">
             <summary>
             PutWindowTitleInEntity returns a string that contains the title of the Active Window
             </summary>
             <returns>string that contains the title of the Active Window</returns>
+            Category::Window
         </member>
         <member name="M:IdealAutomate.Core.Methods.PutInternetExplorerTabTitleInEntity">
             <summary>
             PutInternetExplorerTabTitleInEntity returns a string that contains the Title for the active tab in internet explorer
             </summary>
             <returns>string that contains the Title for the active tab in internet explorer</returns>
+            Category::Internet Explorer
         </member>
         <member name="M:IdealAutomate.Core.Methods.PutInternetExplorerTabURLContainingStringInEntity(System.String)">
             <summary>
             PutInternetExplorerTabTitleInEntity returns a string that contains the url in the address bar for the active tab in internet explorer
             </summary>
             <returns>string that contains the url for the address bar for the active tab in internet explorer</returns>
+            Category::Internet Explorer
         </member>
         <member name="M:IdealAutomate.Core.Methods.PutEntityInClipboard(System.String)">
             <summary>
             PutEntityInClipboard takes the input parameter string and puts it in the clipboard
             </summary>
             <param name="myEntity">string that you want to put into the clipboard</param>
+            Category::Clipboard
         </member>
         <member name="M:IdealAutomate.Core.Methods.TypeText(System.String,System.Int32)">
             <summary>
@@ -177,6 +194,7 @@
             </summary>
             <param name="myEntity">string representing the keys you want to press</param>
             <param name="intSleep">integer representing the number of milliseconds to wait before sending the text</param>
+            Category::Keyboard
         </member>
         <member name="M:IdealAutomate.Core.Methods.CloseApplicationAltFx(System.Int32)">
             <summary>
@@ -184,6 +202,7 @@
             <para>to wait before sending text Alt(F)x to close an application</para>
             </summary>
             <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
+            Category::Keyboard
         </member>
         <member name="M:IdealAutomate.Core.Methods.CloseApplicationAltFc(System.Int32)">
             <summary>
@@ -191,6 +210,7 @@
             <para>to wait before sending text Alt(F)c to close an application</para>
             </summary>
             <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
+            Category::Keyboard
         </member>
         <member name="M:IdealAutomate.Core.Methods.SelectAllCopy(System.Int32)">
             <summary>
@@ -199,6 +219,7 @@
             <para>all of the input into the clipboard</para>
             </summary>
             <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
+            Category::Clipboard
         </member>
         <member name="M:IdealAutomate.Core.Methods.SelectAllCopyIntoEntity(System.Int32)">
             <summary>
@@ -208,6 +229,7 @@
             <para>what is in the clipboard as a string</para>
             </summary>
             <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
+            Category::Clipboard
         </member>
         <member name="M:IdealAutomate.Core.Methods.SelectAllPaste(System.Int32)">
             <summary>
@@ -216,6 +238,7 @@
             <para>all of the input on the screen and replace it with what is in the clipboard</para>
             </summary>
             <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
+            Category::Clipboard
         </member>
         <member name="M:IdealAutomate.Core.Methods.SelectAllPasteFromEntity(System.String,System.Int32)">
             <summary>
@@ -226,6 +249,7 @@
             </summary>
             <param name="myEntity">string that you want to paste</param>
             <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
+            Category::Clipboard
         </member>
         <member name="M:IdealAutomate.Core.Methods.SelectAllDelete(System.Int32)">
             <summary>
@@ -234,6 +258,7 @@
             <para>what is in the input field on the screen</para>    
             </summary>
             <param name="intSleep">integer indicating how many milliseconds to wait before sending the text</param>
+            Category::Keyboard
         </member>
         <member name="M:IdealAutomate.Core.Methods.WindowMultipleControls(System.Collections.Generic.List{IdealAutomate.Core.ControlEntity}@,System.Int32,System.Int32,System.Int32,System.Int32)">
             <summary>
@@ -252,6 +277,7 @@
             <param name="intWindowTop">integer indicating number of pixels from top of screen to display window</param>
             <param name="intWindowLeft">integer indicating number of pixels from left side of screen to display window</param>
             <returns>System.Windows.Forms.DialogResult to indicate if okay button was pressed</returns>
+            Category::Window
         </member>
         <member name="M:IdealAutomate.Core.Methods.WindowMultipleControlsMinimized(System.Collections.Generic.List{IdealAutomate.Core.ControlEntity}@,System.Int32,System.Int32,System.Int32,System.Int32)">
             <summary>
@@ -270,6 +296,7 @@
             <param name="intWindowTop">integer indicating number of pixels from top of screen to display window</param>
             <param name="intWindowLeft">integer indicating number of pixels from left side of screen to display window</param>
             <returns>System.Windows.Forms.DialogResult to indicate if okay button was pressed</returns>
+            Category::Window
         </member>
         <member name="M:IdealAutomate.Core.Methods.WindowShape(System.String,System.String,System.String,System.String,System.Int32,System.Int32)">
             <summary>
@@ -290,12 +317,14 @@
             <param name="myContent">string content for window</param>
             <param name="intTop">integer indicating number of pixels from top of screen to display window</param>
             <param name="intLeft">integer indicating number of pixels from left of screen to display window</param>
+            Category::Window
         </member>
         <member name="M:IdealAutomate.Core.Methods.MessageBoxShow(System.String)">
             <summary>
             MessageBoxShow receives an input string and displays it in a messagebox
             </summary>
             <param name="myEntity">string that you want to display in messagebox</param>
+            Category::MessageBox
         </member>
         <member name="M:IdealAutomate.Core.Methods.MessageBoxShowWithYesNo(System.String)">
             <summary>
@@ -303,6 +332,7 @@
             </summary>
             <param name="myEntity">string that you want to display in messagebox</param>
             <returns>System.Windows.Forms.DialogResult</returns>
+            Category::MessageBox
         </member>
         <member name="M:IdealAutomate.Core.Methods.Run(System.String,System.String)">
             <summary>
@@ -313,6 +343,10 @@
             </summary>
             <param name="myEntityForExecutable">string for the path of the executable</param>
             <param name="myEntityForContent">string for the content for the executable to open</param>
+            Category::Run
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.RunProcessAsAdmin(System.String,System.String)">
+            Category::Process
         </member>
         <member name="M:IdealAutomate.Core.Methods.RunSync(System.String,System.String)">
             <summary>
@@ -323,6 +357,7 @@
             </summary>
             <param name="myEntityForExecutable">string for the path of the executable</param>
             <param name="myEntityForContent">string for the content for the executable to open</param>
+            Category::Run
         </member>
         <member name="M:IdealAutomate.Core.Methods.StartService(System.String,System.Int32)">
             <summary>
@@ -331,6 +366,7 @@
             </summary>
             <param name="serviceName"></param>
             <param name="timeoutMilliseconds"></param>
+            Category::Service
         </member>
         <member name="M:IdealAutomate.Core.Methods.StopService(System.String,System.Int32)">
             <summary>
@@ -338,6 +374,7 @@
             </summary>
             <param name="serviceName"></param>
             <param name="timeoutMilliseconds"></param>
+            Category::Service
         </member>
         <member name="M:IdealAutomate.Core.Methods.RestartService(System.String,System.Int32)">
             <summary>
@@ -347,12 +384,23 @@
             </summary>
             <param name="serviceName"></param>
             <param name="timeoutMilliseconds"></param>
+            Category::Service
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.GetActiveWindowTitle">
+            Category::Window
         </member>
         <member name="M:IdealAutomate.Core.Methods.Sleep(System.Int32)">
             <summary>
             Sleep receives an integer that indicates the number of milliseconds that you want the program to wait.
             </summary>
             <param name="intSleep">integer that indicates the number of milliseconds that you want the program to wait.</param>
+            Category::Sleep
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.FindDelimitedText(FindDelimitedTextParms)">
+            Category::Search
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.IEGoToURL(IdealAutomate.Core.Methods,System.String,System.Boolean)">
+            Category::Internet Explorer
         </member>
         <member name="M:IdealAutomate.Core.Methods.EvaluateCaretPosition">
             <summary>
@@ -379,6 +427,7 @@
             <para>outside of your script on in the application directory</para>
             </summary>
             <returns>string that is the app_data/roaming directory path for the script</returns>
+            Category::Directory
         </member>
         <member name="M:IdealAutomate.Core.Methods.GetAppDirectoryForIdealAutomate">
             <summary>
@@ -389,10 +438,11 @@
             <para>outside of your script on in the application directory</para>
             </summary>
             <returns>string that is the app_data/roaming directory path for the script</returns>
+            Category::Directory
         </member>
         <member name="M:IdealAutomate.Core.Methods.GetValueByKey(System.String)">
             <summary>
-            <para>ReadValueFromAppDataKey takes a key and adds .txt to it in order to create</para>
+            <para>GetValueByKey takes a key and adds .txt to it in order to create</para>
             <para>a file name. It gets the app data path and adds \IdealAutomate\yourscriptname</para>
             <para>to it. By combining that path to the file name created from the key,</para>
             <para>it can retrieve a value from the key that is unique to your script application.</para>
@@ -402,6 +452,46 @@
             </summary>
             <param name="strKey">Unique key within the script application</param>
             <returns>string that was in application directory for that key</returns>
+            Category::Storage>Private
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.GetValueByKeyAsInt(System.String)">
+            Category::Storage>Private
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.GetValueByKeyAsIntForNonCurrentScript(System.String,System.String)">
+            Category::Storage>Private
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.GetValueByPublicKeyAsIntForNonCurrentScript(System.String,System.String)">
+            Category::Storage>Public
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.GetValueByKeyForNonCurrentScript(System.String,System.String)">
+            Category::Storage>Private
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.GetValueByPublicKeyForNonCurrentScript(System.String,System.String)">
+            Category::Storage>Public
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.GetValueByPublicKeyInCurrentFolder(System.String,System.String)">
+            Category::Storage>Public
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.GetValueByKeyAsDouble(System.String)">
+            Category::Storage>Private
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.GetValueByKeyAsDateTime(System.String)">
+            Category::Storage>Private
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.GetValueByKeyAsDateTimeForNonCurrentScript(System.String,System.String)">
+            Category::Storage>Private
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.GetValueByPublicKeyAsDateTimeForNonCurrentScript(System.String,System.String)">
+            Category::Storage>Private
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.GetValueByKeyAsIntGlobal(System.String)">
+            Category::Storage>Private
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.IncrementValueByKeyByValue(System.String,System.Int32)">
+            Category::Storage>Private
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.IncrementValueByKeyByValueGlobal(System.String,System.Int32)">
+            Category::Storage>Private
         </member>
         <member name="M:IdealAutomate.Core.Methods.SetValueByKey(System.String,System.String)">
             <summary>
@@ -416,6 +506,16 @@
             <param name="strKey">Unique key within the script application</param>
             <param name="strValueToWrite">Value to write to the Unique key 
             within the script application</param>
+            Category::Storage>Private
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.SetValueByKeyForNonCurrentScript(System.String,System.String,System.String)">
+            Category::Storage>Private
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.SetValueByPublicKeyForNonCurrentScript(System.String,System.String,System.String)">
+            Category::Storage>Public
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.SetValueByPublicKeyInCurrentFolder(System.String,System.String,System.String)">
+            Category::Storage>Public
         </member>
         <member name="M:IdealAutomate.Core.Methods.GetValueByKeyGlobal(System.String)">
             <summary>
@@ -429,6 +529,7 @@
             </summary>
             <param name="strKey">Unique key within the script application</param>
             <returns>string that was in application directory for that key</returns>
+            Category::Storage>Private
         </member>
         <member name="M:IdealAutomate.Core.Methods.SetValueByKeyGlobal(System.String,System.String)">
             <summary>
@@ -443,6 +544,7 @@
             <param name="strKey">Unique key within the script application</param>
             <param name="strValueToWrite">Value to write to the Unique key 
             within the script application</param>
+            Category::Storage>Private
         </member>
         <member name="M:IdealAutomate.Core.Methods.ReadAppDirectoryKeyToArrayList(System.String)">
             <summary>
@@ -456,6 +558,7 @@
             </summary>
             <param name="strKey">Unique key within the script application</param>
             <returns>ArrayList that was in application directory for that key</returns>
+            Category::Storage>Private
         </member>
         <member name="M:IdealAutomate.Core.Methods.ReadPublicKeyToArrayList(System.String,System.String)">
             <summary>
@@ -465,6 +568,7 @@
             </summary>
             <param name="strKey">Unique key within the script application</param>
             <returns>ArrayList that was in parent folder ..IdealAutomate for that key</returns>
+            Category::Storage>Public
         </member>
         <member name="M:IdealAutomate.Core.Methods.WriteArrayListToAppDirectoryKey(System.String,System.Collections.ArrayList)">
             <summary>
@@ -478,6 +582,10 @@
             </summary>
             <param name="strKey">Unique key within the script application</param>
             <param name="arrayListToWrite">ArrayList that is to written to the application directory for that key</param>
+            Category::Storage>Private
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.WriteArrayListToPublicKey(System.String,System.Collections.ArrayList,System.String)">
+            Category::Storage>Public
         </member>
         <member name="M:IdealAutomate.Core.Methods.ReadAppDirectoryKeyToArrayListGlobal(System.String)">
             <summary>
@@ -491,6 +599,7 @@
             </summary>
             <param name="strKey">Unique key within the script application</param>
             <returns>ArrayList that was in application directory for that key</returns>
+            Category::Storage>Private
         </member>
         <member name="M:IdealAutomate.Core.Methods.WriteArrayListToAppDirectoryKeyGlobal(System.String,System.Collections.ArrayList)">
             <summary>
@@ -504,12 +613,14 @@
             </summary>
             <param name="strKey">Unique key within the script application</param>
             <param name="arrayListToWrite">ArrayList that is to written to the application directory for that key</param>
+            Category::Storage>Private
         </member>
         <member name="M:IdealAutomate.Core.Methods.ScriptStartedUpdateStats">
             <summary>
             At beginning of template, Write StartTime, StartDate, Add 1 to total executions. 
             
             </summary>
+            Category::Stats
         </member>
         <member name="M:IdealAutomate.Core.Methods.ScriptEndedSuccessfullyUpdateStats">
             <summary>
@@ -522,6 +633,19 @@
             ScriptTotalSavedExecutionTime += CurrentSavedExecutionTime
              StartDate is the LastExecutedDate.
             </summary>
+            Category::Stats
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.ConvertFullFileNameToScriptPath(System.String)">
+            Category::Directory
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.ConvertFullFileNameToPublicPath(System.String)">
+            Category::Directory
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(System.String)">
+            Category::Directory
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.GetPathForScriptNoBinDebug">
+            Category::Directory
         </member>
         <member name="T:IdealAutomate.Core.Position_Cursor.Point">
             <summary>

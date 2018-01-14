@@ -3,6 +3,9 @@ Imports System.Text
 Imports System.Management
 Imports System.IO
 Imports IdealAutomate.Core
+Imports Snipping_OCR
+Imports System.Windows.Media.Imaging
+Imports System.Windows
 
 Public Class Form1
 
@@ -378,10 +381,196 @@ Public Class Form1
         End If
         sbg.Length = 0
     End Sub
+    ''' <summary>
+    ''' <para>WindowMultipleControls takes a list of ControlEntity objects</para>
+    ''' <para>and positions them in a window. When the user presses the </para>
+    ''' <para>okay button on the screen, the list of ControlEntity objects</para>
+    ''' <para>are updated with the values the user entered.  This provides</para>
+    ''' <para>an easy way to receive multiple values from the user</para>
+    ''' <para>A string is returned with the name of the button that was pressed</para>
+    ''' <para>Here is an example of setting background color for a button:</para>
+    ''' <para>myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);</para>
+    ''' </summary>
+    ''' <param name="myListControlEntity">list of ControlEntity objects</param>
+    ''' <param name="intWindowHeight">integer indicating height of window</param>
+    ''' <param name="intWindowWidth">integer indicating width of window</param>
+    ''' <param name="intWindowTop">integer indicating number of pixels from top of screen to display window</param>
+    ''' <param name="intWindowLeft">integer indicating number of pixels from left side of screen to display window</param>
+    ''' <returns>System.Windows.Forms.DialogResult to indicate if okay button was pressed</returns>
+    ''' Category::Window
+    Public Function WindowMultipleControls(ByRef myListControlEntity As List(Of ControlEntity), ByVal intWindowHeight As Integer, ByVal intWindowWidth As Integer, ByVal intWindowTop As Integer, ByVal intWindowLeft As Integer) As String
+
+        Dim dlg As New WindowMultipleControls(myListControlEntity, intWindowHeight, intWindowWidth, intWindowTop, intWindowLeft, WindowState.Normal)
+
+        ' dlg.Owner = (Window)Window.GetWindow(this);
+        ' Shadow.Visibility = Visibility.Visible;
+        dlg.ShowDialog()
+
+        Return dlg.strButtonClickedName
+
+
+
+    End Function
 
     Private Sub btnClickMouseOnImage_Click(sender As Object, e As EventArgs) Handles btnClickMouseOnImage.Click
+        Dim directory As String = AppDomain.CurrentDomain.BaseDirectory
+        Dim strFullFileName As String
+        Dim myListControlEntity As New List(Of ControlEntity)()
+        Dim myImage As New ImageEntity()
+        Dim myControlEntity As New ControlEntity()
+        myControlEntity.ControlEntitySetDefaults()
+        myControlEntity.ControlType = ControlType.Heading
+        myControlEntity.Text = "Image Not Found"
+        myListControlEntity.Add(myControlEntity.CreateControlEntity())
 
+
+        myControlEntity.ControlEntitySetDefaults()
+        myControlEntity.ControlType = ControlType.Label
+        myControlEntity.ID = "myLabel"
+        myControlEntity.Text = "Image not found for " & myImage.ImageFile
+        myControlEntity.RowNumber = 0
+        myControlEntity.ColumnNumber = 0
+        myListControlEntity.Add(myControlEntity.CreateControlEntity())
+
+        myControlEntity.ControlEntitySetDefaults()
+        myControlEntity.ControlType = ControlType.Label
+        myControlEntity.ID = "myLabel"
+        '   myControlEntity.Text = "The application is " & Directory
+        myControlEntity.RowNumber = 1
+        myControlEntity.ColumnNumber = 0
+        myListControlEntity.Add(myControlEntity.CreateControlEntity())
+
+
+        myControlEntity.ControlEntitySetDefaults()
+        myControlEntity.ControlType = ControlType.Label
+        myControlEntity.ID = "myLabel"
+        myControlEntity.Text = "Here is what that image looks like:"
+        myControlEntity.RowNumber = 3
+        myControlEntity.ColumnNumber = 0
+        myListControlEntity.Add(myControlEntity.CreateControlEntity())
+
+        'myControlEntity.ControlEntitySetDefaults()
+        'If myImage.ImageFile.Contains(":") Then
+        '    Dim mybytearray() As Byte = File.ReadAllBytes(myImage.ImageFile)
+        '    Dim bm As System.Drawing.Bitmap = BytesToBitmap(mybytearray)
+        '    myControlEntity.Width = bm.Width
+        '    myControlEntity.Height = bm.Height
+        '    myControlEntity.Source = BitmapSourceFromImage(bm)
+        'Else
+        '    Dim mybytearray() As Byte = File.ReadAllBytes(directory.Replace("bin\Debug", "") + myImage.ImageFile)
+        '    Dim bm As System.Drawing.Bitmap = BytesToBitmap(mybytearray)
+        '    myControlEntity.Width = bm.Width
+        '    myControlEntity.Height = bm.Height
+        '    myControlEntity.Source = BitmapSourceFromImage(bm)
+        'End If
+
+        'myControlEntity.ControlType = ControlType.Image
+        'myControlEntity.ID = "myImage"
+        'myControlEntity.RowNumber = 4
+        'myControlEntity.ColumnNumber = 0
+
+        'myListControlEntity.Add(myControlEntity.CreateControlEntity())
+
+        myControlEntity.ControlEntitySetDefaults()
+        myControlEntity.ControlType = ControlType.Label
+        myControlEntity.ID = "myLabel"
+        myControlEntity.Text = "Do you want to override the image with a new one?" & Environment.NewLine & "Click Okay to add alt image or Cancel to continue without adding alt image"
+        myControlEntity.RowNumber = 5
+        myControlEntity.ColumnNumber = 0
+        myListControlEntity.Add(myControlEntity.CreateControlEntity())
+
+        myControlEntity.ControlEntitySetDefaults()
+        myControlEntity.ControlType = ControlType.Label
+        myControlEntity.ID = "myLabel"
+        myControlEntity.Text = "If you click okay, use the cross hairs to get the image and put it into clipboard;" & Environment.NewLine & "You can exit the cross hairs screen by hitting escape if you decide not to add alt image"
+        myControlEntity.RowNumber = 6
+        myControlEntity.ColumnNumber = 0
+        myListControlEntity.Add(myControlEntity.CreateControlEntity())
+
+
+
+
+
+        Dim strButtonPressed As String = WindowMultipleControls(myListControlEntity, 600, 500, 0, 0)
+        If strButtonPressed <> "btnCancel" Then
+            SnippingTool.Snip()
+            If SnippingTool.Image IsNot Nothing Then
+                Clipboard.SetImage(BitmapSourceFromImage(SnippingTool.Image))
+                myListControlEntity = New List(Of ControlEntity)()
+
+                myControlEntity = New ControlEntity()
+                myControlEntity.ControlEntitySetDefaults()
+                myControlEntity.ControlType = ControlType.Heading
+                myControlEntity.Text = "Create Alt Image"
+                myListControlEntity.Add(myControlEntity.CreateControlEntity())
+
+
+
+
+                myControlEntity.ControlEntitySetDefaults()
+                myControlEntity.ControlType = ControlType.Image
+                myControlEntity.ID = "myImage"
+                myControlEntity.RowNumber = 1
+                myControlEntity.ColumnNumber = 0
+                myControlEntity.ColumnSpan = 2
+                myImage.ImageFile = strFullFileName
+                SaveClipboardImageToFile(myImage.ImageFile)
+                Dim mybytearray() As Byte = File.ReadAllBytes(myImage.ImageFile)
+                Dim bm As System.Drawing.Bitmap = BytesToBitmap(mybytearray)
+                myControlEntity.Width = bm.Width
+                myControlEntity.Height = bm.Height
+
+
+                myControlEntity.Source = BitmapSourceFromImage(bm)
+                myListControlEntity.Add(myControlEntity.CreateControlEntity())
+
+                WindowMultipleControls(myListControlEntity, 600, 500, 0, 0)
+
+                '     GoTo PutAllBegin
+            End If
+        End If
     End Sub
+    Private Shared Sub SaveClipboardImageToFile(ByVal filePath As String)
+        Dim image = Clipboard.GetImage()
+        If image Is Nothing Then
+            Dim result As System.Windows.MessageBoxResult = MessageBox.Show("Clipboard Cannot Be Empty", "PopUp Message", MessageBoxButton.OK, MessageBoxImage.Warning)
+            If result = MessageBoxResult.Yes Then
+
+            End If
+        Else
+            Using fileStream = New FileStream(filePath, FileMode.Create)
+                Dim encoder As BitmapEncoder = New PngBitmapEncoder()
+                encoder.Frames.Add(BitmapFrame.Create(image))
+                encoder.Save(fileStream)
+            End Using
+        End If
+    End Sub
+
+    Private Shared Function BitmapSourceFromImage(ByVal img As System.Drawing.Image) As BitmapSource
+        Dim memStream As New MemoryStream()
+
+        ' save the image to memStream as a png
+        img.Save(memStream, System.Drawing.Imaging.ImageFormat.Png)
+
+        ' gets a decoder from this stream
+        Dim decoder As New System.Windows.Media.Imaging.PngBitmapDecoder(memStream, System.Windows.Media.Imaging.BitmapCreateOptions.PreservePixelFormat, System.Windows.Media.Imaging.BitmapCacheOption.Default)
+
+        Return decoder.Frames(0)
+    End Function
+    Private Shared Function BytesToBitmap(ByVal byteArray() As Byte) As System.Drawing.Bitmap
+
+
+        Using ms As New MemoryStream(byteArray)
+
+
+            Dim img As System.Drawing.Bitmap = CType(System.Drawing.Image.FromStream(ms), System.Drawing.Bitmap)
+
+
+            Return img
+
+
+        End Using
+    End Function
 
     Private Sub btnActivateWindowByTitle_Click(sender As Object, e As EventArgs) Handles btnActivateWindowByTitle.Click
 
