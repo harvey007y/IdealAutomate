@@ -75,6 +75,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BaseForm1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BaseForm1.Designer.cs">
+      <DependentUpon>BaseForm1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Common.cs" />
     <Content Include="BuildProjects.bat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
