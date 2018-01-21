@@ -1,8 +1,8 @@
 # IdealAutomate
  <p align="center">
- <a href="http://shareasale.com/r.cfm?b=1066970&u=228350&m=53701&urllink=&afftrack=" target="_blank" style="color:white;font-weight:bold;text-decoration:none;">Save 15% On Pluralsight - Annual Subscription Only $299</a>
+ <a href="//pluralsight.pxf.io/c/1194222/424552/7490" target="_blank" style="color:white;font-weight:bold;text-decoration:none;">Save 15% On Pluralsight - Annual Subscription Only $299</a>
 <br />
-<a target="_blank" href="http://shareasale.com/r.cfm?b=978796&u=228350&m=53701&urllink=&afftrack="><img src="http://static.shareasale.com/image/53701/5011-16_Banners_B2CCartAbandon-300x250.jpg" border="0" height="300"/></a> <a target="_blank" href="http://payscale.com"><img src="http://www.payscale.com/images/llb/payscale_banner_120x240.gif" border="0" height="300" /></a> <a target="_blank" href="http://shareasale.com/r.cfm?b=978789&u=228350&m=53701&urllink=&afftrack="><img src="http://idealprogrammer.com/wp-photos/SoftwareDeveloper300.png" border="0" height="300" /></a>
+<a target="_blank" href="//pluralsight.pxf.io/c/1194222/424552/7490"><img src="http://a.impactradius-go.com/display-ad/7490-431393" border="0" height="300"/></a> <a target="_blank" href="http://payscale.com"><img src="http://www.payscale.com/images/llb/payscale_banner_120x240.gif" border="0" height="300" /></a> <a target="_blank" href="//pluralsight.pxf.io/c/1194222/424552/7490"><img src="http://idealprogrammer.com/wp-photos/SoftwareDeveloper300.png" border="0" height="300" /></a>
  </p>
                              <br /><br />
 Here is a screenshot of IdealAutomateExplorer in List View:<br />
