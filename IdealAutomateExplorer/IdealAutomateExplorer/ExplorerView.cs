@@ -1871,7 +1871,8 @@ namespace System.Windows.Forms.Samples {
                             _appHandle = _proc.MainWindowHandle;
 
                             SetParent(_appHandle, splitContainer1.Panel2.Handle);
-                            SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+                            MoveWindow(_appHandle, 0, 0, splitContainer1.Panel2.Width - 5, splitContainer1.Panel2.Height, true);
+                            //  SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                             //  SetTitle(_dir.FileView);
                         } else {
                             if (fileName.EndsWith(".txt")
@@ -5043,7 +5044,7 @@ namespace System.Windows.Forms.Samples {
             myControlEntity.ControlEntitySetDefaults();
             myControlEntity.ControlType = ControlType.Button;
             myControlEntity.ID = "btnSelectFolder";
-            myControlEntity.Text = "Select Folder...";
+            myControlEntity.Text = "Select Folder or File...";
             myControlEntity.RowNumber = intRowCtr;
             myControlEntity.ColumnNumber = 3;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
@@ -5113,14 +5114,14 @@ namespace System.Windows.Forms.Samples {
             myActions.SetValueByKey("cbxFolderSelectedValue", strFolder);
             string settingsDirectory = "";
             if (strButtonPressed == "btnSelectFolder") {
-                var dialog = new System.Windows.Forms.FolderBrowserDialog();
+                FileFolderDialog dialog = new FileFolderDialog();
                 dialog.SelectedPath = myActions.GetValueByKey("LastSearchFolder");
                 string str = "LastSearchFolder";
 
-
+                
                 System.Windows.Forms.DialogResult result = dialog.ShowDialog();
 
-                if (result == System.Windows.Forms.DialogResult.OK && Directory.Exists(dialog.SelectedPath)) {
+                if (result == System.Windows.Forms.DialogResult.OK && (Directory.Exists(dialog.SelectedPath) || File.Exists(dialog.SelectedPath))) {
                     myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedValue = dialog.SelectedPath;
                     myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedKey = dialog.SelectedPath;
                     myListControlEntity.Find(x => x.ID == "cbxFolder").Text = dialog.SelectedPath;
@@ -5247,7 +5248,13 @@ namespace System.Windows.Forms.Samples {
             st.Start();
             intHits = 0;
             int intLineCtr;
-            List<FileInfo> myFileList = TraverseTree(strSearchPattern, strPathToSearch);
+            List<FileInfo> myFileList = new List<FileInfo>();
+            if (File.Exists(strPathToSearch)) {
+                System.IO.FileInfo fi = new System.IO.FileInfo(strPathToSearch);
+                myFileList.Add(fi);
+            } else {
+                myFileList = TraverseTree(strSearchPattern, strPathToSearch);
+            }
             int intFiles = 0;
             matchInfoList = new List<MatchInfo>();
             //         myFileList = myFileList.OrderBy(fi => fi.FullName).ToList();

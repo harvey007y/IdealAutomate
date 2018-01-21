@@ -115,6 +115,9 @@
     <Compile Include="DataGridViewExt.Designer.cs">
       <DependentUpon>DataGridViewExt.cs</DependentUpon>
     </Compile>
+    <Compile Include="FileFolderDialog.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="HotKeyRecord.cs" />
     <Compile Include="MatchInfo.cs" />
     <Compile Include="Saved.cs">
