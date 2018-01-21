@@ -671,101 +671,160 @@ namespace SetBreakpoints {
             bool boolSolutionFileFound = false;
             string strSolutionName = "";
             string strCurrLine = "";
-            foreach (var item in matchInfoList) {
+            //foreach (var item in matchInfoList) {
 
-                strCurrLine = "\"" + item.FullName + "\"(" + item.LineNumber + "," + item.LinePosition + "): " + item.LineText.Length.ToString() + " " + item.LineText.Substring(0, item.LineText.Length > 5000 ? 5000 : item.LineText.Length);
-                lines.Add("\"" + item.FullName + "\"(" + item.LineNumber + "," + item.LinePosition + "): " + item.LineText.Length.ToString() + " " + item.LineText.Substring(0, item.LineText.Length > 5000 ? 5000 : item.LineText.Length));
-                // TODO: Find the solution in parent folders and activate VS
-                // if it is a new solution
-                // Iterate thru each level of item.FullName to find sln file
-                if (item.FullName != prevFullName) {
-                    string currentTempName = item.FullName;
-                    while (currentTempName.IndexOf("\\") > -1) {
-                        currentTempName = currentTempName.Substring(0,currentTempName.LastIndexOf("\\"));
-                        FileInfo fi = new FileInfo(currentTempName);
-                        if (Directory.Exists(currentTempName)) {
-                            string[] files = null;
-                            try {
-                                files = System.IO.Directory.GetFiles(currentTempName, "*.sln");
-                                if (files.Length > 0) {
-                                    boolSolutionFileFound = true;
-                                    strSolutionName = currentTempName.Substring(currentTempName.LastIndexOf("\\") + 1).Replace(".sln","");
-                                    List<string> myWindowTitles = myActions.GetWindowTitlesByProcessName("devenv");
-                                    myWindowTitles.RemoveAll(vsItem => vsItem == "");
-                                    foreach (var vsTitle in myWindowTitles) {
-                                        if (vsTitle.StartsWith(strSolutionName + " - ")) {
-                                            myActions.ActivateWindowByTitle(vsTitle, 3);
-                                            myActions.Sleep(1000);
-                                            // TODO: Since this is a new file,
-                                            // I need to navigate to the file
-                                            // ??????????????????
-                                            List<string> myBeginDelim = new List<string>();
-                                            List<string> myEndDelim = new List<string>();
-                                            myBeginDelim.Add("\"");
-                                            myEndDelim.Add("\"");
-                                            FindDelimitedTextParms delimParms = new FindDelimitedTextParms(myBeginDelim, myEndDelim);
+            //    strCurrLine = "\"" + item.FullName + "\"(" + item.LineNumber + "," + item.LinePosition + "): " + item.LineText.Length.ToString() + " " + item.LineText.Substring(0, item.LineText.Length > 5000 ? 5000 : item.LineText.Length);
+            //    lines.Add("\"" + item.FullName + "\"(" + item.LineNumber + "," + item.LinePosition + "): " + item.LineText.Length.ToString() + " " + item.LineText.Substring(0, item.LineText.Length > 5000 ? 5000 : item.LineText.Length));
+            //    // TODO: Find the solution in parent folders and activate VS
+            //    // if it is a new solution
+            //    // Iterate thru each level of item.FullName to find sln file
+            //    if (item.FullName != prevFullName) {
+            //        string currentTempName = item.FullName;
+            //        while (currentTempName.IndexOf("\\") > -1) {
+            //            currentTempName = currentTempName.Substring(0,currentTempName.LastIndexOf("\\"));
+            //            FileInfo fi = new FileInfo(currentTempName);
+            //            if (Directory.Exists(currentTempName)) {
+            //                string[] files = null;
+            //                try {
+            //                    files = System.IO.Directory.GetFiles(currentTempName, "*.sln");
+            //                    if (files.Length > 0) {
+            //                        boolSolutionFileFound = true;
+            //                        strSolutionName = currentTempName.Substring(currentTempName.LastIndexOf("\\") + 1).Replace(".sln","");
+            //                        List<string> myWindowTitles = myActions.GetWindowTitlesByProcessName("devenv");
+            //                        myWindowTitles.RemoveAll(vsItem => vsItem == "");
+            //                        bool boolVSMatchingSolutionFound = false;
+            //                        foreach (var vsTitle in myWindowTitles) {
+            //                            if (vsTitle.StartsWith(strSolutionName + " - ")) {
+            //                                boolVSMatchingSolutionFound = true;
+            //                                myActions.ActivateWindowByTitle(vsTitle, 3);
+            //                                myActions.Sleep(1000);
+                       
+            //                                List<string> myBeginDelim = new List<string>();
+            //                                List<string> myEndDelim = new List<string>();
+            //                                myBeginDelim.Add("\"");
+            //                                myEndDelim.Add("\"");
+            //                                FindDelimitedTextParms delimParms = new FindDelimitedTextParms(myBeginDelim, myEndDelim);
 
-                                            string myQuote = "\"";
-                                            delimParms.lines[0] = strCurrLine;
+            //                                string myQuote = "\"";
+            //                                delimParms.lines[0] = strCurrLine;
 
 
-                                            myActions.FindDelimitedText(delimParms);
-                                            int intLastSlash = delimParms.strDelimitedTextFound.LastIndexOf('\\');
-                                            if (intLastSlash < 1) {
-                                                myActions.MessageBoxShow("Could not find last slash in in EditPlusLine - aborting");
-                                                break;
-                                            }
-                                            string strPathOnly = delimParms.strDelimitedTextFound.SubstringBetweenIndexes(0, intLastSlash);
-                                            string strFileNameOnly = delimParms.strDelimitedTextFound.Substring(intLastSlash + 1);
-                                            myBeginDelim.Clear();
-                                            myEndDelim.Clear();
-                                            myBeginDelim.Add("(");
-                                            myEndDelim.Add(",");
-                                            delimParms = new FindDelimitedTextParms(myBeginDelim, myEndDelim);
-                                            delimParms.lines[0] = strCurrLine;
-                                            myActions.FindDelimitedText(delimParms);
-                                            string strLineNumber = delimParms.strDelimitedTextFound;
-                                            myActions.TypeText("{ESC}", 2000);
-                                            myActions.TypeText("%(f)", 1000);
-                                            myActions.TypeText("{DOWN}", 1000);
-                                            myActions.TypeText("{RIGHT}", 1000);
-                                            myActions.TypeText("f", 1000);
-                                            // myActions.TypeText("^(o)", 2000);
-                                            myActions.TypeText("%(d)", 1500);
-                                            myActions.TypeText(strPathOnly, 1500);
-                                            myActions.TypeText("{ENTER}", 500);
-                                            myActions.TypeText("%(n)", 500);
-                                            myActions.TypeText(strFileNameOnly, 1500);
-                                            myActions.TypeText("{ENTER}", 1000);
-                                            break;
-                                        }
-                                    }
-                                    break;
+            //                                myActions.FindDelimitedText(delimParms);
+            //                                int intLastSlash = delimParms.strDelimitedTextFound.LastIndexOf('\\');
+            //                                if (intLastSlash < 1) {
+            //                                    myActions.MessageBoxShow("Could not find last slash in in EditPlusLine - aborting");
+            //                                    break;
+            //                                }
+            //                                string strPathOnly = delimParms.strDelimitedTextFound.SubstringBetweenIndexes(0, intLastSlash);
+            //                                string strFileNameOnly = delimParms.strDelimitedTextFound.Substring(intLastSlash + 1);
+            //                                myBeginDelim.Clear();
+            //                                myEndDelim.Clear();
+            //                                myBeginDelim.Add("(");
+            //                                myEndDelim.Add(",");
+            //                                delimParms = new FindDelimitedTextParms(myBeginDelim, myEndDelim);
+            //                                delimParms.lines[0] = strCurrLine;
+            //                                myActions.FindDelimitedText(delimParms);
+            //                                string strLineNumber = delimParms.strDelimitedTextFound;
+            //                                myActions.TypeText("{ESC}", 2000);
+            //                                myActions.TypeText("%(f)", 1000);
+            //                                myActions.TypeText("{DOWN}", 1000);
+            //                                myActions.TypeText("{RIGHT}", 1000);
+            //                                myActions.TypeText("f", 1000);
+            //                                // myActions.TypeText("^(o)", 2000);
+            //                                myActions.TypeText("%(d)", 1500);
+            //                                myActions.TypeText(strPathOnly, 1500);
+            //                                myActions.TypeText("{ENTER}", 500);
+            //                                myActions.TypeText("%(n)", 500);
+            //                                myActions.TypeText(strFileNameOnly, 1500);
+            //                                myActions.TypeText("{ENTER}", 1000);
+            //                                break;
+            //                            }
+            //                        }
+            //                        if (boolVSMatchingSolutionFound == false) {
+            //                            myActions.Run(@"C:\Windows\explorer.exe", item.FullName);
+            //                            myActions.Sleep(10000);
+            //                            boolSolutionFileFound = true;
+            //                            strSolutionName = currentTempName.Substring(currentTempName.LastIndexOf("\\") + 1).Replace(".sln", "");
+            //                            myWindowTitles = myActions.GetWindowTitlesByProcessName("devenv");
+            //                            myWindowTitles.RemoveAll(vsItem => vsItem == "");
+            //                            boolVSMatchingSolutionFound = false;
+            //                            foreach (var vsTitle in myWindowTitles) {
+            //                                if (vsTitle.StartsWith(strSolutionName + " - ")) {
+            //                                    boolVSMatchingSolutionFound = true;
+            //                                    myActions.ActivateWindowByTitle(vsTitle, 3);
+            //                                    myActions.Sleep(1000);
+
+            //                                    List<string> myBeginDelim = new List<string>();
+            //                                    List<string> myEndDelim = new List<string>();
+            //                                    myBeginDelim.Add("\"");
+            //                                    myEndDelim.Add("\"");
+            //                                    FindDelimitedTextParms delimParms = new FindDelimitedTextParms(myBeginDelim, myEndDelim);
+
+            //                                    string myQuote = "\"";
+            //                                    delimParms.lines[0] = strCurrLine;
+
+
+            //                                    myActions.FindDelimitedText(delimParms);
+            //                                    int intLastSlash = delimParms.strDelimitedTextFound.LastIndexOf('\\');
+            //                                    if (intLastSlash < 1) {
+            //                                        myActions.MessageBoxShow("Could not find last slash in in EditPlusLine - aborting");
+            //                                        break;
+            //                                    }
+            //                                    string strPathOnly = delimParms.strDelimitedTextFound.SubstringBetweenIndexes(0, intLastSlash);
+            //                                    string strFileNameOnly = delimParms.strDelimitedTextFound.Substring(intLastSlash + 1);
+            //                                    myBeginDelim.Clear();
+            //                                    myEndDelim.Clear();
+            //                                    myBeginDelim.Add("(");
+            //                                    myEndDelim.Add(",");
+            //                                    delimParms = new FindDelimitedTextParms(myBeginDelim, myEndDelim);
+            //                                    delimParms.lines[0] = strCurrLine;
+            //                                    myActions.FindDelimitedText(delimParms);
+            //                                    string strLineNumber = delimParms.strDelimitedTextFound;
+            //                                    myActions.TypeText("{ESC}", 2000);
+            //                                    myActions.TypeText("%(f)", 1000);
+            //                                    myActions.TypeText("{DOWN}", 1000);
+            //                                    myActions.TypeText("{RIGHT}", 1000);
+            //                                    myActions.TypeText("f", 1000);
+            //                                    // myActions.TypeText("^(o)", 2000);
+            //                                    myActions.TypeText("%(d)", 1500);
+            //                                    myActions.TypeText(strPathOnly, 1500);
+            //                                    myActions.TypeText("{ENTER}", 500);
+            //                                    myActions.TypeText("%(n)", 500);
+            //                                    myActions.TypeText(strFileNameOnly, 1500);
+            //                                    myActions.TypeText("{ENTER}", 1000);
+            //                                    break;
+            //                                }
+            //                            }
+            //                        }
+            //                        if (boolVSMatchingSolutionFound == false) {
+            //                            myActions.MessageBoxShow("Could not find visual studio for " + strSolutionName);
+            //                        }
+            //                            break;
                                     
-                                }
-                            } catch (UnauthorizedAccessException e) {
+            //                    }
+            //                } catch (UnauthorizedAccessException e) {
 
-                                Console.WriteLine(e.Message);
-                                continue;
-                            } catch (System.IO.DirectoryNotFoundException e) {
-                                Console.WriteLine(e.Message);
-                                continue;
-                            } catch (System.IO.PathTooLongException e) {
-                                Console.WriteLine(e.Message);
-                                continue;
-                            } catch (Exception e) {
-                                Console.WriteLine(e.Message);
-                                continue;
-                            }
-                        }
-                    }
-                }
-                myActions.TypeText("^(g)", 500);
-                myActions.TypeText(item.LineNumber.ToString(), 500);
-                myActions.TypeText("{ENTER}", 500);
-                myActions.TypeText("{F9}", 1000);
-                prevFullName = item.FullName;
-            }
+            //                    Console.WriteLine(e.Message);
+            //                    continue;
+            //                } catch (System.IO.DirectoryNotFoundException e) {
+            //                    Console.WriteLine(e.Message);
+            //                    continue;
+            //                } catch (System.IO.PathTooLongException e) {
+            //                    Console.WriteLine(e.Message);
+            //                    continue;
+            //                } catch (Exception e) {
+            //                    Console.WriteLine(e.Message);
+            //                    continue;
+            //                }
+            //            }
+            //        }
+            //    }
+            //    myActions.TypeText("^(g)", 500);
+            //    myActions.TypeText(item.LineNumber.ToString(), 500);
+            //    myActions.TypeText("{ENTER}", 500);
+            //    myActions.TypeText("{F9}", 1000);
+            //    prevFullName = item.FullName;
+            //}
 
 
             string strApplicationBinDebug1 = System.Windows.Forms.Application.StartupPath;
@@ -808,34 +867,203 @@ namespace SetBreakpoints {
                 //  myActions.KillAllProcessesByProcessName("notepad++");
                 string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
                 string strContent = settingsDirectory + @"\MatchInfo.txt";
-                //Close the running process
-                //if (_appHandle != IntPtr.Zero) {
-                //  PostMessage(_appHandle, WM_CLOSE, 0, 0);
-                //  System.Threading.Thread.Sleep(1000);
-                //  _appHandle = IntPtr.Zero;
-                //}
-                //tries to start the process 
-                //try {
-                //    _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
-                //} catch (Exception) {
-                //    MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                //    return;
-                //}
-
-
-                //System.Threading.Thread.Sleep(500);
-                //while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
-                //    System.Threading.Thread.Sleep(10);
-                //    _proc.Refresh();
-                //}
-
-                //_proc.WaitForInputIdle();
-                //_appHandle = _proc.MainWindowHandle;
-
-                //SetParent(_appHandle, splitContainer1.Panel2.Handle);
-                //SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+             
                 myActions.Run(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
                 myActions.MessageBoxShow("RunTime: " + elapsedTime + "\n\r\n\rHits: " + intHits.ToString() + "\n\r\n\rFiles with hits: " + intUniqueFiles.ToString() + "\n\r\n\rPut Cursor on line and\n\r press Ctrl+Alt+N\n\rto view detail page. ");
+                System.Windows.Forms.DialogResult myResult = myActions.MessageBoxShowWithYesNo("MatchInfo.txt contains the lines where breakpoints will be set.\n\r\n\r If you want to make changes, edit matchinfo.txt and save.\n\r\n\rTo go ahead and set breakpoints, click yes, otherwise, click no to cancel");
+                if (myResult == System.Windows.Forms.DialogResult.Yes) {
+                    // TODO: 1. Read matchinfo.txt file
+                    //       2. Loop thru each line except first and last
+                    //       3. Set breakpoint for each line
+                    using (StreamReader objSRFile = File.OpenText(strContent)) {
+                        string strReadLine = "";
+                        while ((strReadLine = objSRFile.ReadLine()) != null) {
+                            if (strReadLine.StartsWith("--")) {
+                                continue;
+                            }
+                            if (strReadLine.StartsWith("RunTime")) {
+                                break;
+                            }
+                            string myOrigEditPlusLine = strReadLine;
+                            List<string> myBeginDelim = new List<string>();
+                            List<string> myEndDelim = new List<string>();
+                            myBeginDelim.Add("\"");
+                            myEndDelim.Add("\"");
+                            FindDelimitedTextParms delimParms = new FindDelimitedTextParms(myBeginDelim, myEndDelim);
+
+                            string myQuote = "\"";
+                            delimParms.lines[0] = myOrigEditPlusLine;
+
+
+                            myActions.FindDelimitedText(delimParms);
+                            int intLastSlash = delimParms.strDelimitedTextFound.LastIndexOf('\\');
+                            if (intLastSlash < 1) {
+                                myActions.MessageBoxShow("Could not find last slash in in EditPlusLine - aborting");
+                                break;
+                            }
+                            string strPathOnly = delimParms.strDelimitedTextFound.SubstringBetweenIndexes(0, intLastSlash);
+                            string strFileNameOnly = delimParms.strDelimitedTextFound.Substring(intLastSlash + 1);
+                            myBeginDelim.Clear();
+                            myEndDelim.Clear();
+                            myBeginDelim.Add("(");
+                            myEndDelim.Add(",");
+                            delimParms = new FindDelimitedTextParms(myBeginDelim, myEndDelim);
+                            delimParms.lines[0] = myOrigEditPlusLine;
+                            myActions.FindDelimitedText(delimParms);
+                            string strLineNumber = delimParms.strDelimitedTextFound;
+
+                            //========
+                            string strFullName = Path.Combine(strPathOnly, strFileNameOnly);
+                            if (strFullName != prevFullName) {
+                                string currentTempName = strFullName;
+                                while (currentTempName.IndexOf("\\") > -1) {
+                                    currentTempName = currentTempName.Substring(0, currentTempName.LastIndexOf("\\"));
+                                    FileInfo fi = new FileInfo(currentTempName);
+                                    if (Directory.Exists(currentTempName)) {
+                                        string[] files = null;
+                                        try {
+                                            files = System.IO.Directory.GetFiles(currentTempName, "*.sln");
+                                            if (files.Length > 0) {
+                                                boolSolutionFileFound = true;
+                                                strSolutionName = currentTempName.Substring(currentTempName.LastIndexOf("\\") + 1).Replace(".sln", "");
+                                                List<string> myWindowTitles = myActions.GetWindowTitlesByProcessName("devenv");
+                                                myWindowTitles.RemoveAll(vsItem => vsItem == "");
+                                                bool boolVSMatchingSolutionFound = false;
+                                                foreach (var vsTitle in myWindowTitles) {
+                                                    if (vsTitle.StartsWith(strSolutionName + " - ")) {
+                                                        boolVSMatchingSolutionFound = true;
+                                                        myActions.ActivateWindowByTitle(vsTitle, 3);
+                                                        myActions.Sleep(1000);
+
+                                                        myBeginDelim = new List<string>();
+                                                        myEndDelim = new List<string>();
+                                                        myBeginDelim.Add("\"");
+                                                        myEndDelim.Add("\"");
+                                                        delimParms = new FindDelimitedTextParms(myBeginDelim, myEndDelim);
+
+                                                        myQuote = "\"";
+                                                        delimParms.lines[0] = strCurrLine;
+
+
+                                                        myActions.FindDelimitedText(delimParms);
+                                                        intLastSlash = delimParms.strDelimitedTextFound.LastIndexOf('\\');
+                                                        if (intLastSlash < 1) {
+                                                            myActions.MessageBoxShow("Could not find last slash in in EditPlusLine - aborting");
+                                                            break;
+                                                        }
+                                                        strPathOnly = delimParms.strDelimitedTextFound.SubstringBetweenIndexes(0, intLastSlash);
+                                                        strFileNameOnly = delimParms.strDelimitedTextFound.Substring(intLastSlash + 1);
+                                                        myBeginDelim.Clear();
+                                                        myEndDelim.Clear();
+                                                        myBeginDelim.Add("(");
+                                                        myEndDelim.Add(",");
+                                                        delimParms = new FindDelimitedTextParms(myBeginDelim, myEndDelim);
+                                                        delimParms.lines[0] = strCurrLine;
+                                                        myActions.FindDelimitedText(delimParms);
+                                                        strLineNumber = delimParms.strDelimitedTextFound;
+                                                        myActions.TypeText("{ESC}", 2000);
+                                                        myActions.TypeText("%(f)", 1000);
+                                                        myActions.TypeText("{DOWN}", 1000);
+                                                        myActions.TypeText("{RIGHT}", 1000);
+                                                        myActions.TypeText("f", 1000);
+                                                        // myActions.TypeText("^(o)", 2000);
+                                                        myActions.TypeText("%(d)", 1500);
+                                                        myActions.TypeText(strPathOnly, 1500);
+                                                        myActions.TypeText("{ENTER}", 500);
+                                                        myActions.TypeText("%(n)", 500);
+                                                        myActions.TypeText(strFileNameOnly, 1500);
+                                                        myActions.TypeText("{ENTER}", 1000);
+                                                        break;
+                                                    }
+                                                }
+                                                if (boolVSMatchingSolutionFound == false) {
+                                                    myActions.Run(@"C:\Windows\explorer.exe", strFullName);
+                                                    myActions.Sleep(10000);
+                                                    boolSolutionFileFound = true;
+                                                    strSolutionName = currentTempName.Substring(currentTempName.LastIndexOf("\\") + 1).Replace(".sln", "");
+                                                    myWindowTitles = myActions.GetWindowTitlesByProcessName("devenv");
+                                                    myWindowTitles.RemoveAll(vsItem => vsItem == "");
+                                                    boolVSMatchingSolutionFound = false;
+                                                    foreach (var vsTitle in myWindowTitles) {
+                                                        if (vsTitle.StartsWith(strSolutionName + " - ")) {
+                                                            boolVSMatchingSolutionFound = true;
+                                                            myActions.ActivateWindowByTitle(vsTitle, 3);
+                                                            myActions.Sleep(1000);
+
+                                                            myBeginDelim = new List<string>();
+                                                             myEndDelim = new List<string>();
+                                                            myBeginDelim.Add("\"");
+                                                            myEndDelim.Add("\"");
+                                                             delimParms = new FindDelimitedTextParms(myBeginDelim, myEndDelim);
+
+                                                             myQuote = "\"";
+                                                            delimParms.lines[0] = strCurrLine;
+
+
+                                                            myActions.FindDelimitedText(delimParms);
+                                                            intLastSlash = delimParms.strDelimitedTextFound.LastIndexOf('\\');
+                                                            if (intLastSlash < 1) {
+                                                                myActions.MessageBoxShow("Could not find last slash in in EditPlusLine - aborting");
+                                                                break;
+                                                            }
+                                                            strPathOnly = delimParms.strDelimitedTextFound.SubstringBetweenIndexes(0, intLastSlash);
+                                                            strFileNameOnly = delimParms.strDelimitedTextFound.Substring(intLastSlash + 1);
+                                                            myBeginDelim.Clear();
+                                                            myEndDelim.Clear();
+                                                            myBeginDelim.Add("(");
+                                                            myEndDelim.Add(",");
+                                                            delimParms = new FindDelimitedTextParms(myBeginDelim, myEndDelim);
+                                                            delimParms.lines[0] = strCurrLine;
+                                                            myActions.FindDelimitedText(delimParms);
+                                                            strLineNumber = delimParms.strDelimitedTextFound;
+                                                            myActions.TypeText("{ESC}", 2000);
+                                                            myActions.TypeText("%(f)", 1000);
+                                                            myActions.TypeText("{DOWN}", 1000);
+                                                            myActions.TypeText("{RIGHT}", 1000);
+                                                            myActions.TypeText("f", 1000);
+                                                            // myActions.TypeText("^(o)", 2000);
+                                                            myActions.TypeText("%(d)", 1500);
+                                                            myActions.TypeText(strPathOnly, 1500);
+                                                            myActions.TypeText("{ENTER}", 500);
+                                                            myActions.TypeText("%(n)", 500);
+                                                            myActions.TypeText(strFileNameOnly, 1500);
+                                                            myActions.TypeText("{ENTER}", 1000);
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+                                                if (boolVSMatchingSolutionFound == false) {
+                                                    myActions.MessageBoxShow("Could not find visual studio for " + strSolutionName);
+                                                }
+                                                break;
+
+                                            }
+                                        } catch (UnauthorizedAccessException e) {
+
+                                            Console.WriteLine(e.Message);
+                                            continue;
+                                        } catch (System.IO.DirectoryNotFoundException e) {
+                                            Console.WriteLine(e.Message);
+                                            continue;
+                                        } catch (System.IO.PathTooLongException e) {
+                                            Console.WriteLine(e.Message);
+                                            continue;
+                                        } catch (Exception e) {
+                                            Console.WriteLine(e.Message);
+                                            continue;
+                                        }
+                                    }
+                                }
+                            }
+                            myActions.TypeText("^(g)", 500);
+                            myActions.TypeText(strLineNumber, 500);
+                            myActions.TypeText("{ENTER}", 500);
+                            myActions.TypeText("{F9}", 1000);
+                            prevFullName = strFullName;
+                        }
+                        objSRFile.Close();
+                    }
+                }
             }
         }
         public static List<FileInfo> TraverseTree(string filterPattern, string root) {
