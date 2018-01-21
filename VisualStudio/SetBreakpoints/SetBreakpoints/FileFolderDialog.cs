@@ -6,8 +6,7 @@ using System.Reflection;
 using System.IO;
 using System.Windows.Forms;
 
-namespace dnGREP
-{
+namespace SetBreakpoints {
 	public class FileFolderDialog : CommonDialog
 	{
 		private OpenFileDialog dialog = new OpenFileDialog();
