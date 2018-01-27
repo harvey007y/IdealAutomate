@@ -827,7 +827,43 @@ namespace SetBreakpoints {
                                                     }
                                                 }
                                                 if (boolVSMatchingSolutionFound == false) {
+                                                     myResult = myActions.MessageBoxShowWithYesNo("I could not find the solution currently running.\n\r\n\r Do you want me to launch it in Visual Studio for you.\n\r\n\rTo go ahead and launch the solution, click yes, otherwise, click no to cancel");
+                                                    if (myResult == System.Windows.Forms.DialogResult.No) {
+                                                        return;
+                                                    }
                                                     string strVSPath = myActions.GetValueByKeyGlobal("VS2013Path");
+                                                    // C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\devenv.exe
+                                                    if (strVSPath == "") {
+                                                        myListControlEntity = new List<ControlEntity>();
+
+                                                        myControlEntity = new ControlEntity();
+                                                        myControlEntity.ControlEntitySetDefaults();
+                                                        myControlEntity.ControlType = ControlType.Heading;
+                                                        myControlEntity.Text = "Specify location of Visual Studio";
+                                                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+                                                        myControlEntity.ControlEntitySetDefaults();
+                                                        myControlEntity.ControlType = ControlType.Label;
+                                                        myControlEntity.ID = "myLabel";
+                                                        myControlEntity.Text = "Visual Studio Executable:";
+                                                        myControlEntity.RowNumber = 0;
+                                                        myControlEntity.ColumnNumber = 0;
+                                                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                                                        myControlEntity.ControlEntitySetDefaults();
+                                                        myControlEntity.ControlType = ControlType.TextBox;
+                                                        myControlEntity.ID = "myAltExecutable";
+                                                        myControlEntity.Text = "";
+                                                        myControlEntity.RowNumber = 0;
+                                                        myControlEntity.ColumnNumber = 1;
+                                                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                                                        myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, 0, 0);
+                                                        string strAltExecutable = myListControlEntity.Find(x => x.ID == "myAltExecutable").Text;
+                                                        myActions.SetValueByKeyGlobal("VS2013Path", strAltExecutable);
+                                                        strVSPath = strAltExecutable;
+                                                    }
                                                     myActions.Run(strVSPath, strSolutionFullFileName);
                                                     myActions.Sleep(10000);
                                                     myActions.MessageBoxShow("When visual studio finishes loading, please click okay to continue");
