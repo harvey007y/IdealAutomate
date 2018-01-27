@@ -81,6 +81,7 @@ namespace SetBreakpoints {
              *       e. go to line in the file in and F9 to turn on debugging
              */
             FindTextInFoldersFiles();
+            myActions.MessageBoxShow("Your Breakpoints have been set");
           
             goto myExit;
             List<ControlEntity> myListControlEntity = new List<ControlEntity>();
@@ -670,7 +671,7 @@ namespace SetBreakpoints {
             string prevFullName = "";
             bool boolSolutionFileFound = false;
             string strSolutionName = "";
-            string strCurrLine = "";
+          //  string strCurrLine = "";
  
 
 
@@ -731,7 +732,7 @@ namespace SetBreakpoints {
                             if (strReadLine.StartsWith("RunTime")) {
                                 break;
                             }
-                            string myOrigEditPlusLine = strReadLine;
+                            string myOrigEditPlusLine = strReadLine;                            
                             List<string> myBeginDelim = new List<string>();
                             List<string> myEndDelim = new List<string>();
                             myBeginDelim.Add("\"");
@@ -791,7 +792,7 @@ namespace SetBreakpoints {
                                                         delimParms = new FindDelimitedTextParms(myBeginDelim, myEndDelim);
 
                                                         myQuote = "\"";
-                                                        delimParms.lines[0] = strCurrLine;
+                                                        delimParms.lines[0] = myOrigEditPlusLine;
 
 
                                                         myActions.FindDelimitedText(delimParms);
@@ -807,7 +808,7 @@ namespace SetBreakpoints {
                                                         myBeginDelim.Add("(");
                                                         myEndDelim.Add(",");
                                                         delimParms = new FindDelimitedTextParms(myBeginDelim, myEndDelim);
-                                                        delimParms.lines[0] = strCurrLine;
+                                                        delimParms.lines[0] = myOrigEditPlusLine;
                                                         myActions.FindDelimitedText(delimParms);
                                                         strLineNumber = delimParms.strDelimitedTextFound;
                                                         myActions.TypeText("{ESC}", 2000);
@@ -830,7 +831,7 @@ namespace SetBreakpoints {
                                                     myActions.Run(strVSPath, strSolutionFullFileName);
                                                     myActions.Sleep(10000);
                                                     myActions.MessageBoxShow("When visual studio finishes loading, please click okay to continue");
-                                                    myActions.TypeText("{ESCAPE}", 500);
+                                                    myActions.TypeText("{ESCAPE}", 500);                                                  
                                                     boolSolutionFileFound = true;
                                                     strSolutionName = currentTempName.Substring(currentTempName.LastIndexOf("\\") + 1).Replace(".sln", "");
                                                     myWindowTitles = myActions.GetWindowTitlesByProcessName("devenv");
@@ -849,7 +850,7 @@ namespace SetBreakpoints {
                                                              delimParms = new FindDelimitedTextParms(myBeginDelim, myEndDelim);
 
                                                              myQuote = "\"";
-                                                            delimParms.lines[0] = strCurrLine;
+                                                            delimParms.lines[0] = myOrigEditPlusLine;
 
 
                                                             myActions.FindDelimitedText(delimParms);
@@ -865,7 +866,7 @@ namespace SetBreakpoints {
                                                             myBeginDelim.Add("(");
                                                             myEndDelim.Add(",");
                                                             delimParms = new FindDelimitedTextParms(myBeginDelim, myEndDelim);
-                                                            delimParms.lines[0] = strCurrLine;
+                                                            delimParms.lines[0] = myOrigEditPlusLine;
                                                             myActions.FindDelimitedText(delimParms);
                                                             strLineNumber = delimParms.strDelimitedTextFound;
                                                             myActions.TypeText("{ESC}", 2000);
