@@ -25,7 +25,9 @@ Here is a 5-minute video that shows how to get started with Ideal Automate Explo
 
 Here is a 2-minute video that shows one example of the powerful applications that you can create with IdealAutomate. In this video, you will see how you can immediately start using IdealAutomate to automate setting breakpoints in Visual Studio on every method in a file, folder, or project.<br />
         <br /><a href="https://youtu.be/Ydx_40PUmSA" target="_blank"><img title="Visual Studio set breakpoint on every method"  src="http://idealprogrammer.com/wp-photos/SetBreakpoints.PNG" alt="Visual Studio set breakpoint on every method" align="middle"/></a>   <br /><br />
- 
+	Here is an 11-minute video walks through how to use the basic features of Ideal Automate Explorer. <br />
+        <br /><a href="https://youtu.be/EVFt-dSLGWw" target="_blank"><img title="Ideal Automate Explorer Features"  src="http://idealprogrammer.com/wp-photos/IdealAutomateExplorerFeatures.PNG" alt="Ideal Automate Explorer Features" align="middle"/></a>   <br /><br />
+
 
 
 Instead of requiring that you keep all of your information in some third-party software, Ideal Automate Explorer allows you to keep your files in word documents, pdfs, images, desktop shortcuts, etc. Ideal Automate Explorer gives you the ability to organize your knowledge in its original pristine state in your ordinary windows folder structure so that it can easily be shared with others. If you have sensitive information, it can be easily segregated into separate storage in you roaming folder or into separate folders that you can keep in different tabs within the Explorer.<br /><br />
