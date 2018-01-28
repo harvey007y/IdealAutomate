@@ -44,7 +44,7 @@ namespace System.Windows.Forms.Samples {
         DataGridViewExt dataGridView3;
         BindingSource _CurrentFileViewBindingSource = new BindingSource();
         bool boolStopEvent = false;
-        bool _ignoreSelectedIndexChanged = false;
+        bool _ignoreSelectedIndexChanged = true;
         Rectangle _IconRectangle = new Rectangle();
         List<HotKeyRecord> listHotKeyRecords = new List<HotKeyRecord>();
         Dictionary<string, VirtualKeyCode> dictVirtualKeyCodes = new Dictionary<string, VirtualKeyCode>();

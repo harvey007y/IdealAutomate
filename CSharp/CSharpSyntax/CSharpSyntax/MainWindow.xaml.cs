@@ -152,77 +152,7 @@ namespace CSharpSyntax {
 
             
 
-            intRow++;
-            if (intRow > 20) {
-                intRow = 1;
-                intCol++;
-            }
-
-
-            myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.Label;
-            myControlEntity.ID = "lblCreateVSProject";
-            myControlEntity.Text = "Create New VS Project";
-            myControlEntity.RowNumber = intRow;
-            myControlEntity.ColumnNumber = intCol;
-            myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
-            myControlEntity.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
-            myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-            intRow++;
-            myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.Button;
-            myControlEntity.ID = "myButtonCreateVSProject";
-            myControlEntity.Text = "CreateNewVSProject";
-            myControlEntity.RowNumber = intRow;
-            myControlEntity.ColumnNumber = intCol;
-            //    myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
-            //   myControlEntity.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
-            myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-            intRow++;
-            myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.Label;
-            myControlEntity.ID = "lblDeclareVariable";
-            myControlEntity.Text = "Declare A Variable";
-            myControlEntity.RowNumber = intRow;
-            myControlEntity.ColumnNumber = intCol;
-            myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
-            myControlEntity.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
-            myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-            intRow++;
-            myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.Button;
-            myControlEntity.ID = "myButtonDeclareAVariable";
-            myControlEntity.Text = "Declare Variable";
-            myControlEntity.RowNumber = intRow;
-            myControlEntity.ColumnNumber = intCol;
-            //    myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
-            //   myControlEntity.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
-            myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-            intRow++;
-            myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.Label;
-            myControlEntity.ID = "lblCopyVSProjectToIA";
-            myControlEntity.Text = "Copy VS Project to IA";
-            myControlEntity.RowNumber = intRow;
-            myControlEntity.ColumnNumber = intCol;
-            myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
-            myControlEntity.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
-            myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-            intRow++;
-            myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.Button;
-            myControlEntity.ID = "myButtonCopyVSProjectToIA";
-            myControlEntity.Text = "Copy VS Project to IA";
-            myControlEntity.RowNumber = intRow;
-            myControlEntity.ColumnNumber = intCol;
-            //    myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);
-            //   myControlEntity.ForegroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.White.R, System.Drawing.Color.White.G, System.Drawing.Color.White.B);
-            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+          
 
             string strScripts = "";
             string strVariables = "";
