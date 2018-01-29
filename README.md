@@ -48,6 +48,12 @@ Below is a 2-minute video that shows one example of the powerful applications th
         <br /><a href="https://youtu.be/EVFt-dSLGWw" target="_blank"><img title="Ideal Automate Explorer Features"  src="http://idealprogrammer.com/wp-photos/IdealAutomateExplorerFeatures.PNG" alt="Ideal Automate Explorer Features" align="middle"/></a>   <br /><br />
 Below is a 3-minute video that shows another example of the powerful applications that you can create with IdealAutomate. In this video, you will see how you can immediately start using IdealAutomate to create a menu of all executables or hotkeys in a folder.<br />
         <br /><a href="https://youtu.be/YMor-U_bhIQ" target="_blank"><img title="create a menu of all executables or hotkeys in a folder"  src="http://idealprogrammer.com/wp-photos/HotKeysMenu.PNG" alt="create a menu of all executables or hotkeys in a folder" align="middle"/></a>   <br /><br />
+In the 2-minute video video below, you will see how you can immediately start using IdealAutomate to wrap multi-line text strings in quotes to use in assignment to a variable in CSharp<br />
+        <br /><a href="https://youtu.be/rJROGa1YT2I" target="_blank"><img title="wrap multi-line text strings in quotes CSharp"  src="http://idealprogrammer.com/wp-photos/WrapTextInQuotesForCSharp.PNG" alt="wrap multi-line text strings in quotes CSharp" align="middle"/></a>   <br /><br />
+
+In the 2-minute video video below, you will see how you can immediately start using IdealAutomate to wrap multi-line T-SQL statements in quotes to use in assignment to a variable in CSharp<br />
+        <br /><a href="https://youtu.be/xSWJwEBKgqs" target="_blank"><img title="wrap multi-line T-SQL statements in quotes CSharp"  src="http://idealprogrammer.com/wp-photos/PutSqlInQuotesForCSharp.PNG" alt="wrap multi-line T-SQL in quotes CSharp" align="middle"/></a>   <br /><br />
+	
 
 <b>Tags:</b> Windows Explorer with Tabs; Artificial Intelligence; ToDoList; Knowledge Base; Automation Scripts; HotKeys; File Comparison; Search; Add Metadata to files; cheat sheets<br /><br />
   <br />
