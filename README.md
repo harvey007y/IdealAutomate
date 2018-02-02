@@ -4,7 +4,7 @@
 <br />
 <a target="_blank" href="//pluralsight.pxf.io/c/1194222/424552/7490"><img src="http://a.impactradius-go.com/display-ad/7490-431393" border="0" height="300"/></a> <a target="_blank" href="http://payscale.com"><img src="http://www.payscale.com/images/llb/payscale_banner_120x240.gif" border="0" height="300" /></a> <a target="_blank" href="//pluralsight.pxf.io/c/1194222/424552/7490"><img src="http://idealprogrammer.com/wp-photos/SoftwareDeveloper300.png" border="0" height="300" /></a>
  </p>
-[![Github All Releases](https://img.shields.io/github/downloads/atom/atom/total.svg)](https://github.com/harvey007y/IdealAutomate)
+
 <br /><br />
 Here is a screenshot of IdealAutomateExplorer in List View:<br />
 <center>
