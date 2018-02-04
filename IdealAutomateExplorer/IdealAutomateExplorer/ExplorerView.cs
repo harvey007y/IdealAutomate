@@ -40,7 +40,7 @@ using Hardcodet.Wpf.Samples;
 #endregion
 
 namespace System.Windows.Forms.Samples {
-    partial class ExplorerView : BaseForm {
+    partial class ExplorerView : Form {
         private DirectoryView _dir;
         string strInitialDirectory = "";
         int _CurrentIndex = 0;
@@ -271,8 +271,198 @@ namespace System.Windows.Forms.Samples {
 
         #region Event Handlers        
         private void ExplorerView_Load(object sender, EventArgs e) {
-           
 
+            this.Cursor = Cursors.WaitCursor;
+            Methods myActions = new Methods();
+            //_CurrentDataGridView.ClearSelection();
+
+            splitContainer1.Height = Screen.PrimaryScreen.Bounds.Height - 175;
+
+            int splitContainer1Width = myActions.GetValueByKeyAsInt("SplitContainer1Width");
+
+            string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
+            if (splitContainer1Width > 0) {
+                splitContainer1.SplitterDistance = splitContainer1Width;
+            } else {
+                splitContainer1.Width = Screen.PrimaryScreen.Bounds.Width;
+            }
+
+            if (detailsMenuItemChecked == "True") {
+                splitContainer1.Panel2Collapsed = false;
+                this.detailsMenuItem.Checked = true;
+                this.listMenuItem.Checked = false;
+                //tries to start the process 
+                try {
+
+                    _proc = Process.Start(@"C:\Program Files\Windows NT\Accessories\wordpad.exe");
+                } catch (Exception) {
+                    MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                //disables button and textbox
+                //txtProcess.Enabled = false;
+                //btnStart.Enabled = false;
+
+                //host the started process in the panel 
+                System.Threading.Thread.Sleep(500);
+                while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                    System.Threading.Thread.Sleep(10);
+                    _proc.Refresh();
+                }
+
+                _proc.WaitForInputIdle();
+                _appHandle = _proc.MainWindowHandle;
+
+                SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+                //SendMessage(proc.MainWindowHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+            } else {
+                splitContainer1.Panel2Collapsed = true;
+                this.detailsMenuItem.Checked = false;
+                this.listMenuItem.Checked = true;
+            }
+
+
+
+            int intTotalSavingsForAllScripts = 0;
+
+            int numOfTabs = myActions.GetValueByKeyAsInt("NumOfTabs");
+            // default to desktop if they have no tabs
+            if (numOfTabs < 2) {
+                numOfTabs = 2;
+                myActions.SetValueByKey("NumOfTabs", numOfTabs.ToString());
+                myActions.SetValueByKey("InitialDirectory0", Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
+                myActions.SetValueByKey("InitialDirectory1", Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
+
+            }
+
+            // for each tab, add name and tooltip;
+
+            // if an initial directory does not exist for a tab,
+            // default to the documents folder for that tab
+            for (int i = 0; i < numOfTabs - 1; i++) {
+                strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+                // Set Initial Directory to My Documents
+                string strSavedDirectory1 = myActions.GetValueByKey("InitialDirectory" + i.ToString());
+                if (Directory.Exists(strSavedDirectory1)) {
+                    strInitialDirectory = strSavedDirectory1;
+                }
+
+                // do not fill the directory because first time through
+                // we are just addding name and tooltip to each tab
+                _dir = new DirectoryView(strInitialDirectory, false, _myArrayList);
+                this._CurrentFileViewBindingSource.DataSource = _dir;
+
+                tabControl1.TabPages[i].Text = _dir.FileView.Name;
+                tabControl1.TabPages[i].ToolTipText = _dir.FileView.FullName;
+                _CurrentIndex = i;
+                AddDataGridToTab(strInitialDirectory);
+
+
+            }
+
+            // fill the directory for the selected tab with everything under 
+            // that tabs initial directory
+
+            // we are skipping the following load of the directory because
+            // it seems to be redundant, but we may need to reinstate
+            // if categories do not expand and collapse correctly
+            goto testskip;
+            strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            // Set Initial Directory to My Documents
+
+            string strSavedDirectory2 = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
+            if (Directory.Exists(strSavedDirectory2)) {
+                strInitialDirectory = strSavedDirectory2;
+            }
+            _dir = new DirectoryView(strInitialDirectory, _myArrayList);
+            this._CurrentFileViewBindingSource.DataSource = _dir;
+            tabControl1.TabPages[tabControl1.SelectedIndex].Text = _dir.FileView.Name;
+            _CurrentIndex = tabControl1.SelectedIndex;
+            // AddDataGridToTab();
+
+            testskip:
+            int currentIndex = myActions.GetValueByKeyAsInt("CurrentIndex");
+            tabControl1.SelectedIndex = currentIndex;
+            _CurrentDataGridView = (DataGridViewExt)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
+            _CurrentFileViewBindingSource = listBindingSource[tabControl1.SelectedIndex];
+
+            RefreshDataGrid();
+            goto skipSecondLoad;
+            strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            // Set Initial Directory to My Documents
+            string strSavedDirectory = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
+
+
+            if (Directory.Exists(strSavedDirectory)) {
+                strInitialDirectory = strSavedDirectory;
+            }
+            _dir = new DirectoryView(strInitialDirectory, _myArrayList);
+            this._CurrentFileViewBindingSource.DataSource = _dir;
+
+            // Set the title
+            SetTitle(_dir.FileView);
+            skipSecondLoad:
+            string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
+            string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
+            string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
+            string settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPath(myNewProjectSourcePath));
+            string fileName = cbxCurrentPath.Name + ".txt";
+            string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
+            ArrayList alHosts = new ArrayList();
+            List<ComboBoxPair> cbp = new List<ComboBoxPair>();
+            cbp.Clear();
+            //  cbxCurrentPath.Items.Clear();
+            //  cbp.Add(new ComboBoxPair("--Select Item ---", "--Select Item ---"));
+            ComboBox myComboBox = new ComboBox();
+
+            if (!File.Exists(settingsPath)) {
+                using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
+                    objSWFile.Close();
+                }
+            }
+            using (StreamReader objSRFile = File.OpenText(settingsPath)) {
+                string strReadLine = "";
+                while ((strReadLine = objSRFile.ReadLine()) != null) {
+                    string[] keyvalue = strReadLine.Split('^');
+                    if (keyvalue[0] != "--Select Item ---" && keyvalue[0] != "") {
+                        cbp.Add(new ComboBoxPair(keyvalue[0], keyvalue[1]));
+
+                    }
+                }
+                objSRFile.Close();
+            }
+
+            foreach (var item in cbp) {
+                cbxCurrentPath.Items.Add(item);
+            }
+            cbxCurrentPath.DisplayMember = "_Value";
+
+            // Set Size column to right align
+            DataGridViewColumn col = this._CurrentDataGridView.Columns["Size"];
+
+            if (null != col) {
+                DataGridViewCellStyle style = col.HeaderCell.Style;
+
+                style.Padding = new Padding(style.Padding.Left, style.Padding.Top, 6, style.Padding.Bottom);
+                style.Alignment = DataGridViewContentAlignment.MiddleRight;
+            }
+
+            // Select first item.
+            col = this._CurrentDataGridView.Columns["Name"];
+
+            if (null != col) {
+                this._CurrentDataGridView.Rows[0].Cells[col.Index].Selected = true;
+            }
+            AddGlobalHotKeys();
+
+            myActions.SetValueByKey("ExpandCollapseAll", "");
+            //    RefreshDataGrid();
+            //    myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString(), tabControl1.TabPages[tabControl1.SelectedIndex].Text);
+
+
+            this.Cursor = Cursors.Default;
 
         }
 
@@ -6894,6 +7084,14 @@ namespace System.Windows.Forms.Samples {
             SQLToGrid dlg = new SQLToGrid();
             ElementHost.EnableModelessKeyboardInterop(dlg);
             dlg.Show();
+        }
+
+        private void idealSqlTracerToolStripMenuItem_Click(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
+            string strApplicationPath = strApplicationBinDebug.Replace("\\IdealAutomateExplorer\\bin\\Debug", "");
+            string strIdealSqlTracerExe = Path.Combine(strApplicationPath, @"IdealSqlTracer\bin\Debug\IdealSqlTracer.exe");
+            myActions.Run(strIdealSqlTracerExe, "");
         }
     }
 

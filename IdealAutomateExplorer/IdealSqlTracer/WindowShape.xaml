@@ -1,0 +1,31 @@
+﻿<Window x:Class="IdealAutomate.Core.WindowShape"
+	 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="ShapedWindow" Height="267" Width="300"
+    Background="Transparent" WindowStyle="None" OpacityMask="White"
+    AllowsTransparency="True" WindowStartupLocation="Manual"  Topmost="True"  >
+    
+    <Grid>
+
+        <Image Name="imgBackground" Stretch="Fill" Source="/IdealSqlTracer;component/Resources/RedArrowRight.png" />
+        <TextBlock Height="26" Margin="20,10,129,0" Name="lblTitle" VerticalAlignment="Top" FontWeight="Bold" Foreground="Black">
+            Click here to get started
+            <TextBlock.Effect>
+                <DropShadowEffect BlurRadius="20" Color="White"  ShadowDepth="0" />
+            </TextBlock.Effect>
+        </TextBlock>
+        <TextBlock Height="125" Margin="10,36,109,0" Name="lblContent" VerticalAlignment="Top" FontWeight="Bold" Foreground="Azure" TextWrapping="Wrap">
+            Here is what you need to do to get started
+            <TextBlock.BitmapEffect>
+                <OuterGlowBitmapEffect GlowColor="Azure" GlowSize="30" Noise="1" Opacity="0.4" />
+            </TextBlock.BitmapEffect>
+        </TextBlock>
+        <Button Height="25" Margin="40,0,0,23.209" Name="btnLogin" VerticalAlignment="Bottom" FontSize="12" Click="btnLogin_Click" HorizontalAlignment="Left" Width="131">
+            Ok
+            <Button.BitmapEffect>
+                <DropShadowBitmapEffect Color="Black" Direction="320" ShadowDepth="25" 
+                    Softness="1" Opacity="0.5"/>
+            </Button.BitmapEffect>
+        </Button>
+    </Grid>
+</Window>

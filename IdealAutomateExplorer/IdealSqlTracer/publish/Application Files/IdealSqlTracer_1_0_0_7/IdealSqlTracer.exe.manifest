@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
+  <asmv1:assemblyIdentity name="IdealSqlTracer.exe" version="1.0.0.7" publicKeyToken="03a055bb194560c6" language="neutral" processorArchitecture="x86" type="win32" />
+  <application />
+  <entryPoint>
+    <assemblyIdentity name="IdealSqlTracer" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
+    <commandLine file="IdealSqlTracer.exe" parameters="" />
+  </entryPoint>
+  <trustInfo>
+    <security>
+      <applicationRequestMinimum>
+        <PermissionSet Unrestricted="true" ID="Custom" SameSite="site" />
+        <defaultAssemblyRequest permissionSetReference="Custom" />
+      </applicationRequestMinimum>
+      <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
+        <!--
+          UAC Manifest Options
+          If you want to change the Windows User Account Control level replace the 
+          requestedExecutionLevel node with one of the following.
+
+        <requestedExecutionLevel  level="asInvoker" uiAccess="false" />
+        <requestedExecutionLevel  level="requireAdministrator" uiAccess="false" />
+        <requestedExecutionLevel  level="highestAvailable" uiAccess="false" />
+
+         If you want to utilize File and Registry Virtualization for backward 
+         compatibility then delete the requestedExecutionLevel node.
+    -->
+        <requestedExecutionLevel level="asInvoker" uiAccess="false" />
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+  <dependency>
+    <dependentOS>
+      <osVersionInfo>
+        <os majorVersion="5" minorVersion="1" buildNumber="2600" servicePackMajor="0" />
+      </osVersionInfo>
+    </dependentOS>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Windows.CommonLanguageRuntime" version="4.0.30319.0" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IdealSqlTracer.exe" size="140224">
+      <assemblyIdentity name="IdealSqlTracer" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>YMg6WggC/q6TFcP5VuEj2dTdB6M=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <file name="Images\112_UpArrowShort_Green.ico" size="29926">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>Vs4fs9Z1350BhMO053E28qWAI5A=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Images\imgPatch16.PNG" size="397">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>sXbRk+PrP6T7/nx0ohUnEc7cOis=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Images\imgPatch17.PNG" size="549">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>sw+dBQEX/Apffh4eogyTR4cBlgU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Images\imgPatch2015_08.PNG" size="412">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>9D/LNwKdJg2rdaUIr6P2MUvrC/s=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Images\imgPatch2015_08_Home.PNG" size="292">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>4A3yb7n+V8lWzKV1Bat9SWA8QXg=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Images\imgSVNUpdate.PNG" size="704">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>cYZMIe6aJBGqcmHCBwxihcmqkYU=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Images\imgSVNUpdate_Home.PNG" size="502">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>NTpsjxwnFRKoVJETqPp9alGT+Dw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Images\imgUpdateLogOK.PNG" size="932">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>CCz9pd8oW8O3+jru1IUY74j3z34=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Images\imgUpdateLogOK_Home.PNG" size="524">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>yAcZ8ghH+M61XBWYqvzHYy+4TOc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="SqlFormatter.exe" size="206336">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>G8DW33ApQyebHVlArEPLF+wSVS8=</dsig:DigestValue>
+    </hash>
+  </file>
+<publisherIdentity name="CN=GATEWAYSYSTEMS\wharvey" issuerKeyHash="d6c1bf5ce3653494608fccd239ad684e4f8a87ba" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>wnG23BJxdDytE7/3cK5Ylpz8gFs=</DigestValue></Reference></SignedInfo><SignatureValue>Wr72BjU5LW5T14tnjCtW2RWcCJGZNktwalHluyRtZRLAZvdZQSvOLl9DAIZ+mBkTY2IHYPygrd9NToslReEbvsBpRvhLasbtPblhB04PnNV8gD2Jpn0rWSUI4E2XhA/Rq6DxkKzaTOY8sOgZzp5Fxy2l9aZROHuYUMDkpkszgQc=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>w8tjS0ac9LqfIHIXfcQ2aOmC33a/BTPsyiqfMdZjVZ7cHxMw6bdCrLa3RnkatOC92x1JqazceZ09GtKji6teUF0QYJDWFumEtqYESqxTPr+QQkoMqossP1jC8Rg0atE2XeFur7yCkN1BU/+5N87HYPD5Q1wnCfuDK5aHz264gnc=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="5b80fc9c9658ae70f7bf13ad3c747112dcb671c2" Description="" Url=""><as:assemblyIdentity name="IdealSqlTracer.exe" version="1.0.0.7" publicKeyToken="03a055bb194560c6" language="neutral" processorArchitecture="x86" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=GATEWAYSYSTEMS\wharvey</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>Qfcsg35Hc1Gi0FnqRVvcP28qdhA=</DigestValue></Reference></SignedInfo><SignatureValue>aqcKVY35N4lDUNY+tFxITzD02Z384xBV8x1xBtRVOhsm5v4GRZZOVKf3H3hiIPSy12QEEf81Z8bmxwPmgRRhN7MZ0rsX4e713vTXaHwVr3rpVOL6IIz46aVsz4/0hj5kSU6I+mNBMT+YaCRnLpa4U6KuOpVJkgLCRgAKzlm1AjA=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>w8tjS0ac9LqfIHIXfcQ2aOmC33a/BTPsyiqfMdZjVZ7cHxMw6bdCrLa3RnkatOC92x1JqazceZ09GtKji6teUF0QYJDWFumEtqYESqxTPr+QQkoMqossP1jC8Rg0atE2XeFur7yCkN1BU/+5N87HYPD5Q1wnCfuDK5aHz264gnc=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIB8TCCAVqgAwIBAgIQfj8PQ/HeRZpLCWIiDW8otjANBgkqhkiG9w0BAQUFADA3MTUwMwYDVQQDHiwARwBBAFQARQBXAEEAWQBTAFkAUwBUAEUATQBTAFwAdwBoAGEAcgB2AGUAeTAeFw0xNzAzMjAxNDUyNDRaFw0xODAzMjAyMDUyNDRaMDcxNTAzBgNVBAMeLABHAEEAVABFAFcAQQBZAFMAWQBTAFQARQBNAFMAXAB3AGgAYQByAHYAZQB5MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDy2NLRpz0up8gchd9xDZo6YLfdr8FM+zKKp8x1mNVntwfEzDpt0KstrdGeRq04L3bHUmprNx5nT0a0qOLq15QXRBgkNYW6YS2pgRKrFM+v5BCSgyqiyw/WMLxGDRq0TZd4W6vvIKQ3UFT/7k3zsdg8PlDXCcJ+4MrlofPbriCdwIDAQABMA0GCSqGSIb3DQEBBQUAA4GBADxiHKx92biUtipok1YtBiJZ1QmxsCsMkIyp19J98zjNCPF6wIaAnyDvLNajZVd3VwQIuL5bkA2B0Q0JKaowWMdNp1PJ43/4elWcVgdw5yaGDcSfb+rohQhVo8fNuo7dMzbVkLbX7Ym+6yTsWPVhZ1D3ULcWXXhTWDubcagdM4Bi</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>

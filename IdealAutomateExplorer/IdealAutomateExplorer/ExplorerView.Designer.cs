@@ -619,6 +619,7 @@ namespace System.Windows.Forms.Samples
             this.idealSqlTracerToolStripMenuItem.Name = "idealSqlTracerToolStripMenuItem";
             this.idealSqlTracerToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.idealSqlTracerToolStripMenuItem.Text = "IdealSqlTracer";
+            this.idealSqlTracerToolStripMenuItem.Click += new System.EventHandler(this.idealSqlTracerToolStripMenuItem_Click);
             // 
             // sqlLiteToolStripMenuItem
             // 
@@ -746,7 +747,6 @@ namespace System.Windows.Forms.Samples
             this.Name = "ExplorerView";
             this.Text = "[File Name]";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.LoadCompleted += new System.Windows.Forms.Samples.BaseForm.LoadCompletedEventHandler(this.ExplorerView_LoadCompleted_1);
             this.Load += new System.EventHandler(this.ExplorerView_Load);
             this.ClientSizeChanged += new System.EventHandler(this.ExplorerView_ClientSizeChanged);
             this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.ExplorerView_PreviewKeyDown);
