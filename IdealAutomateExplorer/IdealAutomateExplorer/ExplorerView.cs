@@ -7093,6 +7093,102 @@ namespace System.Windows.Forms.Samples {
             string strIdealSqlTracerExe = Path.Combine(strApplicationPath, @"IdealSqlTracer\bin\Debug\IdealSqlTracer.exe");
             myActions.Run(strIdealSqlTracerExe, "");
         }
+
+        private void sqlLiteToolStripMenuItem_Click(object sender, EventArgs e) {
+
+        }
+
+        private void sqlProfilerToolStripMenuItem_Click(object sender, EventArgs e) {
+
+        }
+
+        private void sSMSToolStripMenuItem_Click(object sender, EventArgs e) {
+
+        }
+
+        private void instantCToolStripMenuItem_Click(object sender, EventArgs e) {
+
+        }
+
+        private void instantVBToolStripMenuItem_Click(object sender, EventArgs e) {
+
+        }
+
+        private void paintNETToolStripMenuItem_Click(object sender, EventArgs e) {
+
+        }
+
+        private void visualStudio2015ToolStripMenuItem_Click(object sender, EventArgs e) {
+
+        }
+
+        private void visualStudio2017ToolStripMenuItem_Click(object sender, EventArgs e) {
+
+        }
+
+        private void componentServicesToolStripMenuItem_Click(object sender, EventArgs e) {
+
+        }
+
+        private void eventViewerToolStripMenuItem_Click(object sender, EventArgs e) {
+
+        }
+
+        private void iISToolStripMenuItem_Click(object sender, EventArgs e) {
+
+        }
+
+        private void programsAndFeaturesToolStripMenuItem_Click(object sender, EventArgs e) {
+
+        }
+
+        private void servicesToolStripMenuItem_Click(object sender, EventArgs e) {
+
+        }
+
+        private void taskManagerToolStripMenuItem_Click(object sender, EventArgs e) {
+
+        }
+
+        private void fiddlerToolStripMenuItem_Click(object sender, EventArgs e) {
+
+        }
+
+        private void iISToolStripMenuItem1_Click(object sender, EventArgs e) {
+
+        }
+
+        private void iWB2LearnerToolStripMenuItem_Click(object sender, EventArgs e) {
+
+        }
+
+        private void notepadToolStripMenuItem2_Click(object sender, EventArgs e) {
+
+        }
+
+        private void processExplorerToolStripMenuItem_Click(object sender, EventArgs e) {
+
+        }
+
+        private void taskManagerToolStripMenuItem1_Click(object sender, EventArgs e) {
+
+        }
+
+        private void winListerToolStripMenuItem_Click(object sender, EventArgs e) {
+
+        }
+
+        private void curlToolStripMenuItem_Click(object sender, EventArgs e) {
+
+        }
+
+        private void fiddlerToolStripMenuItem1_Click(object sender, EventArgs e) {
+
+        }
+
+        private void postmanToolStripMenuItem_Click(object sender, EventArgs e) {
+
+        }
     }
 
 }
