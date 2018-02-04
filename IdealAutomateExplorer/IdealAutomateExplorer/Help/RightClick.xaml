@@ -1,0 +1,210 @@
+﻿<Page x:Class="Hardcodet.Wpf.Samples.Help.RightClick"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	Title="RightClick" 
+	>
+    <FlowDocumentReader ViewingMode="Scroll">
+        <FlowDocument FontSize="20">
+            <Paragraph>
+                <Image Source="/Images/help1.png" Width="190" Height="190" Margin="0,0,30,0" />
+                <Run FontSize="30" BaselineAlignment="Center">RightClick</Run>
+            </Paragraph>
+            <Paragraph>
+                <Bold FontSize="24">Examples:</Bold>
+            </Paragraph>
+            <List>
+                <ListItem>
+                    <Paragraph>
+                        <Bold>RightClick</Bold>
+                    </Paragraph>
+                    <Table CellSpacing="5" BorderThickness="1" BorderBrush="Black">
+                        <TableRowGroup>
+                            <TableRow>
+                                <TableCell>
+                                    <Paragraph>
+                                        <Image Source="/Images/Primitives.PNG"  Margin="5,5,5,5"  HorizontalAlignment="Center" />
+                                    </Paragraph>
+                                </TableCell>
+                            </TableRow>
+                        </TableRowGroup>
+                    </Table>
+                    <Table CellSpacing="5" BorderThickness="1" BorderBrush="Black">
+                        <TableRowGroup>
+                            <TableRow>
+                                <TableCell>
+                                    <Paragraph>
+                                        <Image Source="/Images/Arrays.PNG"  Margin="5,5,5,5"  HorizontalAlignment="Center" />
+                                    </Paragraph>
+                                </TableCell>
+                            </TableRow>
+                        </TableRowGroup>
+                    </Table>
+                    <Table CellSpacing="5" BorderThickness="1" BorderBrush="Black">
+                        <TableRowGroup>
+                            <TableRow>
+                                <TableCell>
+                                    <Paragraph>
+                                        <Image Source="/Images/Images.PNG"  Margin="5,5,5,5"  HorizontalAlignment="Center" />
+                                    </Paragraph>
+                                </TableCell>
+                            </TableRow>
+                        </TableRowGroup>
+                    </Table>
+                    <Table  CellSpacing="0" BorderThickness="1" BorderBrush="Black">
+                        <TableRowGroup>
+                            <TableRow Background="Gainsboro" FontWeight="Bold">
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph TextAlignment="Center">Verb</Paragraph>
+                                </TableCell>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph TextAlignment="Center">Entity1</Paragraph>
+                                </TableCell>
+                                <TableCell  BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph TextAlignment="Center">Relationship</Paragraph>
+                                </TableCell>
+                                <TableCell  BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph TextAlignment="Center">Entity2</Paragraph>
+                                </TableCell>
+                            </TableRow>
+                        </TableRowGroup>
+                        <TableRowGroup>
+
+                            <TableRow>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph>PutAll</Paragraph>
+                                </TableCell>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph>imgGoogleSearchButton</Paragraph>
+                                </TableCell>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph>in</Paragraph>
+                                </TableCell>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph>aryImage</Paragraph>
+                                </TableCell>
+                            </TableRow>
+                        </TableRowGroup>
+                        <TableRowGroup>
+                            <TableRow>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph>If</Paragraph>
+                                </TableCell>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph>intCount</Paragraph>
+                                </TableCell>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph>&gt;</Paragraph>
+                                </TableCell>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph>0</Paragraph>
+                                </TableCell>
+
+                            </TableRow>
+                            <TableRow>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph>RightClick</Paragraph>
+                                </TableCell>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph>aryImage</Paragraph>
+                                </TableCell>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph></Paragraph>
+                                </TableCell>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph></Paragraph>
+                                </TableCell>
+                            </TableRow>
+                        </TableRowGroup>
+                        <TableRowGroup>
+                            <TableRow>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph>End If</Paragraph>
+                                </TableCell>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph></Paragraph>
+                                </TableCell>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph></Paragraph>
+                                </TableCell>
+                                <TableCell BorderBrush="Black" BorderThickness="1">
+                                    <Paragraph></Paragraph>
+                                </TableCell>
+
+                            </TableRow>
+                        </TableRowGroup>
+                    </Table>
+
+                    <Paragraph>
+                        <Italic>Explanation of example</Italic> -  Put coordinates for all images found into aryImage. In the arrays tab, aryImage has the Count field defined as intCount, which has been defined as integer in primitives tab. If intCount is greater than 0, right-click at the x and y coordinates  for the first image contained in the array aryImage. The first image in the array is used because the default index for an array in the Arrays tab is 0. Indexes for arrays are zero-based, which means that an index of 0 points to the first image found.
+                    </Paragraph>
+                </ListItem>
+            </List>
+            <Paragraph>
+                <Line Stretch="Fill" Stroke="Black" X2="1"/>
+            </Paragraph>
+            <Paragraph>
+                <Bold FontSize="24">Columns:</Bold>
+            </Paragraph>
+            <Paragraph>
+                <Bold>RightClick</Bold> - RightClick allows you to right-click on the X and Y coordinates for an item specified by an array in Entity1. Here are the columns:
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        1. Sequence
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                Sequence is a decimal number with 4 digits after the decimal. It can be modified to allow you to insert rows anywhere in your script. Rows are executed in sequence number order.
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        2. Verb
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                RightClick
+            </Paragraph>
+
+
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        3. Entity1
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                Entity1 is the name of an array defined in the Arrays tab.
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        4. Relationship
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                Relationship is not used.
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        5. Entity2
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                Entity2 is not used.
+            </Paragraph>
+
+
+
+
+
+        </FlowDocument>
+    </FlowDocumentReader>
+</Page>

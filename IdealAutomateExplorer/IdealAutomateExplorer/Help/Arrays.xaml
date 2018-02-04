@@ -1,0 +1,83 @@
+﻿<Page x:Class="Hardcodet.Wpf.Samples.Help.Arrays"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	Title="Arrays" 
+	>
+    <FlowDocumentReader ViewingMode="Scroll">
+        <FlowDocument FontSize="20">
+       <Paragraph>
+            <Image Source="/Images/help1.png" Width="190" Height="190" Margin="0,0,30,0" />
+            <Run FontSize="30" BaselineAlignment="Center">Arrays</Run>
+
+            </Paragraph>
+            <Table CellSpacing="5" BorderThickness="1" BorderBrush="Black">
+                <TableRowGroup>
+                    <TableRow>
+                        <TableCell>
+                            <Paragraph>
+                                <Image Source="/Images/Arrays.PNG"  Margin="5,5,5,5"  HorizontalAlignment="Center" />
+                            </Paragraph>
+                        </TableCell>
+                    </TableRow>
+                </TableRowGroup>
+            </Table>
+
+            <Paragraph>
+                An array is used to hold repeating information. You can think of an array as being like an excel spreadsheet that is made up of rows and columns.  You use Index to point to a specific row and Index2 to point to a specific column. Count tells you how many rows there are and Count2 tells you the number of columns. IdealAutomate primarily uses arrays to hold the X and Y values of the upper-left hand corner of where an image has been found. Unlike most programming languages where you can specify the number of dimensions of an array, in Ideal Automater all arrays have two dimensions: rows and columns.  When dealing with putting the results of finding an image into an array, each row in the array represents an occurrence of where the image was found, and the columns provide you with the X and Y values for the upper-left corner of that image. There is also a third column in the results for finding an image that tells you the percent of pixels that matched between the image that you were searching for and the image that was found. You can use arrays to hold other information besides the results of finding an image, but their primary use will probably be to hold the results for finding an image. The Array Tab consists of five columns:
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        1. Name
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                Name is just the name that your scripts will use to point to a particular array. I find it easiest to start my array names with ary so that they will all be grouped together alphabetically when I am looking for an array.
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                2. Index
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                 Index must be a primitive that is defined as an int. Index is a zero-based index that points to a specific row.  In the case of image results, Index points to the occurrence of the image that was found. Zero points to the first one that was found; one points to the second one, and so on.
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        3. Count
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                Count must be a primitive that is defined as an int. Count tells you the number of rows, or, in the case of image results, how many images were found. After you have tried to find an image on the screen, you can ask if the count is greater than zero to determine if it was actually located.
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        4. Index2
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                Index must be a primitive that is defined as an int. Index2 is a zero-based index that points to a specific column. In the case of image results, zero points to the X coordinate; one points to the Y-coordinate, and two points the percentage of pixel match. If you want to point to an entire row in an array, just set Index2 to -1 to indicate that you are interested in the entire row.
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        5. Count2
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                Count2 must be a primitive that is defined as an int. Count2 tells you how many columns are in the array.
+            </Paragraph>
+
+
+
+        </FlowDocument>
+    </FlowDocumentReader>
+</Page>

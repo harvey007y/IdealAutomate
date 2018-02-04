@@ -1,0 +1,70 @@
+﻿<Window
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:dg="http://schemas.microsoft.com/wpf/2008/toolkit"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"        
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="Hardcodet.Wpf.Samples.Pages.FindColumns"        
+	  xmlns:pages="clr-namespace:Hardcodet.Wpf.Samples.Pages"
+
+    Loaded="OnLoad"
+        Background="LightGray"    >
+    
+    <StackPanel>
+       
+        <Grid>
+            <Label Name="Label1" Height="28" Width="151" FontSize="12" FontFamily="Microsoft Sans Serif" TabIndex="0" Margin="0,8,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" >New ConnectionString:</Label>
+            <TextBox Name="txtConnectionString" Height="22" Width="496" TabIndex="1" Margin="168,8,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap" ></TextBox>
+            <Button Name="btnAdd" Height="23" Width="75" TabIndex="2" Margin="0,7,78,0" HorizontalAlignment="Right" VerticalAlignment="Top" d:LayoutOverrides="HorizontalAlignment" Content="Add" Click="btnAdd_Click"/>
+            <Label Name="Label2" Height="28" Width="183" FontSize="12" FontFamily="Microsoft Sans Serif" TabIndex="3" Margin="0,40,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" >Existing Connection Strings:</Label>
+            <ComboBox Name="cbConnectionStrings" Height="24" Width="496" TabIndex="4" Margin="168,40,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"  SelectionChanged="cbConnectionStrings_SelectionChanged"/>
+            <Button Name="Button3" Height="28" Width="97" TabIndex="6" Margin="0,37.093,56,0" HorizontalAlignment="Right" VerticalAlignment="Top" d:LayoutOverrides="HorizontalAlignment" Content="Delete Selected" Click="Button3_Click" />
+            <dg:DataGrid Name="DataGridView1" Height="409" Width="800"  Margin="25,140,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"   ItemsSource="{Binding}" AutoGenerateColumns="False">
+                <dg:DataGrid.Columns>
+                    <!-- <dg:DataGridTextColumn
+       Binding="{Binding Mode=OneWay, Path=OrderID}" Header="OrderID"/> -->
+                    <!-- <dg:DataGridTextColumn
+       Binding="{Binding Path=CustomerID}" Header="CustomerID" /> -->
+
+                    <dg:DataGridTextColumn
+      Binding="{Binding Path=table_name}" Header="Table Name" />
+                    <dg:DataGridTextColumn 
+      Binding="{Binding  Mode=OneWay, Path=xtype}" Header="Type" />
+                    <dg:DataGridTextColumn
+      Binding="{Binding Path=column_name}" Header="Column Name" />
+                    <dg:DataGridTextColumn
+      Binding="{Binding Path=datatype}" Header="Data Type" />
+                    <dg:DataGridTextColumn
+      Binding="{Binding Path=length}" Header="Length" />
+                    <dg:DataGridTextColumn
+      Binding="{Binding  Mode=OneWay,  Path=isnullable}" Header="Nullable" />
+                </dg:DataGrid.Columns>
+
+            </dg:DataGrid>
+
+            <Label Name="Label3" Height="28" Width="43" FontSize="12" FontFamily="Microsoft Sans Serif" TabIndex="8" Margin="108,106,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" >Filter:</Label>
+            <TextBox Name="txtName" Height="22" Width="189" TabIndex="9" Margin="168,106,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap" TextChanged="txtName_TextChanged" ></TextBox>
+            <TextBox Name="txtXtype" Height="22" Width="90" TabIndex="10" Margin="373,106,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap" TextChanged="txtXtype_TextChanged"></TextBox>
+            <TextBox Name="txtColumnName" Height="22" Width="93" TabIndex="11" Margin="469,106,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap" TextChanged="txtColumnName_TextChanged"></TextBox>
+            <TextBox Name="txtDataType" Height="22" Width="89" TabIndex="12" Margin="575,106,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap" TextChanged="txtDataType_TextChanged"></TextBox>
+            <Label Content="Use % for Wildcard" Height="28" HorizontalAlignment="Left" Margin="8,76,0,0" Name="label4" VerticalAlignment="Top" Foreground="Red" FontStyle="Italic" FontWeight="Bold" />
+            <Label Content="Table Name:" Height="28" HorizontalAlignment="Left" Margin="168,76,0,0" Name="label5" VerticalAlignment="Top" />
+            <Label Content="Type:" Height="28" HorizontalAlignment="Left" Margin="373,76,0,0" Name="label6" VerticalAlignment="Top" />
+            <Label Content="Column Name:" Height="28" HorizontalAlignment="Right" Margin="0,76,270,0" Name="label7" VerticalAlignment="Top" />
+            <Label Content="Data Type:" Height="28" HorizontalAlignment="Left" Margin="575,76,0,0" Name="label8" VerticalAlignment="Top" />
+            <Button Click="ShowHelpDialog"
+            Margin="777,3,0,0"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top">
+                <Button.Template>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Image Source="/Images/help.png"
+                 Width="50"
+                 Height="50"
+                 ToolTip="Click for Info"
+                 Cursor="Hand"
+                 Opacity="0.8" />
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </Grid>
+    </StackPanel>
+</Window>

@@ -1,0 +1,42 @@
+﻿<NavigationWindow x:Class="NavWindow"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	Title="SQL To Grid Help"				  
+	ShowInTaskbar="False"
+	WindowStartupLocation="CenterScreen"
+	>
+
+    <NavigationWindow.Content >
+        <Grid >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="25*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="75*" />
+            </Grid.ColumnDefinitions>
+
+            <TreeView Name="tree" FontSize="10pt" 
+					  
+					  >
+                <TreeViewItem Header="SQL To Grid Overview" PreviewMouseLeftButtonDown="ProgramOverview_MouseLeftButtonDown"
+						  Tag="Help/Overview.xaml" />
+
+                <TreeViewItem Header="Benefits" PreviewMouseLeftButtonDown="Benefits_MouseLeftButtonDown"
+						  Tag="Help/Benefits.xaml" />
+                <TreeViewItem Header="Inputs" PreviewMouseLeftButtonDown="Inputs_MouseLeftButtonDown"
+						  Tag="Help/Inputs.xaml" 
+						  />
+                <TreeViewItem Header="Outputs" PreviewMouseLeftButtonDown="Outputs_MouseLeftButtonDown"
+						  Tag="Help/Outputs.xaml" 
+						  />
+            </TreeView>
+
+            <GridSplitter Grid.Column="1" Width="6" 
+						  HorizontalAlignment="Center" 
+						  VerticalAlignment="Stretch" />
+
+            <Frame Name="frame" Grid.Column="2" DataContext="{Binding}" />
+        </Grid>
+    </NavigationWindow.Content>
+</NavigationWindow>
+
+

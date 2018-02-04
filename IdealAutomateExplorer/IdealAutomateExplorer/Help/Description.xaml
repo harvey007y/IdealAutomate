@@ -1,0 +1,62 @@
+﻿<Page x:Class="Hardcodet.Wpf.Samples.Help.Description"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	Title="Description" 
+	>
+    <FlowDocumentReader ViewingMode="Scroll">
+        <FlowDocument FontSize="20">
+            <Paragraph>
+                <Image Source="/Images/help1.png" Width="190" Height="190" Margin="0,0,30,0" />
+                <Run FontSize="30" BaselineAlignment="Center">Description</Run>
+
+            </Paragraph>
+            <Table CellSpacing="5" BorderThickness="1" BorderBrush="Black">
+                <TableRowGroup>
+                    <TableRow>
+                        <TableCell>
+                            <Paragraph>
+                                <Image Source="/Images/Description.PNG"  Margin="5,5,5,5"  HorizontalAlignment="Center" />
+                            </Paragraph>
+                        </TableCell>
+                    </TableRow>
+                </TableRowGroup>
+            </Table>
+
+            <Paragraph>
+                The Description Tab consists of three fields:
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        1. Title
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                Title describes the script at high level so that other people will have a general ideal of what it does.
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                2. Summary
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                 The Summary provides more details as to what the script does.
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        3. Setup Instructions
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                The setup instructions should provide details on what windows should be minimized, maximized, etc. before the script runs.  Also, if the focus should be set on a particular field before running the script, that should be noted as well.
+            </Paragraph>
+
+
+        </FlowDocument>
+    </FlowDocumentReader>
+</Page>

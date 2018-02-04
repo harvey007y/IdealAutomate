@@ -88,7 +88,17 @@ namespace System.Windows.Forms.Samples
             this.showHideColumnsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.favoritesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sqlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.findColumnsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.idealSqlTracerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sqlLiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sqlProfilerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sqlToGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.sSMSToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.documentationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.videosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FileViewBindingSource2 = new System.Windows.Forms.BindingSource(this.components);
             this.FileViewBindingSource3 = new System.Windows.Forms.BindingSource(this.components);
             this.FileViewBindingSource4 = new System.Windows.Forms.BindingSource(this.components);
@@ -578,15 +588,90 @@ namespace System.Windows.Forms.Samples
             // 
             // toolsToolStripMenuItem
             // 
+            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.sqlToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
             // 
+            // sqlToolStripMenuItem
+            // 
+            this.sqlToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.findColumnsToolStripMenuItem,
+            this.idealSqlTracerToolStripMenuItem,
+            this.sqlLiteToolStripMenuItem,
+            this.sqlProfilerToolStripMenuItem,
+            this.sqlToGridToolStripMenuItem,
+            this.sSMSToolStripMenuItem});
+            this.sqlToolStripMenuItem.Name = "sqlToolStripMenuItem";
+            this.sqlToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.sqlToolStripMenuItem.Text = "Sql";
+            // 
+            // findColumnsToolStripMenuItem
+            // 
+            this.findColumnsToolStripMenuItem.Name = "findColumnsToolStripMenuItem";
+            this.findColumnsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.findColumnsToolStripMenuItem.Text = "FindColumns";
+            this.findColumnsToolStripMenuItem.Click += new System.EventHandler(this.findColumnsToolStripMenuItem_Click);
+            // 
+            // idealSqlTracerToolStripMenuItem
+            // 
+            this.idealSqlTracerToolStripMenuItem.Name = "idealSqlTracerToolStripMenuItem";
+            this.idealSqlTracerToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.idealSqlTracerToolStripMenuItem.Text = "IdealSqlTracer";
+            // 
+            // sqlLiteToolStripMenuItem
+            // 
+            this.sqlLiteToolStripMenuItem.Name = "sqlLiteToolStripMenuItem";
+            this.sqlLiteToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.sqlLiteToolStripMenuItem.Text = "SqlLite";
+            // 
+            // sqlProfilerToolStripMenuItem
+            // 
+            this.sqlProfilerToolStripMenuItem.Name = "sqlProfilerToolStripMenuItem";
+            this.sqlProfilerToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.sqlProfilerToolStripMenuItem.Text = "SqlProfiler";
+            // 
+            // sqlToGridToolStripMenuItem
+            // 
+            this.sqlToGridToolStripMenuItem.Name = "sqlToGridToolStripMenuItem";
+            this.sqlToGridToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.sqlToGridToolStripMenuItem.Text = "SqlToGrid";
+            this.sqlToGridToolStripMenuItem.Click += new System.EventHandler(this.sqlToGridToolStripMenuItem_Click);
+            // 
+            // sSMSToolStripMenuItem
+            // 
+            this.sSMSToolStripMenuItem.Name = "sSMSToolStripMenuItem";
+            this.sSMSToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.sSMSToolStripMenuItem.Text = "SSMS";
+            // 
             // helpToolStripMenuItem
             // 
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.documentationToolStripMenuItem,
+            this.videosToolStripMenuItem,
+            this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
+            // 
+            // documentationToolStripMenuItem
+            // 
+            this.documentationToolStripMenuItem.Name = "documentationToolStripMenuItem";
+            this.documentationToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.documentationToolStripMenuItem.Text = "Documentation";
+            // 
+            // videosToolStripMenuItem
+            // 
+            this.videosToolStripMenuItem.Name = "videosToolStripMenuItem";
+            this.videosToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.videosToolStripMenuItem.Text = "Videos";
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.aboutToolStripMenuItem.Text = "About";
             // 
             // cbxCurrentPath
             // 
@@ -757,6 +842,16 @@ namespace System.Windows.Forms.Samples
         private ToolStripMenuItem showHideColumnsToolStripMenuItem;
         private ToolStripMenuItem fileShortcutFileToolStripMenuItem;
         private ToolStripMenuItem fileShortcutToolStripMenuItem;
+        private ToolStripMenuItem sqlToolStripMenuItem;
+        private ToolStripMenuItem findColumnsToolStripMenuItem;
+        private ToolStripMenuItem idealSqlTracerToolStripMenuItem;
+        private ToolStripMenuItem sqlLiteToolStripMenuItem;
+        private ToolStripMenuItem sqlProfilerToolStripMenuItem;
+        private ToolStripMenuItem sqlToGridToolStripMenuItem;
+        private ToolStripMenuItem sSMSToolStripMenuItem;
+        private ToolStripMenuItem documentationToolStripMenuItem;
+        private ToolStripMenuItem videosToolStripMenuItem;
+        private ToolStripMenuItem aboutToolStripMenuItem;
     }
 }
 

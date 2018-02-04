@@ -1,6 +1,8 @@
 #region Using directives
 
 using System;
+
+using System.Windows.Forms.Integration;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -27,6 +29,8 @@ using System.Xml;
 using System.Xml.Linq;
 using AODL.Document.Content;
 using DocumentFormat.OpenXml.Packaging;
+using Hardcodet.Wpf.Samples.Pages;
+using Hardcodet.Wpf.Samples;
 
 
 
@@ -6868,6 +6872,28 @@ namespace System.Windows.Forms.Samples {
 
 
             this.Cursor = Cursors.Default;
+        }
+
+        private void findColumnsToolStripMenuItem_Click(object sender, EventArgs e) {
+            //MainWindow mainWindow = new MainWindow();
+            //mainWindow.Show();            
+            //Switcher.Switch(new FindColumns());
+            //mainWindow.Focus();
+            FindColumns dlg = new FindColumns();
+            ElementHost.EnableModelessKeyboardInterop(dlg);
+            dlg.Show();
+
+            //   FindColumns dlg = new FindColumns();
+            //   dlg.Owner = (Window)Window.GetWindow(this);
+            // Shadow.Visibility = Visibility.Visible;
+
+            //Shadow.Visibility = Visibility.Collapsed;
+        }
+
+        private void sqlToGridToolStripMenuItem_Click(object sender, EventArgs e) {
+            SQLToGrid dlg = new SQLToGrid();
+            ElementHost.EnableModelessKeyboardInterop(dlg);
+            dlg.Show();
         }
     }
 

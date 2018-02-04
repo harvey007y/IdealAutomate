@@ -60,6 +60,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
@@ -69,9 +70,14 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
     <Reference Include="WindowsInput, Version=1.0.4.0, Culture=neutral, PublicKeyToken=9b287f7dc5073cad, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\WrapSQLInQuotesForCS\WrapSQLInQuotesForCS\packages\InputSimulator.1.0.4.0\lib\net20\WindowsInput.dll</HintPath>
+    </Reference>
+    <Reference Include="WPFToolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\WPFToolkit.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -85,9 +91,26 @@
       <DependentUpon>BaseForm1.cs</DependentUpon>
     </Compile>
     <Compile Include="Common.cs" />
+    <Compile Include="Videos\AffiliateProgram.xaml.cs">
+      <DependentUpon>AffiliateProgram.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Videos\AutomateLogin.xaml.cs">
+      <DependentUpon>AutomateLogin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Videos\Install.xaml.cs">
+      <DependentUpon>Install.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Videos\LaunchExecutable.xaml.cs">
+      <DependentUpon>LaunchExecutable.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Videos\VideoTutorials.xaml.cs">
+      <DependentUpon>VideoTutorials.xaml</DependentUpon>
+    </Compile>
     <Content Include="BuildProjects.bat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\help.png" />
+    <Content Include="WPFToolkit.dll" />
     <EmbeddedResource Include="Saved.resx">
       <DependentUpon>Saved.cs</DependentUpon>
     </EmbeddedResource>
@@ -118,8 +141,164 @@
     <Compile Include="FileFolderDialog.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Help\AddSQLParameter.xaml.cs">
+      <DependentUpon>AddSQLParameter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\Arrays.xaml.cs">
+      <DependentUpon>Arrays.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\AutomaterBenefits.xaml.cs">
+      <DependentUpon>AutomaterBenefits.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\Benefits.xaml.cs">
+      <DependentUpon>Benefits.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\BenefitsFindColumns.xaml.cs">
+      <DependentUpon>BenefitsFindColumns.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\ClearSQLParameters.xaml.cs">
+      <DependentUpon>ClearSQLParameters.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\ClickImageIfExists.xaml.cs">
+      <DependentUpon>ClickImageIfExists.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\Description.xaml.cs">
+      <DependentUpon>Description.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\ExecuteSQLNonQueryCommand.xaml.cs">
+      <DependentUpon>ExecuteSQLNonQueryCommand.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\ExecuteSQLQueryCommand.xaml.cs">
+      <DependentUpon>ExecuteSQLQueryCommand.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\ExecuteSQLScalarCommand.xaml.cs">
+      <DependentUpon>ExecuteSQLScalarCommand.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\Expressions.xaml.cs">
+      <DependentUpon>Expressions.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\GoToLabel.xaml.cs">
+      <DependentUpon>GoToLabel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\IfElseEndIf.xaml.cs">
+      <DependentUpon>IfElseEndIf.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\Images.xaml.cs">
+      <DependentUpon>Images.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\IncludeScript.xaml.cs">
+      <DependentUpon>IncludeScript.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\Inputs.xaml.cs">
+      <DependentUpon>Inputs.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\InputsFindColumns.xaml.cs">
+      <DependentUpon>InputsFindColumns.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\Label.xaml.cs">
+      <DependentUpon>Label.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\LeftClick.xaml.cs">
+      <DependentUpon>LeftClick.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\Logic.xaml.cs">
+      <DependentUpon>Logic.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\MessageBox.xaml.cs">
+      <DependentUpon>MessageBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\NavWindow.xaml.cs">
+      <DependentUpon>NavWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\NavWindowAutomater.xaml.cs">
+      <DependentUpon>NavWindowAutomater.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\NavWindowFindColumns.xaml.cs">
+      <DependentUpon>NavWindowFindColumns.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\Outputs.xaml.cs">
+      <DependentUpon>Outputs.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\OutputsFindColumns.xaml.cs">
+      <DependentUpon>OutputsFindColumns.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\Overview.xaml.cs">
+      <DependentUpon>Overview.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\OverviewAutomater.xaml.cs">
+      <DependentUpon>OverviewAutomater.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\OverviewFindColumns.xaml.cs">
+      <DependentUpon>OverviewFindColumns.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\PositionCursor.xaml.cs">
+      <DependentUpon>PositionCursor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\Primitives.xaml.cs">
+      <DependentUpon>Primitives.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\PutAll.xaml.cs">
+      <DependentUpon>PutAll.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\PutCaretPositionInArray.xaml.cs">
+      <DependentUpon>PutCaretPositionInArray.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\PutClipboardInEntity.xaml.cs">
+      <DependentUpon>PutClipboardInEntity.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\PutCursorPosition.xaml.cs">
+      <DependentUpon>PutCursorPosition.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\PutEntityInClipboard.xaml.cs">
+      <DependentUpon>PutEntityInClipboard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\ReplaceAllStringInEntity.xaml.cs">
+      <DependentUpon>ReplaceAllStringInEntity.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\Results.xaml.cs">
+      <DependentUpon>Results.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\RightClick.xaml.cs">
+      <DependentUpon>RightClick.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\Run.xaml.cs">
+      <DependentUpon>Run.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\Set.xaml.cs">
+      <DependentUpon>Set.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\ShiftClick.xaml.cs">
+      <DependentUpon>ShiftClick.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\Shortcuts.xaml.cs">
+      <DependentUpon>Shortcuts.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\Sleep.xaml.cs">
+      <DependentUpon>Sleep.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\SQLCmds.xaml.cs">
+      <DependentUpon>SQLCmds.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\SQLParms.xaml.cs">
+      <DependentUpon>SQLParms.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\Tips.xaml.cs">
+      <DependentUpon>Tips.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\TypeText.xaml.cs">
+      <DependentUpon>TypeText.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Help\WindowsTaskScheduler.xaml.cs">
+      <DependentUpon>WindowsTaskScheduler.xaml</DependentUpon>
+    </Compile>
     <Compile Include="HotKeyRecord.cs" />
     <Compile Include="MatchInfo.cs" />
+    <Compile Include="Pages\FindColumns.xaml.cs">
+      <DependentUpon>FindColumns.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SQLToGrid.xaml.cs">
+      <DependentUpon>SQLToGrid.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Saved.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -243,6 +422,236 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Help\AddSQLParameter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\Arrays.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\AutomaterBenefits.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\Benefits.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\BenefitsFindColumns.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\ClearSQLParameters.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\ClickImageIfExists.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\Description.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\ExecuteSQLNonQueryCommand.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\ExecuteSQLQueryCommand.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\ExecuteSQLScalarCommand.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\Expressions.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\GoToLabel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\IfElseEndIf.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\Images.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\IncludeScript.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\Inputs.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\InputsFindColumns.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\Label.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\LeftClick.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\Logic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\MessageBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\NavWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\NavWindowAutomater.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\NavWindowFindColumns.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\Outputs.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\OutputsFindColumns.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\Overview.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\OverviewAutomater.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\OverviewFindColumns.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\PositionCursor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\Primitives.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\PutAll.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\PutCaretPositionInArray.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\PutClipboardInEntity.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\PutCursorPosition.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\PutEntityInClipboard.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\ReplaceAllStringInEntity.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\Results.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\RightClick.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\Run.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\Set.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\ShiftClick.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\Shortcuts.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\Sleep.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\SQLCmds.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\SQLParms.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\Tips.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\TypeText.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Help\WindowsTaskScheduler.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\FindColumns.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\SQLToGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Videos\AffiliateProgram.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Videos\AutomateLogin.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Videos\Install.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Videos\LaunchExecutable.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Videos\VideoTutorials.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
 </Project>

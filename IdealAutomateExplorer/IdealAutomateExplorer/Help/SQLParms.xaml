@@ -1,0 +1,72 @@
+﻿<Page x:Class="Hardcodet.Wpf.Samples.Help.SQLParms"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	Title="SQLParms" 
+	>
+    <FlowDocumentReader ViewingMode="Scroll">
+        <FlowDocument FontSize="20">
+            <Paragraph>
+                <Image Source="/Images/help1.png" Width="190" Height="190" Margin="0,0,30,0" />
+                <Run FontSize="30" BaselineAlignment="Center">SQLParms</Run>
+
+            </Paragraph>
+            <Table CellSpacing="5" BorderThickness="1" BorderBrush="Black">
+                <TableRowGroup>
+                    <TableRow>
+                        <TableCell>
+                            <Paragraph>
+                                <Image Source="/Images/SQLParms.PNG"  Margin="5,5,5,5"  HorizontalAlignment="Center" />
+                            </Paragraph>
+                        </TableCell>
+                    </TableRow>
+                </TableRowGroup>
+            </Table>
+            
+            <Paragraph>
+                SQL Parms are used to pass variables to a sql statement or sql stored procedure.  The Sql parm in the sql statement always begins with an @ sign.  The Name of the SQL Parm is how you refer to the SQL Parm in your script.  SPName is a primitive string that contains the variable name with the @ sign before it as it will be used in the SQL Statement. For example, the SPNAME for a variable for a person's first name might be @firstname. ParmType is a dropdownlist of sql variable types that indicate the data type for the parm. The ParmValue points to a primitive that will hold the value of the parameter. Here are the columns involved in SQLParms:
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        1. Name
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                Name is the name that will be used by the script to refer to the SQL Parm.
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                2. SPName
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                SPName is a primitive string that contains the variable name with the @ sign before it as it will be used in the SQL Statement. For example, the SPNAME for a variable for a person's first name might be @firstname.
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        3. ParmType
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                ParmType is a dropdownlist of sql variable types that indicate the data type for the parm.
+            </Paragraph>
+            <Paragraph FontSize="14pt" >
+                <Italic>
+                    <Bold>
+                        4. ParmValue
+                    </Bold>
+                </Italic>
+            </Paragraph>
+            <Paragraph>
+                The ParmValue points to a primitive that will hold the value of the parameter.
+            </Paragraph>
+
+
+        </FlowDocument>
+    </FlowDocumentReader>
+</Page>
