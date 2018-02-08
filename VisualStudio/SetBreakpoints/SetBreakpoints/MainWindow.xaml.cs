@@ -772,10 +772,11 @@ namespace SetBreakpoints {
                                         string[] files = null;
                                         try {
                                             files = System.IO.Directory.GetFiles(currentTempName, "*.sln");
-                                            if (files.Length > 0) {
-                                                strSolutionFullFileName = files[0];
+                                            if (files.Length > 0) {                  
+                        // TODO: Currently defaulting to last one, but should ask the user which one to use if there is more than one                               
+                                                strSolutionFullFileName = files[files.Length - 1];
                                                 boolSolutionFileFound = true;
-                                                strSolutionName = currentTempName.Substring(currentTempName.LastIndexOf("\\") + 1).Replace(".sln", "");
+                                                strSolutionName = strSolutionFullFileName.Substring(strSolutionFullFileName.LastIndexOf("\\") + 1).Replace(".sln", "");
                                                 List<string> myWindowTitles = myActions.GetWindowTitlesByProcessName("devenv");
                                                 myWindowTitles.RemoveAll(vsItem => vsItem == "");
                                                 bool boolVSMatchingSolutionFound = false;
@@ -827,7 +828,7 @@ namespace SetBreakpoints {
                                                     }
                                                 }
                                                 if (boolVSMatchingSolutionFound == false) {
-                                                     myResult = myActions.MessageBoxShowWithYesNo("I could not find the solution currently running.\n\r\n\r Do you want me to launch it in Visual Studio for you.\n\r\n\rTo go ahead and launch the solution, click yes, otherwise, click no to cancel");
+                                                     myResult = myActions.MessageBoxShowWithYesNo("I could not find the solution (" + strSolutionName + ") currently running.\n\r\n\r Do you want me to launch it in Visual Studio for you.\n\r\n\rTo go ahead and launch the solution, click yes, otherwise, click no to cancel");
                                                     if (myResult == System.Windows.Forms.DialogResult.No) {
                                                         return;
                                                     }
