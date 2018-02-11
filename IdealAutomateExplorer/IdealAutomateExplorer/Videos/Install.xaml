@@ -10,7 +10,9 @@
                 <Run FontSize="30" BaselineAlignment="Center">Install</Run>
 
             </Paragraph>
-          
+            <Paragraph>
+                <Run FontSize="25" Foreground="Red" BaselineAlignment="Center">Caution: All help is for a previous version. Although some info is applicable, most of the help needs to be updated.</Run>
+            </Paragraph>
             <Paragraph>
                 <Button Click="Button_Click" Content="Install Video Tutorial"/> - This five-minute video shows how to install IdealAutomate. The video also shows how to create a script that launches notepad and types "Hello World". 
             </Paragraph>

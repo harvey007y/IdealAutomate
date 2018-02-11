@@ -11,7 +11,10 @@
                 <Image Source="/Images/help1.png" Width="190" Height="190" Margin="0,0,30,0" />
                 <Run FontSize="30" BaselineAlignment="Center">Ideal Automate Overview</Run>
             </Paragraph>
-            
+            <Paragraph>                
+                <Run FontSize="25" Foreground="Red" BaselineAlignment="Center">Caution: All help is for a previous version. Although some info is applicable, most of the help needs to be updated.</Run>
+            </Paragraph>
+
             <Paragraph>
                 Ideal Automate allows one to automate almost any task. It does this by allowing you to write scripts that can find images on the screen.  By finding an image on the screen, you are able to locate where you want to read or write something, regardless of which application the image resides within.  The fact that you can read and write to virtually any location makes it possible to create a degree of artificial intelligence where the script is able to perform real-time, problem-solving activities. For example, the script can read a piece of information, interpret what it has read, and then make decisions in real time about what to do based on that interpretation.
             </Paragraph>

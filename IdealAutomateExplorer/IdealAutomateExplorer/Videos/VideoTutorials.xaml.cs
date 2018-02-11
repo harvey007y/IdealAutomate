@@ -45,8 +45,9 @@ using System.Windows.Shapes;
         {
             frame.Source = new Uri("AffiliateProgram.xaml", UriKind.RelativeOrAbsolute);
         }
-        
 
-       
+    private void frame_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e) {
+
     }
+}
 

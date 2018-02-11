@@ -7189,6 +7189,24 @@ namespace System.Windows.Forms.Samples {
         private void postmanToolStripMenuItem_Click(object sender, EventArgs e) {
 
         }
+
+        private void documentationToolStripMenuItem_Click(object sender, EventArgs e) {
+            NavWindowAutomater dlg = new NavWindowAutomater();
+            ElementHost.EnableModelessKeyboardInterop(dlg);
+            dlg.Show();
+        }
+
+        private void videosToolStripMenuItem_Click(object sender, EventArgs e) {
+            VideoTutorials dlg = new VideoTutorials();
+            ElementHost.EnableModelessKeyboardInterop(dlg);
+            dlg.Show();
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e) {
+            AboutDialog dlg = new AboutDialog();
+            ElementHost.EnableModelessKeyboardInterop(dlg);
+            dlg.Show();     
+        }
     }
 
 }
