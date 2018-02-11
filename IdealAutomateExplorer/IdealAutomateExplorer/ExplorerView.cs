@@ -31,6 +31,7 @@ using AODL.Document.Content;
 using DocumentFormat.OpenXml.Packaging;
 using Hardcodet.Wpf.Samples.Pages;
 using Hardcodet.Wpf.Samples;
+using System.Management;
 
 
 
@@ -67,6 +68,8 @@ namespace System.Windows.Forms.Samples {
         private bool _WebBrowserLoaded = false;
         private bool _NotepadppLoaded = false;
         ArrayList _myArrayList;
+        System.Windows.Threading.DispatcherTimer dispatcherTimer;
+        public IntPtr myhWnd;
 
 
         [DllImport("user32.dll", SetLastError = true)]
@@ -90,6 +93,17 @@ namespace System.Windows.Forms.Samples {
 
         [DllImport("user32.dll", EntryPoint = "GetKeyboardState", SetLastError = true)]
         private static extern bool NativeGetKeyboardState([Out] byte[] keyStates);
+
+        [System.Runtime.InteropServices.DllImport("user32.dll", EntryPoint = "GetForegroundWindow", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Ansi, SetLastError = true)]
+        private static extern IntPtr GetForegroundWindow();
+        /*- Retrieves Id of the thread that created the specified window -*/
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern int GetWindowThreadProcessId(IntPtr hwnd, ref int lpdwProcessID);
+        [System.Runtime.InteropServices.DllImport("user32.dll", EntryPoint = "GetWindowTextA", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Ansi, SetLastError = true)]
+        private static extern int GetWindowText(IntPtr hWnd, string WinTitle, int MaxLength);
+        [System.Runtime.InteropServices.DllImport("user32.dll", EntryPoint = "GetWindowTextLengthA", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Ansi, SetLastError = true)]
+        private static extern int GetWindowTextLengthx(int hwnd);
+
 
 
         private IntPtr _appHandle;
@@ -7187,7 +7201,9 @@ namespace System.Windows.Forms.Samples {
         }
 
         private void postmanToolStripMenuItem_Click(object sender, EventArgs e) {
-
+            string myExe = DialogForGettingExe();
+            Methods myActions = new Methods();
+            myActions.Run(myExe, "");
         }
 
         private void documentationToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -7207,6 +7223,351 @@ namespace System.Windows.Forms.Samples {
             ElementHost.EnableModelessKeyboardInterop(dlg);
             dlg.Show();     
         }
+
+        private string DialogForGettingExe() {
+            Methods myActions = new Methods();
+            string myExe = "";
+            DisplayFindTextInFilesWindow:
+            int intRowCtr = 0;
+            ControlEntity myControlEntity = new ControlEntity();
+            List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+            List<ComboBoxPair> cbp = new List<ComboBoxPair>();
+            List<ComboBoxPair> cbp1 = new List<ComboBoxPair>();
+            List<ComboBoxPair> cbp2 = new List<ComboBoxPair>();
+            List<ComboBoxPair> cbp3 = new List<ComboBoxPair>();
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Heading;
+            myControlEntity.ID = "lbl";
+            myControlEntity.Text = "Specify Executable";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "lblFolder";
+            myControlEntity.Text = "Folder";
+            myControlEntity.Width = 150;
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            myControlEntity.SelectedValue = myActions.GetValueByKey("cbxFolderSelectedValue");
+            myControlEntity.ID = "cbxFolder";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = @"Here is an example: C:\Users\harve\Documents\GitHub";
+            myControlEntity.ComboBoxIsEditable = true;
+            myControlEntity.ColumnNumber = 1;
+            myControlEntity.ColumnSpan = 2;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Button;
+            myControlEntity.ID = "btnSelectFolder";
+            myControlEntity.Text = "Select Folder or File...";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 3;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            intRowCtr++;
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Button;
+            myControlEntity.ID = "btnGetExeByClick";
+            myControlEntity.Text = "Populate Exe by Clicking on running App";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 2;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+
+            DisplayWindowAgain:
+            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 300, 1200, 100, 100);
+            LineAfterDisplayWindow:
+            if (strButtonPressed == "btnCancel") {
+                myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                return myExe;
+            }
+
+
+            string strFolder = myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedValue;
+            //     string strFolderKey = myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedKey;
+
+            myActions.SetValueByKey("cbxFolderSelectedValue", strFolder);
+            string settingsDirectory = "";
+            if (strButtonPressed == "btnSelectFolder") {
+                FileFolderDialog dialog = new FileFolderDialog();
+                dialog.SelectedPath = myActions.GetValueByKey("LastSearchFolder");
+                string str = "LastSearchFolder";
+
+
+                System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+
+                if (result == System.Windows.Forms.DialogResult.OK && (Directory.Exists(dialog.SelectedPath) || File.Exists(dialog.SelectedPath))) {
+                    myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedValue = dialog.SelectedPath;
+                    myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedKey = dialog.SelectedPath;
+                    myListControlEntity.Find(x => x.ID == "cbxFolder").Text = dialog.SelectedPath;
+                    myActions.SetValueByKey("LastSearchFolder", dialog.SelectedPath);
+                    strFolder = dialog.SelectedPath;
+                    myActions.SetValueByKey("cbxFolderSelectedValue", strFolder);
+                    string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
+                    string fileName = "cbxFolder.txt";
+                    string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
+                    string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
+                    settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPath(myNewProjectSourcePath));
+                    string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
+                    ArrayList alHosts = new ArrayList();
+                    cbp = new List<ComboBoxPair>();
+                    cbp.Clear();
+                    cbp.Add(new ComboBoxPair("--Select Item ---", "--Select Item ---"));
+                    ComboBox myComboBox = new ComboBox();
+
+
+                    if (!File.Exists(settingsPath)) {
+                        using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
+                            objSWFile.Close();
+                        }
+                    }
+                    using (StreamReader objSRFile = File.OpenText(settingsPath)) {
+                        string strReadLine = "";
+                        while ((strReadLine = objSRFile.ReadLine()) != null) {
+                            string[] keyvalue = strReadLine.Split('^');
+                            if (keyvalue[0] != "--Select Item ---") {
+                                cbp.Add(new ComboBoxPair(keyvalue[0], keyvalue[1]));
+                            }
+                        }
+                        objSRFile.Close();
+                    }
+                    string strNewHostName = dialog.SelectedPath;
+                    List<ComboBoxPair> alHostx = cbp;
+                    List<ComboBoxPair> alHostsNew = new List<ComboBoxPair>();
+                    ComboBoxPair myCbp = new ComboBoxPair(strNewHostName, strNewHostName);
+                    bool boolNewItem = false;
+
+                    alHostsNew.Add(myCbp);
+                    if (alHostx.Count > 24) {
+                        for (int i = alHostx.Count - 1; i > 0; i--) {
+                            if (alHostx[i]._Key.Trim() != "--Select Item ---") {
+                                alHostx.RemoveAt(i);
+                                break;
+                            }
+                        }
+                    }
+                    foreach (ComboBoxPair item in alHostx) {
+                        if (strNewHostName != item._Key && item._Key != "--Select Item ---") {
+                            boolNewItem = true;
+                            alHostsNew.Add(item);
+                        }
+                    }
+
+                    using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
+                        foreach (ComboBoxPair item in alHostsNew) {
+                            if (item._Key != "") {
+                                objSWFile.WriteLine(item._Key + '^' + item._Value);
+                            }
+                        }
+                        objSWFile.Close();
+                    }
+                    goto DisplayWindowAgain;
+                }
+            }
+            string strFolderToUse = "";
+            if (strButtonPressed == "btnOkay") {
+               
+                if ((strFolder == "--Select Item ---" || strFolder == "")) {
+                    myActions.MessageBoxShow("Please enter Folder or select Folder from ComboBox; else press Cancel to Exit");
+                    goto DisplayFindTextInFilesWindow;
+                }
+                strFolderToUse = strFolder;
+            }
+            if (strButtonPressed == "btnGetExeByClick") {
+                GetExecutableByClicking();
+                strFolderToUse = myActions.PutClipboardInEntity();
+            }
+            myExe = strFolderToUse;
+            return myExe;
+        }
+
+        private void dispatcherTimer_Tick(object sender, EventArgs e) {
+            // code goes here
+
+            IntPtr hWnd = GetForegroundWindow();
+            if (hWnd == IntPtr.Zero) {
+                return;
+            }
+
+            //----- Find the Length of the Window's Title ----- 
+
+            int TitleLength = 0;
+
+            TitleLength = GetWindowTextLengthx(hWnd.ToInt32());
+
+            //----- Find the Window's Title ----- 
+
+            string WindowTitle = new String('*', TitleLength + 1);
+
+            GetWindowText(hWnd, WindowTitle, TitleLength + 1);
+
+            //----- Find the PID of the Application that Owns the Window ----- 
+
+            int pid = 0;
+
+            GetWindowThreadProcessId(hWnd, ref pid);
+
+            if (pid == 0) {
+                return;
+            }
+            Methods myActions = new Methods();
+            if (myhWnd != hWnd) {
+                string myFileName = Keyboard.GetMainModuleFilepath(pid);
+                myActions.PutEntityInClipboard(myFileName);
+                dispatcherTimer.Stop();
+
+                // MessageBox.Show(myFileName);
+            }
+
+        }
+        public void GetExecutableByClicking() {
+
+
+
+            // SetWindowPos(myhWnd.ToInt32(), HWND_TOPMOST, this.Left, this.Top, this.Width, this.Height, SWP_NOACTIVATE);
+            IntPtr hWnd = GetForegroundWindow();
+            myhWnd = hWnd;
+            MakeTopMost(hWnd.ToInt32());
+            dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+            dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
+            dispatcherTimer.Start();
+
+
+        }
+        [System.Runtime.InteropServices.DllImport("user32", EntryPoint = "SetWindowPos", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Ansi, SetLastError = true)]
+        private static extern int SetWindowPos(int hwnd, int hWndInsertAfter, double x, double y, double cx, double cy, uint wFlags);
+        private const int HWND_TOPMOST = -1;
+        private const int HWND_NOTOPMOST = -2;
+        private const int SWP_NOMOVE = 0X2;
+        private const int SWP_NOSIZE = 0X1;
+        private const int TOPMOST_FLAGS = SWP_NOMOVE | SWP_NOSIZE;
+        //INSTANT C# TODO TASK: Insert the following converted event handler wireups at the end of the 'InitializeComponent' method for forms, 'Page_Init' for web pages, or into a constructor for other classes:
+
+
+        public void MakeNormal(int hwnd) {
+
+
+            SetWindowPos(hwnd, HWND_NOTOPMOST, 0, 0, 0, 0, TOPMOST_FLAGS);
+        }
+        public void MakeTopMost(int hwnd) {
+            SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, TOPMOST_FLAGS);
+        }
+
+
+
+    }
+
+}
+internal static class Keyboard {
+    [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+    public extern static IntPtr GetModuleHandle(string lpModuleName);
+    [System.Runtime.InteropServices.DllImport("user32", EntryPoint = "UnhookWindowsHookEx", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Ansi, SetLastError = true)]
+    public static extern int UnhookWindowsHookEx(int hHook);
+    //[System.Runtime.InteropServices.DllImport("user32", EntryPoint="SetWindowsHookExA", ExactSpelling=true, CharSet=System.Runtime.InteropServices.CharSet.Ansi, SetLastError=true)]
+    //public static extern int SetWindowsHookEx(int idHook, KeyboardHookDelegate lpfn, IntPtr hmod, int dwThreadId);
+    [System.Runtime.InteropServices.DllImport("user32", EntryPoint = "GetAsyncKeyState", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Ansi, SetLastError = true)]
+    private static extern int GetAsyncKeyState(int vKey);
+    //[System.Runtime.InteropServices.DllImport("user32", EntryPoint="CallNextHookEx", ExactSpelling=true, CharSet=System.Runtime.InteropServices.CharSet.Ansi, SetLastError=true)]
+    //private static extern int CallNextHookEx(int hHook, int nCode, int wParam, ref KBDLLHOOKSTRUCT lParam);
+    public struct KBDLLHOOKSTRUCT {
+        public int vkCode;
+        public int scanCode;
+        public int flags;
+        public int time;
+        public int dwExtraInfo;
+    }
+    // Low-Level Keyboard Constants
+    private const int HC_ACTION = 0;
+    private const int LLKHF_EXTENDED = 0X1;
+    private const int LLKHF_INJECTED = 0X10;
+    private const int LLKHF_ALTDOWN = 0X20;
+    private const int LLKHF_UP = 0X80;
+    private const int LLKHF_DOWN = 0X81;
+    // Virtual Keys
+    public const int VK_TAB = 0X9;
+    public const int VK_CONTROL = 0X11;
+    public const int VK_ESCAPE = 0X1B;
+    public const int VK_DELETE = 0X2E;
+    private const int WH_KEYBOARD_LL = 13;
+    public static int KeyboardHandle;
+    // Implement this function to block as many
+    // key combinations as you'd like...
+
+    //public static int KeyboardCallback(int Code, int wParam, ref KBDLLHOOKSTRUCT lParam)
+    //{
+    //    if (Code == HC_ACTION)
+    //    {
+    //        Debug.WriteLine("Calling IsHooked");
+    //        if (IsHooked(lParam))
+    //        {
+    //            return 1;
+    //        }
+    //    }
+    //    return CallNextHookEx(KeyboardHandle, Code, wParam, ref lParam);
+    //}
+    //    public delegate int KeyboardHookDelegate(int Code, int wParam, ref KBDLLHOOKSTRUCT lParam);
+    //    [MarshalAs(UnmanagedType.FunctionPtr)]
+    //    private static KeyboardHookDelegate callback;
+    //    public static void HookKeyboard(ref Form f)
+    //    {
+    //        callback = new KeyboardHookDelegate(KeyboardCallback);
+    //        KeyboardHandle = SetWindowsHookEx(WH_KEYBOARD_LL, callback, GetModuleHandle(Process.GetCurrentProcess().MainModule.ModuleName), 0);
+    //        //MessageBox.Show(KeyboardHandle.ToString)
+    //        CheckHooked();
+    //    }
+
+    //    public static void CheckHooked()
+    //    {
+    //        if (Hooked())
+    //        {
+    //            Debug.WriteLine("Keyboard hooked");
+    //        }
+    //        else
+    //        {
+    ////INSTANT C# TODO TASK: Calls to the VB 'Err' object are not converted by Instant C#:
+    //            Debug.WriteLine("Keyboard hook failed: " + Err.LastDllError);
+    //        }
+    //    }
+    //    private static bool Hooked()
+    //    {
+    //        return KeyboardHandle != 0;
+    //    }
+    //    public static void UnhookKeyboard()
+    //    {
+    //        if (Hooked())
+    //        {
+    //            UnhookWindowsHookEx(KeyboardHandle);
+    //        }
+    //    }
+
+
+
+    public static string GetMainModuleFilepath(int processId) {
+        string wmiQueryString = "SELECT ProcessId, ExecutablePath FROM Win32_Process WHERE ProcessId = " + processId;
+        using (var searcher = new ManagementObjectSearcher(wmiQueryString)) {
+            using (var results = searcher.Get()) {
+                ManagementObject mo = results.Cast<ManagementObject>().FirstOrDefault();
+                if (mo != null) {
+                    return (string)mo["ExecutablePath"];
+                }
+            }
+        }
+        return null;
     }
 
 }
