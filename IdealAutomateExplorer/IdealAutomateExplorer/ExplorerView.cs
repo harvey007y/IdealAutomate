@@ -7452,13 +7452,16 @@ namespace System.Windows.Forms.Samples {
             DisplayWindowAgain:
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 300, 1200, 100, 100);
             LineAfterDisplayWindow:
+            string strFolder = myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedValue;
             if (strButtonPressed == "btnCancel") {
+                string whatToolDefaultToSave = myActions.GetValueByKey("whatToolDefaultToSave");
+                myActions.SetValueByKey(whatToolDefaultToSave, strFolder);
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                 return;
             }
 
 
-            string strFolder = myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedValue;
+          
             //     string strFolderKey = myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedKey;
 
             myActions.SetValueByKey("cbxToolExeSelectedValue", strFolder);
@@ -7595,7 +7598,7 @@ namespace System.Windows.Forms.Samples {
             Methods myActions = new Methods();
             if (myhWnd != hWnd) {
                 string myFileName = Keyboard.GetMainModuleFilepath(pid);
-                if (myFileName.EndsWith("IdealAutomateExplorer.exe") ||
+                if (myFileName == null || myFileName.EndsWith("IdealAutomateExplorer.exe") ||
                     myFileName.EndsWith("ApplicationHostFrame.exe") ||
                     myFileName.EndsWith("Wordpad.exe")) {
                     return;
