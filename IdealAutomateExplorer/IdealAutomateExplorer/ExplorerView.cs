@@ -45,6 +45,7 @@ namespace System.Windows.Forms.Samples {
         private DirectoryView _dir;
         string strInitialDirectory = "";
         int _CurrentIndex = 0;
+        static string _ExecutableFromClick = "";
         DataGridViewExt _CurrentDataGridView;
         DataGridViewExt dataGridView3;
         BindingSource _CurrentFileViewBindingSource = new BindingSource();
@@ -7109,101 +7110,201 @@ namespace System.Windows.Forms.Samples {
         }
 
         private void sqlLiteToolStripMenuItem_Click(object sender, EventArgs e) {
-
+            Methods myActions = new Methods();
+            string sqlLiteSaved = myActions.GetValueByKey("sqlLiteSaved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", sqlLiteSaved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "sqlLiteSaved");
+            DialogForGettingExe();
         }
 
         private void sqlProfilerToolStripMenuItem_Click(object sender, EventArgs e) {
-
+            Methods myActions = new Methods();
+            string sqlProfilerSaved = myActions.GetValueByKey("sqlProfilerSaved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", sqlProfilerSaved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "sqlProfilerSaved");
+            DialogForGettingExe();
         }
 
         private void sSMSToolStripMenuItem_Click(object sender, EventArgs e) {
-
+            Methods myActions = new Methods();
+            string sSMSSaved = myActions.GetValueByKey("sSMSSaved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", sSMSSaved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "sSMSSaved");
+            DialogForGettingExe();
         }
 
         private void instantCToolStripMenuItem_Click(object sender, EventArgs e) {
-
+            Methods myActions = new Methods();
+            string instantCSaved = myActions.GetValueByKey("instantCSaved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", instantCSaved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "instantCSaved");
+            DialogForGettingExe();
         }
 
         private void instantVBToolStripMenuItem_Click(object sender, EventArgs e) {
-
+            Methods myActions = new Methods();
+            string instantVBSaved = myActions.GetValueByKey("instantVBSaved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", instantVBSaved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "instantVBSaved");
+            DialogForGettingExe();
         }
 
         private void paintNETToolStripMenuItem_Click(object sender, EventArgs e) {
-
+            Methods myActions = new Methods();
+            string paintNETSaved = myActions.GetValueByKey("paintNETSaved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", paintNETSaved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "paintNETSaved");
+            DialogForGettingExe();
         }
 
         private void visualStudio2015ToolStripMenuItem_Click(object sender, EventArgs e) {
-
+            Methods myActions = new Methods();
+            string visualStudio2015Saved = myActions.GetValueByKey("visualStudio2015Saved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", visualStudio2015Saved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "visualStudio2015Saved");
+            DialogForGettingExe();
         }
 
         private void visualStudio2017ToolStripMenuItem_Click(object sender, EventArgs e) {
-
+            Methods myActions = new Methods();
+            string visualStudio2017Saved = myActions.GetValueByKey("visualStudio2017Saved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", visualStudio2017Saved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "visualStudio2017Saved");
+            DialogForGettingExe();
         }
 
         private void componentServicesToolStripMenuItem_Click(object sender, EventArgs e) {
-
+            Methods myActions = new Methods();
+            string componentServicesSaved = myActions.GetValueByKey("componentServicesSaved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", componentServicesSaved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "componentServicesSaved");
+            DialogForGettingExe();
         }
 
         private void eventViewerToolStripMenuItem_Click(object sender, EventArgs e) {
-
+            Methods myActions = new Methods();
+            string eventViewerSaved = myActions.GetValueByKey("eventViewerSaved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", eventViewerSaved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "eventViewerSaved");
+            DialogForGettingExe();
         }
 
         private void iISToolStripMenuItem_Click(object sender, EventArgs e) {
-
+            Methods myActions = new Methods();
+            string iISSaved = myActions.GetValueByKey("iISSaved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", iISSaved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "iISSaved");
+            DialogForGettingExe();
         }
 
         private void programsAndFeaturesToolStripMenuItem_Click(object sender, EventArgs e) {
-
+            Methods myActions = new Methods();
+            string programsAndFeaturesSaved = myActions.GetValueByKey("programsAndFeaturesSaved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", programsAndFeaturesSaved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "programsAndFeaturesSaved");
+            DialogForGettingExe();
         }
 
         private void servicesToolStripMenuItem_Click(object sender, EventArgs e) {
-
+            Methods myActions = new Methods();
+            string servicesSaved = myActions.GetValueByKey("servicesSaved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", servicesSaved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "servicesSaved");
+            DialogForGettingExe();
         }
 
         private void taskManagerToolStripMenuItem_Click(object sender, EventArgs e) {
-
+            Methods myActions = new Methods();
+            string taskManagerSaved = myActions.GetValueByKey("taskManagerSaved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", taskManagerSaved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "taskManagerSaved");
+            DialogForGettingExe();
         }
 
         private void fiddlerToolStripMenuItem_Click(object sender, EventArgs e) {
-
+            Methods myActions = new Methods();
+            string fiddlerSaved = myActions.GetValueByKey("fiddlerSaved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", fiddlerSaved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "fiddlerSaved");
+            DialogForGettingExe();
         }
 
         private void iISToolStripMenuItem1_Click(object sender, EventArgs e) {
-
+            Methods myActions = new Methods();
+            string iISSaved = myActions.GetValueByKey("iISSaved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", iISSaved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "iISSaved");
+            DialogForGettingExe();
         }
 
         private void iWB2LearnerToolStripMenuItem_Click(object sender, EventArgs e) {
-
+            Methods myActions = new Methods();
+            string iWB2Saved = myActions.GetValueByKey("iWB2Saved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", iWB2Saved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "iWB2Saved");
+            DialogForGettingExe();
         }
 
         private void notepadToolStripMenuItem2_Click(object sender, EventArgs e) {
-
+            Methods myActions = new Methods();
+            string notepadSaved = myActions.GetValueByKey("notepadSaved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", notepadSaved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "notepadSaved");
+            DialogForGettingExe();
         }
 
         private void processExplorerToolStripMenuItem_Click(object sender, EventArgs e) {
-
+            Methods myActions = new Methods();
+            string processExplorerSaved = myActions.GetValueByKey("processExplorerSaved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", processExplorerSaved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "processExplorerSaved");
+            DialogForGettingExe();
         }
 
         private void taskManagerToolStripMenuItem1_Click(object sender, EventArgs e) {
-
+            Methods myActions = new Methods();
+            string taskManagerSaved = myActions.GetValueByKey("taskManagerSaved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", taskManagerSaved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "taskManagerSaved");
+            DialogForGettingExe();
         }
 
         private void winListerToolStripMenuItem_Click(object sender, EventArgs e) {
-
+            Methods myActions = new Methods();
+            string winlisterSaved = myActions.GetValueByKey("winlisterSaved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", winlisterSaved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "winlisterSaved");
+            DialogForGettingExe();
         }
 
         private void curlToolStripMenuItem_Click(object sender, EventArgs e) {
-
+            Methods myActions = new Methods();
+            string curlSaved = myActions.GetValueByKey("curlSaved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", curlSaved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "curlSaved");
+            DialogForGettingExe();
         }
 
         private void fiddlerToolStripMenuItem1_Click(object sender, EventArgs e) {
 
+            Methods myActions = new Methods();
+            string fiddlerSaved = myActions.GetValueByKey("fiddlerSaved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", fiddlerSaved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "fiddlerSaved");
+            DialogForGettingExe();
+
+
         }
 
         private void postmanToolStripMenuItem_Click(object sender, EventArgs e) {
-            string myExe = DialogForGettingExe();
+           
             Methods myActions = new Methods();
-            myActions.Run(myExe, "");
+            string postmanSaved = myActions.GetValueByKey("postmanSaved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", postmanSaved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "postmanSaved");
+            DialogForGettingExe();
+           
+
         }
 
         private void documentationToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -7224,7 +7325,7 @@ namespace System.Windows.Forms.Samples {
             dlg.Show();     
         }
 
-        private string DialogForGettingExe() {
+        private void DialogForGettingExe() {
             Methods myActions = new Methods();
             string myExe = "";
             DisplayFindTextInFilesWindow:
@@ -7256,9 +7357,69 @@ namespace System.Windows.Forms.Samples {
             myControlEntity.ColumnSpan = 1;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
+
+            string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
+            string fileName = "cbxFolder.txt";
+            string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
+            string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
+            string settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPath(myNewProjectSourcePath));
+            string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
+            ArrayList alHosts = new ArrayList();
+            cbp = new List<ComboBoxPair>();
+            cbp.Clear();
+            cbp.Add(new ComboBoxPair("--Select Item ---", "--Select Item ---"));
+            ComboBox myComboBox = new ComboBox();
+
+
+            if (!File.Exists(settingsPath)) {
+                using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
+                    objSWFile.Close();
+                }
+            }
+            using (StreamReader objSRFile = File.OpenText(settingsPath)) {
+                string strReadLine = "";
+                while ((strReadLine = objSRFile.ReadLine()) != null) {
+                    string[] keyvalue = strReadLine.Split('^');
+                    if (keyvalue[0] != "--Select Item ---") {
+                        cbp.Add(new ComboBoxPair(keyvalue[0], keyvalue[1]));
+                    }
+                }
+                objSRFile.Close();
+            }
+            string strNewHostName = myActions.GetValueByKey("cbxToolExeSelectedValue");
+            List<ComboBoxPair> alHostx = cbp;
+            List<ComboBoxPair> alHostsNew = new List<ComboBoxPair>();
+            ComboBoxPair myCbp = new ComboBoxPair(strNewHostName, strNewHostName);
+            bool boolNewItem = false;
+
+            alHostsNew.Add(myCbp);
+            if (alHostx.Count > 24) {
+                for (int i = alHostx.Count - 1; i > 0; i--) {
+                    if (alHostx[i]._Key.Trim() != "--Select Item ---") {
+                        alHostx.RemoveAt(i);
+                        break;
+                    }
+                }
+            }
+            foreach (ComboBoxPair item in alHostx) {
+                if (strNewHostName != item._Key && item._Key != "--Select Item ---") {
+                    boolNewItem = true;
+                    alHostsNew.Add(item);
+                }
+            }
+
+            using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
+                foreach (ComboBoxPair item in alHostsNew) {
+                    if (item._Key != "") {
+                        objSWFile.WriteLine(item._Key + '^' + item._Value);
+                    }
+                }
+                objSWFile.Close();
+            }
+
             myControlEntity.ControlEntitySetDefaults();
             myControlEntity.ControlType = ControlType.ComboBox;
-            myControlEntity.SelectedValue = myActions.GetValueByKey("cbxFolderSelectedValue");
+            myControlEntity.SelectedValue = myActions.GetValueByKey("cbxToolExeSelectedValue");
             myControlEntity.ID = "cbxFolder";
             myControlEntity.RowNumber = intRowCtr;
             myControlEntity.ToolTipx = @"Here is an example: C:\Users\harve\Documents\GitHub";
@@ -7276,7 +7437,7 @@ namespace System.Windows.Forms.Samples {
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
             intRowCtr++;
-
+          
 
             myControlEntity.ControlEntitySetDefaults();
             myControlEntity.ControlType = ControlType.Button;
@@ -7293,15 +7454,15 @@ namespace System.Windows.Forms.Samples {
             LineAfterDisplayWindow:
             if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
-                return myExe;
+                return;
             }
 
 
             string strFolder = myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedValue;
             //     string strFolderKey = myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedKey;
 
-            myActions.SetValueByKey("cbxFolderSelectedValue", strFolder);
-            string settingsDirectory = "";
+            myActions.SetValueByKey("cbxToolExeSelectedValue", strFolder);
+            settingsDirectory = "";
             if (strButtonPressed == "btnSelectFolder") {
                 FileFolderDialog dialog = new FileFolderDialog();
                 dialog.SelectedPath = myActions.GetValueByKey("LastSearchFolder");
@@ -7316,18 +7477,18 @@ namespace System.Windows.Forms.Samples {
                     myListControlEntity.Find(x => x.ID == "cbxFolder").Text = dialog.SelectedPath;
                     myActions.SetValueByKey("LastSearchFolder", dialog.SelectedPath);
                     strFolder = dialog.SelectedPath;
-                    myActions.SetValueByKey("cbxFolderSelectedValue", strFolder);
-                    string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
-                    string fileName = "cbxFolder.txt";
-                    string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
-                    string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
+                    myActions.SetValueByKey("cbxToolExeSelectedValue", strFolder);
+                    strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
+                     fileName = "cbxFolder.txt";
+                     strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
+                     myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
                     settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPath(myNewProjectSourcePath));
-                    string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
-                    ArrayList alHosts = new ArrayList();
+                     settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
+                     alHosts = new ArrayList();
                     cbp = new List<ComboBoxPair>();
                     cbp.Clear();
                     cbp.Add(new ComboBoxPair("--Select Item ---", "--Select Item ---"));
-                    ComboBox myComboBox = new ComboBox();
+                     myComboBox = new ComboBox();
 
 
                     if (!File.Exists(settingsPath)) {
@@ -7345,11 +7506,11 @@ namespace System.Windows.Forms.Samples {
                         }
                         objSRFile.Close();
                     }
-                    string strNewHostName = dialog.SelectedPath;
-                    List<ComboBoxPair> alHostx = cbp;
-                    List<ComboBoxPair> alHostsNew = new List<ComboBoxPair>();
-                    ComboBoxPair myCbp = new ComboBoxPair(strNewHostName, strNewHostName);
-                    bool boolNewItem = false;
+                     strNewHostName = dialog.SelectedPath;
+                     alHostx = cbp;
+                     alHostsNew = new List<ComboBoxPair>();
+                    myCbp = new ComboBoxPair(strNewHostName, strNewHostName);
+                     boolNewItem = false;
 
                     alHostsNew.Add(myCbp);
                     if (alHostx.Count > 24) {
@@ -7379,20 +7540,27 @@ namespace System.Windows.Forms.Samples {
                 }
             }
             string strFolderToUse = "";
-            if (strButtonPressed == "btnOkay") {
-               
+            if (strButtonPressed == "btnOkay") {               
                 if ((strFolder == "--Select Item ---" || strFolder == "")) {
                     myActions.MessageBoxShow("Please enter Folder or select Folder from ComboBox; else press Cancel to Exit");
                     goto DisplayFindTextInFilesWindow;
                 }
                 strFolderToUse = strFolder;
+               // MessageBox.Show(strFolder);
+                myActions.Run(strFolder, "");
+                string whatToolDefaultToSave = myActions.GetValueByKey("whatToolDefaultToSave");
+                myActions.SetValueByKey(whatToolDefaultToSave, strFolder);
             }
             if (strButtonPressed == "btnGetExeByClick") {
                 GetExecutableByClicking();
-                strFolderToUse = myActions.PutClipboardInEntity();
+                return;
+                //myActions.Sleep(1000);
+                //strFolderToUse = myActions.GetValueByKey("ClickedExecutable");
+                //myActions.MessageBoxShow("Executable " + strFolderToUse + " is in clipboard");
+                //goto DisplayFindTextInFilesWindow;
             }
-            myExe = strFolderToUse;
-            return myExe;
+            //myExe = strFolderToUse;
+            return;
         }
 
         private void dispatcherTimer_Tick(object sender, EventArgs e) {
@@ -7427,27 +7595,32 @@ namespace System.Windows.Forms.Samples {
             Methods myActions = new Methods();
             if (myhWnd != hWnd) {
                 string myFileName = Keyboard.GetMainModuleFilepath(pid);
-                myActions.PutEntityInClipboard(myFileName);
+                if (myFileName.EndsWith("IdealAutomateExplorer.exe") ||
+                    myFileName.EndsWith("ApplicationHostFrame.exe") ||
+                    myFileName.EndsWith("Wordpad.exe")) {
+                    return;
+                }
+                myActions.SetValueByKey("cbxToolExeSelectedValue",myFileName);
                 dispatcherTimer.Stop();
+                DialogForGettingExe();
 
-                // MessageBox.Show(myFileName);
             }
 
         }
         public void GetExecutableByClicking() {
-
-
+            Methods myActions = new Methods();
+            myActions.SetValueByKey("ClickedExecutable", "");
 
             // SetWindowPos(myhWnd.ToInt32(), HWND_TOPMOST, this.Left, this.Top, this.Width, this.Height, SWP_NOACTIVATE);
             IntPtr hWnd = GetForegroundWindow();
+
             myhWnd = hWnd;
             MakeTopMost(hWnd.ToInt32());
             dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer.Start();
-
-
+            return; 
         }
         [System.Runtime.InteropServices.DllImport("user32", EntryPoint = "SetWindowPos", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Ansi, SetLastError = true)]
         private static extern int SetWindowPos(int hwnd, int hWndInsertAfter, double x, double y, double cx, double cy, uint wFlags);
@@ -7504,56 +7677,8 @@ internal static class Keyboard {
     public const int VK_ESCAPE = 0X1B;
     public const int VK_DELETE = 0X2E;
     private const int WH_KEYBOARD_LL = 13;
-    public static int KeyboardHandle;
-    // Implement this function to block as many
-    // key combinations as you'd like...
-
-    //public static int KeyboardCallback(int Code, int wParam, ref KBDLLHOOKSTRUCT lParam)
-    //{
-    //    if (Code == HC_ACTION)
-    //    {
-    //        Debug.WriteLine("Calling IsHooked");
-    //        if (IsHooked(lParam))
-    //        {
-    //            return 1;
-    //        }
-    //    }
-    //    return CallNextHookEx(KeyboardHandle, Code, wParam, ref lParam);
-    //}
-    //    public delegate int KeyboardHookDelegate(int Code, int wParam, ref KBDLLHOOKSTRUCT lParam);
-    //    [MarshalAs(UnmanagedType.FunctionPtr)]
-    //    private static KeyboardHookDelegate callback;
-    //    public static void HookKeyboard(ref Form f)
-    //    {
-    //        callback = new KeyboardHookDelegate(KeyboardCallback);
-    //        KeyboardHandle = SetWindowsHookEx(WH_KEYBOARD_LL, callback, GetModuleHandle(Process.GetCurrentProcess().MainModule.ModuleName), 0);
-    //        //MessageBox.Show(KeyboardHandle.ToString)
-    //        CheckHooked();
-    //    }
-
-    //    public static void CheckHooked()
-    //    {
-    //        if (Hooked())
-    //        {
-    //            Debug.WriteLine("Keyboard hooked");
-    //        }
-    //        else
-    //        {
-    ////INSTANT C# TODO TASK: Calls to the VB 'Err' object are not converted by Instant C#:
-    //            Debug.WriteLine("Keyboard hook failed: " + Err.LastDllError);
-    //        }
-    //    }
-    //    private static bool Hooked()
-    //    {
-    //        return KeyboardHandle != 0;
-    //    }
-    //    public static void UnhookKeyboard()
-    //    {
-    //        if (Hooked())
-    //        {
-    //            UnhookWindowsHookEx(KeyboardHandle);
-    //        }
-    //    }
+   // public static int KeyboardHandle;
+   
 
 
 
