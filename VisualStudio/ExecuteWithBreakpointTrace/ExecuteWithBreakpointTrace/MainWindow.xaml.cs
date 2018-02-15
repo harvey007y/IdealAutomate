@@ -57,7 +57,7 @@ namespace ExecuteWithBreakpointTrace {
       myImage.RelativeY = 10;
       myImage.Tolerance = 60;
 
-      int[,] myArray = myActions.PutAll(myImage);
+      int[,] myArray = myActions.PutAllDoNotCheckForAlternative(myImage);
       if (myArray.Length == 0 && intCtr < 50) {
         goto TryToFindYellowArrow;
       }
