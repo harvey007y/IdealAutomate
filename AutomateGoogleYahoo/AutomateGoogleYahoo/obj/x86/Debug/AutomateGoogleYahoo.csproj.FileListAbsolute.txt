@@ -52,3 +52,4 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\AutomateGoogleYahoo\AutomateGoogle
 C:\Users\harve\Documents\GitHub\IdealAutomate\AutomateGoogleYahoo\AutomateGoogleYahoo\obj\x86\Debug\AutomateGoogleYahoo.csproj.GenerateResource.Cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\AutomateGoogleYahoo\AutomateGoogleYahoo\obj\x86\Debug\AutomateGoogleYahoo.exe
 C:\Users\harve\Documents\GitHub\IdealAutomate\AutomateGoogleYahoo\AutomateGoogleYahoo\obj\x86\Debug\AutomateGoogleYahoo.pdb
+C:\Users\harve\Documents\GitHub\IdealAutomate\AutomateGoogleYahoo\AutomateGoogleYahoo\obj\x86\Debug\AutomateGoogleYahoo.csproj.CoreCompileInputs.cache

@@ -26,7 +26,7 @@ namespace AutomateGoogleYahoo
 
             InitializeComponent();
             this.Hide();
-
+            goto myExit;
             string strWindowTitle = myActions.PutWindowTitleInEntity();
             if (strWindowTitle.StartsWith("AutomateGoogleYahoo"))
             {
