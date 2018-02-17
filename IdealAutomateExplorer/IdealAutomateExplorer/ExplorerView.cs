@@ -3796,11 +3796,31 @@ namespace System.Windows.Forms.Samples {
             NestingLevel.HeaderText = "NestingLevel";
             NestingLevel.Name = "NestingLevel";
             NestingLevel.Visible = false;
-            if (DataGridViewExtSetting.Default.ColumnOrder.ContainsKey(pstrInitialDirectory)) {
+            ArrayList myArrayList = new ArrayList();
+            Methods myActions = new Methods();
+            myArrayList = myActions.ReadAppDirectoryKeyToArrayList("ColumnOrder_" + pstrInitialDirectory.Replace(":", "+").Replace("\\", "-"));
+            if (myArrayList.Count > 0) {
+                List<ColumnOrderItem> columnOrder = new List<ColumnOrderItem>();
+                foreach (var item in myArrayList) {
+                    string[] columnArray = item.ToString().Split('^');
+                    ColumnOrderItem myColumnOrderItem = new ColumnOrderItem();
+                    int myInt = 0;
+                    Int32.TryParse(columnArray[0], out  myInt);
+                    myColumnOrderItem.DisplayIndex = myInt;
+                    myInt = 0;
+                    Int32.TryParse(columnArray[1], out myInt);
+                    myColumnOrderItem.Width = myInt;
+                    if (columnArray[2].ToLower() == "true") {
+                        myColumnOrderItem.Visible = true;
+                    } else {
+                        myColumnOrderItem.Visible = false;
+                    }                   
+                    myInt = 0;
+                    Int32.TryParse(columnArray[3], out myInt);                   
+                    myColumnOrderItem.ColumnIndex = myInt;
+                    columnOrder.Add(myColumnOrderItem); 
+                }
 
-
-                List<ColumnOrderItem> columnOrder =
-                    DataGridViewExtSetting.Default.ColumnOrder[pstrInitialDirectory];
 
                 if (columnOrder != null) {
                     var sorted = columnOrder.OrderBy(i => i.DisplayIndex);

@@ -1,14 +1,17 @@
-﻿using System;
+﻿using IdealAutomate.Core;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Drawing;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
 namespace System.Windows.Forms.Samples {
 
-	[Description("DataGridView that Saves Column Order, Width and Visibility to user.config")]
+	[Description("DataGridView that Saves Column Order, Width and Visibility to appdata\\roaming\\idealautomate\\idealautomateexplorer")]
 	[ToolboxBitmap(typeof(System.Windows.Forms.DataGridView))]
 	public partial class DataGridViewExt : DataGridView
 	{
@@ -56,8 +59,25 @@ namespace System.Windows.Forms.Samples {
 					});
 				}
 
-				DataGridViewExtSetting.Default.ColumnOrder[_InitialDirectory] = columnOrder;
-				DataGridViewExtSetting.Default.Save();
+				//DataGridViewExtSetting.Default.ColumnOrder[_InitialDirectory] = columnOrder;
+				//DataGridViewExtSetting.Default.Save();
+                Methods myActions = new Methods();
+                ArrayList myArrayList = new ArrayList();
+                StringBuilder sb = new StringBuilder();
+
+
+                foreach (ColumnOrderItem item in columnOrder) {
+                    sb.Length = 0;
+                    sb.Append(item.DisplayIndex.ToString());
+                    sb.Append("^");
+                    sb.Append(item.Width.ToString());
+                    sb.Append("^");
+                    sb.Append(item.Visible.ToString());
+                    sb.Append("^");
+                    sb.Append(item.ColumnIndex.ToString());                    
+                    myArrayList.Add(sb.ToString());
+                }
+                myActions.WriteArrayListToAppDirectoryKey("ColumnOrder_" + _InitialDirectory.Replace(":","+").Replace("\\","-"), myArrayList);
 			}
 		}
 		//---------------------------------------------------------------------
