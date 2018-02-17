@@ -964,8 +964,8 @@ namespace System.Windows.Forms.Samples
             this.pictureBox1.Size = new System.Drawing.Size(32, 24);
             this.pictureBox1.TabIndex = 12;
             this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.search_Click);
-            // 
+            this.pictureBox1.Click += async (o, e) => { await this.search_ClickAsync(o, e); };
+            // async (o, e) =>
             // ExplorerView
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);

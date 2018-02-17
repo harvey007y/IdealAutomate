@@ -5080,7 +5080,7 @@ namespace System.Windows.Forms.Samples {
 
         }
 
-        private void search_Click(object sender, EventArgs e) {
+        private async Task search_ClickAsync(object sender, EventArgs e) {
             Methods myActions = new Methods();
             myActions = new Methods();
             string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
@@ -5440,8 +5440,6 @@ namespace System.Windows.Forms.Samples {
 
 
             }
-
-
             strPathToSearch = strFolderToUse;
 
             strSearchPattern = strFileTypeToUse;
@@ -5452,106 +5450,97 @@ namespace System.Windows.Forms.Samples {
 
             strLowerCaseSearchText = strFindWhatToUse.ToLower();
             myActions.SetValueByKey("FindWhatToUse", strFindWhatToUse);
+            try {
+                var damageResult = await Task.Run(() => Search(settingsDirectory));
 
-            System.Diagnostics.Stopwatch st = new System.Diagnostics.Stopwatch();
-            st.Start();
-            intHits = 0;
-            int intLineCtr;
-            List<FileInfo> myFileList = new List<FileInfo>();
-            if (File.Exists(strPathToSearch)) {
-                System.IO.FileInfo fi = new System.IO.FileInfo(strPathToSearch);
-                myFileList.Add(fi);
-            } else {
-                myFileList = TraverseTree(strSearchPattern, strPathToSearch);
-            }
-            int intFiles = 0;
-            matchInfoList = new List<MatchInfo>();
-            //         myFileList = myFileList.OrderBy(fi => fi.FullName).ToList();
-            Parallel.ForEach(myFileList, myFileInfo => {
-                intLineCtr = 0;
-                boolStringFoundInFile = false;
-                ReadFileToString(myFileInfo.FullName, intLineCtr, matchInfoList);
-                if (boolStringFoundInFile) {
-                    intFiles++;
+                myActions.MessageBoxShow(damageResult);
+
+        } catch (Exception ex) {
+            // MessageBox.Show(ex.Message);
+          }    
+        }
+
+        private async Task<string> Search(string settingsDirectory) {
+            string myResult = "";
+            Methods myActions = new Methods();
+
+
+                System.Diagnostics.Stopwatch st = new System.Diagnostics.Stopwatch();
+                st.Start();
+                intHits = 0;
+                int intLineCtr;
+                List<FileInfo> myFileList = new List<FileInfo>();
+                if (File.Exists(strPathToSearch)) {
+                    System.IO.FileInfo fi = new System.IO.FileInfo(strPathToSearch);
+                    myFileList.Add(fi);
+                } else {
+                    myFileList = TraverseTree(strSearchPattern, strPathToSearch);
                 }
-            });
-            matchInfoList = matchInfoList.Where(mi => mi != null).OrderBy(mi => mi.FullName).ThenBy(mi => mi.LineNumber).ToList();
-            List<string> lines = new List<string>();
-            foreach (var item in matchInfoList) {
-                lines.Add("\"" + item.FullName + "\"(" + item.LineNumber + "," + item.LinePosition + "): " + item.LineText.Length.ToString() + " " + item.LineText.Substring(0, item.LineText.Length > 5000 ? 5000 : item.LineText.Length));
-
-            }
-
-
-            string strApplicationBinDebug1 = System.Windows.Forms.Application.StartupPath;
-            string myNewProjectSourcePath1 = strApplicationBinDebug1.Replace("\\bin\\Debug", "");
-
-            settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPath(myNewProjectSourcePath1));
-            using (FileStream fs = new FileStream(settingsDirectory + @"\MatchInfo.txt", FileMode.Create)) {
-                StreamWriter file = new System.IO.StreamWriter(fs, Encoding.Default);
-
-                file.WriteLine(@"-- " + strSearchText + " in " + strPathToSearch + " from " + strSearchPattern + " excl  " + strSearchExcludePattern + " --");
+                int intFiles = 0;
+                matchInfoList = new List<MatchInfo>();
+                //         myFileList = myFileList.OrderBy(fi => fi.FullName).ToList();
+                Parallel.ForEach(myFileList, myFileInfo => {
+                    intLineCtr = 0;
+                    boolStringFoundInFile = false;
+                    ReadFileToString(myFileInfo.FullName, intLineCtr, matchInfoList);
+                    if (boolStringFoundInFile) {
+                        intFiles++;
+                    }
+                });
+                matchInfoList = matchInfoList.Where(mi => mi != null).OrderBy(mi => mi.FullName).ThenBy(mi => mi.LineNumber).ToList();
+                List<string> lines = new List<string>();
                 foreach (var item in matchInfoList) {
-                    file.WriteLine("\"" + item.FullName + "\"(" + item.LineNumber + "," + item.LinePosition + "): " + item.LineText.Substring(0, item.LineText.Length > 5000 ? 5000 : item.LineText.Length));
+                    lines.Add("\"" + item.FullName + "\"(" + item.LineNumber + "," + item.LinePosition + "): " + item.LineText.Length.ToString() + " " + item.LineText.Substring(0, item.LineText.Length > 5000 ? 5000 : item.LineText.Length));
+
                 }
-                int intUniqueFiles = matchInfoList.Select(x => x.FullName).Distinct().Count();
-                st.Stop();
-                // Get the elapsed time as a TimeSpan value.
-                TimeSpan ts = st.Elapsed;
-                // Format and display the TimeSpan value.
-                string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
-                    ts.Hours, ts.Minutes, ts.Seconds,
-                    ts.Milliseconds / 10);
-                file.WriteLine("RunTime " + elapsedTime);
-                file.WriteLine(intHits.ToString() + " hits");
-                // file.WriteLine(myFileList.Count().ToString() + " files");           
-                file.WriteLine(intUniqueFiles.ToString() + " files with hits");
-                file.Close();
-
-                myActions.KillAllProcessesByProcessName("notepad++");
-                // Get the elapsed time as a TimeSpan value.
-                ts = st.Elapsed;
-                // Format and display the TimeSpan value.
-                elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
-                   ts.Hours, ts.Minutes, ts.Seconds,
-                   ts.Milliseconds / 10);
-                Console.WriteLine("RunTime " + elapsedTime);
-                Console.WriteLine(intHits.ToString() + " hits");
-                // Console.WriteLine(myFileList.Count().ToString() + " files");
-                Console.WriteLine(intUniqueFiles.ToString() + " files with hits");
-                Console.ReadLine();
-                //  myActions.KillAllProcessesByProcessName("notepad++");
-                string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
-                string strContent = settingsDirectory + @"\MatchInfo.txt";
-                //Close the running process
-                //if (_appHandle != IntPtr.Zero) {
-                //  PostMessage(_appHandle, WM_CLOSE, 0, 0);
-                //  System.Threading.Thread.Sleep(1000);
-                //  _appHandle = IntPtr.Zero;
-                //}
-                //tries to start the process 
-                //try {
-                //    _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
-                //} catch (Exception) {
-                //    MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                //    return;
-                //}
 
 
-                //System.Threading.Thread.Sleep(500);
-                //while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
-                //    System.Threading.Thread.Sleep(10);
-                //    _proc.Refresh();
-                //}
+                string strApplicationBinDebug1 = System.Windows.Forms.Application.StartupPath;
+                string myNewProjectSourcePath1 = strApplicationBinDebug1.Replace("\\bin\\Debug", "");
 
-                //_proc.WaitForInputIdle();
-                //_appHandle = _proc.MainWindowHandle;
+                settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPath(myNewProjectSourcePath1));
+                using (FileStream fs = new FileStream(settingsDirectory + @"\MatchInfo.txt", FileMode.Create)) {
+                    StreamWriter file = new System.IO.StreamWriter(fs, Encoding.Default);
 
-                //SetParent(_appHandle, splitContainer1.Panel2.Handle);
-                //SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
-                myActions.Run(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
-                myActions.MessageBoxShow("RunTime: " + elapsedTime + "\n\r\n\rHits: " + intHits.ToString() + "\n\r\n\rFiles with hits: " + intUniqueFiles.ToString() + "\n\r\n\rPut Cursor on line and\n\r press Ctrl+Alt+N\n\rto view detail page. ");
-            }
+                    file.WriteLine(@"-- " + strSearchText + " in " + strPathToSearch + " from " + strSearchPattern + " excl  " + strSearchExcludePattern + " --");
+                    foreach (var item in matchInfoList) {
+                        file.WriteLine("\"" + item.FullName + "\"(" + item.LineNumber + "," + item.LinePosition + "): " + item.LineText.Substring(0, item.LineText.Length > 5000 ? 5000 : item.LineText.Length));
+                    }
+                    int intUniqueFiles = matchInfoList.Select(x => x.FullName).Distinct().Count();
+                    st.Stop();
+                    // Get the elapsed time as a TimeSpan value.
+                    TimeSpan ts = st.Elapsed;
+                    // Format and display the TimeSpan value.
+                    string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                        ts.Hours, ts.Minutes, ts.Seconds,
+                        ts.Milliseconds / 10);
+                    file.WriteLine("RunTime " + elapsedTime);
+                    file.WriteLine(intHits.ToString() + " hits");
+                    // file.WriteLine(myFileList.Count().ToString() + " files");           
+                    file.WriteLine(intUniqueFiles.ToString() + " files with hits");
+                    file.Close();
+
+                    myActions.KillAllProcessesByProcessName("notepad++");
+                    // Get the elapsed time as a TimeSpan value.
+                    ts = st.Elapsed;
+                    // Format and display the TimeSpan value.
+                    elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                       ts.Hours, ts.Minutes, ts.Seconds,
+                       ts.Milliseconds / 10);
+                    Console.WriteLine("RunTime " + elapsedTime);
+                    Console.WriteLine(intHits.ToString() + " hits");
+                    // Console.WriteLine(myFileList.Count().ToString() + " files");
+                    Console.WriteLine(intUniqueFiles.ToString() + " files with hits");
+                    Console.ReadLine();
+                    //  myActions.KillAllProcessesByProcessName("notepad++");
+                    string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
+                    string strContent = settingsDirectory + @"\MatchInfo.txt";
+                    myActions.Run(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
+                    myResult = "RunTime: " + elapsedTime + "\n\r\n\rHits: " + intHits.ToString() + "\n\r\n\rFiles with hits: " + intUniqueFiles.ToString() + "\n\r\n\rPut Cursor on line and\n\r press Ctrl+Alt+N\n\rto view detail page. ";
+                }
+
+      
+            return myResult;
         }
         public static List<FileInfo> TraverseTree(string filterPattern, string root) {
             string[] arrayExclusionPatterns = strSearchExcludePattern.Split(';');
