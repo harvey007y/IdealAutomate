@@ -52,3 +52,4 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\HelloWorldExample\HelloWorldExampl
 C:\Users\harve\Documents\GitHub\IdealAutomate\HelloWorldExample\HelloWorldExample\obj\x86\Debug\HelloWorldExample.csproj.GenerateResource.Cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\HelloWorldExample\HelloWorldExample\obj\x86\Debug\HelloWorldExample.exe
 C:\Users\harve\Documents\GitHub\IdealAutomate\HelloWorldExample\HelloWorldExample\obj\x86\Debug\HelloWorldExample.pdb
+C:\Users\harve\Documents\GitHub\IdealAutomate\HelloWorldExample\HelloWorldExample\obj\x86\Debug\HelloWorldExample.csproj.CoreCompileInputs.cache

@@ -94,6 +94,33 @@
             <returns>an integer array of all of x,y coordinates of where the image was found</returns>
             Category::Image
         </member>
+        <member name="M:IdealAutomate.Core.Methods.PutAllDoNotCheckForAlternative(IdealAutomate.Core.ImageEntity)">
+            <summary>
+            <para>PutAll receives an ImageEntity object and returns</para>
+            <para>an integer array of all of x,y coordinates of where the</para>
+            <para>image was found</para>
+            <para>Images are used to locate a specific area of the screen. The Windows Snipping Tool is very useful for saving image files to your images folder. If you are not familiar with the Windows Snipping Tool, you should google it to learn about it as it is very helpful. There is a trick to taking snapshots of popup windows. The trick involves clicking on the new option in the snipping tool to cause it to make the entire screen go out of focus. Then, you hit the escape key to remove opacity cloud that prevent you from accessing your screen. At this point, you can activate your popup or dropdown window. Next, you press the control key plus the print key to cause the opacity cloud to appear without removing the popup or dropdown window. You can now drag the Windows Snipping Tool around the window to get a snapshot of it without it disappearing. The Image Tabs has these columns:</para>
+            <para>1. ImageFile</para>
+            <para>The imageFile is the file path where the image resides.</para>
+            <para>2. Attempts</para>
+            <para>If Attempts is specified, it must be defined as an integer (int). The default value is 1. Sometimes an image will not be found on the first attempt because your computer may be running slowly, and the window may not be fully loaded when the script is looking for it. By specifying an Attempts value of 10, for example, the script will try to find the image up to 10 times before moving on to the next action. In this example, if the image was found on the third attempt, it would not continue looking for the other 7 times since the image was already found.</para>
+            <para>3. Occurrence</para>
+            <para>If Occurrence is specified, it must be defined  as an integer (int). If you are only interested in locating a specific occurrence of an image, for example - the second occurrence, you can specify that number as the value of the primitive that is specified in this column.</para>
+            <para>4. Sleep</para>
+            <para>If Sleep is specified, it must be defined as an integer (int). If you are only interested in locating a specific occurrence of an image, for example - the second occurrence, you can specify that number as the value of the primitive that is specified in this column.</para>
+            <para>5. RelativeX</para>
+            <para>If RelativeX is specified, it must be defined  as an integer (int). The default value for RelativeX is 0. When an image is found, the position of the upper-left corner is returned. You can specify a RelativeX value of pixels to be added to the original X value returned to realign the pixel that you want to click on to the left or to the right.</para>
+            <para>6. RelativeY</para>
+            <para>If RelativeY is specified, it must be defined as an integer (int). The default value for RelativeY is 0. When an image is found, the position of the upper-left corner is returned. You can specify a RelativeY value of pixels to be added to the original Y value returned to realign the pixel that you want to click on to be higher or lower.</para>
+            <para>7. UseGrayScale</para>
+            <para>If UseGrayScale is true, it attempts to ignore color when looking for the image. GreyScale is created by add the RGB values for a pixel together and dividing that sum by three so color is still a factor, but it is just not as sensitive.</para>
+            <para>8. Tolerance</para>
+            <para>The default value for Tolerance is 90. Tolerance specifies the percent of pixels that must match in order for an image to be considered found. When searching for images, the application starts by comparing the least frequent occurrence of a pattern of 10 pixels to every location on the screen in order speed up the process. If there is no match on the least frequent pattern of 10 pixels in the smaller image, it will try to match the second to least most popular pattern of 10 pixels. If there is no match on that second-least frequently occurring pattern, the image will not be found even though there may be more than a 90 percent match between the smaller image and an area on the screen. Sometimes, it helps to try to cut and paste a different image if you are having trouble finding a particular image.</para>
+            </summary>
+            <param name="myImage">ImageEntity object</param>
+            <returns>an integer array of all of x,y coordinates of where the image was found</returns>
+            Category::Image
+        </member>
         <member name="M:IdealAutomate.Core.Methods.PutCursorPosition">
             <summary>
             <para>PutCursorPosition provides a way to save the cursor position in</para>
@@ -110,7 +137,7 @@
             the original position again.
             </summary>
             <returns></returns>
-            Category::Caret
+            Category::Mouse
         </member>
         <!-- Badly formed XML comment ignored for member "M:IdealAutomate.Core.Methods.ClickImageIfExists(IdealAutomate.Core.ImageEntity)" -->
         <member name="M:IdealAutomate.Core.Methods.LeftClick(System.Int32[0:,0:])">
@@ -582,6 +609,10 @@
             </summary>
             <param name="strKey">Unique key within the script application</param>
             <param name="arrayListToWrite">ArrayList that is to written to the application directory for that key</param>
+            Category::Storage>Private
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.WriteArrayListToPublicKey(System.String,System.Collections.ArrayList,System.String)">
+            Category::Storage>Public
         </member>
         <member name="M:IdealAutomate.Core.Methods.ReadAppDirectoryKeyToArrayListGlobal(System.String)">
             <summary>
@@ -595,6 +626,7 @@
             </summary>
             <param name="strKey">Unique key within the script application</param>
             <returns>ArrayList that was in application directory for that key</returns>
+            Category::Storage>Private
         </member>
         <member name="M:IdealAutomate.Core.Methods.WriteArrayListToAppDirectoryKeyGlobal(System.String,System.Collections.ArrayList)">
             <summary>
@@ -608,12 +640,14 @@
             </summary>
             <param name="strKey">Unique key within the script application</param>
             <param name="arrayListToWrite">ArrayList that is to written to the application directory for that key</param>
+            Category::Storage>Private
         </member>
         <member name="M:IdealAutomate.Core.Methods.ScriptStartedUpdateStats">
             <summary>
             At beginning of template, Write StartTime, StartDate, Add 1 to total executions. 
             
             </summary>
+            Category::Stats
         </member>
         <member name="M:IdealAutomate.Core.Methods.ScriptEndedSuccessfullyUpdateStats">
             <summary>
@@ -626,6 +660,19 @@
             ScriptTotalSavedExecutionTime += CurrentSavedExecutionTime
              StartDate is the LastExecutedDate.
             </summary>
+            Category::Stats
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.ConvertFullFileNameToScriptPath(System.String)">
+            Category::Directory
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.ConvertFullFileNameToPublicPath(System.String)">
+            Category::Directory
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(System.String)">
+            Category::Directory
+        </member>
+        <member name="M:IdealAutomate.Core.Methods.GetPathForScriptNoBinDebug">
+            Category::Directory
         </member>
         <member name="T:IdealAutomate.Core.Position_Cursor.Point">
             <summary>

@@ -52,3 +52,4 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\RemoveFormattingClipboard\RemoveFo
 C:\Users\harve\Documents\GitHub\IdealAutomate\RemoveFormattingClipboard\RemoveFormattingClipboard\obj\x86\Debug\RemoveFormattingClipboard.csproj.GenerateResource.Cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\RemoveFormattingClipboard\RemoveFormattingClipboard\obj\x86\Debug\RemoveFormattingClipboard.exe
 C:\Users\harve\Documents\GitHub\IdealAutomate\RemoveFormattingClipboard\RemoveFormattingClipboard\obj\x86\Debug\RemoveFormattingClipboard.pdb
+C:\Users\harve\Documents\GitHub\IdealAutomate\RemoveFormattingClipboard\RemoveFormattingClipboard\obj\x86\Debug\RemoveFormattingClipboard.csproj.CoreCompileInputs.cache

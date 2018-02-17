@@ -8,7 +8,7 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("HotKeysMenu")]
-[assembly: AssemblyDescription("IdealAutomateScript")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Ideal Automate")]
 [assembly: AssemblyProduct("HotKeysMenu")]
