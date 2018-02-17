@@ -25,3 +25,4 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\OpenEditPlusInVS\OpenEditPlusInVS\
 C:\Users\harve\Documents\GitHub\IdealAutomate\OpenEditPlusInVS\OpenEditPlusInVS\obj\x86\Debug\OpenEditPlusInVS.csproj.GenerateResource.Cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\OpenEditPlusInVS\OpenEditPlusInVS\obj\x86\Debug\OpenEditPlusInVS.exe
 C:\Users\harve\Documents\GitHub\IdealAutomate\OpenEditPlusInVS\OpenEditPlusInVS\obj\x86\Debug\OpenEditPlusInVS.pdb
+C:\Users\harve\Documents\GitHub\IdealAutomate\OpenEditPlusInVS\OpenEditPlusInVS\obj\x86\Debug\OpenEditPlusInVS.csproj.CoreCompileInputs.cache

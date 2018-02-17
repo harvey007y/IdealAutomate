@@ -2,6 +2,7 @@
 using IdealAutomate.Core;
 using System.Collections.Generic;
 using System.IO;
+using System;
 
 namespace OpenEditPlusInVS {
     /// <summary>
@@ -63,6 +64,9 @@ namespace OpenEditPlusInVS {
                     goto myExit;
                 }
             }
+            //string myOrigEditPlusLine = strReadLine;
+            bool boolSolutionFileFound = true;
+            string strSolutionName = "";
             List<string> myBeginDelim = new List<string>();
             List<string> myEndDelim = new List<string>();
             myBeginDelim.Add("\"");
@@ -90,65 +94,194 @@ namespace OpenEditPlusInVS {
             myActions.FindDelimitedText(delimParms);
             string strLineNumber = delimParms.strDelimitedTextFound;
 
+            //========
+            string strFullName = Path.Combine(strPathOnly, strFileNameOnly);
+            string strSolutionFullFileName = "";
+           
+                string currentTempName = strFullName;
+                while (currentTempName.IndexOf("\\") > -1) {
+                    currentTempName = currentTempName.Substring(0, currentTempName.LastIndexOf("\\"));
+                    FileInfo fi = new FileInfo(currentTempName);
+                    if (Directory.Exists(currentTempName)) {
+                        string[] files = null;
+                        try {
+                            files = System.IO.Directory.GetFiles(currentTempName, "*.sln");
+                            if (files.Length > 0) {
+                                // TODO: Currently defaulting to last one, but should ask the user which one to use if there is more than one                               
+                                strSolutionFullFileName = files[files.Length - 1];
+                                boolSolutionFileFound = true;
+                                strSolutionName = strSolutionFullFileName.Substring(strSolutionFullFileName.LastIndexOf("\\") + 1).Replace(".sln", "");
+                                myWindowTitles = myActions.GetWindowTitlesByProcessName("devenv");
+                                myWindowTitles.RemoveAll(vsItem => vsItem == "");
+                                bool boolVSMatchingSolutionFound = false;
+                                foreach (var vsTitle in myWindowTitles) {
+                                    if (vsTitle.StartsWith(strSolutionName + " - ")) {
+                                        boolVSMatchingSolutionFound = true;
+                                        myActions.ActivateWindowByTitle(vsTitle, 3);
+                                        myActions.Sleep(1000);
+                                        myActions.TypeText("{ESCAPE}", 500);
+                                        myBeginDelim = new List<string>();
+                                        myEndDelim = new List<string>();
+                                        myBeginDelim.Add("\"");
+                                        myEndDelim.Add("\"");
+                                        delimParms = new FindDelimitedTextParms(myBeginDelim, myEndDelim);
 
-            myWindowTitles.RemoveAll(item => item == "");
-            if (myWindowTitles.Count > 0) {
+                                        myQuote = "\"";
+                                        delimParms.lines[0] = myOrigEditPlusLine;
 
 
-                if (strPathOnly.Contains("\\C#\\")) {
-                    myWebSite = myWindowTitles.Find(x => x.StartsWith("WEB Source"));
+                                        myActions.FindDelimitedText(delimParms);
+                                        intLastSlash = delimParms.strDelimitedTextFound.LastIndexOf('\\');
+                                        if (intLastSlash < 1) {
+                                            myActions.MessageBoxShow("Could not find last slash in in EditPlusLine - aborting");
+                                            break;
+                                        }
+                                        strPathOnly = delimParms.strDelimitedTextFound.SubstringBetweenIndexes(0, intLastSlash);
+                                        strFileNameOnly = delimParms.strDelimitedTextFound.Substring(intLastSlash + 1);
+                                        myBeginDelim.Clear();
+                                        myEndDelim.Clear();
+                                        myBeginDelim.Add("(");
+                                        myEndDelim.Add(",");
+                                        delimParms = new FindDelimitedTextParms(myBeginDelim, myEndDelim);
+                                        delimParms.lines[0] = myOrigEditPlusLine;
+                                        myActions.FindDelimitedText(delimParms);
+                                        strLineNumber = delimParms.strDelimitedTextFound;
+                                        myActions.TypeText("{ESC}", 2000);
+                                        myActions.TypeText("%(f)", 1000);
+                                        myActions.TypeText("{DOWN}", 1000);
+                                        myActions.TypeText("{RIGHT}", 1000);
+                                        myActions.TypeText("f", 1000);
+                                        // myActions.TypeText("^(o)", 2000);
+                                        myActions.TypeText("%(d)", 1500);
+                                        myActions.TypeText(strPathOnly, 1500);
+                                        myActions.TypeText("{ENTER}", 500);
+                                        myActions.TypeText("%(n)", 500);
+                                        myActions.TypeText(strFileNameOnly, 1500);
+                                        myActions.TypeText("{ENTER}", 1000);
+                                        break;
+                                    }
+                                }
+                                if (boolVSMatchingSolutionFound == false) {
+                                    System.Windows.Forms.DialogResult myResult = myActions.MessageBoxShowWithYesNo("I could not find the solution (" + strSolutionName + ") currently running.\n\r\n\r Do you want me to launch it in Visual Studio for you.\n\r\n\rTo go ahead and launch the solution, click yes, otherwise, click no to cancel");
+                                    if (myResult == System.Windows.Forms.DialogResult.No) {
+                                        return;
+                                    }
+                                    string strVSPath = myActions.GetValueByKeyGlobal("VS2013Path");
+                                    // C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\devenv.exe
+                                    if (strVSPath == "") {
+                                    List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+
+                                    ControlEntity myControlEntity = new ControlEntity();
+                                        myControlEntity.ControlEntitySetDefaults();
+                                        myControlEntity.ControlType = ControlType.Heading;
+                                        myControlEntity.Text = "Specify location of Visual Studio";
+                                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+                                        myControlEntity.ControlEntitySetDefaults();
+                                        myControlEntity.ControlType = ControlType.Label;
+                                        myControlEntity.ID = "myLabel";
+                                        myControlEntity.Text = "Visual Studio Executable:";
+                                        myControlEntity.RowNumber = 0;
+                                        myControlEntity.ColumnNumber = 0;
+                                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                                        myControlEntity.ControlEntitySetDefaults();
+                                        myControlEntity.ControlType = ControlType.TextBox;
+                                        myControlEntity.ID = "myAltExecutable";
+                                        myControlEntity.Text = "";
+                                        myControlEntity.RowNumber = 0;
+                                        myControlEntity.ColumnNumber = 1;
+                                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                                        myActions.WindowMultipleControls(ref myListControlEntity, 600, 500, 0, 0);
+                                        string strAltExecutable = myListControlEntity.Find(x => x.ID == "myAltExecutable").Text;
+                                        myActions.SetValueByKeyGlobal("VS2013Path", strAltExecutable);
+                                        strVSPath = strAltExecutable;
+                                    }
+                                    myActions.Run(strVSPath, strSolutionFullFileName);
+                                    myActions.Sleep(10000);
+                                    myActions.MessageBoxShow("When visual studio finishes loading, please click okay to continue");
+                                    myActions.TypeText("{ESCAPE}", 500);
+                                    boolSolutionFileFound = true;
+                                    strSolutionName = currentTempName.Substring(currentTempName.LastIndexOf("\\") + 1).Replace(".sln", "");
+                                    myWindowTitles = myActions.GetWindowTitlesByProcessName("devenv");
+                                    myWindowTitles.RemoveAll(vsItem => vsItem == "");
+                                    boolVSMatchingSolutionFound = false;
+                                    foreach (var vsTitle in myWindowTitles) {
+                                        if (vsTitle.StartsWith(strSolutionName + " - ")) {
+                                            boolVSMatchingSolutionFound = true;
+                                            myActions.ActivateWindowByTitle(vsTitle, 3);
+                                            myActions.Sleep(1000);
+                                            myActions.TypeText("{ESCAPE}", 500);
+                                            myBeginDelim = new List<string>();
+                                            myEndDelim = new List<string>();
+                                            myBeginDelim.Add("\"");
+                                            myEndDelim.Add("\"");
+                                            delimParms = new FindDelimitedTextParms(myBeginDelim, myEndDelim);
+
+                                            myQuote = "\"";
+                                            delimParms.lines[0] = myOrigEditPlusLine;
+
+
+                                            myActions.FindDelimitedText(delimParms);
+                                            intLastSlash = delimParms.strDelimitedTextFound.LastIndexOf('\\');
+                                            if (intLastSlash < 1) {
+                                                myActions.MessageBoxShow("Could not find last slash in in EditPlusLine - aborting");
+                                                break;
+                                            }
+                                            strPathOnly = delimParms.strDelimitedTextFound.SubstringBetweenIndexes(0, intLastSlash);
+                                            strFileNameOnly = delimParms.strDelimitedTextFound.Substring(intLastSlash + 1);
+                                            myBeginDelim.Clear();
+                                            myEndDelim.Clear();
+                                            myBeginDelim.Add("(");
+                                            myEndDelim.Add(",");
+                                            delimParms = new FindDelimitedTextParms(myBeginDelim, myEndDelim);
+                                            delimParms.lines[0] = myOrigEditPlusLine;
+                                            myActions.FindDelimitedText(delimParms);
+                                            strLineNumber = delimParms.strDelimitedTextFound;
+                                            myActions.TypeText("{ESC}", 2000);
+                                            myActions.TypeText("%(f)", 1000);
+                                            myActions.TypeText("{DOWN}", 1000);
+                                            myActions.TypeText("{RIGHT}", 1000);
+                                            myActions.TypeText("f", 1000);
+                                            // myActions.TypeText("^(o)", 2000);
+                                            myActions.TypeText("%(d)", 1500);
+                                            myActions.TypeText(strPathOnly, 1500);
+                                            myActions.TypeText("{ENTER}", 500);
+                                            myActions.TypeText("%(n)", 500);
+                                            myActions.TypeText(strFileNameOnly, 1500);
+                                            myActions.TypeText("{ENTER}", 1000);
+                                            break;
+                                        }
+                                    }
+                                }
+                                if (boolVSMatchingSolutionFound == false) {
+                                    myActions.MessageBoxShow("Could not find visual studio for " + strSolutionName);
+                                }
+                                break;
+
+                            }
+                        } catch (UnauthorizedAccessException e) {
+
+                            Console.WriteLine(e.Message);
+                            continue;
+                        } catch (System.IO.DirectoryNotFoundException e) {
+                            Console.WriteLine(e.Message);
+                            continue;
+                        } catch (System.IO.PathTooLongException e) {
+                            Console.WriteLine(e.Message);
+                            continue;
+                        } catch (Exception e) {
+                            Console.WriteLine(e.Message);
+                            continue;
+                        }
+                    }
                 }
-
-                if (strPathOnly.Contains("\\ASP\\")) {
-                    myWebSite = myWindowTitles.Find(x => x.StartsWith("WebApp"));
-                }
-
-                if (strPathOnly.Contains("\\WindowsServices\\")) {
-                    myWebSite = myWindowTitles.Find(x => x.StartsWith("WindowsServices"));
-                }
-
-                if (strPathOnly.Contains("\\Framework\\")) {
-                    myWebSite = myWindowTitles.Find(x => x.StartsWith("Framework"));
-                }
-
-                if (myWebSite == "" || myWebSite == null) {
-                    myActions.MessageBoxShow("Could not find an open visual studio for this type of file");
-                } else {
-                    //myWindowTitles = myActions.GetWindowTitlesByProcessName("editplus");
-                    //myWindowTitles.RemoveAll(item => item == "");
-                    //if (myWindowTitles.Count > 0) {
-                    //  myActions.ActivateWindowByTitle(myWindowTitles[0], 3);
-                    //  myActions.Sleep(1000);
-                    //  int[,] myCursorPosition = myActions.PutCursorPosition();
-
-                    //  myActions.RightClick(myCursorPosition);
-                    //  myActions.TypeText("{UP 5}", 1000);
-                    //  myActions.TypeText("{ENTER}", 800);
-                    //  myActions.TypeText("%(\" \")", 1000);
-                    //  myActions.TypeText("n", 500);
-                    //}
-                    myActions.ActivateWindowByTitle(myWebSite, 3);
-
-                    // myActions.MessageBoxShow("just activated vs");
-                    myActions.TypeText("{ESC}", 2000);
-                    myActions.TypeText("%(f)", 1000);
-                    myActions.TypeText("{DOWN}", 1000);
-                    myActions.TypeText("{RIGHT}", 1000);
-                    myActions.TypeText("f", 1000);
-                    // myActions.TypeText("^(o)", 2000);
-                    myActions.TypeText("%(d)", 1500);
-                    myActions.TypeText(strPathOnly, 1500);
-                    myActions.TypeText("{ENTER}", 500);
-                    myActions.TypeText("%(n)", 500);
-                    myActions.TypeText(strFileNameOnly, 1500);
-                    myActions.TypeText("{ENTER}", 1000);
-                    myActions.TypeText("^(g)", 2000);
-                    myActions.TypeText(strLineNumber, 1500);
-                    myActions.TypeText("{ENTER}", 500);
-                }
-            } else {
-                myActions.MessageBoxShow("Could not find an open visual studio for this type of file");
-            }
+            
+            myActions.TypeText("^(g)", 500);
+            myActions.TypeText(strLineNumber, 500);
+            myActions.TypeText("{ENTER}", 500);
             goto myExit;
 
 
