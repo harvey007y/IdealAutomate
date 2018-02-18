@@ -278,6 +278,9 @@
     <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\Images\favicon_plus.ico">
       <PackagePath>IdealAutomateExplorer\Images\favicon_plus.ico</PackagePath>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\Images\folder-146940_960_720.png">
+      <PackagePath>IdealAutomateExplorer\Images\folder-146940_960_720.png</PackagePath>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\Images\FolderClosed.png">
       <PackagePath>IdealAutomateExplorer\Images\FolderClosed.png</PackagePath>
     </AppxPackagedFile>

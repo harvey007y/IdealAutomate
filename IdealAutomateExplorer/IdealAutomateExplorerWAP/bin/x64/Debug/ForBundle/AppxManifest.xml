@@ -7,7 +7,7 @@
 
     For more information on package manifest files, see http://go.microsoft.com/fwlink/?LinkID=241727
   -->
-  <Identity Name="3ca0a8ba-e87f-4c18-95fb-a46cfcfd2b49" Publisher="CN=harve" Version="1.0.1.0" ProcessorArchitecture="x64" />
+  <Identity Name="3ca0a8ba-e87f-4c18-95fb-a46cfcfd2b49" Publisher="CN=harve" Version="1.0.4.0" ProcessorArchitecture="x64" />
   <Properties>
     <DisplayName>IdealAutomateExplorerApp</DisplayName>
     <PublisherDisplayName>harve</PublisherDisplayName>
@@ -35,7 +35,7 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="IdealAutomateExplorer\IdealAutomateExplorer.exe" EntryPoint="Windows.FullTrustApplication">
-      <uap:VisualElements DisplayName="IdealAutomateExplorerApp" Description="IdealAutomateExplorerWAP" BackgroundColor="transparent" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png">
+      <uap:VisualElements DisplayName="IdealAutomateExplorerApp" Description="IdealAutomateExplorerWAP" BackgroundColor="black" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square310x310Logo="Assets\LargeTile.png" Square71x71Logo="Assets\SmallTile.png"></uap:DefaultTile>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>

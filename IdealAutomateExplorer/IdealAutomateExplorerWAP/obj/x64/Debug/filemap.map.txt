@@ -83,6 +83,7 @@
 "C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorerWAP\obj\x64\Debug\PackageLayout\IdealAutomateExplorer\Images\FolderOpen.png"			"IdealAutomateExplorer\Images\FolderOpen.png"
 "C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorerWAP\obj\x64\Debug\PackageLayout\IdealAutomateExplorer\Images\FolderLogo.png"			"IdealAutomateExplorer\Images\FolderLogo.png"
 "C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorerWAP\obj\x64\Debug\PackageLayout\IdealAutomateExplorer\Images\FolderClosed.png"			"IdealAutomateExplorer\Images\FolderClosed.png"
+"C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorerWAP\obj\x64\Debug\PackageLayout\IdealAutomateExplorer\Images\folder-146940_960_720.png"			"IdealAutomateExplorer\Images\folder-146940_960_720.png"
 "C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorerWAP\obj\x64\Debug\PackageLayout\IdealAutomateExplorer\Images\favicon_plus.ico"			"IdealAutomateExplorer\Images\favicon_plus.ico"
 "C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorerWAP\obj\x64\Debug\PackageLayout\IdealAutomateExplorer\Images\favicon_minus.ico"			"IdealAutomateExplorer\Images\favicon_minus.ico"
 "C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorerWAP\obj\x64\Debug\PackageLayout\IdealAutomateExplorer\Images\Expressions.PNG"			"IdealAutomateExplorer\Images\Expressions.PNG"

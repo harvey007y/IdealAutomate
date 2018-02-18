@@ -22,6 +22,8 @@
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/expressions.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/favicon_minus.ico")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/favicon_plus.ico")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/folder-146940_960_720.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/folder2.jpg")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/folderclosed.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/folderlogo.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/folderopen.png")]
