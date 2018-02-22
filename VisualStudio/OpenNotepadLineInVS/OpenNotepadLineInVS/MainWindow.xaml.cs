@@ -207,7 +207,7 @@ namespace OpenNotepadLineInVS {
                                     myActions.SetValueByKeyGlobal("VS2013Path", strAltExecutable);
                                     strVSPath = strAltExecutable;
                                 }
-                                myActions.Run(strVSPath, strSolutionFullFileName);
+                                myActions.Run(strVSPath, "\"" + strSolutionFullFileName + "\"");
                                 myActions.Sleep(10000);
                                 myActions.MessageBoxShow("When visual studio finishes loading, please click okay to continue");
                                 myActions.TypeText("{ESCAPE}", 500);

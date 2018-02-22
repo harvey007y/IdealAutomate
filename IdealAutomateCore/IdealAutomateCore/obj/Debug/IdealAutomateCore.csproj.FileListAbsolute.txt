@@ -99,4 +99,3 @@ C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateComponents\IdealAutomateC
 C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateComponents\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore.csproj.GenerateResource.Cache
 C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateComponents\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore.dll
 C:\SVN\ReleaseIndependent\Developers\Wade\IdealAutomateComponents\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore.pdb
-C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore.csproj.CoreCompileInputs.cache
