@@ -623,7 +623,203 @@ fAltTab);
       return myArray;
     }
 
+    /// <summary>
 
+    /// <para>PutAll receives an ImageEntity object and returns</para>
+
+    /// <para>an integer array of all of x,y coordinates of where the</para>
+
+    /// <para>image was found</para>
+
+    /// <para>Images are used to locate a specific area of the screen. The Windows Snipping Tool is very useful for saving image files to your images folder. If you are not familiar with the Windows Snipping Tool, you should google it to learn about it as it is very helpful. There is a trick to taking snapshots of popup windows. The trick involves clicking on the new option in the snipping tool to cause it to make the entire screen go out of focus. Then, you hit the escape key to remove opacity cloud that prevent you from accessing your screen. At this point, you can activate your popup or dropdown window. Next, you press the control key plus the print key to cause the opacity cloud to appear without removing the popup or dropdown window. You can now drag the Windows Snipping Tool around the window to get a snapshot of it without it disappearing. The Image Tabs has these columns:</para>
+
+    /// <para>1. ImageFile</para>
+
+    /// <para>The imageFile is the file path where the image resides.</para>
+
+    /// <para>2. Attempts</para>
+
+    /// <para>If Attempts is specified, it must be defined as an integer (int). The default value is 1. Sometimes an image will not be found on the first attempt because your computer may be running slowly, and the window may not be fully loaded when the script is looking for it. By specifying an Attempts value of 10, for example, the script will try to find the image up to 10 times before moving on to the next action. In this example, if the image was found on the third attempt, it would not continue looking for the other 7 times since the image was already found.</para>
+
+    /// <para>3. Occurrence</para>
+
+    /// <para>If Occurrence is specified, it must be defined  as an integer (int). If you are only interested in locating a specific occurrence of an image, for example - the second occurrence, you can specify that number as the value of the primitive that is specified in this column.</para>
+
+    /// <para>4. Sleep</para>
+
+    /// <para>If Sleep is specified, it must be defined as an integer (int). If you are only interested in locating a specific occurrence of an image, for example - the second occurrence, you can specify that number as the value of the primitive that is specified in this column.</para>
+
+    /// <para>5. RelativeX</para>
+
+    /// <para>If RelativeX is specified, it must be defined  as an integer (int). The default value for RelativeX is 0. When an image is found, the position of the upper-left corner is returned. You can specify a RelativeX value of pixels to be added to the original X value returned to realign the pixel that you want to click on to the left or to the right.</para>
+
+    /// <para>6. RelativeY</para>
+
+    /// <para>If RelativeY is specified, it must be defined as an integer (int). The default value for RelativeY is 0. When an image is found, the position of the upper-left corner is returned. You can specify a RelativeY value of pixels to be added to the original Y value returned to realign the pixel that you want to click on to be higher or lower.</para>
+
+    /// <para>7. UseGrayScale</para>
+
+    /// <para>If UseGrayScale is true, it attempts to ignore color when looking for the image. GreyScale is created by add the RGB values for a pixel together and dividing that sum by three so color is still a factor, but it is just not as sensitive.</para>
+
+    /// <para>8. Tolerance</para>
+
+    /// <para>The default value for Tolerance is 90. Tolerance specifies the percent of pixels that must match in order for an image to be considered found. When searching for images, the application starts by comparing the least frequent occurrence of a pattern of 10 pixels to every location on the screen in order speed up the process. If there is no match on the least frequent pattern of 10 pixels in the smaller image, it will try to match the second to least most popular pattern of 10 pixels. If there is no match on that second-least frequently occurring pattern, the image will not be found even though there may be more than a 90 percent match between the smaller image and an area on the screen. Sometimes, it helps to try to cut and paste a different image if you are having trouble finding a particular image.</para>
+
+    /// </summary>
+
+    /// <param name="myImage">ImageEntity object</param>
+
+    /// <returns>an integer array of all of x,y coordinates of where the image was found</returns>
+
+    /// Category::Image
+
+    public int[,] PutAllDoNotCheckForAlternative(ImageEntity myImage) {
+
+
+
+      PutAllBegin:
+
+      if (fbDebugMode) {
+
+        Console.WriteLine(oProcess.ProcessName + "==> " + "PutAll:");
+
+        Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "PutAll:");
+
+        foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(myImage)) {
+
+          string name = descriptor.Name;
+
+          object value = descriptor.GetValue(myImage);
+
+          Console.WriteLine("{0}={1}", name, value);
+
+          Logging.WriteLogSimple(String.Format("{0}={1}", name, value));
+
+        }
+
+      }
+
+      // move cursor off screen so it will not interfer with finding image
+
+      int[,] intArray = new int[,] { { 0, 2000 } };
+
+
+
+      PositionCursor(intArray);
+
+      string directory = AppDomain.CurrentDomain.BaseDirectory;
+
+
+
+      // if alt image exists, use it
+
+      int intLastSlashIndex = myImage.ImageFile.LastIndexOf("\\");
+
+      string strAltFileName = myImage.ImageFile.Substring(intLastSlashIndex + 1);
+
+      string settingsDirectory = GetAppDirectoryForScript();
+
+      string strFullFileName = Path.Combine(settingsDirectory, strAltFileName);
+
+      if (File.Exists(strFullFileName)) {
+
+        myImage.ImageFile = strFullFileName;
+
+      }
+
+
+
+
+
+
+
+      // If ParentImage != null, we need to get the parent image and 
+
+      // do everything that we normally to for an image 
+
+      // to the parent image. If the parent image is found,
+
+      // we need to continue on to get the child image.
+
+      // If the child image is found, we have to adjust the
+
+      // coordinates by adding the coordinates for the parent
+
+      // to the child.
+
+
+
+      bool boolImageFound = false;
+
+      int intAttempts = 0;
+
+      List<SubPositionInfo> ls = new List<SubPositionInfo>();
+
+      boolUseGrayScaleDB = myImage.UseGrayScale;
+
+      while (boolImageFound == false && intAttempts < myImage.Attempts) {
+
+        try {
+
+          ls = Click_PNG(myImage, boolUseGrayScaleDB);
+
+        } catch (Exception ex) {
+
+          MessageBox.Show("Here is exception thrown in PutAll method for file " + myImage.ImageFile + ": " + ex.Message + Environment.NewLine + Environment.NewLine + "PutAll image file is probably missing from project. Make sure properties for the image file are: Build Action=> Content;  Copy to Output Directory=> Copy if Newer;");
+
+        }
+
+
+
+        if (ls.Count > 0) {
+
+          boolImageFound = true;
+
+        }
+
+        intAttempts += 1;
+
+        // boolUseGrayScaleDB = false; //!boolUseGrayScaleDB;
+
+      }
+
+
+
+      int intRowIndex = 0;
+
+      int[,] myArray = new int[0, 0];
+
+      List<SubPositionInfo> SortedList = ls.OrderByDescending(o => o.percentcorrect).ToList();
+
+      foreach (var myRow in SortedList) {
+
+        int[] NewSizes = new int[] { intRowIndex + 1, 2 };
+
+        if (myRow.percentcorrect < myImage.Tolerance) {
+
+          break;
+
+        }
+
+        myArray = (int[,])myArray.ResizeArray(NewSizes);
+
+        myArray[intRowIndex, 0] = myRow.myPoint.X;
+
+        myArray[intRowIndex, 1] = myRow.myPoint.Y;
+
+        //myListObject[2] = myRow.percentcorrect;
+
+        //   myListListObject.Add(myListObject);
+
+        intRowIndex++;
+
+
+
+      }
+
+      return myArray;
+
+    }
 
     private static BitmapSource BitmapSourceFromImage(System.Drawing.Image img) {
       MemoryStream memStream = new MemoryStream();
