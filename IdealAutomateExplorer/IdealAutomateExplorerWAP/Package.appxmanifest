@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities" IgnorableNamespaces="uap mp rescap">
-  <Identity Name="3ca0a8ba-e87f-4c18-95fb-a46cfcfd2b49" Publisher="CN=harve" Version="1.0.4.0" />
+  <Identity Name="25155IdealAutomate.IdealAutomateExplorerApp" Publisher="CN=94FDFE84-28EA-4D6A-BFF2-C33AAE115A01" Version="1.1.50.0" />
   <Properties>
     <DisplayName>IdealAutomateExplorerApp</DisplayName>
-    <PublisherDisplayName>harve</PublisherDisplayName>
+    <PublisherDisplayName>Ideal Automate</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>

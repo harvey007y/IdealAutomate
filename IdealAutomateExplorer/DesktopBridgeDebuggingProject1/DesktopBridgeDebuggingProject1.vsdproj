@@ -19,6 +19,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DefineConstants>DEBUG</DefineConstants>
     <OutputPath>bin\x64\Debug\</OutputPath>
+    <PackageLayout>..\IdealAutomateExplorerWAP\bin\x64\Debug</PackageLayout>
+    <StartupTile>IdealAutomateExplorer</StartupTile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>

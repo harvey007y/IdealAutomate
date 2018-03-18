@@ -147,7 +147,7 @@ namespace System.Windows.Forms.Samples {
         String Url = string.Empty;
 
 
-            public ExplorerView() {
+        public ExplorerView() {
             InitializeComponent();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExplorerView));
 
@@ -3805,7 +3805,7 @@ namespace System.Windows.Forms.Samples {
                     string[] columnArray = item.ToString().Split('^');
                     ColumnOrderItem myColumnOrderItem = new ColumnOrderItem();
                     int myInt = 0;
-                    Int32.TryParse(columnArray[0], out  myInt);
+                    Int32.TryParse(columnArray[0], out myInt);
                     myColumnOrderItem.DisplayIndex = myInt;
                     myInt = 0;
                     Int32.TryParse(columnArray[1], out myInt);
@@ -3814,11 +3814,11 @@ namespace System.Windows.Forms.Samples {
                         myColumnOrderItem.Visible = true;
                     } else {
                         myColumnOrderItem.Visible = false;
-                    }                   
+                    }   
                     myInt = 0;
-                    Int32.TryParse(columnArray[3], out myInt);                   
+                    Int32.TryParse(columnArray[3], out myInt);
                     myColumnOrderItem.ColumnIndex = myInt;
-                    columnOrder.Add(myColumnOrderItem); 
+                    columnOrder.Add(myColumnOrderItem);
                 }
 
 
@@ -5347,7 +5347,7 @@ namespace System.Windows.Forms.Samples {
                 dialog.SelectedPath = myActions.GetValueByKey("LastSearchFolder");
                 string str = "LastSearchFolder";
 
-                
+
                 System.Windows.Forms.DialogResult result = dialog.ShowDialog();
 
                 if (result == System.Windows.Forms.DialogResult.OK && (Directory.Exists(dialog.SelectedPath) || File.Exists(dialog.SelectedPath))) {
@@ -5475,9 +5475,10 @@ namespace System.Windows.Forms.Samples {
 
                 myActions.MessageBoxShow(damageResult);
 
-        } catch (Exception ex) {
-            // MessageBox.Show(ex.Message);
-          }    
+            } catch (Exception ex) {
+                // MessageBox.Show(ex.Message);
+
+            }
         }
 
         private async Task<string> Search(string settingsDirectory) {
@@ -5485,38 +5486,53 @@ namespace System.Windows.Forms.Samples {
             Methods myActions = new Methods();
 
 
-                System.Diagnostics.Stopwatch st = new System.Diagnostics.Stopwatch();
-                st.Start();
-                intHits = 0;
-                int intLineCtr;
-                List<FileInfo> myFileList = new List<FileInfo>();
-                if (File.Exists(strPathToSearch)) {
-                    System.IO.FileInfo fi = new System.IO.FileInfo(strPathToSearch);
-                    myFileList.Add(fi);
-                } else {
-                    myFileList = TraverseTree(strSearchPattern, strPathToSearch);
-                }
-                int intFiles = 0;
-                matchInfoList = new List<MatchInfo>();
-                //         myFileList = myFileList.OrderBy(fi => fi.FullName).ToList();
-                Parallel.ForEach(myFileList, myFileInfo => {
-                    intLineCtr = 0;
-                    boolStringFoundInFile = false;
-                    ReadFileToString(myFileInfo.FullName, intLineCtr, matchInfoList);
-                    if (boolStringFoundInFile) {
-                        intFiles++;
-                    }
-                });
-                matchInfoList = matchInfoList.Where(mi => mi != null).OrderBy(mi => mi.FullName).ThenBy(mi => mi.LineNumber).ToList();
-                List<string> lines = new List<string>();
-                foreach (var item in matchInfoList) {
-                    lines.Add("\"" + item.FullName + "\"(" + item.LineNumber + "," + item.LinePosition + "): " + item.LineText.Length.ToString() + " " + item.LineText.Substring(0, item.LineText.Length > 5000 ? 5000 : item.LineText.Length));
+            System.Diagnostics.Stopwatch st = new System.Diagnostics.Stopwatch();
+            st.Start();
+            intHits = 0;
+            int intLineCtr;
+            List<FileInfo> myFileList = new List<FileInfo>();
+            if (File.Exists(strPathToSearch)) {
+                System.IO.FileInfo fi = new System.IO.FileInfo(strPathToSearch);
+                myFileList.Add(fi);
 
+            } else {
+                myFileList = TraverseTree(strSearchPattern, strPathToSearch);
+            }
+            int intFiles = 0;
+            matchInfoList = new List<MatchInfo>();
+            //         myFileList = myFileList.OrderBy(fi => fi.FullName).ToList();
+            Parallel.ForEach(myFileList, myFileInfo => {
+                intLineCtr = 0;
+                boolStringFoundInFile = false;
+                ReadFileToString(myFileInfo.FullName, intLineCtr, matchInfoList);
+                if (boolStringFoundInFile) {
+                    intFiles++;
                 }
 
 
-                string strApplicationBinDebug1 = System.Windows.Forms.Application.StartupPath;
-                string myNewProjectSourcePath1 = strApplicationBinDebug1.Replace("\\bin\\Debug", "");
+
+
+
+
+
+
+
+
+
+            });
+            matchInfoList = matchInfoList.Where(mi => mi != null).OrderBy(mi => mi.FullName).ThenBy(mi => mi.LineNumber).ToList();
+            List<string> lines = new List<string>();
+            foreach (var item in matchInfoList) {
+                lines.Add("\"" + item.FullName + "\"(" + item.LineNumber + "," + item.LinePosition + "): " + item.LineText.Length.ToString() + " " + item.LineText.Substring(0, item.LineText.Length > 5000 ? 5000 : item.LineText.Length));
+
+
+            }
+            string strApplicationBinDebug1 = System.Windows.Forms.Application.StartupPath;
+            string myNewProjectSourcePath1 = strApplicationBinDebug1.Replace("\\bin\\Debug", "");
+
+
+
+
 
                 settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPath(myNewProjectSourcePath1));
                 using (FileStream fs = new FileStream(settingsDirectory + @"\MatchInfo.txt", FileMode.Create)) {
@@ -5559,7 +5575,7 @@ namespace System.Windows.Forms.Samples {
                     myResult = "RunTime: " + elapsedTime + "\n\r\n\rHits: " + intHits.ToString() + "\n\r\n\rFiles with hits: " + intUniqueFiles.ToString() + "\n\r\n\rPut Cursor on line and\n\r press Ctrl+Alt+N\n\rto view detail page. ";
                 }
 
-      
+
             return myResult;
         }
         public static List<FileInfo> TraverseTree(string filterPattern, string root) {
@@ -6679,7 +6695,8 @@ namespace System.Windows.Forms.Samples {
             cs.ShowHideColumns();
         }
 
-     
+
+		
 
         private void fileShortcutFileToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
@@ -6782,7 +6799,8 @@ namespace System.Windows.Forms.Samples {
                     }
                 } finally {
                     Marshal.FinalReleaseComObject(shell);
-                }               
+
+                }
             }
             splitContainer1.SplitterDistance = (int)(ClientSize.Width * .2);
 
@@ -7306,13 +7324,13 @@ namespace System.Windows.Forms.Samples {
         }
 
         private void postmanToolStripMenuItem_Click(object sender, EventArgs e) {
-           
+
             Methods myActions = new Methods();
             string postmanSaved = myActions.GetValueByKey("postmanSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", postmanSaved);
             myActions.SetValueByKey("whatToolDefaultToSave", "postmanSaved");
             DialogForGettingExe();
-           
+
 
         }
 
@@ -7331,7 +7349,7 @@ namespace System.Windows.Forms.Samples {
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e) {
             AboutDialog dlg = new AboutDialog();
             ElementHost.EnableModelessKeyboardInterop(dlg);
-            dlg.Show();     
+            dlg.Show();
         }
 
         private void DialogForGettingExe() {
@@ -7446,7 +7464,7 @@ namespace System.Windows.Forms.Samples {
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
             intRowCtr++;
-          
+
 
             myControlEntity.ControlEntitySetDefaults();
             myControlEntity.ControlType = ControlType.Button;
@@ -7470,7 +7488,7 @@ namespace System.Windows.Forms.Samples {
             }
 
 
-          
+
             //     string strFolderKey = myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedKey;
 
             myActions.SetValueByKey("cbxToolExeSelectedValue", strFolder);
@@ -7491,16 +7509,16 @@ namespace System.Windows.Forms.Samples {
                     strFolder = dialog.SelectedPath;
                     myActions.SetValueByKey("cbxToolExeSelectedValue", strFolder);
                     strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
-                     fileName = "cbxFolder.txt";
-                     strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
-                     myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
+                    fileName = "cbxFolder.txt";
+                    strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
+                    myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
                     settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPath(myNewProjectSourcePath));
-                     settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
-                     alHosts = new ArrayList();
+                    settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
+                    alHosts = new ArrayList();
                     cbp = new List<ComboBoxPair>();
                     cbp.Clear();
                     cbp.Add(new ComboBoxPair("--Select Item ---", "--Select Item ---"));
-                     myComboBox = new ComboBox();
+                    myComboBox = new ComboBox();
 
 
                     if (!File.Exists(settingsPath)) {
@@ -7518,11 +7536,11 @@ namespace System.Windows.Forms.Samples {
                         }
                         objSRFile.Close();
                     }
-                     strNewHostName = dialog.SelectedPath;
-                     alHostx = cbp;
-                     alHostsNew = new List<ComboBoxPair>();
+                    strNewHostName = dialog.SelectedPath;
+                    alHostx = cbp;
+                    alHostsNew = new List<ComboBoxPair>();
                     myCbp = new ComboBoxPair(strNewHostName, strNewHostName);
-                     boolNewItem = false;
+                    boolNewItem = false;
 
                     alHostsNew.Add(myCbp);
                     if (alHostx.Count > 24) {
@@ -7552,13 +7570,13 @@ namespace System.Windows.Forms.Samples {
                 }
             }
             string strFolderToUse = "";
-            if (strButtonPressed == "btnOkay") {               
+            if (strButtonPressed == "btnOkay") {
                 if ((strFolder == "--Select Item ---" || strFolder == "")) {
                     myActions.MessageBoxShow("Please enter Folder or select Folder from ComboBox; else press Cancel to Exit");
                     goto DisplayFindTextInFilesWindow;
                 }
                 strFolderToUse = strFolder;
-               // MessageBox.Show(strFolder);
+                // MessageBox.Show(strFolder);
                 myActions.Run(strFolder, "");
                 string whatToolDefaultToSave = myActions.GetValueByKey("whatToolDefaultToSave");
                 myActions.SetValueByKey(whatToolDefaultToSave, strFolder);
@@ -7612,7 +7630,7 @@ namespace System.Windows.Forms.Samples {
                     myFileName.EndsWith("Wordpad.exe")) {
                     return;
                 }
-                myActions.SetValueByKey("cbxToolExeSelectedValue",myFileName);
+                myActions.SetValueByKey("cbxToolExeSelectedValue", myFileName);
                 dispatcherTimer.Stop();
                 DialogForGettingExe();
 
@@ -7632,7 +7650,7 @@ namespace System.Windows.Forms.Samples {
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             dispatcherTimer.Start();
-            return; 
+            return;
         }
         [System.Runtime.InteropServices.DllImport("user32", EntryPoint = "SetWindowPos", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Ansi, SetLastError = true)]
         private static extern int SetWindowPos(int hwnd, int hWndInsertAfter, double x, double y, double cx, double cy, uint wFlags);
@@ -7689,8 +7707,9 @@ internal static class Keyboard {
     public const int VK_ESCAPE = 0X1B;
     public const int VK_DELETE = 0X2E;
     private const int WH_KEYBOARD_LL = 13;
-   // public static int KeyboardHandle;
-   
+    // public static int KeyboardHandle;
+
+
 
 
 

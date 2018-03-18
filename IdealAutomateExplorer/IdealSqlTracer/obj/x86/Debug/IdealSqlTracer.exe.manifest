@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
-  <asmv1:assemblyIdentity name="IdealSqlTracer.exe" version="1.0.0.8" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="x86" type="win32" />
+  <asmv1:assemblyIdentity name="IdealSqlTracer.exe" version="1.0.0.8" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="amd64" type="win32" />
   <description asmv2:iconFile="Oxygen-Icons.org-Oxygen-Places-server-database.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="IdealSqlTracer" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
+    <assemblyIdentity name="IdealSqlTracer" version="1.0.0.0" language="neutral" processorArchitecture="amd64" />
     <commandLine file="IdealSqlTracer.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -43,24 +43,33 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IdealSqlTracer.exe" size="1012672">
-      <assemblyIdentity name="IdealSqlTracer" version="1.0.0.0" language="neutral" processorArchitecture="x86" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IdealSqlTracer.exe" size="1012160">
+      <assemblyIdentity name="IdealSqlTracer" version="1.0.0.0" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
-        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>cUuwdJwGqD/ft8EUVvSyQWffQMI=</dsig:DigestValue>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>PsfsHzvhryaQztTu5QSwNjmqnEkvMCVLm8Y1DZ4XM34=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
+  <file name="IdealSqlTracer.exe.config" size="161">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>yuBCKAQrdnPjbuE9bRQew6d7GMs5P2Wv0h0r3zOVAtA=</dsig:DigestValue>
+    </hash>
+  </file>
   <file name="Images\112_UpArrowShort_Green.ico" size="29926">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
-      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>Vs4fs9Z1350BhMO053E28qWAI5A=</dsig:DigestValue>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>K3WVGCINR78pxMfj3QzWZcdVajqa/1zKqgAa8DcO1cE=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Images\imgPatch16.PNG" size="397">
@@ -68,8 +77,8 @@
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
-      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>sXbRk+PrP6T7/nx0ohUnEc7cOis=</dsig:DigestValue>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>xBPOXRHVT5hLc6gVTv/TYbeIF1Ckb+50G27Ixa44zW4=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Images\imgPatch17.PNG" size="549">
@@ -77,8 +86,8 @@
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
-      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>sw+dBQEX/Apffh4eogyTR4cBlgU=</dsig:DigestValue>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>EnUfQr5yMTY50wMiRso3HDGqF4+nEt0PKKKh8Cg2TMY=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Images\imgPatch2015_08.PNG" size="412">
@@ -86,8 +95,8 @@
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
-      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>9D/LNwKdJg2rdaUIr6P2MUvrC/s=</dsig:DigestValue>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>wL06cgIeCg+SfqH80x+8TgABmTUqzRPdVzdtUKe6oNg=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Images\imgPatch2015_08_Home.PNG" size="292">
@@ -95,8 +104,8 @@
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
-      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>4A3yb7n+V8lWzKV1Bat9SWA8QXg=</dsig:DigestValue>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>mKs5LWWtlMG1s/QF1T6gJcqq5uKOBl0feJudcLY0vUM=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Images\imgSVNUpdate.PNG" size="704">
@@ -104,8 +113,8 @@
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
-      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>cYZMIe6aJBGqcmHCBwxihcmqkYU=</dsig:DigestValue>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>n/yKzCcUK0E6lbUoebH4SHEqlUWIhVwJ57urDCFUNM8=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Images\imgSVNUpdate_Home.PNG" size="502">
@@ -113,8 +122,8 @@
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
-      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>NTpsjxwnFRKoVJETqPp9alGT+Dw=</dsig:DigestValue>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>2ZjH+F9aDI7u53DCvOAEcaWQnp7YImdp74UZyVb5ELU=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Images\imgUpdateLogOK.PNG" size="932">
@@ -122,8 +131,8 @@
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
-      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>CCz9pd8oW8O3+jru1IUY74j3z34=</dsig:DigestValue>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>/gOxV2a6bZc+mD3zWnyZV8duYZ+P4I3hDgbbp9xiLfw=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Images\imgUpdateLogOK_Home.PNG" size="524">
@@ -131,8 +140,8 @@
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
-      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>yAcZ8ghH+M61XBWYqvzHYy+4TOc=</dsig:DigestValue>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>sdR3Jg14zf7FWPrcHnVFgRnwMxJbj9peZ946DzB8Tsg=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Oxygen-Icons.org-Oxygen-Places-server-database.ico" size="204865">
@@ -140,8 +149,8 @@
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
-      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>2aR8hKZ1aF1rDQUjFGj0SygEZUw=</dsig:DigestValue>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>JtpaQQIRKKIvLRf/vQRh4NkpYy0kyTfnv/Tu9AldBug=</dsig:DigestValue>
     </hash>
   </file>
   <file name="SqlFormatter.exe" size="206336">
@@ -149,8 +158,8 @@
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
-      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>G8DW33ApQyebHVlArEPLF+wSVS8=</dsig:DigestValue>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>V3BO4i9gwIiLDksgZGVyXsMUWk98+KWt9Mm2mzoVajU=</dsig:DigestValue>
     </hash>
   </file>
 </asmv1:assembly>

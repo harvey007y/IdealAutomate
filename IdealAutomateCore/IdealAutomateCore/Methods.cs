@@ -2569,7 +2569,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         file = File.OpenText(settingsPath);
         strValueRead = file.ReadToEnd();
         file.Close();
-      }
+                file.Dispose();
+            }
       return strValueRead;
     }
     /// Category::Storage>Private
@@ -2583,7 +2584,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         file = File.OpenText(settingsPath);
         strValueRead = file.ReadToEnd();
         file.Close();
-      }
+                file.Dispose();
+            }
       int intValue = 0;
       Int32.TryParse(strValueRead, out intValue);
       return intValue;
@@ -2600,7 +2602,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         file = File.OpenText(settingsPath);
         strValueRead = file.ReadToEnd();
         file.Close();
-      }
+                file.Dispose();
+            }
       int intValue = 0;
       Int32.TryParse(strValueRead, out intValue);
       return intValue;
@@ -2617,7 +2620,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         file = File.OpenText(settingsPath);
         strValueRead = file.ReadToEnd();
         file.Close();
-      }
+                file.Dispose();
+            }
       int intValue = 0;
       Int32.TryParse(strValueRead, out intValue);
       return intValue;
@@ -2634,7 +2638,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         file = File.OpenText(settingsPath);
         strValueRead = file.ReadToEnd();
         file.Close();
-      }
+                file.Dispose();
+            }
       return strValueRead;
     }
     /// Category::Storage>Public
@@ -2649,7 +2654,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         file = File.OpenText(settingsPath);
         strValueRead = file.ReadToEnd();
         file.Close();
-      }
+                file.Dispose();
+            }
       return strValueRead;
     }
     /// Category::Storage>Public
@@ -2700,7 +2706,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         file = File.OpenText(settingsPath);
         strValueRead = file.ReadToEnd();
         file.Close();
-      }
+                file.Dispose();
+            }
       return strValueRead;
     }
     /// Category::Storage>Private
@@ -2714,7 +2721,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         file = File.OpenText(settingsPath);
         strValueRead = file.ReadToEnd();
         file.Close();
-      }
+                file.Dispose();
+            }
       double intValue = 0;
       double.TryParse(strValueRead, out intValue);
       return intValue;
@@ -2730,7 +2738,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         file = File.OpenText(settingsPath);
         strValueRead = file.ReadToEnd();
         file.Close();
-      }
+                file.Dispose();
+            }
       DateTime dtScriptStartDateTime = DateTime.MinValue;
       bool boolDTSuccessful = DateTime.TryParse(strValueRead, out dtScriptStartDateTime);
       return dtScriptStartDateTime;
@@ -2747,6 +2756,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         file = File.OpenText(settingsPath);
         strValueRead = file.ReadToEnd();
         file.Close();
+        file.Dispose();
       }
       DateTime dtScriptStartDateTime = DateTime.MinValue;
       bool boolDTSuccessful = DateTime.TryParse(strValueRead, out dtScriptStartDateTime);
@@ -2764,6 +2774,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         file = File.OpenText(settingsPath);
         strValueRead = file.ReadToEnd();
         file.Close();
+                file.Dispose();
       }
       DateTime dtScriptStartDateTime = DateTime.MinValue;
       bool boolDTSuccessful = DateTime.TryParse(strValueRead, out dtScriptStartDateTime);
@@ -2780,7 +2791,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         file = File.OpenText(settingsPath);
         strValueRead = file.ReadToEnd();
         file.Close();
-      }
+                file.Dispose();
+            }
       int intValue = 0;
       Int32.TryParse(strValueRead, out intValue);
       return intValue;
@@ -2796,7 +2808,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         file = File.OpenText(settingsPath);
         strValueRead = file.ReadToEnd();
         file.Close();
-      }
+                file.Dispose();
+            }
       int intValue = 0;
       Int32.TryParse(strValueRead, out intValue);
       int intResult = intValue + intIncrementValue;
@@ -2814,7 +2827,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         file = File.OpenText(settingsPath);
         strValueRead = file.ReadToEnd();
         file.Close();
-      }
+                file.Dispose();
+            }
       int intValue = 0;
       Int32.TryParse(strValueRead, out intValue);
       int intResult = intValue + intIncrementValue;
@@ -2955,7 +2969,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         file = File.OpenText(settingsPath);
         strValueRead = file.ReadToEnd();
         file.Close();
-      }
+                file.Dispose();
+            }
       return strValueRead;
     }
 
@@ -2981,7 +2996,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         file = File.OpenText(settingsPath);
         strValueRead = file.ReadToEnd();
         file.Close();
-      } else {        
+                file.Dispose();
+            } else {        
         List<ControlEntity> myListControlEntity = new List<ControlEntity>();
 
         ControlEntity myControlEntity = new ControlEntity();

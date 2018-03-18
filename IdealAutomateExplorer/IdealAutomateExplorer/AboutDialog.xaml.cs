@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using Windows.ApplicationModel;
 
 namespace Hardcodet.Wpf.Samples
 {
@@ -16,25 +17,31 @@ namespace Hardcodet.Wpf.Samples
     {
       InitializeComponent();
 
-      //set version number
-   //   Version version = typeof(TreeViewBase<object>).Assembly.GetName().Version;
-      string version = null;
-      //try
-      //{
-      //    //// get deployment version
-      //    version = ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
-      //}
-      //catch (InvalidDeploymentException)
-      //{
-      //    //// you cannot read publish version when app isn't installed 
-      //    //// (e.g. during debug)
-      //    version = "not installed";
-      //}
-            version = "not installed";
-            txtVersion.Text = version;
+            //set version number
+            //Version version = typeof(TreeViewBase<object>).Assembly.GetName().Version;
+            //string version = null;
+            //try {
+            //    //// get deployment version
+            //    version = ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
+            //} catch (InvalidDeploymentException) {
+            //    //// you cannot read publish version when app isn't installed 
+            //    //// (e.g. during debug)
+            //    version = "not installed";
+            //}
+           // version = "not installed";
+            txtVersion.Text = GetAppVersion();
             txtYear.Text = System.DateTime.Now.Year.ToString();
     }
-    public static Version GetCurrentVersion()
+        public static string GetAppVersion() {
+
+            Package package = Package.Current;
+            PackageId packageId = package.Id;
+            PackageVersion version = packageId.Version;
+
+            return string.Format("{0}.{1}.{2}.{3}", version.Major, version.Minor, version.Build, version.Revision);
+
+        }
+        public static Version GetCurrentVersion()
     {
         Version version;
 

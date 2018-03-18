@@ -1,0 +1,1 @@
+C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\DummyUWPForDlls\DummyUWPForDlls.csproj;x86

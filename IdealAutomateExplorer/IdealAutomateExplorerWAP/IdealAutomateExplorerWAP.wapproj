@@ -38,11 +38,11 @@
     <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.14393.0</TargetPlatformMinVersion>
     <DefaultLanguage>en-US</DefaultLanguage>
-    <PackageCertificateKeyFile>IdealAutomateExplorerWAP_TemporaryKey.pfx</PackageCertificateKeyFile>
-    <EntryPointProjectUniqueName>..\IdealAutomateExplorer\IdealAutomateExplorer.csproj</EntryPointProjectUniqueName>
-    <PackageCertificateThumbprint>CC5B5DA6E16DE90051F6FAB0CD7BBAE62EFF2588</PackageCertificateThumbprint>
+    <PackageCertificateKeyFile>IdealAutomateExplorerWAP_StoreKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateThumbprint>80CCCC228CF66EE4602147F51A7CAE292BFC0687</PackageCertificateThumbprint>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <AppxBundlePlatforms>x64</AppxBundlePlatforms>
+    <EntryPointProjectUniqueName>..\IdealAutomateExplorer\IdealAutomateExplorer.csproj</EntryPointProjectUniqueName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <AppxBundle>Always</AppxBundle>
@@ -115,9 +115,12 @@
     <Content Include="Assets\Wide310x150Logo.scale-150.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
+    <None Include="IdealAutomateExplorerWAP_StoreKey.pfx" />
+    <None Include="Package.StoreAssociation.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IdealAutomateExplorer\IdealAutomateExplorer.csproj" />
+    <ProjectReference Include="..\IdealSqlTracer\IdealSqlTracer.csproj" />
   </ItemGroup>
   <Import Project="$(WapProjPath)\Microsoft.DesktopBridge.targets" />
 </Project>

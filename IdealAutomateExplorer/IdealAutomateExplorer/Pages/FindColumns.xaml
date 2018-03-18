@@ -48,7 +48,7 @@
             <Label Content="Use % for Wildcard" Height="28" HorizontalAlignment="Left" Margin="8,76,0,0" Name="label4" VerticalAlignment="Top" Foreground="Red" FontStyle="Italic" FontWeight="Bold" />
             <Label Content="Table Name:" Height="28" HorizontalAlignment="Left" Margin="168,76,0,0" Name="label5" VerticalAlignment="Top" />
             <Label Content="Type:" Height="28" HorizontalAlignment="Left" Margin="373,76,0,0" Name="label6" VerticalAlignment="Top" />
-            <Label Content="Column Name:" Height="28" HorizontalAlignment="Right" Margin="0,76,270,0" Name="label7" VerticalAlignment="Top" />
+            <Label Content="Column Name:" Height="28" HorizontalAlignment="Left" Margin="469,76,270,0" Name="label7" VerticalAlignment="Top" />
             <Label Content="Data Type:" Height="28" HorizontalAlignment="Left" Margin="575,76,0,0" Name="label8" VerticalAlignment="Top" />
             <Button Click="ShowHelpDialog"
             Margin="777,3,0,0"

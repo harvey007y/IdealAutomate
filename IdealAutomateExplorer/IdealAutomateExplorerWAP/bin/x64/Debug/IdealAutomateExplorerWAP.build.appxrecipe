@@ -8,8 +8,8 @@
     <TargetOsDescription>Windows 10.0</TargetOsDescription>
     <SolutionConfiguration>Debug|x64</SolutionConfiguration>
     <PackageArchitecture>x64</PackageArchitecture>
-    <PackageIdentityName>3ca0a8ba-e87f-4c18-95fb-a46cfcfd2b49</PackageIdentityName>
-    <PackageIdentityPublisher>CN=harve</PackageIdentityPublisher>
+    <PackageIdentityName>25155IdealAutomate.IdealAutomateExplorerApp</PackageIdentityName>
+    <PackageIdentityPublisher>CN=94FDFE84-28EA-4D6A-BFF2-C33AAE115A01</PackageIdentityPublisher>
     <IntermediateOutputPath>C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorerWAP\obj\x64\Debug\</IntermediateOutputPath>
     <RemoteDeploymentType></RemoteDeploymentType>
     <PackageRegistrationPath></PackageRegistrationPath>
@@ -224,8 +224,188 @@
     <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\packages\AODL.1.2.0.1\lib\ICSharpCode.SharpZipLib.dll">
       <PackagePath>IdealAutomateExplorer\ICSharpCode.SharpZipLib.dll</PackagePath>
     </AppxPackagedFile>
-    <AppxPackagedFile Include="C:\Users\harve\AppData\Roaming\IdealAutomate\IdealAutomateCore.dll">
-      <PackagePath>IdealAutomateExplorer\IdealAutomateCore.dll</PackagePath>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Reference Assemblies\Microsoft\Framework\.NETCore\v4.5\System.Runtime.WindowsRuntime.dll">
+      <PackagePath>IdealAutomateExplorer\System.Runtime.WindowsRuntime.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Reference Assemblies\Microsoft\Framework\.NETCore\v4.5\System.Runtime.WindowsRuntime.UI.Xaml.dll">
+      <PackagePath>IdealAutomateExplorer\System.Runtime.WindowsRuntime.UI.Xaml.dll</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.ApplicationModel.Activation.ActivatedEventsContract\1.0.0.0\Windows.ApplicationModel.Activation.ActivatedEventsContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.ApplicationModel.Activation.ActivatedEventsContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.ApplicationModel.Activation.ActivationCameraSettingsContract\1.0.0.0\Windows.ApplicationModel.Activation.ActivationCameraSettingsContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.ApplicationModel.Activation.ActivationCameraSettingsContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.ApplicationModel.Activation.ContactActivatedEventsContract\1.0.0.0\Windows.ApplicationModel.Activation.ContactActivatedEventsContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.ApplicationModel.Activation.ContactActivatedEventsContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.ApplicationModel.Activation.WebUISearchActivatedEventsContract\1.0.0.0\Windows.ApplicationModel.Activation.WebUISearchActivatedEventsContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.ApplicationModel.Activation.WebUISearchActivatedEventsContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.ApplicationModel.Background.BackgroundAlarmApplicationContract\1.0.0.0\Windows.ApplicationModel.Background.BackgroundAlarmApplicationContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.ApplicationModel.Background.BackgroundAlarmApplicationContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.ApplicationModel.Calls.Background.CallsBackgroundContract\1.0.0.0\Windows.ApplicationModel.Calls.Background.CallsBackgroundContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.ApplicationModel.Calls.Background.CallsBackgroundContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.ApplicationModel.Calls.CallsVoipContract\1.0.0.0\Windows.ApplicationModel.Calls.CallsVoipContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.ApplicationModel.Calls.CallsVoipContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.ApplicationModel.Calls.LockScreenCallContract\1.0.0.0\Windows.ApplicationModel.Calls.LockScreenCallContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.ApplicationModel.Calls.LockScreenCallContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.ApplicationModel.FullTrustAppContract\1.0.0.0\Windows.ApplicationModel.FullTrustAppContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.ApplicationModel.FullTrustAppContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.ApplicationModel.Preview.Notes.PreviewNotesContract\1.0.0.0\Windows.ApplicationModel.Preview.Notes.PreviewNotesContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.ApplicationModel.Preview.Notes.PreviewNotesContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.ApplicationModel.Resources.Management.ResourceIndexerContract\1.0.0.0\Windows.ApplicationModel.Resources.Management.ResourceIndexerContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.ApplicationModel.Resources.Management.ResourceIndexerContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.ApplicationModel.Search.Core.SearchCoreContract\1.0.0.0\Windows.ApplicationModel.Search.Core.SearchCoreContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.ApplicationModel.Search.Core.SearchCoreContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.ApplicationModel.Search.SearchContract\1.0.0.0\Windows.ApplicationModel.Search.SearchContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.ApplicationModel.Search.SearchContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.ApplicationModel.SocialInfo.SocialInfoContract\1.0.0.0\Windows.ApplicationModel.SocialInfo.SocialInfoContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.ApplicationModel.SocialInfo.SocialInfoContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.ApplicationModel.StartupTaskContract\1.0.0.0\Windows.ApplicationModel.StartupTaskContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.ApplicationModel.StartupTaskContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.ApplicationModel.Wallet.WalletContract\1.0.0.0\Windows.ApplicationModel.Wallet.WalletContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.ApplicationModel.Wallet.WalletContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.Devices.Custom.CustomDeviceContract\1.0.0.0\Windows.Devices.Custom.CustomDeviceContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.Devices.Custom.CustomDeviceContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.Devices.DevicesLowLevelContract\2.0.0.0\Windows.Devices.DevicesLowLevelContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.Devices.DevicesLowLevelContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.Devices.Portable.PortableDeviceContract\1.0.0.0\Windows.Devices.Portable.PortableDeviceContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.Devices.Portable.PortableDeviceContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.Devices.Printers.Extensions.ExtensionsContract\2.0.0.0\Windows.Devices.Printers.Extensions.ExtensionsContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.Devices.Printers.Extensions.ExtensionsContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.Devices.Printers.PrintersContract\1.0.0.0\Windows.Devices.Printers.PrintersContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.Devices.Printers.PrintersContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.Devices.Scanners.ScannerDeviceContract\1.0.0.0\Windows.Devices.Scanners.ScannerDeviceContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.Devices.Scanners.ScannerDeviceContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.Devices.Sms.LegacySmsApiContract\1.0.0.0\Windows.Devices.Sms.LegacySmsApiContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.Devices.Sms.LegacySmsApiContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.Foundation.FoundationContract\2.0.0.0\Windows.Foundation.FoundationContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.Foundation.FoundationContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.Foundation.UniversalApiContract\3.0.0.0\Windows.Foundation.UniversalApiContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.Foundation.UniversalApiContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.Gaming.Preview.GamesEnumerationContract\1.0.0.0\Windows.Gaming.Preview.GamesEnumerationContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.Gaming.Preview.GamesEnumerationContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.Globalization.GlobalizationJapanesePhoneticAnalyzerContract\1.0.0.0\Windows.Globalization.GlobalizationJapanesePhoneticAnalyzerContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.Globalization.GlobalizationJapanesePhoneticAnalyzerContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.Graphics.Printing3D.Printing3DContract\3.0.0.0\Windows.Graphics.Printing3D.Printing3DContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.Graphics.Printing3D.Printing3DContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.Management.Deployment.Preview.DeploymentPreviewContract\1.0.0.0\Windows.Management.Deployment.Preview.DeploymentPreviewContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.Management.Deployment.Preview.DeploymentPreviewContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.Management.Orchestration.OrchestrationContract\1.0.0.0\Windows.Management.Orchestration.OrchestrationContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.Management.Orchestration.OrchestrationContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.Management.Workplace.WorkplaceSettingsContract\1.0.0.0\Windows.Management.Workplace.WorkplaceSettingsContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.Management.Workplace.WorkplaceSettingsContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.Media.Capture.AppCaptureContract\3.0.0.0\Windows.Media.Capture.AppCaptureContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.Media.Capture.AppCaptureContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.Media.Capture.CameraCaptureUIContract\1.0.0.0\Windows.Media.Capture.CameraCaptureUIContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.Media.Capture.CameraCaptureUIContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.Media.Devices.CallControlContract\1.0.0.0\Windows.Media.Devices.CallControlContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.Media.Devices.CallControlContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.Media.MediaControlContract\1.0.0.0\Windows.Media.MediaControlContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.Media.MediaControlContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.Media.Playlists.PlaylistsContract\1.0.0.0\Windows.Media.Playlists.PlaylistsContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.Media.Playlists.PlaylistsContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.Media.Protection.ProtectionRenewalContract\1.0.0.0\Windows.Media.Protection.ProtectionRenewalContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.Media.Protection.ProtectionRenewalContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.Networking.Connectivity.WwanContract\1.0.0.0\Windows.Networking.Connectivity.WwanContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.Networking.Connectivity.WwanContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.Networking.NetworkOperators.LegacyNetworkOperatorsContract\1.0.0.0\Windows.Networking.NetworkOperators.LegacyNetworkOperatorsContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.Networking.NetworkOperators.LegacyNetworkOperatorsContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.Networking.Sockets.ControlChannelTriggerContract\2.0.0.0\Windows.Networking.Sockets.ControlChannelTriggerContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.Networking.Sockets.ControlChannelTriggerContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.Perception.Automation.Core.PerceptionAutomationCoreContract\1.0.0.0\Windows.Perception.Automation.Core.PerceptionAutomationCoreContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.Perception.Automation.Core.PerceptionAutomationCoreContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.Security.EnterpriseData.EnterpriseDataContract\3.0.0.0\Windows.Security.EnterpriseData.EnterpriseDataContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.Security.EnterpriseData.EnterpriseDataContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.Security.ExchangeActiveSyncProvisioning.EasContract\1.0.0.0\Windows.Security.ExchangeActiveSyncProvisioning.EasContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.Security.ExchangeActiveSyncProvisioning.EasContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.Services.Maps.GuidanceContract\2.0.0.0\Windows.Services.Maps.GuidanceContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.Services.Maps.GuidanceContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.Services.Maps.LocalSearchContract\3.0.0.0\Windows.Services.Maps.LocalSearchContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.Services.Maps.LocalSearchContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.Services.Store.StoreContract\1.0.0.0\Windows.Services.Store.StoreContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.Services.Store.StoreContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.System.Profile.ProfileHardwareTokenContract\1.0.0.0\Windows.System.Profile.ProfileHardwareTokenContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.System.Profile.ProfileHardwareTokenContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.System.Profile.ProfileRetailInfoContract\1.0.0.0\Windows.System.Profile.ProfileRetailInfoContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.System.Profile.ProfileRetailInfoContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.System.Profile.ProfileSharedModeContract\1.0.0.0\Windows.System.Profile.ProfileSharedModeContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.System.Profile.ProfileSharedModeContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.System.Profile.SystemManufacturers.SystemManufacturersContract\1.0.0.0\Windows.System.Profile.SystemManufacturers.SystemManufacturersContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.System.Profile.SystemManufacturers.SystemManufacturersContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.System.UserProfile.UserProfileContract\1.0.0.0\Windows.System.UserProfile.UserProfileContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.System.UserProfile.UserProfileContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.System.UserProfile.UserProfileLockScreenContract\1.0.0.0\Windows.System.UserProfile.UserProfileLockScreenContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.System.UserProfile.UserProfileLockScreenContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.UI.ApplicationSettings.ApplicationsSettingsContract\1.0.0.0\Windows.UI.ApplicationSettings.ApplicationsSettingsContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.UI.ApplicationSettings.ApplicationsSettingsContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.UI.Core.AnimationMetrics.AnimationMetricsContract\1.0.0.0\Windows.UI.Core.AnimationMetrics.AnimationMetricsContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.UI.Core.AnimationMetrics.AnimationMetricsContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.UI.Core.CoreWindowDialogsContract\1.0.0.0\Windows.UI.Core.CoreWindowDialogsContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.UI.Core.CoreWindowDialogsContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.UI.ViewManagement.ViewManagementViewScalingContract\1.0.0.0\Windows.UI.ViewManagement.ViewManagementViewScalingContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.UI.ViewManagement.ViewManagementViewScalingContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.UI.Xaml.Hosting.HostingContract\1.0.0.0\Windows.UI.Xaml.Hosting.HostingContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.UI.Xaml.Hosting.HostingContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\References\Windows.Web.Http.Diagnostics.HttpDiagnosticsContract\2.0.0.0\Windows.Web.Http.Diagnostics.HttpDiagnosticsContract.winmd">
+      <PackagePath>IdealAutomateExplorer\Windows.Web.Http.Diagnostics.HttpDiagnosticsContract.winmd</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Program Files %28x86%29\Windows Kits\10\UnionMetadata\Facade\Windows.WinMD">
+      <PackagePath>IdealAutomateExplorer\Windows.WinMD</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\WrapSQLInQuotesForCS\WrapSQLInQuotesForCS\packages\InputSimulator.1.0.4.0\lib\net20\WindowsInput.dll">
       <PackagePath>IdealAutomateExplorer\WindowsInput.dll</PackagePath>
@@ -476,6 +656,27 @@
     <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\Images\Oxygen-Icons.org-Oxygen-Actions-page-zoom.ico">
       <PackagePath>IdealAutomateExplorer\Images\Oxygen-Icons.org-Oxygen-Actions-page-zoom.ico</PackagePath>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\MyNewProject\MyNewProject\App.xaml.cs">
+      <PackagePath>IdealAutomateExplorer\MyNewProject\MyNewProject\App.xaml.cs</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\MyNewProject\MyNewProject\MainWindow.xaml.cs">
+      <PackagePath>IdealAutomateExplorer\MyNewProject\MyNewProject\MainWindow.xaml.cs</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\MyNewProject\MyNewProject\Properties\AssemblyInfo.cs">
+      <PackagePath>IdealAutomateExplorer\MyNewProject\MyNewProject\Properties\AssemblyInfo.cs</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\MyNewProject\MyNewProject\Properties\Resources.Designer.cs">
+      <PackagePath>IdealAutomateExplorer\MyNewProject\MyNewProject\Properties\Resources.Designer.cs</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\MyNewProject\MyNewProject\Properties\Settings.Designer.cs">
+      <PackagePath>IdealAutomateExplorer\MyNewProject\MyNewProject\Properties\Settings.Designer.cs</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\MyNewProject\MyNewProject\Properties\Resources.resx">
+      <PackagePath>IdealAutomateExplorer\MyNewProject\MyNewProject\Properties\Resources.resx</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\MyNewProject\MyNewProject\Properties\Settings.settings">
+      <PackagePath>IdealAutomateExplorer\MyNewProject\MyNewProject\Properties\Settings.settings</PackagePath>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\Images\Back.PNG">
       <PackagePath>IdealAutomateExplorer\Images\Back.PNG</PackagePath>
     </AppxPackagedFile>
@@ -488,17 +689,95 @@
     <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\Images\Up.PNG">
       <PackagePath>IdealAutomateExplorer\Images\Up.PNG</PackagePath>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\MyNewProject\MyNewProject.sln">
+      <PackagePath>IdealAutomateExplorer\MyNewProject\MyNewProject.sln</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\MyNewProject\MyNewProject\Images\112_UpArrowShort_Green.ico">
+      <PackagePath>IdealAutomateExplorer\MyNewProject\MyNewProject\Images\112_UpArrowShort_Green.ico</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\MyNewProject\MyNewProject\Images\imgPatch16.PNG">
+      <PackagePath>IdealAutomateExplorer\MyNewProject\MyNewProject\Images\imgPatch16.PNG</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\MyNewProject\MyNewProject\Images\imgPatch17.PNG">
+      <PackagePath>IdealAutomateExplorer\MyNewProject\MyNewProject\Images\imgPatch17.PNG</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\MyNewProject\MyNewProject\Images\imgPatch2015_08.PNG">
+      <PackagePath>IdealAutomateExplorer\MyNewProject\MyNewProject\Images\imgPatch2015_08.PNG</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\MyNewProject\MyNewProject\Images\imgPatch2015_08_Home.PNG">
+      <PackagePath>IdealAutomateExplorer\MyNewProject\MyNewProject\Images\imgPatch2015_08_Home.PNG</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\MyNewProject\MyNewProject\Images\imgSVNUpdate.PNG">
+      <PackagePath>IdealAutomateExplorer\MyNewProject\MyNewProject\Images\imgSVNUpdate.PNG</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\MyNewProject\MyNewProject\Images\imgSVNUpdate_Home.PNG">
+      <PackagePath>IdealAutomateExplorer\MyNewProject\MyNewProject\Images\imgSVNUpdate_Home.PNG</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\MyNewProject\MyNewProject\Images\imgUpdateLogOK.PNG">
+      <PackagePath>IdealAutomateExplorer\MyNewProject\MyNewProject\Images\imgUpdateLogOK.PNG</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\MyNewProject\MyNewProject\Images\imgUpdateLogOK_Home.PNG">
+      <PackagePath>IdealAutomateExplorer\MyNewProject\MyNewProject\Images\imgUpdateLogOK_Home.PNG</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\MyNewProject\MyNewProject\MyNewProject.csproj">
+      <PackagePath>IdealAutomateExplorer\MyNewProject\MyNewProject\MyNewProject.csproj</PackagePath>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\Text\InitialDirectory.txt">
       <PackagePath>IdealAutomateExplorer\Text\InitialDirectory.txt</PackagePath>
     </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\MyNewProject\MyNewProject\App.xaml">
+      <PackagePath>IdealAutomateExplorer\MyNewProject\MyNewProject\App.xaml</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\MyNewProject\MyNewProject\MainWindow.xaml">
+      <PackagePath>IdealAutomateExplorer\MyNewProject\MyNewProject\MainWindow.xaml</PackagePath>
+    </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\Images\minus.png">
       <PackagePath>IdealAutomateExplorer\Images\minus.png</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\MyNewProject\MyNewProject\ClassDiagram1.cd">
+      <PackagePath>IdealAutomateExplorer\MyNewProject\MyNewProject\ClassDiagram1.cd</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\IdealAutomateExplorer.exe">
       <PackagePath>IdealAutomateExplorer\IdealAutomateExplorer.exe</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\IdealAutomateExplorer.exe.config">
       <PackagePath>IdealAutomateExplorer\IdealAutomateExplorer.exe.config</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\Images\112_UpArrowShort_Green.ico">
+      <PackagePath>IdealSqlTracer\Images\112_UpArrowShort_Green.ico</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\Images\imgPatch16.PNG">
+      <PackagePath>IdealSqlTracer\Images\imgPatch16.PNG</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\Images\imgPatch17.PNG">
+      <PackagePath>IdealSqlTracer\Images\imgPatch17.PNG</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\Images\imgPatch2015_08.PNG">
+      <PackagePath>IdealSqlTracer\Images\imgPatch2015_08.PNG</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\Images\imgPatch2015_08_Home.PNG">
+      <PackagePath>IdealSqlTracer\Images\imgPatch2015_08_Home.PNG</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\Images\imgSVNUpdate.PNG">
+      <PackagePath>IdealSqlTracer\Images\imgSVNUpdate.PNG</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\Images\imgSVNUpdate_Home.PNG">
+      <PackagePath>IdealSqlTracer\Images\imgSVNUpdate_Home.PNG</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\Images\imgUpdateLogOK.PNG">
+      <PackagePath>IdealSqlTracer\Images\imgUpdateLogOK.PNG</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\Images\imgUpdateLogOK_Home.PNG">
+      <PackagePath>IdealSqlTracer\Images\imgUpdateLogOK_Home.PNG</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\SqlFormatter.exe">
+      <PackagePath>IdealSqlTracer\SqlFormatter.exe</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\bin\Debug\IdealSqlTracer.exe">
+      <PackagePath>IdealSqlTracer\IdealSqlTracer.exe</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\bin\Debug\IdealSqlTracer.exe.config">
+      <PackagePath>IdealSqlTracer\IdealSqlTracer.exe.config</PackagePath>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>

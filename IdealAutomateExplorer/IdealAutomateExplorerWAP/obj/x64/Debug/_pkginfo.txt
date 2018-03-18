@@ -1,1 +1,1 @@
-C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorerWAP\AppPackages\IdealAutomateExplorerWAP_1.0.4.0_Debug_Test\IdealAutomateExplorerWAP_1.0.4.0_x64_Debug.appxbundle
+C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorerWAP\AppPackages\IdealAutomateExplorerWAP_1.1.50.0_Debug_Test\IdealAutomateExplorerWAP_1.1.50.0_x64_Debug.appxbundle

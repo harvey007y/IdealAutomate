@@ -7,10 +7,10 @@
 
     For more information on package manifest files, see http://go.microsoft.com/fwlink/?LinkID=241727
   -->
-  <Identity Name="3ca0a8ba-e87f-4c18-95fb-a46cfcfd2b49" Publisher="CN=harve" Version="1.0.4.0" ProcessorArchitecture="x64" />
+  <Identity Name="25155IdealAutomate.IdealAutomateExplorerApp" Publisher="CN=94FDFE84-28EA-4D6A-BFF2-C33AAE115A01" Version="1.1.50.0" ProcessorArchitecture="x64" />
   <Properties>
     <DisplayName>IdealAutomateExplorerApp</DisplayName>
-    <PublisherDisplayName>harve</PublisherDisplayName>
+    <PublisherDisplayName>Ideal Automate</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>

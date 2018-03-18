@@ -1,0 +1,6 @@
+MainPackage=C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorerWAP\bin\x64\Release\Upload\IdealAutomateExplorerWAP_1.1.45.0_x64.appx
+SymbolPackage=C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorerWAP\bin\x64\Release\Upload\IdealAutomateExplorerWAP_1.1.45.0\IdealAutomateExplorerWAP_1.1.45.0_x64.appxsym
+ResourcePack=C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorerWAP\bin\x64\Release\IdealAutomateExplorerWAP_1.1.45.0_scale-100.appx
+ResourcePack=C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorerWAP\bin\x64\Release\IdealAutomateExplorerWAP_1.1.45.0_scale-125.appx
+ResourcePack=C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorerWAP\bin\x64\Release\IdealAutomateExplorerWAP_1.1.45.0_scale-150.appx
+ResourcePack=C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorerWAP\bin\x64\Release\IdealAutomateExplorerWAP_1.1.45.0_scale-400.appx

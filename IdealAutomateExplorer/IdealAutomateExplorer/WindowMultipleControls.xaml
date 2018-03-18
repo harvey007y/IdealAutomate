@@ -1,0 +1,95 @@
+﻿<Window x:Class="IdealAutomate.Core.WindowMultipleControls"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Name="myWindow"
+	Title="WindowMultipleControls"               
+        
+        WindowStyle="None" 
+        AllowsTransparency="True"
+        ShowInTaskbar="True"
+        Background="#00000000" Topmost="True">
+    <!-- main border -->
+    <Border x:Name="MainBorder"
+                  Width="450"
+          Height="300"
+          BorderThickness="0"
+          CornerRadius="12,12,12,12">
+        <Border.Background>
+            <LinearGradientBrush StartPoint="0.126,-0.197"
+                           EndPoint="0.874,1.197">
+                <GradientStop Offset="0"
+                      Color="#FF615E5A" />
+                <GradientStop Offset="1"
+                      Color="#FF535353" />
+                <GradientStop Offset="0.284"
+                      Color="#FFE0E0E0" />
+                <GradientStop Offset="0.365"
+                      Color="#FFFFFFFF" />
+            </LinearGradientBrush>
+        </Border.Background>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+            <Border x:Name="HeaderBorder"
+              Grid.Row="0"
+              Background="#384F4F4F"
+              BorderThickness="0"
+              CornerRadius="12,12,0,0" />
+            <StackPanel Grid.Row="0"
+                  Orientation="Horizontal">
+                <Image Source="/IdealSqlTracer;component/Resources/FolderLogo.png"
+               Width="48"
+               Height="48"
+               Margin="20,0,0,0" />
+               
+                <TextBlock x:Name="Label1"
+                   Margin="8,0,0,0"
+                   VerticalAlignment="Center"
+                   FontSize="18" TextWrapping="Wrap" Width="350px"
+                   Foreground="#FF434343"
+                   Text="Ideal Automate">
+                    <TextBlock.Effect>
+                        <DropShadowEffect BlurRadius="15" Color="#FFFFFFFF"  ShadowDepth="0" Opacity=".24"/>
+                    </TextBlock.Effect>
+                </TextBlock>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Name="myStackPanel"
+                  Margin="10,10,10,47" Grid.RowSpan="2">
+                <Grid Name="myGrid" ></Grid>
+               
+            </StackPanel>
+
+
+
+
+            <Border x:Name="FooterBorder"
+              Grid.Row="2"
+              Background="#384F4F4F"
+              BorderThickness="0"
+              CornerRadius="0,0,12,12" Margin="0,6,0,0"></Border>
+           
+            <Button x:Name="btnOkay" Content="OK" Click="btnOkay_Click"
+              Width="80"
+              Height="24"
+              Grid.Row="2"
+              Margin="0,0,10,10"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Bottom"
+              IsDefault="True"
+              />
+            <Button x:Name="btnCancel" Content="Cancel" Click="btnCancel_Click"
+              Width="80"
+              Height="24"
+              Grid.Row="2"
+              Margin="343,0,27,10"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Bottom"
+              
+              />
+                
+        </Grid>
+    </Border>
+</Window>

@@ -1,5 +1,5 @@
 ﻿namespace System.Windows.Forms.Samples {
-    partial class DataGridViewExt {
+    partial class DataGridViewExty {
         /// <summary> 
         /// Required designer variable.
         /// </summary>
@@ -24,7 +24,7 @@
         /// </summary>
         private void InitializeComponent() {
             components = new System.ComponentModel.Container();
-          //  this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            //  this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
         }
 
         #endregion

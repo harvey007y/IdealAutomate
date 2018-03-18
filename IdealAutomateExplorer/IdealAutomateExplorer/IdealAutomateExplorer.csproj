@@ -21,6 +21,8 @@
     <SccProvider>SAK</SccProvider>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,9 +40,19 @@
     <OutputPath>.\bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Resources\folder.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>false</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AODL, Version=1.2.0.1, Culture=neutral">
@@ -52,10 +64,6 @@
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.84.0.0, Culture=neutral, PublicKeyToken=1b03e6acf1164f73">
       <HintPath>..\packages\AODL.1.2.0.1\lib\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="IdealAutomateCore, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(APPDATA)\IdealAutomate\IdealAutomateCore.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -66,6 +74,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Management" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
@@ -83,6 +92,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AboutDialog.xaml.cs" />
+    <Compile Include="ArrayExtensions.cs" />
     <Compile Include="BaseForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -92,7 +102,37 @@
     <Compile Include="BaseForm1.Designer.cs">
       <DependentUpon>BaseForm1.cs</DependentUpon>
     </Compile>
+    <Compile Include="ClipboardNative.cs" />
+    <Compile Include="ComboBoxPair.cs" />
     <Compile Include="Common.cs" />
+    <Compile Include="ControlEntity.cs" />
+    <Compile Include="ControlType.cs" />
+    <Compile Include="DataGridViewExtx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DataGridViewExtx.Designer.cs">
+      <DependentUpon>DataGridViewExtx.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DeviceInfo.cs" />
+    <Compile Include="EncryptDecrypt.cs" />
+    <Compile Include="FindDelimitedTextParms.cs" />
+    <Compile Include="ImageEntity.cs" />
+    <Compile Include="KeyboardSend.cs" />
+    <Compile Include="Logging.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Methods.cs" />
+    <Compile Include="Position_Cursor.cs" />
+    <Compile Include="Scraper.cs" />
+    <Compile Include="ScreenHelper.cs" />
+    <Compile Include="SnippingTool.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SnippingTool.designer.cs" />
+    <Compile Include="StringExtensionMethods.cs" />
+    <Compile Include="SubPositionInfo.cs" />
+    <Compile Include="Switcher.cs" />
     <Compile Include="Videos\AffiliateProgram.xaml.cs">
       <DependentUpon>AffiliateProgram.xaml</DependentUpon>
     </Compile>
@@ -108,6 +148,11 @@
     <Compile Include="Videos\VideoTutorials.xaml.cs">
       <DependentUpon>VideoTutorials.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WindowMultipleControls.xaml.cs">
+      <DependentUpon>WindowMultipleControls.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WindowShape.xaml.cs" />
+    <Compile Include="WindowShowEnum.cs" />
     <Content Include="BuildProjects.bat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -360,13 +405,21 @@
     <Content Include="Images\112_Plus_Grey.ico" />
     <Content Include="MyNewProject\MyNewProject\App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="MyNewProject\MyNewProject\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="MyNewProject\MyNewProject\Properties\AssemblyInfo.cs" />
-    <Content Include="MyNewProject\MyNewProject\Properties\Resources.Designer.cs" />
-    <Content Include="MyNewProject\MyNewProject\Properties\Settings.Designer.cs" />
+    <Content Include="MyNewProject\MyNewProject\Properties\AssemblyInfo.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MyNewProject\MyNewProject\Properties\Resources.Designer.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MyNewProject\MyNewProject\Properties\Settings.Designer.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Compile Include="DataGridViewColumnSelector.cs" />
     <Compile Include="DataGridViewExt.cs">
       <SubType>Component</SubType>
@@ -557,15 +610,24 @@
     <EmbeddedResource Include="ExplorerView.resx">
       <DependentUpon>ExplorerView.cs</DependentUpon>
     </EmbeddedResource>
-    <Content Include="MyNewProject\MyNewProject\Properties\Resources.resx" />
+    <Content Include="MyNewProject\MyNewProject\Properties\Resources.resx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="app.config" />
-    <None Include="MyNewProject\MyNewProject\ClassDiagram1.cd" />
-    <Content Include="MyNewProject\MyNewProject\Properties\Settings.settings" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="MyNewProject\MyNewProject\ClassDiagram1.cd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="MyNewProject\MyNewProject\Properties\Settings.settings">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
+    <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -596,17 +658,39 @@
     <Content Include="Images\Up.PNG">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="MyNewProject\MyNewProject.sln" />
-    <Content Include="MyNewProject\MyNewProject\Images\112_UpArrowShort_Green.ico" />
-    <Content Include="MyNewProject\MyNewProject\Images\imgPatch16.PNG" />
-    <Content Include="MyNewProject\MyNewProject\Images\imgPatch17.PNG" />
-    <Content Include="MyNewProject\MyNewProject\Images\imgPatch2015_08.PNG" />
-    <Content Include="MyNewProject\MyNewProject\Images\imgPatch2015_08_Home.PNG" />
-    <Content Include="MyNewProject\MyNewProject\Images\imgSVNUpdate.PNG" />
-    <Content Include="MyNewProject\MyNewProject\Images\imgSVNUpdate_Home.PNG" />
-    <Content Include="MyNewProject\MyNewProject\Images\imgUpdateLogOK.PNG" />
-    <Content Include="MyNewProject\MyNewProject\Images\imgUpdateLogOK_Home.PNG" />
-    <Content Include="MyNewProject\MyNewProject\MyNewProject.csproj" />
+    <Content Include="MyNewProject\MyNewProject.sln">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MyNewProject\MyNewProject\Images\112_UpArrowShort_Green.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MyNewProject\MyNewProject\Images\imgPatch16.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MyNewProject\MyNewProject\Images\imgPatch17.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MyNewProject\MyNewProject\Images\imgPatch2015_08.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MyNewProject\MyNewProject\Images\imgPatch2015_08_Home.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MyNewProject\MyNewProject\Images\imgSVNUpdate.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MyNewProject\MyNewProject\Images\imgSVNUpdate_Home.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MyNewProject\MyNewProject\Images\imgUpdateLogOK.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MyNewProject\MyNewProject\Images\imgUpdateLogOK_Home.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MyNewProject\MyNewProject\MyNewProject.csproj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Resources\folder.ico" />
     <None Include="Resources\plus.ico" />
     <None Include="Resources\minus.ico" />
@@ -641,10 +725,12 @@
     <Content Include="MyNewProject\MyNewProject\App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="MyNewProject\MyNewProject\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -872,6 +958,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Pages\FindColumns.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -900,6 +990,24 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="WindowMultipleControls.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="WindowShape.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\UwpDesktop.10.0.14393.3\analyzers\dotnet\UwpDesktopAnalyzer.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
+  <Import Project="..\packages\UwpDesktop.10.0.14393.3\build\portable-net45+uap\UwpDesktop.targets" Condition="Exists('..\packages\UwpDesktop.10.0.14393.3\build\portable-net45+uap\UwpDesktop.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\UwpDesktop.10.0.14393.3\build\portable-net45+uap\UwpDesktop.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\UwpDesktop.10.0.14393.3\build\portable-net45+uap\UwpDesktop.targets'))" />
+  </Target>
 </Project>
