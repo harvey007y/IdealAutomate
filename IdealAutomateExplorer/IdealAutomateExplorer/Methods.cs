@@ -21,7 +21,6 @@ using System.ServiceProcess;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Snipping_OCR;
-using Windows.Storage;
 
 namespace IdealAutomate.Core {
     public class Methods {
@@ -1368,6 +1367,7 @@ namespace IdealAutomate.Core {
                 KeyboardSend.KeyUp(System.Windows.Forms.Keys.L);
                 KeyboardSend.KeyUp(System.Windows.Forms.Keys.Alt);
                 KeyboardSend.KeyUp(System.Windows.Forms.Keys.ControlKey);
+
             }
             if (intSleep > 0) {
                 System.Threading.Thread.Sleep(intSleep);
@@ -1892,30 +1892,30 @@ namespace IdealAutomate.Core {
                     strExecutable = altExecutable;
                 }
             }
-            string myExecString = "";
+
             string strContent = "";
             if (myEntityForContent != null) {
                 strContent = myEntityForContent;
             }
             if (strContent == "") {
-                myExecString = strExecutable;
-              //  Process.Start(strExecutable);
+
+                Process.Start(strExecutable);
             } else {
                 try {
                     if (strExecutable == "microsoft-edge:") {
-                        myExecString = strExecutable + strContent;
+                        Process.Start(strExecutable + strContent);
                     } else {
 
-                        myExecString = strExecutable + " " + string.Concat("", strContent, "");
+                        Process.Start(strExecutable, string.Concat("", strContent, ""));
                     }
                 } catch (Exception ex) {
 
                     MessageBox.Show("Here is an exception thrown in the Run method in IdealAutomateCore for Executable " + strExecutable + ": " + ex.Message);
                 }
             }
-            Methods myActions = new Methods();
-            myActions.PutEntityInClipboard(myExecString);
-            myActions.MessageBoxShow("The information needed to execute " + strExecutable + " has been put in clipboard. If you want to run it, paste what is currently in clipboard into Windows search box.");
+
+
+
         }
         /// Category::Process
         public int RunProcessAsAdmin(string exeName, string parameters) {
@@ -2574,7 +2574,6 @@ namespace IdealAutomate.Core {
                 file = File.OpenText(settingsPath);
                 strValueRead = file.ReadToEnd();
                 file.Close();
-                file.Dispose();
             }
             return strValueRead;
         }
@@ -2589,7 +2588,6 @@ namespace IdealAutomate.Core {
                 file = File.OpenText(settingsPath);
                 strValueRead = file.ReadToEnd();
                 file.Close();
-                file.Dispose();
             }
             int intValue = 0;
             Int32.TryParse(strValueRead, out intValue);
@@ -2607,7 +2605,6 @@ namespace IdealAutomate.Core {
                 file = File.OpenText(settingsPath);
                 strValueRead = file.ReadToEnd();
                 file.Close();
-                file.Dispose();
             }
             int intValue = 0;
             Int32.TryParse(strValueRead, out intValue);
@@ -2625,7 +2622,6 @@ namespace IdealAutomate.Core {
                 file = File.OpenText(settingsPath);
                 strValueRead = file.ReadToEnd();
                 file.Close();
-                file.Dispose();
             }
             int intValue = 0;
             Int32.TryParse(strValueRead, out intValue);
@@ -2643,7 +2639,6 @@ namespace IdealAutomate.Core {
                 file = File.OpenText(settingsPath);
                 strValueRead = file.ReadToEnd();
                 file.Close();
-                file.Dispose();
             }
             return strValueRead;
         }
@@ -2659,7 +2654,6 @@ namespace IdealAutomate.Core {
                 file = File.OpenText(settingsPath);
                 strValueRead = file.ReadToEnd();
                 file.Close();
-                file.Dispose();
             }
             return strValueRead;
         }
@@ -2711,7 +2705,6 @@ namespace IdealAutomate.Core {
                 file = File.OpenText(settingsPath);
                 strValueRead = file.ReadToEnd();
                 file.Close();
-                file.Dispose();
             }
             return strValueRead;
         }
@@ -2726,7 +2719,6 @@ namespace IdealAutomate.Core {
                 file = File.OpenText(settingsPath);
                 strValueRead = file.ReadToEnd();
                 file.Close();
-                file.Dispose();
             }
             double intValue = 0;
             double.TryParse(strValueRead, out intValue);
@@ -2743,7 +2735,6 @@ namespace IdealAutomate.Core {
                 file = File.OpenText(settingsPath);
                 strValueRead = file.ReadToEnd();
                 file.Close();
-                file.Dispose();
             }
             DateTime dtScriptStartDateTime = DateTime.MinValue;
             bool boolDTSuccessful = DateTime.TryParse(strValueRead, out dtScriptStartDateTime);
@@ -2761,7 +2752,6 @@ namespace IdealAutomate.Core {
                 file = File.OpenText(settingsPath);
                 strValueRead = file.ReadToEnd();
                 file.Close();
-                file.Dispose();
             }
             DateTime dtScriptStartDateTime = DateTime.MinValue;
             bool boolDTSuccessful = DateTime.TryParse(strValueRead, out dtScriptStartDateTime);
@@ -2779,7 +2769,6 @@ namespace IdealAutomate.Core {
                 file = File.OpenText(settingsPath);
                 strValueRead = file.ReadToEnd();
                 file.Close();
-                file.Dispose();
             }
             DateTime dtScriptStartDateTime = DateTime.MinValue;
             bool boolDTSuccessful = DateTime.TryParse(strValueRead, out dtScriptStartDateTime);
@@ -2796,7 +2785,6 @@ namespace IdealAutomate.Core {
                 file = File.OpenText(settingsPath);
                 strValueRead = file.ReadToEnd();
                 file.Close();
-                file.Dispose();
             }
             int intValue = 0;
             Int32.TryParse(strValueRead, out intValue);
@@ -2813,7 +2801,6 @@ namespace IdealAutomate.Core {
                 file = File.OpenText(settingsPath);
                 strValueRead = file.ReadToEnd();
                 file.Close();
-                file.Dispose();
             }
             int intValue = 0;
             Int32.TryParse(strValueRead, out intValue);
@@ -2832,7 +2819,6 @@ namespace IdealAutomate.Core {
                 file = File.OpenText(settingsPath);
                 strValueRead = file.ReadToEnd();
                 file.Close();
-                file.Dispose();
             }
             int intValue = 0;
             Int32.TryParse(strValueRead, out intValue);
@@ -2974,7 +2960,6 @@ namespace IdealAutomate.Core {
                 file = File.OpenText(settingsPath);
                 strValueRead = file.ReadToEnd();
                 file.Close();
-                file.Dispose();
             }
             return strValueRead;
         }
@@ -3001,7 +2986,6 @@ namespace IdealAutomate.Core {
                 file = File.OpenText(settingsPath);
                 strValueRead = file.ReadToEnd();
                 file.Close();
-                file.Dispose();
             } else {
                 List<ControlEntity> myListControlEntity = new List<ControlEntity>();
 
