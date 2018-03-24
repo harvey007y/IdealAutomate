@@ -130,10 +130,9 @@ namespace System.Windows.Forms.Samples
             this.FileViewBindingSource5 = new System.Windows.Forms.BindingSource(this.components);
             this.FileViewBindingSource6 = new System.Windows.Forms.BindingSource(this.components);
             this.cbxCurrentPath = new System.Windows.Forms.ComboBox();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource)).BeginInit();
             this.toolBar.SuspendLayout();
@@ -143,11 +142,8 @@ namespace System.Windows.Forms.Samples
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource6)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
-            this.tabControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.tabControl1.SuspendLayout();
             this.SuspendLayout();
             // 
             // contextMenuStrip1
@@ -916,46 +912,37 @@ namespace System.Windows.Forms.Samples
             this.cbxCurrentPath.TextChanged += new System.EventHandler(this.cbxCurrentPath_TextChanged);
             this.cbxCurrentPath.Leave += new System.EventHandler(this.cbxCurrentPath_Leave);
             // 
-            // splitContainer1
+            // pictureBox1
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 63);
-            this.splitContainer1.Name = "splitContainer1";
-            // 
-            // splitContainer1.Panel1
-            // 
-            this.splitContainer1.Panel1.Controls.Add(this.tabControl1);
-            this.splitContainer1.Size = new System.Drawing.Size(856, 500);
-            this.splitContainer1.SplitterDistance = 499;
-            this.splitContainer1.TabIndex = 11;
-            this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer1_SplitterMoved);
-            this.splitContainer1.MouseEnter += new System.EventHandler(this.splitContainer1_MouseEnter);
-            this.splitContainer1.MouseLeave += new System.EventHandler(this.splitContainer1_MouseLeave);
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(798, 36);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(32, 24);
+            this.pictureBox1.TabIndex = 12;
+            this.pictureBox1.TabStop = false;
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.ItemSize = new System.Drawing.Size(42, 18);
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Location = new System.Drawing.Point(0, 63);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.ShowToolTips = true;
-            this.tabControl1.Size = new System.Drawing.Size(499, 500);
-            this.tabControl1.TabIndex = 9;
-            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
+            this.tabControl1.Size = new System.Drawing.Size(856, 294);
+            this.tabControl1.TabIndex = 13;
             // 
             // tabPage3
             // 
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(491, 474);
+            this.tabPage3.Size = new System.Drawing.Size(848, 268);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "    +";
             this.tabPage3.ToolTipText = "Add New Tab";
             this.tabPage3.UseVisualStyleBackColor = true;
-            // 
             // pictureBox1
             // 
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
@@ -966,12 +953,13 @@ namespace System.Windows.Forms.Samples
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += async (o, e) => { await this.search_ClickAsync(o, e); };
             // async (o, e) =>
+            // 
             // ExplorerView
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
             this.ClientSize = new System.Drawing.Size(856, 357);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.cbxCurrentPath);
             this.Controls.Add(this.toolBar);
             this.Controls.Add(this.mainMenu);
@@ -992,11 +980,8 @@ namespace System.Windows.Forms.Samples
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource6)).EndInit();
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
-            this.tabControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.tabControl1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1052,9 +1037,6 @@ namespace System.Windows.Forms.Samples
         private ToolStripMenuItem copyStripMenuItem;
         private ComboBox cbxCurrentPath;
         private ToolStripMenuItem WindowsExplorerStripMenuItem2;
-        private SplitContainer splitContainer1;
-        private TabControl tabControl1;
-        private TabPage tabPage3;
         private ToolStripMenuItem listMenuItem;
         private ToolStripMenuItem detailsMenuItem;
         private PictureBox pictureBox1;
@@ -1108,6 +1090,8 @@ namespace System.Windows.Forms.Samples
         private ToolStripMenuItem curlToolStripMenuItem;
         private ToolStripMenuItem fiddlerToolStripMenuItem1;
         private ToolStripMenuItem postmanToolStripMenuItem;
+        private TabControl tabControl1;
+        private TabPage tabPage3;
     }
 }
 

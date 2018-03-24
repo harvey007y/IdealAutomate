@@ -145,7 +145,8 @@ namespace System.Windows.Forms.Samples {
         private System.Windows.Forms.ToolStripButton toolStripButton5;
         private System.Windows.Forms.ToolStripButton toolStripButton6;
         String Url = string.Empty;
-
+        SplitContainer mySplitContainer = new SplitContainer();
+       
 
         public ExplorerView() {
             InitializeComponent();
@@ -382,9 +383,13 @@ namespace System.Windows.Forms.Samples {
 
             }
             myActions.SetValueByKey("CurrentIndex", tabControl1.SelectedIndex.ToString());
-            _CurrentDataGridView = (DataGridViewExt)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
+            _CurrentDataGridView = (DataGridViewExt)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0].Controls[0].Controls[0];
             _CurrentFileViewBindingSource = listBindingSource[tabControl1.SelectedIndex];
-
+            mySplitContainer = (SplitContainer)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
+            
+            mySplitContainer.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(mySplitContainer_SplitterMoved);
+            mySplitContainer.MouseEnter += new System.EventHandler(mySplitContainer_MouseEnter);
+            mySplitContainer.MouseLeave += new System.EventHandler(mySplitContainer_MouseLeave);
             RefreshDataGrid();
         }
 
@@ -477,25 +482,25 @@ namespace System.Windows.Forms.Samples {
             Methods myActions = new Methods();
             //_CurrentDataGridView.ClearSelection();
 
-            splitContainer1.Height = Screen.PrimaryScreen.Bounds.Height - 175;
+            mySplitContainer.Height = Screen.PrimaryScreen.Bounds.Height - 175;
 
-            int splitContainer1Width = myActions.GetValueByKeyAsInt("SplitContainer1Width");
+            int mySplitContainerWidth = myActions.GetValueByKeyAsInt("mySplitContainerWidth");
 
             string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
-            if (splitContainer1Width > 0) {
-                splitContainer1.SplitterDistance = splitContainer1Width;
+            if (mySplitContainerWidth > 0) {
+                mySplitContainer.SplitterDistance = mySplitContainerWidth;
             } else {
-                splitContainer1.Width = Screen.PrimaryScreen.Bounds.Width;
+                mySplitContainer.Width = Screen.PrimaryScreen.Bounds.Width;
             }
 
             if (detailsMenuItemChecked == "True") {
-                splitContainer1.Panel2Collapsed = false;
+                mySplitContainer.Panel2Collapsed = false;
                 this.detailsMenuItem.Checked = true;
                 this.listMenuItem.Checked = false;
                 //tries to start the process 
                 try {
 
-                    _proc = Process.Start(@"C:\Program Files\Windows NT\Accessories\wordpad.exe");
+                   _proc = Process.Start(@"C:\Program Files\Windows NT\Accessories\wordpad.exe");
                 } catch (Exception) {
                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
@@ -515,11 +520,11 @@ namespace System.Windows.Forms.Samples {
                 _proc.WaitForInputIdle();
                 _appHandle = _proc.MainWindowHandle;
 
-                SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                SetParent(_appHandle, mySplitContainer.Panel2.Handle);
                 SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                 //SendMessage(proc.MainWindowHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
             } else {
-                splitContainer1.Panel2Collapsed = true;
+                mySplitContainer.Panel2Collapsed = true;
                 this.detailsMenuItem.Checked = false;
                 this.listMenuItem.Checked = true;
             }
@@ -586,9 +591,13 @@ namespace System.Windows.Forms.Samples {
             testskip:
             int currentIndex = myActions.GetValueByKeyAsInt("CurrentIndex");
             tabControl1.SelectedIndex = currentIndex;
-            _CurrentDataGridView = (DataGridViewExt)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
+            _CurrentDataGridView = (DataGridViewExt)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0].Controls[0].Controls[0];
             _CurrentFileViewBindingSource = listBindingSource[tabControl1.SelectedIndex];
+            mySplitContainer = (SplitContainer)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
 
+            mySplitContainer.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(mySplitContainer_SplitterMoved);
+            mySplitContainer.MouseEnter += new System.EventHandler(mySplitContainer_MouseEnter);
+            mySplitContainer.MouseLeave += new System.EventHandler(mySplitContainer_MouseLeave);
             RefreshDataGrid();
             goto skipSecondLoad;
             strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
@@ -790,7 +799,7 @@ namespace System.Windows.Forms.Samples {
         private void listMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             if (DoActionRequired(sender)) {
-                splitContainer1.Panel2Collapsed = true;
+                mySplitContainer.Panel2Collapsed = true;
                 myActions.SetValueByKey("DetailsMenuItemChecked", "False");
             }
         }
@@ -798,7 +807,7 @@ namespace System.Windows.Forms.Samples {
         private void detailsMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             if (DoActionRequired(sender)) {
-                splitContainer1.Panel2Collapsed = false;
+                mySplitContainer.Panel2Collapsed = false;
                 myActions.SetValueByKey("DetailsMenuItemChecked", "True");
                 //tries to start the process 
                 try {
@@ -822,7 +831,7 @@ namespace System.Windows.Forms.Samples {
                 _proc.WaitForInputIdle();
                 _appHandle = _proc.MainWindowHandle;
 
-                SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                SetParent(_appHandle, mySplitContainer.Panel2.Handle);
                 SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                 //SendMessage(proc.MainWindowHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
             }
@@ -1356,7 +1365,7 @@ namespace System.Windows.Forms.Samples {
             //_proc.WaitForInputIdle();
             //_appHandle = _proc.MainWindowHandle;
 
-            //SetParent(_appHandle, splitContainer1.Panel2.Handle);
+            //SetParent(_appHandle, mySplitContainer.Panel2.Handle);
             //SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
             _NotepadppLoaded = true;
             myActions.Run(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
@@ -1486,7 +1495,7 @@ namespace System.Windows.Forms.Samples {
             _appHandle = _proc.MainWindowHandle;
 
             try {
-                SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                SetParent(_appHandle, mySplitContainer.Panel2.Handle);
             } catch (Exception) {
 
 
@@ -1551,7 +1560,7 @@ namespace System.Windows.Forms.Samples {
             string strFullFileName = _strFullFileName;
             FileInfo fi = new FileInfo(strFullFileName);
             DirectoryInfo di = fi.Directory;
-            splitContainer1.Panel1.Focus();
+            mySplitContainer.Panel1.Focus();
 
 
             _ignoreSelectedIndexChanged = true;
@@ -1579,7 +1588,7 @@ namespace System.Windows.Forms.Samples {
             tabControl1.TabPages[tabControl1.SelectedIndex].ToolTipText = _dir.FileView.FullName;
 
 
-            _CurrentDataGridView = (DataGridViewExt)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
+            _CurrentDataGridView = (DataGridViewExt)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0].Controls[0];
             _CurrentFileViewBindingSource = listBindingSource[tabControl1.SelectedIndex];
             RefreshDataGrid();
         }
@@ -2199,7 +2208,7 @@ namespace System.Windows.Forms.Samples {
 
 
 
-                            //SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                            //SetParent(_appHandle, mySplitContainer.Panel2.Handle);
                             //SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                             //} catch (Exception ex) {
 
@@ -2215,16 +2224,16 @@ namespace System.Windows.Forms.Samples {
                             webBrowser1.ScriptErrorsSuppressed = true;
                             webBrowser1.Navigate(Url);
 
-                            splitContainer1.Panel2.Controls.Clear();
+                            mySplitContainer.Panel2.Controls.Clear();
                             FlowLayoutPanel flp = new FlowLayoutPanel();
                             flp.Dock = DockStyle.Fill;
 
                             flp.Controls.Add(toolStrip1);
                             flp.Controls.Add(webBrowser1);
-                            webBrowser1.Size = new System.Drawing.Size(splitContainer1.Panel2.ClientSize.Width, splitContainer1.Panel2.Height - 50);
+                            webBrowser1.Size = new System.Drawing.Size(mySplitContainer.Panel2.ClientSize.Width, mySplitContainer.Panel2.Height - 50);
 
                             flp.Controls.Add(statusStrip1);
-                            splitContainer1.Panel2.Controls.Add(flp);
+                            mySplitContainer.Panel2.Controls.Add(flp);
 
                             webBrowser1.ProgressChanged += new WebBrowserProgressChangedEventHandler(webpage_ProgressChanged);
                             webBrowser1.DocumentTitleChanged += new EventHandler(webpage_DocumentTitleChanged);
@@ -2241,7 +2250,7 @@ namespace System.Windows.Forms.Samples {
                             _WebBrowserLoaded = false;
                             _WordPadLoaded = true;
                             //Close the running process
-                            splitContainer1.Panel2.Controls.Clear();
+                            mySplitContainer.Panel2.Controls.Clear();                          
                             if (_appHandle != IntPtr.Zero) {
                                 PostMessage(_appHandle, WM_CLOSE, 0, 0);
                                 System.Threading.Thread.Sleep(1000);
@@ -2265,9 +2274,9 @@ namespace System.Windows.Forms.Samples {
                             _proc.WaitForInputIdle();
                             _appHandle = _proc.MainWindowHandle;
 
-                            SetParent(_appHandle, splitContainer1.Panel2.Handle);
-                            MoveWindow(_appHandle, 0, 0, splitContainer1.Panel2.Width - 5, splitContainer1.Panel2.Height, true);
-                            //  SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+                            SetParent(_appHandle, mySplitContainer.Panel2.Handle);
+                            MoveWindow(_appHandle, 0, 0, mySplitContainer.Panel2.Width - 5, mySplitContainer.Panel2.Height, true);
+                           //  SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                             //  SetTitle(_dir.FileView);
                         } else {
                             if (fileName.EndsWith(".txt")
@@ -2292,7 +2301,7 @@ namespace System.Windows.Forms.Samples {
                                 _NotepadppLoaded = true;
                                 _WebBrowserLoaded = false;
                                 //Close the running process
-                                splitContainer1.Panel2.Controls.Clear();
+                                mySplitContainer.Panel2.Controls.Clear();
                                 if (_appHandle != IntPtr.Zero) {
                                     PostMessage(_appHandle, WM_CLOSE, 0, 0);
                                     System.Threading.Thread.Sleep(1000);
@@ -2317,7 +2326,7 @@ namespace System.Windows.Forms.Samples {
                                 _proc.WaitForInputIdle();
                                 _appHandle = _proc.MainWindowHandle;
 
-                                SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                                SetParent(_appHandle, mySplitContainer.Panel2.Handle);
                                 SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                                 SetTitle(_dir.FileView);
                             }
@@ -2621,7 +2630,7 @@ namespace System.Windows.Forms.Samples {
                     string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
                     if (detailsMenuItemChecked == "False") {
                         myActions.SetValueByKey("DetailsMenuItemChecked", "True");
-                        splitContainer1.Panel2Collapsed = false;
+                        mySplitContainer.Panel2Collapsed = false;
                         this.detailsMenuItem.Checked = true;
                         this.listMenuItem.Checked = false;
                         //tries to start the process 
@@ -2646,7 +2655,7 @@ namespace System.Windows.Forms.Samples {
                         _proc.WaitForInputIdle();
                         _appHandle = _proc.MainWindowHandle;
 
-                        SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                        SetParent(_appHandle, mySplitContainer.Panel2.Handle);
                         SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                         //SendMessage(proc.MainWindowHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                     } else {
@@ -2678,10 +2687,10 @@ namespace System.Windows.Forms.Samples {
                         _proc.WaitForInputIdle();
                         _appHandle = _proc.MainWindowHandle;
 
-                        SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                        SetParent(_appHandle, mySplitContainer.Panel2.Handle);
                         SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                     }
-                    splitContainer1.SplitterDistance = (int)(ClientSize.Width * .2);
+                    mySplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
 
                 } else {
                     myActions.MessageBoxShow("You can not create a text file inside a file; you need to select folder first");
@@ -2947,7 +2956,7 @@ namespace System.Windows.Forms.Samples {
                     string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
                     if (detailsMenuItemChecked == "False") {
                         myActions.SetValueByKey("DetailsMenuItemChecked", "True");
-                        splitContainer1.Panel2Collapsed = false;
+                        mySplitContainer.Panel2Collapsed = false;
                         this.detailsMenuItem.Checked = true;
                         this.listMenuItem.Checked = false;
                         //tries to start the process 
@@ -2972,7 +2981,7 @@ namespace System.Windows.Forms.Samples {
                         _proc.WaitForInputIdle();
                         _appHandle = _proc.MainWindowHandle;
 
-                        SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                        SetParent(_appHandle, mySplitContainer.Panel2.Handle);
                         SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                         //SendMessage(proc.MainWindowHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                     } else {
@@ -3004,10 +3013,10 @@ namespace System.Windows.Forms.Samples {
                         _proc.WaitForInputIdle();
                         _appHandle = _proc.MainWindowHandle;
 
-                        SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                        SetParent(_appHandle, mySplitContainer.Panel2.Handle);
                         SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                     }
-                    splitContainer1.SplitterDistance = (int)(ClientSize.Width * .2);
+                    mySplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
 
                 } else {
                     myActions.MessageBoxShow("You can not create a text document inside a file; first select folder and right click");
@@ -3111,7 +3120,7 @@ namespace System.Windows.Forms.Samples {
 
                         }
                     }
-                    splitContainer1.SplitterDistance = (int)(ClientSize.Width * .2);
+                    mySplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
 
                 } else {
                     myActions.MessageBoxShow("You can not create a text document inside a file; first select folder and right click");
@@ -3841,11 +3850,35 @@ namespace System.Windows.Forms.Samples {
             // 
 
             //&&&&&&&&&&&&&&&
+            // 
+            // mySplitContainer
+            // 
+            mySplitContainer = new SplitContainer();
+            mySplitContainer.Dock = System.Windows.Forms.DockStyle.Top;
+            mySplitContainer.Location = new System.Drawing.Point(0, 63);
+            mySplitContainer.Name = "mySplitContainer" + _CurrentIndex.ToString();
+            // 
+            // mySplitContainer.Panel1
+            // 
+            //    mySplitContainer.Panel1.Controls.Add(this.tabControl1);
+            mySplitContainer.Size = new System.Drawing.Size(856, 500);
+            mySplitContainer.SplitterDistance = 499;
+            mySplitContainer.TabIndex = 11;
+            //mySplitContainer.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(mySplitContainer_SplitterMoved);
+            //mySplitContainer.MouseEnter += new System.EventHandler(mySplitContainer_MouseEnter);
+            //mySplitContainer.MouseLeave += new System.EventHandler(mySplitContainer_MouseLeave);
+
 
             if (_CurrentIndex == tabControl1.TabCount - 1) {
-                tabControl1.TabPages[_CurrentIndex - 1].Controls.Add(myDataGridView);
+                mySplitContainer.Panel1.Controls.Add(myDataGridView);
+                tabControl1.TabPages[_CurrentIndex - 1].Controls.Add(mySplitContainer);
+                
+            //    tabControl1.TabPages[_CurrentIndex - 1].Controls.Add(myDataGridView);
             } else {
-                tabControl1.TabPages[_CurrentIndex].Controls.Add(myDataGridView);
+                mySplitContainer.Panel1.Controls.Add(myDataGridView);
+                tabControl1.TabPages[_CurrentIndex].Controls.Add(mySplitContainer);
+                
+                // tabControl1.TabPages[_CurrentIndex].Controls.Add(myDataGridView);
             }
         }
 
@@ -3917,7 +3950,7 @@ namespace System.Windows.Forms.Samples {
             _proc.WaitForInputIdle();
             _appHandle = _proc.MainWindowHandle;
 
-            SetParent(_appHandle, splitContainer1.Panel2.Handle);
+            SetParent(_appHandle, mySplitContainer.Panel2.Handle);
             SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
         }
 
@@ -3989,7 +4022,7 @@ namespace System.Windows.Forms.Samples {
             _proc.WaitForInputIdle();
             _appHandle = _proc.MainWindowHandle;
 
-            SetParent(_appHandle, splitContainer1.Panel2.Handle);
+            SetParent(_appHandle, mySplitContainer.Panel2.Handle);
             SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
         }
 
@@ -5076,12 +5109,12 @@ namespace System.Windows.Forms.Samples {
             }
         }
 
-        private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e) {
+        private void mySplitContainer_SplitterMoved(object sender, SplitterEventArgs e) {
             //host the started process in the panel 
 
             if (_proc != null) {
                 if (_WebBrowserLoaded) {
-                    webBrowser1.Size = new System.Drawing.Size(splitContainer1.Panel2.ClientSize.Width, splitContainer1.Panel2.Height - 50);
+                    webBrowser1.Size = new System.Drawing.Size(mySplitContainer.Panel2.ClientSize.Width, mySplitContainer.Panel2.Height - 50);
                 } else {
                     System.Threading.Thread.Sleep(500);
                     while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
@@ -5092,11 +5125,11 @@ namespace System.Windows.Forms.Samples {
                     _proc.WaitForInputIdle();
                     _appHandle = _proc.MainWindowHandle;
 
-                    SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                    SetParent(_appHandle, mySplitContainer.Panel2.Handle);
                     SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                 }
                 Methods myActions = new Methods();
-                myActions.SetValueByKey("SplitContainer1Width", e.X.ToString());
+                myActions.SetValueByKey("mySplitContainerWidth", e.X.ToString());
             }
 
 
@@ -5108,7 +5141,7 @@ namespace System.Windows.Forms.Samples {
             string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
             if (detailsMenuItemChecked == "False") {
                 myActions.SetValueByKey("DetailsMenuItemChecked", "True");
-                splitContainer1.Panel2Collapsed = false;
+                mySplitContainer.Panel2Collapsed = false;
                 this.detailsMenuItem.Checked = true;
                 this.listMenuItem.Checked = false;
                 //tries to start the process 
@@ -5133,11 +5166,11 @@ namespace System.Windows.Forms.Samples {
                 _proc.WaitForInputIdle();
                 _appHandle = _proc.MainWindowHandle;
 
-                SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                SetParent(_appHandle, mySplitContainer.Panel2.Handle);
                 SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                 //SendMessage(proc.MainWindowHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
             }
-            splitContainer1.SplitterDistance = (int)(ClientSize.Width * .2);
+            mySplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
 
             string strSavedDomainName = myActions.GetValueByKey("DomainName");
             if (strSavedDomainName == "") {
@@ -6037,7 +6070,7 @@ namespace System.Windows.Forms.Samples {
             string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
             if (detailsMenuItemChecked == "False") {
                 myActions.SetValueByKey("DetailsMenuItemChecked", "True");
-                splitContainer1.Panel2Collapsed = false;
+                mySplitContainer.Panel2Collapsed = false;
                 this.detailsMenuItem.Checked = true;
                 this.listMenuItem.Checked = false;
                 //tries to start the process 
@@ -6062,7 +6095,7 @@ namespace System.Windows.Forms.Samples {
                 _proc.WaitForInputIdle();
                 _appHandle = _proc.MainWindowHandle;
 
-                SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                SetParent(_appHandle, mySplitContainer.Panel2.Handle);
                 SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                 //SendMessage(proc.MainWindowHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
             } else {
@@ -6094,10 +6127,10 @@ namespace System.Windows.Forms.Samples {
                 _proc.WaitForInputIdle();
                 _appHandle = _proc.MainWindowHandle;
 
-                SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                SetParent(_appHandle, mySplitContainer.Panel2.Handle);
                 SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
             }
-            splitContainer1.SplitterDistance = (int)(ClientSize.Width * .2);
+            mySplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
 
 
 
@@ -6284,7 +6317,7 @@ namespace System.Windows.Forms.Samples {
             string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
             if (detailsMenuItemChecked == "False") {
                 myActions.SetValueByKey("DetailsMenuItemChecked", "True");
-                splitContainer1.Panel2Collapsed = false;
+                mySplitContainer.Panel2Collapsed = false;
                 this.detailsMenuItem.Checked = true;
                 this.listMenuItem.Checked = false;
                 //tries to start the process 
@@ -6309,7 +6342,7 @@ namespace System.Windows.Forms.Samples {
                 _proc.WaitForInputIdle();
                 _appHandle = _proc.MainWindowHandle;
 
-                SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                SetParent(_appHandle, mySplitContainer.Panel2.Handle);
                 SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                 //SendMessage(proc.MainWindowHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
             } else {
@@ -6341,10 +6374,10 @@ namespace System.Windows.Forms.Samples {
                 _proc.WaitForInputIdle();
                 _appHandle = _proc.MainWindowHandle;
 
-                SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                SetParent(_appHandle, mySplitContainer.Panel2.Handle);
                 SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
             }
-            splitContainer1.SplitterDistance = (int)(ClientSize.Width * .2);
+            mySplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
 
         }
 
@@ -6478,7 +6511,7 @@ namespace System.Windows.Forms.Samples {
 
                 }
             }
-            splitContainer1.SplitterDistance = (int)(ClientSize.Width * .2);
+            mySplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
 
         }
 
@@ -6654,7 +6687,7 @@ namespace System.Windows.Forms.Samples {
             Saved frm = new Saved();
             frm.ShowDialog();   // frm.Show(); if MDI Parent form            
         }
-        private void splitContainer1_MouseLeave(object sender, EventArgs e) {
+        private void mySplitContainer_MouseLeave(object sender, EventArgs e) {
             if (_Panel2KeyPress && (_WordPadLoaded || _NotepadppLoaded)) {
                 Methods myActions = new Methods();
                 myActions.TypeText("^(s)", 200);
@@ -6681,7 +6714,7 @@ namespace System.Windows.Forms.Samples {
             }
         }
 
-        private void splitContainer1_MouseEnter(object sender, EventArgs e) {
+        private void mySplitContainer_MouseEnter(object sender, EventArgs e) {
             if (_Panel2KeyPress && (_WordPadLoaded || _NotepadppLoaded)) {
                 Methods myActions = new Methods();
                 myActions.TypeText("^(s)", 200);
@@ -6804,7 +6837,7 @@ namespace System.Windows.Forms.Samples {
 
                 }
             }
-            splitContainer1.SplitterDistance = (int)(ClientSize.Width * .2);
+            mySplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
 
         }
         private void fileShortcutToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -6905,7 +6938,7 @@ namespace System.Windows.Forms.Samples {
                             Marshal.FinalReleaseComObject(shell);
                         }
                     }
-                    splitContainer1.SplitterDistance = (int)(ClientSize.Width * .2);
+                    mySplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
 
                 } else {
                     myActions.MessageBoxShow("You can not create a shortcut inside a file; first select folder and right click");
@@ -6919,19 +6952,19 @@ namespace System.Windows.Forms.Samples {
             Methods myActions = new Methods();
             //_CurrentDataGridView.ClearSelection();
 
-            splitContainer1.Height = Screen.PrimaryScreen.Bounds.Height - 175;
+            mySplitContainer.Height = Screen.PrimaryScreen.Bounds.Height - 175;
 
-            int splitContainer1Width = myActions.GetValueByKeyAsInt("SplitContainer1Width");
+            int mySplitContainerWidth = myActions.GetValueByKeyAsInt("mySplitContainerWidth");
 
             string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
-            if (splitContainer1Width > 0) {
-                splitContainer1.SplitterDistance = splitContainer1Width;
+            if (mySplitContainerWidth > 0) {
+                mySplitContainer.SplitterDistance = mySplitContainerWidth;
             } else {
-                splitContainer1.Width = Screen.PrimaryScreen.Bounds.Width;
+                mySplitContainer.Width = Screen.PrimaryScreen.Bounds.Width;
             }
 
             if (detailsMenuItemChecked == "True") {
-                splitContainer1.Panel2Collapsed = false;
+                mySplitContainer.Panel2Collapsed = false;
                 this.detailsMenuItem.Checked = true;
                 this.listMenuItem.Checked = false;
                 //tries to start the process 
@@ -6957,11 +6990,11 @@ namespace System.Windows.Forms.Samples {
                 _proc.WaitForInputIdle();
                 _appHandle = _proc.MainWindowHandle;
 
-                SetParent(_appHandle, splitContainer1.Panel2.Handle);
+                SetParent(_appHandle, mySplitContainer.Panel2.Handle);
                 SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                 //SendMessage(proc.MainWindowHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
             } else {
-                splitContainer1.Panel2Collapsed = true;
+                mySplitContainer.Panel2Collapsed = true;
                 this.detailsMenuItem.Checked = false;
                 this.listMenuItem.Checked = true;
             }
@@ -7028,7 +7061,7 @@ namespace System.Windows.Forms.Samples {
             testskip:
             int currentIndex = myActions.GetValueByKeyAsInt("CurrentIndex");
             tabControl1.SelectedIndex = currentIndex;
-            _CurrentDataGridView = (DataGridViewExt)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
+            _CurrentDataGridView = (DataGridViewExt)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0].Controls[0].Controls[0];
             _CurrentFileViewBindingSource = listBindingSource[tabControl1.SelectedIndex];
 
             RefreshDataGrid();
