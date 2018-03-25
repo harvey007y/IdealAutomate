@@ -768,6 +768,8 @@ namespace System.Windows.Forms.Samples {
             if (_selectedRow > 0 && e.RowIndex == _selectedRow) {
                 if (_CurrentDataGridView.Rows[_selectedRow].Cells.Count > 1) {
                     _CurrentDataGridView.Rows[_selectedRow].Cells[1].Selected = true;
+                    _CurrentDataGridView.FirstDisplayedScrollingRowIndex = _selectedRow;
+                    _CurrentDataGridView.PerformLayout();
                 }
             }
         }
@@ -1273,6 +1275,9 @@ namespace System.Windows.Forms.Samples {
 
             if (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.ESCAPE)) {
                 _CurrentDataGridView.ClearSelection();
+                _selectedRow = 0;
+                Methods myActions = new Methods();
+                myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow", "0");
             }
 
             if (AnyKeyPressed()) {
@@ -1773,7 +1778,7 @@ namespace System.Windows.Forms.Samples {
             cs.Width = 110;
             _selectedRow = myActions.GetValueByKeyAsInt("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow");
             if (_selectedRow > 0) {
-                if (_CurrentDataGridView.Rows[_selectedRow].Cells.Count > 1) {
+                if (_CurrentDataGridView.Rows.Count > _selectedRow && _CurrentDataGridView.Rows[_selectedRow].Cells.Count > 1) {
                     //_CurrentDataGridView.Rows[selectedRow].Cells[1].Selected = true;
                     string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
                     if (detailsMenuItemChecked == "True") {
@@ -2533,6 +2538,8 @@ namespace System.Windows.Forms.Samples {
                     c.DataGridView.ClearSelection();
                     c.DataGridView.CurrentCell = c;
                     c.Selected = true;
+                    _selectedRow = e.RowIndex;                    
+                    myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow", e.RowIndex.ToString());
                 }
             }
 
@@ -6579,6 +6586,9 @@ namespace System.Windows.Forms.Samples {
 
             if (e.KeyCode == Keys.Escape) {
                 _CurrentDataGridView.ClearSelection();
+                _selectedRow = 0;
+                Methods myActions = new Methods();
+                myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow", "0");
             }
 
         }
@@ -6586,6 +6596,9 @@ namespace System.Windows.Forms.Samples {
         private void ExplorerView_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e) {
             if (e.KeyCode == Keys.Escape) {
                 _CurrentDataGridView.ClearSelection();
+                _selectedRow = 0;
+                Methods myActions = new Methods();
+                myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow", "0");
             }
         }
         private void CreateShortcut(string name, string url) {
