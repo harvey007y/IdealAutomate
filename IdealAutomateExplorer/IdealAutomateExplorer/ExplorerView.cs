@@ -146,6 +146,7 @@ namespace System.Windows.Forms.Samples {
         private System.Windows.Forms.ToolStripButton toolStripButton6;
         String Url = string.Empty;
         SplitContainer mySplitContainer = new SplitContainer();
+        int _selectedRow = 0;
 
 
         public ExplorerView() {
@@ -763,12 +764,10 @@ namespace System.Windows.Forms.Samples {
                 DataGridViewCell iconCell = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["dataGridViewImageColumn1"];
             }
   
-          // TODO: the setting of the selected row could be done more efficiently
-          // than reading key on every row...
-            int selectedRow = myActions.GetValueByKeyAsInt("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow");
-            if (selectedRow > 0) {
-                if (_CurrentDataGridView.Rows[selectedRow].Cells.Count > 1) {
-                    _CurrentDataGridView.Rows[selectedRow].Cells[1].Selected = true;
+
+            if (_selectedRow > 0 && e.RowIndex == _selectedRow) {
+                if (_CurrentDataGridView.Rows[_selectedRow].Cells.Count > 1) {
+                    _CurrentDataGridView.Rows[_selectedRow].Cells[1].Selected = true;
                 }
             }
         }
@@ -1772,20 +1771,20 @@ namespace System.Windows.Forms.Samples {
             DataGridViewColumnSelector cs = new DataGridViewColumnSelector(_CurrentDataGridView);
             cs.MaxHeight = 100;
             cs.Width = 110;
-            int selectedRow = myActions.GetValueByKeyAsInt("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow");
-            if (selectedRow > 0) {
-                if (_CurrentDataGridView.Rows[selectedRow].Cells.Count > 1) {
+            _selectedRow = myActions.GetValueByKeyAsInt("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow");
+            if (_selectedRow > 0) {
+                if (_CurrentDataGridView.Rows[_selectedRow].Cells.Count > 1) {
                     //_CurrentDataGridView.Rows[selectedRow].Cells[1].Selected = true;
                     string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
                     if (detailsMenuItemChecked == "True") {
 
-                        DataGridViewCell c = _CurrentDataGridView.Rows[selectedRow].Cells[1];
+                        DataGridViewCell c = _CurrentDataGridView.Rows[_selectedRow].Cells[1];
                         if (!c.Selected) {
                             _CurrentDataGridView.ClearSelection();
                             c.Selected = true;
-                            _CurrentDataGridView.FirstDisplayedScrollingRowIndex = selectedRow;
+                            _CurrentDataGridView.FirstDisplayedScrollingRowIndex = _selectedRow;
                             _CurrentDataGridView.PerformLayout();
-                            string fileName = _CurrentDataGridView.Rows[selectedRow].Cells["FullName"].Value.ToString();
+                            string fileName = _CurrentDataGridView.Rows[_selectedRow].Cells["FullName"].Value.ToString();
                             if (fileName.EndsWith(".url")
 
                              ) {
