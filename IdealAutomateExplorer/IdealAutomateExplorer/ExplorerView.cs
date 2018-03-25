@@ -146,7 +146,7 @@ namespace System.Windows.Forms.Samples {
         private System.Windows.Forms.ToolStripButton toolStripButton6;
         String Url = string.Empty;
         SplitContainer mySplitContainer = new SplitContainer();
-       
+
 
         public ExplorerView() {
             InitializeComponent();
@@ -197,15 +197,17 @@ namespace System.Windows.Forms.Samples {
                     nextIndex = i + 1;
                     string nextInitialDirectory = myActions.GetValueByKey("InitialDirectory" + nextIndex.ToString());
                     myActions.SetValueByKey("InitialDirectory" + i.ToString(), nextInitialDirectory);
+                    string nextInitialDirectorySelectedRow = myActions.GetValueByKey("InitialDirectory" + nextIndex.ToString() + "SelectedRow");
+                    myActions.SetValueByKey("InitialDirectory" + i.ToString() + "SelectedRow", nextInitialDirectorySelectedRow);
 
                 }
                 myActions.SetValueByKey("NumOfTabs", this.tabControl1.TabPages.Count.ToString());
             }
             if (_ignoreSelectedIndexChanged == true) {
                 _ignoreSelectedIndexChanged = false;
-              //  return;
+                //  return;
             }
-            
+
 
             if (tabControl1.SelectedIndex == tabControl1.TabCount - 1) {
                 strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
@@ -386,7 +388,11 @@ namespace System.Windows.Forms.Samples {
             _CurrentDataGridView = (DataGridViewExt)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0].Controls[0].Controls[0];
             _CurrentFileViewBindingSource = listBindingSource[tabControl1.SelectedIndex];
             mySplitContainer = (SplitContainer)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
-            
+
+            mySplitContainer.SplitterMoved -= mySplitContainer_SplitterMoved;
+            mySplitContainer.MouseEnter -= mySplitContainer_MouseEnter;
+            mySplitContainer.MouseLeave -= mySplitContainer_MouseLeave;
+
             mySplitContainer.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(mySplitContainer_SplitterMoved);
             mySplitContainer.MouseEnter += new System.EventHandler(mySplitContainer_MouseEnter);
             mySplitContainer.MouseLeave += new System.EventHandler(mySplitContainer_MouseLeave);
@@ -500,7 +506,7 @@ namespace System.Windows.Forms.Samples {
                 //tries to start the process 
                 try {
 
-                   _proc = Process.Start(@"C:\Program Files\Windows NT\Accessories\wordpad.exe");
+                    _proc = Process.Start(@"C:\Program Files\Windows NT\Accessories\wordpad.exe");
                 } catch (Exception) {
                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
@@ -594,6 +600,10 @@ namespace System.Windows.Forms.Samples {
             _CurrentDataGridView = (DataGridViewExt)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0].Controls[0].Controls[0];
             _CurrentFileViewBindingSource = listBindingSource[tabControl1.SelectedIndex];
             mySplitContainer = (SplitContainer)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
+
+            mySplitContainer.SplitterMoved -= mySplitContainer_SplitterMoved;
+            mySplitContainer.MouseEnter -= mySplitContainer_MouseEnter;
+            mySplitContainer.MouseLeave -= mySplitContainer_MouseLeave;
 
             mySplitContainer.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(mySplitContainer_SplitterMoved);
             mySplitContainer.MouseEnter += new System.EventHandler(mySplitContainer_MouseEnter);
@@ -719,6 +729,7 @@ namespace System.Windows.Forms.Samples {
                 } finally {
                     e.Handled = true;
                 }
+                
             }
         }
 
@@ -750,6 +761,15 @@ namespace System.Windows.Forms.Samples {
             } else {
                 ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["NameCol"].Style.Padding = new Padding(indent, 0, 0, 0);
                 DataGridViewCell iconCell = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["dataGridViewImageColumn1"];
+            }
+  
+          // TODO: the setting of the selected row could be done more efficiently
+          // than reading key on every row...
+            int selectedRow = myActions.GetValueByKeyAsInt("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow");
+            if (selectedRow > 0) {
+                if (_CurrentDataGridView.Rows[selectedRow].Cells.Count > 1) {
+                    _CurrentDataGridView.Rows[selectedRow].Cells[1].Selected = true;
+                }
             }
         }
 
@@ -1752,10 +1772,182 @@ namespace System.Windows.Forms.Samples {
             DataGridViewColumnSelector cs = new DataGridViewColumnSelector(_CurrentDataGridView);
             cs.MaxHeight = 100;
             cs.Width = 110;
+            int selectedRow = myActions.GetValueByKeyAsInt("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow");
+            if (selectedRow > 0) {
+                if (_CurrentDataGridView.Rows[selectedRow].Cells.Count > 1) {
+                    //_CurrentDataGridView.Rows[selectedRow].Cells[1].Selected = true;
+                    string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
+                    if (detailsMenuItemChecked == "True") {
+
+                        DataGridViewCell c = _CurrentDataGridView.Rows[selectedRow].Cells[1];
+                        if (!c.Selected) {
+                            _CurrentDataGridView.ClearSelection();
+                            c.Selected = true;
+                            _CurrentDataGridView.FirstDisplayedScrollingRowIndex = selectedRow;
+                            _CurrentDataGridView.PerformLayout();
+                            string fileName = _CurrentDataGridView.Rows[selectedRow].Cells["FullName"].Value.ToString();
+                            if (fileName.EndsWith(".url")
+
+                             ) {
+                                //Close the running process.
+                                if (_appHandle != IntPtr.Zero) {
+                                    PostMessage(_appHandle, WM_CLOSE, 0, 0);
+                                    System.Threading.Thread.Sleep(1000);
+                                    _appHandle = IntPtr.Zero;
+                                }
+                                ////tries to start the process 
+                                //try {                               
+                                //    myActions.KillAllProcessesByProcessName("iexplore");
+                                //    _proc = Process.Start(@"C:\Program Files\Internet Explorer\iexplore.exe", GetInternetShortcut(fileName));
+                                //} catch (Exception) {
+                                //    MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                //    return;
+                                //}
+
+
+                                //try {
+                                //    System.Threading.Thread.Sleep(500);
+                                //    while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                                //        System.Threading.Thread.Sleep(10);
+                                //        _proc.Refresh();
+                                //    }
+
+                                //    _proc.WaitForInputIdle();
+                                //    _appHandle = _proc.MainWindowHandle;
+
+
+
+                                //SetParent(_appHandle, mySplitContainer.Panel2.Handle);
+                                //SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+                                //} catch (Exception ex) {
+
+                                //    MessageBox.Show(ex.Message);
+                                //}
+                                //if (toolStripComboBox1.Text != "")
+                                //    Url = toolStripComboBox1.Text;
+                                _WordPadLoaded = false;
+                                _NotepadppLoaded = false;
+                                _WebBrowserLoaded = true;
+                                Url = GetInternetShortcut(fileName);
+                                InitializeComponentWebBrowser();
+                                webBrowser1.ScriptErrorsSuppressed = true;
+                                webBrowser1.Navigate(Url);
+
+                                mySplitContainer.Panel2.Controls.Clear();
+                                FlowLayoutPanel flp = new FlowLayoutPanel();
+                                flp.Dock = DockStyle.Fill;
+
+                                flp.Controls.Add(toolStrip1);
+                                flp.Controls.Add(webBrowser1);
+                                webBrowser1.Size = new System.Drawing.Size(mySplitContainer.Panel2.ClientSize.Width, mySplitContainer.Panel2.Height - 50);
+
+                                flp.Controls.Add(statusStrip1);
+                                mySplitContainer.Panel2.Controls.Add(flp);
+
+                                webBrowser1.ProgressChanged += new WebBrowserProgressChangedEventHandler(webpage_ProgressChanged);
+                                webBrowser1.DocumentTitleChanged += new EventHandler(webpage_DocumentTitleChanged);
+                                webBrowser1.StatusTextChanged += new EventHandler(webpage_StatusTextChanged);
+                                webBrowser1.Navigated += new WebBrowserNavigatedEventHandler(webpage_Navigated);
+                                webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webpage_DocumentCompleted);
+                            }
+                            if (fileName.EndsWith(".rtf")
+                                || fileName.EndsWith(".odt")
+                                || fileName.EndsWith(".doc")
+                                || fileName.EndsWith(".docx")
+                                ) {
+                                _NotepadppLoaded = false;
+                                _WebBrowserLoaded = false;
+                                _WordPadLoaded = true;
+                                //Close the running process
+                                mySplitContainer.Panel2.Controls.Clear();
+                                if (_appHandle != IntPtr.Zero) {
+                                    PostMessage(_appHandle, WM_CLOSE, 0, 0);
+                                    System.Threading.Thread.Sleep(1000);
+                                    _appHandle = IntPtr.Zero;
+                                }
+                                //tries to start the process 
+                                try {
+                                    _proc = Process.Start(@"C:\Program Files\Windows NT\Accessories\wordpad.exe", "\"" + fileName + "\"");
+                                } catch (Exception) {
+                                    MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    return;
+                                }
+
+
+                                System.Threading.Thread.Sleep(500);
+                                while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                                    System.Threading.Thread.Sleep(10);
+                                    _proc.Refresh();
+                                }
+
+                                _proc.WaitForInputIdle();
+                                _appHandle = _proc.MainWindowHandle;
+
+                                SetParent(_appHandle, mySplitContainer.Panel2.Handle);
+                                MoveWindow(_appHandle, 0, 0, mySplitContainer.Panel2.Width - 5, mySplitContainer.Panel2.Height, true);
+                                //  SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+                                //  SetTitle(_dir.FileView);
+                            } else {
+                                if (fileName.EndsWith(".txt")
+                                    || fileName.EndsWith(".bat")
+                                    || fileName.EndsWith(".cs")
+                                    || fileName.EndsWith(".xaml")
+                                    || fileName.EndsWith(".sln")
+                                    || fileName.EndsWith(".csproj")
+                                    || fileName.EndsWith(".resx")
+                                     || fileName.EndsWith(".js")
+                                      || fileName.EndsWith(".css")
+                                      || fileName.EndsWith(".html")
+                                      || fileName.EndsWith(".htm")
+                                      || fileName.EndsWith(".xml")
+                                      || fileName.EndsWith(".sql")
+                                      || fileName.EndsWith(".asp")
+                                      || fileName.EndsWith(".inc")
+                                      || fileName.EndsWith(".dinc")
+                                      || fileName.EndsWith(".aspx")
+                                      || fileName.EndsWith(".csv")) {
+                                    _WordPadLoaded = false;
+                                    _NotepadppLoaded = true;
+                                    _WebBrowserLoaded = false;
+                                    //Close the running process
+                                    mySplitContainer.Panel2.Controls.Clear();
+                                    if (_appHandle != IntPtr.Zero) {
+                                        PostMessage(_appHandle, WM_CLOSE, 0, 0);
+                                        System.Threading.Thread.Sleep(1000);
+                                        _appHandle = IntPtr.Zero;
+                                    }
+                                    //tries to start the process 
+                                    try {
+                                        myActions.KillAllProcessesByProcessName("notepad++");
+                                        _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", fileName);
+                                    } catch (Exception) {
+                                        MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                        return;
+                                    }
+
+
+                                    //    System.Threading.Thread.Sleep(500);
+                                    while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                                        System.Threading.Thread.Sleep(10);
+                                        _proc.Refresh();
+                                    }
+
+                                    _proc.WaitForInputIdle();
+                                    _appHandle = _proc.MainWindowHandle;
+
+                                    SetParent(_appHandle, mySplitContainer.Panel2.Handle);
+                                    SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+                                    SetTitle(_dir.FileView);
+                                }
+                            }
+
+                        }
+
+                    }
+                }
+
+            }
         }
-
-
-
 
 
         private void subCategoryToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -1822,6 +2014,7 @@ namespace System.Windows.Forms.Samples {
         private void dataGridView1_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e) {
             Methods myActions = new Methods();
             //    DataGridViewCell myCell = _CurrentDataGridView.SelectedCells[0];
+            myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow", e.RowIndex.ToString());
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 if (myCell.ColumnIndex == 0 && e.RowIndex > -1) {
                     // Call Active on DirectoryView
@@ -2250,7 +2443,7 @@ namespace System.Windows.Forms.Samples {
                             _WebBrowserLoaded = false;
                             _WordPadLoaded = true;
                             //Close the running process
-                            mySplitContainer.Panel2.Controls.Clear();                          
+                            mySplitContainer.Panel2.Controls.Clear();
                             if (_appHandle != IntPtr.Zero) {
                                 PostMessage(_appHandle, WM_CLOSE, 0, 0);
                                 System.Threading.Thread.Sleep(1000);
@@ -2276,7 +2469,7 @@ namespace System.Windows.Forms.Samples {
 
                             SetParent(_appHandle, mySplitContainer.Panel2.Handle);
                             MoveWindow(_appHandle, 0, 0, mySplitContainer.Panel2.Width - 5, mySplitContainer.Panel2.Height, true);
-                           //  SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+                            //  SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                             //  SetTitle(_dir.FileView);
                         } else {
                             if (fileName.EndsWith(".txt")
@@ -3216,7 +3409,7 @@ namespace System.Windows.Forms.Samples {
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e) {
-         
+
         }
 
         private void AddDataGridToTab(string pstrInitialDirectory) {
@@ -3825,7 +4018,7 @@ namespace System.Windows.Forms.Samples {
                         myColumnOrderItem.Visible = true;
                     } else {
                         myColumnOrderItem.Visible = false;
-                    }   
+                    }
                     myInt = 0;
                     Int32.TryParse(columnArray[3], out myInt);
                     myColumnOrderItem.ColumnIndex = myInt;
@@ -3872,12 +4065,12 @@ namespace System.Windows.Forms.Samples {
             if (_CurrentIndex == tabControl1.TabCount - 1) {
                 mySplitContainer.Panel1.Controls.Add(myDataGridView);
                 tabControl1.TabPages[_CurrentIndex - 1].Controls.Add(mySplitContainer);
-                
-            //    tabControl1.TabPages[_CurrentIndex - 1].Controls.Add(myDataGridView);
+
+                //    tabControl1.TabPages[_CurrentIndex - 1].Controls.Add(myDataGridView);
             } else {
                 mySplitContainer.Panel1.Controls.Add(myDataGridView);
                 tabControl1.TabPages[_CurrentIndex].Controls.Add(mySplitContainer);
-                
+
                 // tabControl1.TabPages[_CurrentIndex].Controls.Add(myDataGridView);
             }
         }
@@ -5569,46 +5762,46 @@ namespace System.Windows.Forms.Samples {
 
 
 
-                settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPath(myNewProjectSourcePath1));
-                using (FileStream fs = new FileStream(settingsDirectory + @"\MatchInfo.txt", FileMode.Create)) {
-                    StreamWriter file = new System.IO.StreamWriter(fs, Encoding.Default);
+            settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPath(myNewProjectSourcePath1));
+            using (FileStream fs = new FileStream(settingsDirectory + @"\MatchInfo.txt", FileMode.Create)) {
+                StreamWriter file = new System.IO.StreamWriter(fs, Encoding.Default);
 
-                    file.WriteLine(@"-- " + strSearchText + " in " + strPathToSearch + " from " + strSearchPattern + " excl  " + strSearchExcludePattern + " --");
-                    foreach (var item in matchInfoList) {
-                        file.WriteLine("\"" + item.FullName + "\"(" + item.LineNumber + "," + item.LinePosition + "): " + item.LineText.Substring(0, item.LineText.Length > 5000 ? 5000 : item.LineText.Length));
-                    }
-                    int intUniqueFiles = matchInfoList.Select(x => x.FullName).Distinct().Count();
-                    st.Stop();
-                    // Get the elapsed time as a TimeSpan value.
-                    TimeSpan ts = st.Elapsed;
-                    // Format and display the TimeSpan value.
-                    string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
-                        ts.Hours, ts.Minutes, ts.Seconds,
-                        ts.Milliseconds / 10);
-                    file.WriteLine("RunTime " + elapsedTime);
-                    file.WriteLine(intHits.ToString() + " hits");
-                    // file.WriteLine(myFileList.Count().ToString() + " files");           
-                    file.WriteLine(intUniqueFiles.ToString() + " files with hits");
-                    file.Close();
-
-                    myActions.KillAllProcessesByProcessName("notepad++");
-                    // Get the elapsed time as a TimeSpan value.
-                    ts = st.Elapsed;
-                    // Format and display the TimeSpan value.
-                    elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
-                       ts.Hours, ts.Minutes, ts.Seconds,
-                       ts.Milliseconds / 10);
-                    Console.WriteLine("RunTime " + elapsedTime);
-                    Console.WriteLine(intHits.ToString() + " hits");
-                    // Console.WriteLine(myFileList.Count().ToString() + " files");
-                    Console.WriteLine(intUniqueFiles.ToString() + " files with hits");
-                    Console.ReadLine();
-                    //  myActions.KillAllProcessesByProcessName("notepad++");
-                    string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
-                    string strContent = settingsDirectory + @"\MatchInfo.txt";
-                    myActions.Run(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
-                    myResult = "RunTime: " + elapsedTime + "\n\r\n\rHits: " + intHits.ToString() + "\n\r\n\rFiles with hits: " + intUniqueFiles.ToString() + "\n\r\n\rPut Cursor on line and\n\r press Ctrl+Alt+N\n\rto view detail page. ";
+                file.WriteLine(@"-- " + strSearchText + " in " + strPathToSearch + " from " + strSearchPattern + " excl  " + strSearchExcludePattern + " --");
+                foreach (var item in matchInfoList) {
+                    file.WriteLine("\"" + item.FullName + "\"(" + item.LineNumber + "," + item.LinePosition + "): " + item.LineText.Substring(0, item.LineText.Length > 5000 ? 5000 : item.LineText.Length));
                 }
+                int intUniqueFiles = matchInfoList.Select(x => x.FullName).Distinct().Count();
+                st.Stop();
+                // Get the elapsed time as a TimeSpan value.
+                TimeSpan ts = st.Elapsed;
+                // Format and display the TimeSpan value.
+                string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                    ts.Hours, ts.Minutes, ts.Seconds,
+                    ts.Milliseconds / 10);
+                file.WriteLine("RunTime " + elapsedTime);
+                file.WriteLine(intHits.ToString() + " hits");
+                // file.WriteLine(myFileList.Count().ToString() + " files");           
+                file.WriteLine(intUniqueFiles.ToString() + " files with hits");
+                file.Close();
+
+                myActions.KillAllProcessesByProcessName("notepad++");
+                // Get the elapsed time as a TimeSpan value.
+                ts = st.Elapsed;
+                // Format and display the TimeSpan value.
+                elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                   ts.Hours, ts.Minutes, ts.Seconds,
+                   ts.Milliseconds / 10);
+                Console.WriteLine("RunTime " + elapsedTime);
+                Console.WriteLine(intHits.ToString() + " hits");
+                // Console.WriteLine(myFileList.Count().ToString() + " files");
+                Console.WriteLine(intUniqueFiles.ToString() + " files with hits");
+                Console.ReadLine();
+                //  myActions.KillAllProcessesByProcessName("notepad++");
+                string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
+                string strContent = settingsDirectory + @"\MatchInfo.txt";
+                myActions.Run(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
+                myResult = "RunTime: " + elapsedTime + "\n\r\n\rHits: " + intHits.ToString() + "\n\r\n\rFiles with hits: " + intUniqueFiles.ToString() + "\n\r\n\rPut Cursor on line and\n\r press Ctrl+Alt+N\n\rto view detail page. ";
+            }
 
 
             return myResult;
@@ -6731,7 +6924,7 @@ namespace System.Windows.Forms.Samples {
         }
 
 
-		
+
 
         private void fileShortcutFileToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
