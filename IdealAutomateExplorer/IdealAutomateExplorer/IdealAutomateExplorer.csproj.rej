@@ -1,0 +1,10 @@
+diff a/IdealAutomateExplorer/IdealAutomateExplorer/IdealAutomateExplorer.csproj b/IdealAutomateExplorer/IdealAutomateExplorer/IdealAutomateExplorer.csproj	(rejected hunks)
+@@ -9,7 +9,7 @@
+     <RootNamespace>System.Windows.Forms.Samples</RootNamespace>
+     <AssemblyName>IdealAutomateExplorer</AssemblyName>
+     <WarningLevel>4</WarningLevel>
+-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
++    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+     <FileUpgradeFlags>
+     </FileUpgradeFlags>
+     <UpgradeBackupLocation>

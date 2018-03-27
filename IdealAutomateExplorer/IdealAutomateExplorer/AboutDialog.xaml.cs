@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using Windows.ApplicationModel;
+
 
 namespace Hardcodet.Wpf.Samples
 {
@@ -34,11 +34,11 @@ namespace Hardcodet.Wpf.Samples
     }
         public static string GetAppVersion() {
 
-            Package package = Package.Current;
-            PackageId packageId = package.Id;
-            PackageVersion version = packageId.Version;
+            //Package package = Package.Current;
+            //PackageId packageId = package.Id;
+            //PackageVersion version = packageId.Version;
 
-            return string.Format("{0}.{1}.{2}.{3}", version.Major, version.Minor, version.Build, version.Revision);
+            return "not installed"; // string.Format("{0}.{1}.{2}.{3}", version.Major, version.Minor, version.Build, version.Revision);
 
         }
         public static Version GetCurrentVersion()

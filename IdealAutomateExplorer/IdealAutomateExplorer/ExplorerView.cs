@@ -768,8 +768,8 @@ namespace System.Windows.Forms.Samples {
             if (_selectedRow > 0 && e.RowIndex == _selectedRow) {
                 if (_CurrentDataGridView.Rows[_selectedRow].Cells.Count > 1) {
                     _CurrentDataGridView.Rows[_selectedRow].Cells[1].Selected = true;
-                    _CurrentDataGridView.FirstDisplayedScrollingRowIndex = _selectedRow;
-                    _CurrentDataGridView.PerformLayout();
+                  //  _CurrentDataGridView.FirstDisplayedScrollingRowIndex = _selectedRow;
+                  //  _CurrentDataGridView.PerformLayout();
                 }
             }
         }
@@ -1787,8 +1787,8 @@ namespace System.Windows.Forms.Samples {
                         if (!c.Selected) {
                             _CurrentDataGridView.ClearSelection();
                             c.Selected = true;
-                            _CurrentDataGridView.FirstDisplayedScrollingRowIndex = _selectedRow;
-                            _CurrentDataGridView.PerformLayout();
+                        //    _CurrentDataGridView.FirstDisplayedScrollingRowIndex = _selectedRow;
+                        //    _CurrentDataGridView.PerformLayout();
                             string fileName = _CurrentDataGridView.Rows[_selectedRow].Cells["FullName"].Value.ToString();
                             if (fileName.EndsWith(".url")
 
@@ -4060,7 +4060,7 @@ namespace System.Windows.Forms.Samples {
             // mySplitContainer.Panel1
             // 
             //    mySplitContainer.Panel1.Controls.Add(this.tabControl1);
-            mySplitContainer.Size = new System.Drawing.Size(856, 500);
+            mySplitContainer.Size = new System.Drawing.Size(856, Screen.PrimaryScreen.Bounds.Height - 175);
             mySplitContainer.SplitterDistance = 499;
             mySplitContainer.TabIndex = 11;
             //mySplitContainer.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(mySplitContainer_SplitterMoved);
