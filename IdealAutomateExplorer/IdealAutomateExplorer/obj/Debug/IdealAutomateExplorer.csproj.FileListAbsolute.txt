@@ -277,7 +277,6 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomat
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\IdealAutomateExplorer.csproj.GenerateResource.Cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\IdealAutomateExplorer.csproj.CoreCompileInputs.cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\IdealAutomateExplorer.exe
-C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\IdealAutomateExplorer.csprojResolveAssemblyReference.cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\MainWindow.baml
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\WindowMultipleControls.baml
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\MainWindow.g.cs
@@ -311,3 +310,4 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomat
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\IdealAutomateExplorer.TrustInfo.xml
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\IdealAutomateExplorer.exe.manifest
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\IdealAutomateExplorer.application
+C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\IdealAutomateExplorer.csprojResolveAssemblyReference.cache

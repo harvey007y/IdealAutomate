@@ -196,6 +196,16 @@ namespace System.Windows.Forms.Samples {
                     }
                     if (MessageBox.Show("Would you like to Close this Tab?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
                         this.tabControl1.TabPages.RemoveAt(i);
+                        var itemToRemove = listLoadedIndexes.SingleOrDefault(l => l == i);
+                        if (itemToRemove != -1) {
+                            listLoadedIndexes.Remove(itemToRemove);
+                        }
+                        for (int j = 0; j < listLoadedIndexes.Count; j++) {
+                            if (listLoadedIndexes[j] > i) {
+                                listLoadedIndexes[j] = listLoadedIndexes[j] - 1;
+                            }
+                        }                       
+
                         removedIndex = i;
                         break;
                     }
@@ -204,16 +214,20 @@ namespace System.Windows.Forms.Samples {
             Methods myActions = new Methods();
             int nextIndex = 0;
             if (removedIndex > -1) {
-                for (int i = removedIndex; i < this.tabControl1.TabPages.Count - 2; i++) {
+                for (int i = removedIndex; i < this.tabControl1.TabPages.Count - 1; i++) {
                     nextIndex = i + 1;
                     string nextInitialDirectory = myActions.GetValueByKey("InitialDirectory" + nextIndex.ToString());
                     myActions.SetValueByKey("InitialDirectory" + i.ToString(), nextInitialDirectory);
                     string nextInitialDirectorySelectedRow = myActions.GetValueByKey("InitialDirectory" + nextIndex.ToString() + "SelectedRow");
-                    myActions.SetValueByKey("InitialDirectory" + i.ToString() + "SelectedRow", nextInitialDirectorySelectedRow);
-                    listLoadedIndexes[i] = listLoadedIndexes[nextIndex];
+                    if (nextInitialDirectorySelectedRow != "") {
+                        myActions.SetValueByKey("InitialDirectory" + i.ToString() + "SelectedRow", nextInitialDirectorySelectedRow);
+                    }
+
                     listSplitContainer[i] = listSplitContainer[nextIndex];
                     listBindingSource[i] = listBindingSource[nextIndex];
                 }
+               
+               
                 myActions.SetValueByKey("NumOfTabs", this.tabControl1.TabPages.Count.ToString());
             }
             if (_ignoreSelectedIndexChanged == true) {
@@ -221,7 +235,7 @@ namespace System.Windows.Forms.Samples {
                 //  return;
             }
 
-
+            // Adding a new tab
             if (tabControl1.SelectedIndex == tabControl1.TabCount - 1) {
                 strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
                 // Set Initial Directory to My Documents
@@ -415,6 +429,185 @@ namespace System.Windows.Forms.Samples {
             if (!listLoadedIndexes.Contains(tabControl1.SelectedIndex)) {
                 RefreshDataGrid();
                 listLoadedIndexes.Add(tabControl1.SelectedIndex);
+            } else {
+                string strCurrentPath = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
+                cbxCurrentPath.Text = strCurrentPath;
+                cbxCurrentPath.SelectedValue = strCurrentPath;
+            }
+            _selectedRow = myActions.GetValueByKeyAsInt("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow");
+            if (_selectedRow > 0) {
+                if (_CurrentDataGridView.Rows.Count > _selectedRow && _CurrentDataGridView.Rows[_selectedRow].Cells.Count > 1) {
+                    //_CurrentDataGridView.Rows[selectedRow].Cells[1].Selected = true;
+                    string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
+                    if (detailsMenuItemChecked == "True") {
+
+                        DataGridViewCell c = _CurrentDataGridView.Rows[_selectedRow].Cells[1];
+                        if (!c.Selected) {
+                            _CurrentDataGridView.ClearSelection();
+                            c.Selected = true;
+                            //    _CurrentDataGridView.FirstDisplayedScrollingRowIndex = _selectedRow;
+                            //    _CurrentDataGridView.PerformLayout();
+                            string fileName = _CurrentDataGridView.Rows[_selectedRow].Cells["FullName"].Value.ToString();
+                            if (fileName.EndsWith(".url")
+
+                             ) {
+                                //Close the running process.
+                                if (_appHandle != IntPtr.Zero) {
+                                    PostMessage(_appHandle, WM_CLOSE, 0, 0);
+                                    System.Threading.Thread.Sleep(1000);
+                                    _appHandle = IntPtr.Zero;
+                                }
+                                ////tries to start the process 
+                                //try {                               
+                                //    myActions.KillAllProcessesByProcessName("iexplore");
+                                //    _proc = Process.Start(@"C:\Program Files\Internet Explorer\iexplore.exe", GetInternetShortcut(fileName));
+                                //} catch (Exception) {
+                                //    MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                //    return;
+                                //}
+
+
+                                //try {
+                                //    System.Threading.Thread.Sleep(500);
+                                //    while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                                //        System.Threading.Thread.Sleep(10);
+                                //        _proc.Refresh();
+                                //    }
+
+                                //    _proc.WaitForInputIdle();
+                                //    _appHandle = _proc.MainWindowHandle;
+
+
+
+                                //SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                                //SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+                                //} catch (Exception ex) {
+
+                                //    MessageBox.Show(ex.Message);
+                                //}
+                                //if (toolStripComboBox1.Text != "")
+                                //    Url = toolStripComboBox1.Text;
+                                _WordPadLoaded = false;
+                                _NotepadppLoaded = false;
+                                _WebBrowserLoaded = true;
+                                Url = GetInternetShortcut(fileName);
+                                InitializeComponentWebBrowser();
+                                webBrowser1.ScriptErrorsSuppressed = true;
+                                webBrowser1.Navigate(Url);
+
+                                _CurrentSplitContainer.Panel2.Controls.Clear();
+                                FlowLayoutPanel flp = new FlowLayoutPanel();
+                                flp.Dock = DockStyle.Fill;
+
+                                flp.Controls.Add(toolStrip1);
+                                flp.Controls.Add(webBrowser1);
+                                webBrowser1.Size = new System.Drawing.Size(_CurrentSplitContainer.Panel2.ClientSize.Width, _CurrentSplitContainer.Panel2.Height - 50);
+
+                                flp.Controls.Add(statusStrip1);
+                                _CurrentSplitContainer.Panel2.Controls.Add(flp);
+
+                                webBrowser1.ProgressChanged += new WebBrowserProgressChangedEventHandler(webpage_ProgressChanged);
+                                webBrowser1.DocumentTitleChanged += new EventHandler(webpage_DocumentTitleChanged);
+                                webBrowser1.StatusTextChanged += new EventHandler(webpage_StatusTextChanged);
+                                webBrowser1.Navigated += new WebBrowserNavigatedEventHandler(webpage_Navigated);
+                                webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webpage_DocumentCompleted);
+                            }
+                            if (fileName.EndsWith(".rtf")
+                                || fileName.EndsWith(".odt")
+                                || fileName.EndsWith(".doc")
+                                || fileName.EndsWith(".docx")
+                                ) {
+                                _NotepadppLoaded = false;
+                                _WebBrowserLoaded = false;
+                                _WordPadLoaded = true;
+                                //Close the running process
+                                _CurrentSplitContainer.Panel2.Controls.Clear();
+                                if (_appHandle != IntPtr.Zero) {
+                                    PostMessage(_appHandle, WM_CLOSE, 0, 0);
+                                    System.Threading.Thread.Sleep(1000);
+                                    _appHandle = IntPtr.Zero;
+                                }
+                                //tries to start the process 
+                                try {
+                                    _proc = Process.Start(@"C:\Program Files\Windows NT\Accessories\wordpad.exe", "\"" + fileName + "\"");
+                                } catch (Exception) {
+                                    MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    return;
+                                }
+
+
+                                System.Threading.Thread.Sleep(500);
+                                while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                                    System.Threading.Thread.Sleep(10);
+                                    _proc.Refresh();
+                                }
+
+                                _proc.WaitForInputIdle();
+                                _appHandle = _proc.MainWindowHandle;
+
+                                SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                                MoveWindow(_appHandle, 0, 0, _CurrentSplitContainer.Panel2.Width - 5, _CurrentSplitContainer.Panel2.Height, true);
+                                //  SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+                                //  SetTitle(_dir.FileView);
+                            } else {
+                                if (fileName.EndsWith(".txt")
+                                    || fileName.EndsWith(".bat")
+                                    || fileName.EndsWith(".cs")
+                                    || fileName.EndsWith(".xaml")
+                                    || fileName.EndsWith(".sln")
+                                    || fileName.EndsWith(".csproj")
+                                    || fileName.EndsWith(".resx")
+                                     || fileName.EndsWith(".js")
+                                      || fileName.EndsWith(".css")
+                                      || fileName.EndsWith(".html")
+                                      || fileName.EndsWith(".htm")
+                                      || fileName.EndsWith(".xml")
+                                      || fileName.EndsWith(".sql")
+                                      || fileName.EndsWith(".asp")
+                                      || fileName.EndsWith(".inc")
+                                      || fileName.EndsWith(".dinc")
+                                      || fileName.EndsWith(".aspx")
+                                      || fileName.EndsWith(".csv")) {
+                                    _WordPadLoaded = false;
+                                    _NotepadppLoaded = true;
+                                    _WebBrowserLoaded = false;
+                                    //Close the running process
+                                    _CurrentSplitContainer.Panel2.Controls.Clear();
+                                    if (_appHandle != IntPtr.Zero) {
+                                        PostMessage(_appHandle, WM_CLOSE, 0, 0);
+                                        System.Threading.Thread.Sleep(1000);
+                                        _appHandle = IntPtr.Zero;
+                                    }
+                                    //tries to start the process 
+                                    try {
+                                        myActions.KillAllProcessesByProcessName("notepad++");
+                                        _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", fileName);
+                                    } catch (Exception) {
+                                        MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                        return;
+                                    }
+
+
+                                    //    System.Threading.Thread.Sleep(500);
+                                    while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                                        System.Threading.Thread.Sleep(10);
+                                        _proc.Refresh();
+                                    }
+
+                                    _proc.WaitForInputIdle();
+                                    _appHandle = _proc.MainWindowHandle;
+
+                                    SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                                    SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+                                    SetTitle(_dir.FileView);
+                                }
+                            }
+
+                        }
+
+                    }
+                }
+
             }
             _newTab = true;
         }
