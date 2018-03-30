@@ -5382,45 +5382,7 @@ namespace System.Windows.Forms.Samples {
             Methods myActions = new Methods();
             myActions = new Methods();
             string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
-            if (detailsMenuItemChecked == "False") {
-                myActions.SetValueByKey("DetailsMenuItemChecked", "True");
-                _CurrentSplitContainer.Panel2Collapsed = false;
-                this.detailsMenuItem.Checked = true;
-                this.listMenuItem.Checked = false;
-                //tries to start the process 
-                try {
-                    _proc = Process.Start(@"C:\Program Files\Windows NT\Accessories\wordpad.exe");
-                } catch (Exception) {
-                    MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                //disables button and textbox
-                //txtProcess.Enabled = false;
-                //btnStart.Enabled = false;
-
-                //host the started process in the panel 
-                System.Threading.Thread.Sleep(500);
-                while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
-                    System.Threading.Thread.Sleep(10);
-                    _proc.Refresh();
-                }
-
-                _proc.WaitForInputIdle();
-                _appHandle = _proc.MainWindowHandle;
-
-                SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
-                SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
-                //SendMessage(proc.MainWindowHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
-            }
-            _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
-
-            string strSavedDomainName = myActions.GetValueByKey("DomainName");
-            if (strSavedDomainName == "") {
-                strSavedDomainName = System.Net.NetworkInformation.IPGlobalProperties.GetIPGlobalProperties().DomainName;
-            }
-            //InitializeComponent();
-            //this.Hide();
+            
 
 
 
