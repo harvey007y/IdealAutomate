@@ -911,6 +911,7 @@ namespace System.Windows.Forms.Samples
             this.cbxCurrentPath.SelectedIndexChanged += new System.EventHandler(this.cbxCurrentPath_SelectedIndexChanged);
             this.cbxCurrentPath.TextChanged += new System.EventHandler(this.cbxCurrentPath_TextChanged);
             this.cbxCurrentPath.Leave += new System.EventHandler(this.cbxCurrentPath_Leave);
+            this.cbxCurrentPath.MouseDown += new System.Windows.Forms.MouseEventHandler(this.cbxCurrentPath_MouseDown);
             // 
             // pictureBox1
             // 
@@ -943,16 +944,6 @@ namespace System.Windows.Forms.Samples
             this.tabPage3.Text = "    +";
             this.tabPage3.ToolTipText = "Add New Tab";
             this.tabPage3.UseVisualStyleBackColor = true;
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(798, 36);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(32, 24);
-            this.pictureBox1.TabIndex = 12;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += async (o, e) => { await this.search_ClickAsync(o, e); };
-            // async (o, e) =>
             // 
             // ExplorerView
             // 

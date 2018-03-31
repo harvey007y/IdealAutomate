@@ -53,6 +53,7 @@ namespace System.Windows.Forms.Samples {
         bool boolStopEvent = false;
         bool _newTab = true;
         bool _ignoreSelectedIndexChanged = true;
+        int _selectedTabIndex = 0;
         Rectangle _IconRectangle = new Rectangle();
         List<HotKeyRecord> listHotKeyRecords = new List<HotKeyRecord>();
         Dictionary<string, VirtualKeyCode> dictVirtualKeyCodes = new Dictionary<string, VirtualKeyCode>();
@@ -182,7 +183,7 @@ namespace System.Windows.Forms.Samples {
 
 
         private void TabControl1_MouseClick(object sender, MouseEventArgs e) {
-           // _CurrentDataGridView.ClearSelection();
+            // _CurrentDataGridView.ClearSelection();
             //Looping through the controls.
             int removedIndex = -1;
             for (int i = 0; i < this.tabControl1.TabPages.Count - 1; i++) {
@@ -204,7 +205,7 @@ namespace System.Windows.Forms.Samples {
                             if (listLoadedIndexes[j] > i) {
                                 listLoadedIndexes[j] = listLoadedIndexes[j] - 1;
                             }
-                        }                       
+                        }
 
                         removedIndex = i;
                         break;
@@ -226,8 +227,8 @@ namespace System.Windows.Forms.Samples {
                     listSplitContainer[i] = listSplitContainer[nextIndex];
                     listBindingSource[i] = listBindingSource[nextIndex];
                 }
-               
-               
+
+
                 myActions.SetValueByKey("NumOfTabs", this.tabControl1.TabPages.Count.ToString());
             }
             if (_ignoreSelectedIndexChanged == true) {
@@ -419,20 +420,21 @@ namespace System.Windows.Forms.Samples {
             for (int i = 0; i < 10; i++) {
                 _CurrentSplitContainer.SplitterMoved -= _CurrentSplitContainer_SplitterMoved;
             }
-            
+
             _CurrentSplitContainer.MouseEnter -= _CurrentSplitContainer_MouseEnter;
             _CurrentSplitContainer.MouseLeave -= _CurrentSplitContainer_MouseLeave;
 
             _CurrentSplitContainer.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(_CurrentSplitContainer_SplitterMoved);
             _CurrentSplitContainer.MouseEnter += new System.EventHandler(_CurrentSplitContainer_MouseEnter);
             _CurrentSplitContainer.MouseLeave += new System.EventHandler(_CurrentSplitContainer_MouseLeave);
-            if (!listLoadedIndexes.Contains(tabControl1.SelectedIndex)) {
-                RefreshDataGrid();
-                listLoadedIndexes.Add(tabControl1.SelectedIndex);
-            } else {
+            if (listLoadedIndexes.Contains(tabControl1.SelectedIndex)) {
                 string strCurrentPath = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
                 cbxCurrentPath.Text = strCurrentPath;
                 cbxCurrentPath.SelectedValue = strCurrentPath;
+            } else {
+                _newTab = true;
+                RefreshDataGrid();
+                listLoadedIndexes.Add(tabControl1.SelectedIndex);
             }
             _selectedRow = myActions.GetValueByKeyAsInt("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow");
             if (_selectedRow > 0) {
@@ -951,7 +953,7 @@ namespace System.Windows.Forms.Samples {
                 } finally {
                     e.Handled = true;
                 }
-                
+
             }
         }
 
@@ -984,14 +986,14 @@ namespace System.Windows.Forms.Samples {
                 ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["NameCol"].Style.Padding = new Padding(indent, 0, 0, 0);
                 DataGridViewCell iconCell = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["dataGridViewImageColumn1"];
             }
-  
+
 
             if (_selectedRow > 0 && e.RowIndex == _selectedRow) {
                 if (_CurrentDataGridView.Rows[_selectedRow].Cells.Count > 1) {
 
                     _CurrentDataGridView.Rows[_selectedRow].Cells[1].Selected = true;
-                  //  _CurrentDataGridView.FirstDisplayedScrollingRowIndex = _selectedRow;
-                  //  _CurrentDataGridView.PerformLayout();
+                    //  _CurrentDataGridView.FirstDisplayedScrollingRowIndex = _selectedRow;
+                    //  _CurrentDataGridView.PerformLayout();
                 }
             }
         }
@@ -1499,7 +1501,7 @@ namespace System.Windows.Forms.Samples {
                 _CurrentDataGridView.ClearSelection();
                 _selectedRow = 0;
                 Methods myActions = new Methods();
-                myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow", "0");
+                myActions.SetValueByKey("InitialDirectory" + _selectedTabIndex.ToString() + "SelectedRow", "0");
             }
 
             if (AnyKeyPressed()) {
@@ -2010,15 +2012,18 @@ namespace System.Windows.Forms.Samples {
                         if (!c.Selected) {
                             _CurrentDataGridView.ClearSelection();
                             c.Selected = true;
-                        //    _CurrentDataGridView.FirstDisplayedScrollingRowIndex = _selectedRow;
-                        //    _CurrentDataGridView.PerformLayout();
+                            //    _CurrentDataGridView.FirstDisplayedScrollingRowIndex = _selectedRow;
+                            //    _CurrentDataGridView.PerformLayout();
                             string fileName = _CurrentDataGridView.Rows[_selectedRow].Cells["FullName"].Value.ToString();
                             if (fileName.EndsWith(".url")
 
                              ) {
                                 //Close the running process.
                                 if (_appHandle != IntPtr.Zero) {
-                                    PostMessage(_appHandle, WM_CLOSE, 0, 0);
+                                    if (_newTab == false) {
+                                        PostMessage(_appHandle, WM_CLOSE, 0, 0);
+                                    }
+                                    _newTab = false;
                                     System.Threading.Thread.Sleep(1000);
                                     _appHandle = IntPtr.Zero;
                                 }
@@ -2088,7 +2093,10 @@ namespace System.Windows.Forms.Samples {
                                 //Close the running process
                                 _CurrentSplitContainer.Panel2.Controls.Clear();
                                 if (_appHandle != IntPtr.Zero) {
-                                    PostMessage(_appHandle, WM_CLOSE, 0, 0);
+                                    if (_newTab == false) {
+                                        PostMessage(_appHandle, WM_CLOSE, 0, 0);
+                                    }
+                                    _newTab = false;
                                     System.Threading.Thread.Sleep(1000);
                                     _appHandle = IntPtr.Zero;
                                 }
@@ -2139,7 +2147,10 @@ namespace System.Windows.Forms.Samples {
                                     //Close the running process
                                     _CurrentSplitContainer.Panel2.Controls.Clear();
                                     if (_appHandle != IntPtr.Zero) {
-                                        PostMessage(_appHandle, WM_CLOSE, 0, 0);
+                                        if (_newTab == false) {
+                                            PostMessage(_appHandle, WM_CLOSE, 0, 0);
+                                        }
+                                        _newTab = false;
                                         System.Threading.Thread.Sleep(1000);
                                         _appHandle = IntPtr.Zero;
                                     }
@@ -2173,7 +2184,7 @@ namespace System.Windows.Forms.Samples {
                     }
                 }
 
-            }
+            }           
         }
 
 
@@ -2596,6 +2607,7 @@ namespace System.Windows.Forms.Samples {
                     DataGridViewCell c = (sender as DataGridView)[e.ColumnIndex, e.RowIndex];
                     if (!c.Selected) {
                         c.Selected = true;
+                        myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow", e.RowIndex.ToString());
                         string fileName = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["FullName"].Value.ToString();
                         if (fileName.EndsWith(".url")
 
@@ -2770,7 +2782,7 @@ namespace System.Windows.Forms.Samples {
                     c.DataGridView.ClearSelection();
                     c.DataGridView.CurrentCell = c;
                     c.Selected = true;
-                    _selectedRow = e.RowIndex;                    
+                    _selectedRow = e.RowIndex;
                     myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow", e.RowIndex.ToString());
                 }
             }
@@ -3647,7 +3659,7 @@ namespace System.Windows.Forms.Samples {
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e) {
-
+            _selectedTabIndex = tabControl1.SelectedIndex;
         }
 
         private void AddDataGridToTab(string pstrInitialDirectory) {
@@ -5444,8 +5456,9 @@ namespace System.Windows.Forms.Samples {
         private void cbxCurrentPath_SelectedIndexChanged(object sender, EventArgs e) {
             Methods myActions = new Methods();
             myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString(), ((ComboBoxPair)(cbxCurrentPath.SelectedItem))._Value);
-
-            RefreshDataGrid();
+            if (_newTab == false) {
+                RefreshDataGrid();
+            }
         }
 
         private void cbxCurrentPath_TextChanged(object sender, EventArgs e) {
@@ -5565,7 +5578,7 @@ namespace System.Windows.Forms.Samples {
                 }
             } catch (Exception ex) {
 
-                
+
             }
 
 
@@ -5575,7 +5588,7 @@ namespace System.Windows.Forms.Samples {
             Methods myActions = new Methods();
             myActions = new Methods();
             string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
-            
+
 
 
 
@@ -6783,13 +6796,6 @@ namespace System.Windows.Forms.Samples {
 
         private void ExplorerView_KeyUp(object sender, KeyEventArgs e) {
 
-            if (e.KeyCode == Keys.Escape) {
-                _CurrentDataGridView.ClearSelection();
-                _selectedRow = 0;
-                Methods myActions = new Methods();
-                myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow", "0");
-            }
-
         }
 
         private void ExplorerView_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e) {
@@ -7351,7 +7357,7 @@ namespace System.Windows.Forms.Samples {
             }
         }
 
-      
+
         private void findColumnsToolStripMenuItem_Click(object sender, EventArgs e) {
             //MainWindow mainWindow = new MainWindow();
             //mainWindow.Show();            
@@ -7917,8 +7923,9 @@ namespace System.Windows.Forms.Samples {
             SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, TOPMOST_FLAGS);
         }
 
-
-
+        private void cbxCurrentPath_MouseDown(object sender, MouseEventArgs e) {
+            _newTab = false;
+        }
     }
 
 }
