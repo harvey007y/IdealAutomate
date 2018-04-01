@@ -1,19 +1,20 @@
-﻿<Page x:Class="Hardcodet.Wpf.Samples.Videos.AffiliateProgram"
+﻿<Page x:Class="Hardcodet.Wpf.Samples.Videos.GettingStarted"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	Title="Affiliate Program" 
+	Title="Getting Started" 
 	>
     <FlowDocumentReader ViewingMode="Scroll">
         <FlowDocument FontSize="20">
             <Paragraph>
                 <Image Source="/Images/videos.jpg" Width="128" Height="128" Margin="0,0,30,0" />
-                <Run FontSize="30" BaselineAlignment="Center">Affiliate Program</Run>
+                <Run FontSize="30" BaselineAlignment="Center">Getting Started</Run>
 
             </Paragraph>
 
             <Paragraph>
-                <Button Click="Button_Click" Content="Affiliate Program Video Tutorial"/> - This three-minute video shows how to earn a 50% commission with IdealAutomate's Affiliate Program.
+                <Hyperlink Click="Button_Click">Getting Started Video Tutorial</Hyperlink> - This five-minute video shows how to get started with Ideal Automate Explorer in five minutes. 
             </Paragraph>
+            
 
 
         </FlowDocument>

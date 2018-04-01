@@ -7,64 +7,157 @@
         <FlowDocument FontSize="20">
             <Paragraph>
                 <Image Source="/Images/Benefits.jpg" Width="190" Height="190" Margin="0,0,30,0" />
-                <Run FontSize="30" BaselineAlignment="Center">Benefits</Run>
+                <Run FontSize="30" BaselineAlignment="Center">Benefits of Ideal Automate Explorer</Run>
             </Paragraph>
-            <List MarkerOffset="25" MarkerStyle="Decimal" StartIndex="1" >
-                <ListItem>
-                    <Paragraph>
-                        There are two tiers of privileges for the product: a free privileges tier and a professional privileges tier. The free privileges tier provides you with the fully functioning application, and this means you have no excuse for not trying it out. The free privileges tier allows you to automate up to 5,000 action steps in a month, which is a ton of free automation steps for the normal user (an average of 166 automated action steps per day is a lot of free automation). Only heavy-duty users will want to upgrade to the professional privileges tier, which uses the same application as the free tier, but the professional tier allows you to automate over 5,000 action steps in a month. The upgrade to the professional privileges tier is only $15/mo or $100/yr.
-                    </Paragraph>
-                </ListItem>
-                <ListItem>
-                    <Paragraph>
-                        Ideal Automate is based on the reuse of scripts that others have built. The ideal is that one person solves a problem and many can benefit from that solution when it published. If you publish a useful script that other people use, the number of action steps that they use of your script will be deducted from the number of steps you have used for the month so you can potentially use an unlimited number of steps for free each month.
-                    </Paragraph>
-                </ListItem>
-                <ListItem>
-                    <Paragraph>
-                        Easily launch all of your applications a single location (Never have to ask: "Now where did I put that application?")
-                    </Paragraph>
-                </ListItem>
-                <ListItem>
-                    <Paragraph>
-                        Create login scripts easily (typically, only five lines of code).
-                    </Paragraph>
-                </ListItem>
-                <ListItem>
-                    <Paragraph>
-                        Automate anything that you do repeatitively even if decisions are involved in the repetitive process
-                    </Paragraph>
-                </ListItem>
-                <ListItem>
-                    <Paragraph>
-                        Use Windows Snipping Tool to take a snapshot of a part of the screen where you want to click your mouse or type text and paste that snapshot into your scripts. One of the powerful features of your scripts is that they allow you to find a subimage within a larger one or within the screen as a whole.
-                    </Paragraph>
-                </ListItem>
-                <ListItem>
-                    <Paragraph>
-                        Write "building block" scripts that you can include in other scripts; for example, you can write one basic script that logs you into a web site, and include that "building block" script inside other scripts that are focused on going to different sections of the website.
-                    </Paragraph>
-                </ListItem>
-                <ListItem>
-                    <Paragraph>Publish any script you want to the community and download other people's scripts
-                    </Paragraph>
-                </ListItem>
-                <ListItem>
-                    <Paragraph>
-                        Stats are generated on how accurately scripts work and how many actions have been saved by using scripts
-                    </Paragraph>
-                </ListItem>
-                <ListItem>
-                    <Paragraph>
-                        A Script trace is created for each script executed for debugging purposes. The script trace tells you each line that was executed and provides pictures of what the screen looked like at the moment that there was an attempt to find an image.
-                    </Paragraph>
-                </ListItem>
-                <ListItem>
-                    <Paragraph>
-                        You can use Windows Task Scheduler to cause a script to run once at a particular future time or to run repetitively on any reoccurring schedule.
-                    </Paragraph>
-                </ListItem>
-            </List>
+            <Table CellSpacing="5" BorderThickness="1" BorderBrush="Black">
+                <TableRowGroup>
+                    <TableRow Background="Gainsboro" FontWeight="Bold">
+                        <TableCell ColumnSpan="10">
+                            <Paragraph TextAlignment="Center">Benefits of Ideal Automate Explorer</Paragraph>
+                        </TableCell>
+
+                    </TableRow>
+                </TableRowGroup>
+
+                <TableRowGroup>
+                    <TableRow>
+                        <TableCell Background="Gainsboro" FontWeight="Bold" ColumnSpan="1" >
+                            <Paragraph>
+                                <Image Source="/Images/GreenCheck.png" Width="32" Height="32" Margin="0,0,0,0" />
+                            </Paragraph>
+                        </TableCell>
+                        <TableCell ColumnSpan="9" >
+                            <Paragraph>
+                                <Bold>Windows Explorer Clone with Tabs</Bold> - IdealAutomate Explorer is like windows explorer, except it has a lot of additional built-in features. One feature is multiple tabs. Multiple tabs allows you to easily switch between views of multiple folders without having to open multiple versions of windows explorer.
+                               
+                            </Paragraph>
+                            <Paragraph>                               
+                                <Image Source="/Images/Tabs.png" Width="701" Height="189" Margin="0,0,0,0" />
+                            </Paragraph>
+                        </TableCell>
+
+                    </TableRow>
+
+
+                    <TableRow>
+                        <TableCell Background="Gainsboro" FontWeight="Bold" ColumnSpan="1" >
+                            <Paragraph>
+                                <Image Source="/Images/GreenCheck.png" Width="32" Height="32" Margin="0,0,0,0" />
+                            </Paragraph>
+                        </TableCell>
+                        <TableCell ColumnSpan="9" >
+                            <Paragraph>
+                                <Bold>Create New C# WPF Projects with single click</Bold> - IdealAutomate Explorer has a File/New Project menu tool item. Use File/New Project to easily create a C# WPF Application with a reference to IdealAutomateCore library. The IdealAutomateCore library allows one to automate almost any task. It does this by making it possible for you to write applications that can find images on the screen. By finding an image on the screen, you are able to locate where you want to read or write something, regardless of which application the image resides within. The fact that you can read and write to virtually any location makes it possible to create a degree of artificial intelligence where the application is able to perform real-time, problem-solving activities. For example, the application can read a piece of information, interpret what it has read, and then make decisions in real time about what to do based on that interpretation.
+
+                            </Paragraph>
+                            <Paragraph>
+                                <Image Source="/Images/NewProject.png" Width="259" Height="189" Margin="0,0,0,0" />
+                            </Paragraph>
+                        </TableCell>
+
+                    </TableRow>
+
+                    <TableRow>
+                        <TableCell Background="Gainsboro" FontWeight="Bold" ColumnSpan="1" >
+                            <Paragraph>
+                                <Image Source="/Images/GreenCheck.png" Width="32" Height="32" Margin="0,0,0,0" />
+                            </Paragraph>
+                        </TableCell>
+                        <TableCell ColumnSpan="9" >
+                            <Paragraph>
+                                <Bold>Preview Mode</Bold> - IdealAutomate Explorer has a List View and a Details View. Use Details View to preview contents of files when you select them. Ideal Automate Explorer gives you previews of your files by launching wordpad, notepad++, and internet explorer within the Explorer application to provide a seamless viewing experience.
+
+                            </Paragraph>
+                            <Paragraph>
+                                <Image Source="/Images/Preview.png" Width="800"  Margin="0,0,0,0" />
+                            </Paragraph>
+                        </TableCell>
+
+                    </TableRow>
+
+
+                   
+
+                    <TableRow>
+                        <TableCell Background="Gainsboro" FontWeight="Bold" ColumnSpan="1" >
+                            <Paragraph>
+                                <Image Source="/Images/GreenCheck.png" Width="32" Height="32" Margin="0,0,0,0" />
+                            </Paragraph>
+                        </TableCell>
+                        <TableCell ColumnSpan="9" >
+                            <Paragraph>
+                                <Bold>Categories and Subcategories</Bold> - IdealAutomate Explorer has File/New/Category and File/New/Subcategory menu item. Add Categories and Subcategories to your folder structures to help organize your files better. Categories and Subcategories expand and collapse, and their expanded or collapsed state is remembered. This makes it where you do not have to repeatedly open and close certain folders to get to the level of detail you desire. Categories and Subcategories make it easy to create a knowledge base out of folders and files.
+
+                            </Paragraph>
+                            <Paragraph>
+                                <Image Source="/Images/CategoriesSubCategories.png" Width="611" Height="512" Margin="0,0,0,0" />
+                            </Paragraph>
+                        </TableCell>
+
+                    </TableRow>
+
+                    <TableRow>
+                        <TableCell Background="Gainsboro" FontWeight="Bold" ColumnSpan="1" >
+                            <Paragraph>
+                                <Image Source="/Images/GreenCheck.png" Width="32" Height="32" Margin="0,0,0,0" />
+                            </Paragraph>
+                        </TableCell>
+                        <TableCell ColumnSpan="9" >
+                            <Paragraph>
+                                <Bold>Super Fast Search</Bold> - Search allows you to find all instances of string or regular expression in text, word, or open office files included within all of the subfolders of a parent folder. You can use a hotkey to navigate to the particular line in the result in a file or to open a new tab in IdealAutomate Explorer that points to the immediate parent folder of the file that contains the text that was found. To see a speed comparison of this search to other search utilities, please see: https://youtu.be/IY-Y5BZUpaM
+
+                            </Paragraph>
+                            <Paragraph>
+                                <Image Source="/Images/Search.png" Width="800"  Margin="0,0,0,0" />
+                            </Paragraph>
+                        </TableCell>
+
+                    </TableRow>
+
+                    <TableRow>
+                        <TableCell Background="Gainsboro" FontWeight="Bold" ColumnSpan="1" >
+                            <Paragraph>
+                                <Image Source="/Images/GreenCheck.png" Width="32" Height="32" Margin="0,0,0,0" />
+                            </Paragraph>
+                        </TableCell>
+                        <TableCell ColumnSpan="9" >
+                            <Paragraph>
+                                <Bold>Folder/File Context Menus to Open, Build, Run, and add Metadata/Hotkeys</Bold> - Context Menus make it easy for you to open, build, and run your projects. They also allow you to add metadata and hotkeys.
+
+                            </Paragraph>
+                            <Paragraph>
+                                <Image Source="/Images/ContextMenus.png" Width="542" Height="547" Margin="0,0,0,0" />
+                            </Paragraph>
+                            <Paragraph>
+                                <Bold>Build with msbuild</Bold> - If you select a folder, you can use the "Build" context menu item to build the solution with msbuild in the background without navigating down to the solution file.
+                                <LineBreak></LineBreak>
+                            </Paragraph>
+                            <Paragraph>
+                                <Bold>Run executable within folder</Bold> - If you select a folder, you can use "Run" context menu item to run an executable in the folder or subfolder without navigating down to the executable file.
+                                <LineBreak></LineBreak>
+                            </Paragraph>
+                            <Paragraph>
+                                <Bold>Open Windows Explorer for folder</Bold> - If you select a folder, you can use the "Open With Windows Explorer" context menu item to open the folder with Windows Explorer.
+                                <LineBreak></LineBreak>
+                            </Paragraph>
+                            <Paragraph>
+                                <Bold>Compare Files</Bold> - If you select a file, you can use the "Compare" context menu item to open file in Notepad++ as Actual.txt file or Ideal.txt file for comparing two files.
+                                <LineBreak></LineBreak>
+                            </Paragraph>
+                            <Paragraph>
+                                <Bold>Add metadata and hotkeys to files</Bold> - If you select a file or folder, you can add metadata for: Manual Execution Time, a Custom field, Status, or a HotKey. Manual Execution Time is used to enter how long in seconds that it takes you to do some process manually. Manual Execution Time is compared to Actual Execution Time when you have executables that automate some process to tell you how much time is saved by using the automated process. The Custom Field and Status metadata are particularly useful when you have a folder of files that represent a todo list. Hotkeys make it so that you can execute any program by pressing the hotkey for that program while IdealAutomate Explorer is running..
+                                <LineBreak></LineBreak>
+                            </Paragraph>
+                        </TableCell>
+
+                    </TableRow>
+
+                 
+                </TableRowGroup>
+                
+            </Table>
+
+            
 
         </FlowDocument>
     </FlowDocumentReader>

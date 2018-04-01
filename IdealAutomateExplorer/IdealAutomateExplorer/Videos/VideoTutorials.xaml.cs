@@ -20,31 +20,34 @@ using System.Windows.Shapes;
         public VideoTutorials()
         {
             InitializeComponent();
-            frame.Source = new Uri("Install.xaml", UriKind.RelativeOrAbsolute);
+            frame.Source = new Uri("GettingStarted.xaml", UriKind.RelativeOrAbsolute);
         }
        
         
-        private void Install_MouseLeftButtonDown(object sender, RoutedEventArgs e)
+        private void GettingStarted_MouseLeftButtonDown(object sender, RoutedEventArgs e)
         {
-            frame.Source = new Uri("Install.xaml", UriKind.RelativeOrAbsolute);
+            frame.Source = new Uri("GettingStarted.xaml", UriKind.RelativeOrAbsolute);
         }
-        private void LaunchExecutable_MouseLeftButtonDown(object sender, RoutedEventArgs e)
+        private void BasicFeatures_MouseLeftButtonDown(object sender, RoutedEventArgs e)
         {
-            frame.Source = new Uri("LaunchExecutable.xaml", UriKind.RelativeOrAbsolute);
+            frame.Source = new Uri("BasicFeatures.xaml", UriKind.RelativeOrAbsolute);
         }
-        private void FindImage_MouseLeftButtonDown(object sender, RoutedEventArgs e)
+        private void SetBreakpoints_MouseLeftButtonDown(object sender, RoutedEventArgs e)
         {
-            frame.Source = new Uri("FindImage.xaml", UriKind.RelativeOrAbsolute);
+            frame.Source = new Uri("SetBreakpoints.xaml", UriKind.RelativeOrAbsolute);
         }
-        private void AutomateLogin_MouseLeftButtonDown(object sender, RoutedEventArgs e)
+        private void CreateExecutablesMenu_MouseLeftButtonDown(object sender, RoutedEventArgs e)
         {
-            frame.Source = new Uri("AutomateLogin.xaml", UriKind.RelativeOrAbsolute);
+            frame.Source = new Uri("CreateExecutablesMenu.xaml", UriKind.RelativeOrAbsolute);
         }
 
-        private void AffiliateProgram_MouseLeftButtonDown(object sender, RoutedEventArgs e)
+        private void WrapTextInQuotes_MouseLeftButtonDown(object sender, RoutedEventArgs e)
         {
-            frame.Source = new Uri("AffiliateProgram.xaml", UriKind.RelativeOrAbsolute);
+            frame.Source = new Uri("WrapTextInQuotes.xaml", UriKind.RelativeOrAbsolute);
         }
+    private void WrapSqlInQuotes_MouseLeftButtonDown(object sender, RoutedEventArgs e) {
+        frame.Source = new Uri("WrapSqlInQuotes.xaml", UriKind.RelativeOrAbsolute);
+    }
 
     private void frame_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e) {
 

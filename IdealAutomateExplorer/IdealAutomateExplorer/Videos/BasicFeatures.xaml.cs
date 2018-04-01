@@ -12,20 +12,21 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Hardcodet.Wpf.Samples.Help
+namespace Hardcodet.Wpf.Samples.Videos
 {
     /// <summary>
-    /// Interaction logic for Overview.xaml
+    /// Interaction logic for CopyrightInformation.xaml
     /// </summary>
-    public partial class OverviewAutomater : Page
+    public partial class BasicFeatures : Page
     {
-        public OverviewAutomater()
+        public BasicFeatures()
         {
             InitializeComponent();
         }
 
-        private void Hyperlink_Click(object sender, RoutedEventArgs e) {
-            Process.Start("iexplore", "https://github.com/harvey007y/IdealAutomate");
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Process.Start("iexplore", "https://www.youtube.com/watch?v=EVFt-dSLGWw&feature=youtu.be");
         }
     }
 }

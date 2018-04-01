@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,17 +17,16 @@ namespace Hardcodet.Wpf.Samples.Videos
     /// <summary>
     /// Interaction logic for CopyrightInformation.xaml
     /// </summary>
-    public partial class Install : Page
+    public partial class SetBreakpoints : Page
     {
-        public Install()
+        public SetBreakpoints()
         {
             InitializeComponent();
         }
 
-       
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start("iexplore", "https://www.youtube.com/watch?v=XI2yGmBN_yU");
+            Process.Start("iexplore", "https://www.youtube.com/watch?v=Ydx_40PUmSA&feature=youtu.be");
         }
     }
 }

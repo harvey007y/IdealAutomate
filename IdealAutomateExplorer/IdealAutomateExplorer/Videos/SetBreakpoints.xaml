@@ -1,0 +1,20 @@
+﻿<Page x:Class="Hardcodet.Wpf.Samples.Videos.SetBreakpoints"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	Title="Basic Features" 
+	>
+    <FlowDocumentReader ViewingMode="Scroll">
+        <FlowDocument FontSize="20">
+            <Paragraph>
+                <Image Source="/Images/videos.jpg" Width="128" Height="128" Margin="0,0,30,0" />
+                <Run FontSize="30" BaselineAlignment="Center">Set Breakpoints</Run>
+
+            </Paragraph>
+            <Paragraph>
+                <Hyperlink Click="Button_Click">Automatically Set Breakpoints in Visual Studio Video Tutorial</Hyperlink> - This  is an 2-minute video that shows one example of the powerful applications that you can create with IdealAutomate. In this video, you will see how you can immediately start using IdealAutomate to automate setting breakpoints in Visual Studio on every method in a file, folder, or project.
+            </Paragraph>
+
+
+        </FlowDocument>
+    </FlowDocumentReader>
+</Page>

@@ -7,14 +7,14 @@
     <framework targetVersion="4.5" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="IdealAutomateExplorer.exe.manifest" size="54497">
+    <dependentAssembly dependencyType="install" codebase="IdealAutomateExplorer.exe.manifest" size="58554">
       <assemblyIdentity name="IdealAutomateExplorer.exe" version="1.0.0.4" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="amd64" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>pHSArSli7UzBzFzuEhu2GrJVdF1UTOggISV9dnEQmU8=</dsig:DigestValue>
+        <dsig:DigestValue>KbjbGVZWgWyRIxS4XLx8FBQ0SziqXWqVFTRAUvGNVR0=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

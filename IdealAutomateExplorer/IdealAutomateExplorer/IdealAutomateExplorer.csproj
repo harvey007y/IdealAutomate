@@ -157,17 +157,23 @@
     <Compile Include="StringExtensionMethods.cs" />
     <Compile Include="SubPositionInfo.cs" />
     <Compile Include="Switcher.cs" />
-    <Compile Include="Videos\AffiliateProgram.xaml.cs">
-      <DependentUpon>AffiliateProgram.xaml</DependentUpon>
+    <Compile Include="Videos\WrapSqlInQuotes.xaml.cs">
+      <DependentUpon>WrapSqlInQuotes.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Videos\AutomateLogin.xaml.cs">
-      <DependentUpon>AutomateLogin.xaml</DependentUpon>
+    <Compile Include="Videos\WrapTextInQuotes.xaml.cs">
+      <DependentUpon>WrapTextInQuotes.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Videos\Install.xaml.cs">
-      <DependentUpon>Install.xaml</DependentUpon>
+    <Compile Include="Videos\CreateExecutablesMenu.xaml.cs">
+      <DependentUpon>CreateExecutablesMenu.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Videos\LaunchExecutable.xaml.cs">
-      <DependentUpon>LaunchExecutable.xaml</DependentUpon>
+    <Compile Include="Videos\SetBreakpoints.xaml.cs">
+      <DependentUpon>SetBreakpoints.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Videos\GettingStarted.xaml.cs">
+      <DependentUpon>GettingStarted.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Videos\BasicFeatures.xaml.cs">
+      <DependentUpon>BasicFeatures.xaml</DependentUpon>
     </Compile>
     <Compile Include="Videos\VideoTutorials.xaml.cs">
       <DependentUpon>VideoTutorials.xaml</DependentUpon>
@@ -204,7 +210,13 @@
     <Content Include="Images\Book.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\CategoriesSubCategories.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\colorfulfolder.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\ContextMenus.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Description.PNG">
@@ -236,6 +248,9 @@
     <Content Include="Images\FolderSelected.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\GreenCheck.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\help.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -264,6 +279,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\icon_plus.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\IdealAutomateCoreBuildProperties.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\IdealAutomateExplorer.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\IdealAutomateExplorerDetailsView.PNG">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Images.PNG">
@@ -320,6 +344,12 @@
     <Content Include="Images\Music.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\NewProject.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Preview.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\Primitives.PNG">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -368,6 +398,9 @@
     <Content Include="Images\round.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\Search.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\small.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -387,6 +420,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Stats.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Tabs.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Tips.jpg">
@@ -997,19 +1033,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Videos\AffiliateProgram.xaml">
+    <Page Include="Videos\WrapSqlInQuotes.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Videos\AutomateLogin.xaml">
+    <Page Include="Videos\WrapTextInQuotes.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Videos\Install.xaml">
+    <Page Include="Videos\CreateExecutablesMenu.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Videos\LaunchExecutable.xaml">
+    <Page Include="Videos\SetBreakpoints.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Videos\GettingStarted.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Videos\BasicFeatures.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1025,7 +1069,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-  </ItemGroup>  
+  </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
       <Visible>False</Visible>
@@ -1061,7 +1105,7 @@
     </PublishFile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
-   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>

@@ -12,7 +12,7 @@
             <List MarkerOffset="25" MarkerStyle="Decimal" StartIndex="1" >
                 <ListItem>
                     <Paragraph>
-                        Do not give up. Scripts are not easy to write, and they are very "brittle" in that they break easily whenever anything changes; but they can also be a very powerful tool. When a script is first written it will often have problems at first due to unanticipated steps needed during execution. However, as the script is executed over and over again, you eventually remove all of the bugs in the script so that it almost becomes bullet proof.
+                        Do not give up. Automation applications are not easy to write, and they are very "brittle" in that they break easily whenever anything changes; but they can also be a very powerful tool. When an automation script is first written it will often have problems at first due to unanticipated steps needed during execution. However, as the script is executed over and over again, you eventually remove all of the bugs in the script so that it almost becomes bullet proof.
                     </Paragraph>
                 </ListItem>
                
@@ -21,31 +21,8 @@
                         If using dual monitors, IdealAutomate only uses your primary screen for taking images of the screen so you need to have drag any windows you will be using over to the primary monitor and either close or minimize them so that when they reopen, they will reopen on the primary monitor.
                     </Paragraph>
                 </ListItem>
-                <ListItem>
-                    <Paragraph>
-                        You can only create,edit, and execute scripts on your local machine, but you can clone your local scripts to personal and public scripts. Also, you can  download personal an public scripts to local scripts on your own machine. After downloading a public or personal script, you may have to update the images involved in the local script by replacing the images in the images tab with new images that you cut-n-paste from your local machine. This is because the resolution, background, etc. on your local machine may be different from the machine that the images were originally created from.
-                    </Paragraph>
-                </ListItem>
-                <ListItem>
-                    <Paragraph>
-                        The sequence numbers in the logic tab allow you to insert actions in between other actions. For example, to insert an action between sequence number 1 and 2, you just add a new line at the bottom that has a sequence number of 1.5.  The "Renum and Save" button in the logic tab allows you to easily renumber the sequence numbers.
-                    </Paragraph>
-                </ListItem>
-                <ListItem>
-                    <Paragraph>
-                        When you are in the logic tab, you can get context help for a given verb by selecting that verb from the dropdownlist and then pressing the ? button to the left of selected verb.
-                    </Paragraph>
-                </ListItem>
-                <ListItem>
-                    <Paragraph>
-                        Everything must be defined before it can be used in the logic tab - even numbers - I usually make the name for the number the same as the number to make it obvious that is a number.
-                    </Paragraph>
-                </ListItem>
-                <ListItem>
-                    <Paragraph>
-                        When pasting an image into the images tab, there is a bug in the interface that is causing the image to not appear until the the tab key or the save button is pressed. You do not have to keep trying to paste it over and over - just hit save and the pasted image will appear.
-                    </Paragraph>
-                </ListItem>
+             
+             
                 <ListItem>
                     <Paragraph>
                         When attempting to identify when a page has loaded, a quick and dirty approach is to just use the sleep verb, but a much more accurate method to determine when the page has loaded is to try to find an image on the newly loaded page. If you are just going to use the script a few times, using the sleep verb to wait for the page works fine; however, if the script is going to be executed over and over, identifying the page loaded event by finding an image on the page is best.
@@ -76,24 +53,16 @@
                         Finding images in the taskbar and the active window border can be problematic because of transparency settings for those areas.  It helps to use the control panel to turn off transparency (Control Panel\Appearance and Personalization\Personalization\Window Color and Appearance - uncheck enable transparency) and to set the background for your desktop to a solid color.
                     </Paragraph>
                 </ListItem>
-                <ListItem>
-                    <Paragraph>
-                        Use hungarian notation when naming your entities so that all of the arrays (aryXXXX), images (imgXXXX), integers (intXXXXX), strings (txtXXXXX), etc will sort together in the drop down lists. Also, follow the naming convention of using a pattern of a verb followed by a noun for actions to make it easier for you to remember what you called something. You just have to remember the general pattern of VerbNoun, instead of trying to remember whether you put the verb first in this particular instance.  This pattern is also easy to remember because it makes logical sense: we do perform actions on nouns.
-                    </Paragraph>
-                </ListItem>
+               
                 <ListItem>
                     <Paragraph>
                         When sending text to the screen, you always need to allow some time for the text to be sent so it is a good practice to specify 500 milliseconds of wait time in entity2 when using the TypeText verb.
                     </Paragraph>
                 </ListItem>
+               
                 <ListItem>
                     <Paragraph>
-                        You can create todolist for yourself by creating a local script and cloning that script to personal.  Then, you can use the summary section of the description tab for your todolist. Cloning to personal makes the script available on multiple machines when you use the same userid and password to login.
-                    </Paragraph>
-                </ListItem>
-                <ListItem>
-                    <Paragraph>
-                        If you cannot figure out why an image is not being found, go to the Results tab and click on the button "Click this button to view images directly in folder" When you are in the folder, click on the name of the big image. The name of the big image is provided at the far right in the result step where the image was not found.  Viewing the full-size image will allow you to see what the screen looked like at the time the search for the small image was occurring.
+                        If you cannot figure out why an image is not being found, go to bin\debug folder for the application. When you are in the folder, click on the big image or small image.   Viewing the full-size image will allow you to see what the screen looked like at the time the search for the small image was occurring.
                     </Paragraph>
                 </ListItem>
                 <ListItem>
@@ -103,7 +72,7 @@
                 </ListItem>
                 <ListItem>
                     <Paragraph>
-                        The Run verb requires the path to the executable as the first entity. You can easily copy the path to any executable running on your computer by following these steps: First, go to Primitives tab and select the row for the primitive that you want to copy the path to. Second, click the button at the bottom of the primitives tab called "Copy Executable Path Into Selected Primitive Value By Clicking on a Running Application". Third, click anywhere on the application running on your computer for which you want to get the path. 
+                        You can find a log file that is generated as the script runs in the folder for the application in the roaming directory.
                     </Paragraph>
                 </ListItem>
                 <ListItem>

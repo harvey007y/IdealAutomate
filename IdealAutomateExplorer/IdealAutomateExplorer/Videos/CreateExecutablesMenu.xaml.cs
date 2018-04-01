@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,20 +12,20 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Hardcodet.Wpf.Samples.Help
+namespace Hardcodet.Wpf.Samples.Videos
 {
     /// <summary>
-    /// Interaction logic for Overview.xaml
+    /// Interaction logic for CopyrightInformation.xaml
     /// </summary>
-    public partial class OverviewAutomater : Page
+    public partial class CreateExecutablesMenu : Page
     {
-        public OverviewAutomater()
+        public CreateExecutablesMenu()
         {
             InitializeComponent();
         }
-
-        private void Hyperlink_Click(object sender, RoutedEventArgs e) {
-            Process.Start("iexplore", "https://github.com/harvey007y/IdealAutomate");
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("iexplore", "https://www.youtube.com/watch?v=YMor-U_bhIQ&feature=youtu.be");
         }
     }
 }

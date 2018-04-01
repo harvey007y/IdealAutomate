@@ -16,16 +16,17 @@ namespace Hardcodet.Wpf.Samples.Videos
     /// <summary>
     /// Interaction logic for CopyrightInformation.xaml
     /// </summary>
-    public partial class AffiliateProgram : Page
+    public partial class GettingStarted : Page
     {
-        public AffiliateProgram()
+        public GettingStarted()
         {
             InitializeComponent();
         }
+
+       
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start("iexplore", "http://youtu.be/nh3id0DD7rQ");
+            System.Diagnostics.Process.Start("iexplore", "https://www.youtube.com/watch?v=nT5gH-_GYyA&feature=youtu.be");
         }
-
     }
 }

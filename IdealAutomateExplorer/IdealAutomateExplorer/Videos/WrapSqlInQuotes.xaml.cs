@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,15 +16,16 @@ namespace Hardcodet.Wpf.Samples.Videos
     /// <summary>
     /// Interaction logic for CopyrightInformation.xaml
     /// </summary>
-    public partial class AutomateLogin : Page
+    public partial class WrapSqlInQuotes : Page
     {
-        public AutomateLogin()
+        public WrapSqlInQuotes()
         {
             InitializeComponent();
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start("iexplore", "http://youtu.be/kN3cf-SzunQ");
+            System.Diagnostics.Process.Start("iexplore", "https://www.youtube.com/watch?v=xSWJwEBKgqs&feature=youtu.be");
         }
+
     }
 }

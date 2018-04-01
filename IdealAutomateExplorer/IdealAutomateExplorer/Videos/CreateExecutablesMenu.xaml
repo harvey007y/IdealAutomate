@@ -1,0 +1,21 @@
+﻿<Page x:Class="Hardcodet.Wpf.Samples.Videos.CreateExecutablesMenu"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	Title="Automate Login" 
+	>
+    <FlowDocumentReader ViewingMode="Scroll">
+        <FlowDocument FontSize="20">
+            <Paragraph>
+                <Image Source="/Images/videos.jpg" Width="128" Height="128" Margin="0,0,30,0" />
+                <Run FontSize="24" BaselineAlignment="Center">Create Executables Menu</Run>
+
+            </Paragraph>
+
+            <Paragraph>
+                <Hyperlink Click="Button_Click">Create Executables Menu Video Tutorial</Hyperlink>  - This is a 3-minute video that shows another example of the powerful applications that you can create with IdealAutomate. In this video, you will see how you can immediately start using IdealAutomate to create a menu of all executables or hotkeys in a folder.
+            </Paragraph>
+
+
+        </FlowDocument>
+    </FlowDocumentReader>
+</Page>

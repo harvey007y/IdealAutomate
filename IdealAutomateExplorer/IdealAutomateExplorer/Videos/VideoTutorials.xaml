@@ -20,23 +20,26 @@
 					  >
                
                 <TreeViewItem Header="Basics" IsExpanded="True">
-                    <TreeViewItem Header="Install" PreviewMouseLeftButtonDown="Install_MouseLeftButtonDown"
-						  Tag="Videos/Install.xaml" />
-                    <TreeViewItem Header="Launch Executable with Content" PreviewMouseLeftButtonDown="LaunchExecutable_MouseLeftButtonDown"
-						  Tag="Videos/LaunchExecutable.xaml" 
-						  />
-                    <TreeViewItem Header="Find Image" PreviewMouseLeftButtonDown="FindImage_MouseLeftButtonDown"
-						  Tag="Videos/FindImage.xaml" 
-						  />
-                    <TreeViewItem Header="Automate Login" PreviewMouseLeftButtonDown="AutomateLogin_MouseLeftButtonDown"
-						  Tag="Videos/AutomateLogin.xaml" 
+                    <TreeViewItem Header="Getting Started" PreviewMouseLeftButtonDown="GettingStarted_MouseLeftButtonDown"
+						  Tag="Videos/GettingStarted.xaml" />
+                    <TreeViewItem Header="Basic Features" PreviewMouseLeftButtonDown="BasicFeatures_MouseLeftButtonDown"
+						  Tag="Videos/BasicFeatures.xaml" 
 						  />
                 </TreeViewItem>
-                <TreeViewItem Header="Affiliate Program" PreviewMouseLeftButtonDown="AffiliateProgram_MouseLeftButtonDown"
-						  Tag="Videos/AffiliateProgram.xaml" 
+                <TreeViewItem Header="Sample Applications" IsExpanded="True">
+                    <TreeViewItem Header="Set Breakpoints" PreviewMouseLeftButtonDown="SetBreakpoints_MouseLeftButtonDown"
+						  Tag="Videos/SetBreakpoints.xaml" 
 						  />
-                
-               
+                    <TreeViewItem Header="Create Executables Menu" PreviewMouseLeftButtonDown="CreateExecutablesMenu_MouseLeftButtonDown"
+						  Tag="Videos/SetBreakpoints.xaml" 
+						  />
+                    <TreeViewItem Header="Wrap Text In Quotes" PreviewMouseLeftButtonDown="WrapTextInQuotes_MouseLeftButtonDown"
+						  Tag="Videos/WrapTextInQuotes.xaml" 
+						  />
+                    <TreeViewItem Header="Wrap Sql In Quotes" PreviewMouseLeftButtonDown="WrapSqlInQuotes_MouseLeftButtonDown"
+						  Tag="Videos/WrapSqlInQuotes.xaml" 
+						  />
+                </TreeViewItem>
             </TreeView>
 
             <GridSplitter Grid.Column="1" Width="6" 
