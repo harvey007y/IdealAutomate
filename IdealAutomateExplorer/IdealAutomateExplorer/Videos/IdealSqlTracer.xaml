@@ -1,0 +1,20 @@
+﻿<Page x:Class="Hardcodet.Wpf.Samples.Videos.IdealSqlTracer"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	Title="Basic Features" 
+	>
+    <FlowDocumentReader ViewingMode="Scroll">
+        <FlowDocument FontSize="20">
+            <Paragraph>
+                <Image Source="/Images/videos.jpg" Width="128" Height="128" Margin="0,0,30,0" />
+                <Run FontSize="30" BaselineAlignment="Center">IdealSqlTracer</Run>
+
+            </Paragraph>
+            <Paragraph>
+                <Hyperlink Click="Button_Click">IdealSqlTracer</Hyperlink> - IdealSqlTracer used to be a separate repository on github, but it has now been included in IdealAutomateExplorer under Tools/Sql/IdealSqlTracer toolbar menu item. This eleven-minute video shows hot to use IdealSqlTracer to grab all of the SQL generated behind the scenes on a web page or a desktop app and format that sql into notepad. IdealSqlTracer is an open source free alternative to SQL Profiler. IdealSqlTracer uses sp_trace_create, sp_trace_filter, and sp_trace_setstatus procs to allow you to create customized traces that reduce a lot the noise that normally occurs when using SQL Profiler.
+            </Paragraph>
+
+
+        </FlowDocument>
+    </FlowDocumentReader>
+</Page>

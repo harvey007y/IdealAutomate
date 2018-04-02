@@ -32,7 +32,13 @@ using System.Windows.Shapes;
         {
             frame.Source = new Uri("BasicFeatures.xaml", UriKind.RelativeOrAbsolute);
         }
-        private void SetBreakpoints_MouseLeftButtonDown(object sender, RoutedEventArgs e)
+    private void IdealSqlTracer_MouseLeftButtonDown(object sender, RoutedEventArgs e) {
+        frame.Source = new Uri("IdealSqlTracer.xaml", UriKind.RelativeOrAbsolute);
+    }
+    private void Search_MouseLeftButtonDown(object sender, RoutedEventArgs e) {
+        frame.Source = new Uri("Search.xaml", UriKind.RelativeOrAbsolute);
+    }
+    private void SetBreakpoints_MouseLeftButtonDown(object sender, RoutedEventArgs e)
         {
             frame.Source = new Uri("SetBreakpoints.xaml", UriKind.RelativeOrAbsolute);
         }

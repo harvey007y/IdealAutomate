@@ -25,6 +25,12 @@
                     <TreeViewItem Header="Basic Features" PreviewMouseLeftButtonDown="BasicFeatures_MouseLeftButtonDown"
 						  Tag="Videos/BasicFeatures.xaml" 
 						  />
+                    <TreeViewItem Header="IdealSqlTracer" PreviewMouseLeftButtonDown="IdealSqlTracer_MouseLeftButtonDown"
+						  Tag="Videos/IdealSqlTracer.xaml" 
+						  />
+                    <TreeViewItem Header="Search" PreviewMouseLeftButtonDown="Search_MouseLeftButtonDown"
+						  Tag="Videos/Search.xaml" 
+						  />
                 </TreeViewItem>
                 <TreeViewItem Header="Sample Applications" IsExpanded="True">
                     <TreeViewItem Header="Set Breakpoints" PreviewMouseLeftButtonDown="SetBreakpoints_MouseLeftButtonDown"
