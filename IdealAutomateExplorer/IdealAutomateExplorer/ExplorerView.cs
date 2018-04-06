@@ -110,6 +110,11 @@ namespace System.Windows.Forms.Samples {
         [System.Runtime.InteropServices.DllImport("user32.dll", EntryPoint = "GetWindowTextLengthA", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Ansi, SetLastError = true)]
         private static extern int GetWindowTextLengthx(int hwnd);
 
+        [DllImport("user32.dll", EntryPoint = "GetWindowLongA", SetLastError = true)]
+        private static extern long GetWindowLong(IntPtr hwnd, int nIndex);
+
+        [DllImport("user32.dll", EntryPoint = "SetWindowLongA", SetLastError = true)]
+        public static extern int SetWindowLongA([System.Runtime.InteropServices.InAttribute()] System.IntPtr hWnd, int nIndex, int dwNewLong);
 
 
         private IntPtr _appHandle;
@@ -152,6 +157,22 @@ namespace System.Windows.Forms.Samples {
         String Url = string.Empty;
         SplitContainer mySplitContainer = new SplitContainer();
         int _selectedRow = 0;
+        private const int SWP_NOOWNERZORDER = 0x200;
+        private const int SWP_NOREDRAW = 0x8;
+        private const int SWP_NOZORDER = 0x4;
+        private const int SWP_SHOWWINDOW = 0x0040;
+        private const int WS_EX_MDICHILD = 0x40;
+        private const int SWP_FRAMECHANGED = 0x20;
+        private const int SWP_NOACTIVATE = 0x10;
+        private const int SWP_ASYNCWINDOWPOS = 0x4000;
+        private const int SWP_NOMOVE = 0x2;
+        private const int SWP_NOSIZE = 0x1;
+        private const int GWL_STYLE = (-16);
+        private const int WS_VISIBLE = 0x10000000;
+        private const int WS_CHILD = 0x40000000;
+        public static int WS_BORDER = 0x00800000; //window with border
+        public static int WS_DLGFRAME = 0x00400000; //window with double border but no title
+        public static int WS_CAPTION = WS_BORDER | WS_DLGFRAME; //window with a title bar
 
 
         public ExplorerView() {
@@ -431,6 +452,7 @@ namespace System.Windows.Forms.Samples {
                 string strCurrentPath = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
                 cbxCurrentPath.Text = strCurrentPath;
                 cbxCurrentPath.SelectedValue = strCurrentPath;
+                return;
             } else {
                 _newTab = true;
                 RefreshDataGrid();
@@ -444,9 +466,7 @@ namespace System.Windows.Forms.Samples {
                     if (detailsMenuItemChecked == "True") {
 
                         DataGridViewCell c = _CurrentDataGridView.Rows[_selectedRow].Cells[1];
-                        if (!c.Selected) {
-                            _CurrentDataGridView.ClearSelection();
-                            c.Selected = true;
+
                             //    _CurrentDataGridView.FirstDisplayedScrollingRowIndex = _selectedRow;
                             //    _CurrentDataGridView.PerformLayout();
                             string fileName = _CurrentDataGridView.Rows[_selectedRow].Cells["FullName"].Value.ToString();
@@ -531,7 +551,9 @@ namespace System.Windows.Forms.Samples {
                                 }
                                 //tries to start the process 
                                 try {
-                                    _proc = Process.Start(@"C:\Program Files\Windows NT\Accessories\wordpad.exe", "\"" + fileName + "\"");
+                                    ProcessStartInfo psi = new ProcessStartInfo(@"C:\Program Files\Windows NT\Accessories\wordpad.exe", "\"" + fileName + "\"");
+                                    psi.WindowStyle = ProcessWindowStyle.Minimized;
+                                    _proc = Process.Start(psi);                                  
                                 } catch (Exception) {
                                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                     return;
@@ -548,6 +570,9 @@ namespace System.Windows.Forms.Samples {
                                 _appHandle = _proc.MainWindowHandle;
 
                                 SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+
+                                // Remove border and whatnot
+                                SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                                 MoveWindow(_appHandle, 0, 0, _CurrentSplitContainer.Panel2.Width - 5, _CurrentSplitContainer.Panel2.Height, true);
                                 //  SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                                 //  SetTitle(_dir.FileView);
@@ -600,12 +625,13 @@ namespace System.Windows.Forms.Samples {
                                     _appHandle = _proc.MainWindowHandle;
 
                                     SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                                    SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                                     SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                                     SetTitle(_dir.FileView);
                                 }
                             }
 
-                        }
+                       
 
                     }
                 }
@@ -721,7 +747,9 @@ namespace System.Windows.Forms.Samples {
                 //tries to start the process 
                 try {
 
-                    _proc = Process.Start(@"C:\Program Files\Windows NT\Accessories\wordpad.exe");
+                    ProcessStartInfo psi = new ProcessStartInfo(@"C:\Program Files\Windows NT\Accessories\wordpad.exe");
+                    psi.WindowStyle = ProcessWindowStyle.Minimized;
+                    _proc = Process.Start(psi);
                 } catch (Exception) {
                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
@@ -742,6 +770,7 @@ namespace System.Windows.Forms.Samples {
                 _appHandle = _proc.MainWindowHandle;
 
                 SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                 SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                 //SendMessage(proc.MainWindowHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
             } else {
@@ -1056,7 +1085,9 @@ namespace System.Windows.Forms.Samples {
                 myActions.SetValueByKey("DetailsMenuItemChecked", "True");
                 //tries to start the process 
                 try {
-                    _proc = Process.Start(@"C:\Program Files\Windows NT\Accessories\wordpad.exe");
+                    ProcessStartInfo psi = new ProcessStartInfo(@"C:\Program Files\Windows NT\Accessories\wordpad.exe");
+                    psi.WindowStyle = ProcessWindowStyle.Minimized;
+                    _proc = Process.Start(psi);
                 } catch (Exception) {
                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
@@ -1077,6 +1108,8 @@ namespace System.Windows.Forms.Samples {
                 _appHandle = _proc.MainWindowHandle;
 
                 SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                // Remove border and whatnot
+                SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                 SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                 //SendMessage(proc.MainWindowHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
             }
@@ -1727,6 +1760,9 @@ namespace System.Windows.Forms.Samples {
             //tries to start the process 
             try {
                 _proc = Process.Start(strExecutable, "\"" + strContent + "\"");
+                ProcessStartInfo psi = new ProcessStartInfo(strExecutable, "\"" + strContent + "\"");
+                psi.WindowStyle = ProcessWindowStyle.Minimized;
+                _proc = Process.Start(psi);
             } catch (Exception) {
                 MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -1744,6 +1780,7 @@ namespace System.Windows.Forms.Samples {
 
             try {
                 SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
             } catch (Exception) {
 
 
@@ -2102,7 +2139,9 @@ namespace System.Windows.Forms.Samples {
                                 }
                                 //tries to start the process 
                                 try {
-                                    _proc = Process.Start(@"C:\Program Files\Windows NT\Accessories\wordpad.exe", "\"" + fileName + "\"");
+                                    ProcessStartInfo psi = new ProcessStartInfo(@"C:\Program Files\Windows NT\Accessories\wordpad.exe", "\"" + fileName + "\"");
+                                    psi.WindowStyle = ProcessWindowStyle.Minimized;
+                                    _proc = Process.Start(psi);
                                 } catch (Exception) {
                                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                     return;
@@ -2119,6 +2158,8 @@ namespace System.Windows.Forms.Samples {
                                 _appHandle = _proc.MainWindowHandle;
 
                                 SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                                // Remove border and whatnot
+                                SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                                 MoveWindow(_appHandle, 0, 0, _CurrentSplitContainer.Panel2.Width - 5, _CurrentSplitContainer.Panel2.Height, true);
                                 //  SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                                 //  SetTitle(_dir.FileView);
@@ -2174,6 +2215,7 @@ namespace System.Windows.Forms.Samples {
                                     _appHandle = _proc.MainWindowHandle;
 
                                     SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                                    SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                                     SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                                     SetTitle(_dir.FileView);
                                 }
@@ -2606,6 +2648,10 @@ namespace System.Windows.Forms.Samples {
                 if (e.ColumnIndex != -1 && e.RowIndex != -1 && e.Button == System.Windows.Forms.MouseButtons.Left) {
                     DataGridViewCell c = (sender as DataGridView)[e.ColumnIndex, e.RowIndex];
                     if (!c.Selected) {
+                        _CurrentDataGridView.ClearSelection();
+                        _selectedRow = 0;
+                       // Methods myActions = new Methods();
+                        myActions.SetValueByKey("InitialDirectory" + _selectedTabIndex.ToString() + "SelectedRow", "0");
                         c.Selected = true;
                         myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow", e.RowIndex.ToString());
                         string fileName = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["FullName"].Value.ToString();
@@ -2696,7 +2742,9 @@ namespace System.Windows.Forms.Samples {
                             }
                             //tries to start the process 
                             try {
-                                _proc = Process.Start(@"C:\Program Files\Windows NT\Accessories\wordpad.exe", "\"" + fileName + "\"");
+                                ProcessStartInfo psi = new ProcessStartInfo(@"C:\Program Files\Windows NT\Accessories\wordpad.exe", "\"" + fileName + "\"");
+                                psi.WindowStyle = ProcessWindowStyle.Minimized;
+                                _proc = Process.Start(psi);
                             } catch (Exception) {
                                 MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 return;
@@ -2713,6 +2761,9 @@ namespace System.Windows.Forms.Samples {
                             _appHandle = _proc.MainWindowHandle;
 
                             SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                            // Remove border and whatnot                         
+                            
+                            SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                             MoveWindow(_appHandle, 0, 0, _CurrentSplitContainer.Panel2.Width - 5, _CurrentSplitContainer.Panel2.Height, true);
                             //  SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                             //  SetTitle(_dir.FileView);
@@ -2768,6 +2819,7 @@ namespace System.Windows.Forms.Samples {
                                 _appHandle = _proc.MainWindowHandle;
 
                                 SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                                SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                                 SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                                 SetTitle(_dir.FileView);
                             }
@@ -2779,7 +2831,7 @@ namespace System.Windows.Forms.Samples {
             if (e.ColumnIndex != -1 && e.RowIndex != -1 && e.Button == System.Windows.Forms.MouseButtons.Right) {
                 DataGridViewCell c = (sender as DataGridView)[e.ColumnIndex, e.RowIndex];
                 if (!c.Selected) {
-                    c.DataGridView.ClearSelection();
+                    _CurrentDataGridView.ClearSelection();
                     c.DataGridView.CurrentCell = c;
                     c.Selected = true;
                     _selectedRow = e.RowIndex;
@@ -3099,6 +3151,7 @@ namespace System.Windows.Forms.Samples {
                         _appHandle = _proc.MainWindowHandle;
 
                         SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                        SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                         SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                         //SendMessage(proc.MainWindowHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                     } else {
@@ -3131,6 +3184,7 @@ namespace System.Windows.Forms.Samples {
                         _appHandle = _proc.MainWindowHandle;
 
                         SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                        SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                         SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                     }
                     _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
@@ -3425,6 +3479,7 @@ namespace System.Windows.Forms.Samples {
                         _appHandle = _proc.MainWindowHandle;
 
                         SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                        SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                         SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                         //SendMessage(proc.MainWindowHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                     } else {
@@ -3457,6 +3512,7 @@ namespace System.Windows.Forms.Samples {
                         _appHandle = _proc.MainWindowHandle;
 
                         SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                        SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                         SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                     }
                     _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
@@ -4394,6 +4450,7 @@ namespace System.Windows.Forms.Samples {
             _appHandle = _proc.MainWindowHandle;
 
             SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+            SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
             SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
         }
 
@@ -4466,6 +4523,7 @@ namespace System.Windows.Forms.Samples {
             _appHandle = _proc.MainWindowHandle;
 
             SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+            SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
             SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
         }
 
@@ -5571,6 +5629,7 @@ namespace System.Windows.Forms.Samples {
                         _appHandle = _proc.MainWindowHandle;
 
                         SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                        SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                         SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                     }
                     Methods myActions = new Methods();
@@ -6507,6 +6566,7 @@ namespace System.Windows.Forms.Samples {
                 _appHandle = _proc.MainWindowHandle;
 
                 SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                 SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                 //SendMessage(proc.MainWindowHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
             } else {
@@ -6539,6 +6599,7 @@ namespace System.Windows.Forms.Samples {
                 _appHandle = _proc.MainWindowHandle;
 
                 SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                 SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
             }
             _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
@@ -6754,6 +6815,7 @@ namespace System.Windows.Forms.Samples {
                 _appHandle = _proc.MainWindowHandle;
 
                 SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                 SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                 //SendMessage(proc.MainWindowHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
             } else {
@@ -6786,6 +6848,7 @@ namespace System.Windows.Forms.Samples {
                 _appHandle = _proc.MainWindowHandle;
 
                 SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                 SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
             }
             _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
@@ -7908,8 +7971,8 @@ namespace System.Windows.Forms.Samples {
         private static extern int SetWindowPos(int hwnd, int hWndInsertAfter, double x, double y, double cx, double cy, uint wFlags);
         private const int HWND_TOPMOST = -1;
         private const int HWND_NOTOPMOST = -2;
-        private const int SWP_NOMOVE = 0X2;
-        private const int SWP_NOSIZE = 0X1;
+        //private const int SWP_NOMOVE = 0X2;
+        //private const int SWP_NOSIZE = 0X1;
         private const int TOPMOST_FLAGS = SWP_NOMOVE | SWP_NOSIZE;
         //INSTANT C# TODO TASK: Insert the following converted event handler wireups at the end of the 'InitializeComponent' method for forms, 'Page_Init' for web pages, or into a constructor for other classes:
 
