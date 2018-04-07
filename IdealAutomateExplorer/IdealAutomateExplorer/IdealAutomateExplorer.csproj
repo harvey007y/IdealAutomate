@@ -28,16 +28,16 @@
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
+    <UpdateMode>Background</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdatePeriodically>true</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <InstallUrl>http://idealautomate.com/idealautomateexplorer/</InstallUrl>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>19</ApplicationRevision>
+    <ApplicationRevision>24</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -707,9 +707,9 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="MyNewProject\MyNewProject\ClassDiagram1.cd">
+    <Content Include="MyNewProject\MyNewProject\ClassDiagram1.cd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
     <Content Include="MyNewProject\MyNewProject\Properties\Settings.settings">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

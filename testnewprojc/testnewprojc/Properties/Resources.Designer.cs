@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TestProj.Properties {
+namespace testnewprojc.Properties {
 
 
     /// <summary>
@@ -38,7 +38,7 @@ namespace TestProj.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if ((resourceMan == null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TestProj.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("testnewprojc.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

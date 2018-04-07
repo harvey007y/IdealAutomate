@@ -1020,11 +1020,13 @@ namespace System.Windows.Forms.Samples {
 
 
             if (_selectedRow > 0 && e.RowIndex == _selectedRow) {
-                if (_CurrentDataGridView.Rows[_selectedRow].Cells.Count > 1) {
+                if (_selectedRow < _CurrentDataGridView.Rows.Count) {
+                    if (_CurrentDataGridView.Rows[_selectedRow].Cells.Count > 1) {
 
-                    _CurrentDataGridView.Rows[_selectedRow].Cells[1].Selected = true;
-                    //  _CurrentDataGridView.FirstDisplayedScrollingRowIndex = _selectedRow;
-                    //  _CurrentDataGridView.PerformLayout();
+                        _CurrentDataGridView.Rows[_selectedRow].Cells[1].Selected = true;
+                        //  _CurrentDataGridView.FirstDisplayedScrollingRowIndex = _selectedRow;
+                        //  _CurrentDataGridView.PerformLayout();
+                    }
                 }
             }
         }
@@ -1265,6 +1267,10 @@ namespace System.Windows.Forms.Samples {
                 Directory.CreateDirectory(strProperties);
                 string strApplicationBinDebug = Application.StartupPath;
                 string myNewProjectSourcePath = strApplicationBinDebug.Replace("bin\\Debug", "MyNewProject");
+                if (myNewProjectSourcePath.EndsWith("MyNewProject") == false &&
+                    myNewProjectSourcePath.EndsWith("MyNewProject\\") == false) {
+                    myNewProjectSourcePath = Path.Combine(myNewProjectSourcePath, "MyNewProject");
+                }
                 string strLine = "";
 
                 string[] myLines0 = File.ReadAllLines(Path.Combine(myNewProjectSourcePath, "MyNewProject.sln"));

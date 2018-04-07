@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TestProj.Properties {
+namespace testnewprojc.Properties {
 
 
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
