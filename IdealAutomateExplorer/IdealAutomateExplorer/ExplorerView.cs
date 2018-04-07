@@ -346,7 +346,8 @@ namespace System.Windows.Forms.Samples {
                         string strApplicationBinDebug = Application.StartupPath;
                         string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
 
-                        string settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(myNewProjectSourcePath));
+                        string settingsDirectory =
+      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
                         string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
                         ArrayList alHosts = new ArrayList();
                         cbp = new List<ComboBoxPair>();
@@ -877,7 +878,8 @@ namespace System.Windows.Forms.Samples {
             string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
             string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
             string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
-            string settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(myNewProjectSourcePath));
+            string settingsDirectory =
+       Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
             string fileName = cbxCurrentPath.Name + ".txt";
             string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
             ArrayList alHosts = new ArrayList();
@@ -1372,9 +1374,9 @@ namespace System.Windows.Forms.Samples {
                     // Call EnumerateFiles in a foreach-loop.
 
                     ev_Delete_Directory(myFileView.FullName.ToString());
-                    string scriptPath = myActions.ConvertFullFileNameToPublicPath(myFileView.FullName) + "\\" + myFileView.Name;
-                    string settingsDirectory = myActions.GetAppDirectoryForIdealAutomate();
-                    settingsDirectory = Path.Combine(settingsDirectory, scriptPath);
+                    string settingsDirectory =
+      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
+                    
                     if (Directory.Exists(settingsDirectory)) {
                         Directory.Delete(settingsDirectory, true);
                     }
@@ -2416,7 +2418,8 @@ namespace System.Windows.Forms.Samples {
                     string strApplicationBinDebug = Application.StartupPath;
                     string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
 
-                    string settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(myNewProjectSourcePath));
+                    string settingsDirectory =
+      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
                     string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
                     ArrayList alHosts = new ArrayList();
                     cbp = new List<ComboBoxPair>();
@@ -2496,7 +2499,7 @@ namespace System.Windows.Forms.Samples {
         }
         public string GetAppDirectoryForScript(string strScriptName) {
             string settingsDirectory =
-      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\" + strScriptName;
+      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
             if (!Directory.Exists(settingsDirectory)) {
                 Directory.CreateDirectory(settingsDirectory);
             }
@@ -2540,14 +2543,14 @@ namespace System.Windows.Forms.Samples {
             foreach (DirectoryInfo diSourceSubDir in source.GetDirectories()) {
                 DirectoryInfo nextTargetSubDir =
                     target.CreateSubdirectory(diSourceSubDir.Name);
-                string convertedPath = "";
-                string settingsDirectory = "";
-                convertedPath = myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(diSourceSubDir.FullName);
-                settingsDirectory = myActions.GetAppDirectoryForIdealAutomate();
-                string fromRoamingDirectory = Path.Combine(settingsDirectory, convertedPath);
-                convertedPath = myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(target.FullName);
-                settingsDirectory = myActions.GetAppDirectoryForIdealAutomate();
-                string toRoamingDirectory = Path.Combine(settingsDirectory, convertedPath);
+                
+                
+                string settingsDirectory =
+      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
+                string fromRoamingDirectory = Path.Combine(settingsDirectory, diSourceSubDir.FullName);
+                
+                
+                string toRoamingDirectory = Path.Combine(settingsDirectory, target.FullName);
                 if (Directory.Exists(fromRoamingDirectory)) {
                     DirectoryInfo fromRoamingDirectoryDI = new DirectoryInfo(fromRoamingDirectory);
                     DirectoryInfo toRoamingDirectoryDI = Directory.CreateDirectory(toRoamingDirectory);
@@ -3639,7 +3642,8 @@ namespace System.Windows.Forms.Samples {
 
                     ev_Delete_Directory(myFileView.FullName.ToString());
                     string scriptPath = myActions.ConvertFullFileNameToPublicPath(myFileView.FullName) + "\\" + myFileView.Name;
-                    string settingsDirectory = myActions.GetAppDirectoryForIdealAutomate();
+                    string settingsDirectory =
+      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
                     settingsDirectory = Path.Combine(settingsDirectory, scriptPath);
                     if (Directory.Exists(settingsDirectory)) {
                         Directory.Delete(settingsDirectory, true);
@@ -4761,7 +4765,8 @@ namespace System.Windows.Forms.Samples {
                     string strApplicationBinDebug = Application.StartupPath;
                     string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
 
-                    string settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(myNewProjectSourcePath));
+                    string settingsDirectory =
+       Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
                     string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
                     ArrayList alHosts = new ArrayList();
                     cbp = new List<ComboBoxPair>();
@@ -5353,7 +5358,8 @@ namespace System.Windows.Forms.Samples {
                 string strApplicationBinDebug = Application.StartupPath;
                 string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
 
-                string settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPath(myNewProjectSourcePath));
+                string settingsDirectory =
+       Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
                 string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
                 ArrayList alHosts = new ArrayList();
                 cbp = new List<ComboBoxPair>();
@@ -5431,7 +5437,8 @@ namespace System.Windows.Forms.Samples {
                     string strApplicationBinDebug = Application.StartupPath;
                     string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
 
-                    string settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(myNewProjectSourcePath));
+                    string settingsDirectory =
+      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
                     string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
                     ArrayList alHosts = new ArrayList();
                     cbp = new List<ComboBoxPair>();
@@ -5569,7 +5576,8 @@ namespace System.Windows.Forms.Samples {
             string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
             string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
             string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
-            string settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(myNewProjectSourcePath));
+            string settingsDirectory =
+      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
 
             string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
             using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
@@ -5866,7 +5874,8 @@ namespace System.Windows.Forms.Samples {
                     string fileName = "cbxFolder.txt";
                     string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
                     string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
-                    settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(myNewProjectSourcePath));
+                    settingsDirectory =
+       Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
                     string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
                     ArrayList alHosts = new ArrayList();
                     cbp = new List<ComboBoxPair>();
@@ -6048,7 +6057,8 @@ namespace System.Windows.Forms.Samples {
 
 
 
-            settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(myNewProjectSourcePath1));
+             settingsDirectory =
+      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
             using (FileStream fs = new FileStream(settingsDirectory + @"\MatchInfo.txt", FileMode.Create)) {
                 StreamWriter file = new System.IO.StreamWriter(fs, Encoding.Default);
 
@@ -7713,7 +7723,8 @@ namespace System.Windows.Forms.Samples {
             string fileName = "cbxFolder.txt";
             string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
             string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
-            string settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(myNewProjectSourcePath));
+            string settingsDirectory =
+       Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
             string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
             ArrayList alHosts = new ArrayList();
             cbp = new List<ComboBoxPair>();
@@ -7836,7 +7847,8 @@ namespace System.Windows.Forms.Samples {
                     fileName = "cbxFolder.txt";
                     strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
                     myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
-                    settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(myNewProjectSourcePath));
+                     settingsDirectory =
+      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
                     settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
                     alHosts = new ArrayList();
                     cbp = new List<ComboBoxPair>();
