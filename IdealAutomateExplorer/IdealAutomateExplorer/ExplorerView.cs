@@ -346,7 +346,7 @@ namespace System.Windows.Forms.Samples {
                         string strApplicationBinDebug = Application.StartupPath;
                         string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
 
-                        string settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPath(myNewProjectSourcePath));
+                        string settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(myNewProjectSourcePath));
                         string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
                         ArrayList alHosts = new ArrayList();
                         cbp = new List<ComboBoxPair>();
@@ -877,7 +877,7 @@ namespace System.Windows.Forms.Samples {
             string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
             string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
             string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
-            string settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPath(myNewProjectSourcePath));
+            string settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(myNewProjectSourcePath));
             string fileName = cbxCurrentPath.Name + ".txt";
             string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
             ArrayList alHosts = new ArrayList();
@@ -2416,7 +2416,7 @@ namespace System.Windows.Forms.Samples {
                     string strApplicationBinDebug = Application.StartupPath;
                     string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
 
-                    string settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPath(myNewProjectSourcePath));
+                    string settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(myNewProjectSourcePath));
                     string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
                     ArrayList alHosts = new ArrayList();
                     cbp = new List<ComboBoxPair>();
@@ -4761,7 +4761,7 @@ namespace System.Windows.Forms.Samples {
                     string strApplicationBinDebug = Application.StartupPath;
                     string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
 
-                    string settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPath(myNewProjectSourcePath));
+                    string settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(myNewProjectSourcePath));
                     string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
                     ArrayList alHosts = new ArrayList();
                     cbp = new List<ComboBoxPair>();
@@ -5431,7 +5431,7 @@ namespace System.Windows.Forms.Samples {
                     string strApplicationBinDebug = Application.StartupPath;
                     string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
 
-                    string settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPath(myNewProjectSourcePath));
+                    string settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(myNewProjectSourcePath));
                     string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
                     ArrayList alHosts = new ArrayList();
                     cbp = new List<ComboBoxPair>();
@@ -5569,7 +5569,7 @@ namespace System.Windows.Forms.Samples {
             string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
             string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
             string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
-            string settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPath(myNewProjectSourcePath));
+            string settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(myNewProjectSourcePath));
 
             string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
             using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
@@ -5866,7 +5866,7 @@ namespace System.Windows.Forms.Samples {
                     string fileName = "cbxFolder.txt";
                     string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
                     string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
-                    settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPath(myNewProjectSourcePath));
+                    settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(myNewProjectSourcePath));
                     string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
                     ArrayList alHosts = new ArrayList();
                     cbp = new List<ComboBoxPair>();
@@ -5895,8 +5895,9 @@ namespace System.Windows.Forms.Samples {
                     List<ComboBoxPair> alHostsNew = new List<ComboBoxPair>();
                     ComboBoxPair myCbp = new ComboBoxPair(strNewHostName, strNewHostName);
                     bool boolNewItem = false;
-
+                    // add what they selected in select folder dialog
                     alHostsNew.Add(myCbp);
+                    // if we have more than 24, remove the first one that is not select item
                     if (alHostx.Count > 24) {
                         for (int i = alHostx.Count - 1; i > 0; i--) {
                             if (alHostx[i]._Key.Trim() != "--Select Item ---") {
@@ -5905,20 +5906,28 @@ namespace System.Windows.Forms.Samples {
                             }
                         }
                     }
+                    // add all the items in the original dropdown that are not 
+                    // select item and are not the same as what was selected in
+                    // the select folder dialog
                     foreach (ComboBoxPair item in alHostx) {
                         if (strNewHostName != item._Key && item._Key != "--Select Item ---") {
                             boolNewItem = true;
                             alHostsNew.Add(item);
                         }
                     }
-
-                    using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
-                        foreach (ComboBoxPair item in alHostsNew) {
-                            if (item._Key != "") {
-                                objSWFile.WriteLine(item._Key + '^' + item._Value);
+                    // write updated dropdown list to Explorer/cbxFolder.txt
+                    try {
+                        using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
+                            foreach (ComboBoxPair item in alHostsNew) {                              
+                                if (item._Key != "") {
+                                    objSWFile.WriteLine(item._Key + '^' + item._Value);
+                                }
                             }
+                            objSWFile.Close();
                         }
-                        objSWFile.Close();
+                    } catch (Exception ex) {
+
+                        myActions.MessageBoxShow(ex.Message);
                     }
                     goto DisplayWindowAgain;
                 }
@@ -6039,7 +6048,7 @@ namespace System.Windows.Forms.Samples {
 
 
 
-            settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPath(myNewProjectSourcePath1));
+            settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(myNewProjectSourcePath1));
             using (FileStream fs = new FileStream(settingsDirectory + @"\MatchInfo.txt", FileMode.Create)) {
                 StreamWriter file = new System.IO.StreamWriter(fs, Encoding.Default);
 
@@ -7704,7 +7713,7 @@ namespace System.Windows.Forms.Samples {
             string fileName = "cbxFolder.txt";
             string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
             string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
-            string settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPath(myNewProjectSourcePath));
+            string settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(myNewProjectSourcePath));
             string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
             ArrayList alHosts = new ArrayList();
             cbp = new List<ComboBoxPair>();
@@ -7827,7 +7836,7 @@ namespace System.Windows.Forms.Samples {
                     fileName = "cbxFolder.txt";
                     strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
                     myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
-                    settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPath(myNewProjectSourcePath));
+                    settingsDirectory = GetAppDirectoryForScript(myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(myNewProjectSourcePath));
                     settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
                     alHosts = new ArrayList();
                     cbp = new List<ComboBoxPair>();
