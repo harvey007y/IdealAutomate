@@ -37,7 +37,7 @@
     <InstallUrl>http://idealautomate.com/idealautomateexplorer/</InstallUrl>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>13</ApplicationRevision>
+    <ApplicationRevision>16</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -203,6 +203,9 @@
     <Compile Include="WindowShowEnum.cs" />
     <Content Include="BuildProjects.bat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="IdealSqlTracer.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Add.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -459,6 +462,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\favicon.ico" />
+    <Content Include="SqlFormatter.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="WPFToolkit.dll" />
     <EmbeddedResource Include="Saved.resx">
       <DependentUpon>Saved.cs</DependentUpon>
@@ -1137,4 +1143,7 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
   </Target>
+  <PropertyGroup>
+    <PostBuildEvent>COPY/Y "$(SolutionDir)\IdealSqlTracer\bin\debug\IdealSqlTracer.exe" "$(TargetDir)\IdealSqlTracer.exe"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

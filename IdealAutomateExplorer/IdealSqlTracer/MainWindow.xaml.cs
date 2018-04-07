@@ -24,7 +24,7 @@ namespace IdealSqlTracer {
   /// formats it to make it easily readable. IdealSqlTracer takes this beautifully formatted sql, and puts it into 
   /// notepad. This allows you to easily cut-n-paste the sql in notepad, and run it directly in Sql Server 
   /// Management Studio (SSMS). The advantage of doing this is that it makes it possible for you to see exactly 
-  /// what is going on in your application or website.
+  /// what is going on in your application or website..
   /// 
   /// 
   /// Steps to use:
@@ -82,6 +82,7 @@ namespace IdealSqlTracer {
             InitializeComponent();
             myActions.DebugMode = true;
             string myBigSqlString = "";
+            string junk = "";
             string strScriptName = "IdealSqlTracer";
             string settingsDirectory = GetAppDirectoryForScript(strScriptName);
             string fileName;

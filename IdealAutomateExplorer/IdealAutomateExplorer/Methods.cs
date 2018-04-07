@@ -1832,6 +1832,7 @@ namespace IdealAutomate.Core {
                     myControlEntity.Text = "Executable not found for " + strExecutable;
                     myControlEntity.RowNumber = 0;
                     myControlEntity.ColumnNumber = 0;
+                    myControlEntity.TextWrap = true;
                     myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
                     myControlEntity.ControlEntitySetDefaults();

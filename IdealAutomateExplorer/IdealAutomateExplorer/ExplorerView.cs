@@ -7446,8 +7446,8 @@ namespace System.Windows.Forms.Samples {
         private void idealSqlTracerToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
-            string strApplicationPath = strApplicationBinDebug.Replace("\\IdealAutomateExplorer\\bin\\Debug", "");
-            string strIdealSqlTracerExe = Path.Combine(strApplicationPath, @"IdealSqlTracer\bin\Debug\IdealSqlTracer.exe");
+            //string strApplicationPath = strApplicationBinDebug.Replace("\\IdealAutomateExplorer\\bin\\Debug", "");
+            string strIdealSqlTracerExe = Path.Combine(strApplicationBinDebug, @"IdealSqlTracer.exe");
             myActions.Run(strIdealSqlTracerExe, "");
         }
 

@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------------
 
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("buildprojects.bat")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("idealsqltracer.exe")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/add.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/addsqlparameter.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/arrays.png")]
@@ -96,6 +97,7 @@
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/wadeface.jpg")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/winfolder.gif")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/favicon.ico")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("sqlformatter.exe")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("wpftoolkit.dll")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/plus.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/icon_close.png")]
