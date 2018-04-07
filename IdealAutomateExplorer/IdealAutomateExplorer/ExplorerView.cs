@@ -4371,7 +4371,7 @@ namespace System.Windows.Forms.Samples {
             //mySplitContainer.MouseEnter += new System.EventHandler(mySplitContainer_MouseEnter);
             //mySplitContainer.MouseLeave += new System.EventHandler(mySplitContainer_MouseLeave);
 
-
+            myDataGridView.Height = Screen.PrimaryScreen.Bounds.Height - 300;
             if (_CurrentIndex == tabControl1.TabCount - 1) {
                 _CurrentSplitContainer.Panel1.Controls.Add(myDataGridView);
                 tabControl1.TabPages[_CurrentIndex - 1].Controls.Add(_CurrentSplitContainer);
