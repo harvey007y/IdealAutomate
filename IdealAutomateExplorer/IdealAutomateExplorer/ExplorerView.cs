@@ -4014,7 +4014,7 @@ namespace System.Windows.Forms.Samples {
             dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             myDataGridView.DefaultCellStyle = dataGridViewCellStyle11;
-            myDataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
+            myDataGridView.Dock = System.Windows.Forms.DockStyle.Top;
             myDataGridView.Location = new System.Drawing.Point(3, 3);
             myDataGridView.Name = "myDataGridView";
             dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
@@ -4474,7 +4474,7 @@ namespace System.Windows.Forms.Samples {
             //mySplitContainer.MouseEnter += new System.EventHandler(mySplitContainer_MouseEnter);
             //mySplitContainer.MouseLeave += new System.EventHandler(mySplitContainer_MouseLeave);
 
-            myDataGridView.Height = 175; 
+            myDataGridView.Height = Screen.PrimaryScreen.Bounds.Height - 175;             
             if (_CurrentIndex == tabControl1.TabCount - 1) {
                 _CurrentSplitContainer.Panel1.Controls.Add(myDataGridView);
                 tabControl1.TabPages[_CurrentIndex - 1].Controls.Add(_CurrentSplitContainer);
