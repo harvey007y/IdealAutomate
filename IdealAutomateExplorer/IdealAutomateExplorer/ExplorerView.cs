@@ -3952,6 +3952,7 @@ namespace System.Windows.Forms.Samples {
             myDataGridView.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDown);
             myDataGridView.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.dataGridView1_CellPainting);
             myDataGridView.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.dataGridView1_RowPrePaint);
+            myDataGridView.Sorted += new EventHandler(this.dataGridView1_Sorted);
             // 
             // dataGridViewImageColumn1
             // 
@@ -4401,6 +4402,14 @@ namespace System.Windows.Forms.Samples {
                 // tabControl1.TabPages[_CurrentIndex].Controls.Add(myDataGridView);
             }
 
+        }
+
+        private void dataGridView1_Sorted(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            if (_CurrentDataGridView.SortedColumn != null) {
+                myActions.SetValueByKey("SortedColumn_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"), _CurrentDataGridView.SortedColumn.Index.ToString());
+                myActions.SetValueByKey("SortOrder_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"), _CurrentDataGridView.SortOrder.ToString());
+            }
         }
 
         private void selectIdealToolStripMenuItem_Click_1(object sender, EventArgs e) {
