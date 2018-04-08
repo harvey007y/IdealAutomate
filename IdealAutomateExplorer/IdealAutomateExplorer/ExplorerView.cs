@@ -610,7 +610,11 @@ namespace System.Windows.Forms.Samples {
                                     //tries to start the process 
                                     try {
                                         myActions.KillAllProcessesByProcessName("notepad++");
+                                    if (!File.Exists(@"C:\Program Files (x86)\Notepad++\notepad++.exe")) {
+                                        myActions.MessageBoxShow(" You need to download notepad++ to use this feature.\n\r\n\rFile not found: " + @"C:\Program Files (x86)\Notepad++\notepad++.exe");
+                                    } else {
                                         _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", fileName);
+                                    }
                                     } catch (Exception) {
                                         MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                         return;
@@ -748,10 +752,13 @@ namespace System.Windows.Forms.Samples {
                 this.listMenuItem.Checked = false;
                 //tries to start the process 
                 try {
-
-                    ProcessStartInfo psi = new ProcessStartInfo(@"C:\Program Files\Windows NT\Accessories\wordpad.exe");
-                    psi.WindowStyle = ProcessWindowStyle.Minimized;
-                    _proc = Process.Start(psi);
+                    if (!File.Exists(@"C:\Program Files\Windows NT\Accessories\wordpad.exe")) {
+                        myActions.MessageBoxShow(" File not found: " + @"C:\Program Files\Windows NT\Accessories\wordpad.exe");
+                    } else {
+                        ProcessStartInfo psi = new ProcessStartInfo(@"C:\Program Files\Windows NT\Accessories\wordpad.exe");
+                        psi.WindowStyle = ProcessWindowStyle.Minimized;
+                        _proc = Process.Start(psi);
+                    }
                 } catch (Exception) {
                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
@@ -1090,9 +1097,13 @@ namespace System.Windows.Forms.Samples {
                 myActions.SetValueByKey("DetailsMenuItemChecked", "True");
                 //tries to start the process 
                 try {
-                    ProcessStartInfo psi = new ProcessStartInfo(@"C:\Program Files\Windows NT\Accessories\wordpad.exe");
-                    psi.WindowStyle = ProcessWindowStyle.Minimized;
-                    _proc = Process.Start(psi);
+                    if (!File.Exists(@"C:\Program Files\Windows NT\Accessories\wordpad.exe")) {
+                        myActions.MessageBoxShow(" File not found: " + @"C:\Program Files\Windows NT\Accessories\wordpad.exe");
+                    } else {
+                        ProcessStartInfo psi = new ProcessStartInfo(@"C:\Program Files\Windows NT\Accessories\wordpad.exe");
+                        psi.WindowStyle = ProcessWindowStyle.Minimized;
+                        _proc = Process.Start(psi);
+                    }
                 } catch (Exception) {
                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
@@ -1775,10 +1786,14 @@ namespace System.Windows.Forms.Samples {
             }
             //tries to start the process 
             try {
-                _proc = Process.Start(strExecutable, "\"" + strContent + "\"");
-                ProcessStartInfo psi = new ProcessStartInfo(strExecutable, "\"" + strContent + "\"");
-                psi.WindowStyle = ProcessWindowStyle.Minimized;
-                _proc = Process.Start(psi);
+                if (!File.Exists(strExecutable)) {
+                    myActions.MessageBoxShow(" File not found: " + strExecutable);
+                } else {
+                    ProcessStartInfo psi = new ProcessStartInfo(strExecutable, "\"" + strContent + "\"");
+                    psi.WindowStyle = ProcessWindowStyle.Minimized;
+                    _proc = Process.Start(psi);
+                }
+
             } catch (Exception) {
                 MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -1956,11 +1971,20 @@ namespace System.Windows.Forms.Samples {
             if (myEntityForContent != null) {
                 strContent = myEntityForContent;
             }
+            Methods myActions = new Methods();
             if (strContent == "") {
-                Process.Start(strExecutable);
+                if (!File.Exists(strExecutable)) {
+                    myActions.MessageBoxShow(" File not found: " + strExecutable);
+                } else {
+                    Process.Start(strExecutable);
+                }
             } else {
                 try {
-                    Process.Start(strExecutable, string.Concat("\"", strContent, "\""));
+                    if (!File.Exists(strExecutable)) {
+                        myActions.MessageBoxShow(" File not found: " + strExecutable);
+                    } else {
+                        Process.Start(strExecutable, string.Concat("\"", strContent, "\""));
+                    }
                 } catch (Exception ex) {
 
                     MessageBox.Show(ex.ToString() + " - Line 1446 in ExplorerView");
@@ -2187,9 +2211,13 @@ namespace System.Windows.Forms.Samples {
                                 }
                                 //tries to start the process 
                                 try {
-                                    ProcessStartInfo psi = new ProcessStartInfo(@"C:\Program Files\Windows NT\Accessories\wordpad.exe", "\"" + fileName + "\"");
-                                    psi.WindowStyle = ProcessWindowStyle.Minimized;
-                                    _proc = Process.Start(psi);
+                                    if (!File.Exists(@"C:\Program Files\Windows NT\Accessories\wordpad.exe")) {
+                                        myActions.MessageBoxShow(" File not found: " + @"C:\Program Files\Windows NT\Accessories\wordpad.exe");
+                                    } else {
+                                        ProcessStartInfo psi = new ProcessStartInfo(@"C:\Program Files\Windows NT\Accessories\wordpad.exe", "\"" + fileName + "\"");
+                                        psi.WindowStyle = ProcessWindowStyle.Minimized;
+                                        _proc = Process.Start(psi);
+                                    }
                                 } catch (Exception) {
                                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                     return;
@@ -2246,8 +2274,12 @@ namespace System.Windows.Forms.Samples {
                                     //tries to start the process 
                                     try {
                                         myActions.KillAllProcessesByProcessName("notepad++");
-                                        _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", fileName);
-                                    } catch (Exception) {
+                                        if (!File.Exists(@"C:\Program Files (x86)\Notepad++\notepad++.exe")) {
+                                            myActions.MessageBoxShow(" You need to download notepad++ to use this feature.\n\r\n\rFile not found: " + @"C:\Program Files (x86)\Notepad++\notepad++.exe");
+                                        } else {
+                                            _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", fileName);
+                                        }
+                                        } catch (Exception) {
                                         MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                         return;
                                     }
@@ -2791,9 +2823,13 @@ namespace System.Windows.Forms.Samples {
                             }
                             //tries to start the process 
                             try {
-                                ProcessStartInfo psi = new ProcessStartInfo(@"C:\Program Files\Windows NT\Accessories\wordpad.exe", "\"" + fileName + "\"");
-                                psi.WindowStyle = ProcessWindowStyle.Minimized;
-                                _proc = Process.Start(psi);
+                                if (!File.Exists(@"C:\Program Files\Windows NT\Accessories\wordpad.exe")) {
+                                    myActions.MessageBoxShow(" File not found: " + @"C:\Program Files\Windows NT\Accessories\wordpad.exe");
+                                } else {
+                                    ProcessStartInfo psi = new ProcessStartInfo(@"C:\Program Files\Windows NT\Accessories\wordpad.exe", "\"" + fileName + "\"");
+                                    psi.WindowStyle = ProcessWindowStyle.Minimized;
+                                    _proc = Process.Start(psi);
+                                }
                             } catch (Exception) {
                                 MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 return;
@@ -2851,8 +2887,12 @@ namespace System.Windows.Forms.Samples {
                                 //tries to start the process 
                                 try {
                                     myActions.KillAllProcessesByProcessName("notepad++");
-                                    _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", fileName);
-                                } catch (Exception) {
+                                    if (!File.Exists(@"C:\Program Files (x86)\Notepad++\notepad++.exe")) {
+                                        myActions.MessageBoxShow(" You need to download notepad++ to use this feature.\n\r\n\rFile not found: " + @"C:\Program Files (x86)\Notepad++\notepad++.exe");
+                                    } else {
+                                        _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", fileName);
+                                    }
+                                    } catch (Exception) {
                                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                     return;
                                 }
@@ -3179,8 +3219,12 @@ namespace System.Windows.Forms.Samples {
                         this.listMenuItem.Checked = false;
                         //tries to start the process 
                         try {
-                            _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
-                        } catch (Exception) {
+                            if (!File.Exists(strExecutable)) {
+                                myActions.MessageBoxShow(" File not found: " + strExecutable);
+                            } else {
+                                _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
+                            }
+                            } catch (Exception) {
                             MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             return;
                         }
@@ -3212,8 +3256,12 @@ namespace System.Windows.Forms.Samples {
                         }
                         //tries to start the process 
                         try {
-                            _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
-                        } catch (Exception) {
+                            if (!File.Exists(strExecutable)) {
+                                myActions.MessageBoxShow(" File not found: " + strExecutable);
+                            } else {
+                                _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
+                            }
+                            } catch (Exception) {
                             MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             return;
                         }
@@ -3507,8 +3555,12 @@ namespace System.Windows.Forms.Samples {
                         this.listMenuItem.Checked = false;
                         //tries to start the process 
                         try {
-                            _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
-                        } catch (Exception) {
+                            if (!File.Exists(strExecutable)) {
+                                myActions.MessageBoxShow(" File not found: " + strExecutable);
+                            } else {
+                                _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
+                            }
+                            } catch (Exception) {
                             MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             return;
                         }
@@ -3540,8 +3592,12 @@ namespace System.Windows.Forms.Samples {
                         }
                         //tries to start the process 
                         try {
-                            _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
-                        } catch (Exception) {
+                            if (!File.Exists(strExecutable)) {
+                                myActions.MessageBoxShow(" File not found: " + strExecutable);
+                            } else {
+                                _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
+                            }
+                            } catch (Exception) {
                             MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             return;
                         }
@@ -4496,7 +4552,11 @@ namespace System.Windows.Forms.Samples {
             }
             //tries to start the process 
             try {
-                _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
+                if (!File.Exists(@"C:\Program Files (x86)\Notepad++\notepad++.exe")) {
+                    myActions.MessageBoxShow(" You need to download notepad++ to use this feature.\n\r\n\rFile not found: " + @"C:\Program Files (x86)\Notepad++\notepad++.exe");
+                } else {
+                    _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
+                }
             } catch (Exception) {
                 MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -4569,8 +4629,12 @@ namespace System.Windows.Forms.Samples {
             }
             //tries to start the process 
             try {
-                _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
-            } catch (Exception) {
+                if (!File.Exists(@"C:\Program Files (x86)\Notepad++\notepad++.exe")) {
+                    myActions.MessageBoxShow(" You need to download notepad++ to use this feature.\n\r\n\rFile not found: " + @"C:\Program Files (x86)\Notepad++\notepad++.exe");
+                } else {
+                    _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
+                }
+                } catch (Exception) {
                 MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
@@ -6625,8 +6689,12 @@ namespace System.Windows.Forms.Samples {
                 this.listMenuItem.Checked = false;
                 //tries to start the process 
                 try {
-                    _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
-                } catch (Exception) {
+                    if (!File.Exists(strExecutable)) {
+                        myActions.MessageBoxShow(" File not found: " + strExecutable);
+                    } else {
+                        _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
+                    }  
+                    } catch (Exception) {
                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
@@ -6658,7 +6726,11 @@ namespace System.Windows.Forms.Samples {
                 }
                 //tries to start the process 
                 try {
-                    _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
+                    if (!File.Exists(strExecutable)) {
+                        myActions.MessageBoxShow(" File not found: " + strExecutable);
+                    } else {
+                        _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
+                    }
                 } catch (Exception) {
                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
@@ -6874,7 +6946,11 @@ namespace System.Windows.Forms.Samples {
                 this.listMenuItem.Checked = false;
                 //tries to start the process 
                 try {
-                    _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
+                    if (!File.Exists(strExecutable)) {
+                        myActions.MessageBoxShow(" File not found: " + strExecutable);
+                    } else {
+                        _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
+                    }
                 } catch (Exception) {
                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
@@ -6907,7 +6983,11 @@ namespace System.Windows.Forms.Samples {
                 }
                 //tries to start the process 
                 try {
-                    _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
+                    if (!File.Exists(strExecutable)) {
+                        myActions.MessageBoxShow(" File not found: " + strExecutable);
+                    } else {
+                        _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
+                    }
                 } catch (Exception) {
                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
