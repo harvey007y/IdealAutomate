@@ -1575,11 +1575,11 @@ namespace System.Windows.Forms.Samples {
                         }
 
 
-                        if (myHotKeyRecord.Executable.Contains("OptionSetupIA") || myHotKeyRecord.Executable.Contains("OpenNotepadLineInVS")) {
-                            Methods myActions = new Methods();
-                            myActions.RunProcessAsAdmin(myHotKeyRecord.Executable, myHotKeyRecord.ExecuteContent ?? "");
-                            break;
-                        }
+                        //if (myHotKeyRecord.Executable.Contains("OptionSetupIA") || myHotKeyRecord.Executable.Contains("OpenNotepadLineInVS")) {
+                        //    Methods myActions = new Methods();
+                        //    myActions.RunProcessAsAdmin(myHotKeyRecord.Executable, myHotKeyRecord.ExecuteContent ?? "");
+                        //    break;
+                        //}
 
                         RunWaitTillStart(myHotKeyRecord.Executable, myHotKeyRecord.ExecuteContent ?? "");
                     }
