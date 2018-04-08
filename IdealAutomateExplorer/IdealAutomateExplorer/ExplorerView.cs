@@ -4474,7 +4474,9 @@ namespace System.Windows.Forms.Samples {
             //mySplitContainer.MouseEnter += new System.EventHandler(mySplitContainer_MouseEnter);
             //mySplitContainer.MouseLeave += new System.EventHandler(mySplitContainer_MouseLeave);
 
-            myDataGridView.Height = Screen.PrimaryScreen.Bounds.Height - 175;             
+            myDataGridView.Height = Screen.PrimaryScreen.Bounds.Height - 175;
+             
+            
             if (_CurrentIndex == tabControl1.TabCount - 1) {
                 _CurrentSplitContainer.Panel1.Controls.Add(myDataGridView);
                 tabControl1.TabPages[_CurrentIndex - 1].Controls.Add(_CurrentSplitContainer);
@@ -4487,7 +4489,7 @@ namespace System.Windows.Forms.Samples {
                 // tabControl1.TabPages[_CurrentIndex].Controls.Add(myDataGridView);
             }
             foreach (DataGridViewColumn item in myDataGridView.Columns) {
-                item.ToolTipText = "Right-Click Column Header to add remove filter";
+                item.ToolTipText = "Right-Click Column Header to add remove filter.\nUse menu item View to Show\\Hide Columns.\nLeft-Click column heading to sort.\nUse View\\Refresh to remove sort.";
             }
            
         }
