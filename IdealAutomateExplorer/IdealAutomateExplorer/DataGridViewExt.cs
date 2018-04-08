@@ -64,7 +64,7 @@ namespace System.Windows.Forms.Samples {
                 Methods myActions = new Methods();
                 ArrayList myArrayList = new ArrayList();
                 StringBuilder sb = new StringBuilder();
-
+                
 
                 foreach (ColumnOrderItem item in columnOrder) {
                     sb.Length = 0;
@@ -78,7 +78,14 @@ namespace System.Windows.Forms.Samples {
                     myArrayList.Add(sb.ToString());
                 }
                 myActions.WriteArrayListToAppDirectoryKey("ColumnOrder_" + _InitialDirectory.Replace(":","+").Replace("\\","-"), myArrayList);
-			}
+                if (this.SortedColumn != null) {
+                    myActions.SetValueByKey("SortedColumn_" + _InitialDirectory.Replace(":", "+").Replace("\\", "-"), this.SortedColumn.Index.ToString());
+                    myActions.SetValueByKey("SortOrder_" + _InitialDirectory.Replace(":", "+").Replace("\\", "-"), this.SortOrder.ToString());
+                } else {
+                    myActions.SetValueByKey("SortedColumn_" + _InitialDirectory.Replace(":", "+").Replace("\\", "-"), "-1");
+                    myActions.SetValueByKey("SortOrder_" + _InitialDirectory.Replace(":", "+").Replace("\\", "-"), this.SortOrder.ToString());
+                }
+            }
 		}
 		//---------------------------------------------------------------------
 		protected override void OnCreateControl()

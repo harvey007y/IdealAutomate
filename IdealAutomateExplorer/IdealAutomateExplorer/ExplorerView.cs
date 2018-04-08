@@ -2041,6 +2041,17 @@ namespace System.Windows.Forms.Samples {
             SetTitle(_dir.FileView);
             _CurrentDataGridView.DataSource = null;
             _CurrentDataGridView.DataSource = _CurrentFileViewBindingSource;
+            int sortedColumn = myActions.GetValueByKeyAsInt("SortedColumn_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"));
+            string myDirection = myActions.GetValueByKey("SortOrder_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"));
+            if (sortedColumn > -1 && _CurrentDataGridView.ColumnCount >= sortedColumn) {
+                if (myDirection == "Ascending") {
+                    _CurrentDataGridView.Sort(_CurrentDataGridView.Columns[sortedColumn], ListSortDirection.Ascending);
+                } else {
+                    _CurrentDataGridView.Sort(_CurrentDataGridView.Columns[sortedColumn], ListSortDirection.Descending);
+                }
+                myActions.SetValueByKey("SortedColumn_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"), "-1");
+                myActions.SetValueByKey("SortOrder_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"), ListSortDirection.Ascending.ToString());
+            }
             //   this._CurrentDataGridView.Sort(_CurrentDataGridView.Columns[1], ListSortDirection.Ascending);
             // Use of the DataGridViewColumnSelector
             DataGridViewColumnSelector cs = new DataGridViewColumnSelector(_CurrentDataGridView);
@@ -3831,8 +3842,7 @@ namespace System.Windows.Forms.Samples {
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 
-
-
+        
 
             ((System.ComponentModel.ISupportInitialize)(myDataGridView)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
@@ -4351,6 +4361,7 @@ namespace System.Windows.Forms.Samples {
                     }
                 }
             }
+
             this.contextMenuStrip1.ResumeLayout(false);
             // 
             // FileViewBindingSource
@@ -4389,6 +4400,7 @@ namespace System.Windows.Forms.Samples {
 
                 // tabControl1.TabPages[_CurrentIndex].Controls.Add(myDataGridView);
             }
+
         }
 
         private void selectIdealToolStripMenuItem_Click_1(object sender, EventArgs e) {
@@ -5634,8 +5646,10 @@ namespace System.Windows.Forms.Samples {
                         webBrowser1.Size = new System.Drawing.Size(_CurrentSplitContainer.Panel2.ClientSize.Width, _CurrentSplitContainer.Panel2.Height - 50);
                     } else {
                         System.Threading.Thread.Sleep(500);
-                        while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                        int ctr = 0;
+                        while (ctr < 150 && (_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
                             System.Threading.Thread.Sleep(10);
+                            ctr++;
                             _proc.Refresh();
                         }
 
