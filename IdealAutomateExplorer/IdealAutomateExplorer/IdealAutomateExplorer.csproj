@@ -37,7 +37,7 @@
     <InstallUrl>http://idealautomate.com/idealautomateexplorer/</InstallUrl>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>28</ApplicationRevision>
+    <ApplicationRevision>29</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -468,6 +468,7 @@
     <Content Include="WPFToolkit.dll" />
     <EmbeddedResource Include="Saved.resx">
       <DependentUpon>Saved.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <Content Include="Images\plus.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -696,13 +697,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="ExplorerView.resx">
       <DependentUpon>ExplorerView.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <Content Include="MyNewProject\MyNewProject\Properties\Resources.resx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="app.config">
       <SubType>Designer</SubType>
@@ -1136,6 +1140,12 @@
       <IncludeHash>False</IncludeHash>
       <FileType>Assembly</FileType>
     </PublishFile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DgvFilterPopup\DgvFilterPopup.csproj">
+      <Project>{4b9be5fd-303e-4270-9c4d-fa3bde6c34eb}</Project>
+      <Name>DgvFilterPopup</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

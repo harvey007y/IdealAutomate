@@ -32,6 +32,7 @@ using DocumentFormat.OpenXml.Packaging;
 using Hardcodet.Wpf.Samples.Pages;
 using Hardcodet.Wpf.Samples;
 using System.Management;
+using DgvFilterPopup;
 
 
 
@@ -2028,7 +2029,21 @@ namespace System.Windows.Forms.Samples {
             }
             RefreshDataGrid();
         }
+        public DataTable ConvertToDataTable<T>(IList<T> data) {
+            PropertyDescriptorCollection properties =
+               TypeDescriptor.GetProperties(typeof(T));
+            DataTable table = new DataTable();
+            foreach (PropertyDescriptor prop in properties)
+                table.Columns.Add(prop.Name, Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType);
+            foreach (T item in data) {
+                DataRow row = table.NewRow();
+                foreach (PropertyDescriptor prop in properties)
+                    row[prop.Name] = prop.GetValue(item) ?? DBNull.Value;
+                table.Rows.Add(row);
+            }
+            return table;
 
+        }
         private void RefreshDataGrid() {
             // refresh datagridview
             strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
@@ -2047,7 +2062,14 @@ namespace System.Windows.Forms.Samples {
             // Set the title
             SetTitle(_dir.FileView);
             _CurrentDataGridView.DataSource = null;
-            _CurrentDataGridView.DataSource = _CurrentFileViewBindingSource;
+            List<FileView> myListFileView = new List<FileView>();
+            foreach (FileView item in _CurrentFileViewBindingSource.List) {
+                myListFileView.Add(item);
+
+            }
+            _CurrentDataGridView.DataSource = ConvertToDataTable<FileView>(myListFileView);
+
+            new DgvFilterManager(_CurrentDataGridView);
             int sortedColumn = myActions.GetValueByKeyAsInt("SortedColumn_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"));
             string myDirection = myActions.GetValueByKey("SortOrder_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"));
             if (sortedColumn > -1 && _CurrentDataGridView.ColumnCount >= sortedColumn) {
@@ -4396,7 +4418,7 @@ namespace System.Windows.Forms.Samples {
             //mySplitContainer.MouseEnter += new System.EventHandler(mySplitContainer_MouseEnter);
             //mySplitContainer.MouseLeave += new System.EventHandler(mySplitContainer_MouseLeave);
 
-            myDataGridView.Height = Screen.PrimaryScreen.Bounds.Height - 300;
+            myDataGridView.Height = 175; 
             if (_CurrentIndex == tabControl1.TabCount - 1) {
                 _CurrentSplitContainer.Panel1.Controls.Add(myDataGridView);
                 tabControl1.TabPages[_CurrentIndex - 1].Controls.Add(_CurrentSplitContainer);
@@ -4408,7 +4430,10 @@ namespace System.Windows.Forms.Samples {
 
                 // tabControl1.TabPages[_CurrentIndex].Controls.Add(myDataGridView);
             }
-
+            foreach (DataGridViewColumn item in myDataGridView.Columns) {
+                item.ToolTipText = "Right-Click Column Header to add remove filter";
+            }
+           
         }
 
         private void dataGridView1_Sorted(object sender, EventArgs e) {
