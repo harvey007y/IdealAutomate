@@ -440,10 +440,7 @@ namespace System.Windows.Forms.Samples {
             _CurrentFileViewBindingSource = listBindingSource[tabControl1.SelectedIndex];
             _CurrentSplitContainer = listSplitContainer[tabControl1.SelectedIndex];
             _CurrentSplitContainer = (SplitContainer)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
-            for (int i = 0; i < 10; i++) {
-                _CurrentSplitContainer.SplitterMoved -= _CurrentSplitContainer_SplitterMoved;
-            }
-
+            _CurrentSplitContainer.SplitterMoved -= _CurrentSplitContainer_SplitterMoved;
             _CurrentSplitContainer.MouseEnter -= _CurrentSplitContainer_MouseEnter;
             _CurrentSplitContainer.MouseLeave -= _CurrentSplitContainer_MouseLeave;
 
@@ -854,10 +851,9 @@ namespace System.Windows.Forms.Samples {
             _CurrentFileViewBindingSource = listBindingSource[tabControl1.SelectedIndex];
             _CurrentSplitContainer = listSplitContainer[tabControl1.SelectedIndex];
             _CurrentSplitContainer = (SplitContainer)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
-
-            for (int i = 0; i < 10; i++) {
-                _CurrentSplitContainer.SplitterMoved -= _CurrentSplitContainer_SplitterMoved;
-            }
+          
+            _CurrentSplitContainer.SplitterMoved -= _CurrentSplitContainer_SplitterMoved;
+            
             _CurrentSplitContainer.MouseEnter -= _CurrentSplitContainer_MouseEnter;
             _CurrentSplitContainer.MouseLeave -= _CurrentSplitContainer_MouseLeave;
 
@@ -7814,18 +7810,22 @@ namespace System.Windows.Forms.Samples {
         private void documentationToolStripMenuItem_Click(object sender, EventArgs e) {
             NavWindowAutomater dlg = new NavWindowAutomater();
             ElementHost.EnableModelessKeyboardInterop(dlg);
+            dlg.Topmost = true;
             dlg.Show();
+            
         }
 
         private void videosToolStripMenuItem_Click(object sender, EventArgs e) {
             VideoTutorials dlg = new VideoTutorials();
             ElementHost.EnableModelessKeyboardInterop(dlg);
+            dlg.Topmost = true;
             dlg.Show();
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e) {
             AboutDialog dlg = new AboutDialog();
             ElementHost.EnableModelessKeyboardInterop(dlg);
+            dlg.Topmost = true;
             dlg.Show();
         }
 
