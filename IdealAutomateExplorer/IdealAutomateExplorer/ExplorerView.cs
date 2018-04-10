@@ -732,7 +732,7 @@ namespace System.Windows.Forms.Samples {
             Methods myActions = new Methods();
             //_CurrentDataGridView.ClearSelection();
 
-            _CurrentSplitContainer.Height = Screen.PrimaryScreen.Bounds.Height - 175;
+            _CurrentSplitContainer.Height = Screen.PrimaryScreen.WorkingArea.Size.Height - 155;
 
             int _CurrentSplitContainerWidth = myActions.GetValueByKeyAsInt("_CurrentSplitContainerWidth");
 
@@ -4463,14 +4463,14 @@ namespace System.Windows.Forms.Samples {
             // _CurrentSplitContainer.Panel1
             // 
             //    _CurrentSplitContainer.Panel1.Controls.Add(this.tabControl1);
-            _CurrentSplitContainer.Size = new System.Drawing.Size(856, Screen.PrimaryScreen.Bounds.Height - 175);
+            _CurrentSplitContainer.Size = new System.Drawing.Size(856, Screen.PrimaryScreen.Bounds.Height - 155);
             _CurrentSplitContainer.SplitterDistance = 499;
             _CurrentSplitContainer.TabIndex = 11;
             //mySplitContainer.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(mySplitContainer_SplitterMoved);
             //mySplitContainer.MouseEnter += new System.EventHandler(mySplitContainer_MouseEnter);
             //mySplitContainer.MouseLeave += new System.EventHandler(mySplitContainer_MouseLeave);
-
-            myDataGridView.Height = Screen.PrimaryScreen.Bounds.Height - 175;
+           
+            myDataGridView.Height = Screen.PrimaryScreen.WorkingArea.Size.Height - 150;
              
             
             if (_CurrentIndex == tabControl1.TabCount - 1) {
