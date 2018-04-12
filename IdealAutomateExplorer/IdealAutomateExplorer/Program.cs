@@ -1,8 +1,11 @@
 #region Using directives
 
+using IdealAutomate.Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection;
+using System.Security.Principal;
 using System.Windows.Forms;
 
 #endregion
@@ -17,9 +20,62 @@ namespace System.Windows.Forms.Samples
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ExplorerView());
+            if (!IsRunAsAdministrator()) {
+                Methods myActions = new Methods();
+                DialogResult myResult = myActions.MessageBoxShowWithYesNo("Do you want to run as admin?");
+                if (myResult == DialogResult.Yes) {
+                    var processInfo = new ProcessStartInfo(Assembly.GetExecutingAssembly().CodeBase);
+
+                    // The following properties run the new process as administrator
+                    processInfo.UseShellExecute = true;
+                    processInfo.Verb = "runas";
+
+                    // Start the new process
+                    try {
+                        Process.Start(processInfo);
+                    } catch (Exception) {
+                        // The user did not allow the application to run as administrator
+                        MessageBox.Show("Sorry, this application must be run as Administrator.");
+                    }
+                } else {
+                    Application.EnableVisualStyles();
+                    Application.SetCompatibleTextRenderingDefault(false);
+                    try { 
+                    Application.Run(new ExplorerView());
+                    } catch (Exception ex) {
+
+                        MessageBox.Show(ex.Message);
+                        MessageBox.Show(ex.StackTrace);
+                        MessageBox.Show(ex.InnerException.ToString());
+
+                    }
+                }
+
+                // Shut down the current process
+                
+                
+            } else {
+
+
+
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                try {
+                    Application.Run(new ExplorerView());
+                } catch (Exception ex) {
+
+                    MessageBox.Show(ex.Message);
+                    MessageBox.Show(ex.StackTrace);
+                    MessageBox.Show(ex.InnerException.ToString());
+
+                }
+            }
+        }
+        private static bool IsRunAsAdministrator() {
+            var wi = WindowsIdentity.GetCurrent();
+            var wp = new WindowsPrincipal(wi);
+
+            return wp.IsInRole(WindowsBuiltInRole.Administrator);
         }
     }
 }

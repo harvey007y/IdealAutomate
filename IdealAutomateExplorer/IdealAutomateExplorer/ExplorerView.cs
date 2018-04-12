@@ -5774,7 +5774,7 @@ namespace System.Windows.Forms.Samples {
 
         }
 
-        private async Task search_ClickAsync(object sender, EventArgs e) {
+        private async void search_ClickAsync(object sender, EventArgs e) {
             Methods myActions = new Methods();
             myActions = new Methods();
             string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
