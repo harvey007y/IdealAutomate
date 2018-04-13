@@ -1247,7 +1247,7 @@ namespace System.Windows.Forms.Samples {
             string myNewProjectName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
             string strNewProjectDir = Path.Combine(basePathForNewProject, myNewProjectName);
             string scriptPathNewProject = myActions.ConvertFullFileNameToPublicPath(strNewProjectDir) + "\\-" + myNewProjectName;
-            myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", scriptPathNewProject);
+           // myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", scriptPathNewProject);
             if (Directory.Exists(strNewProjectDir)) {
                 myActions.MessageBoxShow(strNewProjectDir + "already exists");
                 goto ReDisplayNewProjectDialog;
@@ -2372,7 +2372,7 @@ namespace System.Windows.Forms.Samples {
             //    DataGridViewCell myCell = _CurrentDataGridView.SelectedCells[0];
             myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow", e.RowIndex.ToString());
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                if (myCell.ColumnIndex == 0 && e.RowIndex > -1) {
+                if (e.RowIndex > -1) {
                     // Call Active on DirectoryView
                     string fileName = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["FullName"].Value.ToString();
 

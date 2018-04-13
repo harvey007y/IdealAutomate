@@ -4,7 +4,7 @@
   <description asmv2:iconFile="Resources\folder.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="IdealAutomateExplorer" version="1.0.6676.35901" publicKeyToken="D5A6DB18CD610FA5" language="neutral" processorArchitecture="amd64" />
+    <assemblyIdentity name="IdealAutomateExplorer" version="1.0.6677.30159" publicKeyToken="D5A6DB18CD610FA5" language="neutral" processorArchitecture="amd64" />
     <commandLine file="IdealAutomateExplorer.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -92,13 +92,13 @@
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IdealAutomateExplorer.exe" size="1186784">
-      <assemblyIdentity name="IdealAutomateExplorer" version="1.0.6676.35901" publicKeyToken="D5A6DB18CD610FA5" language="neutral" processorArchitecture="amd64" />
+      <assemblyIdentity name="IdealAutomateExplorer" version="1.0.6677.30159" publicKeyToken="D5A6DB18CD610FA5" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>0494aEkudwmm29350kurBBZRyPvxu0fUThK+iSpe9cI=</dsig:DigestValue>
+        <dsig:DigestValue>Ej/F2qZLG6HLjpxr7k2djdyP86F9cPBZR34eVHE0B7o=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
