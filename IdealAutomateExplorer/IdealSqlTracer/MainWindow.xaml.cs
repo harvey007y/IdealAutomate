@@ -384,7 +384,8 @@ namespace IdealSqlTracer {
                 myListControlEntity.Add(myControlEntity.CreateControlEntity());
                 ArrayList myDatabases = new ArrayList();
                 string serverName = strServerName;
-                DataTable dtDatabases = GetDatabases(serverName);
+                DataTable dtDatabases = GetDatabases(serverName, strUserName, strPassword);
+
                 try {
                     for (int i = 0; i < dtDatabases.Rows.Count; i++) {
                         DataRow dr = dtDatabases.Rows[i];
@@ -2850,13 +2851,16 @@ namespace IdealSqlTracer {
             return settingsDirectory;
         }
 
-        private DataTable GetDatabases(string ServerName) {
+        private DataTable GetDatabases(string ServerName, string strUserName, string strPassword) {
             string queryString =
       "SELECT name FROM master.dbo.sysdatabases " +
       "";
             // Define Connection String
             string strConnectionString = null;
-            strConnectionString = @"Data Source=" + ServerName + ";Integrated Security=SSPI";
+            // SqlConnection thisConnection = new SqlConnection("server=" + ServerName + ";" + "Persist Security Info=True;User ID=" + strUserName + ";Password=" + strPassword + ";database=" + strDatabaseName + "");
+
+            strConnectionString = @"Data Source=" + ServerName + ";" + "Persist Security Info=True;User ID=" + strUserName + ";Password=" + strPassword + ";";
+
             // Define .net fields to hold each column selected in query
             String str_sysdbreg_name;
             // Define a datatable that we will define columns in to match the columns
