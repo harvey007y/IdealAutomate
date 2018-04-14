@@ -1053,9 +1053,15 @@ namespace System.Windows.Forms.Samples {
             }
             try {
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName); // GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 _dir.Activate(this._CurrentFileViewBindingSource[myIndex] as FileView);
                 SetTitle(_dir.FileView);
-                //   RefreshDataGrid();
+               
+              
+
+                if (myFileView.IsDirectory) {
+                    RefreshDataGrid();
+                }
             } catch (Exception ex) {
                 MessageBox.Show(ex.Message + " - Line 559 in ExplorerView");
             }
@@ -2408,13 +2414,13 @@ namespace System.Windows.Forms.Samples {
                         return;
                     }
                     try {                        
-                        int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
-                        FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
-                        if (myFileView.IsDirectory && e.ColumnIndex < 2) {
-                            _dir.Activate(this._CurrentFileViewBindingSource[myIndex] as FileView);
-                            SetTitle(_dir.FileView);
-                            RefreshDataGrid();
-                        }
+                        //int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                        //FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
+                        //if (myFileView.IsDirectory && e.ColumnIndex < 2) {
+                        //    _dir.Activate(this._CurrentFileViewBindingSource[myIndex] as FileView);
+                        //    SetTitle(_dir.FileView);
+                        //    RefreshDataGrid();
+                        //}
                     } catch (Exception ex) {
                         MessageBox.Show(ex.Message + " - Line 1625 in ExplorerView");
                     }
