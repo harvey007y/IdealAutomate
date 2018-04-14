@@ -1052,12 +1052,25 @@ namespace System.Windows.Forms.Samples {
                 return;
             }
             try {
-                _dir.Activate(this._CurrentFileViewBindingSource[e.RowIndex] as FileView);
+                int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName); // GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                _dir.Activate(this._CurrentFileViewBindingSource[myIndex] as FileView);
                 SetTitle(_dir.FileView);
                 //   RefreshDataGrid();
             } catch (Exception ex) {
                 MessageBox.Show(ex.Message + " - Line 559 in ExplorerView");
             }
+        }
+
+        private int GetIndexForCurrentFileViewBindingSourceForFullName(string fileName) {
+            int findIndex = -1;
+            for (int i = 0; i < this._CurrentFileViewBindingSource.Count; i++) {
+                FileView item = (FileView)this._CurrentFileViewBindingSource[i];
+                if (item.FullName == fileName) {
+                    findIndex = i;
+                    break;
+                }
+            }
+            return findIndex;
         }
 
         private void thumbnailsMenuItem_Click(object sender, EventArgs e) {
@@ -1237,7 +1250,9 @@ namespace System.Windows.Forms.Samples {
             string basePathForNewProject = _dir.FileView.FullName;
             string basePathName = _dir.FileView.Name;
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
+                int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     basePathForNewProject = myFileView.FullName;
                     basePathName = myFileView.Name;
@@ -1382,7 +1397,9 @@ namespace System.Windows.Forms.Samples {
             FileView myFileView;
             Methods myActions = new Methods();
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
+                int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 //MessageBox.Show(myFileView.FullName.ToString());
                 if (myFileView.IsDirectory) {
                     // Call EnumerateFiles in a foreach-loop.
@@ -2347,7 +2364,9 @@ namespace System.Windows.Forms.Samples {
             string strNewSubCategoryDir = "";
 
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
+                int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 if (myFileView.IsDirectory) {
                     strNewSubCategoryDir = Path.Combine(myFileView.FullName, myNewSubCategoryName);
                     if (Directory.Exists(strNewSubCategoryDir)) {
@@ -2388,10 +2407,11 @@ namespace System.Windows.Forms.Samples {
                         RefreshDataGrid();
                         return;
                     }
-                    try {
-                        FileView myFileView = (FileView)this._CurrentFileViewBindingSource[e.RowIndex];
+                    try {                        
+                        int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                        FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                         if (myFileView.IsDirectory) {
-                            _dir.Activate(this._CurrentFileViewBindingSource[e.RowIndex] as FileView);
+                            _dir.Activate(this._CurrentFileViewBindingSource[myIndex] as FileView);
                             SetTitle(_dir.FileView);
                             RefreshDataGrid();
                         }
@@ -2682,7 +2702,9 @@ namespace System.Windows.Forms.Samples {
             string basePathForNewFolder = _dir.FileView.FullName;
             string basePathName = _dir.FileView.Name;
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
+                int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     basePathForNewFolder = myFileView.FullName;
                     basePathName = myFileView.Name;
@@ -2710,7 +2732,9 @@ namespace System.Windows.Forms.Samples {
         private void notepadToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
+                int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 if (!myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     _NotepadppLoaded = true;
                     string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
@@ -3009,7 +3033,9 @@ namespace System.Windows.Forms.Samples {
         private void notepadToolStripMenuItem1_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
+                int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 if (!myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     myActions.KillAllProcessesByProcessName("notepad++");
                     _NotepadppLoaded = true;
@@ -3029,7 +3055,9 @@ namespace System.Windows.Forms.Samples {
             FileView myFileView;
             string fileFullName = "";
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
+                int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     basePathForNewTextDocument = myFileView.FullName;
                     basePathName = myFileView.Name;
@@ -3330,7 +3358,9 @@ namespace System.Windows.Forms.Samples {
             string basePathForNewFolder = _dir.FileView.FullName;
             string basePathName = _dir.FileView.Name;
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
+                int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     basePathForNewFolder = myFileView.FullName;
                     basePathName = myFileView.Name;
@@ -3358,7 +3388,9 @@ namespace System.Windows.Forms.Samples {
         private void wordPadToolStripMenuItem1_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
+                int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 if (!myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     string strExecutable = @"C:\Program Files\Windows NT\Accessories\wordpad.exe";
                     _WordPadLoaded = true;
@@ -3376,7 +3408,9 @@ namespace System.Windows.Forms.Samples {
             string basePathForNewTextDocument = _dir.FileView.FullName;
             string fileFullName = "";
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
+                int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     basePathForNewTextDocument = myFileView.FullName;
                     basePathName = myFileView.Name;
@@ -3635,7 +3669,9 @@ namespace System.Windows.Forms.Samples {
             string basePathForNewTextDocument = _dir.FileView.FullName;
             string fileFullName = "";
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
+                int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     basePathForNewTextDocument = myFileView.FullName;
                     basePathName = myFileView.Name;
@@ -3736,7 +3772,9 @@ namespace System.Windows.Forms.Samples {
             FileView myFileView;
             Methods myActions = new Methods();
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
+                int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 //MessageBox.Show(myFileView.FullName.ToString());
                 if (myFileView.IsDirectory) {
                     // Call EnumerateFiles in a foreach-loop.
@@ -3799,7 +3837,9 @@ namespace System.Windows.Forms.Samples {
             string strNewSubCategoryDir = "";
 
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
+                int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 if (myFileView.IsDirectory) {
                     strNewSubCategoryDir = Path.Combine(myFileView.FullName, myNewSubCategoryName);
                     if (Directory.Exists(strNewSubCategoryDir)) {
@@ -4508,7 +4548,9 @@ namespace System.Windows.Forms.Samples {
             bool isDirectory = false;
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 //if (myCell.ColumnIndex != 0 && myCell.RowIndex != 0) {
-                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
+                int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 fullFileName = myFileView.FullName;
                 fileNamea = myFileView.Name;
                 if (myFileView.IsDirectory) {
@@ -4585,7 +4627,9 @@ namespace System.Windows.Forms.Samples {
             bool isDirectory = false;
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 //if (myCell.ColumnIndex != 0 && myCell.RowIndex != 0) {
-                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
+                int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 fullFileName = myFileView.FullName;
                 fileNamea = myFileView.Name;
                 if (myFileView.IsDirectory) {
@@ -4682,7 +4726,9 @@ namespace System.Windows.Forms.Samples {
         private void buildStripMenuItem4_Click_1(object sender, EventArgs e) {
             FileView myFileView;
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
+                int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 //MessageBox.Show(myFileView.FullName.ToString());
                 if (myFileView.IsDirectory) {
                     // Call EnumerateFiles in a foreach-loop.
@@ -4738,7 +4784,9 @@ namespace System.Windows.Forms.Samples {
         private void runToolStripMenuItem_Click(object sender, EventArgs e) {
             FileView myFileView;
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
+                int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 //MessageBox.Show(myFileView.FullName.ToString());
                 if (myFileView.IsDirectory) {
                     // Call EnumerateFiles in a foreach-loop.
@@ -4761,7 +4809,9 @@ namespace System.Windows.Forms.Samples {
         private void visualStudioToolStripMenuItem_Click(object sender, EventArgs e) {
             FileView myFileView;
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
+                int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 //MessageBox.Show(myFileView.FullName.ToString());
                 if (myFileView.IsDirectory) {
                     // Call EnumerateFiles in a foreach-loop.
@@ -4785,7 +4835,9 @@ namespace System.Windows.Forms.Samples {
             bool isDirectory = false;
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 //if (myCell.ColumnIndex != 0 && myCell.RowIndex != 0) {
-                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
+                int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 fullFileName = myFileView.FullName;
                 fileNamea = myFileView.Name;
                 if (myFileView.IsDirectory) {
@@ -5027,7 +5079,9 @@ namespace System.Windows.Forms.Samples {
 
             string myHotKey = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
+                int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 //MessageBox.Show(myFileView.FullName.ToString());
                 if (myFileView.IsDirectory) {
                     // Call EnumerateFiles in a foreach-loop.
@@ -5111,7 +5165,9 @@ namespace System.Windows.Forms.Samples {
             Methods myActions = new Methods();
 
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
+                int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 //MessageBox.Show(myFileView.FullName.ToString());
                 bool boolScriptFound = false;
                 if (myFileView.IsDirectory) {
@@ -5204,7 +5260,9 @@ namespace System.Windows.Forms.Samples {
 
             string myManualExecutionTime = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
+                int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 //MessageBox.Show(myFileView.FullName.ToString());
                 if (myFileView.IsDirectory) {
                     // Call EnumerateFiles in a foreach-loop.
@@ -5231,13 +5289,17 @@ namespace System.Windows.Forms.Samples {
             string fileManualTimeFullName = "";
             Methods myActions = new Methods();
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
+                int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 //MessageBox.Show(myFileView.FullName.ToString());                
                 fileFullName = myFileView.FullName;
             }
 
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                myManualTimeFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
+                int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                myManualTimeFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 //MessageBox.Show(myFileView.FullName.ToString());
                 if (myManualTimeFileView.IsDirectory) {
                     // Call EnumerateFiles in a foreach-loop.
@@ -5733,7 +5795,9 @@ namespace System.Windows.Forms.Samples {
         private void WindowsExplorerStripMenuItem2_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
+                int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     string strExecutable = @"C:\Windows\explorer.exe";
                     myActions.Run(strExecutable, "\"" + myFileView.FullName + "\"");
@@ -6506,7 +6570,9 @@ namespace System.Windows.Forms.Samples {
             string fileFullName = "";
 
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
+                int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     basePathForNewTextDocument = myFileView.FullName;
                     basePathName = myFileView.Name;
@@ -6515,7 +6581,9 @@ namespace System.Windows.Forms.Samples {
             }
 
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
+                int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 //MessageBox.Show(myFileView.FullName.ToString());                
                 fileFullName = myFileView.FullName;
                 if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
@@ -6768,7 +6836,9 @@ namespace System.Windows.Forms.Samples {
             string basePathForNewTextDocument = _dir.FileView.FullName;
             string fileFullName = "";
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
+                int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     basePathForNewTextDocument = myFileView.FullName;
                     basePathName = myFileView.Name;
@@ -7053,7 +7123,9 @@ namespace System.Windows.Forms.Samples {
             string basePathForNewTextDocument = _dir.FileView.FullName;
             string fileFullName = "";
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
+                int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     basePathForNewTextDocument = myFileView.FullName;
                     basePathName = myFileView.Name;
@@ -7374,7 +7446,9 @@ namespace System.Windows.Forms.Samples {
             string basePathForNewTextDocument = _dir.FileView.FullName;
             string fileFullName = "";
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
+                int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     basePathForNewTextDocument = myFileView.FullName;
                     basePathName = myFileView.Name;
@@ -7481,7 +7555,9 @@ namespace System.Windows.Forms.Samples {
             string basePathForNewTextDocument = _dir.FileView.FullName;
             string fileFullName = "";
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myCell.RowIndex];
+                string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
+                int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     basePathForNewTextDocument = myFileView.FullName;
                     basePathName = myFileView.Name;
