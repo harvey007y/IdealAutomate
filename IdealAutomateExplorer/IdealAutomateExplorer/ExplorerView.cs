@@ -2389,9 +2389,12 @@ namespace System.Windows.Forms.Samples {
                         return;
                     }
                     try {
-                        _dir.Activate(this._CurrentFileViewBindingSource[e.RowIndex] as FileView);
-                        SetTitle(_dir.FileView);
-                        RefreshDataGrid();
+                        FileView myFileView = (FileView)this._CurrentFileViewBindingSource[e.RowIndex];
+                        if (myFileView.IsDirectory) {
+                            _dir.Activate(this._CurrentFileViewBindingSource[e.RowIndex] as FileView);
+                            SetTitle(_dir.FileView);
+                            RefreshDataGrid();
+                        }
                     } catch (Exception ex) {
                         MessageBox.Show(ex.Message + " - Line 1625 in ExplorerView");
                     }
