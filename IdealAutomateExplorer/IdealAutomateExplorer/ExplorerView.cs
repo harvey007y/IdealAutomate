@@ -2750,7 +2750,25 @@ namespace System.Windows.Forms.Samples {
                 }
             }
         }
+        protected virtual bool IsFileLocked(FileInfo file) {
+            FileStream stream = null;
 
+            try {
+                stream = file.Open(FileMode.Open, FileAccess.Read, FileShare.None);
+            } catch (IOException) {
+                //the file is unavailable because it is:
+                //still being written to
+                //or being processed by another thread
+                //or does not exist (has already been processed)
+                return true;
+            } finally {
+                if (stream != null)
+                    stream.Close();
+            }
+
+            //file is not locked
+            return false;
+        }
         private void dataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e) {
             Methods myActions = new Methods();
             string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
@@ -2855,6 +2873,11 @@ namespace System.Windows.Forms.Samples {
                                 if (!File.Exists(@"C:\Program Files\Windows NT\Accessories\wordpad.exe")) {
                                     myActions.MessageBoxShow(" File not found: " + @"C:\Program Files\Windows NT\Accessories\wordpad.exe");
                                 } else {
+                                    
+                                   if (IsFileLocked(new FileInfo(fileName))) {
+                                        myActions.MessageBoxShow("File already open");
+                                        return;
+                                    }
                                     ProcessStartInfo psi = new ProcessStartInfo(@"C:\Program Files\Windows NT\Accessories\wordpad.exe", "\"" + fileName + "\"");
                                     psi.WindowStyle = ProcessWindowStyle.Minimized;
                                     _proc = Process.Start(psi);
