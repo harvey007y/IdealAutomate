@@ -2410,7 +2410,7 @@ namespace System.Windows.Forms.Samples {
                     try {                        
                         int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                         FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
-                        if (myFileView.IsDirectory) {
+                        if (myFileView.IsDirectory && e.ColumnIndex < 2) {
                             _dir.Activate(this._CurrentFileViewBindingSource[myIndex] as FileView);
                             SetTitle(_dir.FileView);
                             RefreshDataGrid();
