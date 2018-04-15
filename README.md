@@ -1,4 +1,5 @@
 # IdealAutomate
+<center><strong>Automating the Problem-Solving Proces One Chunk at a Time</strong></center> 
  <p align="center">
  <a href="//pluralsight.pxf.io/c/1194222/424552/7490" target="_blank" style="color:white;font-weight:bold;text-decoration:none;">Save 15% On Pluralsight - Annual Subscription Only $299</a>
 <br />
