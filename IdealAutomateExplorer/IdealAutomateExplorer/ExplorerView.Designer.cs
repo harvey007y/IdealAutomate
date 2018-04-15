@@ -934,6 +934,7 @@ namespace System.Windows.Forms.Samples
             this.tabControl1.ShowToolTips = true;
             this.tabControl1.Size = new System.Drawing.Size(856, 294);
             this.tabControl1.TabIndex = 13;
+            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
             // tabPage3
             // 

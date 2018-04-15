@@ -1574,6 +1574,9 @@ namespace System.Windows.Forms.Samples {
                 _selectedRow = 0;
                 Methods myActions = new Methods();
                 myActions.SetValueByKey("InitialDirectory" + _selectedTabIndex.ToString() + "SelectedRow", "0");
+                PostMessage(_appHandle, WM_CLOSE, 0, 0);
+                System.Threading.Thread.Sleep(1000);
+                _appHandle = IntPtr.Zero;
             }
 
             if (AnyKeyPressed()) {
@@ -2750,25 +2753,7 @@ namespace System.Windows.Forms.Samples {
                 }
             }
         }
-        protected virtual bool IsFileLocked(FileInfo file) {
-            FileStream stream = null;
-
-            try {
-                stream = file.Open(FileMode.Open, FileAccess.Read, FileShare.None);
-            } catch (IOException) {
-                //the file is unavailable because it is:
-                //still being written to
-                //or being processed by another thread
-                //or does not exist (has already been processed)
-                return true;
-            } finally {
-                if (stream != null)
-                    stream.Close();
-            }
-
-            //file is not locked
-            return false;
-        }
+       
         private void dataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e) {
             Methods myActions = new Methods();
             string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
@@ -2874,16 +2859,13 @@ namespace System.Windows.Forms.Samples {
                                     myActions.MessageBoxShow(" File not found: " + @"C:\Program Files\Windows NT\Accessories\wordpad.exe");
                                 } else {
                                     
-                                   if (IsFileLocked(new FileInfo(fileName))) {
-                                        myActions.MessageBoxShow("File already open");
-                                        return;
-                                    }
+
                                     ProcessStartInfo psi = new ProcessStartInfo(@"C:\Program Files\Windows NT\Accessories\wordpad.exe", "\"" + fileName + "\"");
                                     psi.WindowStyle = ProcessWindowStyle.Minimized;
                                     _proc = Process.Start(psi);
                                 }
-                            } catch (Exception) {
-                                MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            } catch (Exception ex) {
+                                MessageBox.Show("Something went wrong trying to start your process: " + ex.Message, "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 return;
                             }
 
@@ -7127,6 +7109,9 @@ namespace System.Windows.Forms.Samples {
                 _selectedRow = 0;
                 Methods myActions = new Methods();
                 myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow", "0");
+                PostMessage(_appHandle, WM_CLOSE, 0, 0);      
+                System.Threading.Thread.Sleep(1000);
+                _appHandle = IntPtr.Zero;
             }
         }
         private void CreateShortcut(string name, string url) {
