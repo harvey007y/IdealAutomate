@@ -730,6 +730,12 @@ namespace System.Windows.Forms.Samples {
 
             this.Cursor = Cursors.WaitCursor;
             Methods myActions = new Methods();
+            string launchMode = myActions.GetValueByKey("LaunchMode");
+            if (launchMode == "Admin") {
+                toolStripComboBox2.SelectedIndex = 0;
+            } else {
+                toolStripComboBox2.SelectedIndex = 1;
+            }
             //_CurrentDataGridView.ClearSelection();
 
             _CurrentSplitContainer.Height = Screen.PrimaryScreen.WorkingArea.Size.Height - 155;
@@ -8251,6 +8257,15 @@ namespace System.Windows.Forms.Samples {
 
         private void cbxCurrentPath_MouseDown(object sender, MouseEventArgs e) {
             _newTab = false;
+        }
+
+        private void toolStripComboBox2_SelectedIndexChanged(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            if (toolStripComboBox2.SelectedIndex == 0) {
+                myActions.SetValueByKey("LaunchMode", "Admin");
+            } else {
+                myActions.SetValueByKey("LaunchMode", "NonAdmin");
+            }
         }
     }
 

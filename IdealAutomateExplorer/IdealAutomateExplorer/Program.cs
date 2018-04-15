@@ -22,8 +22,8 @@ namespace System.Windows.Forms.Samples
         {
             if (!IsRunAsAdministrator()) {
                 Methods myActions = new Methods();
-                DialogResult myResult = myActions.MessageBoxShowWithYesNo("Do you want to run as admin?");
-                if (myResult == DialogResult.Yes) {
+                string launchMode = myActions.GetValueByKey("LaunchMode");
+                if (launchMode == "Admin") {
                     var processInfo = new ProcessStartInfo(Assembly.GetExecutingAssembly().CodeBase);
 
                     // The following properties run the new process as administrator

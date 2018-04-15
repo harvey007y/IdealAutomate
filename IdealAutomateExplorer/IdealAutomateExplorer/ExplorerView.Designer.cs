@@ -133,6 +133,8 @@ namespace System.Windows.Forms.Samples
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripComboBox2 = new System.Windows.Forms.ToolStripComboBox();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource)).BeginInit();
             this.toolBar.SuspendLayout();
@@ -614,6 +616,7 @@ namespace System.Windows.Forms.Samples
             this.toolStripMenuItem6,
             this.toolStripMenuItem7,
             this.toolStripMenuItem8,
+            this.toolStripMenuItem9,
             this.sqlToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
@@ -628,41 +631,41 @@ namespace System.Windows.Forms.Samples
             this.visualStudio2015ToolStripMenuItem,
             this.visualStudio2017ToolStripMenuItem});
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(164, 22);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem2.Text = "Coding Tools";
             // 
             // instantCToolStripMenuItem
             // 
             this.instantCToolStripMenuItem.Name = "instantCToolStripMenuItem";
-            this.instantCToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.instantCToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.instantCToolStripMenuItem.Text = "Instant C#";
             this.instantCToolStripMenuItem.Click += new System.EventHandler(this.instantCToolStripMenuItem_Click);
             // 
             // instantVBToolStripMenuItem
             // 
             this.instantVBToolStripMenuItem.Name = "instantVBToolStripMenuItem";
-            this.instantVBToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.instantVBToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.instantVBToolStripMenuItem.Text = "Instant VB";
             this.instantVBToolStripMenuItem.Click += new System.EventHandler(this.instantVBToolStripMenuItem_Click);
             // 
             // paintNETToolStripMenuItem
             // 
             this.paintNETToolStripMenuItem.Name = "paintNETToolStripMenuItem";
-            this.paintNETToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.paintNETToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.paintNETToolStripMenuItem.Text = "Paint.NET";
             this.paintNETToolStripMenuItem.Click += new System.EventHandler(this.paintNETToolStripMenuItem_Click);
             // 
             // visualStudio2015ToolStripMenuItem
             // 
             this.visualStudio2015ToolStripMenuItem.Name = "visualStudio2015ToolStripMenuItem";
-            this.visualStudio2015ToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.visualStudio2015ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.visualStudio2015ToolStripMenuItem.Text = "Visual Studio 2015";
             this.visualStudio2015ToolStripMenuItem.Click += new System.EventHandler(this.visualStudio2015ToolStripMenuItem_Click);
             // 
             // visualStudio2017ToolStripMenuItem
             // 
             this.visualStudio2017ToolStripMenuItem.Name = "visualStudio2017ToolStripMenuItem";
-            this.visualStudio2017ToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.visualStudio2017ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.visualStudio2017ToolStripMenuItem.Text = "Visual Studio 2017";
             this.visualStudio2017ToolStripMenuItem.Click += new System.EventHandler(this.visualStudio2017ToolStripMenuItem_Click);
             // 
@@ -676,7 +679,7 @@ namespace System.Windows.Forms.Samples
             this.servicesToolStripMenuItem,
             this.taskManagerToolStripMenuItem});
             this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(164, 22);
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem6.Text = "Control Panel";
             // 
             // componentServicesToolStripMenuItem
@@ -732,7 +735,7 @@ namespace System.Windows.Forms.Samples
             this.taskManagerToolStripMenuItem1,
             this.winListerToolStripMenuItem});
             this.toolStripMenuItem7.Name = "toolStripMenuItem7";
-            this.toolStripMenuItem7.Size = new System.Drawing.Size(164, 22);
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem7.Text = "Debugging Tools";
             // 
             // fiddlerToolStripMenuItem
@@ -791,27 +794,27 @@ namespace System.Windows.Forms.Samples
             this.fiddlerToolStripMenuItem1,
             this.postmanToolStripMenuItem});
             this.toolStripMenuItem8.Name = "toolStripMenuItem8";
-            this.toolStripMenuItem8.Size = new System.Drawing.Size(164, 22);
+            this.toolStripMenuItem8.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem8.Text = "Http Tools";
             // 
             // curlToolStripMenuItem
             // 
             this.curlToolStripMenuItem.Name = "curlToolStripMenuItem";
-            this.curlToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
+            this.curlToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.curlToolStripMenuItem.Text = "Curl";
             this.curlToolStripMenuItem.Click += new System.EventHandler(this.curlToolStripMenuItem_Click);
             // 
             // fiddlerToolStripMenuItem1
             // 
             this.fiddlerToolStripMenuItem1.Name = "fiddlerToolStripMenuItem1";
-            this.fiddlerToolStripMenuItem1.Size = new System.Drawing.Size(121, 22);
+            this.fiddlerToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.fiddlerToolStripMenuItem1.Text = "Fiddler";
             this.fiddlerToolStripMenuItem1.Click += new System.EventHandler(this.fiddlerToolStripMenuItem1_Click);
             // 
             // postmanToolStripMenuItem
             // 
             this.postmanToolStripMenuItem.Name = "postmanToolStripMenuItem";
-            this.postmanToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
+            this.postmanToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.postmanToolStripMenuItem.Text = "Postman";
             this.postmanToolStripMenuItem.Click += new System.EventHandler(this.postmanToolStripMenuItem_Click);
             // 
@@ -825,48 +828,48 @@ namespace System.Windows.Forms.Samples
             this.sqlToGridToolStripMenuItem,
             this.sSMSToolStripMenuItem});
             this.sqlToolStripMenuItem.Name = "sqlToolStripMenuItem";
-            this.sqlToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.sqlToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.sqlToolStripMenuItem.Text = "Sql";
             // 
             // findColumnsToolStripMenuItem
             // 
             this.findColumnsToolStripMenuItem.Name = "findColumnsToolStripMenuItem";
-            this.findColumnsToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.findColumnsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.findColumnsToolStripMenuItem.Text = "FindColumns";
             this.findColumnsToolStripMenuItem.Click += new System.EventHandler(this.findColumnsToolStripMenuItem_Click);
             // 
             // idealSqlTracerToolStripMenuItem
             // 
             this.idealSqlTracerToolStripMenuItem.Name = "idealSqlTracerToolStripMenuItem";
-            this.idealSqlTracerToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.idealSqlTracerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.idealSqlTracerToolStripMenuItem.Text = "IdealSqlTracer";
             this.idealSqlTracerToolStripMenuItem.Click += new System.EventHandler(this.idealSqlTracerToolStripMenuItem_Click);
             // 
             // sqlLiteToolStripMenuItem
             // 
             this.sqlLiteToolStripMenuItem.Name = "sqlLiteToolStripMenuItem";
-            this.sqlLiteToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.sqlLiteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.sqlLiteToolStripMenuItem.Text = "SqlLite";
             this.sqlLiteToolStripMenuItem.Click += new System.EventHandler(this.sqlLiteToolStripMenuItem_Click);
             // 
             // sqlProfilerToolStripMenuItem
             // 
             this.sqlProfilerToolStripMenuItem.Name = "sqlProfilerToolStripMenuItem";
-            this.sqlProfilerToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.sqlProfilerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.sqlProfilerToolStripMenuItem.Text = "SqlProfiler";
             this.sqlProfilerToolStripMenuItem.Click += new System.EventHandler(this.sqlProfilerToolStripMenuItem_Click);
             // 
             // sqlToGridToolStripMenuItem
             // 
             this.sqlToGridToolStripMenuItem.Name = "sqlToGridToolStripMenuItem";
-            this.sqlToGridToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.sqlToGridToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.sqlToGridToolStripMenuItem.Text = "SqlToGrid";
             this.sqlToGridToolStripMenuItem.Click += new System.EventHandler(this.sqlToGridToolStripMenuItem_Click);
             // 
             // sSMSToolStripMenuItem
             // 
             this.sSMSToolStripMenuItem.Name = "sSMSToolStripMenuItem";
-            this.sSMSToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.sSMSToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.sSMSToolStripMenuItem.Text = "SSMS";
             this.sSMSToolStripMenuItem.Click += new System.EventHandler(this.sSMSToolStripMenuItem_Click);
             // 
@@ -946,6 +949,23 @@ namespace System.Windows.Forms.Samples
             this.tabPage3.Text = "    +";
             this.tabPage3.ToolTipText = "Add New Tab";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // toolStripMenuItem9
+            // 
+            this.toolStripMenuItem9.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripComboBox2});
+            this.toolStripMenuItem9.Name = "toolStripMenuItem9";
+            this.toolStripMenuItem9.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem9.Text = "Preferences";
+            // 
+            // toolStripComboBox2
+            // 
+            this.toolStripComboBox2.Items.AddRange(new object[] {
+            "LaunchAsAdmin",
+            "LaunchAsNonAdmin"});
+            this.toolStripComboBox2.Name = "toolStripComboBox2";
+            this.toolStripComboBox2.Size = new System.Drawing.Size(121, 23);
+            this.toolStripComboBox2.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBox2_SelectedIndexChanged);
             // 
             // ExplorerView
             // 
@@ -1085,6 +1105,8 @@ namespace System.Windows.Forms.Samples
         private ToolStripMenuItem postmanToolStripMenuItem;
         private TabControl tabControl1;
         private TabPage tabPage3;
+        private ToolStripMenuItem toolStripMenuItem9;
+        private ToolStripComboBox toolStripComboBox2;
     }
 }
 
