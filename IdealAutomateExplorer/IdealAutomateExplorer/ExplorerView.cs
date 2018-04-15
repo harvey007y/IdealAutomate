@@ -2091,10 +2091,16 @@ namespace System.Windows.Forms.Samples {
 
         }
         private void RefreshDataGrid() {
+             
+           
             // refresh datagridview
             strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             // Set Initial Directory to My Documents
             Methods myActions = new Methods();
+            int mySplitterDistance = myActions.GetValueByKeyAsInt("_CurrentSplitContainerWidth" + _selectedTabIndex.ToString());
+            if (mySplitterDistance > 0) {
+                _CurrentSplitContainer.SplitterDistance = mySplitterDistance;
+                    }
             string strSavedDirectory = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
 
 
@@ -5842,7 +5848,7 @@ namespace System.Windows.Forms.Samples {
                         SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                     }
                     Methods myActions = new Methods();
-                    myActions.SetValueByKey("_CurrentSplitContainerWidth", e.X.ToString());
+                    myActions.SetValueByKey("_CurrentSplitContainerWidth" + _selectedTabIndex.ToString(), e.X.ToString());
                 }
             } catch (Exception ex) {
 
