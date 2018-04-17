@@ -77,6 +77,7 @@ namespace System.Windows.Forms.Samples {
         ArrayList _myArrayList;
         System.Windows.Threading.DispatcherTimer dispatcherTimer;
         public IntPtr myhWnd;
+        static StringBuilder _searchErrors = new StringBuilder();
 
 
         [DllImport("user32.dll", SetLastError = true)]
@@ -5865,6 +5866,7 @@ namespace System.Windows.Forms.Samples {
         }
 
         private async void search_ClickAsync(object sender, EventArgs e) {
+            _searchErrors.Length = 0;
             Methods myActions = new Methods();
             myActions = new Methods();
             string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
@@ -6310,6 +6312,9 @@ namespace System.Windows.Forms.Samples {
                 string strContent = settingsDirectory + @"\MatchInfo.txt";
                 myActions.Run(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
                 myResult = "RunTime: " + elapsedTime + "\n\r\n\rHits: " + intHits.ToString() + "\n\r\n\rFiles with hits: " + intUniqueFiles.ToString() + "\n\r\n\rPut Cursor on line and\n\r press Ctrl+Alt+N\n\rto view detail page. ";
+                if (_searchErrors.Length > 0) {
+                    myResult += "\n\r\n\rErrors: " + _searchErrors.ToString();
+                }
             }
 
 
@@ -6571,9 +6576,9 @@ namespace System.Windows.Forms.Samples {
 
             } catch (Exception ex) {
                 if (ex.InnerException != null) {
-                    myActions.MessageBoxShow(ex.InnerException.ToString() + " filename is:" + flname + " - Line 5733 in ExplorerView");
+                   _searchErrors.AppendLine(ex.InnerException.ToString() + " filename is:" + flname + " - Line 5733 in ExplorerView");
                 } else {
-                    myActions.MessageBoxShow(ex.Message + " filename is:" + flname + " - Line 5735 in ExplorerView");
+                    _searchErrors.AppendLine(ex.Message + " filename is:" + flname + " - Line 5735 in ExplorerView");
                 }
             }
 
