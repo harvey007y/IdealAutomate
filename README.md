@@ -1,10 +1,5 @@
 # IdealAutomate
 <p align="center"><strong>Automating the Problem-Solving Proces One Chunk at a Time</strong></p> 
- <p align="center">
- <a href="//pluralsight.pxf.io/c/1194222/424552/7490" target="_blank" style="color:white;font-weight:bold;text-decoration:none;">Save 15% On Pluralsight - Annual Subscription Only $299</a>
-<br />
-<a target="_blank" href="//pluralsight.pxf.io/c/1194222/424552/7490"><img src="http://a.impactradius-go.com/display-ad/7490-431393" border="0" height="300"/></a> <a target="_blank" href="http://payscale.com"><img src="http://www.payscale.com/images/llb/payscale_banner_120x240.gif" border="0" height="300" /></a> <a target="_blank" href="//pluralsight.pxf.io/c/1194222/424552/7490"><img src="http://idealprogrammer.com/wp-photos/SoftwareDeveloper300.png" border="0" height="300" /></a>
- </p>
 <br /><br />
 <strong>If you just want the IdealAutomateExplorer executable application, you can install it with a single-click at <a href="http://idealautomate.com/idealautomateexplorer/publish.htm" target="_blank">http://idealautomate.com/idealautomateexplorer/publish.htm</a></strong>
 <br /><br />
