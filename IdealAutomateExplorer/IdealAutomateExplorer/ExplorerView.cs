@@ -320,6 +320,7 @@ namespace System.Windows.Forms.Samples {
                 LineAfterDisplayWindow:
                 if (strButtonPressed == "btnCancel") {
                     myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                    this.Cursor = Cursors.Default;
                     return;
                 }
 
@@ -436,6 +437,7 @@ namespace System.Windows.Forms.Samples {
                 tabControl1.TabPages[tabControl1.SelectedIndex].ToolTipText = _dir.FileView.FullName;
 
             }
+            this.Cursor = Cursors.WaitCursor;
             myActions.SetValueByKey("CurrentIndex", tabControl1.SelectedIndex.ToString());
             _CurrentDataGridView = (DataGridViewExt)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0].Controls[0].Controls[0];
             _CurrentFileViewBindingSource = listBindingSource[tabControl1.SelectedIndex];
@@ -452,6 +454,7 @@ namespace System.Windows.Forms.Samples {
                 string strCurrentPath = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
                 cbxCurrentPath.Text = strCurrentPath;
                 cbxCurrentPath.SelectedValue = strCurrentPath;
+                this.Cursor = Cursors.Default;
                 return;
             } else {
                 _newTab = true;
@@ -556,7 +559,8 @@ namespace System.Windows.Forms.Samples {
                                     _proc = Process.Start(psi);                                  
                                 } catch (Exception) {
                                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                    return;
+                                    this.Cursor = Cursors.Default;
+                                return;
                                 }
 
 
@@ -615,7 +619,8 @@ namespace System.Windows.Forms.Samples {
                                     }
                                     } catch (Exception) {
                                         MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                        return;
+                                    this.Cursor = Cursors.Default;
+                                    return;
                                     }
 
 
@@ -642,6 +647,7 @@ namespace System.Windows.Forms.Samples {
 
             }
             _newTab = true;
+            this.Cursor = Cursors.Default;
         }
 
         private void TabControl1_DrawItem(object sender, System.Windows.Forms.DrawItemEventArgs e) {
@@ -765,6 +771,7 @@ namespace System.Windows.Forms.Samples {
                     }
                 } catch (Exception) {
                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.Cursor = Cursors.Default;
                     return;
                 }
 
@@ -967,10 +974,12 @@ namespace System.Windows.Forms.Samples {
 
         private void dataGridView1_CellPainting(object sender, DataGridViewCellPaintingEventArgs e) {
             if (e == null) {
+                this.Cursor = Cursors.Default;
                 return;
             }
             Icon icon = (e.Value as Icon);
             if (e.Value == null) {
+                this.Cursor = Cursors.Default;
                 return;
             }
             if (null != icon) {
@@ -1000,10 +1009,10 @@ namespace System.Windows.Forms.Samples {
         }
 
         private void dataGridView1_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e) {
-            if (e == null) {
+            if (e == null) {               
                 return;
             }
-            if (e.RowIndex > ((DataGridViewExt)sender).Rows.Count - 1) {
+            if (e.RowIndex > ((DataGridViewExt)sender).Rows.Count - 1) {                
                 return;
             }
             if (e.RowIndex < 0 || ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["NameCol"].Value == null) {
@@ -1051,11 +1060,13 @@ namespace System.Windows.Forms.Samples {
             if (categoryState == "Expanded") {
                 myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Collapsed", fileName);
                 RefreshDataGrid();
+                this.Cursor = Cursors.Default;
                 return;
             }
             if (categoryState == "Collapsed") {
                 myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Expanded", fileName);
                 RefreshDataGrid();
+                this.Cursor = Cursors.Default;
                 return;
             }
             try {
@@ -1113,6 +1124,7 @@ namespace System.Windows.Forms.Samples {
         }
 
         private void detailsMenuItem_Click(object sender, EventArgs e) {
+            this.Cursor = Cursors.WaitCursor;
             Methods myActions = new Methods();
             if (DoActionRequired(sender)) {
                 _CurrentSplitContainer.Panel2Collapsed = false;
@@ -1128,6 +1140,7 @@ namespace System.Windows.Forms.Samples {
                     }
                 } catch (Exception) {
                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.Cursor = Cursors.Default;
                     return;
                 }
 
@@ -1151,6 +1164,7 @@ namespace System.Windows.Forms.Samples {
                 SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                 //SendMessage(proc.MainWindowHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
             }
+            this.Cursor = Cursors.Default;
         }
 
         void Renderer_RenderToolStripBorder(object sender, ToolStripRenderEventArgs e) {
@@ -1164,15 +1178,19 @@ namespace System.Windows.Forms.Samples {
 
 
         private void upSplitButton_Click(object sender, EventArgs e) {
+            Cursor.Current = Cursors.WaitCursor;
             _dir.Up();
             SetTitle(_dir.FileView);
             RefreshDataGrid();
+            Cursor.Current = Cursors.Default;
         }
 
         private void backSplitButton_Click(object sender, EventArgs e) {
+            Cursor.Current = Cursors.WaitCursor;
             _dir.Up();
             SetTitle(_dir.FileView);
             RefreshDataGrid();
+            Cursor.Current = Cursors.Default;
         }
         #endregion
 
@@ -1825,6 +1843,7 @@ namespace System.Windows.Forms.Samples {
 
             } catch (Exception) {
                 MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Cursor = Cursors.Default;
                 return;
             }
 
@@ -2255,6 +2274,7 @@ namespace System.Windows.Forms.Samples {
                                     }
                                 } catch (Exception) {
                                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    this.Cursor = Cursors.Default;
                                     return;
                                 }
 
@@ -2316,6 +2336,7 @@ namespace System.Windows.Forms.Samples {
                                         }
                                         } catch (Exception) {
                                         MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                        this.Cursor = Cursors.Default;
                                         return;
                                     }
 
@@ -2409,6 +2430,7 @@ namespace System.Windows.Forms.Samples {
         }
 
         private void dataGridView1_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e) {
+            this.Cursor = Cursors.WaitCursor;
             Methods myActions = new Methods();
             //    DataGridViewCell myCell = _CurrentDataGridView.SelectedCells[0];
             myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow", e.RowIndex.ToString());
@@ -2422,11 +2444,13 @@ namespace System.Windows.Forms.Samples {
                     if (categoryState == "Expanded") {
                         myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Collapsed", fileName);
                         RefreshDataGrid();
+                        this.Cursor = Cursors.Default;
                         return;
                     }
                     if (categoryState == "Collapsed") {
                         myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Expanded", fileName);
                         RefreshDataGrid();
+                        this.Cursor = Cursors.Default;
                         return;
                     }
                     try {                        
@@ -2442,7 +2466,7 @@ namespace System.Windows.Forms.Samples {
                     }
                 }
             }
-
+            this.Cursor = Cursors.Default;
 
         }
 
@@ -2608,6 +2632,7 @@ namespace System.Windows.Forms.Samples {
                 myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString(), strFolder);
 
                 RefreshDataGrid();
+                this.Cursor = Cursors.Default;
                 return;
             }
 
@@ -2879,6 +2904,7 @@ namespace System.Windows.Forms.Samples {
                                 }
                             } catch (Exception ex) {
                                 MessageBox.Show("Something went wrong trying to start your process: " + ex.Message, "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                this.Cursor = Cursors.Default;
                                 return;
                             }
 
@@ -2941,6 +2967,7 @@ namespace System.Windows.Forms.Samples {
                                     }
                                     } catch (Exception) {
                                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    this.Cursor = Cursors.Default;
                                     return;
                                 }
 
@@ -3016,19 +3043,27 @@ namespace System.Windows.Forms.Samples {
         }
 
         private void toolStripButton4_Click(object sender, EventArgs e) {
+            this.Cursor = Cursors.WaitCursor;
             webBrowser1.Refresh();
+            this.Cursor = Cursors.Default;
         }
 
         private void toolStripButton2_Click(object sender, EventArgs e) {
+            this.Cursor = Cursors.WaitCursor;
             webBrowser1.GoForward();
+            this.Cursor = Cursors.Default;
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e) {
+            this.Cursor = Cursors.WaitCursor;
             webBrowser1.GoBack();
+            this.Cursor = Cursors.Default;
         }
 
         private void toolStripButton5_Click(object sender, EventArgs e) {
+            this.Cursor = Cursors.WaitCursor;
             webBrowser1.GoHome();
+            this.Cursor = Cursors.Default;
         }
 
         private void toolStripButton6_Click(object sender, EventArgs e) {
@@ -3277,6 +3312,7 @@ namespace System.Windows.Forms.Samples {
                             }
                             } catch (Exception) {
                             MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            this.Cursor = Cursors.Default;
                             return;
                         }
 
@@ -3314,6 +3350,7 @@ namespace System.Windows.Forms.Samples {
                             }
                             } catch (Exception) {
                             MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            this.Cursor = Cursors.Default;
                             return;
                         }
 
@@ -3619,6 +3656,7 @@ namespace System.Windows.Forms.Samples {
                             }
                             } catch (Exception) {
                             MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            this.Cursor = Cursors.Default;
                             return;
                         }
 
@@ -3656,6 +3694,7 @@ namespace System.Windows.Forms.Samples {
                             }
                             } catch (Exception) {
                             MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            this.Cursor = Cursors.Default;
                             return;
                         }
 
@@ -4626,6 +4665,7 @@ namespace System.Windows.Forms.Samples {
                 }
             } catch (Exception) {
                 MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Cursor = Cursors.Default;
                 return;
             }
 
@@ -4705,6 +4745,7 @@ namespace System.Windows.Forms.Samples {
                 }
                 } catch (Exception) {
                 MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Cursor = Cursors.Default;
                 return;
             }
 
@@ -4770,20 +4811,26 @@ namespace System.Windows.Forms.Samples {
         }
 
         private void collapseAllToolStripMenuItem_Click(object sender, EventArgs e) {
+            this.Cursor = Cursors.WaitCursor;
             Methods myActions = new Methods();
             myActions.SetValueByKey("ExpandCollapseAll", "Collapse");
             RefreshDataGrid();
             RefreshDataGrid();
+            this.Cursor = Cursors.Default;
         }
 
         private void expandAllToolStripMenuItem_Click(object sender, EventArgs e) {
+            this.Cursor = Cursors.WaitCursor;
             Methods myActions = new Methods();
             myActions.SetValueByKey("ExpandCollapseAll", "Expand");
             RefreshDataGrid();
+            this.Cursor = Cursors.Default;
         }
 
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e) {
+            this.Cursor = Cursors.WaitCursor;
             RefreshDataGrid();
+            this.Cursor = Cursors.Default;
         }
 
         private void totalSavingsToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -5041,8 +5088,9 @@ namespace System.Windows.Forms.Samples {
 
 
 
-
+                this.Cursor = Cursors.WaitCursor;
                 RefreshDataGrid();
+                this.Cursor = Cursors.Default;
                 return;
             }
 
@@ -5717,8 +5765,9 @@ namespace System.Windows.Forms.Samples {
 
                 strFolderToUse = strFolder;
                 myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString(), strFolder);
-
+                this.Cursor = Cursors.WaitCursor;
                 RefreshDataGrid();
+                this.Cursor = Cursors.Default;
                 return;
             }
 
@@ -6793,6 +6842,7 @@ namespace System.Windows.Forms.Samples {
                     }  
                     } catch (Exception) {
                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.Cursor = Cursors.Default;
                     return;
                 }
 
@@ -6830,6 +6880,7 @@ namespace System.Windows.Forms.Samples {
                     }
                 } catch (Exception) {
                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.Cursor = Cursors.Default;
                     return;
                 }
 
@@ -7052,6 +7103,7 @@ namespace System.Windows.Forms.Samples {
                     }
                 } catch (Exception) {
                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.Cursor = Cursors.Default;
                     return;
                 }
 
@@ -7089,6 +7141,7 @@ namespace System.Windows.Forms.Samples {
                     }
                 } catch (Exception) {
                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this.Cursor = Cursors.Default;
                     return;
                 }
 
@@ -8182,6 +8235,74 @@ namespace System.Windows.Forms.Samples {
             return;
         }
 
+        private void DialogForAddingUrl() {
+            Methods myActions = new Methods();
+            string myExe = "";
+            DisplayFindTextInFilesWindow:
+            int intRowCtr = 0;
+            ControlEntity myControlEntity = new ControlEntity();
+            List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+            
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Heading;
+            myControlEntity.ID = "lbl";
+            myControlEntity.Text = "Specify Url";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "lblUrl";
+            myControlEntity.Text = "Url";
+            myControlEntity.Width = 150;
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.Text = myActions.GetValueByKey("cbxToolExeSelectedValue");
+            myControlEntity.ID = "txtDefaultUrl";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ToolTipx = @"Here is an example: http://idealprogrammer.com";           
+            myControlEntity.ColumnNumber = 1;
+            myControlEntity.ColumnSpan = 2;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+            intRowCtr++;
+
+
+            DisplayWindowAgain:
+            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 300, 1200, 100, 100);
+            LineAfterDisplayWindow:
+            string strDefaultUrl = myListControlEntity.Find(x => x.ID == "txtDefaultUrl").Text;
+            if (strButtonPressed == "btnCancel") {
+                string whatToolDefaultToSave = myActions.GetValueByKey("whatToolDefaultToSave");
+                myActions.SetValueByKey(whatToolDefaultToSave, strDefaultUrl);
+                myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                return;
+            }
+          
+            string strFolderToUse = "";
+            if (strButtonPressed == "btnOkay") {
+                if ((strDefaultUrl == "")) {
+                    myActions.MessageBoxShow("Please enter url; else press Cancel to Exit");
+                    goto DisplayFindTextInFilesWindow;
+                }
+                
+                Process.Start("IExplore.exe", strDefaultUrl);
+                string whatToolDefaultToSave = myActions.GetValueByKey("whatToolDefaultToSave");
+                myActions.SetValueByKey(whatToolDefaultToSave, strDefaultUrl);
+            }
+            
+            //myExe = strFolderToUse;
+            return;
+        }
+
         private void dispatcherTimer_Tick(object sender, EventArgs e) {
             // code goes here
 
@@ -8271,6 +8392,138 @@ namespace System.Windows.Forms.Samples {
             } else {
                 myActions.SetValueByKey("LaunchMode", "NonAdmin");
             }
+        }
+
+        private void courseraToolStripMenuItem_Click(object sender, EventArgs e) {
+            Process.Start("IExplore.exe", "https://click.linksynergy.com/fs-bin/click?id=ur0PwtPl4wY&offerid=467035.30&type=3&subid=0");
+        }
+
+        private void pluralsightToolStripMenuItem_Click(object sender, EventArgs e) {
+            Process.Start("IExplore.exe", "http://pluralsight.pxf.io/c/1194222/431393/7490");
+        }
+
+        private void udemyToolStripMenuItem_Click(object sender, EventArgs e) {
+            Process.Start("IExplore.exe", "https://click.linksynergy.com/fs-bin/click?id=ur0PwtPl4wY&offerid=323058.1626&subid=0&type=4");
+        }
+
+        private void videoTrafficBlueprintToolStripMenuItem_Click(object sender, EventArgs e) {
+            Process.Start("IExplore.exe", "http://www.contentsamurai.com/c/harvey007-the-ultimate-video-traffic-blueprint");
+        }
+
+        private void toolStripMenuItem18_Click(object sender, EventArgs e) {
+            Process.Start("IExplore.exe", "http://www.marketsamurai.com/c/harvey007");
+        }
+
+        private void googleDriveToolStripMenuItem_Click(object sender, EventArgs e) {
+            Process.Start("IExplore.exe", "https://drive.google.com/drive/my-drive");
+        }
+
+        private void toolStripMenuItem12_Click(object sender, EventArgs e) {
+            Process.Start("IExplore.exe", "https://www.dropbox.com/h");
+        }
+
+        private void oneDriveToolStripMenuItem_Click(object sender, EventArgs e) {
+            Process.Start("IExplore.exe", "https://onedrive.live.com/about/en-IE/");
+        }
+
+        private void compareItToolStripMenuItem_Click(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            string compareItSaved = myActions.GetValueByKey("compareItSaved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", compareItSaved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "compareItSaved");
+            DialogForGettingExe();
+        }
+
+        private void synchronizeItToolStripMenuItem_Click(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            string synchronizeItSaved = myActions.GetValueByKey("synchronizeItSaved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", synchronizeItSaved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "synchronizeItSaved");
+            DialogForGettingExe();
+        }
+
+        private void filezillaToolStripMenuItem_Click(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            string filezillaSaved = myActions.GetValueByKey("filezillaSaved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", filezillaSaved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "filezillaSaved");
+            DialogForGettingExe();
+        }
+
+        private void flashbackExpressToolStripMenuItem_Click(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            string flashbackExpressSaved = myActions.GetValueByKey("flashbackExpressSaved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", flashbackExpressSaved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "flashbackExpressSaved");
+            DialogForGettingExe();
+        }
+
+        private void facebookToolStripMenuItem_Click(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            string facebookSaved = myActions.GetValueByKey("facebookSaved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", facebookSaved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "facebookSaved");
+            DialogForAddingUrl();
+        }
+
+        private void instagramToolStripMenuItem_Click(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            string instagramSaved = myActions.GetValueByKey("instagramSaved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", instagramSaved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "instagramSaved");
+            DialogForAddingUrl();
+        }
+
+        private void linkedInPersonalToolStripMenuItem_Click(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            string linkedInPersonalSaved = myActions.GetValueByKey("linkedInPersonalSaved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", linkedInPersonalSaved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "linkedInPersonalSaved");
+            DialogForAddingUrl();
+        }
+
+        private void linkedInCompanyToolStripMenuItem_Click(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            string linkedInCompanySaved = myActions.GetValueByKey("linkedInCompanySaved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", linkedInCompanySaved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "linkedInCompanySaved");
+            DialogForAddingUrl();
+        }
+
+        private void stumbleUponToolStripMenuItem_Click(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            string stumbleUponSaved = myActions.GetValueByKey("stumbleUponSaved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", stumbleUponSaved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "stumbleUponSaved");
+            DialogForAddingUrl();
+        }
+
+        private void tumblrToolStripMenuItem_Click(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            string tumblrSaved = myActions.GetValueByKey("tumblrSaved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", tumblrSaved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "tumblrSaved");
+            DialogForAddingUrl();
+        }
+
+        private void twitterToolStripMenuItem_Click(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            string twitterSaved = myActions.GetValueByKey("twitterSaved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", twitterSaved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "twitterSaved");
+            DialogForAddingUrl();
+        }
+
+        private void centralAccessReaderToolStripMenuItem_Click(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            string centralAccessReaderSaved = myActions.GetValueByKey("centralAccessReaderSaved");
+            myActions.SetValueByKey("cbxToolExeSelectedValue", centralAccessReaderSaved);
+            myActions.SetValueByKey("whatToolDefaultToSave", "centralAccessReaderSaved");
+            DialogForGettingExe();
+        }
+
+        private void speakItToolStripMenuItem_Click(object sender, EventArgs e) {
+            Process.Start("IExplore.exe", "https://chrome.google.com/webstore/detail/speak-it/fginjphhpgkicbhibgafbpfjeahmjdfc?hl=en");
         }
     }
 
