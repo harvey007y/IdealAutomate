@@ -452,6 +452,7 @@ namespace System.Windows.Forms.Samples {
             _CurrentSplitContainer.MouseLeave += new System.EventHandler(_CurrentSplitContainer_MouseLeave);
             if (listLoadedIndexes.Contains(tabControl1.SelectedIndex)) {
                 string strCurrentPath = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
+                _newTab = true;
                 cbxCurrentPath.Text = strCurrentPath;
                 cbxCurrentPath.SelectedValue = strCurrentPath;
                 this.Cursor = Cursors.Default;
@@ -470,81 +471,139 @@ namespace System.Windows.Forms.Samples {
 
                         DataGridViewCell c = _CurrentDataGridView.Rows[_selectedRow].Cells[1];
 
-                            //    _CurrentDataGridView.FirstDisplayedScrollingRowIndex = _selectedRow;
-                            //    _CurrentDataGridView.PerformLayout();
-                            string fileName = _CurrentDataGridView.Rows[_selectedRow].Cells["FullName"].Value.ToString();
-                            if (fileName.EndsWith(".url")
+                        //    _CurrentDataGridView.FirstDisplayedScrollingRowIndex = _selectedRow;
+                        //    _CurrentDataGridView.PerformLayout();
+                        string fileName = _CurrentDataGridView.Rows[_selectedRow].Cells["FullName"].Value.ToString();
+                        if (fileName.EndsWith(".url")
 
-                             ) {
-                                //Close the running process.
-                                if (_appHandle != IntPtr.Zero) {
-                                    PostMessage(_appHandle, WM_CLOSE, 0, 0);
-                                    System.Threading.Thread.Sleep(1000);
-                                    _appHandle = IntPtr.Zero;
-                                }
-                                ////tries to start the process 
-                                //try {                               
-                                //    myActions.KillAllProcessesByProcessName("iexplore");
-                                //    _proc = Process.Start(@"C:\Program Files\Internet Explorer\iexplore.exe", GetInternetShortcut(fileName));
-                                //} catch (Exception) {
-                                //    MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                //    return;
-                                //}
-
-
-                                //try {
-                                //    System.Threading.Thread.Sleep(500);
-                                //    while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
-                                //        System.Threading.Thread.Sleep(10);
-                                //        _proc.Refresh();
-                                //    }
-
-                                //    _proc.WaitForInputIdle();
-                                //    _appHandle = _proc.MainWindowHandle;
-
-
-
-                                //SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
-                                //SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
-                                //} catch (Exception ex) {
-
-                                //    MessageBox.Show(ex.Message);
-                                //}
-                                //if (toolStripComboBox1.Text != "")
-                                //    Url = toolStripComboBox1.Text;
-                                _WordPadLoaded = false;
-                                _NotepadppLoaded = false;
-                                _WebBrowserLoaded = true;
-                                Url = GetInternetShortcut(fileName);
-                                InitializeComponentWebBrowser();
-                                webBrowser1.ScriptErrorsSuppressed = true;
-                                webBrowser1.Navigate(Url);
-
-                                _CurrentSplitContainer.Panel2.Controls.Clear();
-                                FlowLayoutPanel flp = new FlowLayoutPanel();
-                                flp.Dock = DockStyle.Fill;
-
-                                flp.Controls.Add(toolStrip1);
-                                flp.Controls.Add(webBrowser1);
-                                webBrowser1.Size = new System.Drawing.Size(_CurrentSplitContainer.Panel2.ClientSize.Width, _CurrentSplitContainer.Panel2.Height - 50);
-
-                                flp.Controls.Add(statusStrip1);
-                                _CurrentSplitContainer.Panel2.Controls.Add(flp);
-
-                                webBrowser1.ProgressChanged += new WebBrowserProgressChangedEventHandler(webpage_ProgressChanged);
-                                webBrowser1.DocumentTitleChanged += new EventHandler(webpage_DocumentTitleChanged);
-                                webBrowser1.StatusTextChanged += new EventHandler(webpage_StatusTextChanged);
-                                webBrowser1.Navigated += new WebBrowserNavigatedEventHandler(webpage_Navigated);
-                                webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webpage_DocumentCompleted);
+                         ) {
+                            //Close the running process.
+                            if (_appHandle != IntPtr.Zero) {
+                                PostMessage(_appHandle, WM_CLOSE, 0, 0);
+                                System.Threading.Thread.Sleep(1000);
+                                _appHandle = IntPtr.Zero;
                             }
-                            if (fileName.EndsWith(".rtf")
-                                || fileName.EndsWith(".odt")
-                                || fileName.EndsWith(".doc")
-                                || fileName.EndsWith(".docx")
-                                ) {
-                                _NotepadppLoaded = false;
+                            ////tries to start the process 
+                            //try {                               
+                            //    myActions.KillAllProcessesByProcessName("iexplore");
+                            //    _proc = Process.Start(@"C:\Program Files\Internet Explorer\iexplore.exe", GetInternetShortcut(fileName));
+                            //} catch (Exception) {
+                            //    MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            //    return;
+                            //}
+
+
+                            //try {
+                            //    System.Threading.Thread.Sleep(500);
+                            //    while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                            //        System.Threading.Thread.Sleep(10);
+                            //        _proc.Refresh();
+                            //    }
+
+                            //    _proc.WaitForInputIdle();
+                            //    _appHandle = _proc.MainWindowHandle;
+
+
+
+                            //SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                            //SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+                            //} catch (Exception ex) {
+
+                            //    MessageBox.Show(ex.Message);
+                            //}
+                            //if (toolStripComboBox1.Text != "")
+                            //    Url = toolStripComboBox1.Text;
+                            _WordPadLoaded = false;
+                            _NotepadppLoaded = false;
+                            _WebBrowserLoaded = true;
+                            Url = GetInternetShortcut(fileName);
+                            InitializeComponentWebBrowser();
+                            webBrowser1.ScriptErrorsSuppressed = true;
+                            webBrowser1.Navigate(Url);
+
+                            _CurrentSplitContainer.Panel2.Controls.Clear();
+                            FlowLayoutPanel flp = new FlowLayoutPanel();
+                            flp.Dock = DockStyle.Fill;
+
+                            flp.Controls.Add(toolStrip1);
+                            flp.Controls.Add(webBrowser1);
+                            webBrowser1.Size = new System.Drawing.Size(_CurrentSplitContainer.Panel2.ClientSize.Width, _CurrentSplitContainer.Panel2.Height - 50);
+
+                            flp.Controls.Add(statusStrip1);
+                            _CurrentSplitContainer.Panel2.Controls.Add(flp);
+
+                            webBrowser1.ProgressChanged += new WebBrowserProgressChangedEventHandler(webpage_ProgressChanged);
+                            webBrowser1.DocumentTitleChanged += new EventHandler(webpage_DocumentTitleChanged);
+                            webBrowser1.StatusTextChanged += new EventHandler(webpage_StatusTextChanged);
+                            webBrowser1.Navigated += new WebBrowserNavigatedEventHandler(webpage_Navigated);
+                            webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webpage_DocumentCompleted);
+                        }
+                        if (fileName.EndsWith(".rtf")
+                            || fileName.EndsWith(".odt")
+                            || fileName.EndsWith(".doc")
+                            || fileName.EndsWith(".docx")
+                            ) {
+                            _NotepadppLoaded = false;
+                            _WebBrowserLoaded = false;
+                            _WordPadLoaded = true;
+                            //Close the running process
+                            _CurrentSplitContainer.Panel2.Controls.Clear();
+                            if (_appHandle != IntPtr.Zero) {
+                                PostMessage(_appHandle, WM_CLOSE, 0, 0);
+                                System.Threading.Thread.Sleep(1000);
+                                _appHandle = IntPtr.Zero;
+                            }
+                            //tries to start the process 
+                            TryToCloseAllOpenFilesInTab();
+                            try {
+                                ProcessStartInfo psi = new ProcessStartInfo(@"C:\Program Files\Windows NT\Accessories\wordpad.exe", "\"" + fileName + "\"");
+                                psi.WindowStyle = ProcessWindowStyle.Minimized;
+                                _proc = Process.Start(psi);
+                            } catch (Exception) {
+                                MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                this.Cursor = Cursors.Default;
+                                return;
+                            }
+
+
+                            System.Threading.Thread.Sleep(500);
+                            while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                                System.Threading.Thread.Sleep(10);
+                                _proc.Refresh();
+                            }
+
+                            _proc.WaitForInputIdle();
+                            _appHandle = _proc.MainWindowHandle;
+
+                            SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                            AddAppHandleToOpenFiles(fileName, _appHandle);
+                            // Remove border and whatnot
+                            SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
+                            MoveWindow(_appHandle, 0, 0, _CurrentSplitContainer.Panel2.Width - 5, _CurrentSplitContainer.Panel2.Height, true);
+                            //  SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+                            //  SetTitle(_dir.FileView);
+                        } else {
+                            if (fileName.EndsWith(".txt")
+                                || fileName.EndsWith(".bat")
+                                || fileName.EndsWith(".cs")
+                                || fileName.EndsWith(".xaml")
+                                || fileName.EndsWith(".sln")
+                                || fileName.EndsWith(".csproj")
+                                || fileName.EndsWith(".resx")
+                                 || fileName.EndsWith(".js")
+                                  || fileName.EndsWith(".css")
+                                  || fileName.EndsWith(".html")
+                                  || fileName.EndsWith(".htm")
+                                  || fileName.EndsWith(".xml")
+                                  || fileName.EndsWith(".sql")
+                                  || fileName.EndsWith(".asp")
+                                  || fileName.EndsWith(".inc")
+                                  || fileName.EndsWith(".dinc")
+                                  || fileName.EndsWith(".aspx")
+                                  || fileName.EndsWith(".csv")) {
+                                _WordPadLoaded = false;
+                                _NotepadppLoaded = true;
                                 _WebBrowserLoaded = false;
-                                _WordPadLoaded = true;
                                 //Close the running process
                                 _CurrentSplitContainer.Panel2.Controls.Clear();
                                 if (_appHandle != IntPtr.Zero) {
@@ -554,17 +613,20 @@ namespace System.Windows.Forms.Samples {
                                 }
                                 //tries to start the process 
                                 try {
-                                    ProcessStartInfo psi = new ProcessStartInfo(@"C:\Program Files\Windows NT\Accessories\wordpad.exe", "\"" + fileName + "\"");
-                                    psi.WindowStyle = ProcessWindowStyle.Minimized;
-                                    _proc = Process.Start(psi);                                  
+                                    myActions.KillAllProcessesByProcessName("notepad++");
+                                    if (!File.Exists(@"C:\Program Files (x86)\Notepad++\notepad++.exe")) {
+                                        myActions.MessageBoxShow(" You need to download notepad++ to use this feature.\n\r\n\rFile not found: " + @"C:\Program Files (x86)\Notepad++\notepad++.exe");
+                                    } else {
+                                        _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", fileName);
+                                    }
                                 } catch (Exception) {
                                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                     this.Cursor = Cursors.Default;
-                                return;
+                                    return;
                                 }
 
 
-                                System.Threading.Thread.Sleep(500);
+                                //    System.Threading.Thread.Sleep(500);
                                 while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
                                     System.Threading.Thread.Sleep(10);
                                     _proc.Refresh();
@@ -574,73 +636,14 @@ namespace System.Windows.Forms.Samples {
                                 _appHandle = _proc.MainWindowHandle;
 
                                 SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
-
-                                // Remove border and whatnot
+                                AddAppHandleToOpenFiles(fileName, _appHandle);
                                 SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
-                                MoveWindow(_appHandle, 0, 0, _CurrentSplitContainer.Panel2.Width - 5, _CurrentSplitContainer.Panel2.Height, true);
-                                //  SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
-                                //  SetTitle(_dir.FileView);
-                            } else {
-                                if (fileName.EndsWith(".txt")
-                                    || fileName.EndsWith(".bat")
-                                    || fileName.EndsWith(".cs")
-                                    || fileName.EndsWith(".xaml")
-                                    || fileName.EndsWith(".sln")
-                                    || fileName.EndsWith(".csproj")
-                                    || fileName.EndsWith(".resx")
-                                     || fileName.EndsWith(".js")
-                                      || fileName.EndsWith(".css")
-                                      || fileName.EndsWith(".html")
-                                      || fileName.EndsWith(".htm")
-                                      || fileName.EndsWith(".xml")
-                                      || fileName.EndsWith(".sql")
-                                      || fileName.EndsWith(".asp")
-                                      || fileName.EndsWith(".inc")
-                                      || fileName.EndsWith(".dinc")
-                                      || fileName.EndsWith(".aspx")
-                                      || fileName.EndsWith(".csv")) {
-                                    _WordPadLoaded = false;
-                                    _NotepadppLoaded = true;
-                                    _WebBrowserLoaded = false;
-                                    //Close the running process
-                                    _CurrentSplitContainer.Panel2.Controls.Clear();
-                                    if (_appHandle != IntPtr.Zero) {
-                                        PostMessage(_appHandle, WM_CLOSE, 0, 0);
-                                        System.Threading.Thread.Sleep(1000);
-                                        _appHandle = IntPtr.Zero;
-                                    }
-                                    //tries to start the process 
-                                    try {
-                                        myActions.KillAllProcessesByProcessName("notepad++");
-                                    if (!File.Exists(@"C:\Program Files (x86)\Notepad++\notepad++.exe")) {
-                                        myActions.MessageBoxShow(" You need to download notepad++ to use this feature.\n\r\n\rFile not found: " + @"C:\Program Files (x86)\Notepad++\notepad++.exe");
-                                    } else {
-                                        _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", fileName);
-                                    }
-                                    } catch (Exception) {
-                                        MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                    this.Cursor = Cursors.Default;
-                                    return;
-                                    }
-
-
-                                    //    System.Threading.Thread.Sleep(500);
-                                    while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
-                                        System.Threading.Thread.Sleep(10);
-                                        _proc.Refresh();
-                                    }
-
-                                    _proc.WaitForInputIdle();
-                                    _appHandle = _proc.MainWindowHandle;
-
-                                    SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
-                                    SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
-                                    SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
-                                    SetTitle(_dir.FileView);
-                                }
+                                SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+                                SetTitle(_dir.FileView);
                             }
+                        }
 
-                       
+
 
                     }
                 }
@@ -734,6 +737,8 @@ namespace System.Windows.Forms.Samples {
 
         #region Event Handlers        
         private void ExplorerView_Load(object sender, EventArgs e) {
+            DeleteOpenFiles();
+
 
             this.Cursor = Cursors.WaitCursor;
             Methods myActions = new Methods();
@@ -865,9 +870,9 @@ namespace System.Windows.Forms.Samples {
             _CurrentFileViewBindingSource = listBindingSource[tabControl1.SelectedIndex];
             _CurrentSplitContainer = listSplitContainer[tabControl1.SelectedIndex];
             _CurrentSplitContainer = (SplitContainer)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
-          
+
             _CurrentSplitContainer.SplitterMoved -= _CurrentSplitContainer_SplitterMoved;
-            
+
             _CurrentSplitContainer.MouseEnter -= _CurrentSplitContainer_MouseEnter;
             _CurrentSplitContainer.MouseLeave -= _CurrentSplitContainer_MouseLeave;
 
@@ -959,6 +964,23 @@ namespace System.Windows.Forms.Samples {
 
         }
 
+        private void DeleteOpenFiles() {
+            string fileName = "OpenFiles.txt";
+            string strApplicationBinDebug = Application.StartupPath;
+            string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
+
+            string settingsDirectory =
+Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
+            string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
+            if (File.Exists(settingsPath)) {
+                try {
+                    File.Delete(settingsPath);
+                } catch (Exception ex) {
+                    MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
+                }
+            }
+        }
+
         private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e) {
             if (this._CurrentDataGridView.Columns[e.ColumnIndex].Name == "SizeCol") {
                 long size = (long)e.Value;
@@ -1009,10 +1031,10 @@ namespace System.Windows.Forms.Samples {
         }
 
         private void dataGridView1_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e) {
-            if (e == null) {               
+            if (e == null) {
                 return;
             }
-            if (e.RowIndex > ((DataGridViewExt)sender).Rows.Count - 1) {                
+            if (e.RowIndex > ((DataGridViewExt)sender).Rows.Count - 1) {
                 return;
             }
             if (e.RowIndex < 0 || ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["NameCol"].Value == null) {
@@ -1074,8 +1096,8 @@ namespace System.Windows.Forms.Samples {
                 FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 _dir.Activate(this._CurrentFileViewBindingSource[myIndex] as FileView);
                 SetTitle(_dir.FileView);
-               
-              
+
+
 
                 if (myFileView.IsDirectory) {
                     RefreshDataGrid();
@@ -1293,7 +1315,7 @@ namespace System.Windows.Forms.Samples {
             string myNewProjectName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
             string strNewProjectDir = Path.Combine(basePathForNewProject, myNewProjectName);
             string scriptPathNewProject = myActions.ConvertFullFileNameToPublicPath(strNewProjectDir) + "\\-" + myNewProjectName;
-           // myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", scriptPathNewProject);
+            // myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", scriptPathNewProject);
             if (Directory.Exists(strNewProjectDir)) {
                 myActions.MessageBoxShow(strNewProjectDir + "already exists");
                 goto ReDisplayNewProjectDialog;
@@ -1438,7 +1460,7 @@ namespace System.Windows.Forms.Samples {
                     ev_Delete_Directory(myFileView.FullName.ToString());
                     string settingsDirectory =
       Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
-                    
+
                     if (Directory.Exists(settingsDirectory)) {
                         Directory.Delete(settingsDirectory, true);
                     }
@@ -1599,7 +1621,7 @@ namespace System.Windows.Forms.Samples {
                 _selectedRow = 0;
                 Methods myActions = new Methods();
                 myActions.SetValueByKey("InitialDirectory" + _selectedTabIndex.ToString() + "SelectedRow", "0");
-                PostMessage(_appHandle, WM_CLOSE, 0, 0);
+                TryToCloseAllOpenFilesInTab();
                 System.Threading.Thread.Sleep(1000);
                 _appHandle = IntPtr.Zero;
             }
@@ -1832,6 +1854,7 @@ namespace System.Windows.Forms.Samples {
                 _appHandle = IntPtr.Zero;
             }
             //tries to start the process 
+            TryToCloseAllOpenFilesInTab();
             try {
                 if (!File.Exists(strExecutable)) {
                     myActions.MessageBoxShow(" File not found: " + strExecutable);
@@ -2117,8 +2140,8 @@ namespace System.Windows.Forms.Samples {
 
         }
         private void RefreshDataGrid() {
-             
-           
+
+
             // refresh datagridview
             strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             // Set Initial Directory to My Documents
@@ -2126,7 +2149,7 @@ namespace System.Windows.Forms.Samples {
             int mySplitterDistance = myActions.GetValueByKeyAsInt("_CurrentSplitContainerWidth" + _selectedTabIndex.ToString());
             if (mySplitterDistance > 0) {
                 _CurrentSplitContainer.SplitterDistance = mySplitterDistance;
-                    }
+            }
             string strSavedDirectory = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
 
 
@@ -2256,9 +2279,7 @@ namespace System.Windows.Forms.Samples {
                                 //Close the running process
                                 _CurrentSplitContainer.Panel2.Controls.Clear();
                                 if (_appHandle != IntPtr.Zero) {
-                                    if (_newTab == false) {
-                                        PostMessage(_appHandle, WM_CLOSE, 0, 0);
-                                    }
+                                    TryToCloseAllOpenFilesInTab();
                                     _newTab = false;
                                     System.Threading.Thread.Sleep(1000);
                                     _appHandle = IntPtr.Zero;
@@ -2289,6 +2310,7 @@ namespace System.Windows.Forms.Samples {
                                 _appHandle = _proc.MainWindowHandle;
 
                                 SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                                AddAppHandleToOpenFiles(fileName, _appHandle);
                                 // Remove border and whatnot
                                 SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                                 MoveWindow(_appHandle, 0, 0, _CurrentSplitContainer.Panel2.Width - 5, _CurrentSplitContainer.Panel2.Height, true);
@@ -2334,7 +2356,7 @@ namespace System.Windows.Forms.Samples {
                                         } else {
                                             _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", fileName);
                                         }
-                                        } catch (Exception) {
+                                    } catch (Exception) {
                                         MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                         this.Cursor = Cursors.Default;
                                         return;
@@ -2351,6 +2373,7 @@ namespace System.Windows.Forms.Samples {
                                     _appHandle = _proc.MainWindowHandle;
 
                                     SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                                    AddAppHandleToOpenFiles(fileName, _appHandle);
                                     SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                                     SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                                     SetTitle(_dir.FileView);
@@ -2362,7 +2385,7 @@ namespace System.Windows.Forms.Samples {
                     }
                 }
 
-            }           
+            }
         }
 
 
@@ -2453,7 +2476,7 @@ namespace System.Windows.Forms.Samples {
                         this.Cursor = Cursors.Default;
                         return;
                     }
-                    try {                        
+                    try {
                         //int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                         //FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                         //if (myFileView.IsDirectory && e.ColumnIndex < 2) {
@@ -2687,13 +2710,13 @@ namespace System.Windows.Forms.Samples {
             foreach (DirectoryInfo diSourceSubDir in source.GetDirectories()) {
                 DirectoryInfo nextTargetSubDir =
                     target.CreateSubdirectory(diSourceSubDir.Name);
-                
-                
+
+
                 string settingsDirectory =
       Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
                 string fromRoamingDirectory = Path.Combine(settingsDirectory, diSourceSubDir.FullName);
-                
-                
+
+
                 string toRoamingDirectory = Path.Combine(settingsDirectory, target.FullName);
                 if (Directory.Exists(fromRoamingDirectory)) {
                     DirectoryInfo fromRoamingDirectoryDI = new DirectoryInfo(fromRoamingDirectory);
@@ -2791,7 +2814,7 @@ namespace System.Windows.Forms.Samples {
                 }
             }
         }
-       
+
         private void dataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e) {
             Methods myActions = new Methods();
             string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
@@ -2801,7 +2824,7 @@ namespace System.Windows.Forms.Samples {
                     if (!c.Selected) {
                         _CurrentDataGridView.ClearSelection();
                         _selectedRow = 0;
-                       // Methods myActions = new Methods();
+                        // Methods myActions = new Methods();
                         myActions.SetValueByKey("InitialDirectory" + _selectedTabIndex.ToString() + "SelectedRow", "0");
                         c.Selected = true;
                         myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow", e.RowIndex.ToString());
@@ -2884,19 +2907,17 @@ namespace System.Windows.Forms.Samples {
                             //Close the running process
                             _CurrentSplitContainer.Panel2.Controls.Clear();
                             if (_appHandle != IntPtr.Zero) {
-                                if (_newTab == false) {
-                                    PostMessage(_appHandle, WM_CLOSE, 0, 0);
-                                }
-                                _newTab = false;
-                                System.Threading.Thread.Sleep(1000);
+                                 System.Threading.Thread.Sleep(1000);
                                 _appHandle = IntPtr.Zero;
                             }
+                            _newTab = false;
                             //tries to start the process 
+                             TryToCloseAllOpenFilesInTab();
                             try {
                                 if (!File.Exists(@"C:\Program Files\Windows NT\Accessories\wordpad.exe")) {
                                     myActions.MessageBoxShow(" File not found: " + @"C:\Program Files\Windows NT\Accessories\wordpad.exe");
                                 } else {
-                                    
+
 
                                     ProcessStartInfo psi = new ProcessStartInfo(@"C:\Program Files\Windows NT\Accessories\wordpad.exe", "\"" + fileName + "\"");
                                     psi.WindowStyle = ProcessWindowStyle.Minimized;
@@ -2919,8 +2940,9 @@ namespace System.Windows.Forms.Samples {
                             _appHandle = _proc.MainWindowHandle;
 
                             SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                            AddAppHandleToOpenFiles(fileName, _appHandle);
                             // Remove border and whatnot                         
-                            
+
                             SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                             MoveWindow(_appHandle, 0, 0, _CurrentSplitContainer.Panel2.Width - 5, _CurrentSplitContainer.Panel2.Height, true);
                             //  SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
@@ -2965,7 +2987,7 @@ namespace System.Windows.Forms.Samples {
                                     } else {
                                         _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", fileName);
                                     }
-                                    } catch (Exception) {
+                                } catch (Exception) {
                                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                     this.Cursor = Cursors.Default;
                                     return;
@@ -2982,6 +3004,7 @@ namespace System.Windows.Forms.Samples {
                                 _appHandle = _proc.MainWindowHandle;
 
                                 SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                                AddAppHandleToOpenFiles(fileName, _appHandle);
                                 SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                                 SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                                 SetTitle(_dir.FileView);
@@ -3003,6 +3026,94 @@ namespace System.Windows.Forms.Samples {
             }
 
         }
+
+        private void TryToCloseAllOpenFilesInTab() {
+            string fileName1 = "OpenFiles.txt";
+            string strApplicationBinDebug = Application.StartupPath;
+            string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
+
+            string settingsDirectory =
+Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
+            string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName1);
+            ArrayList openedFiles = new ArrayList();
+            List<OpenedFile> openedFile = new List<OpenedFile>();
+            openedFile.Clear();
+
+            if (!File.Exists(settingsPath)) {
+                using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
+                    objSWFile.Close();
+                }
+            }
+            using (StreamReader objSRFile = File.OpenText(settingsPath)) {
+                string strReadLine = "";
+                while ((strReadLine = objSRFile.ReadLine()) != null) {
+                    string[] openedFileFieldsArray = strReadLine.Split('^');                   
+                    openedFile.Add(new OpenedFile(openedFileFieldsArray[0], openedFileFieldsArray[1], openedFileFieldsArray[2]));
+                }
+                objSRFile.Close();
+            }         
+
+
+            IntPtr _appHandleToClose = IntPtr.Zero;
+
+            for (int i = openedFile.Count - 1; i > -1; i--) {
+                if (openedFile[i]._Tab.Trim() == _selectedTabIndex.ToString()) {
+                    _appHandleToClose = new IntPtr(Convert.ToInt32(openedFile[i]._Process.Trim()));
+                    if (_appHandleToClose != IntPtr.Zero) {
+                        PostMessage(_appHandleToClose, WM_CLOSE, 0, 0);
+                        System.Threading.Thread.Sleep(1000);
+                        _appHandleToClose = IntPtr.Zero;
+                    }
+                    openedFile.RemoveAt(i);
+                    break;
+                }
+            }
+
+            using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
+                foreach (OpenedFile item in openedFile) {                    
+                        objSWFile.WriteLine(item._Tab + '^' + item._FileName + '^' + item._Process);
+                }               
+                objSWFile.Close();
+            }
+        }
+
+        private void AddAppHandleToOpenFiles(string fileName, IntPtr appHandle) {
+            string fileName1 = "OpenFiles.txt";
+            string strApplicationBinDebug = Application.StartupPath;
+            string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
+
+            string settingsDirectory =
+Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
+            string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName1);
+            ArrayList openedFiles = new ArrayList();
+            List<OpenedFile> openedFile = new List<OpenedFile>();
+            openedFile.Clear();
+
+            if (!File.Exists(settingsPath)) {
+                using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
+                    objSWFile.Close();
+                }
+            }
+            using (StreamReader objSRFile = File.OpenText(settingsPath)) {
+                string strReadLine = "";
+                while ((strReadLine = objSRFile.ReadLine()) != null) {
+                    string[] openedFileFieldsArray = strReadLine.Split('^');                    
+                    openedFile.Add(new OpenedFile(openedFileFieldsArray[0], openedFileFieldsArray[1], openedFileFieldsArray[2]));
+                }
+                objSRFile.Close();
+            }     
+
+            using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
+                foreach (OpenedFile item in openedFile) {
+                    if (item._FileName != "") {
+                        objSWFile.WriteLine(item._Tab + '^' + item._FileName + '^' + item._Process);
+                    }
+                }
+                objSWFile.WriteLine(tabControl1.SelectedIndex.ToString() + '^' + fileName + '^' + _appHandle.ToString());
+                objSWFile.Close();
+            }
+        }
+
         private void webpage_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e) {
             if (webBrowser1.CanGoBack) toolStripButton1.Enabled = true;
             else toolStripButton1.Enabled = false;
@@ -3310,7 +3421,7 @@ namespace System.Windows.Forms.Samples {
                             } else {
                                 _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
                             }
-                            } catch (Exception) {
+                        } catch (Exception) {
                             MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             this.Cursor = Cursors.Default;
                             return;
@@ -3331,6 +3442,7 @@ namespace System.Windows.Forms.Samples {
                         _appHandle = _proc.MainWindowHandle;
 
                         SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                        AddAppHandleToOpenFiles(fileName, _appHandle);
                         SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                         SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                         //SendMessage(proc.MainWindowHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
@@ -3348,7 +3460,7 @@ namespace System.Windows.Forms.Samples {
                             } else {
                                 _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
                             }
-                            } catch (Exception) {
+                        } catch (Exception) {
                             MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             this.Cursor = Cursors.Default;
                             return;
@@ -3369,6 +3481,7 @@ namespace System.Windows.Forms.Samples {
                         _appHandle = _proc.MainWindowHandle;
 
                         SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                        AddAppHandleToOpenFiles(fileName, _appHandle);
                         SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                         SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                     }
@@ -3648,13 +3761,14 @@ namespace System.Windows.Forms.Samples {
                         this.detailsMenuItem.Checked = true;
                         this.listMenuItem.Checked = false;
                         //tries to start the process 
+                        TryToCloseAllOpenFilesInTab();
                         try {
                             if (!File.Exists(strExecutable)) {
                                 myActions.MessageBoxShow(" File not found: " + strExecutable);
                             } else {
                                 _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
                             }
-                            } catch (Exception) {
+                        } catch (Exception) {
                             MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             this.Cursor = Cursors.Default;
                             return;
@@ -3675,6 +3789,7 @@ namespace System.Windows.Forms.Samples {
                         _appHandle = _proc.MainWindowHandle;
 
                         SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                        AddAppHandleToOpenFiles(fileName, _appHandle);
                         SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                         SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                         //SendMessage(proc.MainWindowHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
@@ -3692,7 +3807,7 @@ namespace System.Windows.Forms.Samples {
                             } else {
                                 _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
                             }
-                            } catch (Exception) {
+                        } catch (Exception) {
                             MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             this.Cursor = Cursors.Default;
                             return;
@@ -3713,6 +3828,7 @@ namespace System.Windows.Forms.Samples {
                         _appHandle = _proc.MainWindowHandle;
 
                         SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                        AddAppHandleToOpenFiles(fileName, _appHandle);
                         SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                         SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                     }
@@ -4029,7 +4145,7 @@ namespace System.Windows.Forms.Samples {
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 
-        
+
 
             ((System.ComponentModel.ISupportInitialize)(myDataGridView)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
@@ -4575,10 +4691,10 @@ namespace System.Windows.Forms.Samples {
             //mySplitContainer.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(mySplitContainer_SplitterMoved);
             //mySplitContainer.MouseEnter += new System.EventHandler(mySplitContainer_MouseEnter);
             //mySplitContainer.MouseLeave += new System.EventHandler(mySplitContainer_MouseLeave);
-           
+
             myDataGridView.Height = Screen.PrimaryScreen.WorkingArea.Size.Height - 150;
-             
-            
+
+
             if (_CurrentIndex == tabControl1.TabCount - 1) {
                 _CurrentSplitContainer.Panel1.Controls.Add(myDataGridView);
                 tabControl1.TabPages[_CurrentIndex - 1].Controls.Add(_CurrentSplitContainer);
@@ -4593,7 +4709,7 @@ namespace System.Windows.Forms.Samples {
             foreach (DataGridViewColumn item in myDataGridView.Columns) {
                 item.ToolTipText = "Right-Click Column Header to add remove filter.\nUse menu item View to Show\\Hide Columns.\nLeft-Click column heading to sort.\nUse View\\Refresh to remove sort.";
             }
-           
+
         }
 
         private void dataGridView1_Sorted(object sender, EventArgs e) {
@@ -4679,7 +4795,7 @@ namespace System.Windows.Forms.Samples {
             _proc.WaitForInputIdle();
             _appHandle = _proc.MainWindowHandle;
 
-            SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+            SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);           
             SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
             SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
         }
@@ -4743,7 +4859,7 @@ namespace System.Windows.Forms.Samples {
                 } else {
                     _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
                 }
-                } catch (Exception) {
+            } catch (Exception) {
                 MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.Cursor = Cursors.Default;
                 return;
@@ -4759,7 +4875,7 @@ namespace System.Windows.Forms.Samples {
             _proc.WaitForInputIdle();
             _appHandle = _proc.MainWindowHandle;
 
-            SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+            SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);           
             SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
             SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
         }
@@ -6191,7 +6307,7 @@ namespace System.Windows.Forms.Samples {
                     // write updated dropdown list to Explorer/cbxFolder.txt
                     try {
                         using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
-                            foreach (ComboBoxPair item in alHostsNew) {                              
+                            foreach (ComboBoxPair item in alHostsNew) {
                                 if (item._Key != "") {
                                     objSWFile.WriteLine(item._Key + '^' + item._Value);
                                 }
@@ -6321,8 +6437,8 @@ namespace System.Windows.Forms.Samples {
 
 
 
-             settingsDirectory =
-      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
+            settingsDirectory =
+     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
             using (FileStream fs = new FileStream(settingsDirectory + @"\MatchInfo.txt", FileMode.Create)) {
                 StreamWriter file = new System.IO.StreamWriter(fs, Encoding.Default);
 
@@ -6625,7 +6741,7 @@ namespace System.Windows.Forms.Samples {
 
             } catch (Exception ex) {
                 if (ex.InnerException != null) {
-                   _searchErrors.AppendLine(ex.InnerException.ToString() + " filename is:" + flname + " - Line 5733 in ExplorerView");
+                    _searchErrors.AppendLine(ex.InnerException.ToString() + " filename is:" + flname + " - Line 5733 in ExplorerView");
                 } else {
                     _searchErrors.AppendLine(ex.Message + " filename is:" + flname + " - Line 5735 in ExplorerView");
                 }
@@ -6839,8 +6955,8 @@ namespace System.Windows.Forms.Samples {
                         myActions.MessageBoxShow(" File not found: " + strExecutable);
                     } else {
                         _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
-                    }  
-                    } catch (Exception) {
+                    }
+                } catch (Exception) {
                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     this.Cursor = Cursors.Default;
                     return;
@@ -6861,6 +6977,7 @@ namespace System.Windows.Forms.Samples {
                 _appHandle = _proc.MainWindowHandle;
 
                 SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                AddAppHandleToOpenFiles(strNewTextDocumentDir, _appHandle);
                 SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                 SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                 //SendMessage(proc.MainWindowHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
@@ -6899,6 +7016,7 @@ namespace System.Windows.Forms.Samples {
                 _appHandle = _proc.MainWindowHandle;
 
                 SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                AddAppHandleToOpenFiles(strNewTextDocumentDir, _appHandle);
                 SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                 SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
             }
@@ -7122,6 +7240,7 @@ namespace System.Windows.Forms.Samples {
                 _appHandle = _proc.MainWindowHandle;
 
                 SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                AddAppHandleToOpenFiles(strNewTextDocumentDir, _appHandle);
                 SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                 SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                 //SendMessage(proc.MainWindowHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
@@ -7160,6 +7279,7 @@ namespace System.Windows.Forms.Samples {
                 _appHandle = _proc.MainWindowHandle;
 
                 SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                AddAppHandleToOpenFiles(strNewTextDocumentDir, _appHandle);
                 SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                 SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
             }
@@ -7179,7 +7299,7 @@ namespace System.Windows.Forms.Samples {
                 _selectedRow = 0;
                 Methods myActions = new Methods();
                 myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow", "0");
-                PostMessage(_appHandle, WM_CLOSE, 0, 0);      
+                TryToCloseAllOpenFilesInTab();
                 System.Threading.Thread.Sleep(1000);
                 _appHandle = IntPtr.Zero;
             }
@@ -7975,7 +8095,7 @@ namespace System.Windows.Forms.Samples {
             ElementHost.EnableModelessKeyboardInterop(dlg);
             dlg.Topmost = true;
             dlg.Show();
-            
+
         }
 
         private void videosToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -8153,8 +8273,8 @@ namespace System.Windows.Forms.Samples {
                     fileName = "cbxFolder.txt";
                     strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
                     myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
-                     settingsDirectory =
-      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
+                    settingsDirectory =
+     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
                     settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
                     alHosts = new ArrayList();
                     cbp = new List<ComboBoxPair>();
@@ -8242,7 +8362,7 @@ namespace System.Windows.Forms.Samples {
             int intRowCtr = 0;
             ControlEntity myControlEntity = new ControlEntity();
             List<ControlEntity> myListControlEntity = new List<ControlEntity>();
-            
+
             myControlEntity.ControlEntitySetDefaults();
             myControlEntity.ControlType = ControlType.Heading;
             myControlEntity.ID = "lbl";
@@ -8269,7 +8389,7 @@ namespace System.Windows.Forms.Samples {
             myControlEntity.Text = myActions.GetValueByKey("cbxToolExeSelectedValue");
             myControlEntity.ID = "txtDefaultUrl";
             myControlEntity.RowNumber = intRowCtr;
-            myControlEntity.ToolTipx = @"Here is an example: http://idealprogrammer.com";           
+            myControlEntity.ToolTipx = @"Here is an example: http://idealprogrammer.com";
             myControlEntity.ColumnNumber = 1;
             myControlEntity.ColumnSpan = 2;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
@@ -8286,19 +8406,19 @@ namespace System.Windows.Forms.Samples {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                 return;
             }
-          
+
             string strFolderToUse = "";
             if (strButtonPressed == "btnOkay") {
                 if ((strDefaultUrl == "")) {
                     myActions.MessageBoxShow("Please enter url; else press Cancel to Exit");
                     goto DisplayFindTextInFilesWindow;
                 }
-                
+
                 Process.Start("IExplore.exe", strDefaultUrl);
                 string whatToolDefaultToSave = myActions.GetValueByKey("whatToolDefaultToSave");
                 myActions.SetValueByKey(whatToolDefaultToSave, strDefaultUrl);
             }
-            
+
             //myExe = strFolderToUse;
             return;
         }
@@ -8525,6 +8645,8 @@ namespace System.Windows.Forms.Samples {
         private void speakItToolStripMenuItem_Click(object sender, EventArgs e) {
             Process.Start("IExplore.exe", "https://chrome.google.com/webstore/detail/speak-it/fginjphhpgkicbhibgafbpfjeahmjdfc?hl=en");
         }
+
+
     }
 
 }
