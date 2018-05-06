@@ -437,10 +437,11 @@ namespace System.Windows.Forms.Samples {
                 tabControl1.TabPages[tabControl1.SelectedIndex].ToolTipText = _dir.FileView.FullName;
 
             }
-            this.Cursor = Cursors.WaitCursor;
+            this.Cursor = Cursors.WaitCursor;           
             myActions.SetValueByKey("CurrentIndex", tabControl1.SelectedIndex.ToString());
             _CurrentDataGridView = (DataGridViewExt)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0].Controls[0].Controls[0];
             _CurrentFileViewBindingSource = listBindingSource[tabControl1.SelectedIndex];
+            _dir = (DirectoryView)this._CurrentFileViewBindingSource.DataSource;
             _CurrentSplitContainer = listSplitContainer[tabControl1.SelectedIndex];
             _CurrentSplitContainer = (SplitContainer)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
             _CurrentSplitContainer.SplitterMoved -= _CurrentSplitContainer_SplitterMoved;
@@ -7021,7 +7022,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
             }
             _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
-
+            RefreshDataGrid();
 
 
         }
@@ -7284,6 +7285,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
             }
             _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
+            RefreshDataGrid();
 
         }
 
@@ -7422,7 +7424,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 }
             }
             _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
-
+            RefreshDataGrid();
         }
 
         private void InitializeComponentWebBrowser() {
@@ -7750,7 +7752,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 }
             }
             _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
-
+            RefreshDataGrid();
         }
         private void fileShortcutToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
