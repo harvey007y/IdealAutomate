@@ -17,55 +17,55 @@ using System.Text;
 
 namespace IdealSqlTracer {
 
-  /// <summary>
-  /// Steps to use:
-  /// IdealSqlTracer is a simple, free, open source alternative to SQL Profiler. The advantage of IdealSqlTracer 
-  /// is that it takes all of the sql generated behind the scenes in a desktop application or web page, and it 
-  /// formats it to make it easily readable. IdealSqlTracer takes this beautifully formatted sql, and puts it into 
-  /// notepad. This allows you to easily cut-n-paste the sql in notepad, and run it directly in Sql Server 
-  /// Management Studio (SSMS). The advantage of doing this is that it makes it possible for you to see exactly 
-  /// what is going on in your application or website..
-  /// 
-  /// 
-  /// Steps to use:
-  ///  1. Get Latest source for IdealSqlTracer at https://github.com/harvey007y/IdealSqlTracer 
-  ///  2. Build and Run IdealSqlTracer
-  ///  3. A series of dialog boxes will appear that allow you to specify the server, database, username, password, 
-  /// and so on. 
-  /// 4. Once the basic info is entered, a red dialog box is displayed telling you the trace has started. That 
-  /// dialog tells you that you need to perform the action on the website that you want to trace. After the action 
-  /// on the website is done, click the okay button in the red dialog box to end the trace and have the formatted 
-  /// sql appear in notepad. The next screenshot shows the greenbox dialog that pops up when I am trying to trace 
-  /// what is going on behind a desktop app called IdealAutomate. After the greenbox appears, I hit save in the 
-  /// IdealAutomate application to cause some sql to be generated. 
-  /// 
-  ///  After the save completes in IdealAutomate, I hit okay in the greenbox dialog, to see the following formatted 
-  /// sql in notepad that was used in the save:
-  /// 
-  ///  I can cut-n-paste this sql from notepad into SSMS to run it in realtime so that I can identify where any 
-  /// problems might be.
-  /// 
-  /// If you just want some of the generated sql on the page, you can temporarily 
-  /// add the following to lines to your code where you want to start selecting the generated sql:
-  ///    con = new SqlConnection("Server=yourserver;Initial Catalog=yourdatabase;Integrated Security=SSPI");
-  ///    SqlCommand cmd = new SqlCommand();
-  ///    cmd.CommandText = "select top 1 name from sysobjects where name = 'START_TRACE'";
-  ///    cmd.Connection = con;
-  ///    string strStartTrace = cmd.ExecuteScalar();
-  ///    con.Close();
+    /// <summary>
+    /// Steps to use:
+    /// IdealSqlTracer is a simple, free, open source alternative to SQL Profiler. The advantage of IdealSqlTracer 
+    /// is that it takes all of the sql generated behind the scenes in a desktop application or web page, and it 
+    /// formats it to make it easily readable. IdealSqlTracer takes this beautifully formatted sql, and puts it into 
+    /// notepad. This allows you to easily cut-n-paste the sql in notepad, and run it directly in Sql Server 
+    /// Management Studio (SSMS). The advantage of doing this is that it makes it possible for you to see exactly 
+    /// what is going on in your application or website..
+    /// 
+    /// 
+    /// Steps to use:
+    ///  1. Get Latest source for IdealSqlTracer at https://github.com/harvey007y/IdealSqlTracer 
+    ///  2. Build and Run IdealSqlTracer
+    ///  3. A series of dialog boxes will appear that allow you to specify the server, database, username, password, 
+    /// and so on. 
+    /// 4. Once the basic info is entered, a red dialog box is displayed telling you the trace has started. That 
+    /// dialog tells you that you need to perform the action on the website that you want to trace. After the action 
+    /// on the website is done, click the okay button in the red dialog box to end the trace and have the formatted 
+    /// sql appear in notepad. The next screenshot shows the greenbox dialog that pops up when I am trying to trace 
+    /// what is going on behind a desktop app called IdealAutomate. After the greenbox appears, I hit save in the 
+    /// IdealAutomate application to cause some sql to be generated. 
+    /// 
+    ///  After the save completes in IdealAutomate, I hit okay in the greenbox dialog, to see the following formatted 
+    /// sql in notepad that was used in the save:
+    /// 
+    ///  I can cut-n-paste this sql from notepad into SSMS to run it in realtime so that I can identify where any 
+    /// problems might be.
+    /// 
+    /// If you just want some of the generated sql on the page, you can temporarily 
+    /// add the following to lines to your code where you want to start selecting the generated sql:
+    ///    con = new SqlConnection("Server=yourserver;Initial Catalog=yourdatabase;Integrated Security=SSPI");
+    ///    SqlCommand cmd = new SqlCommand();
+    ///    cmd.CommandText = "select top 1 name from sysobjects where name = 'START_TRACE'";
+    ///    cmd.Connection = con;
+    ///    string strStartTrace = cmd.ExecuteScalar();
+    ///    con.Close();
 
-  ///    
-  /// Then, you temporarily add the following line at the end of where you 
-  /// want to stop selecting the generated sql:
-  ///    
-  ///    con1 = new SqlConnection("Server=yourserver;Initial Catalog=yourdatabase;Integrated Security=SSPI");
-  ///    SqlCommand cmd1 = new SqlCommand();
-  ///    cmd1.CommandTex1t = "select top 1 name from sysobjects where name = 'END_TRACE'";
-  ///    cmd1.Connection1 = con1;
-  ///    string strStartTrace = cmd1.ExecuteScalar();
-  ///    con1.Close();
-  /// </summary>
-  public partial class MainWindow : Window {
+    ///    
+    /// Then, you temporarily add the following line at the end of where you 
+    /// want to stop selecting the generated sql:
+    ///    
+    ///    con1 = new SqlConnection("Server=yourserver;Initial Catalog=yourdatabase;Integrated Security=SSPI");
+    ///    SqlCommand cmd1 = new SqlCommand();
+    ///    cmd1.CommandTex1t = "select top 1 name from sysobjects where name = 'END_TRACE'";
+    ///    cmd1.Connection1 = con1;
+    ///    string strStartTrace = cmd1.ExecuteScalar();
+    ///    con1.Close();
+    /// </summary>
+    public partial class MainWindow : Window {
 
         public MainWindow() {
             try {
@@ -104,7 +104,7 @@ namespace IdealSqlTracer {
                 myControlEntity.ControlEntitySetDefaults();
                 myControlEntity.ControlType = ControlType.Label;
                 myControlEntity.ID = "myLabel2";
-                myControlEntity.Text = "Enter Domain Name";
+                myControlEntity.Text = "Enter Domain Name:";
                 myControlEntity.RowNumber = 0;
                 myControlEntity.ColumnNumber = 0;
                 myListControlEntity.Add(myControlEntity.CreateControlEntity());
@@ -145,11 +145,11 @@ namespace IdealSqlTracer {
                 List<string> listLocalServers = new List<string>();
 
                 // Get servers from the registry (if any)
-                try {
+                try {                   
                     RegistryKey key = RegistryKey.OpenBaseKey(
                               Microsoft.Win32.RegistryHive.LocalMachine, RegistryView.Registry32);
                     key = key.OpenSubKey(@"SOFTWARE\Microsoft\Microsoft SQL Server");
-                    object installedInstances = null;
+                    object installedInstances = null;                    
                     if (key != null) { installedInstances = key.GetValue("InstalledInstances"); }
                     List<string> instances = null;
                     if (installedInstances != null) { instances = ((string[])installedInstances).ToList(); }
@@ -172,12 +172,15 @@ namespace IdealSqlTracer {
                             }
                         }
                     }
-                    foreach (string item in instances) {
-                        string name = System.Environment.MachineName;
-                        if (item != "MSSQLSERVER") { name += @"\" + item; }
-                        if (!servers.Contains(name.ToUpper())) {
-                            myServers.Add(name.ToUpper());
-                            listLocalServers.Add(name.ToUpper());
+              
+                    if (instances != null) {       
+                        foreach (string item in instances) {                           
+                            string name = System.Environment.MachineName;                           
+                            if (item != "MSSQLSERVER") { name += @"\" + item; }
+                            if (!myServers.Contains(name.ToUpper())) {
+                                myServers.Add(name.ToUpper());
+                                listLocalServers.Add(name.ToUpper());
+                            }
                         }
                     }
                 } catch (Exception ex) {
@@ -186,7 +189,6 @@ namespace IdealSqlTracer {
                     MessageBox.Show(ex.StackTrace);
                     MessageBox.Show(ex.InnerException.ToString());
                 }
-
                 try {
                     string myldap = FriendlyDomainToLdapDomain(strDomainName);
 
@@ -200,14 +202,16 @@ namespace IdealSqlTracer {
                     mySearcher.PropertiesToLoad.Add("name");
 
                     SearchResultCollection result = mySearcher.FindAll();
-                    foreach (SearchResult item in result) {
-                        // Get the properties for 'mySearchResult'.
-                        ResultPropertyCollection myResultPropColl;
+                    if (result != null) {
+                        foreach (SearchResult item in result) {
+                            // Get the properties for 'mySearchResult'.
+                            ResultPropertyCollection myResultPropColl;
 
-                        myResultPropColl = item.Properties;
+                            myResultPropColl = item.Properties;
 
-                        foreach (Object myCollection in myResultPropColl["name"]) {
-                            myServers.Add(myCollection.ToString());
+                            foreach (Object myCollection in myResultPropColl["name"]) {
+                                myServers.Add(myCollection.ToString());
+                            }
                         }
                     }
 
@@ -216,10 +220,14 @@ namespace IdealSqlTracer {
                     mySearcher.Dispose();
                 } catch (Exception) {
                     // do not show exception because they may not be using active directory
-                }
+                }              
                 myServers.Sort();
                 fileName = "Servers.txt";
                 WriteArrayListToAppDirectoryFile(settingsDirectory, fileName, myServers);
+                if (myServers.Count < 1) {
+                    MessageBox.Show("No servers found on local computer or network - aborting");
+                    goto myExitApplication;
+                }
 
                 myListControlEntity = new List<ControlEntity>();
                 myControlEntity = new ControlEntity();
@@ -339,7 +347,7 @@ namespace IdealSqlTracer {
                 }
                 myControlEntity.ForegroundColor = System.Windows.Media.Colors.Red;
                 myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
+                // ===========================================================================
                 strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 300, 500, -1, 0);
 
                 if (strButtonPressed == "btnCancel") {
@@ -2746,46 +2754,46 @@ namespace IdealSqlTracer {
                     Console.WriteLine("Connection Closed");
                 }
 
-            
-            myExit:
-            // close SQL Profiler
-            //myActions.TypeText("%fx", 900);
-            if (myBigSqlString == "") {
-                myActions.MessageBoxShow("No SQL was generated that was running under w3wp,dllhost, or the selected db ");
-                goto myExitApplication;
-            }
-            if (!strLocalOutputFolder.EndsWith("\\")) {
-                strLocalOutputFolder += "\\";
-            }
-            string strOutFile = strLocalOutputFolder + @"UnformattedSql.sql";
-            if (File.Exists(strOutFile)) {
-                File.Delete(strOutFile);
-            }
-            using (System.IO.StreamWriter filex = new System.IO.StreamWriter(strOutFile)) {
 
-                filex.Write(myBigSqlString);
-            }
+                myExit:
+                // close SQL Profiler
+                //myActions.TypeText("%fx", 900);
+                if (myBigSqlString == "") {
+                    myActions.MessageBoxShow("No SQL was generated that was running under w3wp,dllhost, or the selected db ");
+                    goto myExitApplication;
+                }
+                if (!strLocalOutputFolder.EndsWith("\\")) {
+                    strLocalOutputFolder += "\\";
+                }
+                string strOutFile = strLocalOutputFolder + @"UnformattedSql.sql";
+                if (File.Exists(strOutFile)) {
+                    File.Delete(strOutFile);
+                }
+                using (System.IO.StreamWriter filex = new System.IO.StreamWriter(strOutFile)) {
 
-            try {
-                string strAppPath = System.AppDomain.CurrentDomain.BaseDirectory;
-                strAppPath = strAppPath.Replace("bin\\Debug\\", "");
-                myActions.RunSync(strAppPath + "SqlFormatter.exe", strLocalOutputFolder + @"UnformattedSql.sql /o:" + strLocalOutputFolder + @"FormattedSql.sql");
+                    filex.Write(myBigSqlString);
+                }
 
+                try {
+                    string strAppPath = System.AppDomain.CurrentDomain.BaseDirectory;
+                    strAppPath = strAppPath.Replace("bin\\Debug\\", "");
+                    myActions.RunSync(strAppPath + "SqlFormatter.exe", strLocalOutputFolder + @"UnformattedSql.sql /o:" + strLocalOutputFolder + @"FormattedSql.sql");
+
+                } catch (Exception ex) {
+                    myActions.MessageBoxShow(ex.Message);
+                    myActions.MessageBoxShow(ex.StackTrace);
+                    goto myExitApplication;
+                }
+
+                string strExecutable = @"C:\Windows\system32\notepad.exe";
+                string strContent = strLocalOutputFolder + @"FormattedSql.sql";
+                Process.Start(strExecutable, string.Concat("", strContent, ""));
             } catch (Exception ex) {
-                myActions.MessageBoxShow(ex.Message);
-                myActions.MessageBoxShow(ex.StackTrace);
-                goto myExitApplication;
-            }
 
-            string strExecutable = @"C:\Windows\system32\notepad.exe";
-            string strContent = strLocalOutputFolder + @"FormattedSql.sql";
-            Process.Start(strExecutable, string.Concat("", strContent, ""));
-            } catch (Exception ex) {
-
-               MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message);
                 MessageBox.Show(ex.StackTrace);
                 MessageBox.Show(ex.InnerException.ToString());
-                
+
             }
             myExitApplication:
             Application.Current.Shutdown();
@@ -2844,7 +2852,7 @@ namespace IdealSqlTracer {
             writer = new StreamWriter(settingsPath);
             // Rewrite the entire value of s to the file
             foreach (var item in arrayListToWrite) {
-                writer.WriteLine(item.ToString());                
+                writer.WriteLine(item.ToString());
             }
             writer.Close();
         }
@@ -2912,7 +2920,7 @@ namespace IdealSqlTracer {
                 // Call Close when done reading. 
                 reader.Close();
             }
-           
+
             return dt;
         }
     }

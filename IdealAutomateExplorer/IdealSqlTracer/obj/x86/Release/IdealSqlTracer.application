@@ -4,7 +4,7 @@
   <description asmv2:publisher="IdealSqlTracer" asmv2:product="IdealSqlTracer" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <deployment install="true" mapFileExtensions="true" />
   <compatibleFrameworks xmlns="urn:schemas-microsoft-com:clickonce.v2">
-    <framework targetVersion="4.7" profile="Full" supportedRuntime="4.0.30319" />
+    <framework targetVersion="4.5" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
     <dependentAssembly dependencyType="install" codebase="IdealSqlTracer.exe.manifest" size="8086">
@@ -14,7 +14,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>Q5btZ21l8qzk0TLr2zlj3UJ+qLPUsKUFOKC9CPvYMFE=</dsig:DigestValue>
+        <dsig:DigestValue>h4zLE1C+DZhZYneX3VTaFCTbDOACGQFHfnBMiS0jCyI=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

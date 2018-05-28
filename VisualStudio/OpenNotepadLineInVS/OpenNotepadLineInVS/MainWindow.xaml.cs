@@ -123,7 +123,7 @@ namespace OpenNotepadLineInVS {
                             myWindowTitles.RemoveAll(vsItem => vsItem == "");
                             bool boolVSMatchingSolutionFound = false;
                             foreach (var vsTitle in myWindowTitles) {
-                                if (vsTitle.StartsWith(strSolutionName + " - ")) {
+                                if (vsTitle.StartsWith(strSolutionName + " - ") || vsTitle.StartsWith(strSolutionName + " (Running) - ")) {
                                     boolVSMatchingSolutionFound = true;
                                     myActions.ActivateWindowByTitle(vsTitle, 3);
                                     myActions.Sleep(1000);

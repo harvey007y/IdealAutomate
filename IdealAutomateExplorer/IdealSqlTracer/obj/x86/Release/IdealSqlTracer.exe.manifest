@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IdealSqlTracer.exe" size="1005504">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IdealSqlTracer.exe" size="1006048">
       <assemblyIdentity name="IdealSqlTracer" version="1.0.0.0" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>CEWO1onB5prsl53KuUsIVbAced0XKR6vMAFawHmOYZ0=</dsig:DigestValue>
+        <dsig:DigestValue>DvZzwnx8AkvzEjAuyjYEG3C40Xkzbxx2QenAUKkr+oY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -60,7 +60,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>yuBCKAQrdnPjbuE9bRQew6d7GMs5P2Wv0h0r3zOVAtA=</dsig:DigestValue>
+      <dsig:DigestValue>+K0Xw31ERSGzkFzL116my249J2OxbrVrLhqkJ0Fz5hQ=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Images\112_UpArrowShort_Green.ico" size="29926">

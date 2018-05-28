@@ -94,6 +94,7 @@
             <returns>an integer array of all of x,y coordinates of where the image was found</returns>
             Category::Image
         </member>
+        <!-- Badly formed XML comment ignored for member "M:IdealAutomate.Core.Methods.PutAllDoNotCheckForAlternative(IdealAutomate.Core.ImageEntity)" -->
         <member name="M:IdealAutomate.Core.Methods.PutCursorPosition">
             <summary>
             <para>PutCursorPosition provides a way to save the cursor position in</para>

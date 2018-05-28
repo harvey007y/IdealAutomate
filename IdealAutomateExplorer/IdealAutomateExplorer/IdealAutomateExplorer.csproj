@@ -37,7 +37,7 @@
     <InstallUrl>http://idealautomate.com/idealautomateexplorer/</InstallUrl>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>59</ApplicationRevision>
+    <ApplicationRevision>75</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -207,7 +207,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="IdealSqlTracer.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Add.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1156,6 +1156,11 @@
     </PropertyGroup>
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>COPY/Y "$(SolutionDir)\IdealSqlTracer\bin\debug\IdealSqlTracer.exe" "$(TargetDir)\IdealSqlTracer.exe"</PostBuildEvent>
+    <PostBuildEvent>
+if $(ConfigurationName) == Debug (
+ COPY/Y "$(SolutionDir)\IdealSqlTracer\bin\debug\IdealSqlTracer.exe" "$(TargetDir)\IdealSqlTracer.exe"
+) ELSE (
+  COPY/Y "$(SolutionDir)\IdealSqlTracer\bin\release\IdealSqlTracer.exe" "$(TargetDir)\IdealSqlTracer.exe"
+)</PostBuildEvent>
   </PropertyGroup>
 </Project>
