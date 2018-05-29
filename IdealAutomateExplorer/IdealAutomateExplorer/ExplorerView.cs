@@ -2465,13 +2465,13 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
 
                     string categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", fileName);
-                    if (categoryState == "Expanded") {
+                    if (categoryState == "Expanded" && e.ColumnIndex == 0) {
                         myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Collapsed", fileName);
                         RefreshDataGrid();
                         this.Cursor = Cursors.Default;
                         return;
                     }
-                    if (categoryState == "Collapsed") {
+                    if (categoryState == "Collapsed" && e.ColumnIndex == 0) {
                         myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Expanded", fileName);
                         RefreshDataGrid();
                         this.Cursor = Cursors.Default;
