@@ -103,3 +103,5 @@ C:\Users\wharvey\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemp
 C:\Users\wharvey\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\obj\x86\Debug\CodeGenTemplateParms.csproj.GenerateResource.Cache
 C:\Users\wharvey\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\obj\x86\Debug\CodeGenTemplateParms.exe
 C:\Users\wharvey\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\obj\x86\Debug\CodeGenTemplateParms.pdb
+C:\Users\harve\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\obj\x86\Debug\CodeGenTemplateParms.csproj.CoreCompileInputs.cache
+C:\Users\harve\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\obj\x86\Debug\CodeGenTemplateParms.csproj.CopyComplete

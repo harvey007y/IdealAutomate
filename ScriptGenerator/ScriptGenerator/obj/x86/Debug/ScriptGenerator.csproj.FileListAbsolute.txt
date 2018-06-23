@@ -58,3 +58,5 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\bi
 C:\Users\harve\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\bin\Debug\IdealAutomateCore.pdb
 C:\Users\harve\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\bin\Debug\IdealAutomateCore.xml
 C:\Users\harve\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\bin\Debug\WindowsInput.xml
+C:\Users\harve\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\obj\x86\Debug\ScriptGenerator.csproj.CoreCompileInputs.cache
+C:\Users\harve\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\obj\x86\Debug\ScriptGenerator.csproj.CopyComplete

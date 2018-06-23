@@ -104,7 +104,7 @@ namespace IdealSqlTracer {
                 myControlEntity.ControlEntitySetDefaults();
                 myControlEntity.ControlType = ControlType.Label;
                 myControlEntity.ID = "myLabel2";
-                myControlEntity.Text = "Enter Domain Name:";
+                myControlEntity.Text = "Enter Domain Name";
                 myControlEntity.RowNumber = 0;
                 myControlEntity.ColumnNumber = 0;
                 myListControlEntity.Add(myControlEntity.CreateControlEntity());
@@ -113,7 +113,7 @@ namespace IdealSqlTracer {
                 myControlEntity.ControlType = ControlType.TextBox;
                 myControlEntity.ID = "myDomainName";
                 myControlEntity.Text = strSavedDomainName;
-                myControlEntity.ToolTipx = "To find Windows Domain, Open the Control Panel, click the System and Security " + System.Environment.NewLine + "category, and click System. Look under “Computer name, " + System.Environment.NewLine + "domain and workgroup settings” here. If you see “Domain”:" + System.Environment.NewLine + "followed by the name of a domain, your computer is joined to a domain." + System.Environment.NewLine + "Most computers running at home do not have a domain as they do" + System.Environment.NewLine + "not use Active Directory";
+                myControlEntity.ToolTipx = "To find Windows Domain, Open the Control Panel, click the System and Security " + System.Environment.NewLine + "category, and click System. Look under “Computer name, " + System.Environment.NewLine + "domain and workgroup settings” here. If you see “Domain”:" + System.Environment.NewLine + "followed by the name of a domain, your computer is joined to a domain." + System.Environment.NewLine + "Most computers running at home do not have a domain as they do" + System.Environment.NewLine + "not use Active Directory..";
                 myControlEntity.RowNumber = 0;
                 myControlEntity.ColumnNumber = 1;
                 myListControlEntity.Add(myControlEntity.CreateControlEntity());

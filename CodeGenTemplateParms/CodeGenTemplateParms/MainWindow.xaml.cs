@@ -8,6 +8,7 @@ using System;
 using Microsoft.CSharp;
 using System.CodeDom.Compiler;
 using System.Reflection;
+using System.IO;
 
 namespace CodeGenTemplateParms {
     /// <summary>
@@ -1486,7 +1487,7 @@ using System.Reflection;
                 CompilerParameters parameters = new CompilerParameters();
                 // Reference to System.Drawing library
                 parameters.ReferencedAssemblies.Add("System.Drawing.dll");
-                parameters.ReferencedAssemblies.Add(myActions.GetValueByKey("SVNPath") + @"IdealAutomateCore\IdealAutomateCore\bin\Debug\IdealAutomateCore.dll");
+                parameters.ReferencedAssemblies.Add(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"IdealAutomate\IdealAutomateCore.dll"));
                 parameters.ReferencedAssemblies.Add(@"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\PresentationFramework.dll");
                 parameters.ReferencedAssemblies.Add(@"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\PresentationCore.dll");
                 parameters.ReferencedAssemblies.Add("System.dll");
