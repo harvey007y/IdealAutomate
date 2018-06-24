@@ -32,8 +32,8 @@ namespace SnippingToolAutomation {
       if (strWindowTitle.StartsWith("SnippingToolAutomation")) {
         myActions.TypeText("%(\" \"n)", 1000); // minimize visual studio
       }
-      StartAgain:
-      myActions.Sleep(1000);
+            snipDialog:
+            myActions.Sleep(1000);
             //myActions.Run(@"C:\WINDOWS\system32\SnippingTool.exe", "");
             //myActions.Sleep(1000);
             //myActions.TypeText("%(n)", 1000);
@@ -60,16 +60,21 @@ namespace SnippingToolAutomation {
             intRowCtr++;
             myControlEntity.ControlEntitySetDefaults();
             myControlEntity.ControlType = ControlType.Button;
-            myControlEntity.ID = "btn";
+            myControlEntity.ID = "btnExit";
             myControlEntity.Text = "Exit";
             myControlEntity.ColumnSpan = 0;
             myControlEntity.ToolTipx = "";
             myControlEntity.RowNumber = intRowCtr;
             myControlEntity.ColumnNumber = 0;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
-            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 200, 500, 0, 0);
+
+            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 200, 200, 0, 0);
             if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                goto myExit;
+            }
+            if (strButtonPressed == "btnExit") {
+               // myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                 goto myExit;
             }
             SnippingTool.Snip();
@@ -77,8 +82,59 @@ namespace SnippingToolAutomation {
             if (SnippingTool.Image != null) {
                 Clipboard.SetImage(BitmapSourceFromImage(SnippingTool.Image));
             }
-            myActions.Sleep(15000);
-            goto myExit;
+            intRowCtr = 0;
+             myControlEntity = new ControlEntity();
+             myListControlEntity = new List<ControlEntity>();
+             cbp = new List<ComboBoxPair>();
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Heading;
+            myControlEntity.ID = "lbl";
+            myControlEntity.Text = "Comments";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "lblComments";
+            myControlEntity.Text = "Comments";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "txtComments";
+            myControlEntity.Text = ""; //myActions.GetValueByKey("Comments"); ;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.Width = 800;
+            myControlEntity.Height = 300;
+            myControlEntity.Multiline = true;
+            myControlEntity.ColumnNumber = 1;
+            myControlEntity.ColumnSpan = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+            strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 800, 0, 0);
+            if (strButtonPressed == "btnCancel") {
+                myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                goto myExit;
+            }
+
+            string strComments = myListControlEntity.Find(x => x.ID == "txtComments").Text;
+            myActions.SetValueByKey("Comments", strComments);
+            List<string> myWindowTitles = myActions.GetWindowTitlesByProcessName("wordpad");
+            myWindowTitles.RemoveAll(item => item == "");
+            if (myWindowTitles.Count > 0) {
+                myActions.ActivateWindowByTitle(myWindowTitles[0]);
+                if (strComments != "") {
+                    myActions.TypeText(strComments, 1000);
+                }
+                myActions.TypeText("^(v)", 1000);
+                myActions.TypeText("{ENTER}", 1000);
+
+            }
+            goto snipDialog;
             myActions.TypeText("^({PRTSC})", 1000);
             myActions.MessageBoxShow("click okay to continue");
             myActions.TypeText("^(c)", 500);
