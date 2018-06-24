@@ -604,7 +604,7 @@ namespace CodeGenTemplateParms {
                     line = line.Replace("&&SPACEDOUTID", strID.Trim().Replace(" ", ""));
                     line = line.Replace("&&SUFFIX", strSuffix.Trim());
                     if (strText.Trim() == "") {
-                        line = line.Replace("\"&&TEXT\"", "myActions.GetValueByKey(\"" + myActions.GetValueByKey("ScriptsDefaultKey") + strID.Trim().Replace(" ", "") + "\", \"IdealAutomateDB\");");
+                        line = line.Replace("\"&&TEXT\"", "myActions.GetValueByKey(\"" + myActions.GetValueByKey("ScriptsDefaultKey") + strID.Trim().Replace(" ", "") + "\");");
                     } else {
                         line = line.Replace("&&TEXT", strText.Trim().Replace("\\r\\n", "\" + System.Environment.NewLine + \""));
                     }
@@ -620,7 +620,7 @@ namespace CodeGenTemplateParms {
                         line = line.Replace("&&HEIGHT", strHeight);
                     }
                     if (boolMultiline) {
-                        line = line.Replace("&&MULTILINE", boolMultiline.ToString());
+                        line = line.Replace("&&MULTILINE", boolMultiline.ToString().ToLower());
                     }
 
                     if (!line.Contains("&&WIDTH") && !line.Contains("&&HEIGHT") && !line.Contains("&&MULTILINE")) {
@@ -629,7 +629,7 @@ namespace CodeGenTemplateParms {
                 }
                 sb2.AppendLine("string str" + strID.Replace(" ", "") + " = myListControlEntity" + strSuffix + ".Find(x => x.ID == \"txt" + strID.Replace(" ", "") + "\").Text;");
                 if (strText.Trim() == "") {
-                    sb2.AppendLine("myActions.SetValueByKey(\"" + myActions.GetValueByKey("ScriptsDefaultKey") + strID.Trim().Replace(" ", "") + "\", str" + strID.Trim().Replace(" ", "") + ", \"IdealAutomateDB\");");
+                    sb2.AppendLine("myActions.SetValueByKey(\"" + myActions.GetValueByKey("ScriptsDefaultKey") + strID.Trim().Replace(" ", "") + "\", str" + strID.Trim().Replace(" ", "") + ");");
                 }
                 sb4.AppendLine("txtTemplateOut = txtTemplateOut.Replace(\"&&" + strID.Replace(" ", "") + "\",str" + strID.Replace(" ", "") + ");");
 
@@ -952,7 +952,7 @@ namespace CodeGenTemplateParms {
 
                 sb2.AppendLine("string str" + strID.Replace(" ", "") + " = myListControlEntity" + strSuffix + ".Find(x => x.ID == \"cbx" + strID.Replace(" ", "") + "\").SelectedValue;");
                 if (strSelectedValue.Trim() == "") {
-                    sb2.AppendLine("myActions.SetValueByKey(\"" + myActions.GetValueByKey("ScriptsDefaultKey") + strID.Trim().Replace(" ", "") + "\", str" + strID.Trim().Replace(" ", "") + ", \"IdealAutomateDB\");");
+                    sb2.AppendLine("myActions.SetValueByKey(\"" + myActions.GetValueByKey("ScriptsDefaultKey") + strID.Trim().Replace(" ", "") + "\", str" + strID.Trim().Replace(" ", "") + ");");
                 }
                 sb4.AppendLine("txtTemplateOut = txtTemplateOut.Replace(\"&&" + strID.Replace(" ", "") + "\",str" + strID.Replace(" ", "") + ");");
 

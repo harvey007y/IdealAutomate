@@ -1290,7 +1290,7 @@ namespace ScriptGenerator {
                         myControlEntity1.ControlEntitySetDefaults();
                         myControlEntity1.ControlType = ControlType.TextBox;
                         myControlEntity1.ID = "txtSyntax2";
-                        myControlEntity1.Text = "myActions.SetValueByKey([[Key]], [[Value]],\"IdealAutomateDB\");";
+                        myControlEntity1.Text = "myActions.SetValueByKey([[Key]], [[Value]]);";
                         myControlEntity1.ColumnSpan = 4;
                         myControlEntity1.RowNumber = intRowCtr;
                         myControlEntity1.ColumnNumber = 1;
@@ -1499,7 +1499,7 @@ namespace ScriptGenerator {
                             }
                             string strGeneratedLinex = "";
 
-                            strGeneratedLinex = "myActions.SetValueByKey(" + strKeyToUse + ", " + strValueToUse + ", \"IdealAutomateDB\");";
+                            strGeneratedLinex = "myActions.SetValueByKey(" + strKeyToUse + ", " + strValueToUse + ");";
 
                             myActions.PutEntityInClipboard(strGeneratedLinex);
                             myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard" );
@@ -4448,7 +4448,7 @@ namespace ScriptGenerator {
                             }
                             string strGeneratedLinex = "";
 
-                            strGeneratedLinex = strResultYesNoToUse + " = myActions.GetValueByKey(" + strMessageToUse + ", \"IdealAutomateDB\");";
+                            strGeneratedLinex = strResultYesNoToUse + " = myActions.GetValueByKey(" + strMessageToUse + ");";
 
                             myActions.PutEntityInClipboard(strGeneratedLinex);
                             myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard" );
@@ -5245,7 +5245,7 @@ namespace ScriptGenerator {
                         myControlEntity1.ControlEntitySetDefaults();
                         myControlEntity1.ControlType = ControlType.TextBox;
                         myControlEntity1.ID = "txtSyntax2";
-                        myControlEntity1.Text = "[[Value]] = myActions.GetValueByKey([[Key]],\"IdealAutomateDB\");";
+                        myControlEntity1.Text = "[[Value]] = myActions.GetValueByKey([[Key]]);";
                         myControlEntity1.ColumnSpan = 4;
                         myControlEntity1.RowNumber = intRowCtr;
                         myControlEntity1.ColumnNumber = 1;
@@ -5470,7 +5470,7 @@ namespace ScriptGenerator {
                             }
                             string strGeneratedLinex = "";
 
-                            strGeneratedLinex = strValueToUse + " = myActions.GetValueByKey(" + strKeyToUse + ", \"IdealAutomateDB\");";
+                            strGeneratedLinex = strValueToUse + " = myActions.GetValueByKey(" + strKeyToUse + ");";
 
                             myActions.PutEntityInClipboard(strGeneratedLinex);
                             myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard" );
