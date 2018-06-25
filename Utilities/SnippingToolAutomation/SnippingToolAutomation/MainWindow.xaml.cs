@@ -4,15 +4,28 @@ using System.Collections.Generic;
 using Snipping_OCR;
 using System.Windows.Media.Imaging;
 using System.IO;
+using System;
+using System.Windows.Forms;
+using System.ComponentModel;
+
+using System.Runtime.InteropServices;
+using EventHook;
 
 namespace SnippingToolAutomation {
   /// <summary>
   /// Interaction logic for MainWindow.xaml
   /// </summary>
   public partial class MainWindow : Window {
-    public MainWindow() {
+        private readonly MouseWatcher mouseWatcher;
+        private readonly EventHookFactory eventHookFactory = new EventHookFactory();
+
+        public MainWindow() {
       bool boolRunningFromHome = false;
-      var window = new Window() //make sure the window is invisible
+           
+           
+            bool _mouseUp = false;
+            MouseHook mh;
+            var window = new Window() //make sure the window is invisible
 {
         Width = 0,
         Height = 0,
@@ -21,24 +34,31 @@ namespace SnippingToolAutomation {
         ShowInTaskbar = false,
         ShowActivated = false,
       };
-      window.Show();
+            //var hWnd = new WindowInteropHelper(window).EnsureHandle();
+            ////WindowInteropHelper windowHwnd = new WindowInteropHelper(this);
+            ////IntPtr hWnd = windowHwnd.Handle;
+            //HwndSource source = HwndSource.FromHwnd(hWnd);
+            //source.AddHook(new HwndSourceHook(WndProc));
+            window.Show();
       IdealAutomate.Core.Methods myActions = new Methods();
       myActions.ScriptStartedUpdateStats();
 
       InitializeComponent();
-      this.Hide();
+           
+            this.Hide();
 
-      string strWindowTitle = myActions.PutWindowTitleInEntity();
+            string strWindowTitle = myActions.PutWindowTitleInEntity();
       if (strWindowTitle.StartsWith("SnippingToolAutomation")) {
         myActions.TypeText("%(\" \"n)", 1000); // minimize visual studio
       }
             snipDialog:
+          
             myActions.Sleep(1000);
-            //myActions.Run(@"C:\WINDOWS\system32\SnippingTool.exe", "");
-            //myActions.Sleep(1000);
-            //myActions.TypeText("%(n)", 1000);
-            //myActions.TypeText("{ESC}", 1000);
-            //myActions.TypeText("%(\" \")n", 1000);
+            myActions.Run(@"C:\WINDOWS\system32\SnippingTool.exe", "");
+            myActions.Sleep(1000);
+            myActions.TypeText("%(n)", 1000);
+            myActions.TypeText("{ESC}", 1000);
+            myActions.TypeText("%(\" \")n", 1000);
 
 
             int intRowCtr = 0;
@@ -77,11 +97,36 @@ namespace SnippingToolAutomation {
                // myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                 goto myExit;
             }
-            SnippingTool.Snip();
+            //SnippingTool.Snip();
 
-            if (SnippingTool.Image != null) {
-                Clipboard.SetImage(BitmapSourceFromImage(SnippingTool.Image));
-            }
+            //if (SnippingTool.Image != null) {
+            //    Clipboard.SetImage(BitmapSourceFromImage(SnippingTool.Image));
+            //}
+            myActions.TypeText("^({PRTSC})", 1000);
+
+
+            myActions.SetValueByKey("Mouseup", "false");
+            //mh = new MouseHook();
+            //mh.Install();
+            strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 200, 200, 0, 0);
+            myActions.ActivateWindowByTitle("Snipping Tool");
+            myActions.TypeText("^(c)", 500);
+            //mh.MouseMove += new MouseHook.MouseHookCallback(mouseHook_MouseMove);
+            string mouseUp = "false";
+            //mouseWatcher = eventHookFactory.GetMouseWatcher();
+            //mouseWatcher.Start();
+            //mouseWatcher.OnMouseInput += (s, e) => {
+            //    if (e.Message.ToString() == "WM_LBUTTONUP") {
+            //        myActions.SetValueByKey("MouseUp", "true");
+            //    }
+            //};
+            //while (mouseUp == "false") {
+            //    myActions.TypeText("^(c)", 500);
+            //    mouseUp = myActions.GetValueByKey("MouseUp");
+
+            // //   myActions.Sleep(5000);
+            //}
+
             intRowCtr = 0;
              myControlEntity = new ControlEntity();
              myListControlEntity = new List<ControlEntity>();
@@ -120,9 +165,11 @@ namespace SnippingToolAutomation {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                 goto myExit;
             }
-
+           
             string strComments = myListControlEntity.Find(x => x.ID == "txtComments").Text;
             myActions.SetValueByKey("Comments", strComments);
+            myActions.TypeText("^(c)", 500);
+            myActions.TypeText("%(\" \")n", 1000);
             List<string> myWindowTitles = myActions.GetWindowTitlesByProcessName("wordpad");
             myWindowTitles.RemoveAll(item => item == "");
             if (myWindowTitles.Count > 0) {
@@ -146,20 +193,32 @@ namespace SnippingToolAutomation {
 
             myActions.Sleep(15000);
             goto myExit;
-           myExit:
-      myActions.ScriptEndedSuccessfullyUpdateStats();
-      Application.Current.Shutdown();
-    }
-        private static BitmapSource BitmapSourceFromImage(System.Drawing.Image img) {
-            MemoryStream memStream = new MemoryStream();
+            myExit:
+            myActions.ScriptEndedSuccessfullyUpdateStats();
+          
+            System.Windows.Application.Current.Shutdown();
 
-            // save the image to memStream as a png
-            img.Save(memStream, System.Drawing.Imaging.ImageFormat.Png);
-
-            // gets a decoder from this stream
-            System.Windows.Media.Imaging.PngBitmapDecoder decoder = new System.Windows.Media.Imaging.PngBitmapDecoder(memStream, System.Windows.Media.Imaging.BitmapCreateOptions.PreservePixelFormat, System.Windows.Media.Imaging.BitmapCacheOption.Default);
-
-            return decoder.Frames[0];
         }
+
+        //private void mouseEvent(object sender, EventArgs e) {
+        //    Methods myActions = new Methods();
+        //    myActions.SetValueByKey("MouseUp", "true");
+        //    MessageBox.Show("Left mouse click!");
+
+        //}
+ 
+        private enum MouseMessages {
+            WM_LBUTTONDOWN = 0x0201,
+            WM_LBUTTONUP = 0x0202,
+            WM_MOUSEMOVE = 0x0200,
+            WM_MOUSEWHEEL = 0x020A,
+            WM_RBUTTONDOWN = 0x0204,
+            WM_RBUTTONUP = 0x0205,
+            WM_LBUTTONDBLCLK = 0x0203,
+            WM_MBUTTONDOWN = 0x0207,
+            WM_MBUTTONUP = 0x0208
+        }
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
     }
 }
