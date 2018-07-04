@@ -163,11 +163,16 @@ namespace IdealAutomate.Core {
                         if (item.Width > 0) {
                             myTextBox.Width = item.Width;
                         }
+                        // Note: if the width of the window causes the width of the textbox
+                        // to be less than what is specified, it will look like a 
+                        // multiline textbox is not wrapping because the wrap will occur
+                        // outside of the smaller width of the textbox.
                         if (item.Multiline == true) {
                             // AcceptsReturn = "True" TextWrapping = "Wrap" VerticalScrollBarVisibility="Auto"
                             myTextBox.AcceptsReturn = true;
                             myTextBox.TextWrapping = System.Windows.TextWrapping.Wrap;
                             myTextBox.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+                         //   myTextBox.HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
                             myTextBox.Height = 50;
 
                         }

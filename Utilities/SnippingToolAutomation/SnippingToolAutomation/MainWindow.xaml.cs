@@ -218,7 +218,7 @@ namespace SnippingToolAutomation {
                 myControlEntity.Text = ""; //myActions.GetValueByKey("Comments"); ;
                 myControlEntity.ToolTipx = "";
                 myControlEntity.RowNumber = intRowCtr;
-                myControlEntity.Width = 800;
+                myControlEntity.Width = 300;
                 myControlEntity.Height = 300;
                 myControlEntity.TextWrap = true;
                 myControlEntity.Multiline = true;
