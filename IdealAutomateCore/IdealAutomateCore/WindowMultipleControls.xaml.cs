@@ -163,10 +163,7 @@ namespace IdealAutomate.Core {
                         if (item.Width > 0) {
                             myTextBox.Width = item.Width;
                         }
-                        // Note: if the width of the window causes the width of the textbox
-                        // to be less than what is specified, it will look like a 
-                        // multiline textbox is not wrapping because the wrap will occur
-                        // outside of the smaller width of the textbox.
+
                         if (item.Multiline == true) {
                             // AcceptsReturn = "True" TextWrapping = "Wrap" VerticalScrollBarVisibility="Auto"
                             myTextBox.AcceptsReturn = true;
@@ -174,6 +171,17 @@ namespace IdealAutomate.Core {
                             myTextBox.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
                          //   myTextBox.HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
                             myTextBox.Height = 50;
+                            if (item.ColumnSpan < 1) {
+                                item.ColumnSpan = 1;
+                            }
+                            
+                            double maxWidth = myWindow.Width / ((intMaxColumns + 1) * item.ColumnSpan);
+                            if (myTextBox.Width > maxWidth) {
+                                myTextBox.Width = maxWidth;
+                            }
+                            Methods myActions = new Methods();
+                            myActions.SetValueByKey("intMaxColumns", intMaxColumns.ToString());
+                            myActions.SetValueByKey("MaxWidth", maxWidth.ToString());
 
                         }
                         if (item.Height > 0) {
