@@ -9,15 +9,12 @@ using System.Windows.Forms;
 using System.ComponentModel;
 
 using System.Runtime.InteropServices;
-using EventHook;
 
 namespace SnippingToolAutomation {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window {
-        private readonly MouseWatcher mouseWatcher;
-        private readonly EventHookFactory eventHookFactory = new EventHookFactory();
+    public partial class MainWindow : Window {    
 
         public MainWindow() {
             bool boolRunningFromHome = false;
@@ -223,6 +220,7 @@ namespace SnippingToolAutomation {
                 myControlEntity.RowNumber = intRowCtr;
                 myControlEntity.Width = 800;
                 myControlEntity.Height = 300;
+                myControlEntity.TextWrap = true;
                 myControlEntity.Multiline = true;
                 myControlEntity.ColumnNumber = 1;
                 myControlEntity.ColumnSpan = 0;
@@ -250,6 +248,7 @@ namespace SnippingToolAutomation {
 
             }
             myActions.TypeText("%(\" \")n", 500);
+            myActions.TypeText(" ", 1000);
             goto snipDialog;
             myActions.TypeText("^({PRTSC})", 1000);
             myActions.MessageBoxShow("click okay to continue");
