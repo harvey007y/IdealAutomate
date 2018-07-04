@@ -48,6 +48,10 @@ namespace SnippingToolAutomation {
             if (strWindowTitle.StartsWith("SnippingToolAutomation")) {
                 myActions.TypeText("%(\" \"n)", 1000); // minimize visual studio
             }
+            int intTop = (int)SystemParameters.WorkArea.Height - 200;
+            int intLeft = (int)SystemParameters.WorkArea.Width - 200;
+            myActions.SetValueByKeyGlobal("WindowTop", "-1");
+            myActions.SetValueByKeyGlobal("WindowLeft", "-1");
             snipDialog:
 
             myActions.Sleep(1000);
@@ -95,8 +99,15 @@ namespace SnippingToolAutomation {
             myControlEntity.RowNumber = intRowCtr;
             myControlEntity.ColumnNumber = 0;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 200, 200, 500, 1150);
+            int intSavedTop = myActions.GetValueByKeyAsIntGlobal("WindowTop");
+            int intSavedLeft = myActions.GetValueByKeyAsIntGlobal("WindowLeft");
+            if (intSavedTop > 0) {
+                intTop = intSavedTop;
+            }
+            if (intSavedLeft > 0) {
+                intLeft = intSavedLeft;
+            }
+            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 200, 200, intTop, intLeft);
             if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                 goto myExit;
@@ -105,6 +116,7 @@ namespace SnippingToolAutomation {
                 // myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                 goto myExit;
             }
+            
             bool snipWithComments = false;
             if (strButtonPressed == "btnSnipWithComments") {
                 snipWithComments = true;
@@ -157,8 +169,15 @@ namespace SnippingToolAutomation {
             myControlEntity.RowNumber = intRowCtr;
             myControlEntity.ColumnNumber = 0;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-            strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 200, 200, 500, 1150);
+            intSavedTop = myActions.GetValueByKeyAsIntGlobal("WindowTop");
+            intSavedLeft = myActions.GetValueByKeyAsIntGlobal("WindowLeft");
+            if (intSavedTop > 0) {
+                intTop = intSavedTop;
+            }
+            if (intSavedLeft > 0) {
+                intLeft = intSavedLeft;
+            }
+            strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 200, 200, intTop, intLeft);
             if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                 goto myExit;
