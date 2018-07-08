@@ -8650,7 +8650,271 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             Process.Start("IExplore.exe", "https://chrome.google.com/webstore/detail/speak-it/fginjphhpgkicbhibgafbpfjeahmjdfc?hl=en");
         }
 
+        private async void snippingToolAutomationToolStripMenuItem_ClickAsync(object sender, EventArgs e) {
+           
+           
 
+        }
+
+        private async Task<string> SnippingTask() {
+            string myResult = "";
+            IdealAutomate.Core.Methods myActions = new Methods();
+
+            int intTop = (int)SystemParameters.WorkArea.Height - 200;
+            int intLeft = (int)SystemParameters.WorkArea.Width - 200;
+            myActions.SetValueByKeyGlobal("WindowTop", "-1");
+            myActions.SetValueByKeyGlobal("WindowLeft", "-1");
+            List<string> myWindowTitles = myActions.GetWindowTitlesByProcessName("wordpad");
+            myWindowTitles.RemoveAll(item => item == "");
+            if (myWindowTitles.Count == 0) {
+               
+                myActions.MessageBoxShow("You need to have an instance of wordpad running in order to save your snippets into it - aborting");
+                return myResult;
+            }
+            snipDialog:
+
+            myActions.Sleep(1000);
+            myActions.Run(@"C:\WINDOWS\system32\SnippingTool.exe", "");
+            myActions.Sleep(1000);
+            myActions.TypeText("%(n)", 1000);
+            myActions.TypeText("{ESC}", 1000);
+            myActions.TypeText("%(\" \")n", 1000);
+
+
+            int intRowCtr = 0;
+            ControlEntity myControlEntity = new ControlEntity();
+            List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+            List<ComboBoxPair> cbp = new List<ComboBoxPair>();
+
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Button;
+            myControlEntity.ID = "btnSnipWithComments";
+            myControlEntity.Text = "Snip w/ Comments";
+            myControlEntity.ColumnSpan = 0;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Button;
+            myControlEntity.ID = "btnSnip";
+            myControlEntity.Text = "Snip";
+            myControlEntity.ColumnSpan = 0;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Button;
+            myControlEntity.ID = "btnExit";
+            myControlEntity.Text = "Exit";
+            myControlEntity.ColumnSpan = 0;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+            int intSavedTop = myActions.GetValueByKeyAsIntGlobal("WindowTop");
+            int intSavedLeft = myActions.GetValueByKeyAsIntGlobal("WindowLeft");
+            if (intSavedTop > 0) {
+                intTop = intSavedTop;
+            }
+            if (intSavedLeft > 0) {
+                intLeft = intSavedLeft;
+            }
+            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 200, 200, intTop, intLeft);
+            if (strButtonPressed == "btnCancel") {
+                myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+               
+                return myResult;
+            }
+            if (strButtonPressed == "btnExit") {
+                // myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                return myResult;
+            }
+
+            bool snipWithComments = false;
+            if (strButtonPressed == "btnSnipWithComments") {
+                snipWithComments = true;
+            }
+            //SnippingTool.Snip();
+
+            //if (SnippingTool.Image != null) {
+            //    Clipboard.SetImage(BitmapSourceFromImage(SnippingTool.Image));
+            //}
+            myActions.TypeText("^({PRTSC})", 1000);
+
+
+            myActions.SetValueByKey("Mouseup", "false");
+            //mh = new MouseHook();
+            //mh.Install();
+            intRowCtr = 0;
+            myControlEntity = new ControlEntity();
+            myListControlEntity = new List<ControlEntity>();
+            cbp = new List<ComboBoxPair>();
+
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Button;
+            myControlEntity.ID = "btnDoneSnipping";
+            myControlEntity.Text = "Done Snipping";
+            myControlEntity.ColumnSpan = 0;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Button;
+            myControlEntity.ID = "btnAddComments";
+            myControlEntity.Text = "Add Comments";
+            myControlEntity.ColumnSpan = 0;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Button;
+            myControlEntity.ID = "btnExit";
+            myControlEntity.Text = "Exit";
+            myControlEntity.ColumnSpan = 0;
+            myControlEntity.ToolTipx = "";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+            intSavedTop = myActions.GetValueByKeyAsIntGlobal("WindowTop");
+            intSavedLeft = myActions.GetValueByKeyAsIntGlobal("WindowLeft");
+            if (intSavedTop > 0) {
+                intTop = intSavedTop;
+            }
+            if (intSavedLeft > 0) {
+                intLeft = intSavedLeft;
+            }
+            strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 200, 200, intTop, intLeft);
+            if (strButtonPressed == "btnCancel") {
+                myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                return myResult;
+            }
+            if (strButtonPressed == "btnExit") {
+                // myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                return myResult;
+            }
+
+            if (strButtonPressed == "btnAddComments") {
+                snipWithComments = true;
+            }
+
+            myActions.ActivateWindowByTitle("Snipping Tool");
+            myActions.TypeText("^(c)", 500);
+            //mh.MouseMove += new MouseHook.MouseHookCallback(mouseHook_MouseMove);
+            string mouseUp = "false";
+            //mouseWatcher = eventHookFactory.GetMouseWatcher();
+            //mouseWatcher.Start();
+            //mouseWatcher.OnMouseInput += (s, e) => {
+            //    if (e.Message.ToString() == "WM_LBUTTONUP") {
+            //        myActions.SetValueByKey("MouseUp", "true");
+            //    }
+            //};
+            //while (mouseUp == "false") {
+            //    myActions.TypeText("^(c)", 500);
+            //    mouseUp = myActions.GetValueByKey("MouseUp");
+
+            // //   myActions.Sleep(5000);
+            //}
+            string strComments = "";
+            if (snipWithComments) {
+                intRowCtr = 0;
+                myControlEntity = new ControlEntity();
+                myListControlEntity = new List<ControlEntity>();
+                cbp = new List<ComboBoxPair>();
+                myControlEntity.ControlEntitySetDefaults();
+                myControlEntity.ControlType = ControlType.Heading;
+                myControlEntity.ID = "lbl";
+                myControlEntity.Text = "Comments";
+                myControlEntity.RowNumber = intRowCtr;
+                myControlEntity.ColumnNumber = 0;
+                myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                intRowCtr++;
+                myControlEntity.ControlEntitySetDefaults();
+                myControlEntity.ControlType = ControlType.Label;
+                myControlEntity.ID = "lblComments";
+                myControlEntity.Text = "Comments";
+                myControlEntity.RowNumber = intRowCtr;
+                myControlEntity.ColumnNumber = 0;
+                myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                myControlEntity.ControlEntitySetDefaults();
+                myControlEntity.ControlType = ControlType.TextBox;
+                myControlEntity.ID = "txtComments";
+                myControlEntity.Text = ""; //myActions.GetValueByKey("Comments"); ;
+                myControlEntity.ToolTipx = "";
+                myControlEntity.RowNumber = intRowCtr;
+                myControlEntity.Width = 800;
+                myControlEntity.Height = 300;
+                myControlEntity.TextWrap = true;
+                myControlEntity.Multiline = true;
+                myControlEntity.ColumnNumber = 1;
+                myControlEntity.ColumnSpan = 0;
+                myListControlEntity.Add(myControlEntity.CreateControlEntity());
+                strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 800, 0, 0);
+                if (strButtonPressed == "btnCancel") {
+                    myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                    return myResult;
+                }
+
+                strComments = myListControlEntity.Find(x => x.ID == "txtComments").Text;
+                myActions.SetValueByKey("Comments", strComments);
+            }
+            myActions.TypeText("^(c)", 500);
+            myActions.TypeText("%(\" \")n", 1000);
+            myWindowTitles = myActions.GetWindowTitlesByProcessName("wordpad");
+            myWindowTitles.RemoveAll(item => item == "");
+            if (myWindowTitles.Count > 0) {
+                myActions.ActivateWindowByTitle(myWindowTitles[0]);
+                if (strComments != "") {
+                    myActions.TypeText(strComments, 1000);
+                }
+                myActions.TypeText("^(v)", 1000);
+                myActions.TypeText("{ENTER}", 1000);
+                myActions.TypeText("%(\" \")n", 500);
+                myActions.TypeText(" ", 1000);
+            } else {
+                myActions.MessageBoxShow("You need to have an instance of wordpad running in order to save your snippets into it - aborting");
+                return myResult;
+            }
+
+            goto snipDialog;
+        }
+
+        private async void snippingAutomationToolToolStripMenuItem_Click(object sender, EventArgs e) {
+            try {
+                Thread thread = new Thread(() => {
+                    SnippingTask();
+
+
+                    System.Windows.Threading.Dispatcher.Run();
+                });
+
+                thread.SetApartmentState(ApartmentState.STA);
+                thread.IsBackground = true;
+                thread.Start();
+
+
+
+            } catch (Exception ex) {
+                // MessageBox.Show(ex.Message);
+
+            }
+            Methods myActions = new Methods();
+        }
     }
 
 }

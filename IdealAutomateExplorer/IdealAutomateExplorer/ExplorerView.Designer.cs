@@ -122,6 +122,8 @@ namespace System.Windows.Forms.Samples
             this.curlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fiddlerToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.postmanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemImages = new System.Windows.Forms.ToolStripMenuItem();
+            this.snippingAutomationToolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem17 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem18 = new System.Windows.Forms.ToolStripMenuItem();
             this.videoTrafficBlueprintToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -649,6 +651,7 @@ namespace System.Windows.Forms.Samples
             this.toolStripMenuItem7,
             this.toolStripMenuItem14,
             this.toolStripMenuItem8,
+            this.toolStripMenuItemImages,
             this.toolStripMenuItem17,
             this.toolStripMenuItem9,
             this.toolStripMenuItem15,
@@ -924,6 +927,24 @@ namespace System.Windows.Forms.Samples
             this.postmanToolStripMenuItem.Text = "Postman";
             this.postmanToolStripMenuItem.Click += new System.EventHandler(this.postmanToolStripMenuItem_Click);
             // 
+            // toolStripMenuItemImages
+            // 
+            this.toolStripMenuItemImages.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.snippingAutomationToolToolStripMenuItem});
+            this.toolStripMenuItemImages.Name = "toolStripMenuItemImages";
+            this.toolStripMenuItemImages.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItemImages.Text = "Image Processing";
+            // 
+            // snippingAutomationToolToolStripMenuItem
+            // 
+            this.snippingAutomationToolToolStripMenuItem.Name = "snippingAutomationToolToolStripMenuItem";
+            this.snippingAutomationToolToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.snippingAutomationToolToolStripMenuItem.Text = "Snipping Automation Tool";
+            this.snippingAutomationToolToolStripMenuItem.ToolTipText = "Allows you to automate the process of cutting and pasting images into the bottom " +
+    "of a wordpad file. This is very useful when taking notes while watching video tu" +
+    "torials.";
+            this.snippingAutomationToolToolStripMenuItem.Click += new System.EventHandler(this.snippingAutomationToolToolStripMenuItem_Click);
+            // 
             // toolStripMenuItem17
             // 
             this.toolStripMenuItem17.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -977,6 +998,7 @@ namespace System.Windows.Forms.Samples
             this.flashbackExpressToolStripMenuItem.Name = "flashbackExpressToolStripMenuItem";
             this.flashbackExpressToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.flashbackExpressToolStripMenuItem.Text = "Flashback Express";
+            this.flashbackExpressToolStripMenuItem.ToolTipText = resources.GetString("flashbackExpressToolStripMenuItem.ToolTipText");
             this.flashbackExpressToolStripMenuItem.Click += new System.EventHandler(this.flashbackExpressToolStripMenuItem_Click);
             // 
             // toolStripMenuItem16
@@ -1397,6 +1419,8 @@ namespace System.Windows.Forms.Samples
         private ToolStripMenuItem centralAccessReaderToolStripMenuItem;
         private ToolStripMenuItem speakItToolStripMenuItem;
         private ToolStripMenuItem toolStripMenuItem18;
+        private ToolStripMenuItem toolStripMenuItemImages;
+        private ToolStripMenuItem snippingAutomationToolToolStripMenuItem;
     }
 }
 

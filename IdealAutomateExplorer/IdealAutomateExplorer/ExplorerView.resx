@@ -214,6 +214,9 @@
   <metadata name="mainMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <data name="flashbackExpressToolStripMenuItem.ToolTipText" xml:space="preserve">
+    <value>Free screen recording app that can be installed from internet by googling Flashback Express. Mine installed to this location: C:\Program Files (x86)\Blueberry Software\FlashBack Express 5\FlashBack Recorder.exe</value>
+  </data>
   <metadata name="FileViewBindingSource2.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>537, 17</value>
   </metadata>
