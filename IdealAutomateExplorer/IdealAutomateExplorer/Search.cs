@@ -250,16 +250,20 @@ namespace System.Windows.Forms.Samples {
                 var damageResult = await Task.Run(() => SearchTask());
                 lblResults.Text = damageResult;
                 myActions.MessageBoxShow(damageResult);
+                this.WindowState = FormWindowState.Maximized;
 
             } catch (Exception ex) {
                 // MessageBox.Show(ex.Message);
 
             }
             // Initialize the DataGridView.
+            panelResults.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             dgvResults.DataSource = ConvertToDataTable<MatchInfo>(matchInfoList);
             foreach (DataGridViewColumn item in dgvResults.Columns) {
                 item.ToolTipText = "Right-Click Column Header to add remove filter.\nUse Show\\Hide button to Show\\Hide Columns.\nLeft-Click column heading to sort.";
             }
+            dgvResults.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            dgvResults.Dock = DockStyle.Fill;
             RefreshDataGrid();
         }
         private async Task<string> SearchTask() {
@@ -440,33 +444,39 @@ namespace System.Windows.Forms.Samples {
         }
         public static void ReadFileToString(string fullFilePath, int intLineCtr, List<MatchInfo> matchInfoList) {
             while (true) {
-                if (fullFilePath.EndsWith(".odt")
-                    ) {
-                    if (FindTextInWordPad(strSearchText, fullFilePath)) {
-                        intHits++;
-                        boolStringFoundInFile = true;
-                        MatchInfo myMatchInfo = new MatchInfo();
-                        myMatchInfo.FullName = fullFilePath;
-                        myMatchInfo.LineNumber = 1;
-                        myMatchInfo.LinePosition = 1;
-                        myMatchInfo.LineText = strSearchText;
-                        matchInfoList.Add(myMatchInfo);
+                try {
+                    if (fullFilePath.EndsWith(".odt")
+                                ) {
+                        if (FindTextInWordPad(strSearchText, fullFilePath)) {
+                            intHits++;
+                            boolStringFoundInFile = true;
+                            MatchInfo myMatchInfo = new MatchInfo();
+                            myMatchInfo.FullName = fullFilePath;
+                            myMatchInfo.LineNumber = 1;
+                            myMatchInfo.LinePosition = 1;
+                            myMatchInfo.LineText = strSearchText;
+                            matchInfoList.Add(myMatchInfo);
+                        }
                     }
-                }
-                if (fullFilePath.EndsWith(".doc") ||
-        fullFilePath.EndsWith(".docx")
+                    if (fullFilePath.EndsWith(".doc") ||
+            fullFilePath.EndsWith(".docx")
 
-        ) {
-                    if (FindTextInWord(strSearchText, fullFilePath)) {
-                        intHits++;
-                        boolStringFoundInFile = true;
-                        MatchInfo myMatchInfo = new MatchInfo();
-                        myMatchInfo.FullName = fullFilePath;
-                        myMatchInfo.LineNumber = 1;
-                        myMatchInfo.LinePosition = 1;
-                        myMatchInfo.LineText = strSearchText;
-                        matchInfoList.Add(myMatchInfo);
+            ) {
+                        if (FindTextInWord(strSearchText, fullFilePath)) {
+                            intHits++;
+                            boolStringFoundInFile = true;
+                            MatchInfo myMatchInfo = new MatchInfo();
+                            myMatchInfo.FullName = fullFilePath;
+                            myMatchInfo.LineNumber = 1;
+                            myMatchInfo.LinePosition = 1;
+                            myMatchInfo.LineText = strSearchText;
+                            matchInfoList.Add(myMatchInfo);
+                        }
                     }
+                } catch (Exception ex) {
+
+                    Console.WriteLine("Output file {0} not yet ready ({1})", fullFilePath, ex.Message);
+                    break;
                 }
                 try {
                     using (FileStream fs = new FileStream(fullFilePath, FileMode.Open)) {
@@ -782,6 +792,9 @@ namespace System.Windows.Forms.Samples {
             foreach (DataGridViewColumn item in dgvResults.Columns) {
                 item.ToolTipText = "Right-Click Column Header to add remove filter.\nUse Show\\Hide button to Show\\Hide Columns.\nLeft-Click column heading to sort.";
             }
+            panelResults.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            dgvResults.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            dgvResults.Dock = DockStyle.Fill;
             RefreshDataGrid();
         }
 
