@@ -112,6 +112,7 @@ namespace System.Windows.Forms.Samples
             this.fiddlerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.iISToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.iWB2LearnerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItemMousePositionShow = new System.Windows.Forms.ToolStripMenuItem();
             this.notepadToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.processExplorerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.taskManagerToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -824,6 +825,7 @@ namespace System.Windows.Forms.Samples
             this.fiddlerToolStripMenuItem,
             this.iISToolStripMenuItem1,
             this.iWB2LearnerToolStripMenuItem,
+            this.toolStripMenuItemMousePositionShow,
             this.notepadToolStripMenuItem2,
             this.processExplorerToolStripMenuItem,
             this.taskManagerToolStripMenuItem1,
@@ -835,49 +837,57 @@ namespace System.Windows.Forms.Samples
             // fiddlerToolStripMenuItem
             // 
             this.fiddlerToolStripMenuItem.Name = "fiddlerToolStripMenuItem";
-            this.fiddlerToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.fiddlerToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
             this.fiddlerToolStripMenuItem.Text = "Fiddler";
             this.fiddlerToolStripMenuItem.Click += new System.EventHandler(this.fiddlerToolStripMenuItem_Click);
             // 
             // iISToolStripMenuItem1
             // 
             this.iISToolStripMenuItem1.Name = "iISToolStripMenuItem1";
-            this.iISToolStripMenuItem1.Size = new System.Drawing.Size(159, 22);
+            this.iISToolStripMenuItem1.Size = new System.Drawing.Size(188, 22);
             this.iISToolStripMenuItem1.Text = "IIS";
             this.iISToolStripMenuItem1.Click += new System.EventHandler(this.iISToolStripMenuItem1_Click);
             // 
             // iWB2LearnerToolStripMenuItem
             // 
             this.iWB2LearnerToolStripMenuItem.Name = "iWB2LearnerToolStripMenuItem";
-            this.iWB2LearnerToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.iWB2LearnerToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
             this.iWB2LearnerToolStripMenuItem.Text = "iWB2 Learner";
             this.iWB2LearnerToolStripMenuItem.Click += new System.EventHandler(this.iWB2LearnerToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItemMousePositionShow
+            // 
+            this.toolStripMenuItemMousePositionShow.Name = "toolStripMenuItemMousePositionShow";
+            this.toolStripMenuItemMousePositionShow.Size = new System.Drawing.Size(188, 22);
+            this.toolStripMenuItemMousePositionShow.Text = "Mouse Position Show";
+            this.toolStripMenuItemMousePositionShow.ToolTipText = "Allows you to get mouse position x,y coordinates";
+            this.toolStripMenuItemMousePositionShow.Click += new System.EventHandler(this.toolStripMenuItemMousePositionShow_Click);
             // 
             // notepadToolStripMenuItem2
             // 
             this.notepadToolStripMenuItem2.Name = "notepadToolStripMenuItem2";
-            this.notepadToolStripMenuItem2.Size = new System.Drawing.Size(159, 22);
+            this.notepadToolStripMenuItem2.Size = new System.Drawing.Size(188, 22);
             this.notepadToolStripMenuItem2.Text = "Notepad++";
             this.notepadToolStripMenuItem2.Click += new System.EventHandler(this.notepadToolStripMenuItem2_Click);
             // 
             // processExplorerToolStripMenuItem
             // 
             this.processExplorerToolStripMenuItem.Name = "processExplorerToolStripMenuItem";
-            this.processExplorerToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.processExplorerToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
             this.processExplorerToolStripMenuItem.Text = "Process Explorer";
             this.processExplorerToolStripMenuItem.Click += new System.EventHandler(this.processExplorerToolStripMenuItem_Click);
             // 
             // taskManagerToolStripMenuItem1
             // 
             this.taskManagerToolStripMenuItem1.Name = "taskManagerToolStripMenuItem1";
-            this.taskManagerToolStripMenuItem1.Size = new System.Drawing.Size(159, 22);
+            this.taskManagerToolStripMenuItem1.Size = new System.Drawing.Size(188, 22);
             this.taskManagerToolStripMenuItem1.Text = "Task Manager";
             this.taskManagerToolStripMenuItem1.Click += new System.EventHandler(this.taskManagerToolStripMenuItem1_Click);
             // 
             // winListerToolStripMenuItem
             // 
             this.winListerToolStripMenuItem.Name = "winListerToolStripMenuItem";
-            this.winListerToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.winListerToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
             this.winListerToolStripMenuItem.Text = "WinLister";
             this.winListerToolStripMenuItem.Click += new System.EventHandler(this.winListerToolStripMenuItem_Click);
             // 
@@ -1421,6 +1431,7 @@ namespace System.Windows.Forms.Samples
         private ToolStripMenuItem toolStripMenuItem18;
         private ToolStripMenuItem toolStripMenuItemImages;
         private ToolStripMenuItem snippingAutomationToolToolStripMenuItem;
+        private ToolStripMenuItem toolStripMenuItemMousePositionShow;
     }
 }
 

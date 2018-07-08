@@ -8915,6 +8915,14 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             }
             Methods myActions = new Methods();
         }
+
+        private void toolStripMenuItemMousePositionShow_Click(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
+            //string strApplicationPath = strApplicationBinDebug.Replace("\\IdealAutomateExplorer\\bin\\Debug", "");
+            string strIdealSqlTracerExe = Path.Combine(strApplicationBinDebug, @"GetCursorPosDemo.exe");
+            myActions.Run(strIdealSqlTracerExe, "");
+        }
     }
 
 }
