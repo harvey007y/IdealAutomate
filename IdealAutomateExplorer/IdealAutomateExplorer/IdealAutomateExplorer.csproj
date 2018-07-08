@@ -140,6 +140,7 @@
       <DependentUpon>BaseForm1.cs</DependentUpon>
     </Compile>
     <Compile Include="ClipboardNative.cs" />
+    <Compile Include="TextLineInfo.cs" />
     <Compile Include="OpenedFile.cs" />
     <Compile Include="ComboBoxPair.cs" />
     <Compile Include="Common.cs" />
@@ -161,9 +162,21 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Methods.cs" />
+    <Compile Include="Peek.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Peek.Designer.cs">
+      <DependentUpon>Peek.cs</DependentUpon>
+    </Compile>
     <Compile Include="Position_Cursor.cs" />
     <Compile Include="Scraper.cs" />
     <Compile Include="ScreenHelper.cs" />
+    <Compile Include="Search.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Search.Designer.cs">
+      <DependentUpon>Search.cs</DependentUpon>
+    </Compile>
     <Compile Include="SnippingTool.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -468,6 +481,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="WPFToolkit.dll" />
+    <EmbeddedResource Include="Peek.resx">
+      <DependentUpon>Peek.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Saved.resx">
       <DependentUpon>Saved.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -475,6 +491,9 @@
     <Content Include="Images\plus.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Search.resx">
+      <DependentUpon>Search.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="IdealAutomateExplorer_TemporaryKey.pfx" />
     <None Include="Images\minus.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
