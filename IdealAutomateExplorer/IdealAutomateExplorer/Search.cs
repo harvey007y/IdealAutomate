@@ -48,6 +48,7 @@ namespace System.Windows.Forms.Samples {
             InitializeComponent();
         }
         public DataTable ConvertToDataTable<T>(IList<T> data) {
+           
             PropertyDescriptorCollection properties =
                TypeDescriptor.GetProperties(typeof(T));
             DataTable table = new DataTable();
@@ -59,6 +60,7 @@ namespace System.Windows.Forms.Samples {
                     row[prop.Name] = prop.GetValue(item) ?? DBNull.Value;
                 table.Rows.Add(row);
             }
+           
             return table;
 
         }
@@ -71,15 +73,17 @@ namespace System.Windows.Forms.Samples {
             new DgvFilterManager(dgvResults);
             int sortedColumn = myActions.GetValueByKeyAsInt("SortedColumn_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"));
             string myDirection = myActions.GetValueByKey("SortOrder_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"));
-            if (sortedColumn > -1 && dgvResults.ColumnCount >= sortedColumn) {
-                if (myDirection == "Ascending") {
-                    dgvResults.Sort(dgvResults.Columns[sortedColumn], ListSortDirection.Ascending);
-                } else {
-                    dgvResults.Sort(dgvResults.Columns[sortedColumn], ListSortDirection.Descending);
-                }
-                myActions.SetValueByKey("SortedColumn_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"), "-1");
-                myActions.SetValueByKey("SortOrder_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"), ListSortDirection.Ascending.ToString());
-            }
+            
+
+            //if (sortedColumn > -1 && dgvResults.ColumnCount >= sortedColumn) {
+            //    if (myDirection == "Ascending") {
+            //        dgvResults.Sort(dgvResults.Columns[sortedColumn], ListSortDirection.Ascending);
+            //    } else {
+            //        dgvResults.Sort(dgvResults.Columns[sortedColumn], ListSortDirection.Descending);
+            //    }
+            //    myActions.SetValueByKey("SortedColumn_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"), "-1");
+            //    myActions.SetValueByKey("SortOrder_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"), ListSortDirection.Ascending.ToString());
+            //}
             //   this.dgvResults.Sort(dgvResults.Columns[1], ListSortDirection.Ascending);
             // Use of the DataGridViewColumnSelector
             DataGridViewColumnSelector cs = new DataGridViewColumnSelector(dgvResults);
