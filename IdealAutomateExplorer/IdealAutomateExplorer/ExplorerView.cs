@@ -437,7 +437,7 @@ namespace System.Windows.Forms.Samples {
                 tabControl1.TabPages[tabControl1.SelectedIndex].ToolTipText = _dir.FileView.FullName;
 
             }
-            this.Cursor = Cursors.WaitCursor;           
+            this.Cursor = Cursors.WaitCursor;
             myActions.SetValueByKey("CurrentIndex", tabControl1.SelectedIndex.ToString());
             _CurrentDataGridView = (DataGridViewExt)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0].Controls[0].Controls[0];
             _CurrentFileViewBindingSource = listBindingSource[tabControl1.SelectedIndex];
@@ -2908,12 +2908,12 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                             //Close the running process
                             _CurrentSplitContainer.Panel2.Controls.Clear();
                             if (_appHandle != IntPtr.Zero) {
-                                 System.Threading.Thread.Sleep(1000);
+                                System.Threading.Thread.Sleep(1000);
                                 _appHandle = IntPtr.Zero;
                             }
                             _newTab = false;
                             //tries to start the process 
-                             TryToCloseAllOpenFilesInTab();
+                            TryToCloseAllOpenFilesInTab();
                             try {
                                 if (!File.Exists(@"C:\Program Files\Windows NT\Accessories\wordpad.exe")) {
                                     myActions.MessageBoxShow(" File not found: " + @"C:\Program Files\Windows NT\Accessories\wordpad.exe");
@@ -3048,11 +3048,11 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             using (StreamReader objSRFile = File.OpenText(settingsPath)) {
                 string strReadLine = "";
                 while ((strReadLine = objSRFile.ReadLine()) != null) {
-                    string[] openedFileFieldsArray = strReadLine.Split('^');                   
+                    string[] openedFileFieldsArray = strReadLine.Split('^');
                     openedFile.Add(new OpenedFile(openedFileFieldsArray[0], openedFileFieldsArray[1], openedFileFieldsArray[2]));
                 }
                 objSRFile.Close();
-            }         
+            }
 
 
             IntPtr _appHandleToClose = IntPtr.Zero;
@@ -3071,9 +3071,9 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             }
 
             using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
-                foreach (OpenedFile item in openedFile) {                    
-                        objSWFile.WriteLine(item._Tab + '^' + item._FileName + '^' + item._Process);
-                }               
+                foreach (OpenedFile item in openedFile) {
+                    objSWFile.WriteLine(item._Tab + '^' + item._FileName + '^' + item._Process);
+                }
                 objSWFile.Close();
             }
         }
@@ -3098,11 +3098,11 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             using (StreamReader objSRFile = File.OpenText(settingsPath)) {
                 string strReadLine = "";
                 while ((strReadLine = objSRFile.ReadLine()) != null) {
-                    string[] openedFileFieldsArray = strReadLine.Split('^');                    
+                    string[] openedFileFieldsArray = strReadLine.Split('^');
                     openedFile.Add(new OpenedFile(openedFileFieldsArray[0], openedFileFieldsArray[1], openedFileFieldsArray[2]));
                 }
                 objSRFile.Close();
-            }     
+            }
 
             using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
                 foreach (OpenedFile item in openedFile) {
@@ -4796,7 +4796,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             _proc.WaitForInputIdle();
             _appHandle = _proc.MainWindowHandle;
 
-            SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);           
+            SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
             SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
             SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
         }
@@ -4876,7 +4876,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             _proc.WaitForInputIdle();
             _appHandle = _proc.MainWindowHandle;
 
-            SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);           
+            SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
             SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
             SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
         }
@@ -6034,10 +6034,10 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         private async void search_ClickAsync(object sender, EventArgs e) {
             var myForm = new Search();
             myForm.Show();
-       //     _searchErrors.Length = 0;
-       //     Methods myActions = new Methods();
-       //     myActions = new Methods();
-       //     string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
+            //     _searchErrors.Length = 0;
+            //     Methods myActions = new Methods();
+            //     myActions = new Methods();
+            //     string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
 
 
 
@@ -6046,345 +6046,345 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
 
 
-       //     DisplayFindTextInFilesWindow:
-       //     int intRowCtr = 0;
-       //     ControlEntity myControlEntity = new ControlEntity();
-       //     List<ControlEntity> myListControlEntity = new List<ControlEntity>();
-       //     List<ComboBoxPair> cbp = new List<ComboBoxPair>();
-       //     List<ComboBoxPair> cbp1 = new List<ComboBoxPair>();
-       //     List<ComboBoxPair> cbp2 = new List<ComboBoxPair>();
-       //     List<ComboBoxPair> cbp3 = new List<ComboBoxPair>();
-       //     myControlEntity.ControlEntitySetDefaults();
-       //     myControlEntity.ControlType = ControlType.Heading;
-       //     myControlEntity.ID = "lbl";
-       //     myControlEntity.Text = "Find Text In Files";
-       //     myControlEntity.RowNumber = intRowCtr;
-       //     myControlEntity.ColumnNumber = 0;
-       //     myListControlEntity.Add(myControlEntity.CreateControlEntity());
+            //     DisplayFindTextInFilesWindow:
+            //     int intRowCtr = 0;
+            //     ControlEntity myControlEntity = new ControlEntity();
+            //     List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+            //     List<ComboBoxPair> cbp = new List<ComboBoxPair>();
+            //     List<ComboBoxPair> cbp1 = new List<ComboBoxPair>();
+            //     List<ComboBoxPair> cbp2 = new List<ComboBoxPair>();
+            //     List<ComboBoxPair> cbp3 = new List<ComboBoxPair>();
+            //     myControlEntity.ControlEntitySetDefaults();
+            //     myControlEntity.ControlType = ControlType.Heading;
+            //     myControlEntity.ID = "lbl";
+            //     myControlEntity.Text = "Find Text In Files";
+            //     myControlEntity.RowNumber = intRowCtr;
+            //     myControlEntity.ColumnNumber = 0;
+            //     myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
-       //     intRowCtr++;
-       //     myControlEntity.ControlEntitySetDefaults();
-       //     myControlEntity.ControlType = ControlType.Label;
-       //     myControlEntity.ID = "lblFindWhat";
-       //     myControlEntity.Text = "FindWhat";
-       //     myControlEntity.RowNumber = intRowCtr;
-       //     myControlEntity.Width = 150;
-       //     myControlEntity.ColumnNumber = 0;
-       //     myControlEntity.ColumnSpan = 1;
-       //     myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-
-
-       //     myControlEntity.ControlEntitySetDefaults();
-       //     myControlEntity.ControlType = ControlType.ComboBox;
-       //     myControlEntity.SelectedValue = myActions.GetValueByKey("cbxFindWhatSelectedValue");
-       //     myControlEntity.ID = "cbxFindWhat";
-       //     myControlEntity.RowNumber = intRowCtr;
-       //     myControlEntity.ToolTipx = "";
-       //     //foreach (var item in alcbxFindWhat) {
-       //     //    cbp.Add(new ComboBoxPair(item.ToString(), item.ToString()));
-       //     //}
-       //     //myControlEntity.ListOfKeyValuePairs = cbp;
-       //     myControlEntity.ComboBoxIsEditable = true;
-       //     myControlEntity.ColumnNumber = 1;
-
-       //     myControlEntity.ColumnSpan = 2;
-       //     myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-
-       //     intRowCtr++;
-       //     myControlEntity.ControlEntitySetDefaults();
-       //     myControlEntity.ControlType = ControlType.Label;
-       //     myControlEntity.ID = "lblFileType";
-       //     myControlEntity.Text = "FileType";
-       //     myControlEntity.RowNumber = intRowCtr;
-       //     myControlEntity.Width = 150;
-       //     myControlEntity.ColumnNumber = 0;
-       //     myControlEntity.ColumnSpan = 1;
-       //     myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-
-       //     myControlEntity.ControlEntitySetDefaults();
-       //     myControlEntity.ControlType = ControlType.ComboBox;
-       //     myControlEntity.SelectedValue = myActions.GetValueByKey("cbxFileTypeSelectedValue");
-       //     myControlEntity.ID = "cbxFileType";
-       //     myControlEntity.RowNumber = intRowCtr;
-       //     myControlEntity.ToolTipx = "Here is an example: *.*";
-       //     //foreach (var item in alcbxFileType) {
-       //     //    cbp1.Add(new ComboBoxPair(item.ToString(), item.ToString()));
-       //     //}
-       //     //myControlEntity.ListOfKeyValuePairs = cbp1;
-       //     myControlEntity.ComboBoxIsEditable = true;
-       //     myControlEntity.ColumnNumber = 1;
-       //     myControlEntity.ColumnSpan = 2;
-       //     myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-
-       //     intRowCtr++;
-       //     myControlEntity.ControlEntitySetDefaults();
-       //     myControlEntity.ControlType = ControlType.Label;
-       //     myControlEntity.ID = "lblExclude";
-       //     myControlEntity.Text = "Exclude";
-       //     myControlEntity.Width = 150;
-       //     myControlEntity.RowNumber = intRowCtr;
-       //     myControlEntity.ColumnNumber = 0;
-       //     myControlEntity.ColumnSpan = 1;
-       //     myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-
-       //     myControlEntity.ControlEntitySetDefaults();
-       //     myControlEntity.ControlType = ControlType.ComboBox;
-       //     myControlEntity.SelectedValue = myActions.GetValueByKey("cbxExcludeSelectedValue");
-       //     myControlEntity.ID = "cbxExclude";
-       //     myControlEntity.RowNumber = intRowCtr;
-       //     myControlEntity.ToolTipx = "Here is an example: *.dll;*.exe;*.png;*.xml;*.cache;*.sln;*.suo;*.pdb;*.csproj;*.deploy";
-       //     myControlEntity.ComboBoxIsEditable = true;
-       //     myControlEntity.ColumnNumber = 1;
-       //     myControlEntity.ColumnSpan = 2;
-       //     myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-
-       //     intRowCtr++;
-       //     myControlEntity.ControlEntitySetDefaults();
-       //     myControlEntity.ControlType = ControlType.Label;
-       //     myControlEntity.ID = "lblFolder";
-       //     myControlEntity.Text = "Folder";
-       //     myControlEntity.Width = 150;
-       //     myControlEntity.RowNumber = intRowCtr;
-       //     myControlEntity.ColumnNumber = 0;
-       //     myControlEntity.ColumnSpan = 1;
-       //     myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-       //     myControlEntity.ControlEntitySetDefaults();
-       //     myControlEntity.ControlType = ControlType.ComboBox;
-       //     myControlEntity.SelectedValue = myActions.GetValueByKey("cbxFolderSelectedValue");
-       //     myControlEntity.ID = "cbxFolder";
-       //     myControlEntity.RowNumber = intRowCtr;
-       //     myControlEntity.ToolTipx = @"Here is an example: C:\Users\harve\Documents\GitHub";
-       //     myControlEntity.ComboBoxIsEditable = true;
-       //     myControlEntity.ColumnNumber = 1;
-       //     myControlEntity.ColumnSpan = 2;
-       //     myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-       //     myControlEntity.ControlEntitySetDefaults();
-       //     myControlEntity.ControlType = ControlType.Button;
-       //     myControlEntity.ID = "btnSelectFolder";
-       //     myControlEntity.Text = "Select Folder or File...";
-       //     myControlEntity.RowNumber = intRowCtr;
-       //     myControlEntity.ColumnNumber = 3;
-       //     myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-       //     intRowCtr++;
-       //     myControlEntity.ControlEntitySetDefaults();
-       //     myControlEntity.ControlType = ControlType.CheckBox;
-       //     myControlEntity.ID = "chkMatchCase";
-       //     myControlEntity.Text = "Match Case";
-       //     myControlEntity.Width = 150;
-       //     myControlEntity.RowNumber = intRowCtr;
-       //     myControlEntity.ColumnNumber = 0;
-       //     myControlEntity.ColumnSpan = 1;
-       //     string strMatchCase = myActions.GetValueByKey("chkMatchCase");
-
-       //     if (strMatchCase.ToLower() == "true") {
-       //         myControlEntity.Checked = true;
-       //     } else {
-       //         myControlEntity.Checked = false;
-       //     }
-       //     myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-       //     intRowCtr++;
-       //     myControlEntity.ControlEntitySetDefaults();
-       //     myControlEntity.ControlType = ControlType.CheckBox;
-       //     myControlEntity.ID = "chkUseRegularExpression";
-       //     myControlEntity.Text = "UseRegularExpression";
-       //     myControlEntity.Width = 150;
-       //     myControlEntity.RowNumber = intRowCtr;
-       //     myControlEntity.ColumnNumber = 0;
-       //     myControlEntity.ColumnSpan = 1;
-       //     string strUseRegularExpression = myActions.GetValueByKey("chkUseRegularExpression");
-       //     if (strUseRegularExpression.ToLower() == "true") {
-       //         myControlEntity.Checked = true;
-       //     } else {
-       //         myControlEntity.Checked = false;
-       //     }
-       //     myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-       //     DisplayWindowAgain:
-       //     string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 300, 1200, 100, 100);
-       //     LineAfterDisplayWindow:
-       //     if (strButtonPressed == "btnCancel") {
-       //         myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
-       //         return;
-       //     }
-
-       //     boolMatchCase = myListControlEntity.Find(x => x.ID == "chkMatchCase").Checked;
-       //     boolUseRegularExpression = myListControlEntity.Find(x => x.ID == "chkUseRegularExpression").Checked;
-
-       //     strFindWhat = myListControlEntity.Find(x => x.ID == "cbxFindWhat").SelectedValue;
-       //     //  string strFindWhatKey = myListControlEntity.Find(x => x.ID == "cbxFindWhat").SelectedKey;
-
-       //     string strFileType = myListControlEntity.Find(x => x.ID == "cbxFileType").SelectedValue;
-       //     //     string strFileTypeKey = myListControlEntity.Find(x => x.ID == "cbxFileType").SelectedKey;
-
-       //     string strExclude = myListControlEntity.Find(x => x.ID == "cbxExclude").SelectedValue;
-       //     //      string strExcludeKey = myListControlEntity.Find(x => x.ID == "cbxExclude").SelectedKey;
-
-       //     string strFolder = myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedValue;
-       //     //     string strFolderKey = myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedKey;
-       //     myActions.SetValueByKey("chkMatchCase", boolMatchCase.ToString());
-       //     myActions.SetValueByKey("chkUseRegularExpression", boolUseRegularExpression.ToString());
-       //     myActions.SetValueByKey("cbxFindWhatSelectedValue", strFindWhat);
-       //     myActions.SetValueByKey("cbxFileTypeSelectedValue", strFileType);
-       //     myActions.SetValueByKey("cbxExcludeSelectedValue", strExclude);
-       //     myActions.SetValueByKey("cbxFolderSelectedValue", strFolder);
-       //     string settingsDirectory = "";
-       //     if (strButtonPressed == "btnSelectFolder") {
-       //         FileFolderDialog dialog = new FileFolderDialog();
-       //         dialog.SelectedPath = myActions.GetValueByKey("LastSearchFolder");
-       //         string str = "LastSearchFolder";
-
-
-       //         System.Windows.Forms.DialogResult result = dialog.ShowDialog();
-
-       //         if (result == System.Windows.Forms.DialogResult.OK && (Directory.Exists(dialog.SelectedPath) || File.Exists(dialog.SelectedPath))) {
-       //             myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedValue = dialog.SelectedPath;
-       //             myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedKey = dialog.SelectedPath;
-       //             myListControlEntity.Find(x => x.ID == "cbxFolder").Text = dialog.SelectedPath;
-       //             myActions.SetValueByKey("LastSearchFolder", dialog.SelectedPath);
-       //             strFolder = dialog.SelectedPath;
-       //             myActions.SetValueByKey("cbxFolderSelectedValue", strFolder);
-       //             string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
-       //             string fileName = "cbxFolder.txt";
-       //             string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
-       //             string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
-       //             settingsDirectory =
-       //Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
-       //             string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
-       //             ArrayList alHosts = new ArrayList();
-       //             cbp = new List<ComboBoxPair>();
-       //             cbp.Clear();
-       //             cbp.Add(new ComboBoxPair("--Select Item ---", "--Select Item ---"));
-       //             ComboBox myComboBox = new ComboBox();
-
-
-       //             if (!File.Exists(settingsPath)) {
-       //                 using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
-       //                     objSWFile.Close();
-       //                 }
-       //             }
-       //             using (StreamReader objSRFile = File.OpenText(settingsPath)) {
-       //                 string strReadLine = "";
-       //                 while ((strReadLine = objSRFile.ReadLine()) != null) {
-       //                     string[] keyvalue = strReadLine.Split('^');
-       //                     if (keyvalue[0] != "--Select Item ---") {
-       //                         cbp.Add(new ComboBoxPair(keyvalue[0], keyvalue[1]));
-       //                     }
-       //                 }
-       //                 objSRFile.Close();
-       //             }
-       //             string strNewHostName = dialog.SelectedPath;
-       //             List<ComboBoxPair> alHostx = cbp;
-       //             List<ComboBoxPair> alHostsNew = new List<ComboBoxPair>();
-       //             ComboBoxPair myCbp = new ComboBoxPair(strNewHostName, strNewHostName);
-       //             bool boolNewItem = false;
-       //             // add what they selected in select folder dialog
-       //             alHostsNew.Add(myCbp);
-       //             // if we have more than 24, remove the first one that is not select item
-       //             if (alHostx.Count > 24) {
-       //                 for (int i = alHostx.Count - 1; i > 0; i--) {
-       //                     if (alHostx[i]._Key.Trim() != "--Select Item ---") {
-       //                         alHostx.RemoveAt(i);
-       //                         break;
-       //                     }
-       //                 }
-       //             }
-       //             // add all the items in the original dropdown that are not 
-       //             // select item and are not the same as what was selected in
-       //             // the select folder dialog
-       //             foreach (ComboBoxPair item in alHostx) {
-       //                 if (strNewHostName != item._Key && item._Key != "--Select Item ---") {
-       //                     boolNewItem = true;
-       //                     alHostsNew.Add(item);
-       //                 }
-       //             }
-       //             // write updated dropdown list to Explorer/cbxFolder.txt
-       //             try {
-       //                 using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
-       //                     foreach (ComboBoxPair item in alHostsNew) {
-       //                         if (item._Key != "") {
-       //                             objSWFile.WriteLine(item._Key + '^' + item._Value);
-       //                         }
-       //                     }
-       //                     objSWFile.Close();
-       //                 }
-       //             } catch (Exception ex) {
-
-       //                 myActions.MessageBoxShow(ex.Message);
-       //             }
-       //             goto DisplayWindowAgain;
-       //         }
-       //     }
-       //     string strFindWhatToUse = "";
-       //     string strFileTypeToUse = "";
-       //     string strExcludeToUse = "";
-       //     string strFolderToUse = "";
-       //     if (strButtonPressed == "btnOkay") {
-       //         if ((strFindWhat == "--Select Item ---" || strFindWhat == "")) {
-       //             myActions.MessageBoxShow("Please enter Find What or select Find What from ComboBox; else press Cancel to Exit");
-       //             goto DisplayFindTextInFilesWindow;
-       //         }
-       //         if ((strFileType == "--Select Item ---" || strFileType == "")) {
-       //             myActions.MessageBoxShow("Please enter File Type or select File Type from ComboBox; else press Cancel to Exit");
-       //             goto DisplayFindTextInFilesWindow;
-       //         }
-       //         if ((strExclude == "--Select Item ---" || strExclude == "")) {
-       //             myActions.MessageBoxShow("Please enter Exclude or select Exclude from ComboBox; else press Cancel to Exit");
-       //             goto DisplayFindTextInFilesWindow;
-       //         }
-       //         if ((strFolder == "--Select Item ---" || strFolder == "")) {
-       //             myActions.MessageBoxShow("Please enter Folder or select Folder from ComboBox; else press Cancel to Exit");
-       //             goto DisplayFindTextInFilesWindow;
-       //         }
+            //     intRowCtr++;
+            //     myControlEntity.ControlEntitySetDefaults();
+            //     myControlEntity.ControlType = ControlType.Label;
+            //     myControlEntity.ID = "lblFindWhat";
+            //     myControlEntity.Text = "FindWhat";
+            //     myControlEntity.RowNumber = intRowCtr;
+            //     myControlEntity.Width = 150;
+            //     myControlEntity.ColumnNumber = 0;
+            //     myControlEntity.ColumnSpan = 1;
+            //     myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
 
 
-       //         strFindWhatToUse = strFindWhat;
+            //     myControlEntity.ControlEntitySetDefaults();
+            //     myControlEntity.ControlType = ControlType.ComboBox;
+            //     myControlEntity.SelectedValue = myActions.GetValueByKey("cbxFindWhatSelectedValue");
+            //     myControlEntity.ID = "cbxFindWhat";
+            //     myControlEntity.RowNumber = intRowCtr;
+            //     myControlEntity.ToolTipx = "";
+            //     //foreach (var item in alcbxFindWhat) {
+            //     //    cbp.Add(new ComboBoxPair(item.ToString(), item.ToString()));
+            //     //}
+            //     //myControlEntity.ListOfKeyValuePairs = cbp;
+            //     myControlEntity.ComboBoxIsEditable = true;
+            //     myControlEntity.ColumnNumber = 1;
 
-       //         if (boolUseRegularExpression) {
-       //             strFindWhatToUse = strFindWhatToUse.Replace(")", "\\)").Replace("(", "\\(");
-       //         }
+            //     myControlEntity.ColumnSpan = 2;
+            //     myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
 
-       //         strFileTypeToUse = strFileType;
+            //     intRowCtr++;
+            //     myControlEntity.ControlEntitySetDefaults();
+            //     myControlEntity.ControlType = ControlType.Label;
+            //     myControlEntity.ID = "lblFileType";
+            //     myControlEntity.Text = "FileType";
+            //     myControlEntity.RowNumber = intRowCtr;
+            //     myControlEntity.Width = 150;
+            //     myControlEntity.ColumnNumber = 0;
+            //     myControlEntity.ColumnSpan = 1;
+            //     myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            //     myControlEntity.ControlEntitySetDefaults();
+            //     myControlEntity.ControlType = ControlType.ComboBox;
+            //     myControlEntity.SelectedValue = myActions.GetValueByKey("cbxFileTypeSelectedValue");
+            //     myControlEntity.ID = "cbxFileType";
+            //     myControlEntity.RowNumber = intRowCtr;
+            //     myControlEntity.ToolTipx = "Here is an example: *.*";
+            //     //foreach (var item in alcbxFileType) {
+            //     //    cbp1.Add(new ComboBoxPair(item.ToString(), item.ToString()));
+            //     //}
+            //     //myControlEntity.ListOfKeyValuePairs = cbp1;
+            //     myControlEntity.ComboBoxIsEditable = true;
+            //     myControlEntity.ColumnNumber = 1;
+            //     myControlEntity.ColumnSpan = 2;
+            //     myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            //     intRowCtr++;
+            //     myControlEntity.ControlEntitySetDefaults();
+            //     myControlEntity.ControlType = ControlType.Label;
+            //     myControlEntity.ID = "lblExclude";
+            //     myControlEntity.Text = "Exclude";
+            //     myControlEntity.Width = 150;
+            //     myControlEntity.RowNumber = intRowCtr;
+            //     myControlEntity.ColumnNumber = 0;
+            //     myControlEntity.ColumnSpan = 1;
+            //     myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            //     myControlEntity.ControlEntitySetDefaults();
+            //     myControlEntity.ControlType = ControlType.ComboBox;
+            //     myControlEntity.SelectedValue = myActions.GetValueByKey("cbxExcludeSelectedValue");
+            //     myControlEntity.ID = "cbxExclude";
+            //     myControlEntity.RowNumber = intRowCtr;
+            //     myControlEntity.ToolTipx = "Here is an example: *.dll;*.exe;*.png;*.xml;*.cache;*.sln;*.suo;*.pdb;*.csproj;*.deploy";
+            //     myControlEntity.ComboBoxIsEditable = true;
+            //     myControlEntity.ColumnNumber = 1;
+            //     myControlEntity.ColumnSpan = 2;
+            //     myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            //     intRowCtr++;
+            //     myControlEntity.ControlEntitySetDefaults();
+            //     myControlEntity.ControlType = ControlType.Label;
+            //     myControlEntity.ID = "lblFolder";
+            //     myControlEntity.Text = "Folder";
+            //     myControlEntity.Width = 150;
+            //     myControlEntity.RowNumber = intRowCtr;
+            //     myControlEntity.ColumnNumber = 0;
+            //     myControlEntity.ColumnSpan = 1;
+            //     myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            //     myControlEntity.ControlEntitySetDefaults();
+            //     myControlEntity.ControlType = ControlType.ComboBox;
+            //     myControlEntity.SelectedValue = myActions.GetValueByKey("cbxFolderSelectedValue");
+            //     myControlEntity.ID = "cbxFolder";
+            //     myControlEntity.RowNumber = intRowCtr;
+            //     myControlEntity.ToolTipx = @"Here is an example: C:\Users\harve\Documents\GitHub";
+            //     myControlEntity.ComboBoxIsEditable = true;
+            //     myControlEntity.ColumnNumber = 1;
+            //     myControlEntity.ColumnSpan = 2;
+            //     myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            //     myControlEntity.ControlEntitySetDefaults();
+            //     myControlEntity.ControlType = ControlType.Button;
+            //     myControlEntity.ID = "btnSelectFolder";
+            //     myControlEntity.Text = "Select Folder or File...";
+            //     myControlEntity.RowNumber = intRowCtr;
+            //     myControlEntity.ColumnNumber = 3;
+            //     myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            //     intRowCtr++;
+            //     myControlEntity.ControlEntitySetDefaults();
+            //     myControlEntity.ControlType = ControlType.CheckBox;
+            //     myControlEntity.ID = "chkMatchCase";
+            //     myControlEntity.Text = "Match Case";
+            //     myControlEntity.Width = 150;
+            //     myControlEntity.RowNumber = intRowCtr;
+            //     myControlEntity.ColumnNumber = 0;
+            //     myControlEntity.ColumnSpan = 1;
+            //     string strMatchCase = myActions.GetValueByKey("chkMatchCase");
+
+            //     if (strMatchCase.ToLower() == "true") {
+            //         myControlEntity.Checked = true;
+            //     } else {
+            //         myControlEntity.Checked = false;
+            //     }
+            //     myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            //     intRowCtr++;
+            //     myControlEntity.ControlEntitySetDefaults();
+            //     myControlEntity.ControlType = ControlType.CheckBox;
+            //     myControlEntity.ID = "chkUseRegularExpression";
+            //     myControlEntity.Text = "UseRegularExpression";
+            //     myControlEntity.Width = 150;
+            //     myControlEntity.RowNumber = intRowCtr;
+            //     myControlEntity.ColumnNumber = 0;
+            //     myControlEntity.ColumnSpan = 1;
+            //     string strUseRegularExpression = myActions.GetValueByKey("chkUseRegularExpression");
+            //     if (strUseRegularExpression.ToLower() == "true") {
+            //         myControlEntity.Checked = true;
+            //     } else {
+            //         myControlEntity.Checked = false;
+            //     }
+            //     myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            //     DisplayWindowAgain:
+            //     string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 300, 1200, 100, 100);
+            //     LineAfterDisplayWindow:
+            //     if (strButtonPressed == "btnCancel") {
+            //         myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+            //         return;
+            //     }
+
+            //     boolMatchCase = myListControlEntity.Find(x => x.ID == "chkMatchCase").Checked;
+            //     boolUseRegularExpression = myListControlEntity.Find(x => x.ID == "chkUseRegularExpression").Checked;
+
+            //     strFindWhat = myListControlEntity.Find(x => x.ID == "cbxFindWhat").SelectedValue;
+            //     //  string strFindWhatKey = myListControlEntity.Find(x => x.ID == "cbxFindWhat").SelectedKey;
+
+            //     string strFileType = myListControlEntity.Find(x => x.ID == "cbxFileType").SelectedValue;
+            //     //     string strFileTypeKey = myListControlEntity.Find(x => x.ID == "cbxFileType").SelectedKey;
+
+            //     string strExclude = myListControlEntity.Find(x => x.ID == "cbxExclude").SelectedValue;
+            //     //      string strExcludeKey = myListControlEntity.Find(x => x.ID == "cbxExclude").SelectedKey;
+
+            //     string strFolder = myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedValue;
+            //     //     string strFolderKey = myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedKey;
+            //     myActions.SetValueByKey("chkMatchCase", boolMatchCase.ToString());
+            //     myActions.SetValueByKey("chkUseRegularExpression", boolUseRegularExpression.ToString());
+            //     myActions.SetValueByKey("cbxFindWhatSelectedValue", strFindWhat);
+            //     myActions.SetValueByKey("cbxFileTypeSelectedValue", strFileType);
+            //     myActions.SetValueByKey("cbxExcludeSelectedValue", strExclude);
+            //     myActions.SetValueByKey("cbxFolderSelectedValue", strFolder);
+            //     string settingsDirectory = "";
+            //     if (strButtonPressed == "btnSelectFolder") {
+            //         FileFolderDialog dialog = new FileFolderDialog();
+            //         dialog.SelectedPath = myActions.GetValueByKey("LastSearchFolder");
+            //         string str = "LastSearchFolder";
+
+
+            //         System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+
+            //         if (result == System.Windows.Forms.DialogResult.OK && (Directory.Exists(dialog.SelectedPath) || File.Exists(dialog.SelectedPath))) {
+            //             myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedValue = dialog.SelectedPath;
+            //             myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedKey = dialog.SelectedPath;
+            //             myListControlEntity.Find(x => x.ID == "cbxFolder").Text = dialog.SelectedPath;
+            //             myActions.SetValueByKey("LastSearchFolder", dialog.SelectedPath);
+            //             strFolder = dialog.SelectedPath;
+            //             myActions.SetValueByKey("cbxFolderSelectedValue", strFolder);
+            //             string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
+            //             string fileName = "cbxFolder.txt";
+            //             string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
+            //             string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
+            //             settingsDirectory =
+            //Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
+            //             string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
+            //             ArrayList alHosts = new ArrayList();
+            //             cbp = new List<ComboBoxPair>();
+            //             cbp.Clear();
+            //             cbp.Add(new ComboBoxPair("--Select Item ---", "--Select Item ---"));
+            //             ComboBox myComboBox = new ComboBox();
+
+
+            //             if (!File.Exists(settingsPath)) {
+            //                 using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
+            //                     objSWFile.Close();
+            //                 }
+            //             }
+            //             using (StreamReader objSRFile = File.OpenText(settingsPath)) {
+            //                 string strReadLine = "";
+            //                 while ((strReadLine = objSRFile.ReadLine()) != null) {
+            //                     string[] keyvalue = strReadLine.Split('^');
+            //                     if (keyvalue[0] != "--Select Item ---") {
+            //                         cbp.Add(new ComboBoxPair(keyvalue[0], keyvalue[1]));
+            //                     }
+            //                 }
+            //                 objSRFile.Close();
+            //             }
+            //             string strNewHostName = dialog.SelectedPath;
+            //             List<ComboBoxPair> alHostx = cbp;
+            //             List<ComboBoxPair> alHostsNew = new List<ComboBoxPair>();
+            //             ComboBoxPair myCbp = new ComboBoxPair(strNewHostName, strNewHostName);
+            //             bool boolNewItem = false;
+            //             // add what they selected in select folder dialog
+            //             alHostsNew.Add(myCbp);
+            //             // if we have more than 24, remove the first one that is not select item
+            //             if (alHostx.Count > 24) {
+            //                 for (int i = alHostx.Count - 1; i > 0; i--) {
+            //                     if (alHostx[i]._Key.Trim() != "--Select Item ---") {
+            //                         alHostx.RemoveAt(i);
+            //                         break;
+            //                     }
+            //                 }
+            //             }
+            //             // add all the items in the original dropdown that are not 
+            //             // select item and are not the same as what was selected in
+            //             // the select folder dialog
+            //             foreach (ComboBoxPair item in alHostx) {
+            //                 if (strNewHostName != item._Key && item._Key != "--Select Item ---") {
+            //                     boolNewItem = true;
+            //                     alHostsNew.Add(item);
+            //                 }
+            //             }
+            //             // write updated dropdown list to Explorer/cbxFolder.txt
+            //             try {
+            //                 using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
+            //                     foreach (ComboBoxPair item in alHostsNew) {
+            //                         if (item._Key != "") {
+            //                             objSWFile.WriteLine(item._Key + '^' + item._Value);
+            //                         }
+            //                     }
+            //                     objSWFile.Close();
+            //                 }
+            //             } catch (Exception ex) {
+
+            //                 myActions.MessageBoxShow(ex.Message);
+            //             }
+            //             goto DisplayWindowAgain;
+            //         }
+            //     }
+            //     string strFindWhatToUse = "";
+            //     string strFileTypeToUse = "";
+            //     string strExcludeToUse = "";
+            //     string strFolderToUse = "";
+            //     if (strButtonPressed == "btnOkay") {
+            //         if ((strFindWhat == "--Select Item ---" || strFindWhat == "")) {
+            //             myActions.MessageBoxShow("Please enter Find What or select Find What from ComboBox; else press Cancel to Exit");
+            //             goto DisplayFindTextInFilesWindow;
+            //         }
+            //         if ((strFileType == "--Select Item ---" || strFileType == "")) {
+            //             myActions.MessageBoxShow("Please enter File Type or select File Type from ComboBox; else press Cancel to Exit");
+            //             goto DisplayFindTextInFilesWindow;
+            //         }
+            //         if ((strExclude == "--Select Item ---" || strExclude == "")) {
+            //             myActions.MessageBoxShow("Please enter Exclude or select Exclude from ComboBox; else press Cancel to Exit");
+            //             goto DisplayFindTextInFilesWindow;
+            //         }
+            //         if ((strFolder == "--Select Item ---" || strFolder == "")) {
+            //             myActions.MessageBoxShow("Please enter Folder or select Folder from ComboBox; else press Cancel to Exit");
+            //             goto DisplayFindTextInFilesWindow;
+            //         }
 
 
 
-       //         strExcludeToUse = strExclude;
+            //         strFindWhatToUse = strFindWhat;
+
+            //         if (boolUseRegularExpression) {
+            //             strFindWhatToUse = strFindWhatToUse.Replace(")", "\\)").Replace("(", "\\(");
+            //         }
 
 
-       //         strFolderToUse = strFolder;
+            //         strFileTypeToUse = strFileType;
 
 
-       //     }
-       //     strPathToSearch = strFolderToUse;
 
-       //     strSearchPattern = strFileTypeToUse;
+            //         strExcludeToUse = strExclude;
 
-       //     strSearchExcludePattern = strExcludeToUse;
 
-       //     strSearchText = strFindWhatToUse;
+            //         strFolderToUse = strFolder;
 
-       //     strLowerCaseSearchText = strFindWhatToUse.ToLower();
-       //     myActions.SetValueByKey("FindWhatToUse", strFindWhatToUse);
-       //     try {
-       //         var damageResult = await Task.Run(() => Search(settingsDirectory));
 
-       //         myActions.MessageBoxShow(damageResult);
+            //     }
+            //     strPathToSearch = strFolderToUse;
 
-       //     } catch (Exception ex) {
-       //         // MessageBox.Show(ex.Message);
+            //     strSearchPattern = strFileTypeToUse;
 
-       //     }
+            //     strSearchExcludePattern = strExcludeToUse;
+
+            //     strSearchText = strFindWhatToUse;
+
+            //     strLowerCaseSearchText = strFindWhatToUse.ToLower();
+            //     myActions.SetValueByKey("FindWhatToUse", strFindWhatToUse);
+            //     try {
+            //         var damageResult = await Task.Run(() => Search(settingsDirectory));
+
+            //         myActions.MessageBoxShow(damageResult);
+
+            //     } catch (Exception ex) {
+            //         // MessageBox.Show(ex.Message);
+
+            //     }
         }
 
         private async Task<string> Search(string settingsDirectory) {
@@ -8651,8 +8651,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private async void snippingToolAutomationToolStripMenuItem_ClickAsync(object sender, EventArgs e) {
-           
-           
+
+
 
         }
 
@@ -8667,7 +8667,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             List<string> myWindowTitles = myActions.GetWindowTitlesByProcessName("wordpad");
             myWindowTitles.RemoveAll(item => item == "");
             if (myWindowTitles.Count == 0) {
-               
+
                 myActions.MessageBoxShow("You need to have an instance of wordpad running in order to save your snippets into it - aborting");
                 return myResult;
             }
@@ -8729,7 +8729,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 200, 200, intTop, intLeft);
             if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
-               
+
                 return myResult;
             }
             if (strButtonPressed == "btnExit") {
@@ -8920,8 +8920,210 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             Methods myActions = new Methods();
             string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
             //string strApplicationPath = strApplicationBinDebug.Replace("\\IdealAutomateExplorer\\bin\\Debug", "");
-            string strIdealSqlTracerExe = Path.Combine(strApplicationBinDebug, @"GetCursorPosDemo.exe");
-            myActions.Run(strIdealSqlTracerExe, "");
+            string strGetCursorPosDemoExe = Path.Combine(strApplicationBinDebug, @"GetCursorPosDemo.exe");
+            myActions.Run(strGetCursorPosDemoExe, "");
+        }
+
+        private void toolStripMenuItemDebugTrace_Click(object sender, EventArgs e) {
+            try {
+                Thread thread = new Thread(() => {
+                    DebugTraceTask();
+
+
+                    System.Windows.Threading.Dispatcher.Run();
+                });
+
+                thread.SetApartmentState(ApartmentState.STA);
+                thread.IsBackground = true;
+                thread.Start();
+
+
+
+            } catch (Exception ex) {
+                // MessageBox.Show(ex.Message);
+
+            }
+        }
+        private void DebugTraceTask() {
+            string myResult = "";
+            IdealAutomate.Core.Methods myActions = new Methods();
+            string settingsDirectory =
+Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\";
+            if (!Directory.Exists(settingsDirectory)) {
+                Directory.CreateDirectory(settingsDirectory);
+            }
+            string filePath = Path.Combine(settingsDirectory, "TraceLog.txt");
+            string filePath2 = Path.Combine(settingsDirectory, "TempCode.txt");
+            string strOutFile = filePath;
+            string strOutFile2 = filePath2;
+            int intCurrentLine = 0;
+            if (File.Exists(strOutFile)) {
+                File.Delete(strOutFile);
+            }
+
+            List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+
+            ControlEntity myControlEntity = new ControlEntity();
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Heading;
+            myControlEntity.Text = "Debug Trace";
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "myLabel";
+            myControlEntity.Text = "Variable of Interest";
+            myControlEntity.RowNumber = 0;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "txtVariableOfInterest";
+            myControlEntity.Text = "Hello World";
+            myControlEntity.RowNumber = 0;
+            myControlEntity.ColumnNumber = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "myLabel2";
+            myControlEntity.Text = "Select F10/F11";
+            myControlEntity.RowNumber = 1;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.ComboBox;
+            myControlEntity.ID = "cbxDepth";
+            myControlEntity.Text = "Hello World";
+            List<ComboBoxPair> cbp = new List<ComboBoxPair>();
+            cbp.Add(new ComboBoxPair("F10 - Step Over", "F10"));
+            cbp.Add(new ComboBoxPair("F11 - Step Into", "F11"));
+            myControlEntity.ListOfKeyValuePairs = cbp;
+            myControlEntity.SelectedValue = "F11";
+            myControlEntity.RowNumber = 1;
+            myControlEntity.ColumnNumber = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.CheckBox;
+            myControlEntity.ID = "myCheckBox";
+            myControlEntity.Text = "Stop at variable";
+            myControlEntity.RowNumber = 2;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
+
+            if (strButtonPressed == "btnCancel") {
+                return;
+            }
+                string myVariableOfInterest = myListControlEntity.Find(x => x.ID == "txtVariableOfInterest").Text;
+            string myDepth = myListControlEntity.Find(x => x.ID == "cbxDepth").SelectedValue;
+
+            bool boolStopAtVariable = myListControlEntity.Find(x => x.ID == "myCheckBox").Checked;
+
+
+            myActions.Sleep(1000);
+            string strCurrentLine = "";
+            string[] myCodeArray = new string[10000];
+            string strPrevLine1 = "";
+            string strPrevLine2 = "";
+            string strPrevLine3 = "";
+            string strCurrentFile = "";
+            string strCurrentFileText = "";
+            string strPrevFile = "";
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < 9000; i++) {
+                myActions.TypeText("{F11}", 500);
+                myActions.TypeText("^(c)", 500);
+                strCurrentLine = myActions.PutClipboardInEntity();
+                strCurrentLine = strCurrentFile + " " + intCurrentLine.ToString() + " " + strCurrentLine;
+                if (strCurrentLine == strPrevLine1 && strPrevLine1 == strPrevLine2 && strPrevLine2 == strPrevLine3) {
+                    break;
+                }
+                strPrevLine3 = strPrevLine2;
+                strPrevLine2 = strPrevLine1;
+                strPrevLine1 = strCurrentLine;
+
+                if (strCurrentLine != "") {
+                    WriteALine(strCurrentLine);
+                }
+                if (strCurrentLine.Contains("tmpParamValue= HTMLEncode(Request.Form(strParamName))")) {
+                    myActions.TypeText("^(d)", 100);
+                    myActions.TypeText("^(l)", 100);
+                    myActions.TypeText("^(a)", 100);
+                    myActions.TypeText("^(c)", 100);
+                    string strLocals = myActions.PutClipboardInEntity();
+                    WriteALine(strLocals);
+                }
+            }
+
+
+
+
+
+
+            string strExecutable = @"C:\Windows\system32\notepad.exe";
+            string strContent = strOutFile;
+            Process.Start(strExecutable, string.Concat("", strContent, ""));
+        }
+
+        private void WriteTheFile(string strOutFile2, string strCurrentFileText) {
+            Methods myActions = new Methods();
+            try {
+
+                //Pass the filepath and filename to the StreamWriter Constructor
+                StreamWriter sw = new StreamWriter(strOutFile2);
+
+                //Write a line of text
+                sw.Write(strCurrentFileText);
+
+                //Close the file
+                sw.Close();
+            } catch (Exception e) {
+                myActions.MessageBoxShow("Exception: " + e.Message);
+            }
+        }
+
+        private void WriteALine(string strPrevLine3) {
+            Methods myActions = new Methods();
+            //string directory = AppDomain.CurrentDomain.BaseDirectory;
+            //directory = directory.Replace("\\bin\\Debug\\", "");
+            //int intLastSlashIndex = directory.LastIndexOf("\\");
+            //directory = directory.Substring(0, intLastSlashIndex);
+            //  string strScriptName = directory.Substring(intLastSlashIndex + 1);
+            // string strScriptName = System.Reflection.Assembly.GetCallingAssembly().GetName().Name;
+            string settingsDirectory =
+      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\";
+            if (!Directory.Exists(settingsDirectory)) {
+                Directory.CreateDirectory(settingsDirectory);
+            }
+            string filePath = Path.Combine(settingsDirectory, "TraceLog.txt");
+            //System.Web.HttpContext.Current.Server.MapPath("~//Trace.html")
+            StreamWriter sw = null;
+
+            if (File.Exists(filePath) == false) {
+                // Create a file to write to.
+                sw = File.CreateText(filePath);
+
+                sw.WriteLine(" ");
+
+                sw.Flush();
+                sw.Close();
+            }
+
+            try {
+                sw = File.AppendText(filePath);
+                sw.WriteLine(strPrevLine3);
+                sw.Flush();
+
+                sw.Close();
+            } catch (Exception Ex) {
+            }
         }
     }
 

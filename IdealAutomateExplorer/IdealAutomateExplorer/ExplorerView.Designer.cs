@@ -167,6 +167,7 @@ namespace System.Windows.Forms.Samples
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.toolStripMenuItemDebugTrace = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource)).BeginInit();
             this.toolBar.SuspendLayout();
@@ -822,6 +823,7 @@ namespace System.Windows.Forms.Samples
             // toolStripMenuItem7
             // 
             this.toolStripMenuItem7.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItemDebugTrace,
             this.fiddlerToolStripMenuItem,
             this.iISToolStripMenuItem1,
             this.iWB2LearnerToolStripMenuItem,
@@ -1260,6 +1262,16 @@ namespace System.Windows.Forms.Samples
             this.tabPage3.ToolTipText = "Add New Tab";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // toolStripMenuItemDebugTrace
+            // 
+            this.toolStripMenuItemDebugTrace.Name = "toolStripMenuItemDebugTrace";
+            this.toolStripMenuItemDebugTrace.Size = new System.Drawing.Size(188, 22);
+            this.toolStripMenuItemDebugTrace.Text = "Debug Trace";
+            this.toolStripMenuItemDebugTrace.ToolTipText = "Set a breakpoint in Visual Studio, and when it is hit, run this tool to automatic" +
+    "ally step thru all subsequent instructions and display a trace log of the instru" +
+    "ctions hit.";
+            this.toolStripMenuItemDebugTrace.Click += new System.EventHandler(this.toolStripMenuItemDebugTrace_Click);
+            // 
             // ExplorerView
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
@@ -1432,6 +1444,7 @@ namespace System.Windows.Forms.Samples
         private ToolStripMenuItem toolStripMenuItemImages;
         private ToolStripMenuItem snippingAutomationToolToolStripMenuItem;
         private ToolStripMenuItem toolStripMenuItemMousePositionShow;
+        private ToolStripMenuItem toolStripMenuItemDebugTrace;
     }
 }
 

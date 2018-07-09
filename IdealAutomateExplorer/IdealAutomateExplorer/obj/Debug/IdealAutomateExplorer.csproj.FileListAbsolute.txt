@@ -336,3 +336,5 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomat
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\DgvFilterPopup.xml
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\System.Windows.Forms.Samples.Search.resources
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\System.Windows.Forms.Samples.Peek.resources
+C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\DebugTrace.exe
+C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\GetCursorPosDemo.exe

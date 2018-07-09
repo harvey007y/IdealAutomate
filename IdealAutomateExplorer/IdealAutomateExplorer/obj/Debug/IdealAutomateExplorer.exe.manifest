@@ -4,7 +4,7 @@
   <description asmv2:iconFile="Resources\folder.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="IdealAutomateExplorer" version="1.0.6763.27946" publicKeyToken="D5A6DB18CD610FA5" language="neutral" processorArchitecture="amd64" />
+    <assemblyIdentity name="IdealAutomateExplorer" version="1.0.6763.33406" publicKeyToken="D5A6DB18CD610FA5" language="neutral" processorArchitecture="amd64" />
     <commandLine file="IdealAutomateExplorer.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -91,14 +91,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IdealAutomateExplorer.exe" size="1229280">
-      <assemblyIdentity name="IdealAutomateExplorer" version="1.0.6763.27946" publicKeyToken="D5A6DB18CD610FA5" language="neutral" processorArchitecture="amd64" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IdealAutomateExplorer.exe" size="1232864">
+      <assemblyIdentity name="IdealAutomateExplorer" version="1.0.6763.33406" publicKeyToken="D5A6DB18CD610FA5" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>YKEDVkX/lrsjeCG2H3WXCg4mqFO+tBVlioDHrM8K1fo=</dsig:DigestValue>
+        <dsig:DigestValue>TIDQaQROnYY1FYBJVAqhurNdQOBV25GnFf49hShNJNY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -130,6 +130,24 @@
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
       <dsig:DigestValue>K2hrDDyWimT8Q45i5zjmXzbhKePyAEebDZBbwGrlLTM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="DebugTrace.exe" size="13312">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>CWUCo6VKaEXgQDNA1y+Mu6tUCW2cl68qw4pa1wZLrTc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="GetCursorPosDemo.exe" size="5120">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>MTBQyFJ62gpoHoX2NtumWJy0pxbm6qfr/go+JZzgKoQ=</dsig:DigestValue>
     </hash>
   </file>
   <file name="IdealAutomateExplorer.exe.config" size="423">

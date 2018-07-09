@@ -31,11 +31,7 @@ namespace SnippingToolAutomation {
                 ShowInTaskbar = false,
                 ShowActivated = false,
             };
-            //var hWnd = new WindowInteropHelper(window).EnsureHandle();
-            ////WindowInteropHelper windowHwnd = new WindowInteropHelper(this);
-            ////IntPtr hWnd = windowHwnd.Handle;
-            //HwndSource source = HwndSource.FromHwnd(hWnd);
-            //source.AddHook(new HwndSourceHook(WndProc));
+
             window.Show();
             IdealAutomate.Core.Methods myActions = new Methods();
             myActions.ScriptStartedUpdateStats();

@@ -35,14 +35,14 @@ namespace DebugTrace {
         myActions.TypeText("%(\" \"n)", 1000); // minimize visual studio
       }
       myActions.Sleep(1000);
-      string directory = AppDomain.CurrentDomain.BaseDirectory;
-      directory = directory.Replace("\\bin\\Debug\\", "");
-      int intLastSlashIndex = directory.LastIndexOf("\\");
-      directory = directory.Substring(0, intLastSlashIndex);
+      //string directory = AppDomain.CurrentDomain.BaseDirectory;
+      //directory = directory.Replace("\\bin\\Debug\\", "");
+      //int intLastSlashIndex = directory.LastIndexOf("\\");
+      //directory = directory.Substring(0, intLastSlashIndex);
       //  string strScriptName = directory.Substring(intLastSlashIndex + 1);
       // string strScriptName = System.Reflection.Assembly.GetCallingAssembly().GetName().Name;
       string settingsDirectory =
-Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\" + myActions.ConvertFullFileNameToScriptPath(directory);
+Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\";
       if (!Directory.Exists(settingsDirectory)) {
         Directory.CreateDirectory(settingsDirectory);
       }
@@ -218,14 +218,14 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
     private void WriteALine(string strPrevLine3) {
       Methods myActions = new Methods();
-      string directory = AppDomain.CurrentDomain.BaseDirectory;
-      directory = directory.Replace("\\bin\\Debug\\", "");
-      int intLastSlashIndex = directory.LastIndexOf("\\");
-      directory = directory.Substring(0, intLastSlashIndex);
+      //string directory = AppDomain.CurrentDomain.BaseDirectory;
+      //directory = directory.Replace("\\bin\\Debug\\", "");
+      //int intLastSlashIndex = directory.LastIndexOf("\\");
+      //directory = directory.Substring(0, intLastSlashIndex);
       //  string strScriptName = directory.Substring(intLastSlashIndex + 1);
       // string strScriptName = System.Reflection.Assembly.GetCallingAssembly().GetName().Name;
       string settingsDirectory =
-Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\" + myActions.ConvertFullFileNameToScriptPath(directory);
+Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\";
       if (!Directory.Exists(settingsDirectory)) {
         Directory.CreateDirectory(settingsDirectory);
       }
