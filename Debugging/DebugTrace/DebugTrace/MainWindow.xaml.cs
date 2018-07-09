@@ -132,40 +132,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         myActions.TypeText("{F11}", 500);
         myActions.TypeText("^(c)", 500);
         strCurrentLine = myActions.PutClipboardInEntity();
-        goto skipLineNumberProcessing;
-        myActions.TypeText("^(w)", 100);
-        myActions.TypeText("^(s)", 100);
-        myActions.TypeText("^(w)", 100);
-        myActions.TypeText("^(p)", 100);
-        myActions.TypeText("{DOWN 5}", 200);
-        myActions.TypeText("^(c)", 100);
-        strCurrentFile = myActions.PutClipboardInEntity();
-        if (strCurrentFile != strPrevFile) {
-          strPrevFile = strCurrentFile;
-          myActions.TypeText("^({F6})", 100);
-          myActions.TypeText("^(a)", 100);
-          myActions.TypeText("^(c)", 100);
-          strCurrentFileText = myActions.PutClipboardInEntity();
-          //myActions.MessageBoxShow(strCurrentFileText);
-          if (File.Exists(strOutFile2)) {
-            File.Delete(strOutFile2);
-          }
-          WriteTheFile(strOutFile2, strCurrentFileText);
-          myCodeArray = File.ReadAllLines(strOutFile2);
-
-        }
-
-
-
-        
-        for (int j = 0; j < myCodeArray.Length; j++) {
-          if (myCodeArray[j] == strCurrentLine.Replace("\r\n", "")) {
-            intCurrentLine = j;
-            break;
-          }
-        }
-        skipLineNumberProcessing:
-        strCurrentLine = strCurrentFile + " " + intCurrentLine.ToString() + " " + strCurrentLine;
+         strCurrentLine = strCurrentFile + " " + intCurrentLine.ToString() + " " + strCurrentLine;
         if (strCurrentLine == strPrevLine1 && strPrevLine1 == strPrevLine2 && strPrevLine2 == strPrevLine3) {
           break;
         }

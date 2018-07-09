@@ -168,7 +168,19 @@ namespace IdealAutomate.Core {
                             myTextBox.AcceptsReturn = true;
                             myTextBox.TextWrapping = System.Windows.TextWrapping.Wrap;
                             myTextBox.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+                            //   myTextBox.HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled;
                             myTextBox.Height = 50;
+                            if (item.ColumnSpan < 1) {
+                                item.ColumnSpan = 1;
+                            }
+
+                            double maxWidth = myWindow.Width / ((intMaxColumns + 1) * item.ColumnSpan);
+                            if (myTextBox.Width > maxWidth) {
+                                myTextBox.Width = maxWidth;
+                            }
+                            Methods myActions = new Methods();
+                            myActions.SetValueByKey("intMaxColumns", intMaxColumns.ToString());
+                            myActions.SetValueByKey("MaxWidth", maxWidth.ToString());
 
                         }
                         if (item.Height > 0) {

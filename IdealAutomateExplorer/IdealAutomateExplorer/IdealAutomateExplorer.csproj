@@ -37,7 +37,7 @@
     <InstallUrl>http://idealautomate.com/idealautomateexplorer/</InstallUrl>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>82</ApplicationRevision>
+    <ApplicationRevision>83</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -73,7 +73,7 @@
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup>
-    <ManifestCertificateThumbprint>F0F46DAA4F6CC8066E5CF17A6EB0254A7567BB2B</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>DB8186F1EEF58CE07A3D9711BAF8B8606AE7363B</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>IdealAutomateExplorer_1_TemporaryKey.pfx</ManifestKeyFile>
@@ -497,6 +497,7 @@
     <EmbeddedResource Include="Search.resx">
       <DependentUpon>Search.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="IdealAutomateExplorer_1_TemporaryKey.pfx" />
     <None Include="IdealAutomateExplorer_TemporaryKey.pfx" />
     <None Include="Images\minus.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
