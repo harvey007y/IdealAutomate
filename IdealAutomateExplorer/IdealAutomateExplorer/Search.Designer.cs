@@ -96,6 +96,8 @@
             this.cbxFileType.Name = "cbxFileType";
             this.cbxFileType.Size = new System.Drawing.Size(600, 21);
             this.cbxFileType.TabIndex = 5;
+            this.cbxFileType.SelectedIndexChanged += new System.EventHandler(this.cbxFileType_SelectedIndexChanged);
+            this.cbxFileType.Leave += new System.EventHandler(this.cbxFileType_Leave);
             // 
             // cbxExclude
             // 
@@ -104,6 +106,8 @@
             this.cbxExclude.Name = "cbxExclude";
             this.cbxExclude.Size = new System.Drawing.Size(600, 21);
             this.cbxExclude.TabIndex = 6;
+            this.cbxExclude.SelectedIndexChanged += new System.EventHandler(this.cbxExclude_SelectedIndexChanged);
+            this.cbxExclude.Leave += new System.EventHandler(this.cbxExclude_Leave);
             // 
             // cbxFolder
             // 
@@ -113,6 +117,8 @@
             this.cbxFolder.Name = "cbxFolder";
             this.cbxFolder.Size = new System.Drawing.Size(600, 21);
             this.cbxFolder.TabIndex = 7;
+            this.cbxFolder.SelectedIndexChanged += new System.EventHandler(this.cbxFolder_SelectedIndexChanged);
+            this.cbxFolder.Leave += new System.EventHandler(this.cbxFolder_Leave);
             // 
             // btnFolder
             // 

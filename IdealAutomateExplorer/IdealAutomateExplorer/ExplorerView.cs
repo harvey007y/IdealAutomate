@@ -3288,7 +3288,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     myControlEntity.ComboBoxIsEditable = true;
                     myControlEntity.ColumnNumber = 1;
 
-                    myControlEntity.ColumnSpan = 2;
+                    myControlEntity.ColumnSpan = 1;
                     myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
 
@@ -3327,7 +3327,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     myControlEntity.ComboBoxIsEditable = true;
                     myControlEntity.ColumnNumber = 1;
 
-                    myControlEntity.ColumnSpan = 2;
+                    myControlEntity.ColumnSpan = 1;
                     myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
 
@@ -3644,7 +3644,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     myControlEntity.ComboBoxIsEditable = true;
                     myControlEntity.ColumnNumber = 1;
 
-                    myControlEntity.ColumnSpan = 2;
+                    myControlEntity.ColumnSpan = 1;
                     myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
 
@@ -3678,7 +3678,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     myControlEntity.ComboBoxIsEditable = true;
                     myControlEntity.ColumnNumber = 1;
 
-                    myControlEntity.ColumnSpan = 2;
+                    myControlEntity.ColumnSpan = 1;
                     myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
 
@@ -5539,7 +5539,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             myControlEntity.ComboBoxIsEditable = true;
             myControlEntity.ColumnNumber = 1;
 
-            myControlEntity.ColumnSpan = 2;
+            myControlEntity.ColumnSpan = 1;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
 
@@ -5573,7 +5573,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             myControlEntity.ComboBoxIsEditable = true;
             myControlEntity.ColumnNumber = 1;
 
-            myControlEntity.ColumnSpan = 2;
+            myControlEntity.ColumnSpan = 1;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
             intRowCtr++;
@@ -5620,7 +5620,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             myControlEntity.ComboBoxIsEditable = true;
             myControlEntity.ColumnNumber = 1;
 
-            myControlEntity.ColumnSpan = 2;
+            myControlEntity.ColumnSpan = 1;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
 
@@ -6843,7 +6843,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             myControlEntity.ComboBoxIsEditable = true;
             myControlEntity.ColumnNumber = 1;
 
-            myControlEntity.ColumnSpan = 2;
+            myControlEntity.ColumnSpan = 1;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
 
@@ -6877,7 +6877,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             myControlEntity.ComboBoxIsEditable = true;
             myControlEntity.ColumnNumber = 1;
 
-            myControlEntity.ColumnSpan = 2;
+            myControlEntity.ColumnSpan = 1;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
 
@@ -6907,7 +6907,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             myControlEntity.ComboBoxIsEditable = true;
             myControlEntity.ColumnNumber = 1;
 
-            myControlEntity.ColumnSpan = 2;
+            myControlEntity.ColumnSpan = 1;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
 
@@ -7100,7 +7100,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             myControlEntity.ComboBoxIsEditable = true;
             myControlEntity.ColumnNumber = 1;
 
-            myControlEntity.ColumnSpan = 2;
+            myControlEntity.ColumnSpan = 1;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
 
@@ -7134,7 +7134,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             myControlEntity.ComboBoxIsEditable = true;
             myControlEntity.ColumnNumber = 1;
 
-            myControlEntity.ColumnSpan = 2;
+            myControlEntity.ColumnSpan = 1;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
 
@@ -7165,7 +7165,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             myControlEntity.ComboBoxIsEditable = true;
             myControlEntity.ColumnNumber = 1;
 
-            myControlEntity.ColumnSpan = 2;
+            myControlEntity.ColumnSpan = 1;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
 
