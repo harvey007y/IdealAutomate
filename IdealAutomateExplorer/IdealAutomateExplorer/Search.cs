@@ -758,7 +758,7 @@ namespace System.Windows.Forms.Samples {
                 float left = e.CellBounds.Left + (keyPos <= 0 ? 0 : textMetricSize.Width) + 2;
                 RectangleF keyRect = new RectangleF(left, e.CellBounds.Top + 1, keySize.Width, e.CellBounds.Height - 2);
 
-                var fillBrush = new SolidBrush(Color.Yellow);
+                var fillBrush = new SolidBrush(Color.Orange);
                 e.Graphics.FillRectangle(fillBrush, keyRect);
                 fillBrush.Dispose();
             }
@@ -1221,73 +1221,6 @@ namespace System.Windows.Forms.Samples {
 
         private void cbxFileType_Leave(object sender, EventArgs e) {
 
-            string strNewHostName = ((ComboBox)sender).Text;
-            Methods myActions = new Methods();
-            System.Windows.Forms.DialogResult myResult;
-            //if (!Directory.Exists(strNewHostName)) {
-
-            //    myResult = myActions.MessageBoxShowWithYesNo("I could not find folder " + strNewHostName + ". Do you want me to create it ? ");
-            //    if (myResult == System.Windows.Forms.DialogResult.Yes) {
-            //        Directory.CreateDirectory(strNewHostName);
-            //    } else {
-            //        return;
-            //    }
-
-            //}
-            List<ComboBoxPair> alHosts = ((ComboBox)sender).Items.Cast<ComboBoxPair>().ToList();
-            List<ComboBoxPair> alHostsNew = new List<ComboBoxPair>();
-
-            ComboBoxPair myCbp = new ComboBoxPair(strNewHostName, strNewHostName);
-            bool boolNewItem = false;
-
-            alHostsNew.Add(myCbp);
-
-            foreach (ComboBoxPair item in alHosts) {
-                if (strNewHostName.ToLower() != item._Key.ToLower()) {
-                    boolNewItem = true;
-                    alHostsNew.Add(item);
-                }
-            }
-            if (alHostsNew.Count > 24) {
-                for (int i = alHostsNew.Count - 1; i > 0; i--) {
-                    if (alHostsNew[i]._Key.Trim() != "--Select Item ---") {
-                        alHostsNew.RemoveAt(i);
-                        break;
-                    }
-                }
-            }
-
-            string fileName = ((ComboBox)sender).Name + ".txt";
-
-
-            string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
-            string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
-            string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
-            string settingsDirectory =
-      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
-
-            string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
-            using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
-                foreach (ComboBoxPair item in alHostsNew) {
-                    if (item._Key != "") {
-                        objSWFile.WriteLine(item._Key + '^' + item._Value);
-                    }
-                }
-                objSWFile.Close();
-            }
-
-            //  alHosts = alHostsNew;
-            if (boolNewItem) {
-                ((ComboBox)sender).Items.Clear();
-                foreach (var item in alHostsNew) {
-                    ((ComboBox)sender).Items.Add(item);
-                }
-            }
-            strFileType = ((ComboBox)(sender)).Text;
-
-
-            myActions.SetValueByKey("cbxFileTypeSelectedValue", strFileType);
-
         }
 
         private void cbxExclude_SelectedIndexChanged(object sender, EventArgs e) {
@@ -1299,73 +1232,6 @@ namespace System.Windows.Forms.Samples {
 
         private void cbxExclude_Leave(object sender, EventArgs e) {
 
-            string strNewHostName = ((ComboBox)sender).Text;
-            Methods myActions = new Methods();
-            System.Windows.Forms.DialogResult myResult;
-            //if (!Directory.Exists(strNewHostName)) {
-
-            //    myResult = myActions.MessageBoxShowWithYesNo("I could not find folder " + strNewHostName + ". Do you want me to create it ? ");
-            //    if (myResult == System.Windows.Forms.DialogResult.Yes) {
-            //        Directory.CreateDirectory(strNewHostName);
-            //    } else {
-            //        return;
-            //    }
-
-            //}
-            List<ComboBoxPair> alHosts = ((ComboBox)sender).Items.Cast<ComboBoxPair>().ToList();
-            List<ComboBoxPair> alHostsNew = new List<ComboBoxPair>();
-
-            ComboBoxPair myCbp = new ComboBoxPair(strNewHostName, strNewHostName);
-            bool boolNewItem = false;
-
-            alHostsNew.Add(myCbp);
-
-            foreach (ComboBoxPair item in alHosts) {
-                if (strNewHostName.ToLower() != item._Key.ToLower()) {
-                    boolNewItem = true;
-                    alHostsNew.Add(item);
-                }
-            }
-            if (alHostsNew.Count > 24) {
-                for (int i = alHostsNew.Count - 1; i > 0; i--) {
-                    if (alHostsNew[i]._Key.Trim() != "--Select Item ---") {
-                        alHostsNew.RemoveAt(i);
-                        break;
-                    }
-                }
-            }
-
-            string fileName = ((ComboBox)sender).Name + ".txt";
-
-
-            string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
-            string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
-            string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
-            string settingsDirectory =
-      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
-
-            string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
-            using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
-                foreach (ComboBoxPair item in alHostsNew) {
-                    if (item._Key != "") {
-                        objSWFile.WriteLine(item._Key + '^' + item._Value);
-                    }
-                }
-                objSWFile.Close();
-            }
-
-            //  alHosts = alHostsNew;
-            if (boolNewItem) {
-                ((ComboBox)sender).Items.Clear();
-                foreach (var item in alHostsNew) {
-                    ((ComboBox)sender).Items.Add(item);
-                }
-            }
-            strExclude = ((ComboBox)(sender)).Text;
-
-
-            myActions.SetValueByKey("cbxExcludeSelectedValue", strExclude);
-
         }
 
         private void cbxFolder_SelectedIndexChanged(object sender, EventArgs e) {
@@ -1376,73 +1242,6 @@ namespace System.Windows.Forms.Samples {
 
 
         private void cbxFolder_Leave(object sender, EventArgs e) {
-
-            string strNewHostName = ((ComboBox)sender).Text;
-            Methods myActions = new Methods();
-            System.Windows.Forms.DialogResult myResult;
-            //if (!Directory.Exists(strNewHostName)) {
-
-            //    myResult = myActions.MessageBoxShowWithYesNo("I could not find folder " + strNewHostName + ". Do you want me to create it ? ");
-            //    if (myResult == System.Windows.Forms.DialogResult.Yes) {
-            //        Directory.CreateDirectory(strNewHostName);
-            //    } else {
-            //        return;
-            //    }
-
-            //}
-            List<ComboBoxPair> alHosts = ((ComboBox)sender).Items.Cast<ComboBoxPair>().ToList();
-            List<ComboBoxPair> alHostsNew = new List<ComboBoxPair>();
-
-            ComboBoxPair myCbp = new ComboBoxPair(strNewHostName, strNewHostName);
-            bool boolNewItem = false;
-
-            alHostsNew.Add(myCbp);
-
-            foreach (ComboBoxPair item in alHosts) {
-                if (strNewHostName.ToLower() != item._Key.ToLower()) {
-                    boolNewItem = true;
-                    alHostsNew.Add(item);
-                }
-            }
-            if (alHostsNew.Count > 24) {
-                for (int i = alHostsNew.Count - 1; i > 0; i--) {
-                    if (alHostsNew[i]._Key.Trim() != "--Select Item ---") {
-                        alHostsNew.RemoveAt(i);
-                        break;
-                    }
-                }
-            }
-
-            string fileName = ((ComboBox)sender).Name + ".txt";
-
-
-            string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
-            string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
-            string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
-            string settingsDirectory =
-      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
-
-            string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
-            using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
-                foreach (ComboBoxPair item in alHostsNew) {
-                    if (item._Key != "") {
-                        objSWFile.WriteLine(item._Key + '^' + item._Value);
-                    }
-                }
-                objSWFile.Close();
-            }
-
-            //  alHosts = alHostsNew;
-            if (boolNewItem) {
-                ((ComboBox)sender).Items.Clear();
-                foreach (var item in alHostsNew) {
-                    ((ComboBox)sender).Items.Add(item);
-                }
-            }
-            strFolder = ((ComboBox)(sender)).Text;
-
-
-            myActions.SetValueByKey("cbxFolderSelectedValue", strFolder);
 
         }
     }

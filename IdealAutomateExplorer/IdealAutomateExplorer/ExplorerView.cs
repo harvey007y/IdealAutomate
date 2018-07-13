@@ -3742,14 +3742,18 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     myActions.SetValueByPublicKeyInCurrentFolder("status", strStatus, strNewTextDocumentDir);
                     myActions.SetValueByPublicKeyInCurrentFolder("cbxStatusSelectedValue", strStatus, strNewTextDocumentDir);
 
-                    if (!File.Exists(strNewTextDocumentDir)) {
+                    if (!File.Exists(strNewTextDocumentDir)) {                        
+                        string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
+                        //string strApplicationPath = strApplicationBinDebug.Replace("\\IdealAutomateExplorer\\bin\\Debug", "");
+                        string strWordpadTemplate = Path.Combine(strApplicationBinDebug, @"WordpadTemplate.rtf");
                         string newFolderScriptPath = basePathForNewTextDocument + "\\" + myNewTextDocumentName.Replace(".rtf", "");
                         //   myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
-                        using (StreamWriter sw = new StreamWriter(strNewTextDocumentDir)) {
+                        File.Copy(strWordpadTemplate, strNewTextDocumentDir);
+                        //using (StreamWriter sw = new StreamWriter(strNewTextDocumentDir)) {
 
 
 
-                        }
+                        //}
                         //   File.Create(strNewTextDocumentDir);
 
                     }
@@ -7199,11 +7203,17 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             if (!File.Exists(strNewTextDocumentDir)) {
                 string newFolderScriptPath = basePathForNewTextDocument + "\\" + myNewTextDocumentName.Replace(".rtf", "");
                 //   myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
-                using (StreamWriter sw = new StreamWriter(strNewTextDocumentDir)) {
+                string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
+                //string strApplicationPath = strApplicationBinDebug.Replace("\\IdealAutomateExplorer\\bin\\Debug", "");
+                string strWordpadTemplate = Path.Combine(strApplicationBinDebug, @"WordpadTemplate.rtf");
+            //    string newFolderScriptPath = basePathForNewTextDocument + "\\" + myNewTextDocumentName.Replace(".rtf", "");
+                //   myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
+                File.Copy(strWordpadTemplate, strNewTextDocumentDir);
+                //using (StreamWriter sw = new StreamWriter(strNewTextDocumentDir)) {
 
 
 
-                }
+                //}
                 //   File.Create(strNewTextDocumentDir);
 
             }

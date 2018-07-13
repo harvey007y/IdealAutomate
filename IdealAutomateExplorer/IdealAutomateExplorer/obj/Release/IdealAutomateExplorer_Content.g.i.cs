@@ -115,6 +115,7 @@
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("mynewproject/mynewproject/properties/resources.resx")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("mynewproject/mynewproject/classdiagram1.cd")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("mynewproject/mynewproject/properties/settings.settings")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("wordpadtemplate.rtf")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/back.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/details.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/forward.png")]

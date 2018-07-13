@@ -46,7 +46,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 6);
+            this.label1.Location = new System.Drawing.Point(13, 8);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(56, 13);
             this.label1.TabIndex = 0;
@@ -55,7 +55,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(14, 28);
+            this.label2.Location = new System.Drawing.Point(14, 33);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(50, 13);
             this.label2.TabIndex = 1;
@@ -64,7 +64,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(14, 50);
+            this.label3.Location = new System.Drawing.Point(14, 58);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(45, 13);
             this.label3.TabIndex = 2;
@@ -73,7 +73,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(14, 73);
+            this.label4.Location = new System.Drawing.Point(14, 83);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(36, 13);
             this.label4.TabIndex = 3;
@@ -81,48 +81,46 @@
             // 
             // cbxFindWhat
             // 
+            this.cbxFindWhat.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbxFindWhat.FormattingEnabled = true;
             this.cbxFindWhat.Location = new System.Drawing.Point(75, 2);
             this.cbxFindWhat.Name = "cbxFindWhat";
-            this.cbxFindWhat.Size = new System.Drawing.Size(600, 21);
+            this.cbxFindWhat.Size = new System.Drawing.Size(686, 23);
             this.cbxFindWhat.TabIndex = 4;
             this.cbxFindWhat.SelectedIndexChanged += new System.EventHandler(this.cbxFindWhat_SelectedIndexChanged);
             this.cbxFindWhat.Leave += new System.EventHandler(this.cbxFindWhat_Leave);
             // 
             // cbxFileType
             // 
+            this.cbxFileType.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbxFileType.FormattingEnabled = true;
-            this.cbxFileType.Location = new System.Drawing.Point(75, 24);
+            this.cbxFileType.Location = new System.Drawing.Point(75, 27);
             this.cbxFileType.Name = "cbxFileType";
-            this.cbxFileType.Size = new System.Drawing.Size(600, 21);
+            this.cbxFileType.Size = new System.Drawing.Size(686, 23);
             this.cbxFileType.TabIndex = 5;
-            this.cbxFileType.SelectedIndexChanged += new System.EventHandler(this.cbxFileType_SelectedIndexChanged);
-            this.cbxFileType.Leave += new System.EventHandler(this.cbxFileType_Leave);
             // 
             // cbxExclude
             // 
+            this.cbxExclude.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbxExclude.FormattingEnabled = true;
-            this.cbxExclude.Location = new System.Drawing.Point(75, 46);
+            this.cbxExclude.Location = new System.Drawing.Point(75, 52);
             this.cbxExclude.Name = "cbxExclude";
-            this.cbxExclude.Size = new System.Drawing.Size(600, 21);
+            this.cbxExclude.Size = new System.Drawing.Size(686, 23);
             this.cbxExclude.TabIndex = 6;
-            this.cbxExclude.SelectedIndexChanged += new System.EventHandler(this.cbxExclude_SelectedIndexChanged);
-            this.cbxExclude.Leave += new System.EventHandler(this.cbxExclude_Leave);
             // 
             // cbxFolder
             // 
             this.cbxFolder.DropDownWidth = 600;
+            this.cbxFolder.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbxFolder.FormattingEnabled = true;
-            this.cbxFolder.Location = new System.Drawing.Point(75, 68);
+            this.cbxFolder.Location = new System.Drawing.Point(75, 77);
             this.cbxFolder.Name = "cbxFolder";
-            this.cbxFolder.Size = new System.Drawing.Size(600, 21);
+            this.cbxFolder.Size = new System.Drawing.Size(686, 23);
             this.cbxFolder.TabIndex = 7;
-            this.cbxFolder.SelectedIndexChanged += new System.EventHandler(this.cbxFolder_SelectedIndexChanged);
-            this.cbxFolder.Leave += new System.EventHandler(this.cbxFolder_Leave);
             // 
             // btnFolder
             // 
-            this.btnFolder.Location = new System.Drawing.Point(682, 66);
+            this.btnFolder.Location = new System.Drawing.Point(767, 76);
             this.btnFolder.Name = "btnFolder";
             this.btnFolder.Size = new System.Drawing.Size(113, 23);
             this.btnFolder.TabIndex = 8;
@@ -133,7 +131,7 @@
             // chkMatchCase
             // 
             this.chkMatchCase.AutoSize = true;
-            this.chkMatchCase.Location = new System.Drawing.Point(19, 95);
+            this.chkMatchCase.Location = new System.Drawing.Point(16, 107);
             this.chkMatchCase.Name = "chkMatchCase";
             this.chkMatchCase.Size = new System.Drawing.Size(83, 17);
             this.chkMatchCase.TabIndex = 9;
@@ -143,7 +141,7 @@
             // chkUseRegularExpression
             // 
             this.chkUseRegularExpression.AutoSize = true;
-            this.chkUseRegularExpression.Location = new System.Drawing.Point(110, 95);
+            this.chkUseRegularExpression.Location = new System.Drawing.Point(110, 107);
             this.chkUseRegularExpression.Name = "chkUseRegularExpression";
             this.chkUseRegularExpression.Size = new System.Drawing.Size(117, 17);
             this.chkUseRegularExpression.TabIndex = 10;
@@ -161,7 +159,7 @@
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(233, 91);
+            this.btnSearch.Location = new System.Drawing.Point(233, 103);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(75, 23);
             this.btnSearch.TabIndex = 13;
@@ -171,14 +169,14 @@
             // 
             // panelResults
             // 
-            this.panelResults.Location = new System.Drawing.Point(19, 118);
+            this.panelResults.Location = new System.Drawing.Point(19, 132);
             this.panelResults.Name = "panelResults";
-            this.panelResults.Size = new System.Drawing.Size(861, 282);
+            this.panelResults.Size = new System.Drawing.Size(861, 268);
             this.panelResults.TabIndex = 14;
             // 
             // btnShowHideColumns
             // 
-            this.btnShowHideColumns.Location = new System.Drawing.Point(327, 91);
+            this.btnShowHideColumns.Location = new System.Drawing.Point(329, 103);
             this.btnShowHideColumns.Name = "btnShowHideColumns";
             this.btnShowHideColumns.Size = new System.Drawing.Size(75, 23);
             this.btnShowHideColumns.TabIndex = 15;
@@ -188,7 +186,7 @@
             // 
             // btnNotepad
             // 
-            this.btnNotepad.Location = new System.Drawing.Point(424, 91);
+            this.btnNotepad.Location = new System.Drawing.Point(423, 103);
             this.btnNotepad.Name = "btnNotepad";
             this.btnNotepad.Size = new System.Drawing.Size(75, 23);
             this.btnNotepad.TabIndex = 16;
@@ -198,7 +196,7 @@
             // 
             // btnVisualStudio
             // 
-            this.btnVisualStudio.Location = new System.Drawing.Point(516, 91);
+            this.btnVisualStudio.Location = new System.Drawing.Point(516, 103);
             this.btnVisualStudio.Name = "btnVisualStudio";
             this.btnVisualStudio.Size = new System.Drawing.Size(89, 23);
             this.btnVisualStudio.TabIndex = 17;
@@ -208,7 +206,7 @@
             // 
             // btnPeek
             // 
-            this.btnPeek.Location = new System.Drawing.Point(630, 90);
+            this.btnPeek.Location = new System.Drawing.Point(627, 103);
             this.btnPeek.Name = "btnPeek";
             this.btnPeek.Size = new System.Drawing.Size(75, 23);
             this.btnPeek.TabIndex = 18;
