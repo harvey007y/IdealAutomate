@@ -19,6 +19,13 @@ using IdealAutomate.Core;
 
 namespace System.Windows.Forms.Samples {
     public partial class Search : Form {
+        private DirectoryView _dir;
+        string strInitialDirectory = "";
+        ArrayList _myArrayList;
+        int _CurrentIndex = 0;
+        const int LEADING_SPACE = 12;
+        const int CLOSE_SPACE = 15;
+        const int CLOSE_AREA = 15;
         bool boolStopEvent = false;
         private bool _NotepadppLoaded = false;
         DataGridViewExt dgvResults = new DataGridViewExt("SearchResults");       
@@ -45,11 +52,39 @@ namespace System.Windows.Forms.Samples {
         string strFileType = "";
         string strExclude = "";
         string strFolder = "";
+        List<BindingSource> listBindingSource = new List<BindingSource>();
+        List<SplitContainer> listSplitContainer = new List<SplitContainer>();
+        List<int> listLoadedIndexes = new List<int>();
+        BindingSource _CurrentFileViewBindingSource = new BindingSource();
+        SplitContainer _CurrentSplitContainer = new SplitContainer();
+        SplitContainer mySplitContainer = new SplitContainer();
 
         public static List<MatchInfo> matchInfoList;
         public Search() {
             InitializeComponent();
+            for (int i = 0; i < 20; i++) {
+                BindingSource myNewBindingSource = new BindingSource();
+                listBindingSource.Add(myNewBindingSource);
+            }
+            for (int i = 0; i < 20; i++) {
+                SplitContainer myNewSplitContainer = new SplitContainer();
+                listSplitContainer.Add(myNewSplitContainer);
+            }
+            // _CurrentDataGridView = new DataGridViewExt(myActions.GetValueByKey("InitialDirectory" + i.ToString()));
+            _CurrentFileViewBindingSource = FileViewBindingSource;
+            _CurrentSplitContainer = mySplitContainer;
+            tabControl1.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
+            tabControl1.HotTrack = true;
+
+            tabControl1.DrawItem += TabControl1_DrawItem;
+            tabControl1.Padding = new System.Drawing.Point(20, 3);
+            tabControl1.MouseClick += TabControl1_MouseClick;
         }
+
+        private void TabControl1_MouseClick(object sender, MouseEventArgs e) {
+            throw new NotImplementedException();
+        }
+
         public DataTable ConvertToDataTable<T>(IList<T> data) {
            
             PropertyDescriptorCollection properties =
@@ -730,6 +765,42 @@ namespace System.Windows.Forms.Samples {
             dgvResults.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             dgvResults.Dock = DockStyle.Fill;
             RefreshDataGrid();
+            // T A B S
+            int numOfTabs = myActions.GetValueByKeyAsInt("NumOfTabs");
+            // default to desktop if they have no tabs
+            if (numOfTabs < 2) {
+                numOfTabs = 2;
+                myActions.SetValueByKey("NumOfTabs", numOfTabs.ToString());
+                myActions.SetValueByKey("InitialDirectory0", Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
+                myActions.SetValueByKey("InitialDirectory1", Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
+
+            }
+
+            // for each tab, add name and tooltip;
+
+            // if an initial directory does not exist for a tab,
+            // default to the documents folder for that tab
+            for (int i = 0; i < numOfTabs - 1; i++) {
+                strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+                // Set Initial Directory to My Documents
+                string strSavedDirectory1 = myActions.GetValueByKey("InitialDirectory" + i.ToString());
+                if (Directory.Exists(strSavedDirectory1)) {
+                    strInitialDirectory = strSavedDirectory1;
+                }
+
+                // do not fill the directory because first time through
+                // we are just addding name and tooltip to each tab
+                _dir = new DirectoryView(strInitialDirectory, false, _myArrayList);
+              //  this._CurrentFileViewBindingSource.DataSource = _dir;
+
+                tabControl1.TabPages[i].Text = _dir.FileView.Name;
+                tabControl1.TabPages[i].ToolTipText = _dir.FileView.FullName;
+                   _CurrentIndex = i;
+                //   AddDataGridToTab(strInitialDirectory);
+                tabControl1.TabPages.Insert(_CurrentIndex + 1, "Search Folder or File");
+
+            }
+            tabControl1.Visible = false;
         }
 
         private void dgvResults_CellPainting(object sender, DataGridViewCellPaintingEventArgs e) {
@@ -772,7 +843,7 @@ namespace System.Windows.Forms.Samples {
             Methods myActions = new Methods();
             myActions = new Methods();
             FileFolderDialog dialog = new FileFolderDialog();
-            dialog.ShowDialog();
+         //   dialog.ShowDialog();
             dialog.SelectedPath = myActions.GetValueByKey("LastSearchFolder");
             string str = "LastSearchFolder";
 
@@ -1220,7 +1291,72 @@ namespace System.Windows.Forms.Samples {
 
 
         private void cbxFileType_Leave(object sender, EventArgs e) {
+            string strNewHostName = ((ComboBox)sender).Text;
+            Methods myActions = new Methods();
+            System.Windows.Forms.DialogResult myResult;
+            //if (!Directory.Exists(strNewHostName)) {
 
+            //    myResult = myActions.MessageBoxShowWithYesNo("I could not find folder " + strNewHostName + ". Do you want me to create it ? ");
+            //    if (myResult == System.Windows.Forms.DialogResult.Yes) {
+            //        Directory.CreateDirectory(strNewHostName);
+            //    } else {
+            //        return;
+            //    }
+
+            //}
+            List<ComboBoxPair> alHosts = ((ComboBox)sender).Items.Cast<ComboBoxPair>().ToList();
+            List<ComboBoxPair> alHostsNew = new List<ComboBoxPair>();
+
+            ComboBoxPair myCbp = new ComboBoxPair(strNewHostName, strNewHostName);
+            bool boolNewItem = false;
+
+            alHostsNew.Add(myCbp);
+
+            foreach (ComboBoxPair item in alHosts) {
+                if (strNewHostName.ToLower() != item._Key.ToLower()) {
+                    boolNewItem = true;
+                    alHostsNew.Add(item);
+                }
+            }
+            if (alHostsNew.Count > 24) {
+                for (int i = alHostsNew.Count - 1; i > 0; i--) {
+                    if (alHostsNew[i]._Key.Trim() != "--Select Item ---") {
+                        alHostsNew.RemoveAt(i);
+                        break;
+                    }
+                }
+            }
+
+            string fileName = ((ComboBox)sender).Name + ".txt";
+
+
+            string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
+            string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
+            string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
+            string settingsDirectory =
+      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
+
+            string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
+            using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
+                foreach (ComboBoxPair item in alHostsNew) {
+                    if (item._Key != "") {
+                        objSWFile.WriteLine(item._Key + '^' + item._Value);
+                    }
+                }
+                objSWFile.Close();
+            }
+
+            //  alHosts = alHostsNew;
+            if (boolNewItem) {
+                ((ComboBox)sender).Items.Clear();
+                foreach (var item in alHostsNew) {
+                    ((ComboBox)sender).Items.Add(item);
+                }
+            }
+            strFileType = ((ComboBox)(sender)).Text;
+
+
+            myActions.SetValueByKey("cbxFileTypeSelectedValue", strFileType);
         }
 
         private void cbxExclude_SelectedIndexChanged(object sender, EventArgs e) {
@@ -1231,7 +1367,72 @@ namespace System.Windows.Forms.Samples {
 
 
         private void cbxExclude_Leave(object sender, EventArgs e) {
+            string strNewHostName = ((ComboBox)sender).Text;
+            Methods myActions = new Methods();
+            System.Windows.Forms.DialogResult myResult;
+            //if (!Directory.Exists(strNewHostName)) {
 
+            //    myResult = myActions.MessageBoxShowWithYesNo("I could not find folder " + strNewHostName + ". Do you want me to create it ? ");
+            //    if (myResult == System.Windows.Forms.DialogResult.Yes) {
+            //        Directory.CreateDirectory(strNewHostName);
+            //    } else {
+            //        return;
+            //    }
+
+            //}
+            List<ComboBoxPair> alHosts = ((ComboBox)sender).Items.Cast<ComboBoxPair>().ToList();
+            List<ComboBoxPair> alHostsNew = new List<ComboBoxPair>();
+
+            ComboBoxPair myCbp = new ComboBoxPair(strNewHostName, strNewHostName);
+            bool boolNewItem = false;
+
+            alHostsNew.Add(myCbp);
+
+            foreach (ComboBoxPair item in alHosts) {
+                if (strNewHostName.ToLower() != item._Key.ToLower()) {
+                    boolNewItem = true;
+                    alHostsNew.Add(item);
+                }
+            }
+            if (alHostsNew.Count > 24) {
+                for (int i = alHostsNew.Count - 1; i > 0; i--) {
+                    if (alHostsNew[i]._Key.Trim() != "--Select Item ---") {
+                        alHostsNew.RemoveAt(i);
+                        break;
+                    }
+                }
+            }
+
+            string fileName = ((ComboBox)sender).Name + ".txt";
+
+
+            string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
+            string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
+            string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
+            string settingsDirectory =
+      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
+
+            string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
+            using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
+                foreach (ComboBoxPair item in alHostsNew) {
+                    if (item._Key != "") {
+                        objSWFile.WriteLine(item._Key + '^' + item._Value);
+                    }
+                }
+                objSWFile.Close();
+            }
+
+            //  alHosts = alHostsNew;
+            if (boolNewItem) {
+                ((ComboBox)sender).Items.Clear();
+                foreach (var item in alHostsNew) {
+                    ((ComboBox)sender).Items.Add(item);
+                }
+            }
+            strExclude = ((ComboBox)(sender)).Text;
+
+
+            myActions.SetValueByKey("cbxExcludeSelectedValue", strExclude);
         }
 
         private void cbxFolder_SelectedIndexChanged(object sender, EventArgs e) {
@@ -1242,6 +1443,28 @@ namespace System.Windows.Forms.Samples {
 
 
         private void cbxFolder_Leave(object sender, EventArgs e) {
+
+        }
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e) {
+
+        }
+
+        private void TabControl1_DrawItem(object sender, System.Windows.Forms.DrawItemEventArgs e) {
+            e.DrawBackground();
+            Graphics g = e.Graphics;
+            g.FillRectangle(new SolidBrush(Color.LightGray), e.Bounds);
+            if (e.Index == tabControl1.SelectedIndex) {
+                g.FillRectangle(new SolidBrush(Color.White), e.Bounds);
+            }
+            e.DrawFocusRectangle();
+            //This code will render a "x" mark at the end of the Tab caption.
+            if (e.Index != tabControl1.TabCount - 1) {
+                e.Graphics.DrawString("x", e.Font, new SolidBrush(Color.Black), e.Bounds.Right - CLOSE_AREA, e.Bounds.Top + 4);
+            }
+
+            e.Graphics.DrawString(this.tabControl1.TabPages[e.Index].Text, e.Font, new SolidBrush(Color.Black), e.Bounds.Left + LEADING_SPACE, e.Bounds.Top + 4);
+
 
         }
     }

@@ -9,7 +9,6 @@
 //------------------------------------------------------------------------------
 
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("buildprojects.bat")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("debugtrace.exe")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("getcursorposdemo.exe")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("idealsqltracer.exe")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/add.png")]
@@ -116,6 +115,7 @@
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("mynewproject/mynewproject/properties/resources.resx")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("mynewproject/mynewproject/classdiagram1.cd")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("mynewproject/mynewproject/properties/settings.settings")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("wordpadtemplate.rtf")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/back.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/details.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/forward.png")]
