@@ -53,11 +53,18 @@ namespace System.Windows.Forms.Samples {
         string strExclude = "";
         string strFolder = "";
         List<BindingSource> listBindingSource = new List<BindingSource>();
-        List<SplitContainer> listSplitContainer = new List<SplitContainer>();
+        List<Panel> listSplitContainer = new List<Panel>();
         List<int> listLoadedIndexes = new List<int>();
         BindingSource _CurrentFileViewBindingSource = new BindingSource();
-        SplitContainer _CurrentSplitContainer = new SplitContainer();
-        SplitContainer mySplitContainer = new SplitContainer();
+      
+        Panel panelResults = new Panel();
+        bool _newTab = true;
+        bool _ignoreSelectedIndexChanged = true;
+        int _selectedTabIndex = 0;
+        Rectangle _IconRectangle = new Rectangle();
+        DataGridViewExt _CurrentDataGridView;
+
+        
 
         public static List<MatchInfo> matchInfoList;
         public Search() {
@@ -67,12 +74,12 @@ namespace System.Windows.Forms.Samples {
                 listBindingSource.Add(myNewBindingSource);
             }
             for (int i = 0; i < 20; i++) {
-                SplitContainer myNewSplitContainer = new SplitContainer();
+                Panel myNewSplitContainer = new Panel();
                 listSplitContainer.Add(myNewSplitContainer);
             }
-            // _CurrentDataGridView = new DataGridViewExt(myActions.GetValueByKey("InitialDirectory" + i.ToString()));
+           // _CurrentDataGridView = new DataGridViewExt(myActions.GetValueByKey("InitialDirectory" + i.ToString()));
             _CurrentFileViewBindingSource = FileViewBindingSource;
-            _CurrentSplitContainer = mySplitContainer;
+          
             tabControl1.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
             tabControl1.HotTrack = true;
 
@@ -81,9 +88,87 @@ namespace System.Windows.Forms.Samples {
             tabControl1.MouseClick += TabControl1_MouseClick;
         }
 
-        private void TabControl1_MouseClick(object sender, MouseEventArgs e) {
-            throw new NotImplementedException();
+        private async void TabControl1_MouseClick(object sender, MouseEventArgs e) {
+            Methods myActions = new Methods();
+            _CurrentIndex = tabControl1.SelectedIndex;
+            // _CurrentDataGridView.ClearSelection();
+            //Looping through the controls.
+            int removedIndex = -1;
+            for (int i = 0; i < this.tabControl1.TabPages.Count - 1; i++) {
+                Rectangle r = tabControl1.GetTabRect(i);
+                //Getting the position of the "x" mark.
+                Rectangle closeButton = new Rectangle(r.Right - 15, r.Top + 4, 9, 7);
+                if (closeButton.Contains(e.Location)) {
+                    if (tabControl1.TabPages.Count == 2) {
+                        MessageBox.Show("You can not remove all tabs");
+                        break;
+                    }
+                    if (MessageBox.Show("Would you like to Close this Tab?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
+                        this.tabControl1.TabPages.RemoveAt(i);
+                        var itemToRemove = listLoadedIndexes.SingleOrDefault(l => l == i);
+                        if (itemToRemove != -1) {
+                            listLoadedIndexes.Remove(itemToRemove);
+                        }
+                        for (int j = 0; j < listLoadedIndexes.Count; j++) {
+                            if (listLoadedIndexes[j] > i) {
+                                listLoadedIndexes[j] = listLoadedIndexes[j] - 1;
+                            }
+                        }
+
+                        removedIndex = i;
+                        break;
+                    }
+                }
+            }
+           // Methods myActions = new Methods();
+            int nextIndex = 0;
+            if (removedIndex > -1) {
+                for (int i = removedIndex; i < this.tabControl1.TabPages.Count - 1; i++) {
+                    nextIndex = i + 1;
+                    string nextInitialDirectory = myActions.GetValueByKey("InitialDirectory" + nextIndex.ToString());
+                    myActions.SetValueByKey("InitialDirectory" + i.ToString(), nextInitialDirectory);
+                    string nextInitialDirectorySelectedRow = myActions.GetValueByKey("InitialDirectory" + nextIndex.ToString() + "SelectedRow");
+                    if (nextInitialDirectorySelectedRow != "") {
+                        myActions.SetValueByKey("InitialDirectory" + i.ToString() + "SelectedRow", nextInitialDirectorySelectedRow);
+                    }
+
+                    listSplitContainer[i] = listSplitContainer[nextIndex];
+                    listBindingSource[i] = listBindingSource[nextIndex];
+                }
+
+
+                myActions.SetValueByKey("NumOfTabs", this.tabControl1.TabPages.Count.ToString());
+            }
+            //if (_ignoreSelectedIndexChanged == true) {
+            //    _ignoreSelectedIndexChanged = false;
+            //    //  return;
+            //}
+
+            
+            this.Cursor = Cursors.WaitCursor;
+            myActions.SetValueByKey("CurrentIndexSearch", tabControl1.SelectedIndex.ToString());
+        //    _CurrentDataGridView = (DataGridViewExt)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
+      //      _CurrentFileViewBindingSource = listBindingSource[tabControl1.SelectedIndex];
+           // _dir = (DirectoryView)this._CurrentFileViewBindingSource.DataSource;
+           // panelResults = listSplitContainer[tabControl1.SelectedIndex];
+           //panelResults = (Panel)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
+            // if (listLoadedIndexes.Contains(tabControl1.SelectedIndex)) {
+            //    string strCurrentPath = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
+            //    _newTab = true;
+            //    //cbxCurrentPath.Text = strCurrentPath;
+            //    //cbxCurrentPath.SelectedValue = strCurrentPath;
+            //    this.Cursor = Cursors.Default;
+            //    return;
+            //} else {
+                _newTab = true;
+                RefreshDataGrid();
+                listLoadedIndexes.Add(tabControl1.SelectedIndex);
+            //}
+            
+            _newTab = true;
+            this.Cursor = Cursors.Default;          
         }
+
 
         public DataTable ConvertToDataTable<T>(IList<T> data) {
            
@@ -102,7 +187,7 @@ namespace System.Windows.Forms.Samples {
             return table;
 
         }
-        private void RefreshDataGrid() {
+        private async void RefreshDataGrid() {
 
 
             // refresh datagridview
@@ -127,15 +212,116 @@ namespace System.Windows.Forms.Samples {
             DataGridViewColumnSelector cs = new DataGridViewColumnSelector(dgvResults);
             cs.MaxHeight = 100;
             cs.Width = 110;
-            panelResults.Width = ClientSize.Width - 100;
-            panelResults.Height = ClientSize.Height - 150;
-            dgvResults.Parent = panelResults;
+            tabControl1.Width = ClientSize.Width - 100;
+            tabControl1.Height = ClientSize.Height - 150;
+            //dgvResults.Parent = panelResults;
+            //dgvResults.Parent = panelResults;
             //    dgvResults.AutoSize = true;
             dgvResults.Width = ClientSize.Width - 100;
             dgvResults.Height = ClientSize.Height - 150;
             dgvResults.ScrollBars = ScrollBars.Both;
             dgvResults.AllowUserToResizeColumns = true;
             dgvResults.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            _searchErrors.Length = 0;
+           // Methods myActions = new Methods();
+            myActions = new Methods();
+            boolMatchCase = chkMatchCase.Checked;
+            boolUseRegularExpression = chkUseRegularExpression.Checked;
+
+            strFindWhat = cbxFindWhat.Text;
+            string strFileType = cbxFileType.Text;
+            string strExclude = cbxExclude.Text;
+            string strFolder = cbxFolder.Text;
+
+            myActions.SetValueByKey("chkMatchCase", boolMatchCase.ToString());
+            myActions.SetValueByKey("chkUseRegularExpression", boolUseRegularExpression.ToString());
+            myActions.SetValueByKey("cbxFindWhatSelectedValue", strFindWhat);
+            myActions.SetValueByKey("cbxFileTypeSelectedValue", strFileType);
+            myActions.SetValueByKey("cbxExcludeSelectedValue", strExclude);
+            myActions.SetValueByKey("cbxFolderSelectedValue", strFolder);
+
+
+            string strFindWhatToUse = "";
+            string strFileTypeToUse = "";
+            string strExcludeToUse = "";
+            string strFolderToUse = "";
+
+            if ((strFindWhat == "--Select Item ---" || strFindWhat == "")) {
+                myActions.MessageBoxShow("Please enter Find What or select Find What from ComboBox");
+                return;
+            }
+            if ((strFileType == "--Select Item ---" || strFileType == "")) {
+                myActions.MessageBoxShow("Please enter File Type or select File Type from ComboBox");
+                return;
+            }
+            if ((strExclude == "--Select Item ---" || strExclude == "")) {
+                myActions.MessageBoxShow("Please enter Exclude or select Exclude from ComboBox");
+                return;
+            }
+            if ((strFolder == "--Select Item ---" || strFolder == "")) {
+                myActions.MessageBoxShow("Please enter Folder or select Folder from ComboBox");
+                return;
+            }
+
+
+
+            strFindWhatToUse = strFindWhat;
+
+            if (boolUseRegularExpression) {
+                strFindWhatToUse = strFindWhatToUse.Replace(")", "\\)").Replace("(", "\\(");
+            }
+
+
+            strFileTypeToUse = strFileType;
+            strExcludeToUse = strExclude;
+            strFolderToUse = strFolder;
+            strPathToSearch = strFolderToUse;
+            strSearchPattern = strFileTypeToUse;
+            strSearchExcludePattern = strExcludeToUse;
+            strSearchText = strFindWhatToUse;
+
+            strLowerCaseSearchText = strFindWhatToUse.ToLower();
+            myActions.SetValueByKey("FindWhatToUse", strFindWhatToUse);
+            myActions.SetValueByKey("FileTypeToUse", strFileTypeToUse);
+            myActions.SetValueByKey("ExcludeToUse", strExcludeToUse);
+            myActions.SetValueByKey("FolderToUse", strFolderToUse);
+            try {
+                var damageResult = await Task.Run(() => SearchTask());
+                lblResults.Text = damageResult;
+                myActions.MessageBoxShow(damageResult);
+                this.WindowState = FormWindowState.Maximized;
+
+            } catch (Exception ex) {
+                // MessageBox.Show(ex.Message);
+
+            }
+            // Initialize the DataGridView.
+            //panelResults = (Panel)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
+            //panelResults.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            //panelResults.Dock = DockStyle.Fill;
+            //dgvResults = (DataGridViewExt)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0].Controls[0];
+            //panelResults.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            dgvResults.DataSource = ConvertToDataTable<MatchInfo>(matchInfoList);
+            foreach (DataGridViewColumn item in dgvResults.Columns) {
+                item.ToolTipText = "Right-Click Column Header to add remove filter.\nUse Show\\Hide button to Show\\Hide Columns.\nLeft-Click column heading to sort.";
+            }
+            //dgvResults.Parent = panelResults;
+
+            dgvResults.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            dgvResults.Dock = DockStyle.Fill;
+         //   _CurrentDataGridView = (DataGridViewExt)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
+            //dgvResults.Parent = panelResults;
+            //panelResults.Parent = tabControl1.TabPages[tabControl1.SelectedIndex];
+            this._CurrentFileViewBindingSource.DataSource = dgvResults.DataSource;
+            //    this._CurrentDataGridView.DataSource = ConvertToDataTable<MatchInfo>(matchInfoList);
+            if (tabControl1.TabPages[tabControl1.SelectedIndex].Controls.Count > 0) {
+                tabControl1.TabPages[tabControl1.SelectedIndex].Controls.RemoveAt(0);
+            }
+            tabControl1.TabPages[tabControl1.SelectedIndex].Controls.Add(dgvResults);
+            foreach (DataGridViewColumn item in dgvResults.Columns) {
+                item.ToolTipText = "Right-Click Column Header to add remove filter.\nUse menu item View to Show\\Hide Columns.\nLeft-Click column heading to sort.\nUse View\\Refresh to remove sort.";
+            }
+
         }
         private string GetAppDirectoryForScript() {
             Methods myActions = new Methods();
@@ -244,6 +430,7 @@ namespace System.Windows.Forms.Samples {
             st.Start();
             intHits = 0;
             int intLineCtr;
+            strPathToSearch = tabControl1.TabPages[_CurrentIndex].ToolTipText;
             List<FileInfo> myFileList = new List<FileInfo>();
             if (File.Exists(strPathToSearch)) {
                 System.IO.FileInfo fi = new System.IO.FileInfo(strPathToSearch);
@@ -593,12 +780,12 @@ namespace System.Windows.Forms.Samples {
             }
         }
 
-        private void Search_Load(object sender, EventArgs e) {           
+        private void Search_Load(object sender, EventArgs e) {
 
             dgvResults.CellPainting += new System.Windows.Forms.DataGridViewCellPaintingEventHandler(this.dgvResults_CellPainting);
 
             Methods myActions = new Methods();
-            
+
             myActions = new Methods();
             List<ComboBoxPair> cbp = new List<ComboBoxPair>();
             string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
@@ -764,7 +951,7 @@ namespace System.Windows.Forms.Samples {
             panelResults.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             dgvResults.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             dgvResults.Dock = DockStyle.Fill;
-            RefreshDataGrid();
+
             // T A B S
             int numOfTabs = myActions.GetValueByKeyAsInt("NumOfTabs");
             // default to desktop if they have no tabs
@@ -791,18 +978,270 @@ namespace System.Windows.Forms.Samples {
                 // do not fill the directory because first time through
                 // we are just addding name and tooltip to each tab
                 _dir = new DirectoryView(strInitialDirectory, false, _myArrayList);
-              //  this._CurrentFileViewBindingSource.DataSource = _dir;
+                this._CurrentFileViewBindingSource.DataSource = _dir;
 
                 tabControl1.TabPages[i].Text = _dir.FileView.Name;
                 tabControl1.TabPages[i].ToolTipText = _dir.FileView.FullName;
-                   _CurrentIndex = i;
-                //   AddDataGridToTab(strInitialDirectory);
-                tabControl1.TabPages.Insert(_CurrentIndex + 1, "Search Folder or File");
+                _CurrentIndex = i;
+                AddDataGridToTab(strInitialDirectory);
+
 
             }
-            tabControl1.Visible = false;
+            // do last tab
+            strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            // Set Initial Directory to My Documents
+            string strSavedDirectory2 = cbxFolder.Text;
+            if (Directory.Exists(strSavedDirectory2)) {
+                strInitialDirectory = strSavedDirectory2;
+            }
+
+            // do not fill the directory because first time through
+            // we are just addding name and tooltip to each tab
+            _dir = new DirectoryView(strInitialDirectory, false, _myArrayList);
+            this._CurrentFileViewBindingSource.DataSource = _dir;
+
+
+            _CurrentIndex = numOfTabs - 1;
+           AddDataGridToLastTab();
+
+            // tabControl1.Visible = false;
         }
 
+        private void AddDataGridToLastTab() {
+            // do not need to insert last tab because it was already inserted
+          //  tabControl1.TabPages.Insert(_CurrentIndex + 1, "Search Folder or File");
+        //    tabControl1.TabPages[_CurrentIndex + 1].Text = _dir.FileView.Name;
+            tabControl1.TabPages[_CurrentIndex].ToolTipText = _dir.FileView.FullName;
+            DataGridViewExt dgvResults = new DataGridViewExt("SearchResults");
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExplorerView));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
+
+
+
+            ((System.ComponentModel.ISupportInitialize)(dgvResults)).BeginInit();
+
+            this.tabControl1.SuspendLayout();
+            //this.tabPage1.SuspendLayout();
+            //this.tabPage2.SuspendLayout();
+
+            this.SuspendLayout();
+            // 
+            // dataGridView1
+            // 
+            dgvResults.AllowUserToAddRows = false;
+            dgvResults.AllowUserToDeleteRows = false;
+            dgvResults.AllowUserToResizeRows = false;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            dgvResults.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dgvResults.AutoGenerateColumns = false;
+            dgvResults.BackgroundColor = System.Drawing.Color.White;
+            dgvResults.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            dgvResults.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            dgvResults.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dgvResults.ColumnHeadersHeight = 22;
+            // #IMPORTANT: put new columns at end because
+            // columns are referred to by index in code and
+            // adding new columns in the middle will break code
+            // Index  Column                      DataPropertyName
+            // 0       dataGridViewImageColumn1,  Icon
+            // 1       NameCol,                   Name
+            // 2       HotKeyCol,                 HotKey
+            // 3       TotalExecutionsCol,        TotalExecutions
+            // 4       SuccessfulExecutionsCol,   SuccessfulExecutions
+            // 5       PercentCorrectCol,         PercentCorrect
+            // 6       LastExecutedCol,           LastExecuted
+            // 7       SizeCol,                   Size 
+            // 8       AvgExecutionTimeCol,       AvgExecutionTime
+            // 9       ManualExecutionTimeCol,    ManualExecutionTime
+            // 10      TotalSavingsCol,           TotalSavings
+            // 11      Type,                      Type
+            // 12      DateModifiedCol,           DateModified
+            // 13      FullName,                  FullName             
+            // 14      CustomCol,                 Custom
+            // 15      StatusCol,                 Status
+            // 16      DescriptionCol,            Description
+            // 17      NestingLevel               NestingLevel
+
+            // 
+            // FileViewBindingSource
+            // 
+            // this.FileViewBindingSource.DataSource = typeof(System.Windows.Forms.Samples.FileView);
+            // 
+
+            //&&&&&&&&&&&&&&&
+
+
+            //mySplitContainer.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(mySplitContainer_SplitterMoved);
+            //mySplitContainer.MouseEnter += new System.EventHandler(mySplitContainer_MouseEnter);
+            //mySplitContainer.MouseLeave += new System.EventHandler(mySplitContainer_MouseLeave);
+
+            dgvResults.Height = Screen.PrimaryScreen.WorkingArea.Size.Height - 150;
+            panelResults = new Panel();
+
+            //if (_CurrentIndex == tabControl1.TabCount - 1) {
+            //    panelResults.Controls.Add(dgvResults);
+            //    tabControl1.TabPages[_CurrentIndex - 1].Controls.Add(panelResults);
+
+            //    //    tabControl1.TabPages[_CurrentIndex - 1].Controls.Add(dgvResults);
+            //} else {
+            panelResults.Controls.Add(dgvResults);
+            //  dgvResults.Parent = _CurrentSplitContainer; //.Add(dgvResults);
+            tabControl1.TabPages[_CurrentIndex].Controls.Add(dgvResults);
+
+            // tabControl1.TabPages[_CurrentIndex].Controls.Add(dgvResults);
+            //}
+            foreach (DataGridViewColumn item in dgvResults.Columns) {
+                item.ToolTipText = "Right-Click Column Header to add remove filter.\nUse menu item View to Show\\Hide Columns.\nLeft-Click column heading to sort.\nUse View\\Refresh to remove sort.";
+            }
+
+           
+        }
+
+        private void AddDataGridToTab(string pstrInitialDirectory) {
+            tabControl1.TabPages.Insert(_CurrentIndex + 1, "Search Folder");
+            DataGridViewExt dgvResults = new DataGridViewExt("SearchResults");            
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExplorerView));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
+
+           
+
+            ((System.ComponentModel.ISupportInitialize)(dgvResults)).BeginInit();
+            
+            this.tabControl1.SuspendLayout();
+            //this.tabPage1.SuspendLayout();
+            //this.tabPage2.SuspendLayout();
+
+            this.SuspendLayout();
+            // 
+            // dataGridView1
+            // 
+            dgvResults.AllowUserToAddRows = false;
+            dgvResults.AllowUserToDeleteRows = false;
+            dgvResults.AllowUserToResizeRows = false;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            dgvResults.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dgvResults.AutoGenerateColumns = false;
+            dgvResults.BackgroundColor = System.Drawing.Color.White;
+            dgvResults.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            dgvResults.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            dgvResults.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dgvResults.ColumnHeadersHeight = 22;
+            // #IMPORTANT: put new columns at end because
+            // columns are referred to by index in code and
+            // adding new columns in the middle will break code
+            // Index  Column                      DataPropertyName
+            // 0       dataGridViewImageColumn1,  Icon
+            // 1       NameCol,                   Name
+            // 2       HotKeyCol,                 HotKey
+            // 3       TotalExecutionsCol,        TotalExecutions
+            // 4       SuccessfulExecutionsCol,   SuccessfulExecutions
+            // 5       PercentCorrectCol,         PercentCorrect
+            // 6       LastExecutedCol,           LastExecuted
+            // 7       SizeCol,                   Size 
+            // 8       AvgExecutionTimeCol,       AvgExecutionTime
+            // 9       ManualExecutionTimeCol,    ManualExecutionTime
+            // 10      TotalSavingsCol,           TotalSavings
+            // 11      Type,                      Type
+            // 12      DateModifiedCol,           DateModified
+            // 13      FullName,                  FullName             
+            // 14      CustomCol,                 Custom
+            // 15      StatusCol,                 Status
+            // 16      DescriptionCol,            Description
+            // 17      NestingLevel               NestingLevel
+          
+            // 
+            // FileViewBindingSource
+            // 
+            // this.FileViewBindingSource.DataSource = typeof(System.Windows.Forms.Samples.FileView);
+            // 
+
+            //&&&&&&&&&&&&&&&
+           
+
+            //mySplitContainer.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(mySplitContainer_SplitterMoved);
+            //mySplitContainer.MouseEnter += new System.EventHandler(mySplitContainer_MouseEnter);
+            //mySplitContainer.MouseLeave += new System.EventHandler(mySplitContainer_MouseLeave);
+
+            dgvResults.Height = Screen.PrimaryScreen.WorkingArea.Size.Height - 150;
+            panelResults = new Panel();
+
+            //if (_CurrentIndex == tabControl1.TabCount - 1) {
+            //    panelResults.Controls.Add(dgvResults);
+            //    tabControl1.TabPages[_CurrentIndex - 1].Controls.Add(panelResults);
+
+            //    //    tabControl1.TabPages[_CurrentIndex - 1].Controls.Add(dgvResults);
+            //} else {
+                panelResults.Controls.Add(dgvResults);
+              //  dgvResults.Parent = _CurrentSplitContainer; //.Add(dgvResults);
+                tabControl1.TabPages[_CurrentIndex].Controls.Add(dgvResults);
+
+                // tabControl1.TabPages[_CurrentIndex].Controls.Add(dgvResults);
+            //}
+            foreach (DataGridViewColumn item in dgvResults.Columns) {
+                item.ToolTipText = "Right-Click Column Header to add remove filter.\nUse menu item View to Show\\Hide Columns.\nLeft-Click column heading to sort.\nUse View\\Refresh to remove sort.";
+            }
+
+        }
         private void dgvResults_CellPainting(object sender, DataGridViewCellPaintingEventArgs e) {
             if (e.Value == null) return;
 
@@ -1438,12 +1877,12 @@ namespace System.Windows.Forms.Samples {
         private void cbxFolder_SelectedIndexChanged(object sender, EventArgs e) {
             Methods myActions = new Methods();
             myActions.SetValueByKey("cbxFolderSelectedValue", ((ComboBoxPair)(cbxFolder.SelectedItem))._Value);
-
+            tabControl1.TabPages[tabControl1.TabPages.Count - 1].ToolTipText = ((ComboBoxPair)(cbxFolder.SelectedItem))._Value;
         }
 
 
         private void cbxFolder_Leave(object sender, EventArgs e) {
-
+            tabControl1.TabPages[tabControl1.TabPages.Count - 1].ToolTipText = cbxFolder.Text;
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e) {

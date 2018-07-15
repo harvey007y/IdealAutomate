@@ -37,7 +37,6 @@
             this.chkUseRegularExpression = new System.Windows.Forms.CheckBox();
             this.lblResults = new System.Windows.Forms.Label();
             this.btnSearch = new System.Windows.Forms.Button();
-            this.panelResults = new System.Windows.Forms.Panel();
             this.btnShowHideColumns = new System.Windows.Forms.Button();
             this.btnNotepad = new System.Windows.Forms.Button();
             this.btnVisualStudio = new System.Windows.Forms.Button();
@@ -45,6 +44,7 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.FileViewBindingSource = new System.Windows.Forms.BindingSource(this.components);
+           
             this.tabControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource)).BeginInit();
             this.SuspendLayout();
@@ -136,7 +136,7 @@
             this.btnFolder.Name = "btnFolder";
             this.btnFolder.Size = new System.Drawing.Size(113, 23);
             this.btnFolder.TabIndex = 8;
-            this.btnFolder.Text = "Select Folder or File";
+            this.btnFolder.Text = "Select Folder";
             this.btnFolder.UseVisualStyleBackColor = true;
             this.btnFolder.Click += new System.EventHandler(this.btnFolder_Click);
             // 
@@ -178,13 +178,6 @@
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = true;
             this.btnSearch.Click += new System.EventHandler(this.search_ClickAsync);
-            // 
-            // panelResults
-            // 
-            this.panelResults.Location = new System.Drawing.Point(19, 158);
-            this.panelResults.Name = "panelResults";
-            this.panelResults.Size = new System.Drawing.Size(861, 242);
-            this.panelResults.TabIndex = 14;
             // 
             // btnShowHideColumns
             // 
@@ -229,10 +222,11 @@
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Location = new System.Drawing.Point(17, 131);
+            this.tabControl1.Location = new System.Drawing.Point(17, 132);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1166, 21);
+            this.tabControl1.ShowToolTips = true;
+            this.tabControl1.Size = new System.Drawing.Size(1166, 295);
             this.tabControl1.TabIndex = 19;
             // 
             // tabPage1
@@ -240,10 +234,11 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1158, 0);
+            this.tabPage1.Size = new System.Drawing.Size(1158, 269);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
+           
             // 
             // Search
             // 
@@ -255,7 +250,6 @@
             this.Controls.Add(this.btnVisualStudio);
             this.Controls.Add(this.btnNotepad);
             this.Controls.Add(this.btnShowHideColumns);
-            this.Controls.Add(this.panelResults);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.lblResults);
             this.Controls.Add(this.chkUseRegularExpression);
@@ -295,7 +289,6 @@
         private CheckBox chkUseRegularExpression;
         private Label lblResults;        
         private Button btnSearch;
-        private Panel panelResults;
         private Button btnShowHideColumns;
         private Button btnNotepad;
         private Button btnVisualStudio;
@@ -303,5 +296,6 @@
         private TabControl tabControl1;
         private TabPage tabPage1;
         private BindingSource FileViewBindingSource;
+      
     }
 }
