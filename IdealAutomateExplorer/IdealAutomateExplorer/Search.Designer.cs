@@ -36,7 +36,6 @@
             this.chkMatchCase = new System.Windows.Forms.CheckBox();
             this.chkUseRegularExpression = new System.Windows.Forms.CheckBox();
             this.lblResults = new System.Windows.Forms.Label();
-            this.btnSearch = new System.Windows.Forms.Button();
             this.btnShowHideColumns = new System.Windows.Forms.Button();
             this.btnNotepad = new System.Windows.Forms.Button();
             this.btnVisualStudio = new System.Windows.Forms.Button();
@@ -44,7 +43,6 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.FileViewBindingSource = new System.Windows.Forms.BindingSource(this.components);
-           
             this.tabControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource)).BeginInit();
             this.SuspendLayout();
@@ -134,9 +132,9 @@
             // 
             this.btnFolder.Location = new System.Drawing.Point(767, 76);
             this.btnFolder.Name = "btnFolder";
-            this.btnFolder.Size = new System.Drawing.Size(113, 23);
+            this.btnFolder.Size = new System.Drawing.Size(190, 23);
             this.btnFolder.TabIndex = 8;
-            this.btnFolder.Text = "Select Folder";
+            this.btnFolder.Text = "Select Folder for Search Folder Tab";
             this.btnFolder.UseVisualStyleBackColor = true;
             this.btnFolder.Click += new System.EventHandler(this.btnFolder_Click);
             // 
@@ -168,16 +166,6 @@
             this.lblResults.Size = new System.Drawing.Size(44, 13);
             this.lblResults.TabIndex = 11;
             this.lblResults.Text = "Count 0";
-            // 
-            // btnSearch
-            // 
-            this.btnSearch.Location = new System.Drawing.Point(233, 103);
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(75, 23);
-            this.btnSearch.TabIndex = 13;
-            this.btnSearch.Text = "Search";
-            this.btnSearch.UseVisualStyleBackColor = true;
-            this.btnSearch.Click += new System.EventHandler(this.search_ClickAsync);
             // 
             // btnShowHideColumns
             // 
@@ -221,6 +209,9 @@
             // 
             // tabControl1
             // 
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Location = new System.Drawing.Point(17, 132);
             this.tabControl1.Name = "tabControl1";
@@ -238,7 +229,6 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
-           
             // 
             // Search
             // 
@@ -250,7 +240,6 @@
             this.Controls.Add(this.btnVisualStudio);
             this.Controls.Add(this.btnNotepad);
             this.Controls.Add(this.btnShowHideColumns);
-            this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.lblResults);
             this.Controls.Add(this.chkUseRegularExpression);
             this.Controls.Add(this.chkMatchCase);
@@ -288,7 +277,6 @@
         private CheckBox chkMatchCase;
         private CheckBox chkUseRegularExpression;
         private Label lblResults;        
-        private Button btnSearch;
         private Button btnShowHideColumns;
         private Button btnNotepad;
         private Button btnVisualStudio;
@@ -296,6 +284,5 @@
         private TabControl tabControl1;
         private TabPage tabPage1;
         private BindingSource FileViewBindingSource;
-      
     }
 }

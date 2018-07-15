@@ -86,6 +86,7 @@ namespace System.Windows.Forms.Samples {
             tabControl1.DrawItem += TabControl1_DrawItem;
             tabControl1.Padding = new System.Drawing.Point(20, 3);
             tabControl1.MouseClick += TabControl1_MouseClick;
+
         }
 
         private async void TabControl1_MouseClick(object sender, MouseEventArgs e) {
@@ -212,11 +213,7 @@ namespace System.Windows.Forms.Samples {
             DataGridViewColumnSelector cs = new DataGridViewColumnSelector(dgvResults);
             cs.MaxHeight = 100;
             cs.Width = 110;
-            tabControl1.Width = ClientSize.Width - 100;
-            tabControl1.Height = ClientSize.Height - 150;
-            //dgvResults.Parent = panelResults;
-            //dgvResults.Parent = panelResults;
-            //    dgvResults.AutoSize = true;
+           
             dgvResults.Width = ClientSize.Width - 100;
             dgvResults.Height = ClientSize.Height - 150;
             dgvResults.ScrollBars = ScrollBars.Both;
@@ -430,7 +427,7 @@ namespace System.Windows.Forms.Samples {
             st.Start();
             intHits = 0;
             int intLineCtr;
-            strPathToSearch = tabControl1.TabPages[_CurrentIndex].ToolTipText;
+            strPathToSearch = tabControl1.TabPages[_CurrentIndex].ToolTipText.Replace("Click on this tab to search in ","");
             List<FileInfo> myFileList = new List<FileInfo>();
             if (File.Exists(strPathToSearch)) {
                 System.IO.FileInfo fi = new System.IO.FileInfo(strPathToSearch);
@@ -981,7 +978,7 @@ namespace System.Windows.Forms.Samples {
                 this._CurrentFileViewBindingSource.DataSource = _dir;
 
                 tabControl1.TabPages[i].Text = _dir.FileView.Name;
-                tabControl1.TabPages[i].ToolTipText = _dir.FileView.FullName;
+                tabControl1.TabPages[i].ToolTipText = "Click on this tab to search in " + _dir.FileView.FullName;
                 _CurrentIndex = i;
                 AddDataGridToTab(strInitialDirectory);
 
@@ -1011,7 +1008,7 @@ namespace System.Windows.Forms.Samples {
             // do not need to insert last tab because it was already inserted
           //  tabControl1.TabPages.Insert(_CurrentIndex + 1, "Search Folder or File");
         //    tabControl1.TabPages[_CurrentIndex + 1].Text = _dir.FileView.Name;
-            tabControl1.TabPages[_CurrentIndex].ToolTipText = _dir.FileView.FullName;
+            tabControl1.TabPages[_CurrentIndex].ToolTipText = "Click on this tab to search in " + _dir.FileView.FullName;
             DataGridViewExt dgvResults = new DataGridViewExt("SearchResults");
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -1877,12 +1874,12 @@ namespace System.Windows.Forms.Samples {
         private void cbxFolder_SelectedIndexChanged(object sender, EventArgs e) {
             Methods myActions = new Methods();
             myActions.SetValueByKey("cbxFolderSelectedValue", ((ComboBoxPair)(cbxFolder.SelectedItem))._Value);
-            tabControl1.TabPages[tabControl1.TabPages.Count - 1].ToolTipText = ((ComboBoxPair)(cbxFolder.SelectedItem))._Value;
+            tabControl1.TabPages[tabControl1.TabPages.Count - 1].ToolTipText = "Click on this tab to search in " + ((ComboBoxPair)(cbxFolder.SelectedItem))._Value;
         }
 
 
         private void cbxFolder_Leave(object sender, EventArgs e) {
-            tabControl1.TabPages[tabControl1.TabPages.Count - 1].ToolTipText = cbxFolder.Text;
+            tabControl1.TabPages[tabControl1.TabPages.Count - 1].ToolTipText = "Click on this tab to search in " + cbxFolder.Text;
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e) {
