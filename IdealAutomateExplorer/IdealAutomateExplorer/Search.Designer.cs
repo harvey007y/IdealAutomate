@@ -43,6 +43,11 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.FileViewBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.percentageLabel = new System.Windows.Forms.Label();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.btnSearch = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource)).BeginInit();
             this.SuspendLayout();
@@ -230,11 +235,61 @@
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(735, 103);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(235, 23);
+            this.progressBar1.TabIndex = 20;
+            this.progressBar1.Tag = "";
+            this.progressBar1.UseWaitCursor = true;
+            // 
+            // percentageLabel
+            // 
+            this.percentageLabel.AutoSize = true;
+            this.percentageLabel.Location = new System.Drawing.Point(991, 107);
+            this.percentageLabel.Name = "percentageLabel";
+            this.percentageLabel.Size = new System.Drawing.Size(35, 13);
+            this.percentageLabel.TabIndex = 21;
+            this.percentageLabel.Text = "label5";
+            // 
+            // backgroundWorker1
+            // 
+            this.backgroundWorker1.WorkerReportsProgress = true;
+            this.backgroundWorker1.WorkerSupportsCancellation = true;
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            this.backgroundWorker1.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker1_ProgressChanged);
+            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.Location = new System.Drawing.Point(981, 77);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.TabIndex = 22;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.cancelBtn_Click);
+            // 
+            // btnSearch
+            // 
+            this.btnSearch.Location = new System.Drawing.Point(981, 52);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(75, 23);
+            this.btnSearch.TabIndex = 23;
+            this.btnSearch.Text = "Search";
+            this.btnSearch.UseVisualStyleBackColor = true;
+            this.btnSearch.Click += new System.EventHandler(this.startBtn_Click);
+            // 
             // Search
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1195, 450);
+            this.Controls.Add(this.btnSearch);
+            this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.percentageLabel);
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.btnPeek);
             this.Controls.Add(this.btnVisualStudio);
@@ -284,5 +339,10 @@
         private TabControl tabControl1;
         private TabPage tabPage1;
         private BindingSource FileViewBindingSource;
+        private ProgressBar progressBar1;
+        private Label percentageLabel;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private Button btnCancel;
+        private Button btnSearch;
     }
 }

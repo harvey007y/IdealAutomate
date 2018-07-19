@@ -27,6 +27,7 @@ namespace System.Windows.Forms.Samples {
         const int CLOSE_SPACE = 15;
         const int CLOSE_AREA = 15;
         bool boolStopEvent = false;
+        string myResult = "";
         private bool _NotepadppLoaded = false;
         DataGridViewExt dgvResults = new DataGridViewExt("SearchResults");       
         static StringBuilder _searchErrors = new StringBuilder();
@@ -167,7 +168,8 @@ namespace System.Windows.Forms.Samples {
             //}
             
             _newTab = true;
-            this.Cursor = Cursors.Default;          
+            this.Cursor = Cursors.Default;
+            strPathToSearch = tabControl1.TabPages[_CurrentIndex].ToolTipText.Replace("Click on this tab to search in ", "");
         }
 
 
@@ -283,9 +285,14 @@ namespace System.Windows.Forms.Samples {
             myActions.SetValueByKey("ExcludeToUse", strExcludeToUse);
             myActions.SetValueByKey("FolderToUse", strFolderToUse);
             try {
-                var damageResult = await Task.Run(() => SearchTask());
-                lblResults.Text = damageResult;
-                myActions.MessageBoxShow(damageResult);
+ //               var damageResult = await Task.Run(() => SearchTask());
+ //               progressBar1.BeginInvoke(
+ //        new Action(() => {
+ //            progressBar1.Value = 0;
+ //        }
+ //));
+ //               lblResults.Text = damageResult;
+ //               myActions.MessageBoxShow(damageResult);
                 this.WindowState = FormWindowState.Maximized;
 
             } catch (Exception ex) {
@@ -334,7 +341,7 @@ namespace System.Windows.Forms.Samples {
  
 
 
-        private async void search_ClickAsync(object sender, EventArgs e) {
+        private void search_ClickAsync(object sender, EventArgs e) {
             _searchErrors.Length = 0;
             Methods myActions = new Methods();
             myActions = new Methods();  
@@ -399,10 +406,15 @@ namespace System.Windows.Forms.Samples {
             myActions.SetValueByKey("ExcludeToUse", strExcludeToUse);
             myActions.SetValueByKey("FolderToUse", strFolderToUse);
             try {
-                var damageResult = await Task.Run(() => SearchTask());
-                lblResults.Text = damageResult;
-                myActions.MessageBoxShow(damageResult);
-                this.WindowState = FormWindowState.Maximized;
+ //               var damageResult =  SearchTask();
+ //               progressBar1.BeginInvoke(
+ //        new Action(() => {
+ //            progressBar1.Value = 0;
+ //        }
+ //));
+ //               lblResults.Text = damageResult;
+ //             //  myActions.MessageBoxShow(damageResult);
+ //               this.WindowState = FormWindowState.Maximized;
 
             } catch (Exception ex) {
                 // MessageBox.Show(ex.Message);
@@ -418,8 +430,33 @@ namespace System.Windows.Forms.Samples {
             dgvResults.Dock = DockStyle.Fill;
             RefreshDataGrid();
         }
-        private async Task<string> SearchTask() {
+        private string SearchTask() {
+           
+            //backgroundWorker1.RunWorkerAsync();
             string myResult = "";
+
+
+            return  myResult;
+        }
+        private void startBtn_Click(object sender, EventArgs e) {
+            //START BG WORKER
+            progressBar1.BeginInvoke(
+new Action(() => {
+progressBar1.Value = 0;
+}
+));
+            backgroundWorker1.RunWorkerAsync();
+        }
+
+        private void cancelBtn_Click(object sender, EventArgs e) {
+            //REQUEST CANCELLATION
+            backgroundWorker1.CancelAsync();
+        }
+
+
+        //RUN BG STUFF HERE.NO GUI HERE PLEASE
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e) {
+            
             Methods myActions = new Methods();
 
 
@@ -427,7 +464,7 @@ namespace System.Windows.Forms.Samples {
             st.Start();
             intHits = 0;
             int intLineCtr;
-            strPathToSearch = tabControl1.TabPages[_CurrentIndex].ToolTipText.Replace("Click on this tab to search in ","");
+            
             List<FileInfo> myFileList = new List<FileInfo>();
             if (File.Exists(strPathToSearch)) {
                 System.IO.FileInfo fi = new System.IO.FileInfo(strPathToSearch);
@@ -437,23 +474,38 @@ namespace System.Windows.Forms.Samples {
                 myFileList = TraverseTree(strSearchPattern, strPathToSearch);
             }
             int intFiles = 0;
+            int intProcessedFiles = 0;
+            progressBar1.Maximum = 100;
+            int tenPercent = myFileList.Count / 10;
+
             matchInfoList = new List<MatchInfo>();
             //         myFileList = myFileList.OrderBy(fi => fi.FullName).ToList();
             Parallel.ForEach(myFileList, myFileInfo => {
                 intLineCtr = 0;
                 boolStringFoundInFile = false;
-                ReadFileToString(myFileInfo.FullName, intLineCtr, matchInfoList);
-                if (boolStringFoundInFile) {
-                    intFiles++;
+                intProcessedFiles++;
+
+                //CHECK FOR CANCELLATION FIRST
+                if (backgroundWorker1.CancellationPending) {
+                    //CANCEL
+                    e.Cancel = true;
+                } else {
+                    ReadFileToString(myFileInfo.FullName, intLineCtr, matchInfoList);
+                    if (boolStringFoundInFile) {
+                        intFiles++;
+                    }
+                    backgroundWorker1.ReportProgress((intProcessedFiles / myFileList.Count) * 100);
                 }
+
+
             });
             matchInfoList = matchInfoList.Where(mi => mi != null).OrderBy(mi => mi.FullName).ThenBy(mi => mi.LineNumber).ToList();
 
             List<string> lines = new List<string>();
             foreach (var item in matchInfoList) {
                 lines.Add("\"" + item.FullName + "\"(" + item.LineNumber + "," + item.LinePosition + "): " + item.LineText.Length.ToString() + " " + item.LineText.Substring(0, item.LineText.Length > 5000 ? 5000 : item.LineText.Length));
-           }
- 
+            }
+
             string settingsDirectory =
      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
             using (FileStream fs = new FileStream(settingsDirectory + @"\MatchInfo.txt", FileMode.Create)) {
@@ -498,9 +550,54 @@ namespace System.Windows.Forms.Samples {
                     myResult += "\n\r\n\rErrors: " + _searchErrors.ToString();
                 }
             }
+  
+        }
 
+        //THIS UPDATES GUI.OUR PROGRESSBAR
+        private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e) {
+            progressBar1.Value = e.ProgressPercentage;
+            percentageLabel.Text = e.ProgressPercentage.ToString() + " %";
+        }
 
-            return  myResult;
+        //WHEN JOB IS DONE THIS IS CALLED.
+        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) {
+            if (e.Cancelled) {
+                display("You have Cancelled");
+                progressBar1.Value = 0;
+                percentageLabel.Text = "0";
+            } else {
+                display("Work completed successfully");
+                dgvResults.DataSource = ConvertToDataTable<MatchInfo>(matchInfoList);
+                foreach (DataGridViewColumn item in dgvResults.Columns) {
+                    item.ToolTipText = "Right-Click Column Header to add remove filter.\nUse Show\\Hide button to Show\\Hide Columns.\nLeft-Click column heading to sort.";
+                }
+                //dgvResults.Parent = panelResults;
+
+                dgvResults.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+                dgvResults.Dock = DockStyle.Fill;
+                //   _CurrentDataGridView = (DataGridViewExt)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
+                //dgvResults.Parent = panelResults;
+                //panelResults.Parent = tabControl1.TabPages[tabControl1.SelectedIndex];
+                this._CurrentFileViewBindingSource.DataSource = dgvResults.DataSource;
+                //    this._CurrentDataGridView.DataSource = ConvertToDataTable<MatchInfo>(matchInfoList);
+                if (tabControl1.TabPages[tabControl1.SelectedIndex].Controls.Count > 0) {
+                    tabControl1.TabPages[tabControl1.SelectedIndex].Controls.RemoveAt(0);
+                }
+                tabControl1.TabPages[tabControl1.SelectedIndex].Controls.Add(dgvResults);
+                foreach (DataGridViewColumn item in dgvResults.Columns) {
+                    item.ToolTipText = "Right-Click Column Header to add remove filter.\nUse menu item View to Show\\Hide Columns.\nLeft-Click column heading to sort.\nUse View\\Refresh to remove sort.";
+                }
+                lblResults.Text = myResult;
+            }
+        }
+        //SIMULATE HEAVY JOB
+        private void simulateHeavyJob() {
+            //SUSPEND THREAD FOR 100 MS
+            Thread.Sleep(100);
+        }
+        //DISPLAY MSG BOX
+        private void display(String text) {
+            MessageBox.Show(text);
         }
         public static List<FileInfo> TraverseTree(string filterPattern, string root) {
             string[] arrayExclusionPatterns = strSearchExcludePattern.Split(';');
