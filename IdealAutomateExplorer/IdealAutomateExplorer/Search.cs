@@ -27,6 +27,7 @@ namespace System.Windows.Forms.Samples {
         const int CLOSE_SPACE = 15;
         const int CLOSE_AREA = 15;
         bool boolStopEvent = false;
+        string _scanningDir = "";
         string myResult = "";
         private bool _NotepadppLoaded = false;
         DataGridViewExt dgvResults = new DataGridViewExt("SearchResults");       
@@ -58,7 +59,7 @@ namespace System.Windows.Forms.Samples {
         List<int> listLoadedIndexes = new List<int>();
         BindingSource _CurrentFileViewBindingSource = new BindingSource();
       
-        Panel panelResults = new Panel();
+        
         bool _newTab = true;
         bool _ignoreSelectedIndexChanged = true;
         int _selectedTabIndex = 0;
@@ -149,27 +150,64 @@ namespace System.Windows.Forms.Samples {
             
             this.Cursor = Cursors.WaitCursor;
             myActions.SetValueByKey("CurrentIndexSearch", tabControl1.SelectedIndex.ToString());
-        //    _CurrentDataGridView = (DataGridViewExt)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
-      //      _CurrentFileViewBindingSource = listBindingSource[tabControl1.SelectedIndex];
-           // _dir = (DirectoryView)this._CurrentFileViewBindingSource.DataSource;
-           // panelResults = listSplitContainer[tabControl1.SelectedIndex];
-           //panelResults = (Panel)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
-            // if (listLoadedIndexes.Contains(tabControl1.SelectedIndex)) {
-            //    string strCurrentPath = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
-            //    _newTab = true;
-            //    //cbxCurrentPath.Text = strCurrentPath;
-            //    //cbxCurrentPath.SelectedValue = strCurrentPath;
-            //    this.Cursor = Cursors.Default;
-            //    return;
-            //} else {
+ 
                 _newTab = true;
-                RefreshDataGrid();
-                listLoadedIndexes.Add(tabControl1.SelectedIndex);
+ 
+            string strInitialDirectory = "SearchResults";
+            new DgvFilterManager(dgvResults);
+            int sortedColumn = myActions.GetValueByKeyAsInt("SortedColumn_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"));
+            string myDirection = myActions.GetValueByKey("SortOrder_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"));
+
+
+            //if (sortedColumn > -1 && dgvResults.ColumnCount >= sortedColumn) {
+            //    if (myDirection == "Ascending") {
+            //        dgvResults.Sort(dgvResults.Columns[sortedColumn], ListSortDirection.Ascending);
+            //    } else {
+            //        dgvResults.Sort(dgvResults.Columns[sortedColumn], ListSortDirection.Descending);
+            //    }
+            //    myActions.SetValueByKey("SortedColumn_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"), "-1");
+            //    myActions.SetValueByKey("SortOrder_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"), ListSortDirection.Ascending.ToString());
             //}
+            //   this.dgvResults.Sort(dgvResults.Columns[1], ListSortDirection.Ascending);
+            // Use of the DataGridViewColumnSelector
+            DataGridViewColumnSelector cs = new DataGridViewColumnSelector(dgvResults);
+            cs.MaxHeight = 100;
+            cs.Width = 110;
+
+            dgvResults.Width = ClientSize.Width - 100;
+            dgvResults.Height = ClientSize.Height - 150;
+            dgvResults.ScrollBars = ScrollBars.Both;
+            dgvResults.AllowUserToResizeColumns = true;
+            dgvResults.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            _searchErrors.Length = 0;
+
+            matchInfoList = new List<MatchInfo>();
+            MatchInfo myMatchInfo = new MatchInfo();
+            myMatchInfo.FullName = "";
+            myMatchInfo.LineNumber = 0;
+            myMatchInfo.LinePosition = 0;
+            myMatchInfo.LineText = "";
+            matchInfoList.Add(myMatchInfo);
+            dgvResults.DataSource = ConvertToDataTable<MatchInfo>(matchInfoList);
+            foreach (DataGridViewColumn item in dgvResults.Columns) {
+                item.ToolTipText = "Right-Click Column Header to add remove filter.\nUse Show\\Hide button to Show\\Hide Columns.\nLeft-Click column heading to sort.";
+            }
+            dgvResults.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            dgvResults.Dock = DockStyle.Fill;
+            this._CurrentFileViewBindingSource.DataSource = dgvResults.DataSource;
+            if (tabControl1.TabPages[tabControl1.SelectedIndex].Controls.Count > 0) {
+                tabControl1.TabPages[tabControl1.SelectedIndex].Controls.RemoveAt(0);
+            }
+            tabControl1.TabPages[tabControl1.SelectedIndex].Controls.Add(dgvResults);
+            foreach (DataGridViewColumn item in dgvResults.Columns) {
+                item.ToolTipText = "Right-Click Column Header to add remove filter.\nUse menu item View to Show\\Hide Columns.\nLeft-Click column heading to sort.\nUse View\\Refresh to remove sort.";
+            }
+            listLoadedIndexes.Add(tabControl1.SelectedIndex);
+           //}
             
             _newTab = true;
             this.Cursor = Cursors.Default;
-            strPathToSearch = tabControl1.TabPages[_CurrentIndex].ToolTipText.Replace("Click on this tab to search in ", "");
+            
         }
 
 
@@ -300,22 +338,13 @@ namespace System.Windows.Forms.Samples {
 
             }
             // Initialize the DataGridView.
-            //panelResults = (Panel)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
-            //panelResults.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            //panelResults.Dock = DockStyle.Fill;
-            //dgvResults = (DataGridViewExt)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0].Controls[0];
-            //panelResults.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            dgvResults.DataSource = ConvertToDataTable<MatchInfo>(matchInfoList);
+           dgvResults.DataSource = ConvertToDataTable<MatchInfo>(matchInfoList);
             foreach (DataGridViewColumn item in dgvResults.Columns) {
                 item.ToolTipText = "Right-Click Column Header to add remove filter.\nUse Show\\Hide button to Show\\Hide Columns.\nLeft-Click column heading to sort.";
             }
-            //dgvResults.Parent = panelResults;
-
+ 
             dgvResults.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             dgvResults.Dock = DockStyle.Fill;
-         //   _CurrentDataGridView = (DataGridViewExt)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
-            //dgvResults.Parent = panelResults;
-            //panelResults.Parent = tabControl1.TabPages[tabControl1.SelectedIndex];
             this._CurrentFileViewBindingSource.DataSource = dgvResults.DataSource;
             //    this._CurrentDataGridView.DataSource = ConvertToDataTable<MatchInfo>(matchInfoList);
             if (tabControl1.TabPages[tabControl1.SelectedIndex].Controls.Count > 0) {
@@ -421,7 +450,6 @@ namespace System.Windows.Forms.Samples {
 
             }
             // Initialize the DataGridView.
-            panelResults.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             dgvResults.DataSource = ConvertToDataTable<MatchInfo>(matchInfoList);
             foreach (DataGridViewColumn item in dgvResults.Columns) {
                 item.ToolTipText = "Right-Click Column Header to add remove filter.\nUse Show\\Hide button to Show\\Hide Columns.\nLeft-Click column heading to sort.";
@@ -439,6 +467,70 @@ namespace System.Windows.Forms.Samples {
             return  myResult;
         }
         private void startBtn_Click(object sender, EventArgs e) {
+            _searchErrors.Length = 0;
+            // Methods myActions = new Methods();
+            Methods myActions = new Methods();
+            boolMatchCase = chkMatchCase.Checked;
+            boolUseRegularExpression = chkUseRegularExpression.Checked;
+
+            strFindWhat = cbxFindWhat.Text;
+            string strFileType = cbxFileType.Text;
+            string strExclude = cbxExclude.Text;
+            string strFolder = cbxFolder.Text;
+
+            myActions.SetValueByKey("chkMatchCase", boolMatchCase.ToString());
+            myActions.SetValueByKey("chkUseRegularExpression", boolUseRegularExpression.ToString());
+            myActions.SetValueByKey("cbxFindWhatSelectedValue", strFindWhat);
+            myActions.SetValueByKey("cbxFileTypeSelectedValue", strFileType);
+            myActions.SetValueByKey("cbxExcludeSelectedValue", strExclude);
+            myActions.SetValueByKey("cbxFolderSelectedValue", strFolder);
+
+
+            string strFindWhatToUse = "";
+            string strFileTypeToUse = "";
+            string strExcludeToUse = "";
+            string strFolderToUse = "";
+
+            if ((strFindWhat == "--Select Item ---" || strFindWhat == "")) {
+                myActions.MessageBoxShow("Please enter Find What or select Find What from ComboBox");
+                return;
+            }
+            if ((strFileType == "--Select Item ---" || strFileType == "")) {
+                myActions.MessageBoxShow("Please enter File Type or select File Type from ComboBox");
+                return;
+            }
+            if ((strExclude == "--Select Item ---" || strExclude == "")) {
+                myActions.MessageBoxShow("Please enter Exclude or select Exclude from ComboBox");
+                return;
+            }
+            if ((strFolder == "--Select Item ---" || strFolder == "")) {
+                myActions.MessageBoxShow("Please enter Folder or select Folder from ComboBox");
+                return;
+            }
+
+
+
+            strFindWhatToUse = strFindWhat;
+
+            if (boolUseRegularExpression) {
+                strFindWhatToUse = strFindWhatToUse.Replace(")", "\\)").Replace("(", "\\(");
+            }
+
+
+            strFileTypeToUse = strFileType;
+            strExcludeToUse = strExclude;
+            strFolderToUse = strFolder;
+            strPathToSearch = strFolderToUse;
+            strSearchPattern = strFileTypeToUse;
+            strSearchExcludePattern = strExcludeToUse;
+            strSearchText = strFindWhatToUse;
+
+            strLowerCaseSearchText = strFindWhatToUse.ToLower();
+            myActions.SetValueByKey("FindWhatToUse", strFindWhatToUse);
+            myActions.SetValueByKey("FileTypeToUse", strFileTypeToUse);
+            myActions.SetValueByKey("ExcludeToUse", strExcludeToUse);
+            myActions.SetValueByKey("FolderToUse", strFolderToUse);
+            strPathToSearch = tabControl1.TabPages[_CurrentIndex].ToolTipText.Replace("Click on this tab to search in ", "");
             //START BG WORKER
             progressBar1.BeginInvoke(
 new Action(() => {
@@ -477,7 +569,7 @@ progressBar1.Value = 0;
             int intProcessedFiles = 0;
             progressBar1.Maximum = 100;
             int tenPercent = myFileList.Count / 10;
-
+            int prevPercent = 0;
             matchInfoList = new List<MatchInfo>();
             //         myFileList = myFileList.OrderBy(fi => fi.FullName).ToList();
             Parallel.ForEach(myFileList, myFileInfo => {
@@ -494,7 +586,11 @@ progressBar1.Value = 0;
                     if (boolStringFoundInFile) {
                         intFiles++;
                     }
-                    backgroundWorker1.ReportProgress((intProcessedFiles / myFileList.Count) * 100);
+                    int currentPercent = (intProcessedFiles * 100) / myFileList.Count;
+                    if (currentPercent != prevPercent) {
+                        prevPercent = currentPercent;
+                        backgroundWorker1.ReportProgress(currentPercent);
+                    }
                 }
 
 
@@ -555,8 +651,12 @@ progressBar1.Value = 0;
 
         //THIS UPDATES GUI.OUR PROGRESSBAR
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e) {
-            progressBar1.Value = e.ProgressPercentage;
-            percentageLabel.Text = e.ProgressPercentage.ToString() + " %";
+            if (e.ProgressPercentage == -1) {
+                percentageLabel.Text = _scanningDir;
+            } else {
+                progressBar1.Value = e.ProgressPercentage;
+                percentageLabel.Text = e.ProgressPercentage.ToString() + " %";
+            }
         }
 
         //WHEN JOB IS DONE THIS IS CALLED.
@@ -566,20 +666,17 @@ progressBar1.Value = 0;
                 progressBar1.Value = 0;
                 percentageLabel.Text = "0";
             } else {
-                display("Work completed successfully");
+                percentageLabel.Text = "100 %";
+                progressBar1.Value = 100;
+                display(myResult);
                 dgvResults.DataSource = ConvertToDataTable<MatchInfo>(matchInfoList);
                 foreach (DataGridViewColumn item in dgvResults.Columns) {
                     item.ToolTipText = "Right-Click Column Header to add remove filter.\nUse Show\\Hide button to Show\\Hide Columns.\nLeft-Click column heading to sort.";
                 }
-                //dgvResults.Parent = panelResults;
-
+ 
                 dgvResults.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
                 dgvResults.Dock = DockStyle.Fill;
-                //   _CurrentDataGridView = (DataGridViewExt)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0];
-                //dgvResults.Parent = panelResults;
-                //panelResults.Parent = tabControl1.TabPages[tabControl1.SelectedIndex];
                 this._CurrentFileViewBindingSource.DataSource = dgvResults.DataSource;
-                //    this._CurrentDataGridView.DataSource = ConvertToDataTable<MatchInfo>(matchInfoList);
                 if (tabControl1.TabPages[tabControl1.SelectedIndex].Controls.Count > 0) {
                     tabControl1.TabPages[tabControl1.SelectedIndex].Controls.RemoveAt(0);
                 }
@@ -590,16 +687,12 @@ progressBar1.Value = 0;
                 lblResults.Text = myResult;
             }
         }
-        //SIMULATE HEAVY JOB
-        private void simulateHeavyJob() {
-            //SUSPEND THREAD FOR 100 MS
-            Thread.Sleep(100);
-        }
+
         //DISPLAY MSG BOX
         private void display(String text) {
             MessageBox.Show(text);
         }
-        public static List<FileInfo> TraverseTree(string filterPattern, string root) {
+        public  List<FileInfo> TraverseTree(string filterPattern, string root) {
             string[] arrayExclusionPatterns = strSearchExcludePattern.Split(';');
             for (int i = 0; i < arrayExclusionPatterns.Length; i++) {
                 arrayExclusionPatterns[i] = arrayExclusionPatterns[i].ToLower().ToString().Replace("*", "");
@@ -618,6 +711,11 @@ progressBar1.Value = 0;
 
             while (dirs.Count > 0) {
                 string currentDir = dirs.Pop();
+                //CHECK FOR CANCELLATION FIRST
+                _scanningDir = currentDir;
+                    backgroundWorker1.ReportProgress(-1);
+                
+
                 string[] subDirs;
                 try {
                     subDirs = System.IO.Directory.GetDirectories(currentDir);
@@ -1042,7 +1140,6 @@ progressBar1.Value = 0;
             foreach (DataGridViewColumn item in dgvResults.Columns) {
                 item.ToolTipText = "Right-Click Column Header to add remove filter.\nUse Show\\Hide button to Show\\Hide Columns.\nLeft-Click column heading to sort.";
             }
-            panelResults.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             dgvResults.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             dgvResults.Dock = DockStyle.Fill;
 
@@ -1097,6 +1194,68 @@ progressBar1.Value = 0;
 
             _CurrentIndex = numOfTabs - 1;
            AddDataGridToLastTab();
+
+            // simulate clicking first tab
+            _CurrentIndex = 0;
+            this.Cursor = Cursors.WaitCursor;
+            myActions.SetValueByKey("CurrentIndexSearch", tabControl1.SelectedIndex.ToString());
+
+            _newTab = true;
+
+            strInitialDirectory = "SearchResults";
+            new DgvFilterManager(dgvResults);
+            int sortedColumn = myActions.GetValueByKeyAsInt("SortedColumn_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"));
+            string myDirection = myActions.GetValueByKey("SortOrder_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"));
+
+
+            //if (sortedColumn > -1 && dgvResults.ColumnCount >= sortedColumn) {
+            //    if (myDirection == "Ascending") {
+            //        dgvResults.Sort(dgvResults.Columns[sortedColumn], ListSortDirection.Ascending);
+            //    } else {
+            //        dgvResults.Sort(dgvResults.Columns[sortedColumn], ListSortDirection.Descending);
+            //    }
+            //    myActions.SetValueByKey("SortedColumn_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"), "-1");
+            //    myActions.SetValueByKey("SortOrder_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"), ListSortDirection.Ascending.ToString());
+            //}
+            //   this.dgvResults.Sort(dgvResults.Columns[1], ListSortDirection.Ascending);
+            // Use of the DataGridViewColumnSelector
+            DataGridViewColumnSelector cs = new DataGridViewColumnSelector(dgvResults);
+            cs.MaxHeight = 100;
+            cs.Width = 110;
+
+            dgvResults.Width = ClientSize.Width - 100;
+            dgvResults.Height = ClientSize.Height - 150;
+            dgvResults.ScrollBars = ScrollBars.Both;
+            dgvResults.AllowUserToResizeColumns = true;
+            dgvResults.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            _searchErrors.Length = 0;
+
+            matchInfoList = new List<MatchInfo>();
+            myMatchInfo = new MatchInfo();
+            myMatchInfo.FullName = "";
+            myMatchInfo.LineNumber = 0;
+            myMatchInfo.LinePosition = 0;
+            myMatchInfo.LineText = "";
+            matchInfoList.Add(myMatchInfo);
+            dgvResults.DataSource = ConvertToDataTable<MatchInfo>(matchInfoList);
+            foreach (DataGridViewColumn item in dgvResults.Columns) {
+                item.ToolTipText = "Right-Click Column Header to add remove filter.\nUse Show\\Hide button to Show\\Hide Columns.\nLeft-Click column heading to sort.";
+            }
+            dgvResults.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            dgvResults.Dock = DockStyle.Fill;
+            this._CurrentFileViewBindingSource.DataSource = dgvResults.DataSource;
+            if (tabControl1.TabPages[tabControl1.SelectedIndex].Controls.Count > 0) {
+                tabControl1.TabPages[tabControl1.SelectedIndex].Controls.RemoveAt(0);
+            }
+            tabControl1.TabPages[tabControl1.SelectedIndex].Controls.Add(dgvResults);
+            foreach (DataGridViewColumn item in dgvResults.Columns) {
+                item.ToolTipText = "Right-Click Column Header to add remove filter.\nUse menu item View to Show\\Hide Columns.\nLeft-Click column heading to sort.\nUse View\\Refresh to remove sort.";
+            }
+            listLoadedIndexes.Add(tabControl1.SelectedIndex);
+            //}
+
+            _newTab = true;
+            this.Cursor = Cursors.Default;
 
             // tabControl1.Visible = false;
         }
@@ -1200,20 +1359,8 @@ progressBar1.Value = 0;
             //mySplitContainer.MouseLeave += new System.EventHandler(mySplitContainer_MouseLeave);
 
             dgvResults.Height = Screen.PrimaryScreen.WorkingArea.Size.Height - 150;
-            panelResults = new Panel();
-
-            //if (_CurrentIndex == tabControl1.TabCount - 1) {
-            //    panelResults.Controls.Add(dgvResults);
-            //    tabControl1.TabPages[_CurrentIndex - 1].Controls.Add(panelResults);
-
-            //    //    tabControl1.TabPages[_CurrentIndex - 1].Controls.Add(dgvResults);
-            //} else {
-            panelResults.Controls.Add(dgvResults);
-            //  dgvResults.Parent = _CurrentSplitContainer; //.Add(dgvResults);
             tabControl1.TabPages[_CurrentIndex].Controls.Add(dgvResults);
 
-            // tabControl1.TabPages[_CurrentIndex].Controls.Add(dgvResults);
-            //}
             foreach (DataGridViewColumn item in dgvResults.Columns) {
                 item.ToolTipText = "Right-Click Column Header to add remove filter.\nUse menu item View to Show\\Hide Columns.\nLeft-Click column heading to sort.\nUse View\\Refresh to remove sort.";
             }
@@ -1222,7 +1369,7 @@ progressBar1.Value = 0;
         }
 
         private void AddDataGridToTab(string pstrInitialDirectory) {
-            tabControl1.TabPages.Insert(_CurrentIndex + 1, "Search Folder");
+            tabControl1.TabPages.Insert(_CurrentIndex + 1, "** Search A Folder **");
             DataGridViewExt dgvResults = new DataGridViewExt("SearchResults");            
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -1317,20 +1464,7 @@ progressBar1.Value = 0;
             //mySplitContainer.MouseLeave += new System.EventHandler(mySplitContainer_MouseLeave);
 
             dgvResults.Height = Screen.PrimaryScreen.WorkingArea.Size.Height - 150;
-            panelResults = new Panel();
 
-            //if (_CurrentIndex == tabControl1.TabCount - 1) {
-            //    panelResults.Controls.Add(dgvResults);
-            //    tabControl1.TabPages[_CurrentIndex - 1].Controls.Add(panelResults);
-
-            //    //    tabControl1.TabPages[_CurrentIndex - 1].Controls.Add(dgvResults);
-            //} else {
-                panelResults.Controls.Add(dgvResults);
-              //  dgvResults.Parent = _CurrentSplitContainer; //.Add(dgvResults);
-                tabControl1.TabPages[_CurrentIndex].Controls.Add(dgvResults);
-
-                // tabControl1.TabPages[_CurrentIndex].Controls.Add(dgvResults);
-            //}
             foreach (DataGridViewColumn item in dgvResults.Columns) {
                 item.ToolTipText = "Right-Click Column Header to add remove filter.\nUse menu item View to Show\\Hide Columns.\nLeft-Click column heading to sort.\nUse View\\Refresh to remove sort.";
             }

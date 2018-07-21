@@ -137,9 +137,9 @@
             // 
             this.btnFolder.Location = new System.Drawing.Point(767, 76);
             this.btnFolder.Name = "btnFolder";
-            this.btnFolder.Size = new System.Drawing.Size(190, 23);
+            this.btnFolder.Size = new System.Drawing.Size(208, 23);
             this.btnFolder.TabIndex = 8;
-            this.btnFolder.Text = "Select Folder for Search Folder Tab";
+            this.btnFolder.Text = "Select Folder for Search A Folder Tab";
             this.btnFolder.UseVisualStyleBackColor = true;
             this.btnFolder.Click += new System.EventHandler(this.btnFolder_Click);
             // 
