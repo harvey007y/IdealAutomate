@@ -43,13 +43,14 @@ using DgvFilterPopup;
 
 namespace System.Windows.Forms.Samples {
     partial class ExplorerView : Form {
+        public static ExplorerView staticVar = null;
         private DirectoryView _dir;
         string strInitialDirectory = "";
         int _CurrentIndex = 0;
         static string _ExecutableFromClick = "";
-        DataGridViewExt _CurrentDataGridView;
+        public DataGridViewExt _CurrentDataGridView;
         DataGridViewExt dataGridView3;
-        BindingSource _CurrentFileViewBindingSource = new BindingSource();
+        public BindingSource _CurrentFileViewBindingSource = new BindingSource();
         SplitContainer _CurrentSplitContainer = new SplitContainer();
         bool boolStopEvent = false;
         bool _newTab = true;
@@ -58,7 +59,7 @@ namespace System.Windows.Forms.Samples {
         Rectangle _IconRectangle = new Rectangle();
         List<HotKeyRecord> listHotKeyRecords = new List<HotKeyRecord>();
         Dictionary<string, VirtualKeyCode> dictVirtualKeyCodes = new Dictionary<string, VirtualKeyCode>();
-        List<BindingSource> listBindingSource = new List<BindingSource>();
+        public List<BindingSource> listBindingSource = new List<BindingSource>();
         List<SplitContainer> listSplitContainer = new List<SplitContainer>();
         List<int> listLoadedIndexes = new List<int>();
         private Point _imageLocation = new Point(13, 5);
@@ -205,7 +206,7 @@ namespace System.Windows.Forms.Samples {
 
 
 
-        private void TabControl1_MouseClick(object sender, MouseEventArgs e) {
+        public void TabControl1_MouseClick(object sender, MouseEventArgs e) {
             // _CurrentDataGridView.ClearSelection();
             //Looping through the controls.
             int removedIndex = -1;
@@ -737,7 +738,7 @@ namespace System.Windows.Forms.Samples {
         #endregion
 
         #region Event Handlers        
-        private void ExplorerView_Load(object sender, EventArgs e) {
+        public void ExplorerView_Load(object sender, EventArgs e) {
             DeleteOpenFiles();
 
 
@@ -866,6 +867,10 @@ namespace System.Windows.Forms.Samples {
 
             testskip:
             int currentIndex = myActions.GetValueByKeyAsInt("CurrentIndex");
+            if (currentIndex > tabControl1.TabPages.Count - 2) {
+                currentIndex = 0;
+                myActions.SetValueByKey("CurrentIndex","0");
+            }
             tabControl1.SelectedIndex = currentIndex;
             _CurrentDataGridView = (DataGridViewExt)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0].Controls[0].Controls[0];
             _CurrentFileViewBindingSource = listBindingSource[tabControl1.SelectedIndex];
@@ -2140,7 +2145,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             return table;
 
         }
-        private void RefreshDataGrid() {
+        public void RefreshDataGrid() {
 
 
             // refresh datagridview
@@ -6036,6 +6041,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private async void search_ClickAsync(object sender, EventArgs e) {
+            staticVar = this;
             var myForm = new Search();
             myForm.Show();
             //     _searchErrors.Length = 0;

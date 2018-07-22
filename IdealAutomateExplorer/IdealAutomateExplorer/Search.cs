@@ -2134,5 +2134,66 @@ progressBar1.Value = 0;
 
 
         }
+
+        private void btnOpenInIAE_Click(object sender, EventArgs e) {
+            Methods myActions = new Methods();
+            int numOfTabs = myActions.GetValueByKeyAsInt("NumOfTabs");
+            if (_CurrentIndex == numOfTabs - 1) {
+                myActions.MessageBoxShow("You can only open files in Ideal Automate Explorer when you are not in the **Search A Folder** tab");
+                return;
+            }
+            for (int index = Application.OpenForms.Count - 1; index >= 0; index--) {
+                if (Application.OpenForms[index].Name == "ExplorerView") {
+                    ExplorerView myExplorerView = (ExplorerView)Application.OpenForms[index];
+                    myExplorerView.Show();
+                    myExplorerView.BringToFront();
+                    TabControl myTabControl = (TabControl)myExplorerView.Controls[0];
+                    myTabControl.SelectedIndex = _CurrentIndex;       
+                    
+                    myActions.SetValueByKey("CurrentIndex", _CurrentIndex.ToString());
+                    DataGridViewExt myDataGridView = (DataGridViewExt)myExplorerView.Controls[0].Controls[0].Controls[0].Controls[0].Controls[0];
+                    string strFullName = "";
+                    string strLineNumber = "";
+
+                    if (this.dgvResults.SelectedRows.Count != 0) {
+                        DataGridViewRow row = this.dgvResults.SelectedRows[0];
+                        strFullName = row.Cells["FullName"].Value.ToString();
+                        strLineNumber = row.Cells["LineNumber"].Value.ToString();
+
+                    } else {
+                        myActions.MessageBoxShow("Please select a row that points to a file to open with Ideal Automate Explorer");
+                        return;
+                    }
+                     myDataGridView.ClearSelection();
+                    MouseEventArgs myMouseEventArgs = new MouseEventArgs(MouseButtons.Left,1,0,0,0);
+                    myExplorerView.TabControl1_MouseClick(sender, myMouseEventArgs);
+                    int mySelectedRow = -1;
+
+                    for (int i = 0; i < myExplorerView._CurrentDataGridView.Rows.Count; i++) {
+                        DataGridViewRow item = myExplorerView._CurrentDataGridView.Rows[i];
+                        if (item.Cells["FullName"].Value.ToString() == strFullName) {
+                            mySelectedRow = i;
+                            break;
+                        }
+                    }
+                    myActions.SetValueByKey("InitialDirectory" + myTabControl.SelectedIndex.ToString() + "SelectedRow", mySelectedRow.ToString());
+                    myExplorerView.RefreshDataGrid();
+
+                  //  myExplorerView._CurrentDataGridView.Rows[mySelectedRow].Selected = true;
+                    myActions.TypeText("^(f)", 1500);
+                    myActions.TypeText(cbxFindWhat.Text, 500);
+                    myActions.TypeText("{ENTER}", 500);
+
+
+
+                    //myDataGridView.FirstDisplayedScrollingRowIndex = 18;
+                    //myDataGridView.CurrentCell = myDataGridView.Rows[18].Cells[1];
+                    //myDataGridView.Rows[18].Selected = true;
+                    //myDataGridView.Refresh();
+                }
+            }
+
+
+        }
     }
 }

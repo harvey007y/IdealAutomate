@@ -48,6 +48,7 @@
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnSearch = new System.Windows.Forms.Button();
+            this.btnOpenInIAE = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource)).BeginInit();
             this.SuspendLayout();
@@ -281,11 +282,22 @@
             this.btnSearch.UseVisualStyleBackColor = true;
             this.btnSearch.Click += new System.EventHandler(this.startBtn_Click);
             // 
+            // btnOpenInIAE
+            // 
+            this.btnOpenInIAE.Location = new System.Drawing.Point(234, 103);
+            this.btnOpenInIAE.Name = "btnOpenInIAE";
+            this.btnOpenInIAE.Size = new System.Drawing.Size(75, 23);
+            this.btnOpenInIAE.TabIndex = 24;
+            this.btnOpenInIAE.Text = "OpenInIAE";
+            this.btnOpenInIAE.UseVisualStyleBackColor = true;
+            this.btnOpenInIAE.Click += new System.EventHandler(this.btnOpenInIAE_Click);
+            // 
             // Search
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1195, 450);
+            this.Controls.Add(this.btnOpenInIAE);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.percentageLabel);
@@ -344,5 +356,6 @@
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private Button btnCancel;
         private Button btnSearch;
+        private Button btnOpenInIAE;
     }
 }
