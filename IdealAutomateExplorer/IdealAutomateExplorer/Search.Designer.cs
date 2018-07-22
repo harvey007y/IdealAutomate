@@ -36,10 +36,6 @@
             this.chkMatchCase = new System.Windows.Forms.CheckBox();
             this.chkUseRegularExpression = new System.Windows.Forms.CheckBox();
             this.lblResults = new System.Windows.Forms.Label();
-            this.btnShowHideColumns = new System.Windows.Forms.Button();
-            this.btnNotepad = new System.Windows.Forms.Button();
-            this.btnVisualStudio = new System.Windows.Forms.Button();
-            this.btnPeek = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.FileViewBindingSource = new System.Windows.Forms.BindingSource(this.components);
@@ -48,9 +44,16 @@
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnSearch = new System.Windows.Forms.Button();
-            this.btnOpenInIAE = new System.Windows.Forms.Button();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.openWithToolStripMenuItemOpenWith = new System.Windows.Forms.ToolStripMenuItem();
+            this.idealAutomateExplorerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.notepadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.visualStudioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.peekToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showHideColumnsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource)).BeginInit();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -173,46 +176,6 @@
             this.lblResults.TabIndex = 11;
             this.lblResults.Text = "Count 0";
             // 
-            // btnShowHideColumns
-            // 
-            this.btnShowHideColumns.Location = new System.Drawing.Point(329, 103);
-            this.btnShowHideColumns.Name = "btnShowHideColumns";
-            this.btnShowHideColumns.Size = new System.Drawing.Size(75, 23);
-            this.btnShowHideColumns.TabIndex = 15;
-            this.btnShowHideColumns.Text = "Show/Hide Columns";
-            this.btnShowHideColumns.UseVisualStyleBackColor = true;
-            this.btnShowHideColumns.Click += new System.EventHandler(this.btnShowHideColumns_Click);
-            // 
-            // btnNotepad
-            // 
-            this.btnNotepad.Location = new System.Drawing.Point(423, 103);
-            this.btnNotepad.Name = "btnNotepad";
-            this.btnNotepad.Size = new System.Drawing.Size(75, 23);
-            this.btnNotepad.TabIndex = 16;
-            this.btnNotepad.Text = "Notepad++";
-            this.btnNotepad.UseVisualStyleBackColor = true;
-            this.btnNotepad.Click += new System.EventHandler(this.btnNotepad_Click);
-            // 
-            // btnVisualStudio
-            // 
-            this.btnVisualStudio.Location = new System.Drawing.Point(516, 103);
-            this.btnVisualStudio.Name = "btnVisualStudio";
-            this.btnVisualStudio.Size = new System.Drawing.Size(89, 23);
-            this.btnVisualStudio.TabIndex = 17;
-            this.btnVisualStudio.Text = "Visual Studio";
-            this.btnVisualStudio.UseVisualStyleBackColor = true;
-            this.btnVisualStudio.Click += new System.EventHandler(this.btnVisualStudio_Click);
-            // 
-            // btnPeek
-            // 
-            this.btnPeek.Location = new System.Drawing.Point(627, 103);
-            this.btnPeek.Name = "btnPeek";
-            this.btnPeek.Size = new System.Drawing.Size(75, 23);
-            this.btnPeek.TabIndex = 18;
-            this.btnPeek.Text = "Peek";
-            this.btnPeek.UseVisualStyleBackColor = true;
-            this.btnPeek.Click += new System.EventHandler(this.btnPeek_Click);
-            // 
             // tabControl1
             // 
             this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -238,7 +201,7 @@
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(735, 103);
+            this.progressBar1.Location = new System.Drawing.Point(428, 103);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(235, 23);
             this.progressBar1.TabIndex = 20;
@@ -248,11 +211,12 @@
             // percentageLabel
             // 
             this.percentageLabel.AutoSize = true;
-            this.percentageLabel.Location = new System.Drawing.Point(991, 107);
+            this.percentageLabel.Location = new System.Drawing.Point(669, 107);
             this.percentageLabel.Name = "percentageLabel";
-            this.percentageLabel.Size = new System.Drawing.Size(35, 13);
+            this.percentageLabel.Size = new System.Drawing.Size(695, 13);
             this.percentageLabel.TabIndex = 21;
-            this.percentageLabel.Text = "label5";
+            this.percentageLabel.Text = "Instructions: 1. Enter search terms in Find What DropDown. 2. Select tab or **Sea" +
+    "rch A Folder**. 3. Click Search. 4. Right-click result rows to open";
             // 
             // backgroundWorker1
             // 
@@ -264,7 +228,7 @@
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(981, 77);
+            this.btnCancel.Location = new System.Drawing.Point(327, 103);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 22;
@@ -274,7 +238,7 @@
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(981, 52);
+            this.btnSearch.Location = new System.Drawing.Point(233, 103);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(75, 23);
             this.btnSearch.TabIndex = 23;
@@ -282,31 +246,70 @@
             this.btnSearch.UseVisualStyleBackColor = true;
             this.btnSearch.Click += new System.EventHandler(this.startBtn_Click);
             // 
-            // btnOpenInIAE
+            // contextMenuStrip1
             // 
-            this.btnOpenInIAE.Location = new System.Drawing.Point(234, 103);
-            this.btnOpenInIAE.Name = "btnOpenInIAE";
-            this.btnOpenInIAE.Size = new System.Drawing.Size(75, 23);
-            this.btnOpenInIAE.TabIndex = 24;
-            this.btnOpenInIAE.Text = "OpenInIAE";
-            this.btnOpenInIAE.UseVisualStyleBackColor = true;
-            this.btnOpenInIAE.Click += new System.EventHandler(this.btnOpenInIAE_Click);
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openWithToolStripMenuItemOpenWith,
+            this.peekToolStripMenuItem,
+            this.showHideColumnsToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(185, 70);
+            // 
+            // openWithToolStripMenuItemOpenWith
+            // 
+            this.openWithToolStripMenuItemOpenWith.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.idealAutomateExplorerToolStripMenuItem,
+            this.notepadToolStripMenuItem,
+            this.visualStudioToolStripMenuItem});
+            this.openWithToolStripMenuItemOpenWith.Name = "openWithToolStripMenuItemOpenWith";
+            this.openWithToolStripMenuItemOpenWith.Size = new System.Drawing.Size(184, 22);
+            this.openWithToolStripMenuItemOpenWith.Text = "Open With...";
+            // 
+            // idealAutomateExplorerToolStripMenuItem
+            // 
+            this.idealAutomateExplorerToolStripMenuItem.Name = "idealAutomateExplorerToolStripMenuItem";
+            this.idealAutomateExplorerToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.idealAutomateExplorerToolStripMenuItem.Text = "Ideal Automate Explorer";
+            this.idealAutomateExplorerToolStripMenuItem.Click += new System.EventHandler(this.btnOpenInIAE_Click);
+            // 
+            // notepadToolStripMenuItem
+            // 
+            this.notepadToolStripMenuItem.Name = "notepadToolStripMenuItem";
+            this.notepadToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.notepadToolStripMenuItem.Text = "Notepad++";
+            this.notepadToolStripMenuItem.Click += new System.EventHandler(this.btnNotepad_Click);
+            // 
+            // visualStudioToolStripMenuItem
+            // 
+            this.visualStudioToolStripMenuItem.Name = "visualStudioToolStripMenuItem";
+            this.visualStudioToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.visualStudioToolStripMenuItem.Text = "Visual Studio";
+            this.visualStudioToolStripMenuItem.Click += new System.EventHandler(this.btnVisualStudio_Click);
+            // 
+            // peekToolStripMenuItem
+            // 
+            this.peekToolStripMenuItem.Name = "peekToolStripMenuItem";
+            this.peekToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.peekToolStripMenuItem.Text = "Peek";
+            this.peekToolStripMenuItem.Click += new System.EventHandler(this.btnPeek_Click);
+            // 
+            // showHideColumnsToolStripMenuItem
+            // 
+            this.showHideColumnsToolStripMenuItem.Name = "showHideColumnsToolStripMenuItem";
+            this.showHideColumnsToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.showHideColumnsToolStripMenuItem.Text = "Show/Hide Columns";
+            this.showHideColumnsToolStripMenuItem.Click += new System.EventHandler(this.btnShowHideColumns_Click);
             // 
             // Search
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1195, 450);
-            this.Controls.Add(this.btnOpenInIAE);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.percentageLabel);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.btnPeek);
-            this.Controls.Add(this.btnVisualStudio);
-            this.Controls.Add(this.btnNotepad);
-            this.Controls.Add(this.btnShowHideColumns);
             this.Controls.Add(this.lblResults);
             this.Controls.Add(this.chkUseRegularExpression);
             this.Controls.Add(this.chkMatchCase);
@@ -325,6 +328,7 @@
             this.Load += new System.EventHandler(this.Search_Load);
             this.tabControl1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource)).EndInit();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -344,10 +348,6 @@
         private CheckBox chkMatchCase;
         private CheckBox chkUseRegularExpression;
         private Label lblResults;        
-        private Button btnShowHideColumns;
-        private Button btnNotepad;
-        private Button btnVisualStudio;
-        private Button btnPeek;
         private TabControl tabControl1;
         private TabPage tabPage1;
         private BindingSource FileViewBindingSource;
@@ -356,6 +356,12 @@
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private Button btnCancel;
         private Button btnSearch;
-        private Button btnOpenInIAE;
+        private ContextMenuStrip contextMenuStrip1;
+        private ToolStripMenuItem openWithToolStripMenuItemOpenWith;
+        private ToolStripMenuItem idealAutomateExplorerToolStripMenuItem;
+        private ToolStripMenuItem notepadToolStripMenuItem;
+        private ToolStripMenuItem visualStudioToolStripMenuItem;
+        private ToolStripMenuItem peekToolStripMenuItem;
+        private ToolStripMenuItem showHideColumnsToolStripMenuItem;
     }
 }

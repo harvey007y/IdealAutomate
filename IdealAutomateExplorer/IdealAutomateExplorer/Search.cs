@@ -94,6 +94,7 @@ namespace System.Windows.Forms.Samples {
         private async void TabControl1_MouseClick(object sender, MouseEventArgs e) {
             Methods myActions = new Methods();
             _CurrentIndex = tabControl1.SelectedIndex;
+            myActions.SetValueByKey("CurrentIndexSearch", _CurrentIndex.ToString());
             // _CurrentDataGridView.ClearSelection();
             //Looping through the controls.
             int removedIndex = -1;
@@ -205,7 +206,7 @@ namespace System.Windows.Forms.Samples {
             listLoadedIndexes.Add(tabControl1.SelectedIndex);
            //}
             
-            _newTab = true;
+            _newTab = true;           
             this.Cursor = Cursors.Default;
             
         }
@@ -645,8 +646,8 @@ progressBar1.Value = 0;
                 if (_searchErrors.Length > 0) {
                     myResult += "\n\r\n\rErrors: " + _searchErrors.ToString();
                 }
-            }
-  
+            }             
+            dgvResults.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvResults_CellMouseDown);
         }
 
         //THIS UPDATES GUI.OUR PROGRESSBAR
@@ -1195,10 +1196,11 @@ progressBar1.Value = 0;
             _CurrentIndex = numOfTabs - 1;
            AddDataGridToLastTab();
 
-            // simulate clicking first tab
-            _CurrentIndex = 0;
+            // simulate clicking  tab
+            _CurrentIndex = myActions.GetValueByKeyAsInt("CurrentIndexSearch");
+            tabControl1.SelectedIndex = _CurrentIndex;
             this.Cursor = Cursors.WaitCursor;
-            myActions.SetValueByKey("CurrentIndexSearch", tabControl1.SelectedIndex.ToString());
+          //  myActions.SetValueByKey("CurrentIndexSearch", tabControl1.SelectedIndex.ToString());
 
             _newTab = true;
 
@@ -1266,6 +1268,7 @@ progressBar1.Value = 0;
         //    tabControl1.TabPages[_CurrentIndex + 1].Text = _dir.FileView.Name;
             tabControl1.TabPages[_CurrentIndex].ToolTipText = "Click on this tab to search in " + _dir.FileView.FullName;
             DataGridViewExt dgvResults = new DataGridViewExt("SearchResults");
+           
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -1368,9 +1371,25 @@ progressBar1.Value = 0;
            
         }
 
+        private void dgvResults_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e) {
+            if (e.Button == MouseButtons.Right) {
+                ContextMenuStrip m =  this.contextMenuStrip1;
+
+                int currentMouseOverRow = dgvResults.HitTest(e.X, e.Y).RowIndex;
+
+                if (currentMouseOverRow >= 0) {
+                    MessageBox.Show(string.Format("Do something to row {0}", currentMouseOverRow.ToString()));
+                }
+
+                m.Show(dgvResults, new System.Drawing.Point(e.X, e.Y));
+
+            }
+        }
+
         private void AddDataGridToTab(string pstrInitialDirectory) {
             tabControl1.TabPages.Insert(_CurrentIndex + 1, "** Search A Folder **");
-            DataGridViewExt dgvResults = new DataGridViewExt("SearchResults");            
+            DataGridViewExt dgvResults = new DataGridViewExt("SearchResults");
+            dgvResults.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(dgvResults_CellMouseClick);
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -1399,8 +1418,9 @@ progressBar1.Value = 0;
 
            
 
-            ((System.ComponentModel.ISupportInitialize)(dgvResults)).BeginInit();
-            
+            ((System.ComponentModel.ISupportInitialize)(dgvResults)).BeginInit();            
+  
+
             this.tabControl1.SuspendLayout();
             //this.tabPage1.SuspendLayout();
             //this.tabPage2.SuspendLayout();
@@ -1427,6 +1447,8 @@ progressBar1.Value = 0;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             dgvResults.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgvResults.ColumnHeadersHeight = 22;
+            
+
             // #IMPORTANT: put new columns at end because
             // columns are referred to by index in code and
             // adding new columns in the middle will break code
@@ -1449,7 +1471,7 @@ progressBar1.Value = 0;
             // 15      StatusCol,                 Status
             // 16      DescriptionCol,            Description
             // 17      NestingLevel               NestingLevel
-          
+
             // 
             // FileViewBindingSource
             // 
@@ -1457,7 +1479,7 @@ progressBar1.Value = 0;
             // 
 
             //&&&&&&&&&&&&&&&
-           
+
 
             //mySplitContainer.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(mySplitContainer_SplitterMoved);
             //mySplitContainer.MouseEnter += new System.EventHandler(mySplitContainer_MouseEnter);
@@ -1470,6 +1492,25 @@ progressBar1.Value = 0;
             }
 
         }
+
+        private void dgvResults_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e) {
+            if (e.Button == MouseButtons.Right) {
+                ContextMenu m = new ContextMenu();
+                m.MenuItems.Add(new MenuItem("Cut"));
+                m.MenuItems.Add(new MenuItem("Copy"));
+                m.MenuItems.Add(new MenuItem("Paste"));
+
+                int currentMouseOverRow = dgvResults.HitTest(e.X, e.Y).RowIndex;
+
+                if (currentMouseOverRow >= 0) {
+                    m.MenuItems.Add(new MenuItem(string.Format("Do something to row {0}", currentMouseOverRow.ToString())));
+                }
+
+                m.Show(dgvResults, new System.Drawing.Point(e.X, e.Y));
+
+            }
+        }
+
         private void dgvResults_CellPainting(object sender, DataGridViewCellPaintingEventArgs e) {
             if (e.Value == null) return;
 
