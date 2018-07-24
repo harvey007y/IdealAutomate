@@ -1374,14 +1374,14 @@ progressBar1.Value = 0;
         private void dgvResults_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e) {
             if (e.Button == MouseButtons.Right) {
                 ContextMenuStrip m =  this.contextMenuStrip1;
-
+               // MessageBox.Show(e.RowIndex.ToString());
                 int currentMouseOverRow = dgvResults.HitTest(e.X, e.Y).RowIndex;
 
-                if (currentMouseOverRow >= 0) {
-                    MessageBox.Show(string.Format("Do something to row {0}", currentMouseOverRow.ToString()));
+                if (e.RowIndex > -1) {
+                    m.Show(dgvResults, new System.Drawing.Point(MousePosition.X - 20, MousePosition.Y - 175));
                 }
 
-                m.Show(dgvResults, new System.Drawing.Point(e.X, e.Y));
+                
 
             }
         }
