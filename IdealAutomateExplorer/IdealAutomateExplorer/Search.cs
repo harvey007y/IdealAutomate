@@ -1375,13 +1375,12 @@ progressBar1.Value = 0;
             if (e.Button == MouseButtons.Right) {
                 ContextMenuStrip m =  this.contextMenuStrip1;
                // MessageBox.Show(e.RowIndex.ToString());
-                int currentMouseOverRow = dgvResults.HitTest(e.X, e.Y).RowIndex;
 
                 if (e.RowIndex > -1) {
+                    dgvResults.Rows[e.RowIndex].Selected = true;
                     m.Show(dgvResults, new System.Drawing.Point(MousePosition.X - 20, MousePosition.Y - 175));
                 }
-
-                
+         
 
             }
         }
@@ -1673,7 +1672,11 @@ progressBar1.Value = 0;
                 }
             }
             string strContent = strFullFileName;
-            
+            int intLineNumber = 0;
+            int.TryParse(strLineNumber, out intLineNumber);
+            if (intLineNumber > 0) {
+                intLineNumber--;
+            }
             _NotepadppLoaded = true;
             myActions.Run(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
             if (strFullFileName.EndsWith(".doc") || strFullFileName.EndsWith(".docx") || strFullFileName.EndsWith(".odt")) {
