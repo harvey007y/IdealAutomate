@@ -1653,7 +1653,9 @@ progressBar1.Value = 0;
                 }
 
             }
-
+          
+            myActions.SetValueByKey("cbxFolderSelectedValue", ((ComboBoxPair)(cbxFolder.SelectedItem))._Value);
+            tabControl1.TabPages[tabControl1.TabPages.Count - 1].ToolTipText = "Click on this tab to search in " + ((ComboBoxPair)(cbxFolder.SelectedItem))._Value;
         }
 
         private void btnShowHideColumns_Click(object sender, EventArgs e) {
