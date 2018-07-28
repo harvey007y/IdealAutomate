@@ -26,7 +26,7 @@ namespace System.Windows.Forms.Samples {
         const int LEADING_SPACE = 12;
         const int CLOSE_SPACE = 15;
         const int CLOSE_AREA = 15;
-        bool boolStopEvent = false;
+        bool boolStopEvent = false;        
         string _scanningDir = "";
         string myResult = "";
         private bool _NotepadppLoaded = false;
@@ -473,7 +473,7 @@ namespace System.Windows.Forms.Samples {
             Methods myActions = new Methods();
             boolMatchCase = chkMatchCase.Checked;
             boolUseRegularExpression = chkUseRegularExpression.Checked;
-
+            lblResults.Text = "Count: 0";
             strFindWhat = cbxFindWhat.Text;
             string strFileType = cbxFileType.Text;
             string strExclude = cbxExclude.Text;
@@ -588,9 +588,29 @@ progressBar1.Value = 0;
                         intFiles++;
                     }
                     int currentPercent = (intProcessedFiles * 100) / myFileList.Count;
-                    if (currentPercent != prevPercent) {
+                    if (currentPercent > prevPercent + 10) {
                         prevPercent = currentPercent;
-                        backgroundWorker1.ReportProgress(currentPercent);
+                        int intUniqueFiles = 0;
+                        try {
+                            intUniqueFiles = matchInfoList.Select(x => x.FullName).Distinct().Count();
+                        } catch (Exception ex) {
+
+                            intUniqueFiles = 0;
+                        }
+                       
+                        // Get the elapsed time as a TimeSpan value.
+                        TimeSpan ts = st.Elapsed;
+                       
+                        // Format and display the TimeSpan value.
+                        string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                            ts.Hours, ts.Minutes, ts.Seconds,
+                            ts.Milliseconds / 10);
+  
+                        myResult = "  RunTime: " + elapsedTime + "  Hits: " + intHits.ToString() + "  Files with hits: " + intUniqueFiles.ToString();
+                        if (_searchErrors.Length > 0) {
+                            myResult += "\n\rErrors: " + _searchErrors.ToString();
+                        }
+                        backgroundWorker1.ReportProgress(currentPercent);           
                     }
                 }
 
@@ -642,9 +662,9 @@ progressBar1.Value = 0;
                 string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
                 string strContent = settingsDirectory + @"\MatchInfo.txt";
                 // myActions.Run(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
-                myResult = "RunTime: " + elapsedTime + "\n\r\n\rHits: " + intHits.ToString() + "\n\r\n\rFiles with hits: " + intUniqueFiles.ToString();
+                myResult = "RunTime: " + elapsedTime + "\n\rHits: " + intHits.ToString() + "\n\rFiles with hits: " + intUniqueFiles.ToString();
                 if (_searchErrors.Length > 0) {
-                    myResult += "\n\r\n\rErrors: " + _searchErrors.ToString();
+                    myResult += "\n\rErrors: " + _searchErrors.ToString();
                 }
             }             
             dgvResults.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvResults_CellMouseDown);
@@ -656,7 +676,7 @@ progressBar1.Value = 0;
                 percentageLabel.Text = _scanningDir;
             } else {
                 progressBar1.Value = e.ProgressPercentage;
-                percentageLabel.Text = e.ProgressPercentage.ToString() + " %";
+                percentageLabel.Text = e.ProgressPercentage.ToString() + " % " + myResult;
             }
         }
 
