@@ -283,3 +283,6 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomat
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Release\System.Windows.Forms.Samples.Peek.resources
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Release\GetCursorPosDemo.exe
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Release\WordpadTemplate.rtf
+C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Release\InteractiveToolTip.dll
+C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Release\InteractiveToolTip.pdb
+C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Release\Demo.ToolTipContent.resources

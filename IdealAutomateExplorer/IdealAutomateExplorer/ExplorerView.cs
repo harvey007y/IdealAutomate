@@ -33,6 +33,9 @@ using Hardcodet.Wpf.Samples.Pages;
 using Hardcodet.Wpf.Samples;
 using System.Management;
 using DgvFilterPopup;
+using Demo;
+using static Digitalis.GUI.Controls.InteractiveToolTip;
+
 
 
 
@@ -45,6 +48,9 @@ namespace System.Windows.Forms.Samples {
     partial class ExplorerView : Form {
         public static ExplorerView staticVar = null;
         private DirectoryView _dir;
+        private ToolTipContent content;
+        private bool toolTipShowing;
+        ToolTip buttonToolTip = new ToolTip();
         string strInitialDirectory = "";
         int _CurrentIndex = 0;
         static string _ExecutableFromClick = "";
@@ -180,6 +186,15 @@ namespace System.Windows.Forms.Samples {
 
         public ExplorerView() {
             InitializeComponent();
+            content = new ToolTipContent();
+
+
+            // we want the tooltip's background colour to show through
+            content.BackColor = Color.Transparent;
+
+            content.linkLabel1.LinkClicked += delegate (object sender, LinkLabelLinkClickedEventArgs e) {
+                MessageBox.Show("Link clicked! " + content.MyLink);
+            };
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExplorerView));
 
             Methods myActions = new Methods();
@@ -4149,7 +4164,6 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.favoritesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -9140,6 +9154,357 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 sw.Close();
             } catch (Exception Ex) {
             }
+        }
+
+        private void cbxCurrentPath_MouseHover(object sender, EventArgs e) {
+            buttonToolTip.ToolTipTitle = "Current Path";
+            buttonToolTip.UseFading = true;
+            buttonToolTip.UseAnimation = true;
+            buttonToolTip.IsBalloon = false;
+            buttonToolTip.ShowAlways = true;
+            buttonToolTip.AutoPopDelay = 5000;
+            buttonToolTip.InitialDelay = 1000;
+            buttonToolTip.ReshowDelay = 0;
+
+            buttonToolTip.SetToolTip(cbxCurrentPath, "Current path for selected tab\r\nYou can select or type another path to change tab on the fly");
+        }
+
+        private void pictureBox1_MouseHover(object sender, EventArgs e) {
+
+
+            //  buttonToolTip.SetToolTip(pictureBox1, "Parallel Search is a tool that uses parallel processing to rapidly find text in any file in a folder \r\nParallel processing makes this tool much faster than any other tool I have tested\r\nContext-menu on the search results allows you to quickly go to line of text in Notepad++, Visual Studio, or IdealAutomateExplorer");
+            // position the tooltip with its stem towards the right end of the button
+            System.Drawing.Point myPoint = new System.Drawing.Point(pictureBox1.Width - (pictureBox1.Width/2), 0);
+            content.MyContent = "Parallel Search is a tool that uses parallel processing to rapidly find text in any file in a folder \r\n\r\n";
+            content.MyContent += "Parallel processing makes this tool much faster than Visual Studio and Windows Grep tool.\r\n\r\n";
+            content.MyContent += "Context -menu on the search results allows you to quickly go to line of text in Notepad++, Visual Studio, or IdealAutomateExplorer\r\n\r\n";
+            content.MyContent += "Here is a brief 4-minute video that compares how much time Parallel Search (which used to be called FindTextInFiles) over other tools: ";
+            content.MyLink = "https://www.youtube.com/watch?v=IY-Y5BZUpaM&feature=youtu.be";
+            interactiveToolTip1.Show(content, pictureBox1, myPoint, StemPosition.BottomLeft, 5000);
+        }
+
+        private void categoryToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+
+            //  buttonToolTip.SetToolTip(pictureBox1, "Parallel Search is a tool that uses parallel processing to rapidly find text in any file in a folder \r\nParallel processing makes this tool much faster than any other tool I have tested\r\nContext-menu on the search results allows you to quickly go to line of text in Notepad++, Visual Studio, or IdealAutomateExplorer");
+            // position the tooltip with its stem towards the right end of the button
+
+            content.MyContent = "Add Categories and Subcategories to your folder structures to help organize your files.  \r\n\r\n";
+            content.MyContent += "Categories and Subcategories expand and collapse, and their expanded or collapsed state is remembered.\r\n\r\n";
+            content.MyContent += "The only difference between a folder and a category is that a categorys expanded state is remembered.";
+            
+            content.MyLink = "";
+            DisplayToolTip(sender);
+        }
+        /// <summary>
+
+        /// Gets the button position by the parent ToolStrip
+
+        /// </summary>
+
+        /// <returns></returns>
+
+        public System.Drawing.Point GetOpenPoint(ToolStripMenuItem myMenuItem, ref int menuItemWidth, ref int menuItemHeight) {
+
+            if (myMenuItem.Owner == null) return new System.Drawing.Point(5, 5);
+            int y = myMenuItem.Owner.Top;
+            int x = myMenuItem.Owner.Left;
+            bool firstTime = true;
+            foreach (ToolStripItem item in myMenuItem.Owner.Items) {
+
+
+                if (item.Visible) {                    
+                    y += item.Height;
+                }
+
+                if (item == myMenuItem) {
+                   
+                        menuItemHeight = item.Height;
+                        menuItemWidth = item.Width;
+                    
+
+                    break;
+                }
+            }
+
+            return new System.Drawing.Point(x, y);
+
+        }
+
+        private void projectToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            //  buttonToolTip.SetToolTip(pictureBox1, "Parallel Search is a tool that uses parallel processing to rapidly find text in any file in a folder \r\nParallel processing makes this tool much faster than any other tool I have tested\r\nContext-menu on the search results allows you to quickly go to line of text in Notepad++, Visual Studio, or IdealAutomateExplorer");
+            // position the tooltip with its stem towards the right end of the button
+            content.MyContent = "Create a Visual Studio project that includes reference to IdealAutomateCore.  \r\n\r\n";
+            content.MyContent += "IdealAutomateCore provides you with the methods needed to easily automate any task.";
+          //  content.MyContent += "The only difference between a folder and a category is that a categorys expanded state is remembered.\r\n\r\n";
+
+            content.MyLink = "";
+            DisplayToolTip(sender);
+        }
+
+        private void fileShortcutFileToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            //  buttonToolTip.SetToolTip(pictureBox1, "Parallel Search is a tool that uses parallel processing to rapidly find text in any file in a folder \r\nParallel processing makes this tool much faster than any other tool I have tested\r\nContext-menu on the search results allows you to quickly go to line of text in Notepad++, Visual Studio, or IdealAutomateExplorer");
+            // position the tooltip with its stem towards the right end of the button
+
+            content.MyContent = "File Shortcut allows you to point directly to any file or folder on your computer.  \r\n\r\n";
+            content.MyContent += "A File Shortcut creates a file that ends with the .lnk extension.  \r\n\r\n";
+            content.MyContent += "Url Shortcuts allow you to point to website urls and File Shortcuts allow you to point to files and folders on your computer.";
+            //  content.MyContent += "The only difference between a folder and a category is that a categorys expanded state is remembered.\r\n\r\n";
+
+            content.MyLink = "";
+            DisplayToolTip(sender);
+        }
+
+        private void synchronizeItToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            //  buttonToolTip.SetToolTip(pictureBox1, "Parallel Search is a tool that uses parallel processing to rapidly find text in any file in a folder \r\nParallel processing makes this tool much faster than any other tool I have tested\r\nContext-menu on the search results allows you to quickly go to line of text in Notepad++, Visual Studio, or IdealAutomateExplorer");
+            // position the tooltip with its stem towards the right end of the button
+
+            content.MyContent = "SynchronizeIt is a free tool that allows you to compare all the files in a folder.  \r\n\r\n";
+            content.MyContent += "SynchronizeIt works in conjunction with the free compare tool called CompareIt.\r\n\r\n";
+            content.MyContent += "CompareIt allows you to see the differences between two individual files.\r\n\r\n";
+            content.MyContent += "You can download Synchronize it by clicking the link below:";
+            content.MyLink = "https://www.grigsoft.com/";
+            DisplayToolTip(sender);
+        }
+
+        private void toolStripMenuItem3_MouseHover(object sender, EventArgs e) {
+            //  buttonToolTip.SetToolTip(pictureBox1, "Parallel Search is a tool that uses parallel processing to rapidly find text in any file in a folder \r\nParallel processing makes this tool much faster than any other tool I have tested\r\nContext-menu on the search results allows you to quickly go to line of text in Notepad++, Visual Studio, or IdealAutomateExplorer");
+            // position the tooltip with its stem towards the right end of the button
+
+            content.MyContent = "Open allows you to open a new folder for the currently selected tab. ";
+          //  content.MyContent += "Url Shortcuts allow you to point to website urls and File Shortcuts allow you to point to files and folders on your computer.";
+            //  content.MyContent += "The only difference between a folder and a category is that a categorys expanded state is remembered.\r\n\r\n";
+
+            content.MyLink = "";
+            DisplayToolTip(sender);
+        }
+
+        private void closeToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            //  buttonToolTip.SetToolTip(pictureBox1, "Parallel Search is a tool that uses parallel processing to rapidly find text in any file in a folder \r\nParallel processing makes this tool much faster than any other tool I have tested\r\nContext-menu on the search results allows you to quickly go to line of text in Notepad++, Visual Studio, or IdealAutomateExplorer");
+            // position the tooltip with its stem towards the right end of the button
+
+            content.MyContent = "Close allows you to close the application. ";
+           // content.MyContent += "Url Shortcuts allow you to point to website urls and File Shortcuts allow you to point to files and folders on your computer.";
+            //  content.MyContent += "The only difference between a folder and a category is that a categorys expanded state is remembered.\r\n\r\n";
+
+            content.MyLink = "";
+            DisplayToolTip(sender);
+        }
+
+        private void subCategoryToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Select a category and Subcategories to your folder structures to help organize your files.  \r\n\r\n";
+            content.MyContent += "Categories and Subcategories expand and collapse, and their expanded or collapsed state is remembered.\r\n\r\n";
+            content.MyContent += "The only difference between a folder and a subcategory is that a subcategorys expanded state is remembered.";
+
+            content.MyLink = "";
+            DisplayToolTip(sender);
+        }
+
+        private void folderToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "You can add folders to your file structures in the same way that you do with File Explorer.  \r\n\r\n";
+            content.MyContent += "The only difference between a folder and a category is that a categorys expanded state is remembered.";
+
+            content.MyLink = "";
+            PictureBox myWindow = new PictureBox();
+            DisplayToolTip(sender);
+        }
+
+        private void textFileToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "You can add text files to your file structures in the same way that you do with File Explorer.  \r\n\r\n";
+            content.MyContent += "One advantage of using IdealAutomateExplorer to add textfiles is that you can associate metadata to the textfile.\r\n\r\n";
+            content.MyContent += "In general, wordpad files are more useful than text files because wordpad files allow one to use images.";
+
+            content.MyLink = "";
+            DisplayToolTip(sender);
+        }
+
+        private void urlShortcutFileToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Url Shortcut allows you to point directly to website url.  \r\n\r\n";
+            content.MyContent += "Url Shortcut creates a file that ends with the .url extension.  \r\n\r\n";
+            content.MyContent += "Url Shortcuts allow you to point to website urls and File Shortcuts allow you to point to files and folders on your computer.";
+            //  content.MyContent += "The only difference between a folder and a category is that a categorys expanded state is remembered.\r\n\r\n";
+
+            content.MyLink = "";
+            DisplayToolTip(sender);
+        }
+
+        private void wordPadFileToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "You can add wordpad to your file structures.  \r\n\r\n";
+            content.MyContent += "One advantage of using IdealAutomateExplorer to add wordpad is that you can associate metadata to the wordpad file.\r\n\r\n";
+            content.MyContent += "In general, wordpad files are more useful than text files because wordpad files allow one to use images.";
+
+            content.MyLink = "";
+            DisplayToolTip(sender);
+        }
+
+        private void toolStripMenuItem12_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "DropBox is not free. It provides you with cloud storage that you can use to share files.  \r\n\r\n";
+           content.MyContent += "You can learn more about DropBox by clicking on the following url.";
+
+            content.MyLink = "https://www.dropbox.com/";
+            DisplayToolTip(sender);
+        }
+
+        private void googleDriveToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "GoogleDrive starts you with 15 GB of free Google online storage.   \r\n\r\n";
+            content.MyContent += "You can learn more about GoogleDrive by clicking on the following url.";
+
+            content.MyLink = "https://www.google.com/drive/";
+            DisplayToolTip(sender);
+        }
+
+        private void oneDriveToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Microsoft OneDrive starts you with 5 GB of free online storage.   \r\n\r\n";
+            content.MyContent += "You can learn more about OneDrive by clicking on the following url.";
+
+            content.MyLink = "https://onedrive.live.com/about/en-us/";
+            DisplayToolTip(sender);
+        }
+
+        private void instantCToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Instant C# Free Version allows you to convert up to 100 lines of vb.net code at a time to C# code.   \r\n\r\n";
+            content.MyContent += "You can download Instant C# by clicking the link below.   \r\n\r\n";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+
+            content.MyLink = "https://www.tangiblesoftwaresolutions.com/";
+            DisplayToolTip(sender);
+        }
+
+        private void instantVBToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Instant VB Free Version allows you to convert up to 100 lines of C# code at a time to vb.net code.   \r\n\r\n";
+            content.MyContent += "You can download Instant VB by clicking the link below.   \r\n\r\n";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+
+            content.MyLink = "https://www.tangiblesoftwaresolutions.com/";
+            DisplayToolTip(sender);
+        }
+
+        private void collapseAllToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Collapse All allows you to collapse all categories and subcategories in the left-split panel with a single click.  ";
+
+            content.MyLink = "";
+            DisplayToolTip(sender);
+        }
+
+        private void expandAllToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Expand All allows you to expand all categories and subcategories in the left-split panel with a single click.  ";
+
+            content.MyLink = "";
+            DisplayToolTip(sender);
+        }
+
+        private void DisplayToolTip(object sender) {
+            PictureBox myWindow = new PictureBox();
+            myWindow.Visible = false;
+            Rectangle myBounds = categoryToolStripMenuItem.Bounds;
+
+            int menuItemHeight = 0;
+            int menuItemWidth = 0;
+            System.Drawing.Point myPoint2 = GetOpenPoint((ToolStripMenuItem)sender, ref menuItemWidth, ref menuItemHeight);
+            myWindow.Left = myPoint2.X;// myBounds.Left;
+            myWindow.Top = myPoint2.Y - (menuItemHeight * 2); // myBounds.Top;
+            myWindow.Height = menuItemHeight; ; // myBounds.Height;
+            myWindow.Width = menuItemWidth; // myBounds.Width;
+            System.Drawing.Point myPoint = new System.Drawing.Point(myWindow.Width, myWindow.Height);
+            interactiveToolTip1.Show(content, myWindow, myPoint, StemPosition.TopLeft, 5000);
+        }
+
+        private void refreshToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Refresh allows you to refresh the files and folders in the left-split panel with a single click.  ";
+
+            content.MyLink = "";
+            DisplayToolTip(sender);
+        }
+
+        private void totalSavingsToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Total Savings allows you to see how much time IdealAutomateExplorer is saving you. \r\n\r\n";
+            content.MyContent += "When you create a project to automate some process \r\n\r\n";
+            content.MyContent += "you can right-click on the project in IdealAutomateExplorer to specify how long it would take you to do the task manually. \r\n\r\n";
+            content.MyContent += "IdealAutomateExplorer will then keep track of how much time you save each time you run that application. ";
+            content.MyLink = "";
+            DisplayToolTip(sender);
+        }
+
+        private void showHideColumnsToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Show/hide allows you to select which columns to show/hide in the left-split panel.";
+           
+            content.MyLink = "";
+            DisplayToolTip(sender);
+        }
+
+        private void favoritesToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Favorites allows you to create a list of filepaths that you frequently use. \r\n\r\n";
+            content.MyContent = "You can select one of the favorites in order to change the filepath for the currently selected tab. ";
+            content.MyLink = "";
+            DisplayToolTip(sender);
+        }
+
+        private void paintNETToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Paint.NET is a free tool that is very similar to photoshop.   \r\n\r\n";
+            content.MyContent += "You can download Paint.NET by clicking the link below.   \r\n\r\n";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+
+            content.MyLink = "https://www.getpaint.net/index.html/";
+            DisplayToolTip(sender);
+        }
+
+        private void visualStudio2015ToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Visual Studio 2015 Community Edition is a free Microsoft tool that allows you to write code in C#, VB.NET, etc.   \r\n\r\n";
+            content.MyContent += "You can download Visual Studio 2015 by clicking the link below.   \r\n\r\n";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+
+            content.MyLink = "https://my.visualstudio.com/";
+            DisplayToolTip(sender);
+        }
+
+        private void visualStudio2017ToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Visual Studio 2017 Community Edition is a free Microsoft tool that allows you to write code in C#, VB.NET, etc.   \r\n\r\n";
+            content.MyContent += "You can download Visual Studio 2017 by clicking the link below.   \r\n\r\n";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+
+            content.MyLink = "https://my.visualstudio.com/";
+            DisplayToolTip(sender);
+        }
+
+        private void compareItToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+
+            content.MyContent = "SynchronizeIt is a free tool that allows you to compare all the files in a folder.  \r\n\r\n";
+            content.MyContent += "SynchronizeIt works in conjunction with the free compare tool called CompareIt.\r\n\r\n";
+            content.MyContent += "CompareIt allows you to see the differences between two individual files.\r\n\r\n";
+            content.MyContent += "You can download Synchronize it by clicking the link below:";
+            content.MyLink = "https://www.grigsoft.com/";
+            DisplayToolTip(sender);
+        }
+
+        private void toolStripMenuItemDebugTrace_MouseHover(object sender, EventArgs e) {
+
+            content.MyContent = "DebugTrace is a free tool that is built into IdealAutomate.  \r\n\r\n";
+            content.MyContent += "Step 1: Set a breakpoint in Visual Studio. \r\n\r\n";
+            content.MyContent += "Step 2: When the breakpoint in Visual Studio is hit, run this tool to automatically step thru all subsequent instructions and display a trace log of the instructions hit.";
+            content.MyLink = "";
+            DisplayToolTip(sender);
+        }
+
+        private void fiddlerToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Fiddler 4 is a free tool that allows you to look at all the traffic that goes back and forth between the client and the server.  \r\n\r\n";
+            content.MyContent += "You can download Fiddler4 by clicking the link below. \r\n\r\n";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+            content.MyLink = "https://www.telerik.com/fiddler";
+            DisplayToolTip(sender);
+        }
+
+
+
+        private void iISToolStripMenuItem1_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Internet Information Services (IIS) is a free tool that is built into Windows.  ";
+            
+            content.MyLink = "";
+            DisplayToolTip(sender);
         }
     }
 

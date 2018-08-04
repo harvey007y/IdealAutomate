@@ -4,7 +4,7 @@
   <description asmv2:iconFile="Resources\folder.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="IdealAutomateExplorer" version="1.0.6783.17927" publicKeyToken="D5A6DB18CD610FA5" language="neutral" processorArchitecture="amd64" />
+    <assemblyIdentity name="IdealAutomateExplorer" version="1.0.6790.17395" publicKeyToken="D5A6DB18CD610FA5" language="neutral" processorArchitecture="amd64" />
     <commandLine file="IdealAutomateExplorer.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -91,14 +91,26 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IdealAutomateExplorer.exe" size="1251808">
-      <assemblyIdentity name="IdealAutomateExplorer" version="1.0.6783.17927" publicKeyToken="D5A6DB18CD610FA5" language="neutral" processorArchitecture="amd64" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IdealAutomateExplorer.exe" size="1269216">
+      <assemblyIdentity name="IdealAutomateExplorer" version="1.0.6790.17395" publicKeyToken="D5A6DB18CD610FA5" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>ajx+YNpV4mMeoAFmp+aJ8aU1oo0QXfcLiskDqeM+Z7M=</dsig:DigestValue>
+        <dsig:DigestValue>XShgj3gcaPwPg318US2BT1urDL6zBMxaSzH4q0JoNDA=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="InteractiveToolTip.dll" size="15360">
+      <assemblyIdentity name="InteractiveToolTip" version="1.0.0.0" publicKeyToken="D5A6DB18CD610FA5" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>Ki1EDI5zYqKESjsLFqr9bUmdgY7jiynGh1kW8pLXt54=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

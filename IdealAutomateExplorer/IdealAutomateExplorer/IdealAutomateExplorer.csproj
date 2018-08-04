@@ -184,6 +184,12 @@
     <Compile Include="StringExtensionMethods.cs" />
     <Compile Include="SubPositionInfo.cs" />
     <Compile Include="Switcher.cs" />
+    <Compile Include="ToolTipContent.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ToolTipContent.Designer.cs">
+      <DependentUpon>ToolTipContent.cs</DependentUpon>
+    </Compile>
     <Compile Include="Videos\IdealSqlTracer.xaml.cs">
       <DependentUpon>IdealSqlTracer.xaml</DependentUpon>
     </Compile>
@@ -496,6 +502,9 @@
     </Content>
     <EmbeddedResource Include="Search.resx">
       <DependentUpon>Search.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ToolTipContent.resx">
+      <DependentUpon>ToolTipContent.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="IdealAutomateExplorer_1_TemporaryKey.pfx" />
     <None Include="IdealAutomateExplorer_TemporaryKey.pfx" />
@@ -1173,6 +1182,10 @@
     <ProjectReference Include="..\DgvFilterPopup\DgvFilterPopup.csproj">
       <Project>{4b9be5fd-303e-4270-9c4d-fa3bde6c34eb}</Project>
       <Name>DgvFilterPopup</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DLL\InteractiveToolTipDLL.csproj">
+      <Project>{f4c48759-908d-466a-adc8-271e3dddacc3}</Project>
+      <Name>InteractiveToolTipDLL</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
