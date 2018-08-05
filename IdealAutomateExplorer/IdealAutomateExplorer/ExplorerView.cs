@@ -9506,6 +9506,196 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             content.MyLink = "";
             DisplayToolTip(sender);
         }
+
+        private void iWB2LearnerToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "iWB2 Learner is a free tool that allows you to drag a selection tool over an html element in a web page.  \r\n\r\n";
+            content.MyContent += "When the rectangle is over the element, it shows you the element name and id. \r\n\r\n";
+            content.MyContent += "It also displays the inner and outer html for the element in a format that can easily be copied to the clipboard. \r\n\r\n";
+            content.MyContent += "You can download iWB2 Learner by clicking the link below. \r\n\r\n";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+            content.MyLink = "https://osdn.net/projects/sfnet_ahkcn/downloads/Recommended/iWB2%20Learner/iWB2%20Learner%20-%2064bit.zip/";
+            DisplayToolTip(sender);
+        }
+
+        private void toolStripMenuItemMousePositionShow_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Mouse Position Show is a free tool that is built into IdealAutomateExplorer. It allows you to get mouse position x,y coordinates.  ";
+
+            content.MyLink = "";
+            DisplayToolTip(sender);
+        }
+
+        private void notepadToolStripMenuItem2_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Notepad++ is a free tool that is like regular notepad on steriods.  \r\n\r\n";
+            content.MyContent += "Notepad++ has a lot of plugin extensions that you can add. \r\n\r\n";
+            content.MyContent += "One extension allows you to compare two files. \r\n\r\n";
+            content.MyContent += "You can download Notepad++ by clicking the link below. \r\n\r\n";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+            content.MyLink = "https://notepad-plus-plus.org/download";
+            DisplayToolTip(sender);
+        }
+
+        private void processExplorerToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Process Explorer is a free tool that is like Windows Task Manager on steriods.  \r\n\r\n";
+            content.MyContent += "You can download Process Explorer by clicking the link below. \r\n\r\n";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+            content.MyLink = "https://docs.microsoft.com/en-us/sysinternals/downloads/process-explorer";
+            DisplayToolTip(sender);
+        }
+
+        private void taskManagerToolStripMenuItem1_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Task Manager is a free tool that comes with the Windows operating system.  \r\n\r\n";
+            content.MyContent += "Task Manager allows you to see all the tasks running on your computer and to end any of them.  ";
+            content.MyLink = "";
+            DisplayToolTip(sender);
+        }
+
+        private void winListerToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Winlister is a free tool that is like Windows Task Manager on steriods.  \r\n\r\n";
+            content.MyContent += "You can download Winlister by clicking the link below. \r\n\r\n";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+            content.MyLink = "http://www.nirsoft.net/utils/winlister.html";
+            DisplayToolTip(sender);
+        }
+
+        private void filezillaToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Filezilla is a free FTP tool that allows you to transfer files between your computer and a website.  \r\n\r\n";
+            content.MyContent += "You can download Filezilla by clicking the link below. \r\n\r\n";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+            content.MyLink = "https://filezilla-project.org/download.php";
+            DisplayToolTip(sender);
+        }
+
+        private void curlToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "cURL is a free command line tool that allows you to get or send files using URL syntax.  \r\n\r\n";
+            content.MyContent += "You can download cURL by clicking the link below. \r\n\r\n";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+            content.MyLink = "https://curl.haxx.se/";
+            DisplayToolTip(sender);
+        }
+
+        private void fiddlerToolStripMenuItem1_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Fiddler 4 is a free tool that allows you to look at all the traffic that goes back and forth between the client and the server.  \r\n\r\n";
+            content.MyContent += "You can download Fiddler4 by clicking the link below. \r\n\r\n";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+            content.MyLink = "https://www.telerik.com/fiddler";
+            DisplayToolTip(sender);
+        }
+
+        private void postmanToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Postman is a free tool that allows you to look at all the traffic that goes back and forth between the client and the server.  \r\n\r\n";
+            content.MyContent += "You can download Postman by clicking the link below. \r\n\r\n";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+            content.MyLink = "https://www.getpostman.com/";
+            DisplayToolTip(sender);
+        }
+
+        private void snippingAutomationToolToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Snipping Automation Tool is a free tool that is built into IdealAutomateExplorer.  \r\n\r\n";
+            content.MyContent += "Snipping Automation Tool allows you to automate the process of cutting  \r\n\r\n";
+            content.MyContent += "and pasting images into the bottom of a wordpad file.  \r\n\r\n";
+            content.MyContent += "This is very useful when taking notes while watching video tutorials.  ";
+
+            content.MyLink = "";
+            DisplayToolTip(sender);
+        }
+
+        private void toolStripMenuItem18_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Market Samurai is a paid keyword analysis tool.   \r\n\r\n";
+            content.MyContent += "Market Samurai allows you to see how much traffic each keyword is currently getting. ";
+            content.MyLink = "";
+            DisplayToolTip(sender);
+        }
+
+        private void videoTrafficBlueprintToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Video Traffic Blueprint is a paid tool.   \r\n\r\n";
+            content.MyContent += "Video Traffic Blueprint provides you with five killer templates for creating content videos to promote products. ";
+            content.MyLink = "";
+            DisplayToolTip(sender);
+        }
+
+        private void toolStripMenuItem9_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Preferences allows you to select whether you want to start IdealAutomateExplorer in Admin mode or regular mode.   ";
+
+            content.MyLink = "";
+            DisplayToolTip(sender);
+        }
+
+        private void flashbackExpressToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Flashback Express is a free tool that is similar to Camtasia.\r\n\r\n";
+            content.MyContent += "Flashback Express  allows you to create screen recordings that you can share with others.  \r\n\r\n";
+            content.MyContent += "You can download Flashback Express by clicking the link below. \r\n\r\n";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+            content.MyLink = "https://www.flashbackrecorder.com/express/";
+            DisplayToolTip(sender);
+        }
+
+        private void findColumnsToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Find Columns is a free tool that is built into IdealAutomateExplorer.  \r\n\r\n";
+            content.MyContent += "Find Columns allows you to quickly find any column in any database.  \r\n\r\n";
+            content.MyContent += "You just supply the connectionstring to the database,  \r\n\r\n";
+            content.MyContent += "and that allows you to display table info based on various filters.  ";
+
+            content.MyLink = "";
+            DisplayToolTip(sender);
+        }
+
+        private void idealSqlTracerToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "IdealSqlTracer is a free tool that is built into IdealAutomateExplorer.  \r\n\r\n";
+            content.MyContent += "IdealSqlTracer is similar to sql profiler, .  \r\n\r\n";
+            content.MyContent += "but it allows you to easily grab all the sql that is generated  \r\n\r\n";
+            content.MyContent += "behind a webpage, format that sql, and copy it to notepad.  ";
+
+            content.MyLink = "";
+            DisplayToolTip(sender);
+        }
+
+        private void sqlLiteToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Sql Manager for SQL Server Lite edition is a free tool that is similar to Sql Server Management Studio (SSMS).\r\n\r\n";
+            content.MyContent += "SqlLite allows you to use filters to easily find data.  \r\n\r\n";
+            content.MyContent += "It also allows you to see your data in a form view,  \r\n\r\n";
+            content.MyContent += "which makes it easy to edit rows.  \r\n\r\n";
+            content.MyContent += "You can download Sql Manager for SQL Server Lite edition by clicking the link below. \r\n\r\n";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+            content.MyLink = "https://www.sqlmanager.net/products/mssql/manager/";
+            DisplayToolTip(sender);
+        }
+
+        private void sqlProfilerToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Sql Profiler is a free tool that allows you to view the sql that is generated behind a web page.\r\n\r\n";
+            content.MyContent += "You can download Sql Profiler by clicking the link below. \r\n\r\n";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+            content.MyLink = "https://docs.microsoft.com/en-us/sql/tools/sql-server-profiler/sql-server-profiler?view=sql-server-2017";
+            DisplayToolTip(sender);
+        }
+
+        private void centralAccessReaderToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Central Access Reader is a free tool that allows you to paste text into the application so that it can be read to you.\r\n\r\n";
+            content.MyContent += "You can download Central Access Reader by clicking the link below. \r\n\r\n";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+            content.MyLink = "https://www.cwu.edu/central-access/reader";
+            DisplayToolTip(sender);
+        }
+
+        private void speakItToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "SpeakIt is a free Google Chrome extension that allows you to highlight text on a webpage so that it can be read to you.\r\n\r\n";
+            content.MyContent += "You can download SpeakIt by clicking the link below. \r\n\r\n";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+            content.MyLink = "https://chrome.google.com/webstore/detail/speakit/pgeolalilifpodheeocdmbhehgnkkbak?hl=en-US";
+            DisplayToolTip(sender);
+        }
     }
 
 }
