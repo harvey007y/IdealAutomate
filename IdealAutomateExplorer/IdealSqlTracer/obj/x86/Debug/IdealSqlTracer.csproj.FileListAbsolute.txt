@@ -132,6 +132,7 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTrac
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\bin\Debug\Images\imgUpdateLogOK.PNG
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\bin\Debug\Images\imgUpdateLogOK_Home.PNG
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\bin\Debug\SqlFormatter.exe
+C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\bin\Debug\IdealSqlTracer.exe.config
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\bin\Debug\IdealSqlTracer.exe.manifest
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\bin\Debug\IdealSqlTracer.application
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\bin\Debug\IdealSqlTracer.exe
@@ -148,10 +149,9 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTrac
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\obj\x86\Debug\IdealSqlTracer_MarkupCompile.cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\obj\x86\Debug\IdealSqlTracer.g.resources
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\obj\x86\Debug\IdealSqlTracer.Properties.Resources.resources
-C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\obj\x86\Debug\IdealSqlTracer.csproj.GenerateResource.Cache
+C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\obj\x86\Debug\IdealSqlTracer.csproj.GenerateResource.cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\obj\x86\Debug\IdealSqlTracer.csproj.CoreCompileInputs.cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\obj\x86\Debug\IdealSqlTracer.exe.manifest
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\obj\x86\Debug\IdealSqlTracer.application
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\obj\x86\Debug\IdealSqlTracer.exe
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\obj\x86\Debug\IdealSqlTracer.pdb
-C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\bin\Debug\IdealSqlTracer.exe.config

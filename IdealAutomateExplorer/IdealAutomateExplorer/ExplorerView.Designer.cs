@@ -680,7 +680,7 @@ namespace System.Windows.Forms.Samples
             this.googleDriveToolStripMenuItem,
             this.oneDriveToolStripMenuItem});
             this.toolStripMenuItem11.Name = "toolStripMenuItem11";
-            this.toolStripMenuItem11.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem11.Size = new System.Drawing.Size(172, 22);
             this.toolStripMenuItem11.Text = "Cloud Storage";
             // 
             // toolStripMenuItem12
@@ -716,7 +716,7 @@ namespace System.Windows.Forms.Samples
             this.visualStudio2015ToolStripMenuItem,
             this.visualStudio2017ToolStripMenuItem});
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(172, 22);
             this.toolStripMenuItem2.Text = "Coding Tools";
             // 
             // instantCToolStripMenuItem
@@ -765,7 +765,7 @@ namespace System.Windows.Forms.Samples
             this.compareItToolStripMenuItem,
             this.synchronizeItToolStripMenuItem});
             this.toolStripMenuItem13.Name = "toolStripMenuItem13";
-            this.toolStripMenuItem13.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem13.Size = new System.Drawing.Size(172, 22);
             this.toolStripMenuItem13.Text = "Comparison Tools";
             // 
             // compareItToolStripMenuItem
@@ -794,7 +794,7 @@ namespace System.Windows.Forms.Samples
             this.servicesToolStripMenuItem,
             this.taskManagerToolStripMenuItem});
             this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(172, 22);
             this.toolStripMenuItem6.Text = "Control Panel";
             // 
             // componentServicesToolStripMenuItem
@@ -852,7 +852,7 @@ namespace System.Windows.Forms.Samples
             this.taskManagerToolStripMenuItem1,
             this.winListerToolStripMenuItem});
             this.toolStripMenuItem7.Name = "toolStripMenuItem7";
-            this.toolStripMenuItem7.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(172, 22);
             this.toolStripMenuItem7.Text = "Debugging Tools";
             // 
             // toolStripMenuItemDebugTrace
@@ -932,7 +932,7 @@ namespace System.Windows.Forms.Samples
             this.toolStripMenuItem14.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.filezillaToolStripMenuItem});
             this.toolStripMenuItem14.Name = "toolStripMenuItem14";
-            this.toolStripMenuItem14.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem14.Size = new System.Drawing.Size(172, 22);
             this.toolStripMenuItem14.Text = "FTP";
             // 
             // filezillaToolStripMenuItem
@@ -950,7 +950,7 @@ namespace System.Windows.Forms.Samples
             this.fiddlerToolStripMenuItem1,
             this.postmanToolStripMenuItem});
             this.toolStripMenuItem8.Name = "toolStripMenuItem8";
-            this.toolStripMenuItem8.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem8.Size = new System.Drawing.Size(172, 22);
             this.toolStripMenuItem8.Text = "Http Tools";
             // 
             // curlToolStripMenuItem
@@ -982,7 +982,7 @@ namespace System.Windows.Forms.Samples
             this.toolStripMenuItemImages.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.snippingAutomationToolToolStripMenuItem});
             this.toolStripMenuItemImages.Name = "toolStripMenuItemImages";
-            this.toolStripMenuItemImages.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItemImages.Size = new System.Drawing.Size(172, 22);
             this.toolStripMenuItemImages.Text = "Image Processing";
             // 
             // snippingAutomationToolToolStripMenuItem
@@ -1002,7 +1002,7 @@ namespace System.Windows.Forms.Samples
             this.toolStripMenuItem18,
             this.videoTrafficBlueprintToolStripMenuItem});
             this.toolStripMenuItem17.Name = "toolStripMenuItem17";
-            this.toolStripMenuItem17.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem17.Size = new System.Drawing.Size(172, 22);
             this.toolStripMenuItem17.Text = "Internet Marketing";
             // 
             // toolStripMenuItem18
@@ -1026,7 +1026,7 @@ namespace System.Windows.Forms.Samples
             this.toolStripMenuItem9.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripComboBox2});
             this.toolStripMenuItem9.Name = "toolStripMenuItem9";
-            this.toolStripMenuItem9.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem9.Size = new System.Drawing.Size(172, 22);
             this.toolStripMenuItem9.Text = "Preferences";
             this.toolStripMenuItem9.MouseHover += new System.EventHandler(this.toolStripMenuItem9_MouseHover);
             // 
@@ -1044,7 +1044,7 @@ namespace System.Windows.Forms.Samples
             this.toolStripMenuItem15.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.flashbackExpressToolStripMenuItem});
             this.toolStripMenuItem15.Name = "toolStripMenuItem15";
-            this.toolStripMenuItem15.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem15.Size = new System.Drawing.Size(172, 22);
             this.toolStripMenuItem15.Text = "Screen Recording";
             // 
             // flashbackExpressToolStripMenuItem
@@ -1067,7 +1067,7 @@ namespace System.Windows.Forms.Samples
             this.tumblrToolStripMenuItem,
             this.twitterToolStripMenuItem});
             this.toolStripMenuItem16.Name = "toolStripMenuItem16";
-            this.toolStripMenuItem16.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem16.Size = new System.Drawing.Size(172, 22);
             this.toolStripMenuItem16.Text = "Social";
             // 
             // facebookToolStripMenuItem
@@ -1129,7 +1129,7 @@ namespace System.Windows.Forms.Samples
             this.sqlToGridToolStripMenuItem,
             this.sSMSToolStripMenuItem});
             this.sqlToolStripMenuItem.Name = "sqlToolStripMenuItem";
-            this.sqlToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.sqlToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.sqlToolStripMenuItem.Text = "Sql";
             // 
             // findColumnsToolStripMenuItem
@@ -1184,7 +1184,7 @@ namespace System.Windows.Forms.Samples
             this.centralAccessReaderToolStripMenuItem,
             this.speakItToolStripMenuItem});
             this.textToSpeechToolStripMenuItem.Name = "textToSpeechToolStripMenuItem";
-            this.textToSpeechToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.textToSpeechToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.textToSpeechToolStripMenuItem.Text = "TextToSpeech";
             // 
             // centralAccessReaderToolStripMenuItem
@@ -1216,23 +1216,26 @@ namespace System.Windows.Forms.Samples
             // courseraToolStripMenuItem
             // 
             this.courseraToolStripMenuItem.Name = "courseraToolStripMenuItem";
-            this.courseraToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+            this.courseraToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.courseraToolStripMenuItem.Text = "Coursera";
             this.courseraToolStripMenuItem.Click += new System.EventHandler(this.courseraToolStripMenuItem_Click);
+            this.courseraToolStripMenuItem.MouseHover += new System.EventHandler(this.courseraToolStripMenuItem_MouseHover);
             // 
             // pluralsightToolStripMenuItem
             // 
             this.pluralsightToolStripMenuItem.Name = "pluralsightToolStripMenuItem";
-            this.pluralsightToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+            this.pluralsightToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.pluralsightToolStripMenuItem.Text = "Pluralsight";
             this.pluralsightToolStripMenuItem.Click += new System.EventHandler(this.pluralsightToolStripMenuItem_Click);
+            this.pluralsightToolStripMenuItem.MouseHover += new System.EventHandler(this.pluralsightToolStripMenuItem_MouseHover);
             // 
             // udemyToolStripMenuItem
             // 
             this.udemyToolStripMenuItem.Name = "udemyToolStripMenuItem";
-            this.udemyToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+            this.udemyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.udemyToolStripMenuItem.Text = "Udemy";
             this.udemyToolStripMenuItem.Click += new System.EventHandler(this.udemyToolStripMenuItem_Click);
+            this.udemyToolStripMenuItem.MouseHover += new System.EventHandler(this.udemyToolStripMenuItem_MouseHover);
             // 
             // helpToolStripMenuItem
             // 

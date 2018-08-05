@@ -9363,8 +9363,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         private void instantCToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Instant C# Free Version allows you to convert up to 100 lines of vb.net code at a time to C# code.   \r\n\r\n";
             content.MyContent += "You can download Instant C# by clicking the link below.   \r\n\r\n";
-            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
-            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the full filepath for the executable file to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the full filepath for the executable file to the text field allows you to immediately launch the application from the dialog in the future.";
 
             content.MyLink = "https://www.tangiblesoftwaresolutions.com/";
             DisplayToolTip(sender);
@@ -9373,8 +9373,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         private void instantVBToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Instant VB Free Version allows you to convert up to 100 lines of C# code at a time to vb.net code.   \r\n\r\n";
             content.MyContent += "You can download Instant VB by clicking the link below.   \r\n\r\n";
-            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
-            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the full filepath for the executable file to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the full filepath for the executable file to the text field allows you to immediately launch the application from the dialog in the future.";
 
             content.MyLink = "https://www.tangiblesoftwaresolutions.com/";
             DisplayToolTip(sender);
@@ -9443,8 +9443,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         private void paintNETToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Paint.NET is a free tool that is very similar to photoshop.   \r\n\r\n";
             content.MyContent += "You can download Paint.NET by clicking the link below.   \r\n\r\n";
-            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
-            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the full filepath for the executable file to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the full filepath for the executable file to the text field allows you to immediately launch the application from the dialog in the future.";
 
             content.MyLink = "https://www.getpaint.net/index.html/";
             DisplayToolTip(sender);
@@ -9453,8 +9453,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         private void visualStudio2015ToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Visual Studio 2015 Community Edition is a free Microsoft tool that allows you to write code in C#, VB.NET, etc.   \r\n\r\n";
             content.MyContent += "You can download Visual Studio 2015 by clicking the link below.   \r\n\r\n";
-            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
-            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the full filepath for the executable file to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the full filepath for the executable file to the text field allows you to immediately launch the application from the dialog in the future.";
 
             content.MyLink = "https://my.visualstudio.com/";
             DisplayToolTip(sender);
@@ -9463,8 +9463,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         private void visualStudio2017ToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Visual Studio 2017 Community Edition is a free Microsoft tool that allows you to write code in C#, VB.NET, etc.   \r\n\r\n";
             content.MyContent += "You can download Visual Studio 2017 by clicking the link below.   \r\n\r\n";
-            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
-            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the full filepath for the executable file to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the full filepath for the executable file to the text field allows you to immediately launch the application from the dialog in the future.";
 
             content.MyLink = "https://my.visualstudio.com/";
             DisplayToolTip(sender);
@@ -9492,8 +9492,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         private void fiddlerToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Fiddler 4 is a free tool that allows you to look at all the traffic that goes back and forth between the client and the server.  \r\n\r\n";
             content.MyContent += "You can download Fiddler4 by clicking the link below. \r\n\r\n";
-            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
-            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the full filepath for the executable file to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the full filepath for the executable file to the text field allows you to immediately launch the application from the dialog in the future.";
             content.MyLink = "https://www.telerik.com/fiddler";
             DisplayToolTip(sender);
         }
@@ -9512,8 +9512,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             content.MyContent += "When the rectangle is over the element, it shows you the element name and id. \r\n\r\n";
             content.MyContent += "It also displays the inner and outer html for the element in a format that can easily be copied to the clipboard. \r\n\r\n";
             content.MyContent += "You can download iWB2 Learner by clicking the link below. \r\n\r\n";
-            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
-            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the full filepath for the executable file to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the full filepath for the executable file to the text field allows you to immediately launch the application from the dialog in the future.";
             content.MyLink = "https://osdn.net/projects/sfnet_ahkcn/downloads/Recommended/iWB2%20Learner/iWB2%20Learner%20-%2064bit.zip/";
             DisplayToolTip(sender);
         }
@@ -9530,8 +9530,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             content.MyContent += "Notepad++ has a lot of plugin extensions that you can add. \r\n\r\n";
             content.MyContent += "One extension allows you to compare two files. \r\n\r\n";
             content.MyContent += "You can download Notepad++ by clicking the link below. \r\n\r\n";
-            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
-            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the full filepath for the executable file to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the full filepath for the executable file to the text field allows you to immediately launch the application from the dialog in the future.";
             content.MyLink = "https://notepad-plus-plus.org/download";
             DisplayToolTip(sender);
         }
@@ -9539,8 +9539,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         private void processExplorerToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Process Explorer is a free tool that is like Windows Task Manager on steriods.  \r\n\r\n";
             content.MyContent += "You can download Process Explorer by clicking the link below. \r\n\r\n";
-            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
-            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the full filepath for the executable file to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the full filepath for the executable file to the text field allows you to immediately launch the application from the dialog in the future.";
             content.MyLink = "https://docs.microsoft.com/en-us/sysinternals/downloads/process-explorer";
             DisplayToolTip(sender);
         }
@@ -9555,8 +9555,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         private void winListerToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Winlister is a free tool that is like Windows Task Manager on steriods.  \r\n\r\n";
             content.MyContent += "You can download Winlister by clicking the link below. \r\n\r\n";
-            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
-            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the full filepath for the executable file to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the full filepath for the executable file to the text field allows you to immediately launch the application from the dialog in the future.";
             content.MyLink = "http://www.nirsoft.net/utils/winlister.html";
             DisplayToolTip(sender);
         }
@@ -9564,8 +9564,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         private void filezillaToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Filezilla is a free FTP tool that allows you to transfer files between your computer and a website.  \r\n\r\n";
             content.MyContent += "You can download Filezilla by clicking the link below. \r\n\r\n";
-            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
-            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the full filepath for the executable file to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the full filepath for the executable file to the text field allows you to immediately launch the application from the dialog in the future.";
             content.MyLink = "https://filezilla-project.org/download.php";
             DisplayToolTip(sender);
         }
@@ -9573,8 +9573,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         private void curlToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "cURL is a free command line tool that allows you to get or send files using URL syntax.  \r\n\r\n";
             content.MyContent += "You can download cURL by clicking the link below. \r\n\r\n";
-            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
-            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the full filepath for the executable file to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the full filepath for the executable file to the text field allows you to immediately launch the application from the dialog in the future.";
             content.MyLink = "https://curl.haxx.se/";
             DisplayToolTip(sender);
         }
@@ -9582,8 +9582,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         private void fiddlerToolStripMenuItem1_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Fiddler 4 is a free tool that allows you to look at all the traffic that goes back and forth between the client and the server.  \r\n\r\n";
             content.MyContent += "You can download Fiddler4 by clicking the link below. \r\n\r\n";
-            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
-            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the full filepath for the executable file to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the full filepath for the executable file to the text field allows you to immediately launch the application from the dialog in the future.";
             content.MyLink = "https://www.telerik.com/fiddler";
             DisplayToolTip(sender);
         }
@@ -9591,8 +9591,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         private void postmanToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Postman is a free tool that allows you to look at all the traffic that goes back and forth between the client and the server.  \r\n\r\n";
             content.MyContent += "You can download Postman by clicking the link below. \r\n\r\n";
-            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
-            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the full filepath for the executable file to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the full filepath for the executable file to the text field allows you to immediately launch the application from the dialog in the future.";
             content.MyLink = "https://www.getpostman.com/";
             DisplayToolTip(sender);
         }
@@ -9632,8 +9632,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             content.MyContent = "Flashback Express is a free tool that is similar to Camtasia.\r\n\r\n";
             content.MyContent += "Flashback Express  allows you to create screen recordings that you can share with others.  \r\n\r\n";
             content.MyContent += "You can download Flashback Express by clicking the link below. \r\n\r\n";
-            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
-            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the full filepath for the executable file to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the full filepath for the executable file to the text field allows you to immediately launch the application from the dialog in the future.";
             content.MyLink = "https://www.flashbackrecorder.com/express/";
             DisplayToolTip(sender);
         }
@@ -9664,8 +9664,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             content.MyContent += "It also allows you to see your data in a form view,  \r\n\r\n";
             content.MyContent += "which makes it easy to edit rows.  \r\n\r\n";
             content.MyContent += "You can download Sql Manager for SQL Server Lite edition by clicking the link below. \r\n\r\n";
-            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
-            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the full filepath for the executable file to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the full filepath for the executable file to the text field allows you to immediately launch the application from the dialog in the future.";
             content.MyLink = "https://www.sqlmanager.net/products/mssql/manager/";
             DisplayToolTip(sender);
         }
@@ -9673,8 +9673,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         private void sqlProfilerToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Sql Profiler is a free tool that allows you to view the sql that is generated behind a web page.\r\n\r\n";
             content.MyContent += "You can download Sql Profiler by clicking the link below. \r\n\r\n";
-            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
-            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the full filepath for the executable file to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the full filepath for the executable file to the text field allows you to immediately launch the application from the dialog in the future.";
             content.MyLink = "https://docs.microsoft.com/en-us/sql/tools/sql-server-profiler/sql-server-profiler?view=sql-server-2017";
             DisplayToolTip(sender);
         }
@@ -9682,18 +9682,40 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         private void centralAccessReaderToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Central Access Reader is a free tool that allows you to paste text into the application so that it can be read to you.\r\n\r\n";
             content.MyContent += "You can download Central Access Reader by clicking the link below. \r\n\r\n";
-            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
-            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the full filepath for the executable file to a saved text field. \r\n\r\n";
+            content.MyContent += "Copying the full filepath for the executable file to the text field allows you to immediately launch the application from the dialog in the future.";
             content.MyLink = "https://www.cwu.edu/central-access/reader";
             DisplayToolTip(sender);
         }
 
         private void speakItToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "SpeakIt is a free Google Chrome extension that allows you to highlight text on a webpage so that it can be read to you.\r\n\r\n";
-            content.MyContent += "You can download SpeakIt by clicking the link below. \r\n\r\n";
-            content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the executable link to a saved text field. \r\n\r\n";
-            content.MyContent += "Copying the executable link to the text field allows you to immediately launch the application from the dialog in the future.";
+            content.MyContent += "You can download SpeakIt by clicking the link below. ";
             content.MyLink = "https://chrome.google.com/webstore/detail/speakit/pgeolalilifpodheeocdmbhehgnkkbak?hl=en-US";
+            DisplayToolTip(sender);
+        }
+
+        private void pluralsightToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Pluralsight is a paid membership programming video training site with over 6000 online courses.\r\n\r\n";
+            content.MyContent = "Pluralsight offers a 10-day free trial. Monthly fee is currently $35 and annual is $299.\r\n\r\n";
+            content.MyContent += "You can learn more by clicking this menu item or the following link. ";
+            content.MyLink = "http://pluralsight.pxf.io/c/1194222/431393/7490";
+            DisplayToolTip(sender);
+        }
+
+        private void udemyToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Udemy is a paid programming video training site with over 65,000 online courses.\r\n\r\n";
+            content.MyContent = "Udemy charges on a per course basis and the current rate is $10.99 for one course.\r\n\r\n";
+            content.MyContent += "You can learn more by clicking this menu item or the following link. ";
+            content.MyLink = "https://click.linksynergy.com/fs-bin/click?id=ur0PwtPl4wY&offerid=323058.1626&subid=0&type=4";
+            DisplayToolTip(sender);
+        }
+
+        private void courseraToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            content.MyContent = "Coursera is a paid membership programming video training site with online courses from many top universities.\r\n\r\n";
+            content.MyContent = "Coursera offers a 7-day free trial. Monthly fee is currently $49.\r\n\r\n";
+            content.MyContent += "You can learn more by clicking this menu item or the following link. ";
+            content.MyLink = "https://click.linksynergy.com/fs-bin/click?id=ur0PwtPl4wY&offerid=467035.30&type=3&subid=0";
             DisplayToolTip(sender);
         }
     }
