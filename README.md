@@ -1,5 +1,5 @@
 # IdealAutomate
-<p align="center"><strong>Automating the Problem-Solving Proces One Chunk at a Time</strong></p> 
+<p align="center"><strong>Automating the Problem-Solving Process One Chunk at a Time</strong></p> 
 <br /><br />
 <strong>If you just want the IdealAutomateExplorer executable application, you can install it with a single-click at <a href="http://idealautomate.com/idealautomateexplorer/publish.htm" target="_blank">http://idealautomate.com/idealautomateexplorer/publish.htm</a></strong>
 <br /><br />
