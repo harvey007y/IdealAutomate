@@ -1216,7 +1216,7 @@ namespace System.Windows.Forms.Samples
             // courseraToolStripMenuItem
             // 
             this.courseraToolStripMenuItem.Name = "courseraToolStripMenuItem";
-            this.courseraToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.courseraToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
             this.courseraToolStripMenuItem.Text = "Coursera";
             this.courseraToolStripMenuItem.Click += new System.EventHandler(this.courseraToolStripMenuItem_Click);
             this.courseraToolStripMenuItem.MouseHover += new System.EventHandler(this.courseraToolStripMenuItem_MouseHover);
@@ -1224,7 +1224,7 @@ namespace System.Windows.Forms.Samples
             // pluralsightToolStripMenuItem
             // 
             this.pluralsightToolStripMenuItem.Name = "pluralsightToolStripMenuItem";
-            this.pluralsightToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.pluralsightToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
             this.pluralsightToolStripMenuItem.Text = "Pluralsight";
             this.pluralsightToolStripMenuItem.Click += new System.EventHandler(this.pluralsightToolStripMenuItem_Click);
             this.pluralsightToolStripMenuItem.MouseHover += new System.EventHandler(this.pluralsightToolStripMenuItem_MouseHover);
@@ -1232,7 +1232,7 @@ namespace System.Windows.Forms.Samples
             // udemyToolStripMenuItem
             // 
             this.udemyToolStripMenuItem.Name = "udemyToolStripMenuItem";
-            this.udemyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.udemyToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
             this.udemyToolStripMenuItem.Text = "Udemy";
             this.udemyToolStripMenuItem.Click += new System.EventHandler(this.udemyToolStripMenuItem_Click);
             this.udemyToolStripMenuItem.MouseHover += new System.EventHandler(this.udemyToolStripMenuItem_MouseHover);

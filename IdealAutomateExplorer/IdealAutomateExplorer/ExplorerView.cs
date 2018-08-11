@@ -755,7 +755,8 @@ namespace System.Windows.Forms.Samples {
         #region Event Handlers        
         public void ExplorerView_Load(object sender, EventArgs e) {
             DeleteOpenFiles();
-
+            GlobalMouseHandler globalClick = new GlobalMouseHandler();
+            Application.AddMessageFilter(globalClick);
 
             this.Cursor = Cursors.WaitCursor;
             Methods myActions = new Methods();
@@ -9717,6 +9718,10 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             content.MyContent += "You can learn more by clicking this menu item or the following link. ";
             content.MyLink = "https://click.linksynergy.com/fs-bin/click?id=ur0PwtPl4wY&offerid=467035.30&type=3&subid=0";
             DisplayToolTip(sender);
+        }
+
+        internal void ExplorerView_Click(object p1, object p2) {
+            interactiveToolTip1.Hide();
         }
     }
 

@@ -37,7 +37,7 @@
     <InstallUrl>http://idealautomate.com/idealautomateexplorer/</InstallUrl>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>95</ApplicationRevision>
+    <ApplicationRevision>96</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -140,6 +140,7 @@
       <DependentUpon>BaseForm1.cs</DependentUpon>
     </Compile>
     <Compile Include="ClipboardNative.cs" />
+    <Compile Include="GlobalMouseHandler.cs" />
     <Compile Include="TextLineInfo.cs" />
     <Compile Include="OpenedFile.cs" />
     <Compile Include="ComboBoxPair.cs" />
