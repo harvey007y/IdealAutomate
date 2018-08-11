@@ -435,7 +435,12 @@ namespace Digitalis.GUI.Controls
                 // and finally display it
                 Win32.SendMessage(Handle, Win32.TTM_TRACKACTIVATE, 1, ref _toolInfo);
                 DoLayout(Window, content, stemPosition, ref toolTipBounds);
-
+                _contentPanel.MouseDown += delegate (object sender, MouseEventArgs e) {
+                    if (null != MouseDown && _mouseOverToolTip) {
+                        _mouseOverToolTip = true;
+                        MouseDown(this, e);
+                    }
+                };
                 _contentPanel.MouseEnter += delegate(object sender, EventArgs e)
                 {
                     if (null != MouseEnter && !_mouseOverToolTip)
@@ -444,6 +449,7 @@ namespace Digitalis.GUI.Controls
                         MouseEnter(this, e);
                     }
                 };
+
 
                 _contentPanel.MouseLeave += delegate(object sender, EventArgs e)
                 {
@@ -454,6 +460,11 @@ namespace Digitalis.GUI.Controls
                         MouseLeave(this, e);
                     }
                 };
+
+            }
+
+            private void ToolTipMouseDown(object sender, MouseEventArgs e) {
+                throw new NotImplementedException();
             }
 
             ~ToolTipWindow()
@@ -490,6 +501,8 @@ namespace Digitalis.GUI.Controls
             public IWin32Window Window;
 
             public event EventHandler MouseEnter;
+
+            public event EventHandler MouseDown;
 
             public event EventHandler MouseLeave;
 
@@ -711,6 +724,11 @@ namespace Digitalis.GUI.Controls
                 _currentToolTip.MouseLeave += delegate(object sender, EventArgs e)
                 {
                     if (duration > 0)
+                        _durationTimer.Start();
+                };
+                _currentToolTip.MouseDown += delegate (object sender, EventArgs e) {
+                    if (duration > 0)
+                        duration = 1;
                         _durationTimer.Start();
                 };
 

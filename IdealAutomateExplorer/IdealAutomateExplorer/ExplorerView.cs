@@ -193,7 +193,9 @@ namespace System.Windows.Forms.Samples {
             content.BackColor = Color.Transparent;
 
             content.linkLabel1.LinkClicked += delegate (object sender, LinkLabelLinkClickedEventArgs e) {
-                MessageBox.Show("Link clicked! " + content.MyLink);
+                interactiveToolTip1.Hide();
+                Process.Start("IExplore.exe", content.MyLink);
+             
             };
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExplorerView));
 

@@ -7,6 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Windows.Forms.Samples;
+using System.Windows.Media;
+//using System.Windows;
 
 namespace Demo {
     // a very simple Control to be used as the content of the InteractiveToolTip
@@ -41,6 +44,25 @@ namespace Demo {
             }
             this.linkLabel1.LinkClicked += delegate (object sender, LinkLabelLinkClickedEventArgs e) {
                 string strDefaultUrl = MyLink;
+                var lastOpenedForm = new Form();
+
+                if (Form.ActiveForm == null) {
+                    lastOpenedForm = Application.OpenForms.Cast<Form>().Last();
+                } else {
+                    lastOpenedForm = Form.ActiveForm;
+                }
+                if (lastOpenedForm.Name == "ExplorerView") {
+                    if ((ExplorerView)Form.ActiveForm == null) {
+                        ((ExplorerView)Application.OpenForms[Application.OpenForms.Count - 1]).ExplorerView_Click(null, null);
+                    } else {
+                        ((ExplorerView)Form.ActiveForm).ExplorerView_Click(null, null);
+                    }
+                }
+                if (lastOpenedForm.Name == "Search") {
+                    if ((Search)Form.ActiveForm != null) {
+                        ((Search)Form.ActiveForm).Search_Click(null, null);
+                    }
+                }
                 Process.Start("IExplore.exe", strDefaultUrl);
             };
             this.SuspendLayout();

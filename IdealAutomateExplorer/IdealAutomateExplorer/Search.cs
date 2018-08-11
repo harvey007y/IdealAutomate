@@ -2261,5 +2261,8 @@ progressBar1.Value = 0;
 
 
         }
+        internal void Search_Click(object p1, object p2) {
+            //interactiveToolTip1.Hide();
+        }
     }
 }
