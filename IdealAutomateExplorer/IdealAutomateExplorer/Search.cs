@@ -1803,16 +1803,24 @@ progressBar1.Value = 0;
 
                                     myActions.TypeText("{ESC}", 2000);
                                     myActions.TypeText("%(f)", 1000);
-                                    myActions.TypeText("{DOWN}", 1000);
-                                    myActions.TypeText("{RIGHT}", 1000);
-                                    myActions.TypeText("f", 1000);
-                                    // myActions.TypeText("^(o)", 2000);
-                                    myActions.TypeText("%(d)", 1500);
-                                    myActions.TypeText(strPathOnly, 1500);
-                                    myActions.TypeText("{ENTER}", 500);
-                                    myActions.TypeText("%(n)", 500);
-                                    myActions.TypeText(strFileNameOnly, 1500);
-                                    myActions.TypeText("{ENTER}", 1000);
+                                    myActions.TypeText("a", 1000);
+                                    myActions.TypeText("^(c)", 1000);
+
+                                    myActions.TypeText("{ESC}", 1000);
+                                    string currentFile = myActions.PutClipboardInEntity();
+                                    if (strFullName != currentFile) {
+                                        myActions.TypeText("%(f)", 1000);
+                                        myActions.TypeText("{DOWN}", 1000);
+                                        myActions.TypeText("{RIGHT}", 1000);
+                                        myActions.TypeText("f", 1000);
+                                        // myActions.TypeText("^(o)", 2000);
+                                        myActions.TypeText("%(d)", 1500);
+                                        myActions.TypeText(strPathOnly, 1500);
+                                        myActions.TypeText("{ENTER}", 500);
+                                        myActions.TypeText("%(n)", 500);
+                                        myActions.TypeText(strFileNameOnly, 1500);
+                                        myActions.TypeText("{ENTER}", 1000);
+                                    }
                                     break;
                                 }
                             }
