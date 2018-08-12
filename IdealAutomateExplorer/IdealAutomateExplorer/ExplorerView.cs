@@ -2412,6 +2412,57 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             }
         }
 
+        public void RefreshDataGridWithoutOpeningSelectedRow() {
+
+
+            // refresh datagridview
+            strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            // Set Initial Directory to My Documents
+            Methods myActions = new Methods();
+            int mySplitterDistance = myActions.GetValueByKeyAsInt("_CurrentSplitContainerWidth" + _selectedTabIndex.ToString());
+            if (mySplitterDistance > 0) {
+                _CurrentSplitContainer.SplitterDistance = mySplitterDistance;
+            }
+            string strSavedDirectory = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
+
+
+            if (Directory.Exists(strSavedDirectory)) {
+                strInitialDirectory = strSavedDirectory;
+                myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString(), strSavedDirectory);
+            }
+            _dir = new DirectoryView(strInitialDirectory, _myArrayList);
+            this._CurrentFileViewBindingSource.DataSource = _dir;
+
+            // Set the title
+            SetTitle(_dir.FileView);
+            _CurrentDataGridView.DataSource = null;
+            List<FileView> myListFileView = new List<FileView>();
+            foreach (FileView item in _CurrentFileViewBindingSource.List) {
+                myListFileView.Add(item);
+
+            }
+            _CurrentDataGridView.DataSource = ConvertToDataTable<FileView>(myListFileView);
+
+            new DgvFilterManager(_CurrentDataGridView);
+            int sortedColumn = myActions.GetValueByKeyAsInt("SortedColumn_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"));
+            string myDirection = myActions.GetValueByKey("SortOrder_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"));
+            if (sortedColumn > -1 && _CurrentDataGridView.ColumnCount >= sortedColumn) {
+                if (myDirection == "Ascending") {
+                    _CurrentDataGridView.Sort(_CurrentDataGridView.Columns[sortedColumn], ListSortDirection.Ascending);
+                } else {
+                    _CurrentDataGridView.Sort(_CurrentDataGridView.Columns[sortedColumn], ListSortDirection.Descending);
+                }
+                myActions.SetValueByKey("SortedColumn_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"), "-1");
+                myActions.SetValueByKey("SortOrder_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"), ListSortDirection.Ascending.ToString());
+            }
+            //   this._CurrentDataGridView.Sort(_CurrentDataGridView.Columns[1], ListSortDirection.Ascending);
+            // Use of the DataGridViewColumnSelector
+            DataGridViewColumnSelector cs = new DataGridViewColumnSelector(_CurrentDataGridView);
+            cs.MaxHeight = 100;
+            cs.Width = 110;
+            
+        }
+
 
         private void subCategoryToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
@@ -3509,7 +3560,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                         SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                         SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                     }
-                    _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
+                  //  _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
 
                 } else {
                     myActions.MessageBoxShow("You can not create a text file inside a file; you need to select folder first");
@@ -3781,6 +3832,16 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                     }
                     _WordPadLoaded = true;
+                     myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName); // GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                     myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
+                    _dir.Activate(this._CurrentFileViewBindingSource[myIndex] as FileView);
+                    SetTitle(_dir.FileView);
+
+
+
+                    if (myFileView.IsDirectory) {
+                        RefreshDataGridWithoutOpeningSelectedRow();
+                    }
                     string strExecutable = @"C:\Program Files\Windows NT\Accessories\wordpad.exe";
                     string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
                     if (detailsMenuItemChecked == "False") {
@@ -3788,85 +3849,27 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                         _CurrentSplitContainer.Panel2Collapsed = false;
                         this.detailsMenuItem.Checked = true;
                         this.listMenuItem.Checked = false;
-                        //tries to start the process 
-                        TryToCloseAllOpenFilesInTab();
-                        try {
-                            if (!File.Exists(strExecutable)) {
-                                myActions.MessageBoxShow(" File not found: " + strExecutable);
-                            } else {
-                                _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
-                            }
-                        } catch (Exception) {
-                            MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            this.Cursor = Cursors.Default;
-                            return;
-                        }
-
-                        //disables button and textbox
-                        //txtProcess.Enabled = false;
-                        //btnStart.Enabled = false;
-
-                        //host the started process in the panel 
-                        System.Threading.Thread.Sleep(500);
-                        while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
-                            System.Threading.Thread.Sleep(10);
-                            _proc.Refresh();
-                        }
-
-                        _proc.WaitForInputIdle();
-                        _appHandle = _proc.MainWindowHandle;
-
-                        SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
-                        AddAppHandleToOpenFiles(fileName, _appHandle);
-                        SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
-                        SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
-                        //SendMessage(proc.MainWindowHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
-                    } else {
-                        //Close the running process
-                        if (_appHandle != IntPtr.Zero) {
-                            PostMessage(_appHandle, WM_CLOSE, 0, 0);
-                            System.Threading.Thread.Sleep(1000);
-                            _appHandle = IntPtr.Zero;
-                        }
-                        //tries to start the process 
-                        try {
-                            if (!File.Exists(strExecutable)) {
-                                myActions.MessageBoxShow(" File not found: " + strExecutable);
-                            } else {
-                                _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
-                            }
-                        } catch (Exception) {
-                            MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            this.Cursor = Cursors.Default;
-                            return;
-                        }
-
-                        //disables button and textbox
-                        //txtProcess.Enabled = false;
-                        //btnStart.Enabled = false;
-
-                        //host the started process in the panel 
-                        System.Threading.Thread.Sleep(500);
-                        while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
-                            System.Threading.Thread.Sleep(10);
-                            _proc.Refresh();
-                        }
-
-                        _proc.WaitForInputIdle();
-                        _appHandle = _proc.MainWindowHandle;
-
-                        SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
-                        AddAppHandleToOpenFiles(fileName, _appHandle);
-                        SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
-                        SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                     }
-                    _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
 
+                    RefreshDataGridWithoutOpeningSelectedRow();
+                    int mySelectedRow = -1;
+
+                    for (int i = 0; i < _CurrentDataGridView.Rows.Count; i++) {
+                        DataGridViewRow item = _CurrentDataGridView.Rows[i];
+                        if (item.Cells["FullName"].Value.ToString() == strNewTextDocumentDir) {
+                            mySelectedRow = i;
+                            break;
+                        }
+                    }
+                    myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow", mySelectedRow.ToString());
+                    RefreshDataGrid();
+                    _CurrentDataGridView.FirstDisplayedScrollingRowIndex = mySelectedRow;
                 } else {
                     myActions.MessageBoxShow("You can not create a text document inside a file; first select folder and right click");
                 }
 
             }
+           
         }
 
         private void urlShortcutToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -3966,7 +3969,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                         }
                     }
-                    _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
+                   // _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
 
                 } else {
                     myActions.MessageBoxShow("You can not create a text document inside a file; first select folder and right click");
@@ -7050,7 +7053,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                 SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
             }
-            _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
+          //  _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
             RefreshDataGrid();
 
 
@@ -7062,9 +7065,13 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             string basePathName = _dir.FileView.Name;
             string basePathForNewTextDocument = _dir.FileView.FullName;
             string fileFullName = "";
+            string fileName = "";
+            int myIndex = -1;
+            
+
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
-                string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
-                int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
+                myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                 FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     basePathForNewTextDocument = myFileView.FullName;
@@ -7241,6 +7248,13 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             }
             _WordPadLoaded = true;
+             myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName); // GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+            FileView myFileView2 = (FileView)this._CurrentFileViewBindingSource[myIndex];
+            if (myFileView2.IsDirectory) {
+                _dir.Activate(this._CurrentFileViewBindingSource[myIndex] as FileView);
+                SetTitle(_dir.FileView);        
+                RefreshDataGridWithoutOpeningSelectedRow();
+            }
             string strExecutable = @"C:\Program Files\Windows NT\Accessories\wordpad.exe";
             string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
             if (detailsMenuItemChecked == "False") {
@@ -7248,79 +7262,21 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 _CurrentSplitContainer.Panel2Collapsed = false;
                 this.detailsMenuItem.Checked = true;
                 this.listMenuItem.Checked = false;
-                //tries to start the process 
-                try {
-                    if (!File.Exists(strExecutable)) {
-                        myActions.MessageBoxShow(" File not found: " + strExecutable);
-                    } else {
-                        _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
-                    }
-                } catch (Exception) {
-                    MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    this.Cursor = Cursors.Default;
-                    return;
-                }
-
-                //disables button and textbox
-                //txtProcess.Enabled = false;
-                //btnStart.Enabled = false;
-
-                //host the started process in the panel 
-                System.Threading.Thread.Sleep(500);
-                while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
-                    System.Threading.Thread.Sleep(10);
-                    _proc.Refresh();
-                }
-
-                _proc.WaitForInputIdle();
-                _appHandle = _proc.MainWindowHandle;
-
-                SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
-                AddAppHandleToOpenFiles(strNewTextDocumentDir, _appHandle);
-                SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
-                SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
-                //SendMessage(proc.MainWindowHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
-            } else {
-                //Close the running process
-                if (_appHandle != IntPtr.Zero) {
-                    PostMessage(_appHandle, WM_CLOSE, 0, 0);
-                    System.Threading.Thread.Sleep(1000);
-                    _appHandle = IntPtr.Zero;
-                }
-                //tries to start the process 
-                try {
-                    if (!File.Exists(strExecutable)) {
-                        myActions.MessageBoxShow(" File not found: " + strExecutable);
-                    } else {
-                        _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
-                    }
-                } catch (Exception) {
-                    MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    this.Cursor = Cursors.Default;
-                    return;
-                }
-
-                //disables button and textbox
-                //txtProcess.Enabled = false;
-                //btnStart.Enabled = false;
-
-                //host the started process in the panel 
-                System.Threading.Thread.Sleep(500);
-                while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
-                    System.Threading.Thread.Sleep(10);
-                    _proc.Refresh();
-                }
-
-                _proc.WaitForInputIdle();
-                _appHandle = _proc.MainWindowHandle;
-
-                SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
-                AddAppHandleToOpenFiles(strNewTextDocumentDir, _appHandle);
-                SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
-                SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
             }
-            _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
+            
+            RefreshDataGridWithoutOpeningSelectedRow();
+            int mySelectedRow = -1;
+
+            for (int i = 0; i < _CurrentDataGridView.Rows.Count; i++) {
+                DataGridViewRow item = _CurrentDataGridView.Rows[i];
+                if (item.Cells["FullName"].Value.ToString() == strNewTextDocumentDir) {
+                    mySelectedRow = i;
+                    break;
+                }
+            }
+            myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow", mySelectedRow.ToString());
             RefreshDataGrid();
+            _CurrentDataGridView.FirstDisplayedScrollingRowIndex = mySelectedRow;
 
         }
 
@@ -7458,7 +7414,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                 }
             }
-            _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
+         //   _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
             RefreshDataGrid();
         }
 
@@ -7786,7 +7742,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                 }
             }
-            _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
+          //  _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
             RefreshDataGrid();
         }
         private void fileShortcutToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -7889,7 +7845,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                             Marshal.FinalReleaseComObject(shell);
                         }
                     }
-                    _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
+                  //  _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
 
                 } else {
                     myActions.MessageBoxShow("You can not create a shortcut inside a file; first select folder and right click");
