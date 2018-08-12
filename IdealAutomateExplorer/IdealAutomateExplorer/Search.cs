@@ -1583,6 +1583,9 @@ progressBar1.Value = 0;
                 myActions.SetValueByKey("LastSearchFolder", dialog.SelectedPath);
                 string strFolder = dialog.SelectedPath;
                 myActions.SetValueByKey("cbxFolderSelectedValue", strFolder);
+                tabControl1.SelectedIndex = tabControl1.TabPages.Count - 1;
+                _CurrentIndex = tabControl1.SelectedIndex;
+                myActions.SetValueByKey("CurrentIndexSearch", _CurrentIndex.ToString());
                 string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
                 string fileName = "cbxFolder.txt";
                 string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
@@ -1655,6 +1658,9 @@ progressBar1.Value = 0;
             }
           
             myActions.SetValueByKey("cbxFolderSelectedValue", ((ComboBoxPair)(cbxFolder.SelectedItem))._Value);
+            tabControl1.SelectedIndex = tabControl1.TabPages.Count - 1;
+            _CurrentIndex = tabControl1.SelectedIndex;
+            myActions.SetValueByKey("CurrentIndexSearch", _CurrentIndex.ToString());
             tabControl1.TabPages[tabControl1.TabPages.Count - 1].ToolTipText = "Click on this tab to search in " + ((ComboBoxPair)(cbxFolder.SelectedItem))._Value;
         }
 
@@ -2180,11 +2186,20 @@ progressBar1.Value = 0;
         private void cbxFolder_SelectedIndexChanged(object sender, EventArgs e) {
             Methods myActions = new Methods();
             myActions.SetValueByKey("cbxFolderSelectedValue", ((ComboBoxPair)(cbxFolder.SelectedItem))._Value);
+            tabControl1.SelectedIndex = tabControl1.TabPages.Count - 1;
+            _CurrentIndex = tabControl1.SelectedIndex;
+            myActions.SetValueByKey("CurrentIndexSearch", _CurrentIndex.ToString());
             tabControl1.TabPages[tabControl1.TabPages.Count - 1].ToolTipText = "Click on this tab to search in " + ((ComboBoxPair)(cbxFolder.SelectedItem))._Value;
         }
 
 
-        private void cbxFolder_Leave(object sender, EventArgs e) {
+        private void cbxFolder_Leave(object sender, EventArgs e) {            
+            Methods myActions = new Methods();
+            myActions.SetValueByKey("cbxFolderSelectedValue", cbxFolder.SelectedText);
+            strFolder = cbxFolder.SelectedText;
+            tabControl1.SelectedIndex = tabControl1.TabPages.Count - 1;
+            _CurrentIndex = tabControl1.SelectedIndex;
+            myActions.SetValueByKey("CurrentIndexSearch", _CurrentIndex.ToString());
             tabControl1.TabPages[tabControl1.TabPages.Count - 1].ToolTipText = "Click on this tab to search in " + cbxFolder.Text;
         }
 
