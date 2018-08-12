@@ -195,7 +195,7 @@ namespace System.Windows.Forms.Samples {
             content.linkLabel1.LinkClicked += delegate (object sender, LinkLabelLinkClickedEventArgs e) {
                 interactiveToolTip1.Hide();
                 Process.Start("IExplore.exe", content.MyLink);
-             
+
             };
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExplorerView));
 
@@ -363,13 +363,13 @@ namespace System.Windows.Forms.Samples {
                         strFolder = dialog.SelectedPath;
                         myActions.SetValueByKey("cbxFolderSelectedValue", strFolder);
                         string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
-                        string fileName = "cbxFolder.txt";
+                        string fileName1 = "cbxFolder.txt";
                         string strApplicationBinDebug = Application.StartupPath;
                         string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
 
                         string settingsDirectory =
       Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
-                        string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
+                        string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName1);
                         ArrayList alHosts = new ArrayList();
                         cbp = new List<ComboBoxPair>();
                         cbp.Clear();
@@ -469,12 +469,29 @@ namespace System.Windows.Forms.Samples {
             _CurrentSplitContainer.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(_CurrentSplitContainer_SplitterMoved);
             _CurrentSplitContainer.MouseEnter += new System.EventHandler(_CurrentSplitContainer_MouseEnter);
             _CurrentSplitContainer.MouseLeave += new System.EventHandler(_CurrentSplitContainer_MouseLeave);
+            string fileName = "";
             if (listLoadedIndexes.Contains(tabControl1.SelectedIndex)) {
                 string strCurrentPath = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
                 _newTab = true;
                 cbxCurrentPath.Text = strCurrentPath;
                 cbxCurrentPath.SelectedValue = strCurrentPath;
                 this.Cursor = Cursors.Default;
+                _selectedRow = myActions.GetValueByKeyAsInt("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow");
+                if (_selectedRow > 0) {
+                    if (_CurrentDataGridView.Rows.Count > _selectedRow && _CurrentDataGridView.Rows[_selectedRow].Cells.Count > 1) {
+                        //_CurrentDataGridView.Rows[selectedRow].Cells[1].Selected = true;
+                        string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
+                        if (detailsMenuItemChecked == "True") {
+
+                            DataGridViewCell c = _CurrentDataGridView.Rows[_selectedRow].Cells[1];
+
+                            //    _CurrentDataGridView.FirstDisplayedScrollingRowIndex = _selectedRow;
+                            //    _CurrentDataGridView.PerformLayout();
+                            fileName = _CurrentDataGridView.Rows[_selectedRow].Cells["FullName"].Value.ToString();
+                        }
+                    }
+                }
+                txtMetaDescription.Text = myActions.GetValueByPublicKeyInCurrentFolder("description", fileName);
                 return;
             } else {
                 _newTab = true;
@@ -492,7 +509,7 @@ namespace System.Windows.Forms.Samples {
 
                         //    _CurrentDataGridView.FirstDisplayedScrollingRowIndex = _selectedRow;
                         //    _CurrentDataGridView.PerformLayout();
-                        string fileName = _CurrentDataGridView.Rows[_selectedRow].Cells["FullName"].Value.ToString();
+                        fileName = _CurrentDataGridView.Rows[_selectedRow].Cells["FullName"].Value.ToString();
                         if (fileName.EndsWith(".url")
 
                          ) {
@@ -668,6 +685,7 @@ namespace System.Windows.Forms.Samples {
                 }
 
             }
+            txtMetaDescription.Text = myActions.GetValueByPublicKeyInCurrentFolder("description", fileName);
             _newTab = true;
             this.Cursor = Cursors.Default;
         }
@@ -887,7 +905,7 @@ namespace System.Windows.Forms.Samples {
             int currentIndex = myActions.GetValueByKeyAsInt("CurrentIndex");
             if (currentIndex > tabControl1.TabPages.Count - 2) {
                 currentIndex = 0;
-                myActions.SetValueByKey("CurrentIndex","0");
+                myActions.SetValueByKey("CurrentIndex", "0");
             }
             tabControl1.SelectedIndex = currentIndex;
             _CurrentDataGridView = (DataGridViewExt)tabControl1.TabPages[tabControl1.SelectedIndex].Controls[0].Controls[0].Controls[0];
@@ -2164,7 +2182,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         }
         public void RefreshDataGrid() {
-
+            string fileName = "";
 
             // refresh datagridview
             strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
@@ -2212,23 +2230,158 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             cs.MaxHeight = 100;
             cs.Width = 110;
             _selectedRow = myActions.GetValueByKeyAsInt("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow");
-           
-                if (_CurrentDataGridView.Rows.Count > _selectedRow && _CurrentDataGridView.Rows[_selectedRow].Cells.Count > 1) {
-                    //_CurrentDataGridView.Rows[selectedRow].Cells[1].Selected = true;
-                    string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
-                    if (detailsMenuItemChecked == "True") {
 
-                        DataGridViewCell c = _CurrentDataGridView.Rows[_selectedRow].Cells[1];
-                        if (!c.Selected) {
-                            _CurrentDataGridView.ClearSelection();
-                            c.Selected = true;
-                            //    _CurrentDataGridView.FirstDisplayedScrollingRowIndex = _selectedRow;
-                            //    _CurrentDataGridView.PerformLayout();
-                            string fileName = _CurrentDataGridView.Rows[_selectedRow].Cells["FullName"].Value.ToString();
-                            if (fileName.EndsWith(".url")
+            if (_CurrentDataGridView.Rows.Count > _selectedRow && _CurrentDataGridView.Rows[_selectedRow].Cells.Count > 1) {
+                //_CurrentDataGridView.Rows[selectedRow].Cells[1].Selected = true;
+                string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
+                if (detailsMenuItemChecked == "True") {
 
-                             ) {
-                                //Close the running process.
+                    DataGridViewCell c = _CurrentDataGridView.Rows[_selectedRow].Cells[1];
+                    if (!c.Selected) {
+                        _CurrentDataGridView.ClearSelection();
+                        c.Selected = true;
+                        //    _CurrentDataGridView.FirstDisplayedScrollingRowIndex = _selectedRow;
+                        //    _CurrentDataGridView.PerformLayout();
+                        fileName = _CurrentDataGridView.Rows[_selectedRow].Cells["FullName"].Value.ToString();
+                        if (fileName.EndsWith(".url")
+
+                         ) {
+                            //Close the running process.
+                            if (_appHandle != IntPtr.Zero) {
+                                if (_newTab == false) {
+                                    PostMessage(_appHandle, WM_CLOSE, 0, 0);
+                                }
+                                _newTab = false;
+                                System.Threading.Thread.Sleep(1000);
+                                _appHandle = IntPtr.Zero;
+                            }
+                            ////tries to start the process 
+                            //try {                               
+                            //    myActions.KillAllProcessesByProcessName("iexplore");
+                            //    _proc = Process.Start(@"C:\Program Files\Internet Explorer\iexplore.exe", GetInternetShortcut(fileName));
+                            //} catch (Exception) {
+                            //    MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            //    return;
+                            //}
+
+
+                            //try {
+                            //    System.Threading.Thread.Sleep(500);
+                            //    while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                            //        System.Threading.Thread.Sleep(10);
+                            //        _proc.Refresh();
+                            //    }
+
+                            //    _proc.WaitForInputIdle();
+                            //    _appHandle = _proc.MainWindowHandle;
+
+
+
+                            //SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                            //SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+                            //} catch (Exception ex) {
+
+                            //    MessageBox.Show(ex.Message);
+                            //}
+                            //if (toolStripComboBox1.Text != "")
+                            //    Url = toolStripComboBox1.Text;
+                            _WordPadLoaded = false;
+                            _NotepadppLoaded = false;
+                            _WebBrowserLoaded = true;
+                            Url = GetInternetShortcut(fileName);
+                            InitializeComponentWebBrowser();
+                            webBrowser1.ScriptErrorsSuppressed = true;
+                            webBrowser1.Navigate(Url);
+
+                            _CurrentSplitContainer.Panel2.Controls.Clear();
+                            FlowLayoutPanel flp = new FlowLayoutPanel();
+                            flp.Dock = DockStyle.Fill;
+
+                            flp.Controls.Add(toolStrip1);
+                            flp.Controls.Add(webBrowser1);
+                            webBrowser1.Size = new System.Drawing.Size(_CurrentSplitContainer.Panel2.ClientSize.Width, _CurrentSplitContainer.Panel2.Height - 50);
+
+                            flp.Controls.Add(statusStrip1);
+                            _CurrentSplitContainer.Panel2.Controls.Add(flp);
+
+                            webBrowser1.ProgressChanged += new WebBrowserProgressChangedEventHandler(webpage_ProgressChanged);
+                            webBrowser1.DocumentTitleChanged += new EventHandler(webpage_DocumentTitleChanged);
+                            webBrowser1.StatusTextChanged += new EventHandler(webpage_StatusTextChanged);
+                            webBrowser1.Navigated += new WebBrowserNavigatedEventHandler(webpage_Navigated);
+                            webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webpage_DocumentCompleted);
+                        }
+                        if (fileName.EndsWith(".rtf")
+                            || fileName.EndsWith(".odt")
+                            || fileName.EndsWith(".doc")
+                            || fileName.EndsWith(".docx")
+                            ) {
+                            _NotepadppLoaded = false;
+                            _WebBrowserLoaded = false;
+                            _WordPadLoaded = true;
+                            //Close the running process
+                            _CurrentSplitContainer.Panel2.Controls.Clear();
+                            if (_appHandle != IntPtr.Zero) {
+                                TryToCloseAllOpenFilesInTab();
+                                _newTab = false;
+                                System.Threading.Thread.Sleep(1000);
+                                _appHandle = IntPtr.Zero;
+                            }
+                            //tries to start the process 
+                            try {
+                                if (!File.Exists(@"C:\Program Files\Windows NT\Accessories\wordpad.exe")) {
+                                    myActions.MessageBoxShow(" File not found: " + @"C:\Program Files\Windows NT\Accessories\wordpad.exe");
+                                } else {
+                                    ProcessStartInfo psi = new ProcessStartInfo(@"C:\Program Files\Windows NT\Accessories\wordpad.exe", "\"" + fileName + "\"");
+                                    psi.WindowStyle = ProcessWindowStyle.Minimized;
+                                    _proc = Process.Start(psi);
+                                }
+                            } catch (Exception) {
+                                MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                this.Cursor = Cursors.Default;
+                                return;
+                            }
+
+
+                            System.Threading.Thread.Sleep(500);
+                            while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                                System.Threading.Thread.Sleep(10);
+                                _proc.Refresh();
+                            }
+
+                            _proc.WaitForInputIdle();
+                            _appHandle = _proc.MainWindowHandle;
+
+                            SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
+                            AddAppHandleToOpenFiles(fileName, _appHandle);
+                            // Remove border and whatnot
+                            SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
+                            MoveWindow(_appHandle, 0, 0, _CurrentSplitContainer.Panel2.Width - 5, _CurrentSplitContainer.Panel2.Height, true);
+                            //  SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+                            //  SetTitle(_dir.FileView);
+                        } else {
+                            if (fileName.EndsWith(".txt")
+                                || fileName.EndsWith(".bat")
+                                || fileName.EndsWith(".cs")
+                                || fileName.EndsWith(".xaml")
+                                || fileName.EndsWith(".sln")
+                                || fileName.EndsWith(".csproj")
+                                || fileName.EndsWith(".resx")
+                                 || fileName.EndsWith(".js")
+                                  || fileName.EndsWith(".css")
+                                  || fileName.EndsWith(".html")
+                                  || fileName.EndsWith(".htm")
+                                  || fileName.EndsWith(".xml")
+                                  || fileName.EndsWith(".sql")
+                                  || fileName.EndsWith(".asp")
+                                  || fileName.EndsWith(".inc")
+                                  || fileName.EndsWith(".dinc")
+                                  || fileName.EndsWith(".aspx")
+                                  || fileName.EndsWith(".csv")) {
+                                _WordPadLoaded = false;
+                                _NotepadppLoaded = true;
+                                _WebBrowserLoaded = false;
+                                //Close the running process
+                                _CurrentSplitContainer.Panel2.Controls.Clear();
                                 if (_appHandle != IntPtr.Zero) {
                                     if (_newTab == false) {
                                         PostMessage(_appHandle, WM_CLOSE, 0, 0);
@@ -2237,85 +2390,13 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                                     System.Threading.Thread.Sleep(1000);
                                     _appHandle = IntPtr.Zero;
                                 }
-                                ////tries to start the process 
-                                //try {                               
-                                //    myActions.KillAllProcessesByProcessName("iexplore");
-                                //    _proc = Process.Start(@"C:\Program Files\Internet Explorer\iexplore.exe", GetInternetShortcut(fileName));
-                                //} catch (Exception) {
-                                //    MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                //    return;
-                                //}
-
-
-                                //try {
-                                //    System.Threading.Thread.Sleep(500);
-                                //    while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
-                                //        System.Threading.Thread.Sleep(10);
-                                //        _proc.Refresh();
-                                //    }
-
-                                //    _proc.WaitForInputIdle();
-                                //    _appHandle = _proc.MainWindowHandle;
-
-
-
-                                //SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
-                                //SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
-                                //} catch (Exception ex) {
-
-                                //    MessageBox.Show(ex.Message);
-                                //}
-                                //if (toolStripComboBox1.Text != "")
-                                //    Url = toolStripComboBox1.Text;
-                                _WordPadLoaded = false;
-                                _NotepadppLoaded = false;
-                                _WebBrowserLoaded = true;
-                                Url = GetInternetShortcut(fileName);
-                                InitializeComponentWebBrowser();
-                                webBrowser1.ScriptErrorsSuppressed = true;
-                                webBrowser1.Navigate(Url);
-
-                                _CurrentSplitContainer.Panel2.Controls.Clear();
-                                FlowLayoutPanel flp = new FlowLayoutPanel();
-                                flp.Dock = DockStyle.Fill;
-
-                                flp.Controls.Add(toolStrip1);
-                                flp.Controls.Add(webBrowser1);
-                                webBrowser1.Size = new System.Drawing.Size(_CurrentSplitContainer.Panel2.ClientSize.Width, _CurrentSplitContainer.Panel2.Height - 50);
-
-                                flp.Controls.Add(statusStrip1);
-                                _CurrentSplitContainer.Panel2.Controls.Add(flp);
-
-                                webBrowser1.ProgressChanged += new WebBrowserProgressChangedEventHandler(webpage_ProgressChanged);
-                                webBrowser1.DocumentTitleChanged += new EventHandler(webpage_DocumentTitleChanged);
-                                webBrowser1.StatusTextChanged += new EventHandler(webpage_StatusTextChanged);
-                                webBrowser1.Navigated += new WebBrowserNavigatedEventHandler(webpage_Navigated);
-                                webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webpage_DocumentCompleted);
-                            }
-                            if (fileName.EndsWith(".rtf")
-                                || fileName.EndsWith(".odt")
-                                || fileName.EndsWith(".doc")
-                                || fileName.EndsWith(".docx")
-                                ) {
-                                _NotepadppLoaded = false;
-                                _WebBrowserLoaded = false;
-                                _WordPadLoaded = true;
-                                //Close the running process
-                                _CurrentSplitContainer.Panel2.Controls.Clear();
-                                if (_appHandle != IntPtr.Zero) {
-                                    TryToCloseAllOpenFilesInTab();
-                                    _newTab = false;
-                                    System.Threading.Thread.Sleep(1000);
-                                    _appHandle = IntPtr.Zero;
-                                }
                                 //tries to start the process 
                                 try {
-                                    if (!File.Exists(@"C:\Program Files\Windows NT\Accessories\wordpad.exe")) {
-                                        myActions.MessageBoxShow(" File not found: " + @"C:\Program Files\Windows NT\Accessories\wordpad.exe");
+                                    myActions.KillAllProcessesByProcessName("notepad++");
+                                    if (!File.Exists(@"C:\Program Files (x86)\Notepad++\notepad++.exe")) {
+                                        myActions.MessageBoxShow(" You need to download notepad++ to use this feature.\n\r\n\rFile not found: " + @"C:\Program Files (x86)\Notepad++\notepad++.exe");
                                     } else {
-                                        ProcessStartInfo psi = new ProcessStartInfo(@"C:\Program Files\Windows NT\Accessories\wordpad.exe", "\"" + fileName + "\"");
-                                        psi.WindowStyle = ProcessWindowStyle.Minimized;
-                                        _proc = Process.Start(psi);
+                                        _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", fileName);
                                     }
                                 } catch (Exception) {
                                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -2324,7 +2405,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                                 }
 
 
-                                System.Threading.Thread.Sleep(500);
+                                //    System.Threading.Thread.Sleep(500);
                                 while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
                                     System.Threading.Thread.Sleep(10);
                                     _proc.Refresh();
@@ -2335,81 +2416,19 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                                 SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
                                 AddAppHandleToOpenFiles(fileName, _appHandle);
-                                // Remove border and whatnot
                                 SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
-                                MoveWindow(_appHandle, 0, 0, _CurrentSplitContainer.Panel2.Width - 5, _CurrentSplitContainer.Panel2.Height, true);
-                                //  SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
-                                //  SetTitle(_dir.FileView);
-                            } else {
-                                if (fileName.EndsWith(".txt")
-                                    || fileName.EndsWith(".bat")
-                                    || fileName.EndsWith(".cs")
-                                    || fileName.EndsWith(".xaml")
-                                    || fileName.EndsWith(".sln")
-                                    || fileName.EndsWith(".csproj")
-                                    || fileName.EndsWith(".resx")
-                                     || fileName.EndsWith(".js")
-                                      || fileName.EndsWith(".css")
-                                      || fileName.EndsWith(".html")
-                                      || fileName.EndsWith(".htm")
-                                      || fileName.EndsWith(".xml")
-                                      || fileName.EndsWith(".sql")
-                                      || fileName.EndsWith(".asp")
-                                      || fileName.EndsWith(".inc")
-                                      || fileName.EndsWith(".dinc")
-                                      || fileName.EndsWith(".aspx")
-                                      || fileName.EndsWith(".csv")) {
-                                    _WordPadLoaded = false;
-                                    _NotepadppLoaded = true;
-                                    _WebBrowserLoaded = false;
-                                    //Close the running process
-                                    _CurrentSplitContainer.Panel2.Controls.Clear();
-                                    if (_appHandle != IntPtr.Zero) {
-                                        if (_newTab == false) {
-                                            PostMessage(_appHandle, WM_CLOSE, 0, 0);
-                                        }
-                                        _newTab = false;
-                                        System.Threading.Thread.Sleep(1000);
-                                        _appHandle = IntPtr.Zero;
-                                    }
-                                    //tries to start the process 
-                                    try {
-                                        myActions.KillAllProcessesByProcessName("notepad++");
-                                        if (!File.Exists(@"C:\Program Files (x86)\Notepad++\notepad++.exe")) {
-                                            myActions.MessageBoxShow(" You need to download notepad++ to use this feature.\n\r\n\rFile not found: " + @"C:\Program Files (x86)\Notepad++\notepad++.exe");
-                                        } else {
-                                            _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", fileName);
-                                        }
-                                    } catch (Exception) {
-                                        MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                        this.Cursor = Cursors.Default;
-                                        return;
-                                    }
-
-
-                                    //    System.Threading.Thread.Sleep(500);
-                                    while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
-                                        System.Threading.Thread.Sleep(10);
-                                        _proc.Refresh();
-                                    }
-
-                                    _proc.WaitForInputIdle();
-                                    _appHandle = _proc.MainWindowHandle;
-
-                                    SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
-                                    AddAppHandleToOpenFiles(fileName, _appHandle);
-                                    SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
-                                    SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
-                                    SetTitle(_dir.FileView);
-                                }
+                                SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+                                SetTitle(_dir.FileView);
                             }
-
                         }
 
                     }
-                }
 
-            
+                }
+                txtMetaDescription.Text = myActions.GetValueByPublicKeyInCurrentFolder("description", fileName);
+            }
+           
+
         }
 
         public void RefreshDataGridWithoutOpeningSelectedRow() {
@@ -2460,7 +2479,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DataGridViewColumnSelector cs = new DataGridViewColumnSelector(_CurrentDataGridView);
             cs.MaxHeight = 100;
             cs.Width = 110;
-            
+
         }
 
 
@@ -2892,6 +2911,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         private void dataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e) {
             Methods myActions = new Methods();
+            string fileName = "";
             string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
             if (detailsMenuItemChecked == "True") {
                 if (e.ColumnIndex != -1 && e.RowIndex != -1 && e.Button == System.Windows.Forms.MouseButtons.Left) {
@@ -2903,7 +2923,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                         myActions.SetValueByKey("InitialDirectory" + _selectedTabIndex.ToString() + "SelectedRow", "0");
                         c.Selected = true;
                         myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow", e.RowIndex.ToString());
-                        string fileName = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["FullName"].Value.ToString();
+                        fileName = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["FullName"].Value.ToString();
                         if (fileName.EndsWith(".url")
 
                          ) {
@@ -3088,6 +3108,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                     }
                 }
+                txtMetaDescription.Text = myActions.GetValueByPublicKeyInCurrentFolder("description", fileName);
+
             }
             if (e.ColumnIndex != -1 && e.RowIndex != -1 && e.Button == System.Windows.Forms.MouseButtons.Right) {
                 DataGridViewCell c = (sender as DataGridView)[e.ColumnIndex, e.RowIndex];
@@ -3560,7 +3582,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                         SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                         SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                     }
-                  //  _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
+                    //  _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
 
                 } else {
                     myActions.MessageBoxShow("You can not create a text file inside a file; you need to select folder first");
@@ -3817,7 +3839,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     myActions.SetValueByPublicKeyInCurrentFolder("status", strStatus, strNewTextDocumentDir);
                     myActions.SetValueByPublicKeyInCurrentFolder("cbxStatusSelectedValue", strStatus, strNewTextDocumentDir);
 
-                    if (!File.Exists(strNewTextDocumentDir)) {                        
+                    if (!File.Exists(strNewTextDocumentDir)) {
                         string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
                         //string strApplicationPath = strApplicationBinDebug.Replace("\\IdealAutomateExplorer\\bin\\Debug", "");
                         string strWordpadTemplate = Path.Combine(strApplicationBinDebug, @"WordpadTemplate.rtf");
@@ -3976,7 +3998,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                         }
                     }
-                   // _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
+                    // _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
 
                 } else {
                     myActions.MessageBoxShow("You can not create a text document inside a file; first select folder and right click");
@@ -7060,7 +7082,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                 SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
             }
-          //  _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
+            //  _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
             RefreshDataGrid();
 
 
@@ -7075,7 +7097,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             string fileFullName = "";
             string fileName = "";
             int myIndex = -1;
-            
+
 
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
@@ -7244,7 +7266,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
                 //string strApplicationPath = strApplicationBinDebug.Replace("\\IdealAutomateExplorer\\bin\\Debug", "");
                 string strWordpadTemplate = Path.Combine(strApplicationBinDebug, @"WordpadTemplate.rtf");
-            //    string newFolderScriptPath = basePathForNewTextDocument + "\\" + myNewTextDocumentName.Replace(".rtf", "");
+                //    string newFolderScriptPath = basePathForNewTextDocument + "\\" + myNewTextDocumentName.Replace(".rtf", "");
                 //   myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
                 File.Copy(strWordpadTemplate, strNewTextDocumentDir);
                 //using (StreamWriter sw = new StreamWriter(strNewTextDocumentDir)) {
@@ -7258,8 +7280,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             }
             _WordPadLoaded = true;
-            
-            if (fileName != "" && _CurrentDataGridView.SelectedCells.Count > 0 
+
+            if (fileName != "" && _CurrentDataGridView.SelectedCells.Count > 0
                 && !(_CurrentDataGridView.SelectedCells[0].ColumnIndex == 0 &&
                 _CurrentDataGridView.SelectedCells[0].RowIndex == 0)) {
                 myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName); // GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
@@ -7278,9 +7300,9 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 this.detailsMenuItem.Checked = true;
                 this.listMenuItem.Checked = false;
             }
-            
+
             RefreshDataGridWithoutOpeningSelectedRow();
-         
+
             int mySelectedRow = -1;
 
             for (int i = 0; i < _CurrentDataGridView.Rows.Count; i++) {
@@ -7291,7 +7313,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 }
             }
             myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow", mySelectedRow.ToString());
-            RefreshDataGrid();          
+            RefreshDataGrid();
             _CurrentDataGridView.FirstDisplayedScrollingRowIndex = mySelectedRow;
             this.Cursor = Cursors.Default;
         }
@@ -7430,7 +7452,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                 }
             }
-         //   _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
+            //   _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
             RefreshDataGrid();
         }
 
@@ -7758,7 +7780,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                 }
             }
-          //  _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
+            //  _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
             RefreshDataGrid();
         }
         private void fileShortcutToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -7861,7 +7883,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                             Marshal.FinalReleaseComObject(shell);
                         }
                     }
-                  //  _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
+                    //  _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
 
                 } else {
                     myActions.MessageBoxShow("You can not create a shortcut inside a file; first select folder and right click");
@@ -9026,7 +9048,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             if (strButtonPressed == "btnCancel") {
                 return;
             }
-                string myVariableOfInterest = myListControlEntity.Find(x => x.ID == "txtVariableOfInterest").Text;
+            string myVariableOfInterest = myListControlEntity.Find(x => x.ID == "txtVariableOfInterest").Text;
             string myDepth = myListControlEntity.Find(x => x.ID == "cbxDepth").SelectedValue;
 
             bool boolStopAtVariable = myListControlEntity.Find(x => x.ID == "myCheckBox").Checked;
@@ -9149,7 +9171,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             //  buttonToolTip.SetToolTip(pictureBox1, "Parallel Search is a tool that uses parallel processing to rapidly find text in any file in a folder \r\nParallel processing makes this tool much faster than any other tool I have tested\r\nContext-menu on the search results allows you to quickly go to line of text in Notepad++, Visual Studio, or IdealAutomateExplorer");
             // position the tooltip with its stem towards the right end of the button
-            System.Drawing.Point myPoint = new System.Drawing.Point(pictureBox1.Width - (pictureBox1.Width/2), 0);
+            System.Drawing.Point myPoint = new System.Drawing.Point(pictureBox1.Width - (pictureBox1.Width / 2), 0);
             content.MyContent = "Parallel Search is a tool that uses parallel processing to rapidly find text in any file in a folder \r\n\r\n";
             content.MyContent += "Parallel processing makes this tool much faster than Visual Studio and Windows Grep tool.\r\n\r\n";
             content.MyContent += "Context -menu on the search results allows you to quickly go to line of text in Notepad++, Visual Studio, or IdealAutomateExplorer\r\n\r\n";
@@ -9166,7 +9188,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             content.MyContent = "Add Categories and Subcategories to your folder structures to help organize your files.  \r\n\r\n";
             content.MyContent += "Categories and Subcategories expand and collapse, and their expanded or collapsed state is remembered.\r\n\r\n";
             content.MyContent += "The only difference between a folder and a category is that a categorys expanded state is remembered.";
-            
+
             content.MyLink = "";
             DisplayToolTip(sender);
         }
@@ -9187,15 +9209,15 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             foreach (ToolStripItem item in myMenuItem.Owner.Items) {
 
 
-                if (item.Visible) {                    
+                if (item.Visible) {
                     y += item.Height;
                 }
 
                 if (item == myMenuItem) {
-                   
-                        menuItemHeight = item.Height;
-                        menuItemWidth = item.Width;
-                    
+
+                    menuItemHeight = item.Height;
+                    menuItemWidth = item.Width;
+
 
                     break;
                 }
@@ -9210,7 +9232,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             // position the tooltip with its stem towards the right end of the button
             content.MyContent = "Create a Visual Studio project that includes reference to IdealAutomateCore.  \r\n\r\n";
             content.MyContent += "IdealAutomateCore provides you with the methods needed to easily automate any task.";
-          //  content.MyContent += "The only difference between a folder and a category is that a categorys expanded state is remembered.\r\n\r\n";
+            //  content.MyContent += "The only difference between a folder and a category is that a categorys expanded state is remembered.\r\n\r\n";
 
             content.MyLink = "";
             DisplayToolTip(sender);
@@ -9246,7 +9268,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             // position the tooltip with its stem towards the right end of the button
 
             content.MyContent = "Open allows you to open a new folder for the currently selected tab. ";
-          //  content.MyContent += "Url Shortcuts allow you to point to website urls and File Shortcuts allow you to point to files and folders on your computer.";
+            //  content.MyContent += "Url Shortcuts allow you to point to website urls and File Shortcuts allow you to point to files and folders on your computer.";
             //  content.MyContent += "The only difference between a folder and a category is that a categorys expanded state is remembered.\r\n\r\n";
 
             content.MyLink = "";
@@ -9258,7 +9280,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             // position the tooltip with its stem towards the right end of the button
 
             content.MyContent = "Close allows you to close the application. ";
-           // content.MyContent += "Url Shortcuts allow you to point to website urls and File Shortcuts allow you to point to files and folders on your computer.";
+            // content.MyContent += "Url Shortcuts allow you to point to website urls and File Shortcuts allow you to point to files and folders on your computer.";
             //  content.MyContent += "The only difference between a folder and a category is that a categorys expanded state is remembered.\r\n\r\n";
 
             content.MyLink = "";
@@ -9313,7 +9335,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         private void toolStripMenuItem12_MouseHover(object sender, EventArgs e) {
             content.MyContent = "DropBox is not free. It provides you with cloud storage that you can use to share files.  \r\n\r\n";
-           content.MyContent += "You can learn more about DropBox by clicking on the following url.";
+            content.MyContent += "You can learn more about DropBox by clicking on the following url.";
 
             content.MyLink = "https://www.dropbox.com/";
             DisplayToolTip(sender);
@@ -9403,7 +9425,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         private void showHideColumnsToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Show/hide allows you to select which columns to show/hide in the left-split panel.";
-           
+
             content.MyLink = "";
             DisplayToolTip(sender);
         }
@@ -9477,7 +9499,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         private void iISToolStripMenuItem1_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Internet Information Services (IIS) is a free tool that is built into Windows.  ";
-            
+
             content.MyLink = "";
             DisplayToolTip(sender);
         }
@@ -9696,6 +9718,14 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         internal void ExplorerView_Click(object p1, object p2) {
             interactiveToolTip1.Hide();
+        }
+
+        private void txtMetaDescription_MouseHover(object sender, EventArgs e) {
+            System.Drawing.Point myPoint = new System.Drawing.Point(txtMetaDescription.Width - (txtMetaDescription.Width / 2), 0);
+            content.MyContent = "ReadOnly MetaData Description For Selected File.\r\n\r\n";
+            content.MyContent += "Right-Click on FileName and select MetaData to add Description.";
+            content.MyLink = "";
+            interactiveToolTip1.Show(content, txtMetaDescription, myPoint, StemPosition.TopLeft, 5000);
         }
     }
 

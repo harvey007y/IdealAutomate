@@ -168,6 +168,7 @@ namespace System.Windows.Forms.Samples
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.interactiveToolTip1 = new Digitalis.GUI.Controls.InteractiveToolTip(this.components);
+            this.txtMetaDescription = new System.Windows.Forms.TextBox();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource)).BeginInit();
             this.toolBar.SuspendLayout();
@@ -392,7 +393,7 @@ namespace System.Windows.Forms.Samples
             this.toolBar.Location = new System.Drawing.Point(0, 24);
             this.toolBar.Name = "toolBar";
             this.toolBar.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.toolBar.Size = new System.Drawing.Size(856, 39);
+            this.toolBar.Size = new System.Drawing.Size(1186, 39);
             this.toolBar.TabIndex = 0;
             this.toolBar.Text = "toolStrip1";
             this.toolBar.MouseEnter += new System.EventHandler(this.toolBar_MouseEnter);
@@ -471,7 +472,7 @@ namespace System.Windows.Forms.Samples
             this.mainMenu.Location = new System.Drawing.Point(0, 0);
             this.mainMenu.Name = "mainMenu";
             this.mainMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            this.mainMenu.Size = new System.Drawing.Size(856, 24);
+            this.mainMenu.Size = new System.Drawing.Size(1186, 24);
             this.mainMenu.TabIndex = 0;
             this.mainMenu.Text = "menuStrip1";
             // 
@@ -680,7 +681,7 @@ namespace System.Windows.Forms.Samples
             this.googleDriveToolStripMenuItem,
             this.oneDriveToolStripMenuItem});
             this.toolStripMenuItem11.Name = "toolStripMenuItem11";
-            this.toolStripMenuItem11.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem11.Size = new System.Drawing.Size(172, 22);
             this.toolStripMenuItem11.Text = "Cloud Storage";
             // 
             // toolStripMenuItem12
@@ -716,7 +717,7 @@ namespace System.Windows.Forms.Samples
             this.visualStudio2015ToolStripMenuItem,
             this.visualStudio2017ToolStripMenuItem});
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(172, 22);
             this.toolStripMenuItem2.Text = "Coding Tools";
             // 
             // instantCToolStripMenuItem
@@ -765,7 +766,7 @@ namespace System.Windows.Forms.Samples
             this.compareItToolStripMenuItem,
             this.synchronizeItToolStripMenuItem});
             this.toolStripMenuItem13.Name = "toolStripMenuItem13";
-            this.toolStripMenuItem13.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem13.Size = new System.Drawing.Size(172, 22);
             this.toolStripMenuItem13.Text = "Comparison Tools";
             // 
             // compareItToolStripMenuItem
@@ -794,7 +795,7 @@ namespace System.Windows.Forms.Samples
             this.servicesToolStripMenuItem,
             this.taskManagerToolStripMenuItem});
             this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(172, 22);
             this.toolStripMenuItem6.Text = "Control Panel";
             // 
             // componentServicesToolStripMenuItem
@@ -852,7 +853,7 @@ namespace System.Windows.Forms.Samples
             this.taskManagerToolStripMenuItem1,
             this.winListerToolStripMenuItem});
             this.toolStripMenuItem7.Name = "toolStripMenuItem7";
-            this.toolStripMenuItem7.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(172, 22);
             this.toolStripMenuItem7.Text = "Debugging Tools";
             // 
             // toolStripMenuItemDebugTrace
@@ -932,7 +933,7 @@ namespace System.Windows.Forms.Samples
             this.toolStripMenuItem14.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.filezillaToolStripMenuItem});
             this.toolStripMenuItem14.Name = "toolStripMenuItem14";
-            this.toolStripMenuItem14.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem14.Size = new System.Drawing.Size(172, 22);
             this.toolStripMenuItem14.Text = "FTP";
             // 
             // filezillaToolStripMenuItem
@@ -950,7 +951,7 @@ namespace System.Windows.Forms.Samples
             this.fiddlerToolStripMenuItem1,
             this.postmanToolStripMenuItem});
             this.toolStripMenuItem8.Name = "toolStripMenuItem8";
-            this.toolStripMenuItem8.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem8.Size = new System.Drawing.Size(172, 22);
             this.toolStripMenuItem8.Text = "Http Tools";
             // 
             // curlToolStripMenuItem
@@ -982,7 +983,7 @@ namespace System.Windows.Forms.Samples
             this.toolStripMenuItemImages.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.snippingAutomationToolToolStripMenuItem});
             this.toolStripMenuItemImages.Name = "toolStripMenuItemImages";
-            this.toolStripMenuItemImages.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItemImages.Size = new System.Drawing.Size(172, 22);
             this.toolStripMenuItemImages.Text = "Image Processing";
             // 
             // snippingAutomationToolToolStripMenuItem
@@ -999,7 +1000,7 @@ namespace System.Windows.Forms.Samples
             this.toolStripMenuItem18,
             this.videoTrafficBlueprintToolStripMenuItem});
             this.toolStripMenuItem17.Name = "toolStripMenuItem17";
-            this.toolStripMenuItem17.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem17.Size = new System.Drawing.Size(172, 22);
             this.toolStripMenuItem17.Text = "Internet Marketing";
             // 
             // toolStripMenuItem18
@@ -1023,7 +1024,7 @@ namespace System.Windows.Forms.Samples
             this.toolStripMenuItem9.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripComboBox2});
             this.toolStripMenuItem9.Name = "toolStripMenuItem9";
-            this.toolStripMenuItem9.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem9.Size = new System.Drawing.Size(172, 22);
             this.toolStripMenuItem9.Text = "Preferences";
             this.toolStripMenuItem9.MouseHover += new System.EventHandler(this.toolStripMenuItem9_MouseHover);
             // 
@@ -1041,13 +1042,13 @@ namespace System.Windows.Forms.Samples
             this.toolStripMenuItem15.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.flashbackExpressToolStripMenuItem});
             this.toolStripMenuItem15.Name = "toolStripMenuItem15";
-            this.toolStripMenuItem15.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem15.Size = new System.Drawing.Size(172, 22);
             this.toolStripMenuItem15.Text = "Screen Recording";
             // 
             // flashbackExpressToolStripMenuItem
             // 
             this.flashbackExpressToolStripMenuItem.Name = "flashbackExpressToolStripMenuItem";
-            this.flashbackExpressToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.flashbackExpressToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.flashbackExpressToolStripMenuItem.Text = "Flashback Express";
             this.flashbackExpressToolStripMenuItem.ToolTipText = resources.GetString("flashbackExpressToolStripMenuItem.ToolTipText");
             this.flashbackExpressToolStripMenuItem.Click += new System.EventHandler(this.flashbackExpressToolStripMenuItem_Click);
@@ -1064,7 +1065,7 @@ namespace System.Windows.Forms.Samples
             this.tumblrToolStripMenuItem,
             this.twitterToolStripMenuItem});
             this.toolStripMenuItem16.Name = "toolStripMenuItem16";
-            this.toolStripMenuItem16.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem16.Size = new System.Drawing.Size(172, 22);
             this.toolStripMenuItem16.Text = "Social";
             // 
             // facebookToolStripMenuItem
@@ -1126,7 +1127,7 @@ namespace System.Windows.Forms.Samples
             this.sqlToGridToolStripMenuItem,
             this.sSMSToolStripMenuItem});
             this.sqlToolStripMenuItem.Name = "sqlToolStripMenuItem";
-            this.sqlToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.sqlToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.sqlToolStripMenuItem.Text = "Sql";
             // 
             // findColumnsToolStripMenuItem
@@ -1181,7 +1182,7 @@ namespace System.Windows.Forms.Samples
             this.centralAccessReaderToolStripMenuItem,
             this.speakItToolStripMenuItem});
             this.textToSpeechToolStripMenuItem.Name = "textToSpeechToolStripMenuItem";
-            this.textToSpeechToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.textToSpeechToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.textToSpeechToolStripMenuItem.Text = "TextToSpeech";
             // 
             // centralAccessReaderToolStripMenuItem
@@ -1298,7 +1299,7 @@ namespace System.Windows.Forms.Samples
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.ShowToolTips = true;
-            this.tabControl1.Size = new System.Drawing.Size(856, 294);
+            this.tabControl1.Size = new System.Drawing.Size(1186, 294);
             this.tabControl1.TabIndex = 13;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -1307,7 +1308,7 @@ namespace System.Windows.Forms.Samples
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(848, 268);
+            this.tabPage3.Size = new System.Drawing.Size(1178, 268);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "    +";
             this.tabPage3.ToolTipText = "Add New Tab";
@@ -1318,10 +1319,21 @@ namespace System.Windows.Forms.Samples
             this.interactiveToolTip1.UseAnimation = true;
             this.interactiveToolTip1.UseFading = true;
             // 
+            // txtMetaDescription
+            // 
+            this.txtMetaDescription.Location = new System.Drawing.Point(837, 36);
+            this.txtMetaDescription.Name = "txtMetaDescription";
+            this.txtMetaDescription.ReadOnly = true;
+            this.txtMetaDescription.Size = new System.Drawing.Size(325, 20);
+            this.txtMetaDescription.TabIndex = 14;
+            this.txtMetaDescription.Text = "MetaDescription for Selected File";
+            this.txtMetaDescription.MouseHover += new System.EventHandler(this.txtMetaDescription_MouseHover);
+            // 
             // ExplorerView
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-            this.ClientSize = new System.Drawing.Size(856, 357);
+            this.ClientSize = new System.Drawing.Size(1186, 357);
+            this.Controls.Add(this.txtMetaDescription);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.cbxCurrentPath);
@@ -1491,6 +1503,7 @@ namespace System.Windows.Forms.Samples
         private ToolStripMenuItem toolStripMenuItemMousePositionShow;
         private ToolStripMenuItem toolStripMenuItemDebugTrace;
         private Digitalis.GUI.Controls.InteractiveToolTip interactiveToolTip1;
+        private TextBox txtMetaDescription;
     }
 }
 
