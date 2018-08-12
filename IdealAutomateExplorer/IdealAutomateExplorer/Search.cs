@@ -1810,6 +1810,7 @@ progressBar1.Value = 0;
                                     string currentFile = myActions.PutClipboardInEntity();
                                     if (strFullName != currentFile) {
                                         myActions.TypeText("%(f)", 1000);
+                                        myActions.TypeText("{HOME}", 1000);
                                         myActions.TypeText("{DOWN}", 1000);
                                         myActions.TypeText("{RIGHT}", 1000);
                                         myActions.TypeText("f", 1000);

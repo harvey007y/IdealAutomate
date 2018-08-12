@@ -2203,8 +2203,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 } else {
                     _CurrentDataGridView.Sort(_CurrentDataGridView.Columns[sortedColumn], ListSortDirection.Descending);
                 }
-                myActions.SetValueByKey("SortedColumn_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"), "-1");
-                myActions.SetValueByKey("SortOrder_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"), ListSortDirection.Ascending.ToString());
+                myActions.SetValueByKey("SortedColumn_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"), sortedColumn.ToString());
+                myActions.SetValueByKey("SortOrder_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"), myDirection);
             }
             //   this._CurrentDataGridView.Sort(_CurrentDataGridView.Columns[1], ListSortDirection.Ascending);
             // Use of the DataGridViewColumnSelector
@@ -2212,7 +2212,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             cs.MaxHeight = 100;
             cs.Width = 110;
             _selectedRow = myActions.GetValueByKeyAsInt("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow");
-            if (_selectedRow > 0) {
+           
                 if (_CurrentDataGridView.Rows.Count > _selectedRow && _CurrentDataGridView.Rows[_selectedRow].Cells.Count > 1) {
                     //_CurrentDataGridView.Rows[selectedRow].Cells[1].Selected = true;
                     string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
@@ -2409,7 +2409,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     }
                 }
 
-            }
+            
         }
 
         public void RefreshDataGridWithoutOpeningSelectedRow() {
@@ -2452,8 +2452,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 } else {
                     _CurrentDataGridView.Sort(_CurrentDataGridView.Columns[sortedColumn], ListSortDirection.Descending);
                 }
-                myActions.SetValueByKey("SortedColumn_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"), "-1");
-                myActions.SetValueByKey("SortOrder_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"), ListSortDirection.Ascending.ToString());
+                myActions.SetValueByKey("SortedColumn_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"), sortedColumn.ToString());
+                myActions.SetValueByKey("SortOrder_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"), myDirection);
             }
             //   this._CurrentDataGridView.Sort(_CurrentDataGridView.Columns[1], ListSortDirection.Ascending);
             // Use of the DataGridViewColumnSelector
@@ -3651,6 +3651,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void wordPadToolStripMenuItem_Click(object sender, EventArgs e) {
+            this.Cursor = Cursors.WaitCursor;
             Methods myActions = new Methods();
             string basePathForNewFolder = _dir.FileView.FullName;
             string basePathName = _dir.FileView.Name;
@@ -3823,6 +3824,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                         string newFolderScriptPath = basePathForNewTextDocument + "\\" + myNewTextDocumentName.Replace(".rtf", "");
                         //   myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
                         File.Copy(strWordpadTemplate, strNewTextDocumentDir);
+                        DateTime localDate = DateTime.Now;
+                        File.SetLastWriteTime(strNewTextDocumentDir, localDate);
                         //using (StreamWriter sw = new StreamWriter(strNewTextDocumentDir)) {
 
 
@@ -3873,7 +3876,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 }
 
             }
-           
+            this.Cursor = Cursors.Default;
         }
 
         private void urlShortcutToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -7064,6 +7067,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void wordPadFileToolStripMenuItem_Click(object sender, EventArgs e) {
+            this.Cursor = Cursors.WaitCursor;
             Methods myActions = new Methods();
             string basePathForNewFolder = _dir.FileView.FullName;
             string basePathName = _dir.FileView.Name;
@@ -7244,6 +7248,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 //   myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
                 File.Copy(strWordpadTemplate, strNewTextDocumentDir);
                 //using (StreamWriter sw = new StreamWriter(strNewTextDocumentDir)) {
+                DateTime localDate = DateTime.Now;
+                File.SetLastWriteTime(strNewTextDocumentDir, localDate);
 
 
 
@@ -7274,6 +7280,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             }
             
             RefreshDataGridWithoutOpeningSelectedRow();
+         
             int mySelectedRow = -1;
 
             for (int i = 0; i < _CurrentDataGridView.Rows.Count; i++) {
@@ -7284,9 +7291,9 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 }
             }
             myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow", mySelectedRow.ToString());
-            RefreshDataGrid();
+            RefreshDataGrid();          
             _CurrentDataGridView.FirstDisplayedScrollingRowIndex = mySelectedRow;
-
+            this.Cursor = Cursors.Default;
         }
 
 
