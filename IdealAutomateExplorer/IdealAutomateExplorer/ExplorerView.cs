@@ -3832,15 +3832,19 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                     }
                     _WordPadLoaded = true;
-                     myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName); // GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
-                     myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
-                    _dir.Activate(this._CurrentFileViewBindingSource[myIndex] as FileView);
-                    SetTitle(_dir.FileView);
+                    if (fileName != "" && _CurrentDataGridView.SelectedCells.Count > 0
+    && !(_CurrentDataGridView.SelectedCells[0].ColumnIndex == 0 &&
+    _CurrentDataGridView.SelectedCells[0].RowIndex == 0)) {
+                        myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName); // GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                        myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
+                        _dir.Activate(this._CurrentFileViewBindingSource[myIndex] as FileView);
+                        SetTitle(_dir.FileView);
 
 
 
-                    if (myFileView.IsDirectory) {
-                        RefreshDataGridWithoutOpeningSelectedRow();
+                        if (myFileView.IsDirectory) {
+                            RefreshDataGridWithoutOpeningSelectedRow();
+                        }
                     }
                     string strExecutable = @"C:\Program Files\Windows NT\Accessories\wordpad.exe";
                     string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
@@ -7248,12 +7252,17 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             }
             _WordPadLoaded = true;
-             myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName); // GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
-            FileView myFileView2 = (FileView)this._CurrentFileViewBindingSource[myIndex];
-            if (myFileView2.IsDirectory) {
-                _dir.Activate(this._CurrentFileViewBindingSource[myIndex] as FileView);
-                SetTitle(_dir.FileView);        
-                RefreshDataGridWithoutOpeningSelectedRow();
+            
+            if (fileName != "" && _CurrentDataGridView.SelectedCells.Count > 0 
+                && !(_CurrentDataGridView.SelectedCells[0].ColumnIndex == 0 &&
+                _CurrentDataGridView.SelectedCells[0].RowIndex == 0)) {
+                myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName); // GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                FileView myFileView2 = (FileView)this._CurrentFileViewBindingSource[myIndex];
+                if (myFileView2.IsDirectory) {
+                    _dir.Activate(this._CurrentFileViewBindingSource[myIndex] as FileView);
+                    SetTitle(_dir.FileView);
+                    RefreshDataGridWithoutOpeningSelectedRow();
+                }
             }
             string strExecutable = @"C:\Program Files\Windows NT\Accessories\wordpad.exe";
             string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
