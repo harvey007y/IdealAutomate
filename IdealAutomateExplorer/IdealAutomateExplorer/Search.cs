@@ -26,7 +26,8 @@ namespace System.Windows.Forms.Samples {
         const int LEADING_SPACE = 12;
         const int CLOSE_SPACE = 15;
         const int CLOSE_AREA = 15;
-        bool boolStopEvent = false;        
+        bool boolStopEvent = false;
+        bool _ignoreFolderIndexChanged = true;
         string _scanningDir = "";
         string myResult = "";
         private bool _NotepadppLoaded = false;
@@ -2186,9 +2187,13 @@ progressBar1.Value = 0;
         private void cbxFolder_SelectedIndexChanged(object sender, EventArgs e) {
             Methods myActions = new Methods();
             myActions.SetValueByKey("cbxFolderSelectedValue", ((ComboBoxPair)(cbxFolder.SelectedItem))._Value);
-            tabControl1.SelectedIndex = tabControl1.TabPages.Count - 1;
-            _CurrentIndex = tabControl1.SelectedIndex;
-            myActions.SetValueByKey("CurrentIndexSearch", _CurrentIndex.ToString());
+            if (_ignoreFolderIndexChanged == true) {
+                _ignoreFolderIndexChanged = false;
+            } else {
+                tabControl1.SelectedIndex = tabControl1.TabPages.Count - 1;
+                _CurrentIndex = tabControl1.SelectedIndex;
+                myActions.SetValueByKey("CurrentIndexSearch", _CurrentIndex.ToString());
+            }
             tabControl1.TabPages[tabControl1.TabPages.Count - 1].ToolTipText = "Click on this tab to search in " + ((ComboBoxPair)(cbxFolder.SelectedItem))._Value;
         }
 
