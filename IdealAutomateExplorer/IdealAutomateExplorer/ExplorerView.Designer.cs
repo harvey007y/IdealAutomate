@@ -1327,6 +1327,7 @@ namespace System.Windows.Forms.Samples
             this.txtMetaDescription.Size = new System.Drawing.Size(325, 20);
             this.txtMetaDescription.TabIndex = 14;
             this.txtMetaDescription.Text = "MetaDescription for Selected File";
+            this.txtMetaDescription.MouseLeave += new System.EventHandler(this.txtMetaDescription_MouseLeave);
             this.txtMetaDescription.MouseHover += new System.EventHandler(this.txtMetaDescription_MouseHover);
             // 
             // ExplorerView

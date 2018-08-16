@@ -9727,6 +9727,10 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             content.MyLink = "";
             interactiveToolTip1.Show(content, txtMetaDescription, myPoint, StemPosition.TopLeft, 5000);
         }
+
+        private void txtMetaDescription_MouseLeave(object sender, EventArgs e) {
+            interactiveToolTip1.Hide();
+        }
     }
 
 }
