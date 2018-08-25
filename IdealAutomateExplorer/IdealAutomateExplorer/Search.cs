@@ -2242,11 +2242,11 @@ progressBar1.Value = 0;
                     ExplorerView myExplorerView = (ExplorerView)Application.OpenForms[index];
                     myExplorerView.Show();
                     myExplorerView.BringToFront();
-                    TabControl myTabControl = (TabControl)myExplorerView.Controls[0];
+                    TabControl myTabControl = (TabControl)myExplorerView.Controls[1];
                     myTabControl.SelectedIndex = _CurrentIndex;       
                     
                     myActions.SetValueByKey("CurrentIndex", _CurrentIndex.ToString());
-                    DataGridViewExt myDataGridView = (DataGridViewExt)myExplorerView.Controls[0].Controls[0].Controls[0].Controls[0].Controls[0];
+                    DataGridViewExt myDataGridView = (DataGridViewExt)myExplorerView.Controls[1].Controls[0].Controls[0].Controls[0].Controls[0];
                     string strFullName = "";
                     string strLineNumber = "";
 
