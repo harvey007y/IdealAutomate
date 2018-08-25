@@ -1791,11 +1791,11 @@ progressBar1.Value = 0;
                             myWindowTitles.RemoveAll(vsItem => vsItem == "");
                             bool boolVSMatchingSolutionFound = false;
                             foreach (var vsTitle in myWindowTitles) {
-                                if (vsTitle.StartsWith(strSolutionName + " (Debugging) - ")) {
+                                if (vsTitle.StartsWith(strSolutionName + " (Debugging) - ") || vsTitle.StartsWith(strSolutionName.Replace(" ", ".sln ") + "(Debugging) - ")) {
                                     myActions.MessageBoxShow("Visual Studio is currently running in debug mode - aborting");
                                     return;
                                 }
-                                    if (vsTitle.StartsWith(strSolutionName + " - ") || vsTitle.StartsWith(strSolutionName + " (Running) - ")) {
+                                if (vsTitle.StartsWith(strSolutionName + " - ") || vsTitle.StartsWith(strSolutionName + " (Running) - ") || vsTitle.StartsWith(strSolutionName.Replace(" ", ".sln ") + " - ") || vsTitle.StartsWith(strSolutionName.Replace(" ", ".sln ") + " (Running) - ")) {
                                     boolVSMatchingSolutionFound = true;
                                     myActions.ActivateWindowByTitle(vsTitle, 3);
                                     myActions.Sleep(1000);

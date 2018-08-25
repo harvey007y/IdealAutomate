@@ -186,7 +186,6 @@ namespace Digitalis.GUI.Controls
             private Win32.TOOLINFO CreateTool(string contentSpacing, IWin32Window window, StemPosition stemPosition)
             {
                 Win32.TOOLINFO ti = new Win32.TOOLINFO();
-
                 ti.cbSize   = Marshal.SizeOf(ti);
                 ti.uFlags   = Win32.TTF_IDISHWND | Win32.TTF_TRACK | Win32.TTF_TRANSPARENT;
                 ti.uId      = window.Handle;
@@ -337,7 +336,7 @@ namespace Digitalis.GUI.Controls
 
                 _contentPanel        = new ContentPanel(Handle);
                 _contentPanel.Width  = toolTipBounds.Width;
-                _contentPanel.Height = toolTipBounds.Height;
+                _contentPanel.Height = toolTipBounds.Height;               
                 _contentPanel.Controls.Add(content);
 
                 Win32.SetWindowPos(Handle, Win32.HWND_TOPMOST, toolTipBounds.X, toolTipBounds.Y, 0, 0, Win32.SWP_NOACTIVATE | Win32.SWP_NOSIZE | Win32.SWP_NOOWNERZORDER);
