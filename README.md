@@ -53,10 +53,10 @@ In the 2-minute video video below, you will see how you can immediately start us
         <br /><a href="https://youtu.be/xSWJwEBKgqs" target="_blank"><img title="wrap multi-line T-SQL statements in quotes CSharp"  src="http://idealprogrammer.com/wp-photos/PutSqlInQuotesForCSharp.PNG" alt="wrap multi-line T-SQL in quotes CSharp" align="middle"/></a>   <br /><br />
 	
 In the 9-minute video below, you will see how you can automate the process of using Windows Snipping Tool to take notes into a wordpad document when watching video tutorials.<br />
-        <br /><a href="https://youtu.be/qhW5F059eBQ" target="_blank"><img title="automate using Windows Snipping Tool to take notes on Video Tutorials"  src="http://idealprogrammer.com/wp-photos/SnippingToolAutomation.PNG" alt="automate using Windows Snipping Tool to take notes on Video Tutorials" align="middle"/></a>   <br /><br />	
+        <br /><a href="https://youtu.be/qhW5F059eBQ" target="_blank"><img title="What is a Snipping Tool? Copying Images to a File Automatically When Taking Notes on Video Tutorials"  src="http://idealprogrammer.com/wp-photos/SnippingToolAutomation.PNG" alt="What is a Snipping Tool? Copying Images to a File Automatically When Taking Notes on Video Tutorials" align="middle"/></a>   <br /><br />	
 	
 
-<b>Tags:</b> Windows Explorer with Tabs; Artificial Intelligence; ToDoList; Knowledge Base; Automation Scripts; HotKeys; File Comparison; Search; Add Metadata to files; cheat sheets<br /><br />
+<b>Tags:</b> Windows Explorer with Tabs; Artificial Intelligence; ToDoList; Knowledge Base; Automation Scripts; HotKeys; File Comparison; Search; Add Metadata to files; cheat sheets; What is a Snipping Tool; Copying Images to a File Automatically When Taking Notes on Video Tutorials<br /><br />
   <br />
     <br />
 
