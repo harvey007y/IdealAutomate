@@ -17,6 +17,7 @@ using System.Linq;
 
 namespace System.Windows.Forms.Samples
 {
+    [Serializable]
     public class FileView
     {
         private string _path;
@@ -25,7 +26,7 @@ namespace System.Windows.Forms.Samples
         private DateTime _modified;
         private DateTime _created;
         private string _type;
-        private Icon _icon;
+        private Icon _icon;       
         private string _hotkey;
         private int _totalExecutions;
         private int _successfulExecutions;
@@ -191,7 +192,7 @@ namespace System.Windows.Forms.Samples
                 }
                 if (categoryState == "Child") {
                     CategoryState = categoryState;
-                }
+                }                
             }
             catch (Exception ex)
             {
@@ -200,7 +201,7 @@ namespace System.Windows.Forms.Samples
             }
             
         }
-
+  
         public string Name
         {
             get { return _name; }
