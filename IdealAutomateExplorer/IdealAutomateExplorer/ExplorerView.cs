@@ -1047,50 +1047,13 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 return;
             }
             if (null != icon) {
-                
-                string fullName = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["FullName"].Value.ToString();
-                    Methods myActions = new Methods();
-                FileInfo fileInfo = new FileInfo(fullName);
-                // Get Type Name
-                Win32.SHFILEINFO info = Win32.ShellGetFileInfo.GetFileInfo(fullName);
-
-                string _type = info.szTypeName;
-
-                // Get ICON
-                string CategoryState = "";
-                int NestingLevel = myActions.GetValueByKeyAsInt("NestingLevel");
-                Icon _icon = System.Drawing.Icon.FromHandle(info.hIcon);
-                try {
-                    
-                    string scriptName = myActions.ConvertFullFileNameToPublicPath(fileInfo.FullName) + "\\" + fileInfo.Name;
-                    string categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", scriptName);
-                    string expandCollapseAll = myActions.GetValueByKey("ExpandCollapseAll");
-
-                    if (categoryState == "Collapsed") {                       
-                        
-                        _icon = new Icon(Properties.Resources._112_Plus_Grey, 16, 16);
-                    }
-                    if (categoryState == "Expanded") {                        
-                        _icon = new Icon(Properties.Resources._112_Minus_Grey, 16, 16);
-                    }
-                    if (categoryState == "Child") {
-                        CategoryState = categoryState;
-                    }
-                   
-
-
-                } catch (Exception ex) {
-                    MessageBox.Show(ex.Message);
-                    // I think this error is just occurring during debugging
-                }
                 using (SolidBrush b = new SolidBrush(e.CellStyle.BackColor)) {
                     e.Graphics.FillRectangle(b, e.CellBounds);
                 }
-
                 _IconRectangle = e.CellBounds;
                 // Draw right aligned icon (1 pixed padding)
                 try {
-                    int myX = e.CellBounds.Width - _icon.Width - 1;
+                    int myX = e.CellBounds.Width - icon.Width - 1;
                     int myY = e.CellBounds.Y + 1;
                     if (myX < 1) {
                         myX = 15;
@@ -1098,7 +1061,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     if (myY < 1) {
                         myY = 15;
                     }
-                    e.Graphics.DrawIcon(_icon, myX, myY);
+                    e.Graphics.DrawIcon(icon, myX, myY);
                 } catch (Exception ex) {
 
                     MessageBox.Show(ex.Message + " - Line 500 in ExplorerView");
@@ -1160,14 +1123,12 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             string categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", fileName);
             if (categoryState == "Expanded") {
                 myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Collapsed", fileName);
-                DeleteLastCached();
                 RefreshDataGrid();
                 this.Cursor = Cursors.Default;
                 return;
             }
             if (categoryState == "Collapsed") {
                 myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Expanded", fileName);
-                DeleteLastCached();
                 RefreshDataGrid();
                 this.Cursor = Cursors.Default;
                 return;
@@ -1181,7 +1142,6 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
 
                 if (myFileView.IsDirectory) {
-                    DeleteLastCached();
                     RefreshDataGrid();
                 }
             } catch (Exception ex) {
@@ -1525,7 +1485,6 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                 MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
             }
-            DeleteLastCached();
             RefreshDataGrid();
         }
 
@@ -1553,7 +1512,6 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 }
 
             }
-            DeleteLastCached();
             RefreshDataGrid();
         }
 
@@ -2206,7 +2164,6 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                 MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
             }
-            DeleteLastCached();
             RefreshDataGrid();
         }
         public DataTable ConvertToDataTable<T>(IList<T> data) {
@@ -2585,7 +2542,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     }
                 }
             }
-            DeleteLastCached();
+
             RefreshDataGrid();
         }
 
@@ -2603,14 +2560,12 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     string categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", fileName);
                     if (categoryState == "Expanded" && e.ColumnIndex == 0) {
                         myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Collapsed", fileName);
-                        DeleteLastCached();
                         RefreshDataGrid();
                         this.Cursor = Cursors.Default;
                         return;
                     }
                     if (categoryState == "Collapsed" && e.ColumnIndex == 0) {
                         myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Expanded", fileName);
-                        DeleteLastCached();
                         RefreshDataGrid();
                         this.Cursor = Cursors.Default;
                         return;
@@ -2935,7 +2890,6 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                 MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
             }
-            DeleteLastCached();
             RefreshDataGrid();
         }
 
@@ -3699,7 +3653,6 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                 MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
             }
-            DeleteLastCached();
             RefreshDataGrid();
         }
 
@@ -3915,7 +3868,6 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
 
                         if (myFileView.IsDirectory) {
-                            DeleteLastCached();
                             RefreshDataGridWithoutOpeningSelectedRow();
                         }
                     }
@@ -3927,7 +3879,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                         this.detailsMenuItem.Checked = true;
                         this.listMenuItem.Checked = false;
                     }
-                    DeleteLastCached();
+
                     RefreshDataGridWithoutOpeningSelectedRow();
                     int mySelectedRow = -1;
 
@@ -3939,7 +3891,6 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                         }
                     }
                     myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow", mySelectedRow.ToString());
-                    DeleteLastCached();
                     RefreshDataGrid();
                     _CurrentDataGridView.FirstDisplayedScrollingRowIndex = mySelectedRow;
                 } else {
@@ -4081,7 +4032,6 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 }
 
             }
-            DeleteLastCached();
             RefreshDataGrid();
         }
 
@@ -4144,7 +4094,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     }
                 }
             }
-            DeleteLastCached();            
+
             RefreshDataGrid();
         }
 
@@ -5039,7 +4989,6 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             this.Cursor = Cursors.WaitCursor;
             Methods myActions = new Methods();
             myActions.SetValueByKey("ExpandCollapseAll", "Collapse");
-            DeleteLastCached();
             RefreshDataGrid();
             RefreshDataGrid();
             this.Cursor = Cursors.Default;
@@ -5048,7 +4997,6 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         private void expandAllToolStripMenuItem_Click(object sender, EventArgs e) {
             this.Cursor = Cursors.WaitCursor;
             Methods myActions = new Methods();
-            DeleteLastCached();
             myActions.SetValueByKey("ExpandCollapseAll", "Expand");
             RefreshDataGrid();
             this.Cursor = Cursors.Default;
@@ -5056,22 +5004,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e) {
             this.Cursor = Cursors.WaitCursor;
-            Methods myActions = new Methods();
-            DeleteLastCached();
             RefreshDataGrid();
             this.Cursor = Cursors.Default;
-        }
-
-        private void DeleteLastCached() {
-            Methods myActions = new Methods();
-            try {
-                string settingsDirectory = myActions.GetAppDirectoryForScript();
-                string settingsPathx = Path.Combine(settingsDirectory, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strInitialDirectory) + "_LastCached.txt");
-                File.Delete(settingsPathx);
-            } catch (Exception ex) {
-
-
-            }
         }
 
         private void totalSavingsToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -5330,7 +5264,6 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
 
                 this.Cursor = Cursors.WaitCursor;
-                DeleteLastCached();
                 RefreshDataGrid();
                 this.Cursor = Cursors.Default;
                 return;
@@ -7150,7 +7083,6 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
             }
             //  _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
-            DeleteLastCached();
             RefreshDataGrid();
 
 
@@ -7357,7 +7289,6 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 if (myFileView2.IsDirectory) {
                     _dir.Activate(this._CurrentFileViewBindingSource[myIndex] as FileView);
                     SetTitle(_dir.FileView);
-                    DeleteLastCached();
                     RefreshDataGridWithoutOpeningSelectedRow();
                 }
             }
@@ -7369,7 +7300,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 this.detailsMenuItem.Checked = true;
                 this.listMenuItem.Checked = false;
             }
-            DeleteLastCached();
+
             RefreshDataGridWithoutOpeningSelectedRow();
 
             int mySelectedRow = -1;
@@ -7382,7 +7313,6 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 }
             }
             myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow", mySelectedRow.ToString());
-            DeleteLastCached();
             RefreshDataGrid();
             _CurrentDataGridView.FirstDisplayedScrollingRowIndex = mySelectedRow;
             this.Cursor = Cursors.Default;
@@ -7523,7 +7453,6 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 }
             }
             //   _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
-            DeleteLastCached();
             RefreshDataGrid();
         }
 
@@ -7852,7 +7781,6 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 }
             }
             //  _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
-            DeleteLastCached();
             RefreshDataGrid();
         }
         private void fileShortcutToolStripMenuItem_Click(object sender, EventArgs e) {
