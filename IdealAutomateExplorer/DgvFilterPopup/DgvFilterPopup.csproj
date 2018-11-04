@@ -39,10 +39,10 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>IdealAutomateExplorer_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>IdealAutomateExplorer_TemporaryKey1.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -150,7 +150,7 @@
     <None Include="Diagrams\BasicDiagram.cd" />
     <None Include="Diagrams\Extensions.cd" />
     <None Include="Diagrams\Implementations.cd" />
-    <None Include="IdealAutomateExplorer_TemporaryKey.pfx" />
+    <None Include="IdealAutomateExplorer_TemporaryKey1.pfx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
