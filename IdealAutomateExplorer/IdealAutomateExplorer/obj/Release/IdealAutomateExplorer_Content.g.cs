@@ -51,6 +51,7 @@
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/imagesputcursorposition.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/includescript.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/info.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/imgkeepratio.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/logic.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/logicfindimage.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/logicputcaretposition.png")]

@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IdealSqlTracer.exe" size="1006048">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IdealSqlTracer.exe" size="1006096">
       <assemblyIdentity name="IdealSqlTracer" version="1.0.0.0" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>WZzraK5UFCnyD1P3mFGriaz9Bzgz1Jan0lWykAZONsI=</dsig:DigestValue>
+        <dsig:DigestValue>6lIWLKmXQ5YYtzHxS38UcwhHTeb18gzKBU8GxN8dpxo=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

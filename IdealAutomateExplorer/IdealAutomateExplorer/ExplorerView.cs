@@ -9803,6 +9803,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             string strTitle = "";
             string strBody = "";
             System.Drawing.Image returnImage = null;
+            bool slidePopulated = false;
 
             int intTop = (int)SystemParameters.WorkArea.Height - 200;
             int intLeft = (int)SystemParameters.WorkArea.Width - 200;
@@ -9817,6 +9818,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 myActions.MessageBoxShow("You need to have an instance of Open Office Impress running in order to save your snippets into it - aborting");
                 return myResult;
             }
+            
         snipDialog:
             bool fixedRatio = false;
             myActions.Sleep(1000);
@@ -9835,8 +9837,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             intRowCtr++;
             myControlEntity.ControlEntitySetDefaults();
             myControlEntity.ControlType = ControlType.Button;
-            myControlEntity.ID = "btnTextForTitle";
-            myControlEntity.Text = "Text For Title";
+            myControlEntity.ID = "btnAddText";
+            myControlEntity.Text = "Add Text";
             myControlEntity.ColumnSpan = 0;
             myControlEntity.ToolTipx = "";
             myControlEntity.RowNumber = intRowCtr;
@@ -9846,30 +9848,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             intRowCtr++;
             myControlEntity.ControlEntitySetDefaults();
             myControlEntity.ControlType = ControlType.Button;
-            myControlEntity.ID = "btnTextForBody";
-            myControlEntity.Text = "Text For Body";
-            myControlEntity.ColumnSpan = 0;
-            myControlEntity.ToolTipx = "";
-            myControlEntity.RowNumber = intRowCtr;
-            myControlEntity.ColumnNumber = 0;
-            myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-            intRowCtr++;
-            myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.Button;
-            myControlEntity.ID = "btnSnipImageForBody";
-            myControlEntity.Text = "Snip Image";
-            myControlEntity.ColumnSpan = 0;
-            myControlEntity.ToolTipx = "";
-            myControlEntity.RowNumber = intRowCtr;
-            myControlEntity.ColumnNumber = 0;
-            myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-            intRowCtr++;
-            myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.Button;
-            myControlEntity.ID = "btnSnipImageForBodyFixed";
-            myControlEntity.Text = "Snip Image Fixed Size";
+            myControlEntity.ID = "btnAddImage";
+            myControlEntity.Text = "Add Image";
             myControlEntity.ColumnSpan = 0;
             myControlEntity.ToolTipx = "";
             myControlEntity.RowNumber = intRowCtr;
@@ -9918,15 +9898,15 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             {
                 intLeft = intSavedLeft;
             }
-            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 300, 200, intTop, intLeft);
-            if (strButtonPressed == "btnSnipImageForBodyFixed")
+            if (slidePopulated)
             {
-                fixedRatio = true;
-            }
-                if (strButtonPressed == "btnCancel")
+                myActions.TypeText(" ", 1000); // restart the video
+                slidePopulated = false;
+            } 
+            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 250, 200, intTop, intLeft);
+            if (strButtonPressed == "btnCancel")
             {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
-
                 return myResult;
             }
             if (strButtonPressed == "btnExit")
@@ -9936,7 +9916,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             }
 
             // ===============
-            if (strButtonPressed == "btnTextForTitle")
+            if (strButtonPressed == "btnAddText")
             {
                 intRowCtr = 0;
                 myControlEntity = new ControlEntity();
@@ -9945,7 +9925,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 myControlEntity.ControlEntitySetDefaults();
                 myControlEntity.ControlType = ControlType.Heading;
                 myControlEntity.ID = "lbl";
-                myControlEntity.Text = "Title";
+                myControlEntity.Text = "Add Text";
                 myControlEntity.RowNumber = intRowCtr;
                 myControlEntity.ColumnNumber = 0;
                 myListControlEntity.Add(myControlEntity.CreateControlEntity());
@@ -9966,37 +9946,21 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 myControlEntity.ToolTipx = "";
                 myControlEntity.RowNumber = intRowCtr;
                 myControlEntity.Width = 800;
-                myControlEntity.Height = 300;
+                myControlEntity.Height = 150;
                 myControlEntity.TextWrap = true;
                 myControlEntity.Multiline = true;
                 myControlEntity.ColumnNumber = 1;
                 myControlEntity.ColumnSpan = 0;
                 myListControlEntity.Add(myControlEntity.CreateControlEntity());
-                strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 800, 0, 0);
-                if (strButtonPressed == "btnCancel")
-                {
-                    myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
-                    return myResult;
-                }
 
-
-                strTitle = myListControlEntity.Find(x => x.ID == "txtTitle").Text;
-                myActions.SetValueByKey("Title", strTitle);
-                goto snipDialogWithoutRelaunchingSnippingTool;
-            }
-
-            if (strButtonPressed == "btnTextForBody")
-            {
-                intRowCtr = 0;
-                myControlEntity = new ControlEntity();
-                myListControlEntity = new List<ControlEntity>();
-                cbp = new List<ComboBoxPair>();
+                intRowCtr++;
                 myControlEntity.ControlEntitySetDefaults();
-                myControlEntity.ControlType = ControlType.Heading;
-                myControlEntity.ID = "lbl";
-                myControlEntity.Text = "Body";
+                myControlEntity.ControlType = ControlType.Label;
+                myControlEntity.ID = "lblHyper";
+                myControlEntity.Text = "Syntax for Hyperlink: <<optional text for link>>[[link url]]";
                 myControlEntity.RowNumber = intRowCtr;
                 myControlEntity.ColumnNumber = 0;
+                myControlEntity.ColumnSpan = 2;
                 myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
                 intRowCtr++;
@@ -10021,24 +9985,20 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 myControlEntity.ColumnNumber = 1;
                 myControlEntity.ColumnSpan = 0;
                 myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-              
-
-
-                strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 800, 0, 0);               
-
-      
+                strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 450, 800, 0, 0);
                 if (strButtonPressed == "btnCancel")
                 {
                     myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                     return myResult;
                 }
 
-                strBody = myListControlEntity.Find(x => x.ID == "txtBody").Text;
 
+                strTitle = myListControlEntity.Find(x => x.ID == "txtTitle").Text;
+                myActions.SetValueByKey("Title", strTitle);
+                strBody = myListControlEntity.Find(x => x.ID == "txtBody").Text;
                 myActions.SetValueByKey("Body", strBody);
                 goto snipDialogWithoutRelaunchingSnippingTool;
-            }
+            }       
 
             if (strButtonPressed == "btnAddSound")
             {
@@ -10052,9 +10012,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 myControlEntity.Text = "Add Sound";
                 myControlEntity.RowNumber = intRowCtr;
                 myControlEntity.ColumnNumber = 0;
-                myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-                
+                myListControlEntity.Add(myControlEntity.CreateControlEntity());                
 
                 intRowCtr++;
                 myControlEntity.ControlEntitySetDefaults();
@@ -10129,8 +10087,6 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     myControlEntity.ColumnNumber = 0;
                     myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
-
-
                     myControlEntity.ControlEntitySetDefaults();
                     myControlEntity.ControlType = ControlType.Button;
                     myControlEntity.ID = "btnEndRecording";
@@ -10155,19 +10111,14 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                     return myResult;
                 }
-
-                strBody = myListControlEntity.Find(x => x.ID == "txtBody").Text;
-
-                myActions.SetValueByKey("Body", strBody);
                 goto snipDialogWithoutRelaunchingSnippingTool;
             }
 
             // ==============
 
-            if (strButtonPressed == "btnSnipImageForBody" || strButtonPressed == "btnSnipImageForBodyFixed")
+            if (strButtonPressed == "btnAddImage")
             {
                 myActions.TypeText("^({PRTSC})", 1000);
-
 
                 myActions.SetValueByKey("Mouseup", "false");
                 //mh = new MouseHook();
@@ -10237,21 +10188,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 myActions.TypeText("^(c)", 500);
                 //mh.MouseMove += new MouseHook.MouseHookCallback(mouseHook_MouseMove);
                 string mouseUp = "false";
-                //mouseWatcher = eventHookFactory.GetMouseWatcher();
-                //mouseWatcher.Start();
-                //mouseWatcher.OnMouseInput += (s, e) => {
-                //    if (e.Message.ToString() == "WM_LBUTTONUP") {
-                //        myActions.SetValueByKey("MouseUp", "true");
-                //    }
-                //};
-                //while (mouseUp == "false") {
-                //    myActions.TypeText("^(c)", 500);
-                //    mouseUp = myActions.GetValueByKey("MouseUp");
-
-                // //   myActions.Sleep(5000);
-                //}
-
-                // copy what is in snipping tool to clipboard and minimize snipping tool.
+              
                 myActions.TypeText("^(c)", 500);
                 myActions.TypeText("%(\" \")n", 1000);
 
@@ -10263,169 +10200,238 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             }
             if (strButtonPressed == "btnPopulateSlide" || strButtonPressed == "btnDoneSnippingPopulate")
             {
+                slidePopulated = true;
                 // activate open office impress
                 myWindowTitles = myActions.GetWindowTitlesByProcessName("soffice.bin");
                 myWindowTitles.RemoveAll(item => item == "");
                 myWindowTitles.RemoveAll(item => item.Contains("Impress") == false);
                 if (myWindowTitles.Count > 0)
                 {
-                    Double positionx = .55;
-                    Double positiony = .55;
-                    Double imageWidth = 9.9;
-                    Double imageHeight = 7.4;
-                    myActions.ActivateWindowByTitle(myWindowTitles[0]);
-                    // if there are comments, write them
-                    if (strTitle != "")
+                    try
                     {
-                        positiony = 2;
-                        imageHeight = imageHeight - positiony;
-                        myActions.TypeText("{ESC}", 1000);
-                        myActions.TypeText("%(v)", 1000);
-                        myActions.TypeText("o", 1000);
-                        myActions.TypeText("%(v)", 1000);
-                        myActions.TypeText("n", 1000);
-                        //  myActions.TypeText("{TAB}", 1000);
-                        myActions.TypeText(strTitle, 1000);
-                    }
-                    // move to click to add text section in open office impress
-                    myActions.TypeText("^({ENTER})", 2000);
-                    if (strBody != "")
-                    {
-                        myActions.TypeText("{BACKSPACE}", 1000);
-                        string[] lines = strBody.Split(
-                            new[] { "\r\n", "\r", "\n" },
-                            StringSplitOptions.None
-                        );
-                        positiony = positiony + (lines.Count() * .45); // assuming font 32 for body 
-                        foreach (var line in lines)
+                        Double positionx = .55;
+                        Double positiony = .55;
+                        Double imageWidth = 9.9;
+                        Double imageHeight = 7.4;
+                        myActions.ActivateWindowByTitle(myWindowTitles[0]);
+                        // if there are comments, write them
+                        if (strTitle == "")
                         {
-                            if (line.Contains("http")) {
-                                string myHyperlink = "";
-                                int intHttpIndex = line.IndexOf("http");
-                                string lineAfterHyperlink = "";
-                                string lineBeforeHttp = line.Substring(0, intHttpIndex);
-                                string lineStartingWithHttp = line.Substring(intHttpIndex);
-                                int intFirstSpace = lineStartingWithHttp.IndexOf(" ");
-                                if (intFirstSpace == -1)
-                                {
-                                    myHyperlink = lineStartingWithHttp;
-                                } else
-                                {
-                                    myHyperlink = lineStartingWithHttp.Substring(0, intFirstSpace);
-                                    lineAfterHyperlink = lineStartingWithHttp.Substring(intFirstSpace);
-                                }
-                                if (lineBeforeHttp.Length > 0)
-                                {
-                                    myActions.TypeText(lineBeforeHttp, 1000);
-                                }
-                                myActions.TypeText("%(i)", 1000);
-                                myActions.TypeText("h", 1000);
-                                myActions.TypeText(myHyperlink, 1000);
-                                myActions.TypeText("+({TAB 5})", 1000);
-                                myActions.TypeText("{ENTER}", 1000);
-                                myActions.TypeText("{TAB}", 1000);
-                                myActions.TypeText("{ENTER}", 1000);
-                                myActions.TypeText("{RIGHT}", 1000);
-                                if (lineAfterHyperlink.Length > 0)
-                                {
-                                    myActions.TypeText(lineAfterHyperlink, 1000);
-                                }
-                                myActions.TypeText("+({ENTER})", 1000);
-                            }
-                            else
+                            myActions.TypeText("{ESC}", 500);
+                            myActions.TypeText("%(v)", 500);
+                            myActions.TypeText("o", 500);
+                            myActions.TypeText("%(v)", 500);
+                            myActions.TypeText("n", 500);
+                            myActions.TypeText(" ", 500);
+                        }
+                        else
+                        {
+                            positiony = 2;
+                            imageHeight = imageHeight - positiony;
+                            myActions.TypeText("{ESC}", 500);
+                            myActions.TypeText("%(v)", 500);
+                            myActions.TypeText("o", 500);
+                            myActions.TypeText("%(v)", 500);
+                            myActions.TypeText("n", 500);
+                            //    myActions.TypeText("{TAB}", 1000);
+                            myActions.TypeText(strTitle, 500);
+                        }
+                        // move to click to add text section in open office impress
+                        myActions.TypeText("^({ENTER})", 500);
+                        if (strBody != "")
+                        {
+                            myActions.TypeText("{BACKSPACE}", 500);
+                            string[] lines = strBody.Split(
+                                new[] { "\r\n", "\r", "\n" },
+                                StringSplitOptions.None
+                            );
+                            positiony = positiony + (lines.Count() * .45); // assuming font 32 for body 
+                            foreach (var line in lines)
                             {
-                                myActions.TypeText(line, 1000);
-                                myActions.TypeText("+({ENTER})", 1000);
-                            }
-                        }
-                        
-                        imageHeight = 8.5 - positiony;
-                    }
-                    if (outputFilePath != "")
-                    {
-                        myActions.TypeText("%(i)", 1000);
-                        myActions.TypeText("v", 1000);
-                        myActions.TypeText("%(d)", 1000);
-                        myActions.TypeText(@"c:\data", 1000);
-                        myActions.TypeText("%(n)", 1000);
-                        myActions.TypeText(currentFileName, 1000);
-                        myActions.TypeText("%(o)", 1000);
-                        // open position and size window in open office impress
-                        myActions.TypeText("%(o)", 2000);
-                        myActions.TypeText("z", 2000);
-                        // select the contents of positionx
-                        myActions.TypeText("^(a)", 1000);
-                        // write the contents of positionx
-                        myActions.TypeText("9.83", 1000);
-                        // tab to positiony field
-                        myActions.TypeText("{TAB}", 1000);
-                        // write the contents of positiony
-                        myActions.TypeText("7.18", 1000);
-                        // tab to width field
-                        myActions.TypeText("{TAB 2}", 1000);
-                        // write the contents of width
-                        myActions.TypeText("1", 1000);
-                        // tab to height field
-                        myActions.TypeText("{TAB}", 1000);
-                        // copy the contents of height to clipboard
-                        myActions.TypeText("1", 1000);
-                        // close the position and size window
-                        myActions.TypeText("{ENTER}", 1000);
-                        outputFilePath = "";
-                    }
-                    if (returnImage != null)
-                    {
-                        // write what we took from snipping tool and put in clipboard to open office impress
-                        Clipboard.SetImage(returnImage);
-                        myActions.TypeText("^(v)", 2000);
-                        // open position and size window in open office impress
-                        myActions.TypeText("%(o)", 2000);
-                        myActions.TypeText("z", 2000);
-                        // select the contents of positionx
-                        myActions.TypeText("^(a)", 1000);
-                        // write the contents of positionx
-                        myActions.TypeText(positionx.ToString(), 1000);
-                        // tab to positiony field
-                        myActions.TypeText("{TAB}", 1000);
-                        // write the contents of positiony
-                        myActions.TypeText(positiony.ToString(), 1000);
-                        if (fixedRatio)
-                        {                            
-                            myActions.TypeText("{ENTER}", 1000);
-                            goto AddNewSlide;
-                        }
-                        // tab to width field
-                        myActions.TypeText("{TAB 2}", 1000);
-                        // write the contents of width
-                        myActions.TypeText(imageWidth.ToString(), 1000);
-                        // tab to height field
-                        myActions.TypeText("{TAB}", 1000);
-                        // copy the contents of height to clipboard
-                        myActions.TypeText("^(a)", 1000);
-                        myActions.TypeText("^(c)", 1000);
-                        string strTempImageHeight = myActions.PutClipboardInEntity();
-                        strTempImageHeight = strTempImageHeight.Replace("\"", "").Trim();
-                        Double dblTempImageHeight = 0;
-                        Double.TryParse(strTempImageHeight, out dblTempImageHeight);
-                        // if the height is too big, we need to write the height to the max that it can be
-                        // and that will automatically readjust the width to what it should be.
-                        if (dblTempImageHeight > imageHeight)
-                        {
-                            myActions.TypeText(imageHeight.ToString(), 1000);
-                        }
-                        // close the position and size window
-                        myActions.TypeText("{ENTER}", 1000);
+                                int linesWrapped = line.Length / 50;
+                                positiony = positiony + (linesWrapped * .45);
+                                if (line.Contains("[[") || line.Contains("<<"))
+                                {
+                                    string myHyperlinkUrl = "";
+                                    string myHyperlinkText = "";
+                                    int intHttpIndexText = line.IndexOf("<<");
+                                    if (intHttpIndexText > -1)
+                                    {
+                                        // we need to get text
+                                        int intHttpIndexTextEnd = line.IndexOf(">>");
+                                        if (intHttpIndexTextEnd > intHttpIndexText)
+                                        {
+                                            int intHttpTextLength = (intHttpIndexTextEnd - intHttpIndexText) - 2;
+                                            myHyperlinkText = line.Substring(intHttpIndexText + 2, intHttpTextLength);
+                                        }
+                                    }
 
+                                    int intHttpIndexUrl = line.IndexOf("[[");
+                                    int intHttpIndexUrlEnd = -1;
+                                    if (intHttpIndexUrl > -1)
+                                    {
+                                        // we need to get Url
+                                        intHttpIndexUrlEnd = line.IndexOf("]]");
+                                        if (intHttpIndexUrlEnd > intHttpIndexUrl)
+                                        {
+                                            int intHttpUrlLength = (intHttpIndexUrlEnd - intHttpIndexUrl) - 2;
+                                            myHyperlinkUrl = line.Substring(intHttpIndexUrl + 2, intHttpUrlLength);
+                                        }
+                                    }
+                                    string lineBeforeHttp = "";
+                                    string lineAfterHyperlink = "";
+                                    if (myHyperlinkText == "")
+                                    {
+                                        lineBeforeHttp = line.Substring(0, intHttpIndexUrl);
+                                    }
+                                    else
+                                    {
+                                        lineBeforeHttp = line.Substring(0, intHttpIndexText);
+                                    }
+
+                                    lineAfterHyperlink = line.Substring(intHttpIndexUrlEnd + 2);
+
+                                    if (lineBeforeHttp.Length > 0)
+                                    {
+                                        myActions.TypeText(lineBeforeHttp, 1000);
+                                    }
+                                    myActions.TypeText("%(i)", 1000);
+                                    myActions.TypeText("h", 1000);
+                                    myActions.TypeText(myHyperlinkUrl, 1000);
+                                    myActions.TypeText("{TAB 5}", 1000);
+                                    if (myHyperlinkText != "")
+                                    {
+                                        myActions.TypeText(myHyperlinkText, 1000);
+                                    }
+                                    myActions.TypeText("{TAB 3}", 1000);
+                                    myActions.TypeText("{ENTER}", 1000);
+                                    myActions.TypeText("{TAB}", 1000);
+                                    myActions.TypeText("{ENTER}", 1000);
+                                    myActions.TypeText("{RIGHT}", 1000);
+                                    if (lineAfterHyperlink.Length > 0)
+                                    {
+                                        myActions.TypeText(lineAfterHyperlink, 1000);
+                                    }
+                                    myActions.TypeText("+({ENTER})", 1000);
+                                }
+                                else
+                                {
+                                    myActions.TypeText(line, 1000);
+                                    myActions.TypeText("+({ENTER})", 1000);
+                                }
+                            }
+
+                            imageHeight = 8.5 - positiony;
+                        }
+                        // check for adding sound
+                        if (outputFilePath != "")
+                        {
+                            myActions.TypeText("%(i)", 500);
+                            myActions.TypeText("v", 500);
+                            myActions.TypeText("%(d)", 500);
+                            myActions.TypeText(@"c:\data", 500);
+                            myActions.TypeText("%(n)", 500);
+                            myActions.TypeText(currentFileName, 500);
+                            myActions.TypeText("%(o)", 500);
+                            // open position and size window in open office impress
+                            myActions.TypeText("%(o)", 500);
+                            myActions.TypeText("z", 500);
+                            // select the contents of positionx
+                            myActions.TypeText("^(a)", 500);
+                            // write the contents of positionx
+                            myActions.TypeText("9.83", 500);
+                            // tab to positiony field
+                            myActions.TypeText("{TAB}", 500);
+                            // write the contents of positiony
+                            myActions.TypeText("7.18", 500);
+                            // tab to width field
+                            myActions.TypeText("{TAB 2}", 500);
+                            // write the contents of width
+                            myActions.TypeText("1", 500);
+                            // tab to height field
+                            myActions.TypeText("{TAB}", 500);
+                            // copy the contents of height to clipboard
+                            myActions.TypeText("1", 500);
+                            // close the position and size window
+                            myActions.TypeText("{ENTER}", 500);
+                            outputFilePath = "";
+                        }
+                        // check for adding image
+                        if (returnImage != null)
+                        {
+                            // write what we took from snipping tool and put in clipboard to open office impress
+                            Clipboard.SetImage(returnImage);
+                            myActions.TypeText("^(v)", 500);
+                            // open position and size window in open office impress
+                            myActions.TypeText("%(o)", 500);
+                            myActions.TypeText("z", 500);
+                            // select the contents of positionx
+                            myActions.TypeText("^(a)", 500);
+                            // write the contents of positionx
+                            myActions.TypeText(positionx.ToString(), 500);
+                            // tab to positiony field
+                            myActions.TypeText("{TAB}", 500);
+                            // write the contents of positiony
+                            myActions.TypeText(positiony.ToString(), 500);
+                            if (fixedRatio)
+                            {
+                                myActions.TypeText("{ENTER}", 500);
+                                goto AddNewSlide;
+                            }
+                            ImageEntity myImage = new ImageEntity();
+
+                            myImage.ImageFile = "Images\\imgKeepRatio.PNG";
+
+                            myImage.Sleep = 100;
+                            myImage.Attempts = 1;
+                            myImage.RelativeX = 10;
+                            myImage.RelativeY = 10;
+                            int[,] myArray = myActions.PutAll(myImage);
+                            if (myArray.Length == 0)
+                            {
+                                myActions.TypeText("%(k)", 500);
+                            }
+                            // tab to width field
+
+                            myActions.TypeText("{TAB 2}", 500);
+                            // write the contents of width
+                            myActions.TypeText(imageWidth.ToString(), 500);
+                            // tab to height field
+                            myActions.TypeText("{TAB}", 500);
+                            // copy the contents of height to clipboard
+                            myActions.TypeText("^(a)", 500);
+                            myActions.TypeText("^(c)", 500);
+                            string strTempImageHeight = myActions.PutClipboardInEntity();
+                            strTempImageHeight = strTempImageHeight.Replace("\"", "").Trim();
+                            Double dblTempImageHeight = 0;
+                            Double.TryParse(strTempImageHeight, out dblTempImageHeight);
+                            // if the height is too big, we need to write the height to the max that it can be
+                            // and that will automatically readjust the width to what it should be.
+                            if (dblTempImageHeight > imageHeight)
+                            {
+                                myActions.TypeText(imageHeight.ToString(), 500);
+                            }
+                            // close the position and size window
+                            myActions.TypeText("{ENTER}", 500);
+
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                        myActions.MessageBoxShow(ex.Message);
                     }
                    
                     AddNewSlide:
                     // insert a new slide
-                    myActions.TypeText("%(i)", 1000);
-                    myActions.TypeText("e", 1000);
-                    myActions.TypeText("%(\" \")n", 500);
-                    myActions.TypeText(" ", 1000);
+                    myActions.TypeText("%(i)", 500);
+                    myActions.TypeText("e", 500);
+                    myActions.TypeText("%(\" \")n", 500);                   
                     strTitle = "";
                     strBody = "";
+                    outputFilePath = "";
+                    returnImage = null;
+                    Clipboard.Clear();
                 }
                 else
                 {
