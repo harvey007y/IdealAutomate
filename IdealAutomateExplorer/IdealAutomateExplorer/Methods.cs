@@ -1550,7 +1550,15 @@ namespace IdealAutomate.Core {
                 //KeyboardSend.KeyUp(System.Windows.Forms.Keys.Right);
             } else {
 
-                System.Windows.Forms.SendKeys.SendWait(myEntity);
+                try
+                {
+                    System.Windows.Forms.SendKeys.SendWait(myEntity);
+                }
+                catch (Exception ex)
+                {
+
+                    MessageBox.Show(ex.Message);
+                }
             }
         }
         /// <summary>
