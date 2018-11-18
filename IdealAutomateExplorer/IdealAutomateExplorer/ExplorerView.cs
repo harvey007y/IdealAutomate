@@ -10250,7 +10250,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                             {
                                 int linesWrapped = line.Length / 50;
                                 positiony = positiony + (linesWrapped * .45);
-                                if (line.Contains("[[") || line.Contains("<<"))
+                                if (line.Contains("[[") || line.Contains("<<") || line.Contains("http"))
                                 {
                                     string myHyperlinkUrl = "";
                                     string myHyperlinkText = "";
@@ -10277,7 +10277,27 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                                             int intHttpUrlLength = (intHttpIndexUrlEnd - intHttpIndexUrl) - 2;
                                             myHyperlinkUrl = line.Substring(intHttpIndexUrl + 2, intHttpUrlLength);
                                         }
+                                    } else
+                                    {
+                                        // we need to get http thru first space
+                                        intHttpIndexUrl = line.IndexOf("http");
+                                        if (intHttpIndexUrl > -1)
+                                        {
+                                            // we need to get Url
+                                            intHttpIndexUrlEnd = line.IndexOf(" ");
+                                            if (intHttpIndexUrlEnd == -1)
+                                            {
+                                                intHttpIndexUrlEnd = line.Length - intHttpIndexUrl;
+                                            }
+                                            if (intHttpIndexUrlEnd > intHttpIndexUrl)
+                                            {
+                                                int intHttpUrlLength = (intHttpIndexUrlEnd - intHttpIndexUrl);
+                                                myHyperlinkUrl = line.Substring(intHttpIndexUrl, intHttpUrlLength);
+
+                                            }
+                                        }
                                     }
+
                                     string lineBeforeHttp = "";
                                     string lineAfterHyperlink = "";
                                     if (myHyperlinkText == "")
@@ -10288,8 +10308,14 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                                     {
                                         lineBeforeHttp = line.Substring(0, intHttpIndexText);
                                     }
-
-                                    lineAfterHyperlink = line.Substring(intHttpIndexUrlEnd + 2);
+                                    if (myHyperlinkText == "")
+                                    {
+                                        myHyperlinkText = myHyperlinkUrl;
+                                    }
+                                    if (line.Length >= intHttpIndexUrlEnd + 2)
+                                    {
+                                        lineAfterHyperlink = line.Substring(intHttpIndexUrlEnd + 2);
+                                    }
 
                                     if (lineBeforeHttp.Length > 0)
                                     {
@@ -10298,8 +10324,10 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                                     myActions.TypeText("%(i)", 1000);
                                     myActions.TypeText("h", 1000);
                                     myActions.TypeText(myHyperlinkUrl, 1000);
-                                    myActions.TypeText("{TAB 5}", 1000);
-                                    if (myHyperlinkText != "")
+                                    myActions.TypeText("{TAB 4}", 1000);
+                                    if (myHyperlinkText == "") {
+                                        myActions.TypeText(myHyperlinkUrl, 1000);
+                                    } else
                                     {
                                         myActions.TypeText(myHyperlinkText, 1000);
                                     }
