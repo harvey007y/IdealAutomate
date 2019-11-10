@@ -633,3 +633,5 @@ C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\Idea
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\IdealAutomateExplorer.exe.manifest
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\IdealAutomateExplorer.application
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\IdealAutomateExplorer.csproj.CopyComplete
+C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\WindowsInput.dll
+C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\WindowsInput.xml

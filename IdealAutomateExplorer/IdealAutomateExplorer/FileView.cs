@@ -14,11 +14,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Resources;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace System.Windows.Forms.Samples
 {
     public class FileView
     {
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern bool DestroyIcon(IntPtr hIcon);
         private string _path;
         private string _name;
         private long _size;
@@ -160,7 +163,9 @@ namespace System.Windows.Forms.Samples
 
             try
             {
-                _icon = System.Drawing.Icon.FromHandle(info.hIcon);
+                _icon = (Icon)System.Drawing.Icon.FromHandle(info.hIcon).Clone();
+                DestroyIcon(info.hIcon);
+
                 string scriptName = myActions.ConvertFullFileNameToPublicPath(fileInfo.FullName) + "\\" + fileInfo.Name;
                 string categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", scriptName);
                 string expandCollapseAll = myActions.GetValueByKey("ExpandCollapseAll");

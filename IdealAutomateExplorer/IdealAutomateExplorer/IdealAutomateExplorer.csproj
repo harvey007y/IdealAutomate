@@ -37,7 +37,7 @@
     <InstallUrl>http://idealautomate.com/idealautomateexplorer/</InstallUrl>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>113</ApplicationRevision>
+    <ApplicationRevision>114</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -73,10 +73,10 @@
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup>
-    <ManifestCertificateThumbprint>BE5BB52EF54616A264D7734B6CC4FE6E6A200E17</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>31E307CA70F645A920336EC9505DF5EA41C5E939</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>IdealAutomateExplorer_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>IdealAutomateExplorer_4_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>true</SignManifests>
@@ -514,6 +514,7 @@
       <DependentUpon>ToolTipContent.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="IdealAutomateExplorer_1_TemporaryKey.pfx" />
+    <None Include="IdealAutomateExplorer_4_TemporaryKey.pfx" />
     <None Include="IdealAutomateExplorer_TemporaryKey.pfx" />
     <None Include="IdealAutomateExplorer_TemporaryKey1.pfx" />
     <None Include="Images\minus.png">

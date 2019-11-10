@@ -912,7 +912,7 @@ namespace System.Windows.Forms.Samples
             }
             else
             {
-                _CurrentSplitContainer.Width = Screen.PrimaryScreen.Bounds.Width;
+                _CurrentSplitContainer.Width = Screen.FromControl(this).Bounds.Width;
             }
 
             if (detailsMenuItemChecked == "True")
