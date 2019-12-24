@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
-  <asmv1:assemblyIdentity name="IdealAutomateExplorer.exe" version="1.0.0.113" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="amd64" type="win32" />
+  <asmv1:assemblyIdentity name="IdealAutomateExplorer.exe" version="1.0.0.114" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="amd64" type="win32" />
   <description asmv2:iconFile="Resources\folder.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="IdealAutomateExplorer" version="1.0.7253.22684" language="neutral" processorArchitecture="amd64" />
+    <assemblyIdentity name="IdealAutomateExplorer" version="1.0.7297.19942" language="neutral" processorArchitecture="amd64" />
     <commandLine file="IdealAutomateExplorer.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -91,14 +91,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IdealAutomateExplorer.exe" size="1301520">
-      <assemblyIdentity name="IdealAutomateExplorer" version="1.0.7253.22684" language="neutral" processorArchitecture="amd64" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IdealAutomateExplorer.exe" size="1302544">
+      <assemblyIdentity name="IdealAutomateExplorer" version="1.0.7297.19942" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>vG/cnSvnWRKL5hvPlgJmN+4dHcniRwwLY3fIjDHjQ2c=</dsig:DigestValue>
+        <dsig:DigestValue>oZuHmXniRoiN1/+70L/BagCSA5BjWjtptx0rUeNTf30=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -165,13 +165,13 @@
       <dsig:DigestValue>MTBQyFJ62gpoHoX2NtumWJy0pxbm6qfr/go+JZzgKoQ=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="IdealAutomateExplorer.exe.config" size="423">
+  <file name="IdealAutomateExplorer.exe.config" size="507">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>DKa3sxflw17kYlSLKeYQ4DPre+quDoyRdZtJJDXs49E=</dsig:DigestValue>
+      <dsig:DigestValue>CMHx63E3pYJq0rQkCcMRD/YWuNJIMnv1VvgFlA+g4b0=</dsig:DigestValue>
     </hash>
   </file>
   <file name="IdealSqlTracer.exe" size="1005056">

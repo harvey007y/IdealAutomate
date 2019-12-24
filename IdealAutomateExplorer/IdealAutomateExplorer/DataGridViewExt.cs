@@ -13,7 +13,7 @@ namespace System.Windows.Forms.Samples {
 
 	[Description("DataGridView that Saves Column Order, Width and Visibility to appdata\\roaming\\idealautomate\\idealautomateexplorer")]
 	[ToolboxBitmap(typeof(System.Windows.Forms.DataGridView))]
-	public partial class DataGridViewExt : DataGridView
+	public partial class DataGridViewExt : DataGridView, IDisposable
 	{
         string _InitialDirectory = "myInitialDirectory";
         public DataGridViewExt(string InitialDirectory) {

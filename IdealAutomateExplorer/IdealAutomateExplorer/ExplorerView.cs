@@ -37,6 +37,8 @@ using Demo;
 using static Digitalis.GUI.Controls.InteractiveToolTip;
 using NAudio.Wave;
 using NAudio.CoreAudioApi;
+using IdealAutomateCore;
+using System.Runtime;
 
 
 
@@ -46,10 +48,8 @@ using NAudio.CoreAudioApi;
 
 #endregion
 
-namespace System.Windows.Forms.Samples
-{
-    partial class ExplorerView : Form
-    {
+namespace System.Windows.Forms.Samples {
+    partial class ExplorerView : Form {
         public static ExplorerView staticVar = null;
         private DirectoryView _dir;
         private ToolTipContent content;
@@ -89,7 +89,12 @@ namespace System.Windows.Forms.Samples
         System.Windows.Threading.DispatcherTimer dispatcherTimer;
         public IntPtr myhWnd;
         static StringBuilder _searchErrors = new StringBuilder();
+        Stopwatch _stopwatch = new Stopwatch();
+        private Icon _plusIcon;
+        private Icon _minusIcon;
 
+        [DllImport("kernel32", SetLastError = true)]
+        static extern bool FreeLibrary(IntPtr hModule);
 
         [DllImport("user32.dll", SetLastError = true)]
         private static extern bool IsWindowVisible(IntPtr hWnd);
@@ -199,7 +204,7 @@ namespace System.Windows.Forms.Samples
         private string currentFileName;
         private string message;
         private float peak;
-        private  SynchronizationContext synchronizationContext;
+        private SynchronizationContext synchronizationContext;
 
         private float recordLevel;
 
@@ -211,17 +216,19 @@ namespace System.Windows.Forms.Samples
         private int shareModeIndex;
         private string outputFilePath = "";
 
-        public ExplorerView()
-        {
+        public ExplorerView() {
+            _plusIcon = new Icon(Properties.Resources._112_Plus_Grey, 16, 16);
+            _minusIcon = new Icon(Properties.Resources._112_Minus_Grey, 16, 16);
             InitializeComponent();
             content = new ToolTipContent();
 
+          //  _stopwatch.Start();
+          //  Logging.WriteLogSimple("Constructor for ExplorerView " + _stopwatch.Elapsed.ToString() + " GC.Count " + String.Format("{0:n0}", GC.GetTotalMemory(true)));
 
             // we want the tooltip's background colour to show through
             content.BackColor = Color.Transparent;
 
-            content.linkLabel1.LinkClicked += delegate (object sender, LinkLabelLinkClickedEventArgs e)
-            {
+            content.linkLabel1.LinkClicked += delegate (object sender, LinkLabelLinkClickedEventArgs e) {
                 interactiveToolTip1.Hide();
                 Process.Start("IExplore.exe", content.MyLink);
 
@@ -230,13 +237,11 @@ namespace System.Windows.Forms.Samples
 
             Methods myActions = new Methods();
 
-            for (int i = 0; i < 20; i++)
-            {
+            for (int i = 0; i < 20; i++) {
                 BindingSource myNewBindingSource = new BindingSource();
                 listBindingSource.Add(myNewBindingSource);
             }
-            for (int i = 0; i < 20; i++)
-            {
+            for (int i = 0; i < 20; i++) {
                 SplitContainer myNewSplitContainer = new SplitContainer();
                 listSplitContainer.Add(myNewSplitContainer);
             }
@@ -249,40 +254,31 @@ namespace System.Windows.Forms.Samples
             tabControl1.DrawItem += TabControl1_DrawItem;
             tabControl1.Padding = new System.Drawing.Point(20, 3);
             tabControl1.MouseClick += TabControl1_MouseClick;
-
         }
 
 
 
-        public void TabControl1_MouseClick(object sender, MouseEventArgs e)
-        {
+        public void TabControl1_MouseClick(object sender, MouseEventArgs e) {
             // _CurrentDataGridView.ClearSelection();
             //Looping through the controls.
             int removedIndex = -1;
-            for (int i = 0; i < this.tabControl1.TabPages.Count - 1; i++)
-            {
+            for (int i = 0; i < this.tabControl1.TabPages.Count - 1; i++) {
                 Rectangle r = tabControl1.GetTabRect(i);
                 //Getting the position of the "x" mark.
                 Rectangle closeButton = new Rectangle(r.Right - 15, r.Top + 4, 9, 7);
-                if (closeButton.Contains(e.Location))
-                {
-                    if (tabControl1.TabPages.Count == 2)
-                    {
+                if (closeButton.Contains(e.Location)) {
+                    if (tabControl1.TabPages.Count == 2) {
                         MessageBox.Show("You can not remove all tabs");
                         break;
                     }
-                    if (MessageBox.Show("Would you like to Close this Tab?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                    {
+                    if (MessageBox.Show("Would you like to Close this Tab?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
                         this.tabControl1.TabPages.RemoveAt(i);
                         var itemToRemove = listLoadedIndexes.SingleOrDefault(l => l == i);
-                        if (itemToRemove != -1)
-                        {
+                        if (itemToRemove != -1) {
                             listLoadedIndexes.Remove(itemToRemove);
                         }
-                        for (int j = 0; j < listLoadedIndexes.Count; j++)
-                        {
-                            if (listLoadedIndexes[j] > i)
-                            {
+                        for (int j = 0; j < listLoadedIndexes.Count; j++) {
+                            if (listLoadedIndexes[j] > i) {
                                 listLoadedIndexes[j] = listLoadedIndexes[j] - 1;
                             }
                         }
@@ -294,16 +290,13 @@ namespace System.Windows.Forms.Samples
             }
             Methods myActions = new Methods();
             int nextIndex = 0;
-            if (removedIndex > -1)
-            {
-                for (int i = removedIndex; i < this.tabControl1.TabPages.Count - 1; i++)
-                {
+            if (removedIndex > -1) {
+                for (int i = removedIndex; i < this.tabControl1.TabPages.Count - 1; i++) {
                     nextIndex = i + 1;
                     string nextInitialDirectory = myActions.GetValueByKey("InitialDirectory" + nextIndex.ToString());
                     myActions.SetValueByKey("InitialDirectory" + i.ToString(), nextInitialDirectory);
                     string nextInitialDirectorySelectedRow = myActions.GetValueByKey("InitialDirectory" + nextIndex.ToString() + "SelectedRow");
-                    if (nextInitialDirectorySelectedRow != "")
-                    {
+                    if (nextInitialDirectorySelectedRow != "") {
                         myActions.SetValueByKey("InitialDirectory" + i.ToString() + "SelectedRow", nextInitialDirectorySelectedRow);
                     }
 
@@ -314,20 +307,17 @@ namespace System.Windows.Forms.Samples
 
                 myActions.SetValueByKey("NumOfTabs", this.tabControl1.TabPages.Count.ToString());
             }
-            if (_ignoreSelectedIndexChanged == true)
-            {
+            if (_ignoreSelectedIndexChanged == true) {
                 _ignoreSelectedIndexChanged = false;
                 //  return;
             }
 
             // Adding a new tab
-            if (tabControl1.SelectedIndex == tabControl1.TabCount - 1)
-            {
+            if (tabControl1.SelectedIndex == tabControl1.TabCount - 1) {
                 strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
                 // Set Initial Directory to My Documents
                 string strSavedDirectory = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
-                if (Directory.Exists(strSavedDirectory))
-                {
+                if (Directory.Exists(strSavedDirectory)) {
                     strInitialDirectory = strSavedDirectory;
                 }
             DisplayFindTextInFilesWindow:
@@ -381,8 +371,7 @@ namespace System.Windows.Forms.Samples
             DisplayWindowAgain:
                 string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 300, 1200, 100, 100);
             LineAfterDisplayWindow:
-                if (strButtonPressed == "btnCancel")
-                {
+                if (strButtonPressed == "btnCancel") {
                     myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                     this.Cursor = Cursors.Default;
                     return;
@@ -394,15 +383,13 @@ namespace System.Windows.Forms.Samples
 
                 myActions.SetValueByKey("cbxFolderSelectedValue", strFolder);
 
-                if (strButtonPressed == "btnSelectFolder")
-                {
+                if (strButtonPressed == "btnSelectFolder") {
                     var dialog = new System.Windows.Forms.FolderBrowserDialog();
                     dialog.SelectedPath = myActions.GetValueByKey("LastSearchFolder");
 
 
                     System.Windows.Forms.DialogResult result = dialog.ShowDialog();
-                    if (result == System.Windows.Forms.DialogResult.OK && Directory.Exists(dialog.SelectedPath))
-                    {
+                    if (result == System.Windows.Forms.DialogResult.OK && Directory.Exists(dialog.SelectedPath)) {
                         myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedValue = dialog.SelectedPath;
                         myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedKey = dialog.SelectedPath;
                         myListControlEntity.Find(x => x.ID == "cbxFolder").Text = dialog.SelectedPath;
@@ -425,21 +412,16 @@ namespace System.Windows.Forms.Samples
                         ComboBox myComboBox = new ComboBox();
 
 
-                        if (!File.Exists(settingsPath))
-                        {
-                            using (StreamWriter objSWFile = File.CreateText(settingsPath))
-                            {
+                        if (!File.Exists(settingsPath)) {
+                            using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
                                 objSWFile.Close();
                             }
                         }
-                        using (StreamReader objSRFile = File.OpenText(settingsPath))
-                        {
+                        using (StreamReader objSRFile = File.OpenText(settingsPath)) {
                             string strReadLine = "";
-                            while ((strReadLine = objSRFile.ReadLine()) != null)
-                            {
+                            while ((strReadLine = objSRFile.ReadLine()) != null) {
                                 string[] keyvalue = strReadLine.Split('^');
-                                if (keyvalue[0] != "--Select Item ---")
-                                {
+                                if (keyvalue[0] != "--Select Item ---") {
                                     cbp.Add(new ComboBoxPair(keyvalue[0], keyvalue[1]));
                                 }
                             }
@@ -452,32 +434,24 @@ namespace System.Windows.Forms.Samples
                         bool boolNewItem = false;
 
                         alHostsNew.Add(myCbp);
-                        if (alHostx.Count > 24)
-                        {
-                            for (int i = alHostx.Count - 1; i > 0; i--)
-                            {
-                                if (alHostx[i]._Key.Trim() != "--Select Item ---")
-                                {
+                        if (alHostx.Count > 24) {
+                            for (int i = alHostx.Count - 1; i > 0; i--) {
+                                if (alHostx[i]._Key.Trim() != "--Select Item ---") {
                                     alHostx.RemoveAt(i);
                                     break;
                                 }
                             }
                         }
-                        foreach (ComboBoxPair item in alHostx)
-                        {
-                            if (strNewHostName.ToLower() != item._Key.ToLower() && item._Key != "--Select Item ---")
-                            {
+                        foreach (ComboBoxPair item in alHostx) {
+                            if (strNewHostName.ToLower() != item._Key.ToLower() && item._Key != "--Select Item ---") {
                                 boolNewItem = true;
                                 alHostsNew.Add(item);
                             }
                         }
 
-                        using (StreamWriter objSWFile = File.CreateText(settingsPath))
-                        {
-                            foreach (ComboBoxPair item in alHostsNew)
-                            {
-                                if (item._Key != "")
-                                {
+                        using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
+                            foreach (ComboBoxPair item in alHostsNew) {
+                                if (item._Key != "") {
                                     objSWFile.WriteLine(item._Key + '^' + item._Value);
                                 }
                             }
@@ -488,11 +462,9 @@ namespace System.Windows.Forms.Samples
                 }
 
                 string strFolderToUse = "";
-                if (strButtonPressed == "btnOkay")
-                {
+                if (strButtonPressed == "btnOkay") {
 
-                    if ((strFolder == "--Select Item ---" || strFolder == ""))
-                    {
+                    if ((strFolder == "--Select Item ---" || strFolder == "")) {
                         myActions.MessageBoxShow("Please enter Folder or select Folder from ComboBox; else press Cancel to Exit");
                         goto DisplayFindTextInFilesWindow;
                     }
@@ -509,11 +481,10 @@ namespace System.Windows.Forms.Samples
                 strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
                 // Set Initial Directory to My Documents
                 string strSavedDirectory1 = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
-                if (Directory.Exists(strSavedDirectory1))
-                {
+                if (Directory.Exists(strSavedDirectory1)) {
                     strInitialDirectory = strSavedDirectory1;
                 }
-                _dir = new DirectoryView(strInitialDirectory, _myArrayList);
+                _dir = new DirectoryView(strInitialDirectory, _myArrayList,_plusIcon,_minusIcon);
                 this._CurrentFileViewBindingSource.DataSource = _dir;
                 tabControl1.TabPages[tabControl1.SelectedIndex].Text = _dir.FileView.Name;
                 tabControl1.TabPages[tabControl1.SelectedIndex].ToolTipText = _dir.FileView.FullName;
@@ -534,22 +505,18 @@ namespace System.Windows.Forms.Samples
             _CurrentSplitContainer.MouseEnter += new System.EventHandler(_CurrentSplitContainer_MouseEnter);
             _CurrentSplitContainer.MouseLeave += new System.EventHandler(_CurrentSplitContainer_MouseLeave);
             string fileName = "";
-            if (listLoadedIndexes.Contains(tabControl1.SelectedIndex))
-            {
+            if (listLoadedIndexes.Contains(tabControl1.SelectedIndex)) {
                 string strCurrentPath = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
                 _newTab = true;
                 cbxCurrentPath.Text = strCurrentPath;
                 cbxCurrentPath.SelectedValue = strCurrentPath;
                 this.Cursor = Cursors.Default;
                 _selectedRow = myActions.GetValueByKeyAsInt("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow");
-                if (_selectedRow > 0)
-                {
-                    if (_CurrentDataGridView.Rows.Count > _selectedRow && _CurrentDataGridView.Rows[_selectedRow].Cells.Count > 1)
-                    {
+                if (_selectedRow > 0) {
+                    if (_CurrentDataGridView.Rows.Count > _selectedRow && _CurrentDataGridView.Rows[_selectedRow].Cells.Count > 1) {
                         //_CurrentDataGridView.Rows[selectedRow].Cells[1].Selected = true;
                         string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
-                        if (detailsMenuItemChecked == "True")
-                        {
+                        if (detailsMenuItemChecked == "True") {
 
                             DataGridViewCell c = _CurrentDataGridView.Rows[_selectedRow].Cells[1];
 
@@ -561,22 +528,17 @@ namespace System.Windows.Forms.Samples
                 }
                 txtMetaDescription.Text = myActions.GetValueByPublicKeyInCurrentFolder("description", fileName);
                 return;
-            }
-            else
-            {
+            } else {
                 _newTab = true;
                 RefreshDataGrid();
                 listLoadedIndexes.Add(tabControl1.SelectedIndex);
             }
             _selectedRow = myActions.GetValueByKeyAsInt("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow");
-            if (_selectedRow > 0)
-            {
-                if (_CurrentDataGridView.Rows.Count > _selectedRow && _CurrentDataGridView.Rows[_selectedRow].Cells.Count > 1)
-                {
+            if (_selectedRow > 0) {
+                if (_CurrentDataGridView.Rows.Count > _selectedRow && _CurrentDataGridView.Rows[_selectedRow].Cells.Count > 1) {
                     //_CurrentDataGridView.Rows[selectedRow].Cells[1].Selected = true;
                     string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
-                    if (detailsMenuItemChecked == "True")
-                    {
+                    if (detailsMenuItemChecked == "True") {
 
                         DataGridViewCell c = _CurrentDataGridView.Rows[_selectedRow].Cells[1];
 
@@ -585,11 +547,9 @@ namespace System.Windows.Forms.Samples
                         fileName = _CurrentDataGridView.Rows[_selectedRow].Cells["FullName"].Value.ToString();
                         if (fileName.EndsWith(".url")
 
-                         )
-                        {
+                         ) {
                             //Close the running process.
-                            if (_appHandle != IntPtr.Zero)
-                            {
+                            if (_appHandle != IntPtr.Zero) {
                                 PostMessage(_appHandle, WM_CLOSE, 0, 0);
                                 System.Threading.Thread.Sleep(1000);
                                 _appHandle = IntPtr.Zero;
@@ -653,29 +613,24 @@ namespace System.Windows.Forms.Samples
                             || fileName.EndsWith(".odt")
                             || fileName.EndsWith(".doc")
                             || fileName.EndsWith(".docx")
-                            )
-                        {
+                            ) {
                             _NotepadppLoaded = false;
                             _WebBrowserLoaded = false;
                             _WordPadLoaded = true;
                             //Close the running process
                             _CurrentSplitContainer.Panel2.Controls.Clear();
-                            if (_appHandle != IntPtr.Zero)
-                            {
+                            if (_appHandle != IntPtr.Zero) {
                                 PostMessage(_appHandle, WM_CLOSE, 0, 0);
                                 System.Threading.Thread.Sleep(1000);
                                 _appHandle = IntPtr.Zero;
                             }
                             //tries to start the process 
                             TryToCloseAllOpenFilesInTab();
-                            try
-                            {
+                            try {
                                 ProcessStartInfo psi = new ProcessStartInfo(@"C:\Program Files\Windows NT\Accessories\wordpad.exe", "\"" + fileName + "\"");
                                 psi.WindowStyle = ProcessWindowStyle.Minimized;
                                 _proc = Process.Start(psi);
-                            }
-                            catch (Exception)
-                            {
+                            } catch (Exception) {
                                 MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 this.Cursor = Cursors.Default;
                                 return;
@@ -683,8 +638,7 @@ namespace System.Windows.Forms.Samples
 
 
                             System.Threading.Thread.Sleep(500);
-                            while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle)))
-                            {
+                            while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
                                 System.Threading.Thread.Sleep(10);
                                 _proc.Refresh();
                             }
@@ -699,9 +653,7 @@ namespace System.Windows.Forms.Samples
                             MoveWindow(_appHandle, 0, 0, _CurrentSplitContainer.Panel2.Width - 5, _CurrentSplitContainer.Panel2.Height, true);
                             //  SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                             //  SetTitle(_dir.FileView);
-                        }
-                        else
-                        {
+                        } else {
                             if (fileName.EndsWith(".txt")
                                 || fileName.EndsWith(".bat")
                                 || fileName.EndsWith(".cs")
@@ -719,34 +671,26 @@ namespace System.Windows.Forms.Samples
                                   || fileName.EndsWith(".inc")
                                   || fileName.EndsWith(".dinc")
                                   || fileName.EndsWith(".aspx")
-                                  || fileName.EndsWith(".csv"))
-                            {
+                                  || fileName.EndsWith(".csv")) {
                                 _WordPadLoaded = false;
                                 _NotepadppLoaded = true;
                                 _WebBrowserLoaded = false;
                                 //Close the running process
                                 _CurrentSplitContainer.Panel2.Controls.Clear();
-                                if (_appHandle != IntPtr.Zero)
-                                {
+                                if (_appHandle != IntPtr.Zero) {
                                     PostMessage(_appHandle, WM_CLOSE, 0, 0);
                                     System.Threading.Thread.Sleep(1000);
                                     _appHandle = IntPtr.Zero;
                                 }
                                 //tries to start the process 
-                                try
-                                {
+                                try {
                                     myActions.KillAllProcessesByProcessName("notepad++");
-                                    if (!File.Exists(@"C:\Program Files (x86)\Notepad++\notepad++.exe"))
-                                    {
+                                    if (!File.Exists(@"C:\Program Files (x86)\Notepad++\notepad++.exe")) {
                                         myActions.MessageBoxShow(" You need to download notepad++ to use this feature.\n\r\n\rFile not found: " + @"C:\Program Files (x86)\Notepad++\notepad++.exe");
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", fileName);
                                     }
-                                }
-                                catch (Exception)
-                                {
+                                } catch (Exception) {
                                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                     this.Cursor = Cursors.Default;
                                     return;
@@ -754,8 +698,7 @@ namespace System.Windows.Forms.Samples
 
 
                                 //    System.Threading.Thread.Sleep(500);
-                                while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle)))
-                                {
+                                while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
                                     System.Threading.Thread.Sleep(10);
                                     _proc.Refresh();
                                 }
@@ -782,19 +725,16 @@ namespace System.Windows.Forms.Samples
             this.Cursor = Cursors.Default;
         }
 
-        private void TabControl1_DrawItem(object sender, System.Windows.Forms.DrawItemEventArgs e)
-        {
+        private void TabControl1_DrawItem(object sender, System.Windows.Forms.DrawItemEventArgs e) {
             e.DrawBackground();
             Graphics g = e.Graphics;
             g.FillRectangle(new SolidBrush(Color.LightGray), e.Bounds);
-            if (e.Index == tabControl1.SelectedIndex)
-            {
+            if (e.Index == tabControl1.SelectedIndex) {
                 g.FillRectangle(new SolidBrush(Color.White), e.Bounds);
             }
             e.DrawFocusRectangle();
             //This code will render a "x" mark at the end of the Tab caption.
-            if (e.Index != tabControl1.TabCount - 1)
-            {
+            if (e.Index != tabControl1.TabCount - 1) {
                 e.Graphics.DrawString("x", e.Font, new SolidBrush(Color.Black), e.Bounds.Right - CLOSE_AREA, e.Bounds.Top + 4);
             }
 
@@ -804,8 +744,7 @@ namespace System.Windows.Forms.Samples
         }
 
         #region Helper Methods
-        private void SetTitle(FileView fv)
-        {
+        private void SetTitle(FileView fv) {
             // Clicked on the Name property, update the title
             this.Text = fv.Name + " - Ideal Automate Explorer";
             this.Icon = fv.Icon;
@@ -818,8 +757,7 @@ namespace System.Windows.Forms.Samples
             strInitialDirectoryArray[0] = fv.FullName;
             Methods myActions = new Methods();
 
-            if (tabControl1.TabCount - 1 != tabControl1.SelectedIndex)
-            {
+            if (tabControl1.TabCount - 1 != tabControl1.SelectedIndex) {
                 tabControl1.TabPages[tabControl1.SelectedIndex].Text = fv.Name;
                 myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString(), fv.FullName);
             }
@@ -827,38 +765,29 @@ namespace System.Windows.Forms.Samples
             //File.WriteAllLines(Path.Combine(Application.StartupPath, @"Text\InitialDirectory.txt"), strInitialDirectoryArray);
         }
 
-        private void toolStripMenuItem4_CheckStateChanged(object sender, EventArgs e)
-        {
+        private void toolStripMenuItem4_CheckStateChanged(object sender, EventArgs e) {
             ToolStripMenuItem item = (sender as ToolStripMenuItem);
 
-            foreach (ToolStripMenuItem child in viewSplitButton.DropDownItems)
-            {
-                if (child != item)
-                {
+            foreach (ToolStripMenuItem child in viewSplitButton.DropDownItems) {
+                if (child != item) {
                     child.Checked = false;
-                }
-                else
-                {
+                } else {
                     item.Checked = true;
                 }
             }
         }
 
         // Clear the one of many list
-        private void ClearItems(ToolStripMenuItem selected)
-        {
+        private void ClearItems(ToolStripMenuItem selected) {
             // Clear items
-            foreach (ToolStripMenuItem child in viewSplitButton.DropDownItems)
-            {
-                if (child != selected)
-                {
+            foreach (ToolStripMenuItem child in viewSplitButton.DropDownItems) {
+                if (child != selected) {
                     child.Checked = false;
                 }
             }
         }
 
-        private bool DoActionRequired(object sender)
-        {
+        private bool DoActionRequired(object sender) {
             ToolStripMenuItem item = (sender as ToolStripMenuItem);
             bool doAction;
 
@@ -866,13 +795,10 @@ namespace System.Windows.Forms.Samples
             ClearItems(item);
 
             // Check this one
-            if (!item.Checked)
-            {
+            if (!item.Checked) {
                 item.Checked = true;
                 doAction = false;
-            }
-            else
-            {
+            } else {
                 // Item click and wasn't previously checked - Do action
                 doAction = true;
             }
@@ -882,8 +808,7 @@ namespace System.Windows.Forms.Samples
         #endregion
 
         #region Event Handlers        
-        public void ExplorerView_Load(object sender, EventArgs e)
-        {
+        public void ExplorerView_Load(object sender, EventArgs e) {
             DeleteOpenFiles();
             GlobalMouseHandler globalClick = new GlobalMouseHandler();
             Application.AddMessageFilter(globalClick);
@@ -891,12 +816,9 @@ namespace System.Windows.Forms.Samples
             this.Cursor = Cursors.WaitCursor;
             Methods myActions = new Methods();
             string launchMode = myActions.GetValueByKey("LaunchMode");
-            if (launchMode == "Admin")
-            {
+            if (launchMode == "Admin") {
                 toolStripComboBox2.SelectedIndex = 0;
-            }
-            else
-            {
+            } else {
                 toolStripComboBox2.SelectedIndex = 1;
             }
             //_CurrentDataGridView.ClearSelection();
@@ -906,36 +828,26 @@ namespace System.Windows.Forms.Samples
             int _CurrentSplitContainerWidth = myActions.GetValueByKeyAsInt("_CurrentSplitContainerWidth");
 
             string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
-            if (_CurrentSplitContainerWidth > 0)
-            {
+            if (_CurrentSplitContainerWidth > 0) {
                 _CurrentSplitContainer.SplitterDistance = _CurrentSplitContainerWidth;
-            }
-            else
-            {
+            } else {
                 _CurrentSplitContainer.Width = Screen.FromControl(this).Bounds.Width;
             }
 
-            if (detailsMenuItemChecked == "True")
-            {
+            if (detailsMenuItemChecked == "True") {
                 _CurrentSplitContainer.Panel2Collapsed = false;
                 this.detailsMenuItem.Checked = true;
                 this.listMenuItem.Checked = false;
                 //tries to start the process 
-                try
-                {
-                    if (!File.Exists(@"C:\Program Files\Windows NT\Accessories\wordpad.exe"))
-                    {
+                try {
+                    if (!File.Exists(@"C:\Program Files\Windows NT\Accessories\wordpad.exe")) {
                         myActions.MessageBoxShow(" File not found: " + @"C:\Program Files\Windows NT\Accessories\wordpad.exe");
-                    }
-                    else
-                    {
+                    } else {
                         ProcessStartInfo psi = new ProcessStartInfo(@"C:\Program Files\Windows NT\Accessories\wordpad.exe");
                         psi.WindowStyle = ProcessWindowStyle.Minimized;
                         _proc = Process.Start(psi);
                     }
-                }
-                catch (Exception)
-                {
+                } catch (Exception) {
                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     this.Cursor = Cursors.Default;
                     return;
@@ -947,8 +859,7 @@ namespace System.Windows.Forms.Samples
 
                 //host the started process in the panel 
                 System.Threading.Thread.Sleep(500);
-                while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle)))
-                {
+                while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
                     System.Threading.Thread.Sleep(10);
                     _proc.Refresh();
                 }
@@ -960,9 +871,7 @@ namespace System.Windows.Forms.Samples
                 SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                 SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                 //SendMessage(proc.MainWindowHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
-            }
-            else
-            {
+            } else {
                 _CurrentSplitContainer.Panel2Collapsed = true;
                 this.detailsMenuItem.Checked = false;
                 this.listMenuItem.Checked = true;
@@ -974,8 +883,7 @@ namespace System.Windows.Forms.Samples
 
             int numOfTabs = myActions.GetValueByKeyAsInt("NumOfTabs");
             // default to desktop if they have no tabs
-            if (numOfTabs < 2)
-            {
+            if (numOfTabs < 2) {
                 numOfTabs = 2;
                 myActions.SetValueByKey("NumOfTabs", numOfTabs.ToString());
                 myActions.SetValueByKey("InitialDirectory0", Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
@@ -987,13 +895,11 @@ namespace System.Windows.Forms.Samples
 
             // if an initial directory does not exist for a tab,
             // default to the documents folder for that tab
-            for (int i = 0; i < numOfTabs - 1; i++)
-            {
+            for (int i = 0; i < numOfTabs - 1; i++) {
                 strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
                 // Set Initial Directory to My Documents
                 string strSavedDirectory1 = myActions.GetValueByKey("InitialDirectory" + i.ToString());
-                if (Directory.Exists(strSavedDirectory1))
-                {
+                if (Directory.Exists(strSavedDirectory1)) {
                     strInitialDirectory = strSavedDirectory1;
                 }
 
@@ -1021,11 +927,10 @@ namespace System.Windows.Forms.Samples
             // Set Initial Directory to My Documents
 
             string strSavedDirectory2 = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
-            if (Directory.Exists(strSavedDirectory2))
-            {
+            if (Directory.Exists(strSavedDirectory2)) {
                 strInitialDirectory = strSavedDirectory2;
             }
-            _dir = new DirectoryView(strInitialDirectory, _myArrayList);
+            _dir = new DirectoryView(strInitialDirectory, _myArrayList, _plusIcon, _minusIcon);
             this._CurrentFileViewBindingSource.DataSource = _dir;
             tabControl1.TabPages[tabControl1.SelectedIndex].Text = _dir.FileView.Name;
             _CurrentIndex = tabControl1.SelectedIndex;
@@ -1033,8 +938,7 @@ namespace System.Windows.Forms.Samples
 
         testskip:
             int currentIndex = myActions.GetValueByKeyAsInt("CurrentIndex");
-            if (currentIndex > tabControl1.TabPages.Count - 2)
-            {
+            if (currentIndex > tabControl1.TabPages.Count - 2) {
                 currentIndex = 0;
                 myActions.SetValueByKey("CurrentIndex", "0");
             }
@@ -1062,11 +966,10 @@ namespace System.Windows.Forms.Samples
             string strSavedDirectory = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
 
 
-            if (Directory.Exists(strSavedDirectory))
-            {
+            if (Directory.Exists(strSavedDirectory)) {
                 strInitialDirectory = strSavedDirectory;
             }
-            _dir = new DirectoryView(strInitialDirectory, _myArrayList);
+            _dir = new DirectoryView(strInitialDirectory, _myArrayList, _plusIcon, _minusIcon);
             this._CurrentFileViewBindingSource.DataSource = _dir;
 
             // Set the title
@@ -1086,21 +989,16 @@ namespace System.Windows.Forms.Samples
             //  cbp.Add(new ComboBoxPair("--Select Item ---", "--Select Item ---"));
             ComboBox myComboBox = new ComboBox();
 
-            if (!File.Exists(settingsPath))
-            {
-                using (StreamWriter objSWFile = File.CreateText(settingsPath))
-                {
+            if (!File.Exists(settingsPath)) {
+                using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
                     objSWFile.Close();
                 }
             }
-            using (StreamReader objSRFile = File.OpenText(settingsPath))
-            {
+            using (StreamReader objSRFile = File.OpenText(settingsPath)) {
                 string strReadLine = "";
-                while ((strReadLine = objSRFile.ReadLine()) != null)
-                {
+                while ((strReadLine = objSRFile.ReadLine()) != null) {
                     string[] keyvalue = strReadLine.Split('^');
-                    if (keyvalue[0] != "--Select Item ---" && keyvalue[0] != "")
-                    {
+                    if (keyvalue[0] != "--Select Item ---" && keyvalue[0] != "") {
                         cbp.Add(new ComboBoxPair(keyvalue[0], keyvalue[1]));
 
                     }
@@ -1108,8 +1006,7 @@ namespace System.Windows.Forms.Samples
                 objSRFile.Close();
             }
 
-            foreach (var item in cbp)
-            {
+            foreach (var item in cbp) {
                 cbxCurrentPath.Items.Add(item);
             }
             cbxCurrentPath.DisplayMember = "_Value";
@@ -1117,8 +1014,7 @@ namespace System.Windows.Forms.Samples
             // Set Size column to right align
             DataGridViewColumn col = this._CurrentDataGridView.Columns["Size"];
 
-            if (null != col)
-            {
+            if (null != col) {
                 DataGridViewCellStyle style = col.HeaderCell.Style;
 
                 style.Padding = new Padding(style.Padding.Left, style.Padding.Top, 6, style.Padding.Bottom);
@@ -1128,15 +1024,13 @@ namespace System.Windows.Forms.Samples
             // Select first item.
             col = this._CurrentDataGridView.Columns["Name"];
 
-            if (null != col)
-            {
+            if (null != col) {
                 this._CurrentDataGridView.Rows[0].Cells[col.Index].Selected = true;
             }
             AddGlobalHotKeys();
 
             myActions.SetValueByKey("ExpandCollapseAll", "");
-            if (!listLoadedIndexes.Contains(tabControl1.SelectedIndex))
-            {
+            if (!listLoadedIndexes.Contains(tabControl1.SelectedIndex)) {
                 RefreshDataGrid();
                 listLoadedIndexes.Add(tabControl1.SelectedIndex);
             }
@@ -1147,8 +1041,7 @@ namespace System.Windows.Forms.Samples
 
         }
 
-        private void DeleteOpenFiles()
-        {
+        private void DeleteOpenFiles() {
             string fileName = "OpenFiles.txt";
             string strApplicationBinDebug = Application.StartupPath;
             string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
@@ -1156,97 +1049,72 @@ namespace System.Windows.Forms.Samples
             string settingsDirectory =
 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
             string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
-            if (File.Exists(settingsPath))
-            {
-                try
-                {
+            if (File.Exists(settingsPath)) {
+                try {
                     File.Delete(settingsPath);
-                }
-                catch (Exception ex)
-                {
+                } catch (Exception ex) {
                     MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
                 }
             }
         }
 
-        private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
-        {
-            if (this._CurrentDataGridView.Columns[e.ColumnIndex].Name == "SizeCol")
-            {
+        private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e) {
+            if (this._CurrentDataGridView.Columns[e.ColumnIndex].Name == "SizeCol") {
                 long size = (long)e.Value;
 
-                if (size < 0)
-                {
+                if (size < 0) {
                     e.Value = "";
-                }
-                else
-                {
+                } else {
                     size = ((size + 999) / 1000);
                     e.Value = size.ToString() + " " + "KB";
                 }
             }
         }
 
-        private void dataGridView1_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
-        {
-            if (e == null)
-            {
+        private void dataGridView1_CellPainting(object sender, DataGridViewCellPaintingEventArgs e) {
+            if (e == null) {
                 this.Cursor = Cursors.Default;
                 return;
             }
             Icon icon = (e.Value as Icon);
-            if (e.Value == null)
-            {
+            if (e.Value == null) {
                 this.Cursor = Cursors.Default;
                 return;
             }
-            if (null != icon)
-            {
-                using (SolidBrush b = new SolidBrush(e.CellStyle.BackColor))
-                {
+            if (null != icon) {
+                using (SolidBrush b = new SolidBrush(e.CellStyle.BackColor)) {
                     e.Graphics.FillRectangle(b, e.CellBounds);
                 }
                 _IconRectangle = e.CellBounds;
                 // Draw right aligned icon (1 pixed padding)
-                try
-                {
+                try {
                     int myX = e.CellBounds.Width - icon.Width - 1;
                     int myY = e.CellBounds.Y + 1;
-                    if (myX < 1)
-                    {
+                    if (myX < 1) {
                         myX = 15;
                     }
-                    if (myY < 1)
-                    {
+                    if (myY < 1) {
                         myY = 15;
                     }
                     e.Graphics.DrawIcon(icon, myX, myY);
-                }
-                catch (Exception ex)
-                {
+                } catch (Exception ex) {
 
                     MessageBox.Show(ex.Message + " - Line 500 in ExplorerView");
-                }
-                finally
-                {
+                } finally {
                     e.Handled = true;
                 }
 
             }
         }
 
-        private void dataGridView1_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e)
-        {
-            if (e == null)
-            {
+        private void dataGridView1_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e) {
+            if (e == null) {
                 return;
             }
-            if (e.RowIndex > ((DataGridViewExt)sender).Rows.Count - 1)
-            {
+            if (e.RowIndex > ((DataGridViewExt)sender).Rows.Count - 1) {
                 return;
             }
-            if (e.RowIndex < 0 || ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["NameCol"].Value == null)
-            {
+            if (e.RowIndex < 0 || ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["NameCol"].Value == null) {
                 return;
             }
             string fileName = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["FullName"].Value.ToString();
@@ -1254,32 +1122,24 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             Methods myActions = new Methods();
             string categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToPublicPath(fileName) + "\\" + scriptName.Replace(".txt", "").Replace(".rtf", ""));
             string strNestingLevel = "";
-            if (((DataGridViewExt)sender).Rows.Count == 0)
-            {
+            if (((DataGridViewExt)sender).Rows.Count == 0) {
                 return;
             }
             strNestingLevel = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["NestingLevel"].Value.ToString();
             int nestingLevel = 0;
             Int32.TryParse(strNestingLevel, out nestingLevel);
             int indent = nestingLevel * 20;
-            if (categoryState == "Collapsed" || categoryState == "Expanded")
-            {
+            if (categoryState == "Collapsed" || categoryState == "Expanded") {
                 ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["NameCol"].Style.Font = new Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold);
                 ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["NameCol"].Style.Padding = new Padding(indent, 0, 0, 0);
-            }
-            else
-            {
+            } else {
                 ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["NameCol"].Style.Padding = new Padding(indent, 0, 0, 0);
                 DataGridViewCell iconCell = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["dataGridViewImageColumn1"];
             }
 
-
-            if (_selectedRow > 0 && e.RowIndex == _selectedRow)
-            {
-                if (_selectedRow < _CurrentDataGridView.Rows.Count)
-                {
-                    if (_CurrentDataGridView.Rows[_selectedRow].Cells.Count > 1)
-                    {
+            if (_selectedRow > 0 && e.RowIndex == _selectedRow) {
+                if (_selectedRow < _CurrentDataGridView.Rows.Count) {
+                    if (_CurrentDataGridView.Rows[_selectedRow].Cells.Count > 1) {
 
                         _CurrentDataGridView.Rows[_selectedRow].Cells[1].Selected = true;
                         //  _CurrentDataGridView.FirstDisplayedScrollingRowIndex = _selectedRow;
@@ -1289,29 +1149,25 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             }
         }
 
-        private void dataGridView1_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
+        private void dataGridView1_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e) {
             // Call Active on DirectoryView
             string fileName = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["FullName"].Value.ToString();
             Methods myActions = new Methods();
             // fileName = fileName;
             string categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", fileName);
-            if (categoryState == "Expanded")
-            {
+            if (categoryState == "Expanded") {
                 myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Collapsed", fileName);
                 RefreshDataGrid();
                 this.Cursor = Cursors.Default;
                 return;
             }
-            if (categoryState == "Collapsed")
-            {
+            if (categoryState == "Collapsed") {
                 myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Expanded", fileName);
                 RefreshDataGrid();
                 this.Cursor = Cursors.Default;
                 return;
             }
-            try
-            {
+            try {
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName); // GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                 FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 _dir.Activate(this._CurrentFileViewBindingSource[myIndex] as FileView);
@@ -1319,25 +1175,19 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
 
 
-                if (myFileView.IsDirectory)
-                {
+                if (myFileView.IsDirectory) {
                     RefreshDataGrid();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 MessageBox.Show(ex.Message + " - Line 559 in ExplorerView");
             }
         }
 
-        private int GetIndexForCurrentFileViewBindingSourceForFullName(string fileName)
-        {
+        private int GetIndexForCurrentFileViewBindingSourceForFullName(string fileName) {
             int findIndex = -1;
-            for (int i = 0; i < this._CurrentFileViewBindingSource.Count; i++)
-            {
+            for (int i = 0; i < this._CurrentFileViewBindingSource.Count; i++) {
                 FileView item = (FileView)this._CurrentFileViewBindingSource[i];
-                if (item.FullName == fileName)
-                {
+                if (item.FullName == fileName) {
                     findIndex = i;
                     break;
                 }
@@ -1345,64 +1195,48 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             return findIndex;
         }
 
-        private void thumbnailsMenuItem_Click(object sender, EventArgs e)
-        {
-            if (DoActionRequired(sender))
-            {
+        private void thumbnailsMenuItem_Click(object sender, EventArgs e) {
+            if (DoActionRequired(sender)) {
                 MessageBox.Show("Thumbnails View");
             }
         }
 
-        private void tilesMenuItem_Click(object sender, EventArgs e)
-        {
-            if (DoActionRequired(sender))
-            {
+        private void tilesMenuItem_Click(object sender, EventArgs e) {
+            if (DoActionRequired(sender)) {
                 MessageBox.Show("Tiles View");
             }
         }
 
-        private void iconsMenuItem_Click(object sender, EventArgs e)
-        {
-            if (DoActionRequired(sender))
-            {
+        private void iconsMenuItem_Click(object sender, EventArgs e) {
+            if (DoActionRequired(sender)) {
                 MessageBox.Show("Icons View");
             }
         }
 
-        private void listMenuItem_Click(object sender, EventArgs e)
-        {
+        private void listMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
-            if (DoActionRequired(sender))
-            {
+            if (DoActionRequired(sender)) {
                 _CurrentSplitContainer.Panel2Collapsed = true;
                 myActions.SetValueByKey("DetailsMenuItemChecked", "False");
             }
         }
 
-        private void detailsMenuItem_Click(object sender, EventArgs e)
-        {
+        private void detailsMenuItem_Click(object sender, EventArgs e) {
             this.Cursor = Cursors.WaitCursor;
             Methods myActions = new Methods();
-            if (DoActionRequired(sender))
-            {
+            if (DoActionRequired(sender)) {
                 _CurrentSplitContainer.Panel2Collapsed = false;
                 myActions.SetValueByKey("DetailsMenuItemChecked", "True");
                 //tries to start the process 
-                try
-                {
-                    if (!File.Exists(@"C:\Program Files\Windows NT\Accessories\wordpad.exe"))
-                    {
+                try {
+                    if (!File.Exists(@"C:\Program Files\Windows NT\Accessories\wordpad.exe")) {
                         myActions.MessageBoxShow(" File not found: " + @"C:\Program Files\Windows NT\Accessories\wordpad.exe");
-                    }
-                    else
-                    {
+                    } else {
                         ProcessStartInfo psi = new ProcessStartInfo(@"C:\Program Files\Windows NT\Accessories\wordpad.exe");
                         psi.WindowStyle = ProcessWindowStyle.Minimized;
                         _proc = Process.Start(psi);
                     }
-                }
-                catch (Exception)
-                {
+                } catch (Exception) {
                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     this.Cursor = Cursors.Default;
                     return;
@@ -1414,8 +1248,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                 //host the started process in the panel 
                 System.Threading.Thread.Sleep(500);
-                while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle)))
-                {
+                while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
                     System.Threading.Thread.Sleep(10);
                     _proc.Refresh();
                 }
@@ -1432,20 +1265,17 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             this.Cursor = Cursors.Default;
         }
 
-        void Renderer_RenderToolStripBorder(object sender, ToolStripRenderEventArgs e)
-        {
+        void Renderer_RenderToolStripBorder(object sender, ToolStripRenderEventArgs e) {
             e.Graphics.DrawLine(SystemPens.ButtonShadow, 0, 1, toolBar.Width, 1);
             e.Graphics.DrawLine(SystemPens.ButtonHighlight, 0, 2, toolBar.Width, 2);
         }
 
-        private void closeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void closeToolStripMenuItem_Click(object sender, EventArgs e) {
             Application.Exit();
         }
 
 
-        private void upSplitButton_Click(object sender, EventArgs e)
-        {
+        private void upSplitButton_Click(object sender, EventArgs e) {
             Cursor.Current = Cursors.WaitCursor;
             _dir.Up();
             SetTitle(_dir.FileView);
@@ -1453,8 +1283,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             Cursor.Current = Cursors.Default;
         }
 
-        private void backSplitButton_Click(object sender, EventArgs e)
-        {
+        private void backSplitButton_Click(object sender, EventArgs e) {
             Cursor.Current = Cursors.WaitCursor;
             _dir.Up();
             SetTitle(_dir.FileView);
@@ -1463,56 +1292,39 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
         #endregion
 
-        private void btnTraceOn_Click(object sender, EventArgs e)
-        {
+        private void btnTraceOn_Click(object sender, EventArgs e) {
 
         }
-        private void ev_Process_File(string myFile)
-        {
-            try
-            {
+        private void ev_Process_File(string myFile) {
+            try {
                 Process.Start(myFile);
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
             }
         }
 
-        private void ev_Build_File(string myFile)
-        {
+        private void ev_Build_File(string myFile) {
             Methods myActions = new Methods();
-            try
-            {
+            try {
                 string strApplicationPath = System.AppDomain.CurrentDomain.BaseDirectory;
                 myActions.RunSync(strApplicationPath + "BuildProjects.bat", myFile);
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
             }
         }
 
-        private void ev_Delete_File(string myFile)
-        {
-            try
-            {
+        private void ev_Delete_File(string myFile) {
+            try {
                 File.Delete(myFile);
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
             }
         }
 
-        private void ev_Delete_Directory(string myFile)
-        {
-            try
-            {
+        private void ev_Delete_Directory(string myFile) {
+            try {
                 Directory.Delete(myFile, true);
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
             }
         }
@@ -1521,15 +1333,13 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
 
 
-        private void btnVisualStudio_Click(object sender, EventArgs e)
-        {
+        private void btnVisualStudio_Click(object sender, EventArgs e) {
 
         }
 
 
 
-        private void projectToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void projectToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             List<ControlEntity> myListControlEntity = new List<ControlEntity>();
 
@@ -1561,21 +1371,18 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         ReDisplayNewProjectDialog:
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
 
-            if (strButtonPressed == "btnCancel")
-            {
+            if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                 return;
             }
 
             string basePathForNewProject = _dir.FileView.FullName;
             string basePathName = _dir.FileView.Name;
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells)
-            {
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                 FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
-                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0))
-                {
+                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     basePathForNewProject = myFileView.FullName;
                     basePathName = myFileView.Name;
                 }
@@ -1585,13 +1392,11 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             string strNewProjectDir = Path.Combine(basePathForNewProject, myNewProjectName);
             string scriptPathNewProject = myActions.ConvertFullFileNameToPublicPath(strNewProjectDir) + "\\-" + myNewProjectName;
             // myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", scriptPathNewProject);
-            if (Directory.Exists(strNewProjectDir))
-            {
+            if (Directory.Exists(strNewProjectDir)) {
                 myActions.MessageBoxShow(strNewProjectDir + "already exists");
                 goto ReDisplayNewProjectDialog;
             }
-            try
-            {
+            try {
                 // create the directories
                 Directory.CreateDirectory(strNewProjectDir);
                 string strNewProjectDirNewProjectDir = Path.Combine(strNewProjectDir, myNewProjectName);
@@ -1615,17 +1420,14 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 string strApplicationBinDebug = Application.StartupPath;
                 string myNewProjectSourcePath = strApplicationBinDebug.Replace("bin\\Debug", "MyNewProject");
                 if (myNewProjectSourcePath.EndsWith("MyNewProject") == false &&
-                    myNewProjectSourcePath.EndsWith("MyNewProject\\") == false)
-                {
+                    myNewProjectSourcePath.EndsWith("MyNewProject\\") == false) {
                     myNewProjectSourcePath = Path.Combine(myNewProjectSourcePath, "MyNewProject");
                 }
                 string strLine = "";
 
                 string[] myLines0 = File.ReadAllLines(Path.Combine(myNewProjectSourcePath, "MyNewProject.sln"));
-                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Path.Combine(strNewProjectDir, myNewProjectName + ".sln")))
-                {
-                    foreach (var item in myLines0)
-                    {
+                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Path.Combine(strNewProjectDir, myNewProjectName + ".sln"))) {
+                    foreach (var item in myLines0) {
                         strLine = item.Replace("MyNewProject", myNewProjectName);
                         sw.WriteLine(strLine);
                     }
@@ -1644,10 +1446,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
 
                 string[] myLines = File.ReadAllLines(Path.Combine(myNewProjectSourcePath, "Properties\\AssemblyInfo.cs"));
-                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Path.Combine(strNewProjectDir, "Properties\\AssemblyInfo.cs")))
-                {
-                    foreach (var item in myLines)
-                    {
+                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Path.Combine(strNewProjectDir, "Properties\\AssemblyInfo.cs"))) {
+                    foreach (var item in myLines) {
                         strLine = item.Replace("MyNewProject", myNewProjectName);
                         sw.WriteLine(strLine);
                     }
@@ -1655,10 +1455,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
 
                 string[] myLines1 = File.ReadAllLines(Path.Combine(myNewProjectSourcePath, "Properties\\Resources.Designer.cs"));
-                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Path.Combine(strNewProjectDir, "Properties\\Resources.Designer.cs")))
-                {
-                    foreach (var item in myLines1)
-                    {
+                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Path.Combine(strNewProjectDir, "Properties\\Resources.Designer.cs"))) {
+                    foreach (var item in myLines1) {
                         strLine = item.Replace("MyNewProject", myNewProjectName);
                         sw.WriteLine(strLine);
                     }
@@ -1666,10 +1464,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 File.Copy(Path.Combine(myNewProjectSourcePath, "Properties\\Resources.resx"), Path.Combine(strNewProjectDir, "Properties\\Resources.resx"));
 
                 string[] myLines2 = File.ReadAllLines(Path.Combine(myNewProjectSourcePath, "Properties\\Settings.Designer.cs"));
-                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Path.Combine(strNewProjectDir, "Properties\\Settings.Designer.cs")))
-                {
-                    foreach (var item in myLines2)
-                    {
+                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Path.Combine(strNewProjectDir, "Properties\\Settings.Designer.cs"))) {
+                    foreach (var item in myLines2) {
                         strLine = item.Replace("MyNewProject", myNewProjectName);
                         sw.WriteLine(strLine);
                     }
@@ -1677,20 +1473,16 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 File.Copy(Path.Combine(myNewProjectSourcePath, "Properties\\Settings.settings"), Path.Combine(strNewProjectDir, "Properties\\Settings.settings"));
 
                 string[] myLines3 = File.ReadAllLines(Path.Combine(myNewProjectSourcePath, "App.xaml"));
-                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Path.Combine(strNewProjectDir, "App.xaml")))
-                {
-                    foreach (var item in myLines3)
-                    {
+                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Path.Combine(strNewProjectDir, "App.xaml"))) {
+                    foreach (var item in myLines3) {
                         strLine = item.Replace("MyNewProject", myNewProjectName);
                         sw.WriteLine(strLine);
                     }
                 }
 
                 string[] myLines4 = File.ReadAllLines(Path.Combine(myNewProjectSourcePath, "App.xaml.cs"));
-                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Path.Combine(strNewProjectDir, "App.xaml.cs")))
-                {
-                    foreach (var item in myLines4)
-                    {
+                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Path.Combine(strNewProjectDir, "App.xaml.cs"))) {
+                    foreach (var item in myLines4) {
                         strLine = item.Replace("MyNewProject", myNewProjectName);
                         sw.WriteLine(strLine);
                     }
@@ -1699,71 +1491,57 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 File.Copy(Path.Combine(myNewProjectSourcePath, "ClassDiagram1.cd"), Path.Combine(strNewProjectDir, "ClassDiagram1.cd"));
 
                 string[] myLines5 = File.ReadAllLines(Path.Combine(myNewProjectSourcePath, "MainWindow.xaml"));
-                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Path.Combine(strNewProjectDir, "MainWindow.xaml")))
-                {
-                    foreach (var item in myLines5)
-                    {
+                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Path.Combine(strNewProjectDir, "MainWindow.xaml"))) {
+                    foreach (var item in myLines5) {
                         strLine = item.Replace("MyNewProject", myNewProjectName);
                         sw.WriteLine(strLine);
                     }
                 }
 
                 string[] myLines6 = File.ReadAllLines(Path.Combine(myNewProjectSourcePath, "MainWindow.xaml.cs"));
-                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Path.Combine(strNewProjectDir, "MainWindow.xaml.cs")))
-                {
-                    foreach (var item in myLines6)
-                    {
+                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Path.Combine(strNewProjectDir, "MainWindow.xaml.cs"))) {
+                    foreach (var item in myLines6) {
                         strLine = item.Replace("MyNewProject", myNewProjectName);
                         sw.WriteLine(strLine);
                     }
                 }
 
                 string[] myLines7 = File.ReadAllLines(Path.Combine(myNewProjectSourcePath, "MyNewProject.csproj"));
-                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Path.Combine(strNewProjectDir, myNewProjectName + ".csproj")))
-                {
-                    foreach (var item in myLines7)
-                    {
+                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Path.Combine(strNewProjectDir, myNewProjectName + ".csproj"))) {
+                    foreach (var item in myLines7) {
                         strLine = item.Replace("MyNewProject", myNewProjectName);
                         sw.WriteLine(strLine);
                     }
                 }
 
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
 
                 MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
             }
             RefreshDataGrid();
         }
 
-        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e) {
             FileView myFileView;
             Methods myActions = new Methods();
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells)
-            {
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                 myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 //MessageBox.Show(myFileView.FullName.ToString());
-                if (myFileView.IsDirectory)
-                {
+                if (myFileView.IsDirectory) {
                     // Call EnumerateFiles in a foreach-loop.
 
                     ev_Delete_Directory(myFileView.FullName.ToString());
                     string settingsDirectory =
       Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
 
-                    if (Directory.Exists(settingsDirectory))
-                    {
+                    if (Directory.Exists(settingsDirectory)) {
                         Directory.Delete(settingsDirectory, true);
                     }
 
-                }
-                else
-                {
+                } else {
                     ev_Delete_File(myFileView.FullName.ToString());
                 }
 
@@ -1771,22 +1549,19 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             RefreshDataGrid();
         }
 
-        private void AddGlobalHotKeys()
-        {
+        private void AddGlobalHotKeys() {
             Methods myActions = new Methods();
             _myArrayList = myActions.ReadAppDirectoryKeyToArrayListGlobal("ScriptInfo");
             ArrayList newArrayList = new ArrayList();
             string strHotKey = "";
             HotKeyRecord myHotKeyRecord = new HotKeyRecord();
             bool boolHotKeysGood = true;
-            foreach (var item in _myArrayList)
-            {
+            foreach (var item in _myArrayList) {
                 string[] myScriptInfoFields = item.ToString().Split('^');
                 string scriptName = myScriptInfoFields[0];
 
                 strHotKey = myScriptInfoFields[1];
-                if (strHotKey != "")
-                {
+                if (strHotKey != "") {
 
                     string strHotKeyExecutable = myScriptInfoFields[5];
                     myHotKeyRecord = new HotKeyRecord();
@@ -1794,16 +1569,13 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     myHotKeyRecord.Executable = strHotKeyExecutable;
                     myHotKeyRecord.ExecuteContent = "";
                     boolHotKeysGood = true;
-                    foreach (string myHotKey in myHotKeyRecord.HotKeys)
-                    {
-                        if (dictVirtualKeyCodes.ContainsKey(myHotKey))
-                        {
+                    foreach (string myHotKey in myHotKeyRecord.HotKeys) {
+                        if (dictVirtualKeyCodes.ContainsKey(myHotKey)) {
                             MessageBox.Show("Invalid hotkey: " + myHotKey + " on script: " + scriptName);
                             boolHotKeysGood = false;
                         }
                     }
-                    if (boolHotKeysGood)
-                    {
+                    if (boolHotKeysGood) {
                         listHotKeyRecords.Add(myHotKeyRecord);
                     }
                 }
@@ -1817,16 +1589,13 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             myHotKeyRecord.ExecuteContent = null;
             myHotKeyRecord.ScriptID = 0;
             boolHotKeysGood = true;
-            foreach (string myHotKey in myHotKeyRecord.HotKeys)
-            {
-                if (dictVirtualKeyCodes.ContainsKey(myHotKey))
-                {
+            foreach (string myHotKey in myHotKeyRecord.HotKeys) {
+                if (dictVirtualKeyCodes.ContainsKey(myHotKey)) {
                     MessageBox.Show("Invalid hotkey: " + myHotKey);
                     boolHotKeysGood = false;
                 }
             }
-            if (boolHotKeysGood)
-            {
+            if (boolHotKeysGood) {
                 listHotKeyRecords.Add(myHotKeyRecord);
             }
 
@@ -1837,16 +1606,13 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             myHotKeyRecord.ExecuteContent = null;
             myHotKeyRecord.ScriptID = 0;
             boolHotKeysGood = true;
-            foreach (string myHotKey in myHotKeyRecord.HotKeys)
-            {
-                if (dictVirtualKeyCodes.ContainsKey(myHotKey))
-                {
+            foreach (string myHotKey in myHotKeyRecord.HotKeys) {
+                if (dictVirtualKeyCodes.ContainsKey(myHotKey)) {
                     MessageBox.Show("Invalid hotkey: " + myHotKey);
                     boolHotKeysGood = false;
                 }
             }
-            if (boolHotKeysGood)
-            {
+            if (boolHotKeysGood) {
                 listHotKeyRecords.Add(myHotKeyRecord);
             }
             dictVirtualKeyCodes.Add("Ctrl", VirtualKeyCode.CONTROL);
@@ -1902,8 +1668,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             // Start the timer
             aTimer.Enabled = true;
         }
-        private static bool GetKeyboardState(byte[] keyStates)
-        {
+        private static bool GetKeyboardState(byte[] keyStates) {
             if (keyStates == null)
                 throw new ArgumentNullException("keyState");
             if (keyStates.Length != 256)
@@ -1911,27 +1676,23 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             return NativeGetKeyboardState(keyStates);
         }
 
-        private static byte[] GetKeyboardState()
-        {
+        private static byte[] GetKeyboardState() {
             byte[] keyStates = new byte[256];
             if (!GetKeyboardState(keyStates))
                 throw new Win32Exception(Marshal.GetLastWin32Error());
             return keyStates;
         }
 
-        private static bool AnyKeyPressed()
-        {
+        private static bool AnyKeyPressed() {
             byte[] keyState = GetKeyboardState();
             // skip the mouse buttons
             return keyState.Skip(8).Any(state => (state & 0x80) != 0);
         }
 
-        private void OnTimedEvent(object sender, System.Timers.ElapsedEventArgs e)
-        {
+        private void OnTimedEvent(object sender, System.Timers.ElapsedEventArgs e) {
             InputSimulator myInputSimulator = new InputSimulator();
 
-            if (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.ESCAPE))
-            {
+            if (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.ESCAPE)) {
                 _CurrentDataGridView.ClearSelection();
                 _selectedRow = 0;
                 Methods myActions = new Methods();
@@ -1941,39 +1702,31 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 _appHandle = IntPtr.Zero;
             }
 
-            if (AnyKeyPressed())
-            {
+            if (AnyKeyPressed()) {
                 _Panel2KeyPress = true;
             }
 
-            if (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.CONTROL) || myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.MENU))
-            {
-                foreach (HotKeyRecord myHotKeyRecord in listHotKeyRecords)
-                {
+            if (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.CONTROL) || myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.MENU)) {
+                foreach (HotKeyRecord myHotKeyRecord in listHotKeyRecords) {
                     bool boolAllHotKeysPressed = true;
-                    foreach (string myHotKey in myHotKeyRecord.HotKeys)
-                    {
+                    foreach (string myHotKey in myHotKeyRecord.HotKeys) {
                         VirtualKeyCode myVirtualKeyCode;
                         dictVirtualKeyCodes.TryGetValue(myHotKey, out myVirtualKeyCode);
-                        if (!myInputSimulator.InputDeviceState.IsKeyDown(myVirtualKeyCode))
-                        {
+                        if (!myInputSimulator.InputDeviceState.IsKeyDown(myVirtualKeyCode)) {
                             boolAllHotKeysPressed = false;
                         }
                     }
 
 
-                    if (boolAllHotKeysPressed && boolStopEvent == false)
-                    {
+                    if (boolAllHotKeysPressed && boolStopEvent == false) {
                         boolStopEvent = true;
                         //TODO: increment number times executed
-                        if (myHotKeyRecord.Executable == "OpenLineInNotepad")
-                        {
+                        if (myHotKeyRecord.Executable == "OpenLineInNotepad") {
                             OpenLineInNotepad();
                             break;
                         }
 
-                        if (myHotKeyRecord.Executable == "OpenLineInIAExplorer")
-                        {
+                        if (myHotKeyRecord.Executable == "OpenLineInIAExplorer") {
                             OpenLineInIAExplorer();
                             break;
                         }
@@ -1990,8 +1743,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 }
             }
         }
-        private void OpenLineInNotepad()
-        {
+        private void OpenLineInNotepad() {
             Methods myActions = new Methods();
             myActions.TypeText("{RIGHT}", 500);
             myActions.TypeText("{HOME}", 500);
@@ -2000,8 +1752,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             myActions.Sleep(500);
             string strCurrentLine = "";
             RunAsSTAThread(
-            () =>
-            {
+            () => {
                 strCurrentLine = myActions.PutClipboardInEntity();
             });
             List<string> myBeginDelim = new List<string>();
@@ -2016,8 +1767,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             myActions.FindDelimitedText(delimParms);
             int intLastSlash = delimParms.strDelimitedTextFound.LastIndexOf('\\');
-            if (intLastSlash < 1)
-            {
+            if (intLastSlash < 1) {
                 myActions.MessageBoxShow("Could not find last slash in in EditPlusLine - aborting");
                 return;
             }
@@ -2033,18 +1783,12 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             myActions.FindDelimitedText(delimParms);
             string strLineNumber = delimParms.strDelimitedTextFound;
             string strExecutable = "";
-            if (strFullFileName.EndsWith(".doc") || strFullFileName.EndsWith(".docx"))
-            {
+            if (strFullFileName.EndsWith(".doc") || strFullFileName.EndsWith(".docx")) {
                 strExecutable = @"C:\Program Files\Windows NT\Accessories\wordpad.exe";
-            }
-            else
-            {
-                if (strFullFileName.EndsWith(".odt"))
-                {
+            } else {
+                if (strFullFileName.EndsWith(".odt")) {
                     strExecutable = @"C:\Program Files\Windows NT\Accessories\wordpad.exe";
-                }
-                else
-                {
+                } else {
                     myActions.KillAllProcessesByProcessName("notepad++");
                     strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
                 }
@@ -2078,11 +1822,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             //SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
             _NotepadppLoaded = true;
             myActions.Run(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
-            if (strFullFileName.EndsWith(".doc") || strFullFileName.EndsWith(".docx") || strFullFileName.EndsWith(".odt"))
-            {
-            }
-            else
-            {
+            if (strFullFileName.EndsWith(".doc") || strFullFileName.EndsWith(".docx") || strFullFileName.EndsWith(".odt")) {
+            } else {
                 myActions.TypeText("^(g)", 2000);
                 myActions.TypeText(strLineNumber, 500);
                 myActions.TypeText("{ENTER}", 500);
@@ -2094,14 +1835,11 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             strFindWhatToUse = "";
             char[] specialChars = { '{', '}', '(', ')', '+', '^' };
 
-            foreach (char letter in blockText)
-            {
+            foreach (char letter in blockText) {
                 bool _specialCharFound = false;
 
-                for (int i = 0; i < specialChars.Length; i++)
-                {
-                    if (letter == specialChars[i])
-                    {
+                for (int i = 0; i < specialChars.Length; i++) {
+                    if (letter == specialChars[i]) {
                         _specialCharFound = true;
                         break;
                     }
@@ -2117,12 +1855,10 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             myActions.TypeText("{ESC}", 500);
             boolStopEvent = false;
         }
-        static void RunAsSTAThread(Action goForIt)
-        {
+        static void RunAsSTAThread(Action goForIt) {
             AutoResetEvent @event = new AutoResetEvent(false);
             Thread thread = new Thread(
-                () =>
-                {
+                () => {
                     goForIt();
                     @event.Set();
                 });
@@ -2130,8 +1866,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             thread.Start();
             @event.WaitOne();
         }
-        private void OpenLineInIAExplorer()
-        {
+        private void OpenLineInIAExplorer() {
 
             Methods myActions = new Methods();
             myActions.TypeText("{RIGHT}", 500);
@@ -2141,8 +1876,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             myActions.Sleep(500);
             string strCurrentLine = "";
             RunAsSTAThread(
-            () =>
-            {
+            () => {
                 strCurrentLine = myActions.PutClipboardInEntity();
             });
             List<string> myBeginDelim = new List<string>();
@@ -2157,8 +1891,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             myActions.FindDelimitedText(delimParms);
             int intLastSlash = delimParms.strDelimitedTextFound.LastIndexOf('\\');
-            if (intLastSlash < 1)
-            {
+            if (intLastSlash < 1) {
                 myActions.MessageBoxShow("Could not find last slash in in EditPlusLine - aborting");
                 return;
             }
@@ -2178,18 +1911,12 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             string strLineNumber = delimParms.strDelimitedTextFound;
             string strExecutable = "";
 
-            if (strFullFileName.EndsWith(".doc") || strFullFileName.EndsWith(".docx"))
-            {
+            if (strFullFileName.EndsWith(".doc") || strFullFileName.EndsWith(".docx")) {
                 strExecutable = @"C:\Program Files\Windows NT\Accessories\wordpad.exe";
-            }
-            else
-            {
-                if (strFullFileName.EndsWith(".odt"))
-                {
+            } else {
+                if (strFullFileName.EndsWith(".odt")) {
                     strExecutable = @"C:\Program Files\Windows NT\Accessories\wordpad.exe";
-                }
-                else
-                {
+                } else {
                     myActions.KillAllProcessesByProcessName("notepad++");
                     strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
                 }
@@ -2197,30 +1924,23 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             string strContent = strFullFileName;
             //Close the running process
-            if (_appHandle != IntPtr.Zero)
-            {
+            if (_appHandle != IntPtr.Zero) {
                 PostMessage(_appHandle, WM_CLOSE, 0, 0);
                 System.Threading.Thread.Sleep(1000);
                 _appHandle = IntPtr.Zero;
             }
             //tries to start the process 
             TryToCloseAllOpenFilesInTab();
-            try
-            {
-                if (!File.Exists(strExecutable))
-                {
+            try {
+                if (!File.Exists(strExecutable)) {
                     myActions.MessageBoxShow(" File not found: " + strExecutable);
-                }
-                else
-                {
+                } else {
                     ProcessStartInfo psi = new ProcessStartInfo(strExecutable, "\"" + strContent + "\"");
                     psi.WindowStyle = ProcessWindowStyle.Minimized;
                     _proc = Process.Start(psi);
                 }
 
-            }
-            catch (Exception)
-            {
+            } catch (Exception) {
                 MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.Cursor = Cursors.Default;
                 return;
@@ -2228,8 +1948,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
 
             System.Threading.Thread.Sleep(500);
-            while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle)))
-            {
+            while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
                 System.Threading.Thread.Sleep(10);
                 _proc.Refresh();
             }
@@ -2237,22 +1956,16 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             _proc.WaitForInputIdle();
             _appHandle = _proc.MainWindowHandle;
 
-            try
-            {
+            try {
                 SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
                 SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
-            }
-            catch (Exception)
-            {
+            } catch (Exception) {
 
 
             }
             SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
-            if (strFullFileName.EndsWith(".doc") || strFullFileName.EndsWith(".docx") || strFullFileName.EndsWith(".odt"))
-            {
-            }
-            else
-            {
+            if (strFullFileName.EndsWith(".doc") || strFullFileName.EndsWith(".docx") || strFullFileName.EndsWith(".odt")) {
+            } else {
                 myActions.TypeText("^(g)", 2000);
                 myActions.TypeText(strLineNumber, 500);
                 myActions.TypeText("{ENTER}", 500);
@@ -2264,14 +1977,11 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             strFindWhatToUse = "";
             char[] specialChars = { '{', '}', '(', ')', '+', '^' };
 
-            foreach (char letter in blockText)
-            {
+            foreach (char letter in blockText) {
                 bool _specialCharFound = false;
 
-                for (int i = 0; i < specialChars.Length; i++)
-                {
-                    if (letter == specialChars[i])
-                    {
+                for (int i = 0; i < specialChars.Length; i++) {
+                    if (letter == specialChars[i]) {
                         _specialCharFound = true;
                         break;
                     }
@@ -2297,12 +2007,9 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             _strFullFileName = strFullFileName;
 
             // Determine the full path of the file just created.
-            if (InvokeRequired)
-            {
+            if (InvokeRequired) {
                 Invoke(new MethodInvoker(updateGUI));
-            }
-            else
-            {
+            } else {
                 // Do Something
                 updateGUI();
             }
@@ -2311,8 +2018,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         }
 
-        private void updateGUI()
-        {
+        private void updateGUI() {
             Methods myActions = new Methods();
             string strFullFileName = _strFullFileName;
             FileInfo fi = new FileInfo(strFullFileName);
@@ -2336,11 +2042,10 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             // Set Initial Directory to My Documents
             string strSavedDirectory1 = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
-            if (Directory.Exists(strSavedDirectory1))
-            {
+            if (Directory.Exists(strSavedDirectory1)) {
                 strInitialDirectory = strSavedDirectory1;
             }
-            _dir = new DirectoryView(strInitialDirectory, _myArrayList);
+            _dir = new DirectoryView(strInitialDirectory, _myArrayList,_plusIcon,_minusIcon);
             this._CurrentFileViewBindingSource.DataSource = _dir;
             tabControl1.TabPages[tabControl1.SelectedIndex].Text = _dir.FileView.Name;
             tabControl1.TabPages[tabControl1.SelectedIndex].ToolTipText = _dir.FileView.FullName;
@@ -2352,12 +2057,10 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             RefreshDataGrid();
         }
 
-        public void RunWaitTillStart(string myEntityForExecutable, string myEntityForContent)
-        {
+        public void RunWaitTillStart(string myEntityForExecutable, string myEntityForContent) {
 
 
-            if (myEntityForExecutable == null)
-            {
+            if (myEntityForExecutable == null) {
                 string message = "Error - You need to specify executable primitive  "; // +"; EntityName is: " + myEntityForExecutable.EntityName;
                 MessageBox.Show(message);
                 return;
@@ -2365,46 +2068,35 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             string strExecutable = myEntityForExecutable;
 
             string strContent = "";
-            if (myEntityForContent != null)
-            {
+            if (myEntityForContent != null) {
                 strContent = myEntityForContent;
             }
             var p = new Process();
             p.StartInfo.FileName = strExecutable;
-            if (strContent != "")
-            {
+            if (strContent != "") {
                 p.StartInfo.Arguments = string.Concat("\"", strContent, "\"");
             }
             bool started = true;
-            try
-            {
+            try {
                 p.Start();
-            }
-            catch (Exception)
-            {
+            } catch (Exception) {
                 MessageBox.Show("Could not start process; Executable = " + strExecutable);
                 boolStopEvent = false;
 
             }
 
             int procId = 0;
-            try
-            {
+            try {
                 procId = p.Id;
                 Console.WriteLine("ID: " + procId);
-            }
-            catch (InvalidOperationException)
-            {
+            } catch (InvalidOperationException) {
+                started = false;
+                boolStopEvent = false;
+            } catch (Exception ex) {
                 started = false;
                 boolStopEvent = false;
             }
-            catch (Exception ex)
-            {
-                started = false;
-                boolStopEvent = false;
-            }
-            while (started == true && GetProcByID(procId) != null)
-            {
+            while (started == true && GetProcByID(procId) != null) {
                 System.Threading.Thread.Sleep(1000);
                 boolStopEvent = false;
                 started = false;
@@ -2412,12 +2104,10 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         }
 
-        public void Run(string myEntityForExecutable, string myEntityForContent)
-        {
+        public void Run(string myEntityForExecutable, string myEntityForContent) {
 
 
-            if (myEntityForExecutable == null)
-            {
+            if (myEntityForExecutable == null) {
                 string message = "Error - You need to specify executable primitive  "; // +"; EntityName is: " + myEntityForExecutable.EntityName;
                 MessageBox.Show(message);
                 return;
@@ -2425,51 +2115,36 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             string strExecutable = myEntityForExecutable;
 
             string strContent = "";
-            if (myEntityForContent != null)
-            {
+            if (myEntityForContent != null) {
                 strContent = myEntityForContent;
             }
             Methods myActions = new Methods();
-            if (strContent == "")
-            {
-                if (!File.Exists(strExecutable))
-                {
+            if (strContent == "") {
+                if (!File.Exists(strExecutable)) {
                     myActions.MessageBoxShow(" File not found: " + strExecutable);
-                }
-                else
-                {
+                } else {
                     Process.Start(strExecutable);
                 }
-            }
-            else
-            {
-                try
-                {
-                    if (!File.Exists(strExecutable))
-                    {
+            } else {
+                try {
+                    if (!File.Exists(strExecutable)) {
                         myActions.MessageBoxShow(" File not found: " + strExecutable);
-                    }
-                    else
-                    {
+                    } else {
                         Process.Start(strExecutable, string.Concat("\"", strContent, "\""));
                     }
-                }
-                catch (Exception ex)
-                {
+                } catch (Exception ex) {
 
                     MessageBox.Show(ex.ToString() + " - Line 1446 in ExplorerView");
                 }
             }
 
         }
-        private Process GetProcByID(int id)
-        {
+        private Process GetProcByID(int id) {
             Process[] processlist = Process.GetProcesses();
             return processlist.FirstOrDefault(pr => pr.Id == id);
         }
 
-        private void categoryToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void categoryToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             List<ControlEntity> myListControlEntity = new List<ControlEntity>();
 
@@ -2501,44 +2176,37 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         ReDisplayNewCategoryDialog:
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
 
-            if (strButtonPressed == "btnCancel")
-            {
+            if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                 return;
             }
 
             string myNewCategoryName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
             string strNewCategoryDir = Path.Combine(_dir.FileView.FullName, myNewCategoryName);
-            if (Directory.Exists(strNewCategoryDir))
-            {
+            if (Directory.Exists(strNewCategoryDir)) {
                 myActions.MessageBoxShow(strNewCategoryDir + "already exists");
                 goto ReDisplayNewCategoryDialog;
             }
-            try
-            {
+            try {
                 // create the directories
                 Directory.CreateDirectory(strNewCategoryDir);
                 myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Collapsed", myActions.ConvertFullFileNameToPublicPath(strNewCategoryDir) + "\\" + myNewCategoryName);
 
 
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
 
                 MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
             }
             RefreshDataGrid();
         }
-        public DataTable ConvertToDataTable<T>(IList<T> data)
-        {
+        public DataTable ConvertToDataTable<T>(IList<T> data) {
             PropertyDescriptorCollection properties =
                TypeDescriptor.GetProperties(typeof(T));
             DataTable table = new DataTable();
             foreach (PropertyDescriptor prop in properties)
                 table.Columns.Add(prop.Name, Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType);
-            foreach (T item in data)
-            {
+            foreach (T item in data) {
                 DataRow row = table.NewRow();
                 foreach (PropertyDescriptor prop in properties)
                     row[prop.Name] = prop.GetValue(item) ?? DBNull.Value;
@@ -2547,8 +2215,10 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             return table;
 
         }
-        public void RefreshDataGrid()
-        {
+        public void RefreshDataGrid() {
+
+
+          //  Logging.WriteLogSimple("refresh before datasource created " + _stopwatch.Elapsed.ToString() + " GC.Count " + String.Format("{0:n0}", GC.GetTotalMemory(true)));
             string fileName = "";
 
             // refresh datagridview
@@ -2556,27 +2226,33 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             // Set Initial Directory to My Documents
             Methods myActions = new Methods();
             int mySplitterDistance = myActions.GetValueByKeyAsInt("_CurrentSplitContainerWidth" + _selectedTabIndex.ToString());
-            if (mySplitterDistance > 0)
-            {
+            if (mySplitterDistance > 0) {
                 _CurrentSplitContainer.SplitterDistance = mySplitterDistance;
             }
             string strSavedDirectory = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
 
 
-            if (Directory.Exists(strSavedDirectory))
-            {
+            if (Directory.Exists(strSavedDirectory)) {
                 strInitialDirectory = strSavedDirectory;
                 myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString(), strSavedDirectory);
             }
-            _dir = new DirectoryView(strInitialDirectory, _myArrayList);
+
+            _dir = new DirectoryView(strInitialDirectory, _myArrayList, _plusIcon, _minusIcon);
+          //  Logging.WriteLogSimple("refresh after directoryview created " + _stopwatch.Elapsed.ToString() + " GetTotalMemory " + String.Format("{0:n0}", GC.GetTotalMemory(true)));
+
             this._CurrentFileViewBindingSource.DataSource = _dir;
 
+            //Logging.WriteLogSimple("refresh after datasource created " + _stopwatch.Elapsed.ToString() + " GetTotalMemory " + String.Format("{0:n0}", GC.GetTotalMemory(true)));
+            //GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+            //var maxgen = GC.MaxGeneration;
+            //GC.Collect(maxgen, GCCollectionMode.Forced, true);
+            //GC.WaitForPendingFinalizers();
+            //Logging.WriteLogSimple("refresh after GC.Collect " + _stopwatch.Elapsed.ToString() + " GC.Count " + String.Format("{0:n0}", GC.GetTotalMemory(true)) + " maxgen = " + maxgen.ToString());
             // Set the title
             SetTitle(_dir.FileView);
             _CurrentDataGridView.DataSource = null;
             List<FileView> myListFileView = new List<FileView>();
-            foreach (FileView item in _CurrentFileViewBindingSource.List)
-            {
+            foreach (FileView item in _CurrentFileViewBindingSource.List) {
                 myListFileView.Add(item);
 
             }
@@ -2585,14 +2261,10 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             new DgvFilterManager(_CurrentDataGridView);
             int sortedColumn = myActions.GetValueByKeyAsInt("SortedColumn_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"));
             string myDirection = myActions.GetValueByKey("SortOrder_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"));
-            if (sortedColumn > -1 && _CurrentDataGridView.ColumnCount >= sortedColumn)
-            {
-                if (myDirection == "Ascending")
-                {
+            if (sortedColumn > -1 && _CurrentDataGridView.ColumnCount >= sortedColumn) {
+                if (myDirection == "Ascending") {
                     _CurrentDataGridView.Sort(_CurrentDataGridView.Columns[sortedColumn], ListSortDirection.Ascending);
-                }
-                else
-                {
+                } else {
                     _CurrentDataGridView.Sort(_CurrentDataGridView.Columns[sortedColumn], ListSortDirection.Descending);
                 }
                 myActions.SetValueByKey("SortedColumn_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"), sortedColumn.ToString());
@@ -2605,16 +2277,13 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             cs.Width = 110;
             _selectedRow = myActions.GetValueByKeyAsInt("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow");
 
-            if (_CurrentDataGridView.Rows.Count > _selectedRow && _CurrentDataGridView.Rows[_selectedRow].Cells.Count > 1)
-            {
+            if (_CurrentDataGridView.Rows.Count > _selectedRow && _CurrentDataGridView.Rows[_selectedRow].Cells.Count > 1) {
                 //_CurrentDataGridView.Rows[selectedRow].Cells[1].Selected = true;
                 string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
-                if (detailsMenuItemChecked == "True")
-                {
+                if (detailsMenuItemChecked == "True") {
 
                     DataGridViewCell c = _CurrentDataGridView.Rows[_selectedRow].Cells[1];
-                    if (!c.Selected)
-                    {
+                    if (!c.Selected) {
                         _CurrentDataGridView.ClearSelection();
                         c.Selected = true;
                         //    _CurrentDataGridView.FirstDisplayedScrollingRowIndex = _selectedRow;
@@ -2622,13 +2291,10 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                         fileName = _CurrentDataGridView.Rows[_selectedRow].Cells["FullName"].Value.ToString();
                         if (fileName.EndsWith(".url")
 
-                         )
-                        {
+                         ) {
                             //Close the running process.
-                            if (_appHandle != IntPtr.Zero)
-                            {
-                                if (_newTab == false)
-                                {
+                            if (_appHandle != IntPtr.Zero) {
+                                if (_newTab == false) {
                                     PostMessage(_appHandle, WM_CLOSE, 0, 0);
                                 }
                                 _newTab = false;
@@ -2694,36 +2360,28 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                             || fileName.EndsWith(".odt")
                             || fileName.EndsWith(".doc")
                             || fileName.EndsWith(".docx")
-                            )
-                        {
+                            ) {
                             _NotepadppLoaded = false;
                             _WebBrowserLoaded = false;
                             _WordPadLoaded = true;
                             //Close the running process
                             _CurrentSplitContainer.Panel2.Controls.Clear();
-                            if (_appHandle != IntPtr.Zero)
-                            {
+                            if (_appHandle != IntPtr.Zero) {
                                 TryToCloseAllOpenFilesInTab();
                                 _newTab = false;
                                 System.Threading.Thread.Sleep(1000);
                                 _appHandle = IntPtr.Zero;
                             }
                             //tries to start the process 
-                            try
-                            {
-                                if (!File.Exists(@"C:\Program Files\Windows NT\Accessories\wordpad.exe"))
-                                {
+                            try {
+                                if (!File.Exists(@"C:\Program Files\Windows NT\Accessories\wordpad.exe")) {
                                     myActions.MessageBoxShow(" File not found: " + @"C:\Program Files\Windows NT\Accessories\wordpad.exe");
-                                }
-                                else
-                                {
+                                } else {
                                     ProcessStartInfo psi = new ProcessStartInfo(@"C:\Program Files\Windows NT\Accessories\wordpad.exe", "\"" + fileName + "\"");
                                     psi.WindowStyle = ProcessWindowStyle.Minimized;
                                     _proc = Process.Start(psi);
                                 }
-                            }
-                            catch (Exception)
-                            {
+                            } catch (Exception) {
                                 MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 this.Cursor = Cursors.Default;
                                 return;
@@ -2731,8 +2389,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
 
                             System.Threading.Thread.Sleep(500);
-                            while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle)))
-                            {
+                            while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
                                 System.Threading.Thread.Sleep(10);
                                 _proc.Refresh();
                             }
@@ -2747,9 +2404,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                             MoveWindow(_appHandle, 0, 0, _CurrentSplitContainer.Panel2.Width - 5, _CurrentSplitContainer.Panel2.Height, true);
                             //  SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                             //  SetTitle(_dir.FileView);
-                        }
-                        else
-                        {
+                        } else {
                             if (fileName.EndsWith(".txt")
                                 || fileName.EndsWith(".bat")
                                 || fileName.EndsWith(".cs")
@@ -2767,17 +2422,14 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                                   || fileName.EndsWith(".inc")
                                   || fileName.EndsWith(".dinc")
                                   || fileName.EndsWith(".aspx")
-                                  || fileName.EndsWith(".csv"))
-                            {
+                                  || fileName.EndsWith(".csv")) {
                                 _WordPadLoaded = false;
                                 _NotepadppLoaded = true;
                                 _WebBrowserLoaded = false;
                                 //Close the running process
                                 _CurrentSplitContainer.Panel2.Controls.Clear();
-                                if (_appHandle != IntPtr.Zero)
-                                {
-                                    if (_newTab == false)
-                                    {
+                                if (_appHandle != IntPtr.Zero) {
+                                    if (_newTab == false) {
                                         PostMessage(_appHandle, WM_CLOSE, 0, 0);
                                     }
                                     _newTab = false;
@@ -2785,20 +2437,14 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                                     _appHandle = IntPtr.Zero;
                                 }
                                 //tries to start the process 
-                                try
-                                {
+                                try {
                                     myActions.KillAllProcessesByProcessName("notepad++");
-                                    if (!File.Exists(@"C:\Program Files (x86)\Notepad++\notepad++.exe"))
-                                    {
+                                    if (!File.Exists(@"C:\Program Files (x86)\Notepad++\notepad++.exe")) {
                                         myActions.MessageBoxShow(" You need to download notepad++ to use this feature.\n\r\n\rFile not found: " + @"C:\Program Files (x86)\Notepad++\notepad++.exe");
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", fileName);
                                     }
-                                }
-                                catch (Exception)
-                                {
+                                } catch (Exception) {
                                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                     this.Cursor = Cursors.Default;
                                     return;
@@ -2806,8 +2452,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
 
                                 //    System.Threading.Thread.Sleep(500);
-                                while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle)))
-                                {
+                                while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
                                     System.Threading.Thread.Sleep(10);
                                     _proc.Refresh();
                                 }
@@ -2829,11 +2474,11 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 txtMetaDescription.Text = myActions.GetValueByPublicKeyInCurrentFolder("description", fileName);
             }
 
-
+            //Logging.WriteLogSimple("refresh " + _stopwatch.Elapsed.ToString() + " GC.Count " + String.Format("{0:n0}", GC.GetTotalMemory(true)));
+            //GC.Collect();
         }
 
-        public void RefreshDataGridWithoutOpeningSelectedRow()
-        {
+        public void RefreshDataGridWithoutOpeningSelectedRow() {
 
 
             // refresh datagridview
@@ -2841,27 +2486,24 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             // Set Initial Directory to My Documents
             Methods myActions = new Methods();
             int mySplitterDistance = myActions.GetValueByKeyAsInt("_CurrentSplitContainerWidth" + _selectedTabIndex.ToString());
-            if (mySplitterDistance > 0)
-            {
+            if (mySplitterDistance > 0) {
                 _CurrentSplitContainer.SplitterDistance = mySplitterDistance;
             }
             string strSavedDirectory = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
 
 
-            if (Directory.Exists(strSavedDirectory))
-            {
+            if (Directory.Exists(strSavedDirectory)) {
                 strInitialDirectory = strSavedDirectory;
                 myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString(), strSavedDirectory);
             }
-            _dir = new DirectoryView(strInitialDirectory, _myArrayList);
+            _dir = new DirectoryView(strInitialDirectory, _myArrayList,_plusIcon,_minusIcon);
             this._CurrentFileViewBindingSource.DataSource = _dir;
 
             // Set the title
             SetTitle(_dir.FileView);
             _CurrentDataGridView.DataSource = null;
             List<FileView> myListFileView = new List<FileView>();
-            foreach (FileView item in _CurrentFileViewBindingSource.List)
-            {
+            foreach (FileView item in _CurrentFileViewBindingSource.List) {
                 myListFileView.Add(item);
 
             }
@@ -2870,14 +2512,10 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             new DgvFilterManager(_CurrentDataGridView);
             int sortedColumn = myActions.GetValueByKeyAsInt("SortedColumn_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"));
             string myDirection = myActions.GetValueByKey("SortOrder_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"));
-            if (sortedColumn > -1 && _CurrentDataGridView.ColumnCount >= sortedColumn)
-            {
-                if (myDirection == "Ascending")
-                {
+            if (sortedColumn > -1 && _CurrentDataGridView.ColumnCount >= sortedColumn) {
+                if (myDirection == "Ascending") {
                     _CurrentDataGridView.Sort(_CurrentDataGridView.Columns[sortedColumn], ListSortDirection.Ascending);
-                }
-                else
-                {
+                } else {
                     _CurrentDataGridView.Sort(_CurrentDataGridView.Columns[sortedColumn], ListSortDirection.Descending);
                 }
                 myActions.SetValueByKey("SortedColumn_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"), sortedColumn.ToString());
@@ -2892,8 +2530,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
 
-        private void subCategoryToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void subCategoryToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             List<ControlEntity> myListControlEntity = new List<ControlEntity>();
 
@@ -2925,8 +2562,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         ReDisplayNewSubCategoryDialog:
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
 
-            if (strButtonPressed == "btnCancel")
-            {
+            if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                 return;
             }
@@ -2934,27 +2570,21 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             string myNewSubCategoryName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
             string strNewSubCategoryDir = "";
 
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells)
-            {
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                 FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
-                if (myFileView.IsDirectory)
-                {
+                if (myFileView.IsDirectory) {
                     strNewSubCategoryDir = Path.Combine(myFileView.FullName, myNewSubCategoryName);
-                    if (Directory.Exists(strNewSubCategoryDir))
-                    {
+                    if (Directory.Exists(strNewSubCategoryDir)) {
                         myActions.MessageBoxShow(strNewSubCategoryDir + "already exists");
                         goto ReDisplayNewSubCategoryDialog;
                     }
-                    try
-                    {
+                    try {
                         // create the directories
                         Directory.CreateDirectory(strNewSubCategoryDir);
                         myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Collapsed", myActions.ConvertFullFileNameToPublicPath(strNewSubCategoryDir) + "\\" + myNewSubCategoryName);
-                    }
-                    catch (Exception ex)
-                    {
+                    } catch (Exception ex) {
                         MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
                     }
                 }
@@ -2963,47 +2593,32 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             RefreshDataGrid();
         }
 
-        private void dataGridView1_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
+        private void dataGridView1_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e) {
             this.Cursor = Cursors.WaitCursor;
             Methods myActions = new Methods();
             //    DataGridViewCell myCell = _CurrentDataGridView.SelectedCells[0];
             myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow", e.RowIndex.ToString());
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells)
-            {
-                if (e.RowIndex > -1)
-                {
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
+                if (e.RowIndex > -1) {
                     // Call Active on DirectoryView
                     string fileName = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["FullName"].Value.ToString();
 
 
                     string categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", fileName);
-                    if (categoryState == "Expanded" && e.ColumnIndex == 0)
-                    {
+                    if (categoryState == "Expanded" && e.ColumnIndex == 0) {
                         myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Collapsed", fileName);
                         RefreshDataGrid();
                         this.Cursor = Cursors.Default;
                         return;
                     }
-                    if (categoryState == "Collapsed" && e.ColumnIndex == 0)
-                    {
+                    if (categoryState == "Collapsed" && e.ColumnIndex == 0) {
                         myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Expanded", fileName);
                         RefreshDataGrid();
                         this.Cursor = Cursors.Default;
                         return;
                     }
-                    try
-                    {
-                        //int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
-                        //FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
-                        //if (myFileView.IsDirectory && e.ColumnIndex < 2) {
-                        //    _dir.Activate(this._CurrentFileViewBindingSource[myIndex] as FileView);
-                        //    SetTitle(_dir.FileView);
-                        //    RefreshDataGrid();
-                        //}
-                    }
-                    catch (Exception ex)
-                    {
+                    try {
+                    } catch (Exception ex) {
                         MessageBox.Show(ex.Message + " - Line 1625 in ExplorerView");
                     }
                 }
@@ -3012,16 +2627,14 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         }
 
-        private void openStripMenuItem3_Click(object sender, EventArgs e)
-        {
+        private void openStripMenuItem3_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             // Set Initial Directory to My Documents
             string strSavedDirectory = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
 
 
-            if (Directory.Exists(strSavedDirectory))
-            {
+            if (Directory.Exists(strSavedDirectory)) {
                 strInitialDirectory = strSavedDirectory;
             }
         DisplayFindTextInFilesWindow:
@@ -3075,8 +2688,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         DisplayWindowAgain:
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 300, 1200, 100, 100);
         LineAfterDisplayWindow:
-            if (strButtonPressed == "btnCancel")
-            {
+            if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                 return;
             }
@@ -3087,15 +2699,13 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             myActions.SetValueByKey("cbxFolderSelectedValue", strFolder);
 
-            if (strButtonPressed == "btnSelectFolder")
-            {
+            if (strButtonPressed == "btnSelectFolder") {
                 var dialog = new System.Windows.Forms.FolderBrowserDialog();
                 dialog.SelectedPath = myActions.GetValueByKey("LastSearchFolder");
 
 
                 System.Windows.Forms.DialogResult result = dialog.ShowDialog();
-                if (result == System.Windows.Forms.DialogResult.OK && Directory.Exists(dialog.SelectedPath))
-                {
+                if (result == System.Windows.Forms.DialogResult.OK && Directory.Exists(dialog.SelectedPath)) {
                     myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedValue = dialog.SelectedPath;
                     myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedKey = dialog.SelectedPath;
                     myListControlEntity.Find(x => x.ID == "cbxFolder").Text = dialog.SelectedPath;
@@ -3118,21 +2728,16 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     ComboBox myComboBox = new ComboBox();
 
 
-                    if (!File.Exists(settingsPath))
-                    {
-                        using (StreamWriter objSWFile = File.CreateText(settingsPath))
-                        {
+                    if (!File.Exists(settingsPath)) {
+                        using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
                             objSWFile.Close();
                         }
                     }
-                    using (StreamReader objSRFile = File.OpenText(settingsPath))
-                    {
+                    using (StreamReader objSRFile = File.OpenText(settingsPath)) {
                         string strReadLine = "";
-                        while ((strReadLine = objSRFile.ReadLine()) != null)
-                        {
+                        while ((strReadLine = objSRFile.ReadLine()) != null) {
                             string[] keyvalue = strReadLine.Split('^');
-                            if (keyvalue[0] != "--Select Item ---")
-                            {
+                            if (keyvalue[0] != "--Select Item ---") {
                                 cbp.Add(new ComboBoxPair(keyvalue[0], keyvalue[1]));
                             }
                         }
@@ -3145,32 +2750,24 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     bool boolNewItem = false;
 
                     alHostsNew.Add(myCbp);
-                    if (alHostx.Count > 24)
-                    {
-                        for (int i = alHostx.Count - 1; i > 0; i--)
-                        {
-                            if (alHostx[i]._Key.Trim() != "--Select Item ---")
-                            {
+                    if (alHostx.Count > 24) {
+                        for (int i = alHostx.Count - 1; i > 0; i--) {
+                            if (alHostx[i]._Key.Trim() != "--Select Item ---") {
                                 alHostx.RemoveAt(i);
                                 break;
                             }
                         }
                     }
-                    foreach (ComboBoxPair item in alHostx)
-                    {
-                        if (strNewHostName.ToLower() != item._Key.ToLower() && item._Key != "--Select Item ---")
-                        {
+                    foreach (ComboBoxPair item in alHostx) {
+                        if (strNewHostName.ToLower() != item._Key.ToLower() && item._Key != "--Select Item ---") {
                             boolNewItem = true;
                             alHostsNew.Add(item);
                         }
                     }
 
-                    using (StreamWriter objSWFile = File.CreateText(settingsPath))
-                    {
-                        foreach (ComboBoxPair item in alHostsNew)
-                        {
-                            if (item._Key != "")
-                            {
+                    using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
+                        foreach (ComboBoxPair item in alHostsNew) {
+                            if (item._Key != "") {
                                 objSWFile.WriteLine(item._Key + '^' + item._Value);
                             }
                         }
@@ -3181,11 +2778,9 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             }
 
             string strFolderToUse = "";
-            if (strButtonPressed == "btnOkay")
-            {
+            if (strButtonPressed == "btnOkay") {
 
-                if ((strFolder == "--Select Item ---" || strFolder == ""))
-                {
+                if ((strFolder == "--Select Item ---" || strFolder == "")) {
                     myActions.MessageBoxShow("Please enter Folder or select Folder from ComboBox; else press Cancel to Exit");
                     goto DisplayFindTextInFilesWindow;
                 }
@@ -3198,26 +2793,22 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 return;
             }
 
-            if (strButtonPressed == "btnOkay")
-            {
+            if (strButtonPressed == "btnOkay") {
                 strButtonPressed = myActions.WindowMultipleControlsMinimized(ref myListControlEntity, 300, 1200, 100, 100);
                 goto LineAfterDisplayWindow;
             }
         }
-        public string GetAppDirectoryForScript(string strScriptName)
-        {
+        public string GetAppDirectoryForScript(string strScriptName) {
             string settingsDirectory =
       Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
-            if (!Directory.Exists(settingsDirectory))
-            {
+            if (!Directory.Exists(settingsDirectory)) {
                 Directory.CreateDirectory(settingsDirectory);
             }
             return settingsDirectory;
         }
 
 
-        public static void Copy(string sourceDirectory, string targetDirectory)
-        {
+        public static void Copy(string sourceDirectory, string targetDirectory) {
             DirectoryInfo diSource = new DirectoryInfo(sourceDirectory);
             DirectoryInfo diTarget = new DirectoryInfo(targetDirectory);
 
@@ -3225,40 +2816,32 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         }
 
-        public static void CopyFile(string sourceFile, string targetDirectory)
-        {
+        public static void CopyFile(string sourceFile, string targetDirectory) {
             FileInfo fi = new FileInfo(sourceFile);
             DirectoryInfo target = new DirectoryInfo(targetDirectory);
             string newFile = Path.Combine(target.FullName, fi.Name);
-            if (File.Exists(newFile))
-            {
+            if (File.Exists(newFile)) {
                 // TODO: need to check if newFile + "1" exists, etc
                 fi.CopyTo(newFile + "1", true);
-            }
-            else
-            {
+            } else {
                 fi.CopyTo(newFile, true);
             }
 
         }
 
-        public static void CopyAll(DirectoryInfo source, DirectoryInfo target)
-        {
-            if (!Directory.Exists(target.FullName))
-            {
+        public static void CopyAll(DirectoryInfo source, DirectoryInfo target) {
+            if (!Directory.Exists(target.FullName)) {
                 Directory.CreateDirectory(target.FullName);
             }
 
             // Copy each file into the new directory.
-            foreach (FileInfo fi in source.GetFiles())
-            {
+            foreach (FileInfo fi in source.GetFiles()) {
                 //  Console.WriteLine(@"Copying {0}\{1}", target.FullName, fi.Name);
                 fi.CopyTo(Path.Combine(target.FullName, fi.Name), true);
             }
             Methods myActions = new Methods();
             // Copy each subdirectory using recursion.
-            foreach (DirectoryInfo diSourceSubDir in source.GetDirectories())
-            {
+            foreach (DirectoryInfo diSourceSubDir in source.GetDirectories()) {
                 DirectoryInfo nextTargetSubDir =
                     target.CreateSubdirectory(diSourceSubDir.Name);
 
@@ -3269,13 +2852,11 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
 
                 string toRoamingDirectory = Path.Combine(settingsDirectory, target.FullName);
-                if (Directory.Exists(fromRoamingDirectory))
-                {
+                if (Directory.Exists(fromRoamingDirectory)) {
                     DirectoryInfo fromRoamingDirectoryDI = new DirectoryInfo(fromRoamingDirectory);
                     DirectoryInfo toRoamingDirectoryDI = Directory.CreateDirectory(toRoamingDirectory);
                     // Copy each file into the new directory.
-                    foreach (FileInfo fi in fromRoamingDirectoryDI.GetFiles())
-                    {
+                    foreach (FileInfo fi in fromRoamingDirectoryDI.GetFiles()) {
                         //  Console.WriteLine(@"Copying {0}\{1}", target.FullName, fi.Name);
                         fi.CopyTo(Path.Combine(toRoamingDirectoryDI.FullName, fi.Name), true);
                     }
@@ -3286,8 +2867,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             }
         }
 
-        private void folderToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void folderToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             List<ControlEntity> myListControlEntity = new List<ControlEntity>();
 
@@ -3319,20 +2899,17 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         ReDisplayNewFolderDialog:
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
 
-            if (strButtonPressed == "btnCancel")
-            {
+            if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                 return;
             }
             string basePathForNewFolder = _dir.FileView.FullName;
             string basePathName = _dir.FileView.Name;
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells)
-            {
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                 FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
-                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0))
-                {
+                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     basePathForNewFolder = myFileView.FullName;
                     basePathName = myFileView.Name;
                 }
@@ -3340,59 +2917,46 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             string parentScriptPath = myActions.ConvertFullFileNameToPublicPath(basePathForNewFolder) + "\\" + basePathName;
             string myNewFolderName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
             string strNewFolderDir = Path.Combine(basePathForNewFolder, myNewFolderName);
-            if (Directory.Exists(strNewFolderDir))
-            {
+            if (Directory.Exists(strNewFolderDir)) {
                 myActions.MessageBoxShow(strNewFolderDir + "already exists");
                 goto ReDisplayNewFolderDialog;
             }
-            try
-            {
+            try {
                 // create the directories
                 string newFolderScriptPath = basePathForNewFolder + "\\" + myNewFolderName;
                 myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
                 Directory.CreateDirectory(strNewFolderDir);
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
 
                 MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
             }
             RefreshDataGrid();
         }
 
-        private void notepadToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void notepadToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells)
-            {
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                 FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
-                if (!myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0))
-                {
+                if (!myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     _NotepadppLoaded = true;
                     string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
                     myActions.Run(strExecutable, "\"" + myFileView.FullName + "\"");
-                }
-                else
-                {
+                } else {
                     myActions.MessageBoxShow("You cannot open folders with Notepad");
                 }
             }
         }
 
-        private void dataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
-        {
+        private void dataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e) {
             Methods myActions = new Methods();
             string fileName = "";
             string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
-            if (detailsMenuItemChecked == "True")
-            {
-                if (e.ColumnIndex != -1 && e.RowIndex != -1 && e.Button == System.Windows.Forms.MouseButtons.Left)
-                {
+            if (detailsMenuItemChecked == "True") {
+                if (e.ColumnIndex != -1 && e.RowIndex != -1 && e.Button == System.Windows.Forms.MouseButtons.Left) {
                     DataGridViewCell c = (sender as DataGridView)[e.ColumnIndex, e.RowIndex];
-                    if (!c.Selected)
-                    {
+                    if (!c.Selected) {
                         _CurrentDataGridView.ClearSelection();
                         _selectedRow = 0;
                         // Methods myActions = new Methods();
@@ -3402,13 +2966,10 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                         fileName = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["FullName"].Value.ToString();
                         if (fileName.EndsWith(".url")
 
-                         )
-                        {
+                         ) {
                             //Close the running process.
-                            if (_appHandle != IntPtr.Zero)
-                            {
-                                if (_newTab == false)
-                                {
+                            if (_appHandle != IntPtr.Zero) {
+                                if (_newTab == false) {
                                     PostMessage(_appHandle, WM_CLOSE, 0, 0);
                                 }
                                 _newTab = false;
@@ -3474,38 +3035,30 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                             || fileName.EndsWith(".odt")
                             || fileName.EndsWith(".doc")
                             || fileName.EndsWith(".docx")
-                            )
-                        {
+                            ) {
                             _NotepadppLoaded = false;
                             _WebBrowserLoaded = false;
                             _WordPadLoaded = true;
                             //Close the running process
                             _CurrentSplitContainer.Panel2.Controls.Clear();
-                            if (_appHandle != IntPtr.Zero)
-                            {
+                            if (_appHandle != IntPtr.Zero) {
                                 System.Threading.Thread.Sleep(1000);
                                 _appHandle = IntPtr.Zero;
                             }
                             _newTab = false;
                             //tries to start the process 
                             TryToCloseAllOpenFilesInTab();
-                            try
-                            {
-                                if (!File.Exists(@"C:\Program Files\Windows NT\Accessories\wordpad.exe"))
-                                {
+                            try {
+                                if (!File.Exists(@"C:\Program Files\Windows NT\Accessories\wordpad.exe")) {
                                     myActions.MessageBoxShow(" File not found: " + @"C:\Program Files\Windows NT\Accessories\wordpad.exe");
-                                }
-                                else
-                                {
+                                } else {
 
 
                                     ProcessStartInfo psi = new ProcessStartInfo(@"C:\Program Files\Windows NT\Accessories\wordpad.exe", "\"" + fileName + "\"");
                                     psi.WindowStyle = ProcessWindowStyle.Minimized;
                                     _proc = Process.Start(psi);
                                 }
-                            }
-                            catch (Exception ex)
-                            {
+                            } catch (Exception ex) {
                                 MessageBox.Show("Something went wrong trying to start your process: " + ex.Message, "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 this.Cursor = Cursors.Default;
                                 return;
@@ -3513,8 +3066,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
 
                             System.Threading.Thread.Sleep(500);
-                            while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle)))
-                            {
+                            while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
                                 System.Threading.Thread.Sleep(10);
                                 _proc.Refresh();
                             }
@@ -3528,11 +3080,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                             SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                             MoveWindow(_appHandle, 0, 0, _CurrentSplitContainer.Panel2.Width - 5, _CurrentSplitContainer.Panel2.Height, true);
-                            //  SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
-                            //  SetTitle(_dir.FileView);
-                        }
-                        else
-                        {
+                        } else {
                             if (fileName.EndsWith(".txt")
                                 || fileName.EndsWith(".bat")
                                 || fileName.EndsWith(".cs")
@@ -3550,17 +3098,14 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                                   || fileName.EndsWith(".inc")
                                   || fileName.EndsWith(".dinc")
                                   || fileName.EndsWith(".aspx")
-                                  || fileName.EndsWith(".csv"))
-                            {
+                                  || fileName.EndsWith(".csv")) {
                                 _WordPadLoaded = false;
                                 _NotepadppLoaded = true;
                                 _WebBrowserLoaded = false;
                                 //Close the running process
                                 _CurrentSplitContainer.Panel2.Controls.Clear();
-                                if (_appHandle != IntPtr.Zero)
-                                {
-                                    if (_newTab == false)
-                                    {
+                                if (_appHandle != IntPtr.Zero) {
+                                    if (_newTab == false) {
                                         PostMessage(_appHandle, WM_CLOSE, 0, 0);
                                     }
                                     _newTab = false;
@@ -3568,20 +3113,14 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                                     _appHandle = IntPtr.Zero;
                                 }
                                 //tries to start the process 
-                                try
-                                {
+                                try {
                                     myActions.KillAllProcessesByProcessName("notepad++");
-                                    if (!File.Exists(@"C:\Program Files (x86)\Notepad++\notepad++.exe"))
-                                    {
+                                    if (!File.Exists(@"C:\Program Files (x86)\Notepad++\notepad++.exe")) {
                                         myActions.MessageBoxShow(" You need to download notepad++ to use this feature.\n\r\n\rFile not found: " + @"C:\Program Files (x86)\Notepad++\notepad++.exe");
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", fileName);
                                     }
-                                }
-                                catch (Exception)
-                                {
+                                } catch (Exception) {
                                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                     this.Cursor = Cursors.Default;
                                     return;
@@ -3589,8 +3128,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
 
                                 //    System.Threading.Thread.Sleep(500);
-                                while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle)))
-                                {
+                                while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
                                     System.Threading.Thread.Sleep(10);
                                     _proc.Refresh();
                                 }
@@ -3611,11 +3149,9 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 txtMetaDescription.Text = myActions.GetValueByPublicKeyInCurrentFolder("description", fileName);
 
             }
-            if (e.ColumnIndex != -1 && e.RowIndex != -1 && e.Button == System.Windows.Forms.MouseButtons.Right)
-            {
+            if (e.ColumnIndex != -1 && e.RowIndex != -1 && e.Button == System.Windows.Forms.MouseButtons.Right) {
                 DataGridViewCell c = (sender as DataGridView)[e.ColumnIndex, e.RowIndex];
-                if (!c.Selected)
-                {
+                if (!c.Selected) {
                     _CurrentDataGridView.ClearSelection();
                     c.DataGridView.CurrentCell = c;
                     c.Selected = true;
@@ -3626,8 +3162,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         }
 
-        private void TryToCloseAllOpenFilesInTab()
-        {
+        private void TryToCloseAllOpenFilesInTab() {
             string fileName1 = "OpenFiles.txt";
             string strApplicationBinDebug = Application.StartupPath;
             string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
@@ -3639,18 +3174,14 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             List<OpenedFile> openedFile = new List<OpenedFile>();
             openedFile.Clear();
 
-            if (!File.Exists(settingsPath))
-            {
-                using (StreamWriter objSWFile = File.CreateText(settingsPath))
-                {
+            if (!File.Exists(settingsPath)) {
+                using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
                     objSWFile.Close();
                 }
             }
-            using (StreamReader objSRFile = File.OpenText(settingsPath))
-            {
+            using (StreamReader objSRFile = File.OpenText(settingsPath)) {
                 string strReadLine = "";
-                while ((strReadLine = objSRFile.ReadLine()) != null)
-                {
+                while ((strReadLine = objSRFile.ReadLine()) != null) {
                     string[] openedFileFieldsArray = strReadLine.Split('^');
                     openedFile.Add(new OpenedFile(openedFileFieldsArray[0], openedFileFieldsArray[1], openedFileFieldsArray[2]));
                 }
@@ -3660,13 +3191,10 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             IntPtr _appHandleToClose = IntPtr.Zero;
 
-            for (int i = openedFile.Count - 1; i > -1; i--)
-            {
-                if (openedFile[i]._Tab.Trim() == _selectedTabIndex.ToString())
-                {
+            for (int i = openedFile.Count - 1; i > -1; i--) {
+                if (openedFile[i]._Tab.Trim() == _selectedTabIndex.ToString()) {
                     _appHandleToClose = new IntPtr(Convert.ToInt32(openedFile[i]._Process.Trim()));
-                    if (_appHandleToClose != IntPtr.Zero)
-                    {
+                    if (_appHandleToClose != IntPtr.Zero) {
                         PostMessage(_appHandleToClose, WM_CLOSE, 0, 0);
                         System.Threading.Thread.Sleep(1000);
                         _appHandleToClose = IntPtr.Zero;
@@ -3676,18 +3204,15 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 }
             }
 
-            using (StreamWriter objSWFile = File.CreateText(settingsPath))
-            {
-                foreach (OpenedFile item in openedFile)
-                {
+            using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
+                foreach (OpenedFile item in openedFile) {
                     objSWFile.WriteLine(item._Tab + '^' + item._FileName + '^' + item._Process);
                 }
                 objSWFile.Close();
             }
         }
 
-        private void AddAppHandleToOpenFiles(string fileName, IntPtr appHandle)
-        {
+        private void AddAppHandleToOpenFiles(string fileName, IntPtr appHandle) {
             string fileName1 = "OpenFiles.txt";
             string strApplicationBinDebug = Application.StartupPath;
             string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
@@ -3699,30 +3224,23 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             List<OpenedFile> openedFile = new List<OpenedFile>();
             openedFile.Clear();
 
-            if (!File.Exists(settingsPath))
-            {
-                using (StreamWriter objSWFile = File.CreateText(settingsPath))
-                {
+            if (!File.Exists(settingsPath)) {
+                using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
                     objSWFile.Close();
                 }
             }
-            using (StreamReader objSRFile = File.OpenText(settingsPath))
-            {
+            using (StreamReader objSRFile = File.OpenText(settingsPath)) {
                 string strReadLine = "";
-                while ((strReadLine = objSRFile.ReadLine()) != null)
-                {
+                while ((strReadLine = objSRFile.ReadLine()) != null) {
                     string[] openedFileFieldsArray = strReadLine.Split('^');
                     openedFile.Add(new OpenedFile(openedFileFieldsArray[0], openedFileFieldsArray[1], openedFileFieldsArray[2]));
                 }
                 objSRFile.Close();
             }
 
-            using (StreamWriter objSWFile = File.CreateText(settingsPath))
-            {
-                foreach (OpenedFile item in openedFile)
-                {
-                    if (item._FileName != "")
-                    {
+            using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
+                foreach (OpenedFile item in openedFile) {
+                    if (item._FileName != "") {
                         objSWFile.WriteLine(item._Tab + '^' + item._FileName + '^' + item._Process);
                     }
                 }
@@ -3731,8 +3249,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             }
         }
 
-        private void webpage_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
-        {
+        private void webpage_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e) {
             if (webBrowser1.CanGoBack) toolStripButton1.Enabled = true;
             else toolStripButton1.Enabled = false;
 
@@ -3741,13 +3258,11 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             toolStripStatusLabel1.Text = "Done";
         }
 
-        private void toolStripButton3_Click(object sender, EventArgs e)
-        {
+        private void toolStripButton3_Click(object sender, EventArgs e) {
             myBrowser();
         }
 
-        private void myBrowser()
-        {
+        private void myBrowser() {
             if (toolStripComboBox1.Text != "")
                 Url = toolStripComboBox1.Text;
             webBrowser1.Navigate(Url);
@@ -3757,73 +3272,59 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             webBrowser1.Navigated += new WebBrowserNavigatedEventHandler(webpage_Navigated);
             webBrowser1.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(webpage_DocumentCompleted);
         }
-        private void webpage_DocumentTitleChanged(object sender, EventArgs e)
-        {
+        private void webpage_DocumentTitleChanged(object sender, EventArgs e) {
             this.Text = webBrowser1.DocumentTitle.ToString();
         }
-        private void webpage_StatusTextChanged(object sender, EventArgs e)
-        {
+        private void webpage_StatusTextChanged(object sender, EventArgs e) {
             toolStripStatusLabel1.Text = webBrowser1.StatusText;
         }
 
-        private void webpage_ProgressChanged(object sender, WebBrowserProgressChangedEventArgs e)
-        {
+        private void webpage_ProgressChanged(object sender, WebBrowserProgressChangedEventArgs e) {
             toolStripProgressBar1.Maximum = (int)e.MaximumProgress;
             toolStripProgressBar1.Value = ((int)e.CurrentProgress < 0 || (int)e.MaximumProgress < (int)e.CurrentProgress) ? (int)e.MaximumProgress : (int)e.CurrentProgress;
         }
 
-        private void webpage_Navigated(object sender, WebBrowserNavigatedEventArgs e)
-        {
+        private void webpage_Navigated(object sender, WebBrowserNavigatedEventArgs e) {
             toolStripComboBox1.Text = webBrowser1.Url.ToString();
         }
 
-        private void toolStripButton4_Click(object sender, EventArgs e)
-        {
+        private void toolStripButton4_Click(object sender, EventArgs e) {
             this.Cursor = Cursors.WaitCursor;
             webBrowser1.Refresh();
             this.Cursor = Cursors.Default;
         }
 
-        private void toolStripButton2_Click(object sender, EventArgs e)
-        {
+        private void toolStripButton2_Click(object sender, EventArgs e) {
             this.Cursor = Cursors.WaitCursor;
             webBrowser1.GoForward();
             this.Cursor = Cursors.Default;
         }
 
-        private void toolStripButton1_Click(object sender, EventArgs e)
-        {
+        private void toolStripButton1_Click(object sender, EventArgs e) {
             this.Cursor = Cursors.WaitCursor;
             webBrowser1.GoBack();
             this.Cursor = Cursors.Default;
         }
 
-        private void toolStripButton5_Click(object sender, EventArgs e)
-        {
+        private void toolStripButton5_Click(object sender, EventArgs e) {
             this.Cursor = Cursors.WaitCursor;
             webBrowser1.GoHome();
             this.Cursor = Cursors.Default;
         }
 
-        private void toolStripButton6_Click(object sender, EventArgs e)
-        {
+        private void toolStripButton6_Click(object sender, EventArgs e) {
             webBrowser1.ShowPrintPreviewDialog();
         }
 
-        public static string GetInternetShortcut(string filePath)
-        {
+        public static string GetInternetShortcut(string filePath) {
             string url = "";
 
-            using (TextReader reader = new StreamReader(filePath))
-            {
+            using (TextReader reader = new StreamReader(filePath)) {
                 string line = "";
-                while ((line = reader.ReadLine()) != null)
-                {
-                    if (line.StartsWith("URL="))
-                    {
+                while ((line = reader.ReadLine()) != null) {
+                    if (line.StartsWith("URL=")) {
                         string[] splitLine = line.Split('=');
-                        if (splitLine.Length > 0)
-                        {
+                        if (splitLine.Length > 0) {
                             url = splitLine[1];
                             break;
                         }
@@ -3834,49 +3335,40 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             return url;
         }
 
-        private void notepadToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
+        private void notepadToolStripMenuItem1_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells)
-            {
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                 FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
-                if (!myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0))
-                {
+                if (!myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     myActions.KillAllProcessesByProcessName("notepad++");
                     _NotepadppLoaded = true;
                     string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
                     myActions.Run(strExecutable, "\"" + myFileView.FullName + "\"");
-                }
-                else
-                {
+                } else {
                     myActions.MessageBoxShow("You can not open folders with Notepad++");
                 }
             }
         }
 
-        private void textDocumentToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void textDocumentToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string basePathForNewFolder = _dir.FileView.FullName;
             string basePathName = _dir.FileView.Name;
             string basePathForNewTextDocument = _dir.FileView.FullName;
             FileView myFileView;
             string fileFullName = "";
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells)
-            {
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                 myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
-                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0))
-                {
+                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     basePathForNewTextDocument = myFileView.FullName;
                     basePathName = myFileView.Name;
                     basePathForNewFolder = myFileView.FullName;
                 }
-                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0))
-                {
+                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     List<ControlEntity> myListControlEntity = new List<ControlEntity>();
                     int intRowCtr = 0;
 
@@ -4013,8 +3505,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 ReDisplayNewTextDocumentDialog:
                     string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 800, 0, 0);
 
-                    if (strButtonPressed == "btnCancel")
-                    {
+                    if (strButtonPressed == "btnCancel") {
                         myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                         return;
                     }
@@ -4031,8 +3522,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     string strStatus = myListControlEntity.Find(x => x.ID == "cbxStatus").SelectedValue;
 
 
-                    if (!myNewTextDocumentName.Contains("."))
-                    {
+                    if (!myNewTextDocumentName.Contains(".")) {
                         myNewTextDocumentName = myNewTextDocumentName + ".txt";
                     }
                     string strNewTextDocumentDir = Path.Combine(basePathForNewTextDocument, myNewTextDocumentName);
@@ -4043,8 +3533,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     myActions.SetValueByPublicKeyInCurrentFolder("cbxStatusSelectedValue", strStatus, strNewTextDocumentDir);
 
 
-                    if (!File.Exists(strNewTextDocumentDir))
-                    {
+                    if (!File.Exists(strNewTextDocumentDir)) {
                         string newFolderScriptPath = basePathForNewTextDocument + "\\" + myNewTextDocumentName.Replace(".txt", "");
                         //  myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
 
@@ -4055,26 +3544,19 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
 
                     string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
-                    if (detailsMenuItemChecked == "False")
-                    {
+                    if (detailsMenuItemChecked == "False") {
                         myActions.SetValueByKey("DetailsMenuItemChecked", "True");
                         _CurrentSplitContainer.Panel2Collapsed = false;
                         this.detailsMenuItem.Checked = true;
                         this.listMenuItem.Checked = false;
                         //tries to start the process 
-                        try
-                        {
-                            if (!File.Exists(strExecutable))
-                            {
+                        try {
+                            if (!File.Exists(strExecutable)) {
                                 myActions.MessageBoxShow(" File not found: " + strExecutable);
-                            }
-                            else
-                            {
+                            } else {
                                 _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
                             }
-                        }
-                        catch (Exception)
-                        {
+                        } catch (Exception) {
                             MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             this.Cursor = Cursors.Default;
                             return;
@@ -4086,8 +3568,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                         //host the started process in the panel 
                         System.Threading.Thread.Sleep(500);
-                        while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle)))
-                        {
+                        while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
                             System.Threading.Thread.Sleep(10);
                             _proc.Refresh();
                         }
@@ -4100,30 +3581,21 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                         SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                         SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                         //SendMessage(proc.MainWindowHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
-                    }
-                    else
-                    {
+                    } else {
                         //Close the running process
-                        if (_appHandle != IntPtr.Zero)
-                        {
+                        if (_appHandle != IntPtr.Zero) {
                             PostMessage(_appHandle, WM_CLOSE, 0, 0);
                             System.Threading.Thread.Sleep(1000);
                             _appHandle = IntPtr.Zero;
                         }
                         //tries to start the process 
-                        try
-                        {
-                            if (!File.Exists(strExecutable))
-                            {
+                        try {
+                            if (!File.Exists(strExecutable)) {
                                 myActions.MessageBoxShow(" File not found: " + strExecutable);
-                            }
-                            else
-                            {
+                            } else {
                                 _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
                             }
-                        }
-                        catch (Exception)
-                        {
+                        } catch (Exception) {
                             MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             this.Cursor = Cursors.Default;
                             return;
@@ -4135,8 +3607,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                         //host the started process in the panel 
                         System.Threading.Thread.Sleep(500);
-                        while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle)))
-                        {
+                        while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
                             System.Threading.Thread.Sleep(10);
                             _proc.Refresh();
                         }
@@ -4151,16 +3622,13 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     }
                     //  _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
 
-                }
-                else
-                {
+                } else {
                     myActions.MessageBoxShow("You can not create a text file inside a file; you need to select folder first");
                 }
             }
         }
 
-        private void folderToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
+        private void folderToolStripMenuItem1_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             List<ControlEntity> myListControlEntity = new List<ControlEntity>();
 
@@ -4192,20 +3660,17 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         ReDisplayNewFolderDialog:
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
 
-            if (strButtonPressed == "btnCancel")
-            {
+            if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                 return;
             }
             string basePathForNewFolder = _dir.FileView.FullName;
             string basePathName = _dir.FileView.Name;
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells)
-            {
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                 FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
-                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0))
-                {
+                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     basePathForNewFolder = myFileView.FullName;
                     basePathName = myFileView.Name;
                 }
@@ -4213,62 +3678,50 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             string parentScriptPath = myActions.ConvertFullFileNameToPublicPath(basePathForNewFolder) + "\\" + basePathName;
             string myNewFolderName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
             string strNewFolderDir = Path.Combine(basePathForNewFolder, myNewFolderName);
-            if (Directory.Exists(strNewFolderDir))
-            {
+            if (Directory.Exists(strNewFolderDir)) {
                 myActions.MessageBoxShow(strNewFolderDir + "already exists");
                 goto ReDisplayNewFolderDialog;
             }
-            try
-            {
+            try {
                 // create the directories
                 string newFolderScriptPath = basePathForNewFolder + "\\" + myNewFolderName;
                 myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
                 Directory.CreateDirectory(strNewFolderDir);
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
 
                 MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
             }
             RefreshDataGrid();
         }
 
-        private void wordPadToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
+        private void wordPadToolStripMenuItem1_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells)
-            {
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                 FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
-                if (!myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0))
-                {
+                if (!myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     string strExecutable = @"C:\Program Files\Windows NT\Accessories\wordpad.exe";
                     _WordPadLoaded = true;
                     myActions.Run(strExecutable, "\"" + myFileView.FullName + "\"");
-                }
-                else
-                {
+                } else {
                     myActions.MessageBoxShow("You can not create a wordpad file inside a file; first select folder and then right click");
                 }
             }
         }
 
-        private void wordPadToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void wordPadToolStripMenuItem_Click(object sender, EventArgs e) {
             this.Cursor = Cursors.WaitCursor;
             Methods myActions = new Methods();
             string basePathForNewFolder = _dir.FileView.FullName;
             string basePathName = _dir.FileView.Name;
             string basePathForNewTextDocument = _dir.FileView.FullName;
             string fileFullName = "";
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells)
-            {
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                 FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
-                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0))
-                {
+                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     basePathForNewTextDocument = myFileView.FullName;
                     basePathName = myFileView.Name;
                     basePathForNewFolder = myFileView.FullName;
@@ -4397,8 +3850,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 ReDisplayNewTextDocumentDialog:
                     string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 800, 0, 0);
 
-                    if (strButtonPressed == "btnCancel")
-                    {
+                    if (strButtonPressed == "btnCancel") {
                         myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                         return;
                     }
@@ -4415,8 +3867,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                     string parentScriptPath = myActions.ConvertFullFileNameToPublicPath(basePathForNewTextDocument) + "\\" + basePathName;
                     string myNewTextDocumentName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
-                    if (!myNewTextDocumentName.Contains("."))
-                    {
+                    if (!myNewTextDocumentName.Contains(".")) {
                         myNewTextDocumentName = myNewTextDocumentName + ".rtf";
                     }
                     string strNewTextDocumentDir = Path.Combine(basePathForNewTextDocument, myNewTextDocumentName);
@@ -4426,8 +3877,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     myActions.SetValueByPublicKeyInCurrentFolder("status", strStatus, strNewTextDocumentDir);
                     myActions.SetValueByPublicKeyInCurrentFolder("cbxStatusSelectedValue", strStatus, strNewTextDocumentDir);
 
-                    if (!File.Exists(strNewTextDocumentDir))
-                    {
+                    if (!File.Exists(strNewTextDocumentDir)) {
                         string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
                         //string strApplicationPath = strApplicationBinDebug.Replace("\\IdealAutomateExplorer\\bin\\Debug", "");
                         string strWordpadTemplate = Path.Combine(strApplicationBinDebug, @"WordpadTemplate.rtf");
@@ -4447,8 +3897,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     _WordPadLoaded = true;
                     if (fileName != "" && _CurrentDataGridView.SelectedCells.Count > 0
     && !(_CurrentDataGridView.SelectedCells[0].ColumnIndex == 0 &&
-    _CurrentDataGridView.SelectedCells[0].RowIndex == 0))
-                    {
+    _CurrentDataGridView.SelectedCells[0].RowIndex == 0)) {
                         myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName); // GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                         myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                         _dir.Activate(this._CurrentFileViewBindingSource[myIndex] as FileView);
@@ -4456,15 +3905,13 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
 
 
-                        if (myFileView.IsDirectory)
-                        {
+                        if (myFileView.IsDirectory) {
                             RefreshDataGridWithoutOpeningSelectedRow();
                         }
                     }
                     string strExecutable = @"C:\Program Files\Windows NT\Accessories\wordpad.exe";
                     string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
-                    if (detailsMenuItemChecked == "False")
-                    {
+                    if (detailsMenuItemChecked == "False") {
                         myActions.SetValueByKey("DetailsMenuItemChecked", "True");
                         _CurrentSplitContainer.Panel2Collapsed = false;
                         this.detailsMenuItem.Checked = true;
@@ -4474,11 +3921,9 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     RefreshDataGridWithoutOpeningSelectedRow();
                     int mySelectedRow = -1;
 
-                    for (int i = 0; i < _CurrentDataGridView.Rows.Count; i++)
-                    {
+                    for (int i = 0; i < _CurrentDataGridView.Rows.Count; i++) {
                         DataGridViewRow item = _CurrentDataGridView.Rows[i];
-                        if (item.Cells["FullName"].Value.ToString() == strNewTextDocumentDir)
-                        {
+                        if (item.Cells["FullName"].Value.ToString() == strNewTextDocumentDir) {
                             mySelectedRow = i;
                             break;
                         }
@@ -4486,9 +3931,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow", mySelectedRow.ToString());
                     RefreshDataGrid();
                     _CurrentDataGridView.FirstDisplayedScrollingRowIndex = mySelectedRow;
-                }
-                else
-                {
+                } else {
                     myActions.MessageBoxShow("You can not create a text document inside a file; first select folder and right click");
                 }
 
@@ -4496,20 +3939,17 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             this.Cursor = Cursors.Default;
         }
 
-        private void urlShortcutToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void urlShortcutToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string basePathForNewFolder = _dir.FileView.FullName;
             string basePathName = _dir.FileView.Name;
             string basePathForNewTextDocument = _dir.FileView.FullName;
             string fileFullName = "";
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells)
-            {
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                 FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
-                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0))
-                {
+                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     basePathForNewTextDocument = myFileView.FullName;
                     basePathName = myFileView.Name;
                     basePathForNewFolder = myFileView.FullName;
@@ -4565,8 +4005,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                     string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
 
-                    if (strButtonPressed == "btnCancel")
-                    {
+                    if (strButtonPressed == "btnCancel") {
                         myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                         return;
                     }
@@ -4577,20 +4016,17 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                     string parentScriptPath = myActions.ConvertFullFileNameToPublicPath(basePathForNewTextDocument) + "\\" + basePathName;
                     string myNewTextDocumentName = myListControlEntity.Find(x => x.ID == "txtShortcutName").Text;
-                    if (!myNewTextDocumentName.EndsWith(".url"))
-                    {
+                    if (!myNewTextDocumentName.EndsWith(".url")) {
                         myNewTextDocumentName = myNewTextDocumentName + ".url";
                     }
                     string strNewTextDocumentDir = Path.Combine(basePathForNewTextDocument, myNewTextDocumentName);
 
                     myActions.SetValueByKeyForNonCurrentScript("shortcutName", strShortcutName, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
                     myActions.SetValueByKeyForNonCurrentScript("shortcutUrl", strShortcutUrl, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
-                    if (!File.Exists(strNewTextDocumentDir))
-                    {
+                    if (!File.Exists(strNewTextDocumentDir)) {
                         string newFolderScriptPath = basePathForNewTextDocument + "\\" + myNewTextDocumentName.Replace(".rtf", "");
                         //   myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
-                        using (StreamWriter writer = new StreamWriter(strNewTextDocumentDir))
-                        {
+                        using (StreamWriter writer = new StreamWriter(strNewTextDocumentDir)) {
 
                             writer.WriteLine("[InternetShortcut]");
 
@@ -4602,27 +4038,22 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     }
                     // _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
 
-                }
-                else
-                {
+                } else {
                     myActions.MessageBoxShow("You can not create a text document inside a file; first select folder and right click");
                 }
 
             }
         }
 
-        private void DeleteStripMenuItem4_Click(object sender, EventArgs e)
-        {
+        private void DeleteStripMenuItem4_Click(object sender, EventArgs e) {
             FileView myFileView;
             Methods myActions = new Methods();
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells)
-            {
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                 myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 //MessageBox.Show(myFileView.FullName.ToString());
-                if (myFileView.IsDirectory)
-                {
+                if (myFileView.IsDirectory) {
                     // Call EnumerateFiles in a foreach-loop.
 
                     ev_Delete_Directory(myFileView.FullName.ToString());
@@ -4630,14 +4061,11 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     string settingsDirectory =
       Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
                     settingsDirectory = Path.Combine(settingsDirectory, scriptPath);
-                    if (Directory.Exists(settingsDirectory))
-                    {
+                    if (Directory.Exists(settingsDirectory)) {
                         Directory.Delete(settingsDirectory, true);
                     }
 
-                }
-                else
-                {
+                } else {
                     ev_Delete_File(myFileView.FullName.ToString());
                 }
 
@@ -4645,8 +4073,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             RefreshDataGrid();
         }
 
-        private void subCategoryStripMenuItem5_Click(object sender, EventArgs e)
-        {
+        private void subCategoryStripMenuItem5_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             List<ControlEntity> myListControlEntity = new List<ControlEntity>();
 
@@ -4678,8 +4105,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         ReDisplayNewSubCategoryDialog:
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
 
-            if (strButtonPressed == "btnCancel")
-            {
+            if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                 return;
             }
@@ -4687,27 +4113,21 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             string myNewSubCategoryName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
             string strNewSubCategoryDir = "";
 
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells)
-            {
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                 FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
-                if (myFileView.IsDirectory)
-                {
+                if (myFileView.IsDirectory) {
                     strNewSubCategoryDir = Path.Combine(myFileView.FullName, myNewSubCategoryName);
-                    if (Directory.Exists(strNewSubCategoryDir))
-                    {
+                    if (Directory.Exists(strNewSubCategoryDir)) {
                         myActions.MessageBoxShow(strNewSubCategoryDir + "already exists");
                         goto ReDisplayNewSubCategoryDialog;
                     }
-                    try
-                    {
+                    try {
                         // create the directories
                         Directory.CreateDirectory(strNewSubCategoryDir);
                         myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Collapsed", myActions.ConvertFullFileNameToPublicPath(strNewSubCategoryDir) + "\\" + myNewSubCategoryName);
-                    }
-                    catch (Exception ex)
-                    {
+                    } catch (Exception ex) {
                         MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
                     }
                 }
@@ -4716,13 +4136,11 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             RefreshDataGrid();
         }
 
-        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
-        {
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e) {
             _selectedTabIndex = tabControl1.SelectedIndex;
         }
 
-        private void AddDataGridToTab(string pstrInitialDirectory)
-        {
+        private void AddDataGridToTab(string pstrInitialDirectory) {
             tabControl1.TabPages.Insert(_CurrentIndex + 1, "    +");
             DataGridViewExt myDataGridView = new DataGridViewExt(pstrInitialDirectory);
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -4857,6 +4275,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             myDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             myDataGridView.ColumnHeadersHeight = 22;
+
             // #IMPORTANT: put new columns at end because
             // columns are referred to by index in code and
             // adding new columns in the middle will break code
@@ -5312,11 +4731,9 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             ArrayList myArrayList = new ArrayList();
             Methods myActions = new Methods();
             myArrayList = myActions.ReadAppDirectoryKeyToArrayList("ColumnOrder_" + pstrInitialDirectory.Replace(":", "+").Replace("\\", "-"));
-            if (myArrayList.Count > 0)
-            {
+            if (myArrayList.Count > 0) {
                 List<ColumnOrderItem> columnOrder = new List<ColumnOrderItem>();
-                foreach (var item in myArrayList)
-                {
+                foreach (var item in myArrayList) {
                     string[] columnArray = item.ToString().Split('^');
                     ColumnOrderItem myColumnOrderItem = new ColumnOrderItem();
                     int myInt = 0;
@@ -5325,12 +4742,9 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     myInt = 0;
                     Int32.TryParse(columnArray[1], out myInt);
                     myColumnOrderItem.Width = myInt;
-                    if (columnArray[2].ToLower() == "true")
-                    {
+                    if (columnArray[2].ToLower() == "true") {
                         myColumnOrderItem.Visible = true;
-                    }
-                    else
-                    {
+                    } else {
                         myColumnOrderItem.Visible = false;
                     }
                     myInt = 0;
@@ -5340,11 +4754,9 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 }
 
 
-                if (columnOrder != null)
-                {
+                if (columnOrder != null) {
                     var sorted = columnOrder.OrderBy(i => i.DisplayIndex);
-                    foreach (var item in sorted)
-                    {
+                    foreach (var item in sorted) {
                         myDataGridView.Columns[item.ColumnIndex].DisplayIndex = item.DisplayIndex;
                         myDataGridView.Columns[item.ColumnIndex].Visible = item.Visible;
                         myDataGridView.Columns[item.ColumnIndex].Width = item.Width;
@@ -5381,73 +4793,61 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             myDataGridView.Height = Screen.PrimaryScreen.WorkingArea.Size.Height - 150;
 
 
-            if (_CurrentIndex == tabControl1.TabCount - 1)
-            {
+            if (_CurrentIndex == tabControl1.TabCount - 1) {
                 _CurrentSplitContainer.Panel1.Controls.Add(myDataGridView);
                 tabControl1.TabPages[_CurrentIndex - 1].Controls.Add(_CurrentSplitContainer);
 
                 //    tabControl1.TabPages[_CurrentIndex - 1].Controls.Add(myDataGridView);
-            }
-            else
-            {
+            } else {
                 _CurrentSplitContainer.Panel1.Controls.Add(myDataGridView);
                 tabControl1.TabPages[_CurrentIndex].Controls.Add(_CurrentSplitContainer);
 
                 // tabControl1.TabPages[_CurrentIndex].Controls.Add(myDataGridView);
             }
-            foreach (DataGridViewColumn item in myDataGridView.Columns)
-            {
+            foreach (DataGridViewColumn item in myDataGridView.Columns) {
                 item.ToolTipText = "Right-Click Column Header to add remove filter.\nUse menu item View to Show\\Hide Columns.\nLeft-Click column heading to sort.\nUse View\\Refresh to remove sort.";
             }
 
         }
 
-        private void dataGridView1_Sorted(object sender, EventArgs e)
-        {
+        private void dataGridView1_Sorted(object sender, EventArgs e) {
             Methods myActions = new Methods();
-            if (_CurrentDataGridView.SortedColumn != null)
-            {
+            if (_CurrentDataGridView.SortedColumn != null) {
                 myActions.SetValueByKey("SortedColumn_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"), _CurrentDataGridView.SortedColumn.Index.ToString());
                 myActions.SetValueByKey("SortOrder_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"), _CurrentDataGridView.SortOrder.ToString());
             }
         }
 
-        private void selectIdealToolStripMenuItem_Click_1(object sender, EventArgs e)
-        {
+        private void selectIdealToolStripMenuItem_Click_1(object sender, EventArgs e) {
             string fullFileName = "";
             string fileNamea = "";
             FileView myFileView;
             bool isDirectory = false;
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells)
-            {
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 //if (myCell.ColumnIndex != 0 && myCell.RowIndex != 0) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                 myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 fullFileName = myFileView.FullName;
                 fileNamea = myFileView.Name;
-                if (myFileView.IsDirectory)
-                {
+                if (myFileView.IsDirectory) {
                     isDirectory = true;
                 }
                 //}
 
             }
             Methods myActions = new Methods();
-            if (fullFileName == "")
-            {
+            if (fullFileName == "") {
                 myActions.MessageBoxShow("Please select a row to copy before selecting File/Copy");
                 return;
             }
 
-            if (isDirectory)
-            {
+            if (isDirectory) {
                 myActions.MessageBoxShow("Folders cannot be selected as ideal.txt");
                 return;
             }
 
-            if (!Directory.Exists(@"C:\Data"))
-            {
+            if (!Directory.Exists(@"C:\Data")) {
                 Directory.CreateDirectory(@"C:\Data");
             }
 
@@ -5456,8 +4856,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             string newFile = Path.Combine(target.FullName, "ideal.txt");
             fi.CopyTo(newFile, true);
             //Close the running process
-            if (_appHandle != IntPtr.Zero)
-            {
+            if (_appHandle != IntPtr.Zero) {
                 PostMessage(_appHandle, WM_CLOSE, 0, 0);
                 System.Threading.Thread.Sleep(1000);
                 _appHandle = IntPtr.Zero;
@@ -5466,26 +4865,19 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
             string strContent = @"C:\Data\ideal.txt";
             //Close the running process
-            if (_appHandle != IntPtr.Zero)
-            {
+            if (_appHandle != IntPtr.Zero) {
                 PostMessage(_appHandle, WM_CLOSE, 0, 0);
                 System.Threading.Thread.Sleep(1000);
                 _appHandle = IntPtr.Zero;
             }
             //tries to start the process 
-            try
-            {
-                if (!File.Exists(@"C:\Program Files (x86)\Notepad++\notepad++.exe"))
-                {
+            try {
+                if (!File.Exists(@"C:\Program Files (x86)\Notepad++\notepad++.exe")) {
                     myActions.MessageBoxShow(" You need to download notepad++ to use this feature.\n\r\n\rFile not found: " + @"C:\Program Files (x86)\Notepad++\notepad++.exe");
-                }
-                else
-                {
+                } else {
                     _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
                 }
-            }
-            catch (Exception)
-            {
+            } catch (Exception) {
                 MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.Cursor = Cursors.Default;
                 return;
@@ -5493,8 +4885,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
 
             System.Threading.Thread.Sleep(500);
-            while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle)))
-            {
+            while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
                 System.Threading.Thread.Sleep(10);
                 _proc.Refresh();
             }
@@ -5507,42 +4898,36 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
         }
 
-        private void selectActualToolStripMenuItem_Click_1(object sender, EventArgs e)
-        {
+        private void selectActualToolStripMenuItem_Click_1(object sender, EventArgs e) {
             string fullFileName = "";
             string fileNamea = "";
             FileView myFileView;
             bool isDirectory = false;
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells)
-            {
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 //if (myCell.ColumnIndex != 0 && myCell.RowIndex != 0) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                 myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 fullFileName = myFileView.FullName;
                 fileNamea = myFileView.Name;
-                if (myFileView.IsDirectory)
-                {
+                if (myFileView.IsDirectory) {
                     isDirectory = true;
                 }
                 //}
 
             }
             Methods myActions = new Methods();
-            if (fullFileName == "")
-            {
+            if (fullFileName == "") {
                 myActions.MessageBoxShow("Please select a row to copy before selecting File/Copy");
                 return;
             }
 
-            if (isDirectory)
-            {
+            if (isDirectory) {
                 myActions.MessageBoxShow("Folders cannot be selected as actual.txt");
                 return;
             }
 
-            if (!Directory.Exists(@"C:\Data"))
-            {
+            if (!Directory.Exists(@"C:\Data")) {
                 Directory.CreateDirectory(@"C:\Data");
             }
 
@@ -5551,8 +4936,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             string newFile = Path.Combine(target.FullName, "Actual.txt");
             fi.CopyTo(newFile, true);
             //Close the running process
-            if (_appHandle != IntPtr.Zero)
-            {
+            if (_appHandle != IntPtr.Zero) {
                 PostMessage(_appHandle, WM_CLOSE, 0, 0);
                 System.Threading.Thread.Sleep(1000);
                 _appHandle = IntPtr.Zero;
@@ -5561,26 +4945,19 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
             string strContent = @"C:\Data\Actual.txt";
             //Close the running process
-            if (_appHandle != IntPtr.Zero)
-            {
+            if (_appHandle != IntPtr.Zero) {
                 PostMessage(_appHandle, WM_CLOSE, 0, 0);
                 System.Threading.Thread.Sleep(1000);
                 _appHandle = IntPtr.Zero;
             }
             //tries to start the process 
-            try
-            {
-                if (!File.Exists(@"C:\Program Files (x86)\Notepad++\notepad++.exe"))
-                {
+            try {
+                if (!File.Exists(@"C:\Program Files (x86)\Notepad++\notepad++.exe")) {
                     myActions.MessageBoxShow(" You need to download notepad++ to use this feature.\n\r\n\rFile not found: " + @"C:\Program Files (x86)\Notepad++\notepad++.exe");
-                }
-                else
-                {
+                } else {
                     _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
                 }
-            }
-            catch (Exception)
-            {
+            } catch (Exception) {
                 MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.Cursor = Cursors.Default;
                 return;
@@ -5588,8 +4965,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
 
             System.Threading.Thread.Sleep(500);
-            while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle)))
-            {
+            while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
                 System.Threading.Thread.Sleep(10);
                 _proc.Refresh();
             }
@@ -5602,20 +4978,21 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
         }
 
-        private void dataGridView1_DataError(object sender, DataGridViewDataErrorEventArgs e)
-        {
+        private void dataGridView1_DataError(object sender, DataGridViewDataErrorEventArgs e) {
             Methods myActions = new Methods();
             strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             // Set Initial Directory to My Documents
             string strSavedDirectory = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
 
 
-            if (Directory.Exists(strSavedDirectory))
-            {
+            if (Directory.Exists(strSavedDirectory)) {
                 strInitialDirectory = strSavedDirectory;
             }
-            _dir = new DirectoryView(strInitialDirectory, _myArrayList);
-            this._CurrentFileViewBindingSource.DataSource = _dir;
+            using (_dir = new DirectoryView(strInitialDirectory, _myArrayList, _plusIcon,_minusIcon)) {
+                this._CurrentFileViewBindingSource.DataSource = _dir;
+            }
+
+
 
             // Set the title
             SetTitle(_dir.FileView);
@@ -5625,40 +5002,37 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             // AddGlobalHotKeys();
         }
 
-        private void ExplorerView_ClientSizeChanged(object sender, EventArgs e)
-        {
+        private void ExplorerView_ClientSizeChanged(object sender, EventArgs e) {
         }
 
-        private void buildStripMenuItem4_Click_1(object sender, EventArgs e)
-        {
-            FileView myFileView;
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells)
-            {
+        private void buildStripMenuItem4_Click_1(object sender, EventArgs e) {
+
+
+
+
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
-                myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
-                //MessageBox.Show(myFileView.FullName.ToString());
-                if (myFileView.IsDirectory)
-                {
-                    // Call EnumerateFiles in a foreach-loop.
-                    foreach (string file in Directory.EnumerateFiles(myFileView.FullName.ToString(),
-                       myFileView.Name + ".sln",
-                        SearchOption.AllDirectories))
-                    {
-                        // Display file path.
-                        ev_Build_File(file);
-                    }
+                using (FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex]) {
 
-                }
-                else
-                {
-                    ev_Build_File(myFileView.FullName.ToString());
+                    //MessageBox.Show(myFileView.FullName.ToString());
+                    if (myFileView.IsDirectory) {
+                        // Call EnumerateFiles in a foreach-loop.
+                        foreach (string file in Directory.EnumerateFiles(myFileView.FullName.ToString(),
+                           myFileView.Name + ".sln",
+                            SearchOption.AllDirectories)) {
+                            // Display file path.
+                            ev_Build_File(file);
+                        }
+
+                    } else {
+                        ev_Build_File(myFileView.FullName.ToString());
+                    }
                 }
             }
         }
 
-        private void collapseAllToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void collapseAllToolStripMenuItem_Click(object sender, EventArgs e) {
             this.Cursor = Cursors.WaitCursor;
             Methods myActions = new Methods();
             myActions.SetValueByKey("ExpandCollapseAll", "Collapse");
@@ -5667,8 +5041,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             this.Cursor = Cursors.Default;
         }
 
-        private void expandAllToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void expandAllToolStripMenuItem_Click(object sender, EventArgs e) {
             this.Cursor = Cursors.WaitCursor;
             Methods myActions = new Methods();
             myActions.SetValueByKey("ExpandCollapseAll", "Expand");
@@ -5676,18 +5049,15 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             this.Cursor = Cursors.Default;
         }
 
-        private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void refreshToolStripMenuItem_Click(object sender, EventArgs e) {
             this.Cursor = Cursors.WaitCursor;
             RefreshDataGrid();
             this.Cursor = Cursors.Default;
         }
 
-        private void totalSavingsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void totalSavingsToolStripMenuItem_Click(object sender, EventArgs e) {
             int intTotalSavingsForAllScripts = 0;
-            foreach (DataGridViewRow item in _CurrentDataGridView.Rows)
-            {
+            foreach (DataGridViewRow item in _CurrentDataGridView.Rows) {
                 intTotalSavingsForAllScripts += (int)item.Cells["TotalSavingsCol"].Value;
             }
             TimeSpan diff = TimeSpan.FromSeconds(intTotalSavingsForAllScripts);
@@ -5704,90 +5074,73 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             MessageBox.Show("Total Savings shows total savings for current tab.\r\nTo see total savings for current tab, you need to use toolbar View\\ExpandAll and View\\Refresh prior to using View\\Total Savings.\r\nTotal Savings: " + formatted);
         }
 
-        private void runToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void runToolStripMenuItem_Click(object sender, EventArgs e) {
             FileView myFileView;
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells)
-            {
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                 myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 //MessageBox.Show(myFileView.FullName.ToString());
-                if (myFileView.IsDirectory)
-                {
+                if (myFileView.IsDirectory) {
                     // Call EnumerateFiles in a foreach-loop.
                     foreach (string file in Directory.EnumerateFiles(myFileView.FullName.ToString(),
                        myFileView.Name + ".exe",
-                        SearchOption.AllDirectories))
-                    {
+                        SearchOption.AllDirectories)) {
                         // Display file path.
-                        if (file.Contains("bin\\Debug"))
-                        {
+                        if (file.Contains("bin\\Debug")) {
                             ev_Process_File(file);
                         }
                     }
 
-                }
-                else
-                {
+                } else {
                     ev_Process_File(myFileView.FullName.ToString());
                 }
 
             }
         }
 
-        private void visualStudioToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void visualStudioToolStripMenuItem_Click(object sender, EventArgs e) {
             FileView myFileView;
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells)
-            {
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                 myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 //MessageBox.Show(myFileView.FullName.ToString());
-                if (myFileView.IsDirectory)
-                {
+                if (myFileView.IsDirectory) {
                     // Call EnumerateFiles in a foreach-loop.
                     foreach (string file in Directory.EnumerateFiles(myFileView.FullName.ToString(),
                        myFileView.Name + ".sln",
-                        SearchOption.AllDirectories))
-                    {
+                        SearchOption.AllDirectories)) {
                         // Display file path.
                         ev_Process_File(file);
                     }
 
-                }
-                else
-                {
+                } else {
                     ev_Process_File(myFileView.FullName.ToString());
                 }
             }
         }
 
-        private void copyStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void copyStripMenuItem_Click(object sender, EventArgs e) {
             string fullFileName = "";
             string fileNamea = "";
             FileView myFileView;
             bool isDirectory = false;
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells)
-            {
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 //if (myCell.ColumnIndex != 0 && myCell.RowIndex != 0) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                 myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 fullFileName = myFileView.FullName;
                 fileNamea = myFileView.Name;
-                if (myFileView.IsDirectory)
-                {
+                if (myFileView.IsDirectory) {
                     isDirectory = true;
                 }
                 //}
 
             }
             Methods myActions = new Methods();
-            if (fullFileName == "")
-            {
+            if (fullFileName == "") {
                 myActions.MessageBoxShow("Please select a row to copy before selecting File/Copy");
                 return;
             }
@@ -5797,8 +5150,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             string strSavedDirectory = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
 
 
-            if (Directory.Exists(strSavedDirectory))
-            {
+            if (Directory.Exists(strSavedDirectory)) {
                 strInitialDirectory = strSavedDirectory;
             }
         DisplayCopyWindow:
@@ -5852,8 +5204,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         DisplayCopyWindowAgain:
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 300, 1200, 100, 100);
         LineAfterDisplayCopyWindow:
-            if (strButtonPressed == "btnCancel")
-            {
+            if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                 return;
             }
@@ -5864,15 +5215,13 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             myActions.SetValueByKey("cbxCopyFolderSelectedValue", strFolder);
 
-            if (strButtonPressed == "btnSelectFolder")
-            {
+            if (strButtonPressed == "btnSelectFolder") {
                 var dialog1 = new System.Windows.Forms.FolderBrowserDialog();
                 dialog1.SelectedPath = myActions.GetValueByKey("LastSearchCopyFolder");
 
 
                 System.Windows.Forms.DialogResult result = dialog1.ShowDialog();
-                if (result == System.Windows.Forms.DialogResult.OK && Directory.Exists(dialog1.SelectedPath))
-                {
+                if (result == System.Windows.Forms.DialogResult.OK && Directory.Exists(dialog1.SelectedPath)) {
                     myListControlEntity.Find(x => x.ID == "cbxCopyFolder").SelectedValue = dialog1.SelectedPath;
                     myListControlEntity.Find(x => x.ID == "cbxCopyFolder").SelectedKey = dialog1.SelectedPath;
                     myListControlEntity.Find(x => x.ID == "cbxCopyFolder").Text = dialog1.SelectedPath;
@@ -5895,21 +5244,16 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     ComboBox myComboBox = new ComboBox();
 
 
-                    if (!File.Exists(settingsPath))
-                    {
-                        using (StreamWriter objSWFile = File.CreateText(settingsPath))
-                        {
+                    if (!File.Exists(settingsPath)) {
+                        using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
                             objSWFile.Close();
                         }
                     }
-                    using (StreamReader objSRFile = File.OpenText(settingsPath))
-                    {
+                    using (StreamReader objSRFile = File.OpenText(settingsPath)) {
                         string strReadLine = "";
-                        while ((strReadLine = objSRFile.ReadLine()) != null)
-                        {
+                        while ((strReadLine = objSRFile.ReadLine()) != null) {
                             string[] keyvalue = strReadLine.Split('^');
-                            if (keyvalue[0] != "--Select Item ---")
-                            {
+                            if (keyvalue[0] != "--Select Item ---") {
                                 cbp.Add(new ComboBoxPair(keyvalue[0], keyvalue[1]));
                             }
                         }
@@ -5922,32 +5266,24 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     bool boolNewItem = false;
 
                     alHostsNew.Add(myCbp);
-                    if (alHostx.Count > 24)
-                    {
-                        for (int i = alHostx.Count - 1; i > 0; i--)
-                        {
-                            if (alHostx[i]._Key.Trim() != "--Select Item ---")
-                            {
+                    if (alHostx.Count > 24) {
+                        for (int i = alHostx.Count - 1; i > 0; i--) {
+                            if (alHostx[i]._Key.Trim() != "--Select Item ---") {
                                 alHostx.RemoveAt(i);
                                 break;
                             }
                         }
                     }
-                    foreach (ComboBoxPair item in alHostx)
-                    {
-                        if (strNewHostName.ToLower() != item._Key.ToLower() && item._Key != "--Select Item ---")
-                        {
+                    foreach (ComboBoxPair item in alHostx) {
+                        if (strNewHostName.ToLower() != item._Key.ToLower() && item._Key != "--Select Item ---") {
                             boolNewItem = true;
                             alHostsNew.Add(item);
                         }
                     }
 
-                    using (StreamWriter objSWFile = File.CreateText(settingsPath))
-                    {
-                        foreach (ComboBoxPair item in alHostsNew)
-                        {
-                            if (item._Key != "")
-                            {
+                    using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
+                        foreach (ComboBoxPair item in alHostsNew) {
+                            if (item._Key != "") {
                                 objSWFile.WriteLine(item._Key + '^' + item._Value);
                             }
                         }
@@ -5958,22 +5294,17 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             }
 
             string strFolderToUse = "";
-            if (strButtonPressed == "btnOkay")
-            {
+            if (strButtonPressed == "btnOkay") {
 
-                if ((strFolder == "--Select Item ---" || strFolder == ""))
-                {
+                if ((strFolder == "--Select Item ---" || strFolder == "")) {
                     myActions.MessageBoxShow("Please enter Folder or select Folder from ComboBox; else press Cancel to Exit");
                     goto DisplayCopyWindow;
                 }
 
                 strFolderToUse = strFolder;
-                if (isDirectory)
-                {
+                if (isDirectory) {
                     Copy(fullFileName, strFolder);
-                }
-                else
-                {
+                } else {
                     CopyFile(fullFileName, strFolder);
                 }
 
@@ -5985,15 +5316,13 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 return;
             }
 
-            if (strButtonPressed == "btnOkay")
-            {
+            if (strButtonPressed == "btnOkay") {
                 strButtonPressed = myActions.WindowMultipleControlsMinimized(ref myListControlEntity, 300, 1200, 100, 100);
                 goto LineAfterDisplayCopyWindow;
             }
         }
 
-        private void addHotKeyToolStripMenuItem_Click_1(object sender, EventArgs e)
-        {
+        private void addHotKeyToolStripMenuItem_Click_1(object sender, EventArgs e) {
             FileView myFileView;
             Methods myActions = new Methods();
             List<ControlEntity> myListControlEntity = new List<ControlEntity>();
@@ -6037,40 +5366,33 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
 
-            if (strButtonPressed == "btnCancel")
-            {
+            if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                 return;
             }
 
             string myHotKey = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells)
-            {
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                 myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 //MessageBox.Show(myFileView.FullName.ToString());
-                if (myFileView.IsDirectory)
-                {
+                if (myFileView.IsDirectory) {
                     // Call EnumerateFiles in a foreach-loop.
                     foreach (string file in Directory.EnumerateFiles(myFileView.FullName.ToString(),
                        myFileView.Name + ".exe",
-                        SearchOption.AllDirectories))
-                    {
+                        SearchOption.AllDirectories)) {
                         string newHotKeyScriptUniqueName = myActions.ConvertFullFileNameToScriptPath(myFileView.FullName) + "-" + myFileView.Name;
                         // Display file path.
-                        if (file.Contains("bin\\Debug"))
-                        {
+                        if (file.Contains("bin\\Debug")) {
                             ArrayList myArrayList = myActions.ReadAppDirectoryKeyToArrayListGlobal("ScriptInfo");
                             ArrayList newArrayList = new ArrayList();
                             bool boolScriptFound = false;
-                            foreach (var item in myArrayList)
-                            {
+                            foreach (var item in myArrayList) {
                                 string[] myScriptInfoFields = item.ToString().Split('^');
                                 string scriptName = myScriptInfoFields[0];
                                 string strHotKeyExecutable = myScriptInfoFields[5];
-                                if (scriptName == newHotKeyScriptUniqueName && file == strHotKeyExecutable)
-                                {
+                                if (scriptName == newHotKeyScriptUniqueName && file == strHotKeyExecutable) {
                                     boolScriptFound = true;
                                     string strHotKey = myScriptInfoFields[1];
                                     string strTotalExecutions = myScriptInfoFields[2];
@@ -6089,14 +5411,11 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                                          myScriptInfoFields[4] + "^" +
                                          myScriptInfoFields[5] + "^"
                                         );
-                                }
-                                else
-                                {
+                                } else {
                                     newArrayList.Add(item.ToString());
                                 }
                             }
-                            if (boolScriptFound == false)
-                            {
+                            if (boolScriptFound == false) {
                                 newArrayList.Add(newHotKeyScriptUniqueName + "^" +
                                        "Ctrl+Alt+" + myHotKey + "^" +
                                         "0" + "^" +
@@ -6109,9 +5428,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                         }
                     }
 
-                }
-                else
-                {
+                } else {
                     ev_Process_File(myFileView.FullName.ToString());
                 }
 
@@ -6123,11 +5440,10 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             string strSavedDirectory = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
 
 
-            if (Directory.Exists(strSavedDirectory))
-            {
+            if (Directory.Exists(strSavedDirectory)) {
                 strInitialDirectory = strSavedDirectory;
             }
-            _dir = new DirectoryView(strInitialDirectory, _myArrayList);
+            _dir = new DirectoryView(strInitialDirectory, _myArrayList,_plusIcon, _minusIcon);
             this._CurrentFileViewBindingSource.DataSource = _dir;
 
             // Set the title
@@ -6138,53 +5454,41 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             // AddGlobalHotKeys();
         }
 
-        private void removeHotKeyToolStripMenuItem_Click_1(object sender, EventArgs e)
-        {
+        private void removeHotKeyToolStripMenuItem_Click_1(object sender, EventArgs e) {
             FileView myFileView;
             Methods myActions = new Methods();
 
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells)
-            {
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                 myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 //MessageBox.Show(myFileView.FullName.ToString());
                 bool boolScriptFound = false;
-                if (myFileView.IsDirectory)
-                {
+                if (myFileView.IsDirectory) {
                     // Call EnumerateFiles in a foreach-loop.
                     foreach (string file in Directory.EnumerateFiles(myFileView.FullName.ToString(),
                        myFileView.Name + ".exe",
-                        SearchOption.AllDirectories))
-                    {
+                        SearchOption.AllDirectories)) {
                         // Display file path.
-                        if (file.Contains("bin\\Debug"))
-                        {
+                        if (file.Contains("bin\\Debug")) {
                             ArrayList myArrayList = myActions.ReadAppDirectoryKeyToArrayListGlobal("ScriptInfo");
                             ArrayList newArrayList = new ArrayList();
-                            foreach (var item in myArrayList)
-                            {
+                            foreach (var item in myArrayList) {
                                 string[] myScriptInfoFields = item.ToString().Split('^');
                                 string scriptName = myScriptInfoFields[0];
-                                if (scriptName == myActions.ConvertFullFileNameToScriptPath(myFileView.FullName) + "-" + myFileView.Name)
-                                {
+                                if (scriptName == myActions.ConvertFullFileNameToScriptPath(myFileView.FullName) + "-" + myFileView.Name) {
                                     boolScriptFound = true;
-                                }
-                                else
-                                {
+                                } else {
                                     newArrayList.Add(item.ToString());
                                 }
                             }
                             myActions.WriteArrayListToAppDirectoryKeyGlobal("ScriptInfo", newArrayList);
                         }
                     }
-                    if (boolScriptFound == false)
-                    {
+                    if (boolScriptFound == false) {
                         myActions.MessageBoxShow(@"Could not find the HotKey; Script may have been moved; you can manually delete the row from AppData\Roaming\IdealAutomate\ScriptInfo.txt");
                     }
-                }
-                else
-                {
+                } else {
                     ev_Process_File(myFileView.FullName.ToString());
                 }
 
@@ -6196,11 +5500,10 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             string strSavedDirectory = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
 
 
-            if (Directory.Exists(strSavedDirectory))
-            {
+            if (Directory.Exists(strSavedDirectory)) {
                 strInitialDirectory = strSavedDirectory;
             }
-            _dir = new DirectoryView(strInitialDirectory, _myArrayList);
+            _dir = new DirectoryView(strInitialDirectory, _myArrayList, _plusIcon, _minusIcon);
             this._CurrentFileViewBindingSource.DataSource = _dir;
 
             // Set the title
@@ -6211,8 +5514,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             // AddGlobalHotKeys();
         }
 
-        private void manualTimeStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void manualTimeStripMenuItem_Click(object sender, EventArgs e) {
             FileView myFileView;
             Methods myActions = new Methods();
             List<ControlEntity> myListControlEntity = new List<ControlEntity>();
@@ -6245,51 +5547,42 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
 
-            if (strButtonPressed == "btnCancel")
-            {
+            if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                 return;
             }
 
             string myManualExecutionTime = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells)
-            {
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                 myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 //MessageBox.Show(myFileView.FullName.ToString());
-                if (myFileView.IsDirectory)
-                {
+                if (myFileView.IsDirectory) {
                     // Call EnumerateFiles in a foreach-loop.
                     foreach (string file in Directory.EnumerateFiles(myFileView.FullName.ToString(),
                        myFileView.Name + ".exe",
-                        SearchOption.AllDirectories))
-                    {
+                        SearchOption.AllDirectories)) {
                         // Display file path.
-                        if (file.Contains("bin\\Debug"))
-                        {
+                        if (file.Contains("bin\\Debug")) {
                             string fileFullName = myFileView.FullName;
                             myActions.SetValueByKeyForNonCurrentScript("ManualExecutionTime", myManualExecutionTime, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
                         }
                     }
 
-                }
-                else
-                {
+                } else {
                     ev_Process_File(myFileView.FullName.ToString());
                 }
 
             }
         }
-        private void descriptionStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void descriptionStripMenuItem_Click(object sender, EventArgs e) {
             FileView myFileView;
             FileView myManualTimeFileView;
             string fileFullName = "";
             string fileManualTimeFullName = "";
             Methods myActions = new Methods();
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells)
-            {
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                 myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
@@ -6297,22 +5590,18 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 fileFullName = myFileView.FullName;
             }
 
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells)
-            {
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                 myManualTimeFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 //MessageBox.Show(myFileView.FullName.ToString());
-                if (myManualTimeFileView.IsDirectory)
-                {
+                if (myManualTimeFileView.IsDirectory) {
                     // Call EnumerateFiles in a foreach-loop.
                     foreach (string file in Directory.EnumerateFiles(myManualTimeFileView.FullName.ToString(),
                        myManualTimeFileView.Name + ".exe",
-                        SearchOption.AllDirectories))
-                    {
+                        SearchOption.AllDirectories)) {
                         // Display file path.
-                        if (file.Contains("bin\\Debug"))
-                        {
+                        if (file.Contains("bin\\Debug")) {
                             fileManualTimeFullName = myManualTimeFileView.FullName;
 
                         }
@@ -6443,8 +5732,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         DisplaydescriptionWindow:
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 800, 0, 0);
 
-            if (strButtonPressed == "btnCancel")
-            {
+            if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                 return;
             }
@@ -6463,16 +5751,14 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         }
 
-        private void favoritesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void favoritesToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             // Set Initial Directory to My Documents
             string strSavedDirectory = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
 
 
-            if (Directory.Exists(strSavedDirectory))
-            {
+            if (Directory.Exists(strSavedDirectory)) {
                 strInitialDirectory = strSavedDirectory;
             }
         DisplayFindTextInFilesWindow:
@@ -6534,8 +5820,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         DisplayWindowAgain:
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 300, 1200, 100, 100);
         LineAfterDisplayWindow:
-            if (strButtonPressed == "btnCancel")
-            {
+            if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                 return;
             }
@@ -6546,8 +5831,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             myActions.SetValueByKey("cbxFavoriteFolderSelectedValue", strFolder);
 
-            if (strButtonPressed == "btnDeleteFolder")
-            {
+            if (strButtonPressed == "btnDeleteFolder") {
                 strFolder = myListControlEntity.Find(x => x.ID == "cbxFavoriteFolder").SelectedValue;
                 string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
                 string fileName = "cbxFavoriteFolder.txt";
@@ -6564,21 +5848,16 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 ComboBox myComboBox = new ComboBox();
 
 
-                if (!File.Exists(settingsPath))
-                {
-                    using (StreamWriter objSWFile = File.CreateText(settingsPath))
-                    {
+                if (!File.Exists(settingsPath)) {
+                    using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
                         objSWFile.Close();
                     }
                 }
-                using (StreamReader objSRFile = File.OpenText(settingsPath))
-                {
+                using (StreamReader objSRFile = File.OpenText(settingsPath)) {
                     string strReadLine = "";
-                    while ((strReadLine = objSRFile.ReadLine()) != null)
-                    {
+                    while ((strReadLine = objSRFile.ReadLine()) != null) {
                         string[] keyvalue = strReadLine.Split('^');
-                        if (keyvalue[0] != "--Select Item ---")
-                        {
+                        if (keyvalue[0] != "--Select Item ---") {
                             cbp.Add(new ComboBoxPair(keyvalue[0], keyvalue[1]));
                         }
                     }
@@ -6591,33 +5870,25 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 bool boolNewItem = false;
 
                 alHostsNew.Add(myCbp);
-                if (alHostx.Count > 24)
-                {
-                    for (int i = alHostx.Count - 1; i > 0; i--)
-                    {
-                        if (alHostx[i]._Key.Trim() != "--Select Item ---")
-                        {
+                if (alHostx.Count > 24) {
+                    for (int i = alHostx.Count - 1; i > 0; i--) {
+                        if (alHostx[i]._Key.Trim() != "--Select Item ---") {
                             alHostx.RemoveAt(i);
                             break;
                         }
                     }
                 }
-                foreach (ComboBoxPair item in alHostx)
-                {
-                    if (strNewHostName.ToLower() != item._Key.ToLower() && item._Key != "--Select Item ---")
-                    {
+                foreach (ComboBoxPair item in alHostx) {
+                    if (strNewHostName.ToLower() != item._Key.ToLower() && item._Key != "--Select Item ---") {
                         boolNewItem = true;
                         alHostsNew.Add(item);
                     }
                 }
 
-                using (StreamWriter objSWFile = File.CreateText(settingsPath))
-                {
+                using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
                     alHostsNew.OrderBy(x => x._Value);
-                    for (int i = 0; i < alHostsNew.Count; i++)
-                    {
-                        if (alHostsNew[i]._Key != "" && alHostsNew[i]._Key != strFolder)
-                        {
+                    for (int i = 0; i < alHostsNew.Count; i++) {
+                        if (alHostsNew[i]._Key != "" && alHostsNew[i]._Key != strFolder) {
                             objSWFile.WriteLine(alHostsNew[i]._Key + '^' + alHostsNew[i]._Value);
                         }
                     }
@@ -6627,15 +5898,13 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             }
 
-            if (strButtonPressed == "btnSelectFolder")
-            {
+            if (strButtonPressed == "btnSelectFolder") {
                 var dialog = new System.Windows.Forms.FolderBrowserDialog();
                 dialog.SelectedPath = myActions.GetValueByKey("LastSearchFolder");
 
 
                 System.Windows.Forms.DialogResult result = dialog.ShowDialog();
-                if (result == System.Windows.Forms.DialogResult.OK && Directory.Exists(dialog.SelectedPath))
-                {
+                if (result == System.Windows.Forms.DialogResult.OK && Directory.Exists(dialog.SelectedPath)) {
                     myListControlEntity.Find(x => x.ID == "cbxFavoriteFolder").SelectedValue = dialog.SelectedPath;
                     myListControlEntity.Find(x => x.ID == "cbxFavoriteFolder").SelectedKey = dialog.SelectedPath;
                     myListControlEntity.Find(x => x.ID == "cbxFavoriteFolder").Text = dialog.SelectedPath;
@@ -6658,21 +5927,16 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     ComboBox myComboBox = new ComboBox();
 
 
-                    if (!File.Exists(settingsPath))
-                    {
-                        using (StreamWriter objSWFile = File.CreateText(settingsPath))
-                        {
+                    if (!File.Exists(settingsPath)) {
+                        using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
                             objSWFile.Close();
                         }
                     }
-                    using (StreamReader objSRFile = File.OpenText(settingsPath))
-                    {
+                    using (StreamReader objSRFile = File.OpenText(settingsPath)) {
                         string strReadLine = "";
-                        while ((strReadLine = objSRFile.ReadLine()) != null)
-                        {
+                        while ((strReadLine = objSRFile.ReadLine()) != null) {
                             string[] keyvalue = strReadLine.Split('^');
-                            if (keyvalue[0] != "--Select Item ---")
-                            {
+                            if (keyvalue[0] != "--Select Item ---") {
                                 cbp.Add(new ComboBoxPair(keyvalue[0], keyvalue[1]));
                             }
                         }
@@ -6685,33 +5949,25 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     bool boolNewItem = false;
 
                     alHostsNew.Add(myCbp);
-                    if (alHostx.Count > 24)
-                    {
-                        for (int i = alHostx.Count - 1; i > 0; i--)
-                        {
-                            if (alHostx[i]._Key.Trim() != "--Select Item ---")
-                            {
+                    if (alHostx.Count > 24) {
+                        for (int i = alHostx.Count - 1; i > 0; i--) {
+                            if (alHostx[i]._Key.Trim() != "--Select Item ---") {
                                 alHostx.RemoveAt(i);
                                 break;
                             }
                         }
                     }
-                    foreach (ComboBoxPair item in alHostx)
-                    {
-                        if (strNewHostName.ToLower() != item._Key.ToLower() && item._Key != "--Select Item ---")
-                        {
+                    foreach (ComboBoxPair item in alHostx) {
+                        if (strNewHostName.ToLower() != item._Key.ToLower() && item._Key != "--Select Item ---") {
                             boolNewItem = true;
                             alHostsNew.Add(item);
                         }
                     }
 
-                    using (StreamWriter objSWFile = File.CreateText(settingsPath))
-                    {
+                    using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
                         alHostsNew.OrderBy(x => x._Value);
-                        for (int i = 0; i < alHostsNew.Count; i++)
-                        {
-                            if (alHostsNew[i]._Key != "")
-                            {
+                        for (int i = 0; i < alHostsNew.Count; i++) {
+                            if (alHostsNew[i]._Key != "") {
                                 objSWFile.WriteLine(alHostsNew[i]._Key + '^' + alHostsNew[i]._Value);
                             }
                         }
@@ -6722,11 +5978,9 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             }
 
             string strFolderToUse = "";
-            if (strButtonPressed == "btnOkay")
-            {
+            if (strButtonPressed == "btnOkay") {
 
-                if ((strFolder == "--Select Item ---" || strFolder == ""))
-                {
+                if ((strFolder == "--Select Item ---" || strFolder == "")) {
                     myActions.MessageBoxShow("Please enter Folder or select Folder from ComboBox; else press Cancel to Exit");
                     goto DisplayFindTextInFilesWindow;
                 }
@@ -6739,47 +5993,37 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 return;
             }
 
-            if (strButtonPressed == "btnOkay")
-            {
+            if (strButtonPressed == "btnOkay") {
                 strButtonPressed = myActions.WindowMultipleControlsMinimized(ref myListControlEntity, 300, 1200, 100, 100);
                 goto LineAfterDisplayWindow;
             }
         }
 
-        private void cbxCurrentPath_SelectedIndexChanged(object sender, EventArgs e)
-        {
+        private void cbxCurrentPath_SelectedIndexChanged(object sender, EventArgs e) {
             Methods myActions = new Methods();
             myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString(), ((ComboBoxPair)(cbxCurrentPath.SelectedItem))._Value);
-            if (_newTab == false)
-            {
+            if (_newTab == false) {
                 RefreshDataGrid();
             }
         }
 
-        private void cbxCurrentPath_TextChanged(object sender, EventArgs e)
-        {
+        private void cbxCurrentPath_TextChanged(object sender, EventArgs e) {
 
         }
 
-        private void cbxCurrentPath_Leave(object sender, EventArgs e)
-        {
-            if (_ignoreSelectedIndexChanged == true)
-            {
+        private void cbxCurrentPath_Leave(object sender, EventArgs e) {
+            if (_ignoreSelectedIndexChanged == true) {
                 return;
             }
             string strNewHostName = ((ComboBox)sender).Text;
             Methods myActions = new Methods();
             System.Windows.Forms.DialogResult myResult;
-            if (!Directory.Exists(strNewHostName))
-            {
+            if (!Directory.Exists(strNewHostName)) {
 
                 myResult = myActions.MessageBoxShowWithYesNo("I could not find folder " + strNewHostName + ". Do you want me to create it ? ");
-                if (myResult == System.Windows.Forms.DialogResult.Yes)
-                {
+                if (myResult == System.Windows.Forms.DialogResult.Yes) {
                     Directory.CreateDirectory(strNewHostName);
-                }
-                else
-                {
+                } else {
                     return;
                 }
 
@@ -6792,20 +6036,15 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             alHostsNew.Add(myCbp);
 
-            foreach (ComboBoxPair item in alHosts)
-            {
-                if (strNewHostName.ToLower() != item._Key.ToLower())
-                {
+            foreach (ComboBoxPair item in alHosts) {
+                if (strNewHostName.ToLower() != item._Key.ToLower()) {
                     boolNewItem = true;
                     alHostsNew.Add(item);
                 }
             }
-            if (alHostsNew.Count > 24)
-            {
-                for (int i = alHostsNew.Count - 1; i > 0; i--)
-                {
-                    if (alHostsNew[i]._Key.Trim() != "--Select Item ---")
-                    {
+            if (alHostsNew.Count > 24) {
+                for (int i = alHostsNew.Count - 1; i > 0; i--) {
+                    if (alHostsNew[i]._Key.Trim() != "--Select Item ---") {
                         alHostsNew.RemoveAt(i);
                         break;
                     }
@@ -6822,12 +6061,9 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
       Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
 
             string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
-            using (StreamWriter objSWFile = File.CreateText(settingsPath))
-            {
-                foreach (ComboBoxPair item in alHostsNew)
-                {
-                    if (item._Key != "")
-                    {
+            using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
+                foreach (ComboBoxPair item in alHostsNew) {
+                    if (item._Key != "") {
                         objSWFile.WriteLine(item._Key + '^' + item._Value);
                     }
                 }
@@ -6835,18 +6071,15 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             }
 
             //  alHosts = alHostsNew;
-            if (boolNewItem)
-            {
+            if (boolNewItem) {
                 ((ComboBox)sender).Items.Clear();
-                foreach (var item in alHostsNew)
-                {
+                foreach (var item in alHostsNew) {
                     ((ComboBox)sender).Items.Add(item);
                 }
             }
             string strCurrentPath = ((ComboBox)(sender)).Text;
 
-            if (strCurrentPath != myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString()))
-            {
+            if (strCurrentPath != myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString())) {
                 RefreshDataGrid();
             }
 
@@ -6854,44 +6087,32 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         }
 
-        private void WindowsExplorerStripMenuItem2_Click(object sender, EventArgs e)
-        {
+        private void WindowsExplorerStripMenuItem2_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells)
-            {
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                 FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
-                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0))
-                {
+                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     string strExecutable = @"C:\Windows\explorer.exe";
                     myActions.Run(strExecutable, "\"" + myFileView.FullName + "\"");
-                }
-                else
-                {
+                } else {
                     myActions.MessageBoxShow("You can only open directories with Windows Explorer");
                 }
             }
         }
 
-        private void _CurrentSplitContainer_SplitterMoved(object sender, SplitterEventArgs e)
-        {
+        private void _CurrentSplitContainer_SplitterMoved(object sender, SplitterEventArgs e) {
             //host the started process in the panel 
 
-            try
-            {
-                if (_proc != null)
-                {
-                    if (_WebBrowserLoaded)
-                    {
+            try {
+                if (_proc != null) {
+                    if (_WebBrowserLoaded) {
                         webBrowser1.Size = new System.Drawing.Size(_CurrentSplitContainer.Panel2.ClientSize.Width, _CurrentSplitContainer.Panel2.Height - 50);
-                    }
-                    else
-                    {
+                    } else {
                         System.Threading.Thread.Sleep(500);
                         int ctr = 0;
-                        while (ctr < 150 && (_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle)))
-                        {
+                        while (ctr < 150 && (_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
                             System.Threading.Thread.Sleep(10);
                             ctr++;
                             _proc.Refresh();
@@ -6903,13 +6124,13 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                         SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
                         SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                         SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
+
                     }
                     Methods myActions = new Methods();
                     myActions.SetValueByKey("_CurrentSplitContainerWidth" + _selectedTabIndex.ToString(), e.X.ToString());
                 }
-            }
-            catch (Exception ex)
-            {
+
+            } catch (Exception ex) {
 
 
             }
@@ -6917,8 +6138,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         }
 
-        private async void search_ClickAsync(object sender, EventArgs e)
-        {
+        private async void search_ClickAsync(object sender, EventArgs e) {
             staticVar = this;
             var myForm = new Search();
             myForm.Show();
@@ -7275,8 +6495,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             //     }
         }
 
-        private async Task<string> Search(string settingsDirectory)
-        {
+        private async Task<string> Search(string settingsDirectory) {
             string myResult = "";
             Methods myActions = new Methods();
 
@@ -7286,26 +6505,21 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             intHits = 0;
             int intLineCtr;
             List<FileInfo> myFileList = new List<FileInfo>();
-            if (File.Exists(strPathToSearch))
-            {
+            if (File.Exists(strPathToSearch)) {
                 System.IO.FileInfo fi = new System.IO.FileInfo(strPathToSearch);
                 myFileList.Add(fi);
 
-            }
-            else
-            {
+            } else {
                 myFileList = TraverseTree(strSearchPattern, strPathToSearch);
             }
             int intFiles = 0;
             matchInfoList = new List<MatchInfo>();
             //         myFileList = myFileList.OrderBy(fi => fi.FullName).ToList();
-            Parallel.ForEach(myFileList, myFileInfo =>
-            {
+            Parallel.ForEach(myFileList, myFileInfo => {
                 intLineCtr = 0;
                 boolStringFoundInFile = false;
                 ReadFileToString(myFileInfo.FullName, intLineCtr, matchInfoList);
-                if (boolStringFoundInFile)
-                {
+                if (boolStringFoundInFile) {
                     intFiles++;
                 }
 
@@ -7322,8 +6536,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             });
             matchInfoList = matchInfoList.Where(mi => mi != null).OrderBy(mi => mi.FullName).ThenBy(mi => mi.LineNumber).ToList();
             List<string> lines = new List<string>();
-            foreach (var item in matchInfoList)
-            {
+            foreach (var item in matchInfoList) {
                 lines.Add("\"" + item.FullName + "\"(" + item.LineNumber + "," + item.LinePosition + "): " + item.LineText.Length.ToString() + " " + item.LineText.Substring(0, item.LineText.Length > 5000 ? 5000 : item.LineText.Length));
 
 
@@ -7337,13 +6550,11 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             settingsDirectory =
      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
-            using (FileStream fs = new FileStream(settingsDirectory + @"\MatchInfo.txt", FileMode.Create))
-            {
+            using (FileStream fs = new FileStream(settingsDirectory + @"\MatchInfo.txt", FileMode.Create)) {
                 StreamWriter file = new System.IO.StreamWriter(fs, Encoding.Default);
 
                 file.WriteLine(@"-- " + strSearchText + " in " + strPathToSearch + " from " + strSearchPattern + " excl  " + strSearchExcludePattern + " --");
-                foreach (var item in matchInfoList)
-                {
+                foreach (var item in matchInfoList) {
                     file.WriteLine("\"" + item.FullName + "\"(" + item.LineNumber + "," + item.LinePosition + "): " + item.LineText.Substring(0, item.LineText.Length > 5000 ? 5000 : item.LineText.Length));
                 }
                 int intUniqueFiles = matchInfoList.Select(x => x.FullName).Distinct().Count();
@@ -7377,8 +6588,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 string strContent = settingsDirectory + @"\MatchInfo.txt";
                 myActions.Run(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
                 myResult = "RunTime: " + elapsedTime + "\n\r\n\rHits: " + intHits.ToString() + "\n\r\n\rFiles with hits: " + intUniqueFiles.ToString() + "\n\r\n\rPut Cursor on line and\n\r press Ctrl+Alt+N\n\rto view detail page. ";
-                if (_searchErrors.Length > 0)
-                {
+                if (_searchErrors.Length > 0) {
                     myResult += "\n\r\n\rErrors: " + _searchErrors.ToString();
                 }
             }
@@ -7386,11 +6596,9 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             return myResult;
         }
-        public static List<FileInfo> TraverseTree(string filterPattern, string root)
-        {
+        public static List<FileInfo> TraverseTree(string filterPattern, string root) {
             string[] arrayExclusionPatterns = strSearchExcludePattern.Split(';');
-            for (int i = 0; i < arrayExclusionPatterns.Length; i++)
-            {
+            for (int i = 0; i < arrayExclusionPatterns.Length; i++) {
                 arrayExclusionPatterns[i] = arrayExclusionPatterns[i].ToLower().ToString().Replace("*", "");
             }
             List<FileInfo> myFileList = new List<FileInfo>();
@@ -7398,20 +6606,17 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             // examined for files.
             Stack<string> dirs = new Stack<string>(20);
 
-            if (!System.IO.Directory.Exists(root))
-            {
+            if (!System.IO.Directory.Exists(root)) {
                 MessageBox.Show(root + " - folder did not exist");
             }
 
 
             dirs.Push(root);
 
-            while (dirs.Count > 0)
-            {
+            while (dirs.Count > 0) {
                 string currentDir = dirs.Pop();
                 string[] subDirs;
-                try
-                {
+                try {
                     subDirs = System.IO.Directory.GetDirectories(currentDir);
                 }
                 // An UnauthorizedAccessException exception will be thrown if we do not have
@@ -7423,73 +6628,52 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 // choice of which exceptions to catch depends entirely on the specific task 
                 // you are intending to perform and also on how much you know with certainty 
                 // about the systems on which this code will run.
-                catch (UnauthorizedAccessException e)
-                {
+                catch (UnauthorizedAccessException e) {
                     Console.WriteLine(e.Message);
                     continue;
-                }
-                catch (System.IO.DirectoryNotFoundException e)
-                {
+                } catch (System.IO.DirectoryNotFoundException e) {
                     Console.WriteLine(e.Message);
                     continue;
-                }
-                catch (System.ArgumentException e)
-                {
+                } catch (System.ArgumentException e) {
                     //      MessageBox.Show(e.Message + " CurrentDir = " + currentDir);
                     continue;
                 }
 
                 string[] files = null;
-                try
-                {
+                try {
                     files = System.IO.Directory.GetFiles(currentDir, filterPattern);
-                }
-                catch (UnauthorizedAccessException e)
-                {
+                } catch (UnauthorizedAccessException e) {
 
                     Console.WriteLine(e.Message);
                     continue;
-                }
-                catch (System.IO.DirectoryNotFoundException e)
-                {
+                } catch (System.IO.DirectoryNotFoundException e) {
                     Console.WriteLine(e.Message);
                     continue;
-                }
-                catch (System.IO.PathTooLongException e)
-                {
+                } catch (System.IO.PathTooLongException e) {
                     Console.WriteLine(e.Message);
                     continue;
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     Console.WriteLine(e.Message);
                     continue;
                 }
 
                 // Perform the required action on each file here.
                 // Modify this block to perform your required task.
-                foreach (string file in files)
-                {
-                    try
-                    {
+                foreach (string file in files) {
+                    try {
                         // Perform whatever action is required in your scenario.
                         System.IO.FileInfo fi = new System.IO.FileInfo(file);
                         bool boolFileHasGoodExtension = true;
-                        foreach (var item in arrayExclusionPatterns)
-                        {
-                            if (fi.FullName.ToLower().Contains(item))
-                            {
+                        foreach (var item in arrayExclusionPatterns) {
+                            if (fi.FullName.ToLower().Contains(item)) {
                                 boolFileHasGoodExtension = false;
                             }
                         }
-                        if (boolFileHasGoodExtension)
-                        {
+                        if (boolFileHasGoodExtension) {
                             myFileList.Add(fi);
                         }
                         //    Console.WriteLine("{0}: {1}, {2}", fi.Name, fi.Length, fi.CreationTime);
-                    }
-                    catch (System.IO.FileNotFoundException e)
-                    {
+                    } catch (System.IO.FileNotFoundException e) {
                         // If file was deleted by a separate application
                         //  or thread since the call to TraverseTree()
                         // then just continue.
@@ -7505,15 +6689,11 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             }
             return myFileList;
         }
-        public static void ReadFileToString(string fullFilePath, int intLineCtr, List<MatchInfo> matchInfoList)
-        {
-            while (true)
-            {
+        public static void ReadFileToString(string fullFilePath, int intLineCtr, List<MatchInfo> matchInfoList) {
+            while (true) {
                 if (fullFilePath.EndsWith(".odt")
-                    )
-                {
-                    if (FindTextInWordPad(strSearchText, fullFilePath))
-                    {
+                    ) {
+                    if (FindTextInWordPad(strSearchText, fullFilePath)) {
                         intHits++;
                         boolStringFoundInFile = true;
                         MatchInfo myMatchInfo = new MatchInfo();
@@ -7527,10 +6707,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 if (fullFilePath.EndsWith(".doc") ||
         fullFilePath.EndsWith(".docx")
 
-        )
-                {
-                    if (FindTextInWord(strSearchText, fullFilePath))
-                    {
+        ) {
+                    if (FindTextInWord(strSearchText, fullFilePath)) {
                         intHits++;
                         boolStringFoundInFile = true;
                         MatchInfo myMatchInfo = new MatchInfo();
@@ -7541,23 +6719,16 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                         matchInfoList.Add(myMatchInfo);
                     }
                 }
-                try
-                {
-                    using (FileStream fs = new FileStream(fullFilePath, FileMode.Open))
-                    {
-                        using (StreamReader sr = new StreamReader(fs, Encoding.Default))
-                        {
+                try {
+                    using (FileStream fs = new FileStream(fullFilePath, FileMode.Open)) {
+                        using (StreamReader sr = new StreamReader(fs, Encoding.Default)) {
                             string s;
                             string s_lower = "";
-                            while ((s = sr.ReadLine()) != null)
-                            {
+                            while ((s = sr.ReadLine()) != null) {
                                 intLineCtr++;
-                                if (boolUseRegularExpression)
-                                {
-                                    if (boolMatchCase)
-                                    {
-                                        if (System.Text.RegularExpressions.Regex.IsMatch(s, strSearchText, System.Text.RegularExpressions.RegexOptions.None))
-                                        {
+                                if (boolUseRegularExpression) {
+                                    if (boolMatchCase) {
+                                        if (System.Text.RegularExpressions.Regex.IsMatch(s, strSearchText, System.Text.RegularExpressions.RegexOptions.None)) {
                                             intHits++;
                                             boolStringFoundInFile = true;
                                             MatchInfo myMatchInfo = new MatchInfo();
@@ -7567,12 +6738,9 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                                             myMatchInfo.LineText = s;
                                             matchInfoList.Add(myMatchInfo);
                                         }
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         s_lower = s.ToLower();
-                                        if (System.Text.RegularExpressions.Regex.IsMatch(s_lower, strLowerCaseSearchText, System.Text.RegularExpressions.RegexOptions.IgnoreCase))
-                                        {
+                                        if (System.Text.RegularExpressions.Regex.IsMatch(s_lower, strLowerCaseSearchText, System.Text.RegularExpressions.RegexOptions.IgnoreCase)) {
                                             intHits++;
                                             boolStringFoundInFile = true;
                                             MatchInfo myMatchInfo = new MatchInfo();
@@ -7583,13 +6751,9 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                                             matchInfoList.Add(myMatchInfo);
                                         }
                                     }
-                                }
-                                else
-                                {
-                                    if (boolMatchCase)
-                                    {
-                                        if (s.Contains(strSearchText))
-                                        {
+                                } else {
+                                    if (boolMatchCase) {
+                                        if (s.Contains(strSearchText)) {
                                             intHits++;
                                             boolStringFoundInFile = true;
                                             MatchInfo myMatchInfo = new MatchInfo();
@@ -7599,12 +6763,9 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                                             myMatchInfo.LineText = s;
                                             matchInfoList.Add(myMatchInfo);
                                         }
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         s_lower = s.ToLower();
-                                        if (s_lower.Contains(strLowerCaseSearchText))
-                                        {
+                                        if (s_lower.Contains(strLowerCaseSearchText)) {
 
                                             intHits++;
                                             boolStringFoundInFile = true;
@@ -7622,41 +6783,30 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                         }
 
                     }
-                }
-                catch (FileNotFoundException ex)
-                {
+                } catch (FileNotFoundException ex) {
                     Console.WriteLine("Output file {0} not yet ready ({1})", fullFilePath, ex.Message);
                     break;
-                }
-                catch (IOException ex)
-                {
+                } catch (IOException ex) {
                     Console.WriteLine("Output file {0} not yet ready ({1})", fullFilePath, ex.Message);
                     break;
-                }
-                catch (UnauthorizedAccessException ex)
-                {
+                } catch (UnauthorizedAccessException ex) {
                     Console.WriteLine("Output file {0} not yet ready ({1})", fullFilePath, ex.Message);
                     break;
                 }
             }
         }
-        protected static bool FindTextInWordPad(string text, string flname)
-        {
+        protected static bool FindTextInWordPad(string text, string flname) {
             Methods myActions = new Methods();
             StringBuilder sb = new StringBuilder();
             string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
-            if (!File.Exists(strApplicationBinDebug + "\\aodlread\\settings.xml"))
-            {
-                if (!Directory.Exists(strApplicationBinDebug + "\\aodlread"))
-                {
+            if (!File.Exists(strApplicationBinDebug + "\\aodlread\\settings.xml")) {
+                if (!Directory.Exists(strApplicationBinDebug + "\\aodlread")) {
                     Directory.CreateDirectory(strApplicationBinDebug + "\\aodlread");
                 }
                 File.Copy(strApplicationBinDebug.Replace("\\bin\\Debug", "") + "\\aodlread\\settings.xml", strApplicationBinDebug + "\\aodlread\\settings.xml");
             }
-            try
-            {
-                using (var doc = new TextDocument())
-                {
+            try {
+                using (var doc = new TextDocument()) {
                     doc.Load(flname);
 
                     //The header and footer are in the DocumentStyles part. Grab the XML of this part
@@ -7673,70 +6823,49 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                     sb.Append(mainText);
                 }
-            }
-            catch (Exception ex)
-            {
-                if (ex.InnerException != null)
-                {
+            } catch (Exception ex) {
+                if (ex.InnerException != null) {
                     myActions.MessageBoxShow(ex.InnerException.ToString() + " - Line 5706 in ExplorerView");
-                }
-                else
-                {
+                } else {
                     //  myActions.MessageBoxShow(ex.Message + " - Line 5708 in ExplorerView");
                 }
             }
-            if (sb.ToString().Contains(text))
-            {
+            if (sb.ToString().Contains(text)) {
                 return true;
-            }
-            else
-            {
+            } else {
                 return false;
             }
 
         }
 
-        protected static bool FindTextInWord(string text, string flname)
-        {
+        protected static bool FindTextInWord(string text, string flname) {
             Methods myActions = new Methods();
             StringBuilder sb = new StringBuilder();
             string docText = null;
-            try
-            {
-                using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(flname, true))
-                {
+            try {
+                using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(flname, true)) {
                     docText = null;
-                    using (StreamReader sr = new StreamReader(wordDoc.MainDocumentPart.GetStream()))
-                    {
+                    using (StreamReader sr = new StreamReader(wordDoc.MainDocumentPart.GetStream())) {
                         docText = sr.ReadToEnd();
                     }
                 }
 
-            }
-            catch (Exception ex)
-            {
-                if (ex.InnerException != null)
-                {
+            } catch (Exception ex) {
+                if (ex.InnerException != null) {
                     _searchErrors.AppendLine(ex.InnerException.ToString() + " filename is:" + flname + " - Line 5733 in ExplorerView");
-                }
-                else
-                {
+                } else {
                     _searchErrors.AppendLine(ex.Message + " filename is:" + flname + " - Line 5735 in ExplorerView");
                 }
             }
 
-            if (docText != null && docText.Contains(text))
-            {
+            if (docText != null && docText.Contains(text)) {
                 return true;
-            }
-            else
-            {
+            } else {
                 return false;
             }
         }
 
-        private void textFileToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void textFileToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string basePathForNewFolder = _dir.FileView.FullName;
             string basePathName = _dir.FileView.Name;
@@ -7744,28 +6873,24 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             FileView myFileView;
             string fileFullName = "";
 
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells)
-            {
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                 myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
-                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0))
-                {
+                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     basePathForNewTextDocument = myFileView.FullName;
                     basePathName = myFileView.Name;
                     basePathForNewFolder = myFileView.FullName;
                 }
             }
 
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells)
-            {
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                 myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 //MessageBox.Show(myFileView.FullName.ToString());                
                 fileFullName = myFileView.FullName;
-                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0))
-                {
+                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     basePathForNewTextDocument = myFileView.FullName;
                     basePathName = myFileView.Name;
                     basePathForNewFolder = myFileView.FullName;
@@ -7897,8 +7022,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         ReDisplayNewTextDocumentDialog:
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 800, 0, 0);
 
-            if (strButtonPressed == "btnCancel")
-            {
+            if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                 return;
             }
@@ -7911,8 +7035,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             string strStatus = myListControlEntity.Find(x => x.ID == "cbxStatus").SelectedValue;
 
 
-            if (!myNewTextDocumentName.EndsWith(".txt"))
-            {
+            if (!myNewTextDocumentName.EndsWith(".txt")) {
                 myNewTextDocumentName = myNewTextDocumentName + ".txt";
             }
             string strNewTextDocumentDir = Path.Combine(basePathForNewTextDocument, myNewTextDocumentName);
@@ -7921,8 +7044,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             myActions.SetValueByPublicKeyInCurrentFolder("description", strdescription, strNewTextDocumentDir);
             myActions.SetValueByPublicKeyInCurrentFolder("status", strStatus, strNewTextDocumentDir);
             myActions.SetValueByPublicKeyInCurrentFolder("cbxStatusSelectedValue", strStatus, strNewTextDocumentDir);
-            if (!File.Exists(strNewTextDocumentDir))
-            {
+            if (!File.Exists(strNewTextDocumentDir)) {
                 string newFolderScriptPath = basePathForNewTextDocument + "\\" + myNewTextDocumentName.Replace(".txt", "");
                 //  myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
 
@@ -7933,26 +7055,19 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
 
             string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
-            if (detailsMenuItemChecked == "False")
-            {
+            if (detailsMenuItemChecked == "False") {
                 myActions.SetValueByKey("DetailsMenuItemChecked", "True");
                 _CurrentSplitContainer.Panel2Collapsed = false;
                 this.detailsMenuItem.Checked = true;
                 this.listMenuItem.Checked = false;
                 //tries to start the process 
-                try
-                {
-                    if (!File.Exists(strExecutable))
-                    {
+                try {
+                    if (!File.Exists(strExecutable)) {
                         myActions.MessageBoxShow(" File not found: " + strExecutable);
-                    }
-                    else
-                    {
+                    } else {
                         _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
                     }
-                }
-                catch (Exception)
-                {
+                } catch (Exception) {
                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     this.Cursor = Cursors.Default;
                     return;
@@ -7964,8 +7079,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                 //host the started process in the panel 
                 System.Threading.Thread.Sleep(500);
-                while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle)))
-                {
+                while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
                     System.Threading.Thread.Sleep(10);
                     _proc.Refresh();
                 }
@@ -7978,30 +7092,21 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 SetWindowLongA(_appHandle, WS_CAPTION, WS_VISIBLE);
                 SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
                 //SendMessage(proc.MainWindowHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
-            }
-            else
-            {
+            } else {
                 //Close the running process
-                if (_appHandle != IntPtr.Zero)
-                {
+                if (_appHandle != IntPtr.Zero) {
                     PostMessage(_appHandle, WM_CLOSE, 0, 0);
                     System.Threading.Thread.Sleep(1000);
                     _appHandle = IntPtr.Zero;
                 }
                 //tries to start the process 
-                try
-                {
-                    if (!File.Exists(strExecutable))
-                    {
+                try {
+                    if (!File.Exists(strExecutable)) {
                         myActions.MessageBoxShow(" File not found: " + strExecutable);
-                    }
-                    else
-                    {
+                    } else {
                         _proc = Process.Start(strExecutable, "\"" + strNewTextDocumentDir + "\"");
                     }
-                }
-                catch (Exception)
-                {
+                } catch (Exception) {
                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     this.Cursor = Cursors.Default;
                     return;
@@ -8013,8 +7118,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                 //host the started process in the panel 
                 System.Threading.Thread.Sleep(500);
-                while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle)))
-                {
+                while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
                     System.Threading.Thread.Sleep(10);
                     _proc.Refresh();
                 }
@@ -8033,8 +7137,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         }
 
-        private void wordPadFileToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void wordPadFileToolStripMenuItem_Click(object sender, EventArgs e) {
             this.Cursor = Cursors.WaitCursor;
             Methods myActions = new Methods();
             string basePathForNewFolder = _dir.FileView.FullName;
@@ -8045,13 +7148,11 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             int myIndex = -1;
 
 
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells)
-            {
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                 FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
-                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0))
-                {
+                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     basePathForNewTextDocument = myFileView.FullName;
                     basePathName = myFileView.Name;
                     basePathForNewFolder = myFileView.FullName;
@@ -8184,8 +7285,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         ReDisplayNewTextDocumentDialog:
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 800, 0, 0);
 
-            if (strButtonPressed == "btnCancel")
-            {
+            if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                 return;
             }
@@ -8199,8 +7299,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             string parentScriptPath = myActions.ConvertFullFileNameToPublicPath(basePathForNewTextDocument) + "\\" + basePathName;
             string myNewTextDocumentName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
-            if (!myNewTextDocumentName.EndsWith(".rtf"))
-            {
+            if (!myNewTextDocumentName.EndsWith(".rtf")) {
                 myNewTextDocumentName = myNewTextDocumentName + ".rtf";
             }
             string strNewTextDocumentDir = Path.Combine(basePathForNewTextDocument, myNewTextDocumentName);
@@ -8210,8 +7309,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             myActions.SetValueByPublicKeyInCurrentFolder("status", strStatus, strNewTextDocumentDir);
             myActions.SetValueByPublicKeyInCurrentFolder("cbxStatusSelectedValue", strStatus, strNewTextDocumentDir);
 
-            if (!File.Exists(strNewTextDocumentDir))
-            {
+            if (!File.Exists(strNewTextDocumentDir)) {
                 string newFolderScriptPath = basePathForNewTextDocument + "\\" + myNewTextDocumentName.Replace(".rtf", "");
                 //   myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
                 string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
@@ -8234,12 +7332,10 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             if (fileName != "" && _CurrentDataGridView.SelectedCells.Count > 0
                 && !(_CurrentDataGridView.SelectedCells[0].ColumnIndex == 0 &&
-                _CurrentDataGridView.SelectedCells[0].RowIndex == 0))
-            {
+                _CurrentDataGridView.SelectedCells[0].RowIndex == 0)) {
                 myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName); // GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                 FileView myFileView2 = (FileView)this._CurrentFileViewBindingSource[myIndex];
-                if (myFileView2.IsDirectory)
-                {
+                if (myFileView2.IsDirectory) {
                     _dir.Activate(this._CurrentFileViewBindingSource[myIndex] as FileView);
                     SetTitle(_dir.FileView);
                     RefreshDataGridWithoutOpeningSelectedRow();
@@ -8247,8 +7343,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             }
             string strExecutable = @"C:\Program Files\Windows NT\Accessories\wordpad.exe";
             string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
-            if (detailsMenuItemChecked == "False")
-            {
+            if (detailsMenuItemChecked == "False") {
                 myActions.SetValueByKey("DetailsMenuItemChecked", "True");
                 _CurrentSplitContainer.Panel2Collapsed = false;
                 this.detailsMenuItem.Checked = true;
@@ -8259,11 +7354,9 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             int mySelectedRow = -1;
 
-            for (int i = 0; i < _CurrentDataGridView.Rows.Count; i++)
-            {
+            for (int i = 0; i < _CurrentDataGridView.Rows.Count; i++) {
                 DataGridViewRow item = _CurrentDataGridView.Rows[i];
-                if (item.Cells["FullName"].Value.ToString() == strNewTextDocumentDir)
-                {
+                if (item.Cells["FullName"].Value.ToString() == strNewTextDocumentDir) {
                     mySelectedRow = i;
                     break;
                 }
@@ -8276,15 +7369,12 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
 
 
-        private void ExplorerView_KeyUp(object sender, KeyEventArgs e)
-        {
+        private void ExplorerView_KeyUp(object sender, KeyEventArgs e) {
 
         }
 
-        private void ExplorerView_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        {
-            if (e.KeyCode == Keys.Escape)
-            {
+        private void ExplorerView_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e) {
+            if (e.KeyCode == Keys.Escape) {
                 _CurrentDataGridView.ClearSelection();
                 _selectedRow = 0;
                 Methods myActions = new Methods();
@@ -8294,13 +7384,11 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 _appHandle = IntPtr.Zero;
             }
         }
-        private void CreateShortcut(string name, string url)
-        {
+        private void CreateShortcut(string name, string url) {
 
             string deskDir = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
 
-            using (StreamWriter writer = new StreamWriter(deskDir + "\\" + name + ".url"))
-            {
+            using (StreamWriter writer = new StreamWriter(deskDir + "\\" + name + ".url")) {
 
                 writer.WriteLine("[InternetShortcut]");
 
@@ -8312,20 +7400,17 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         }
 
-        private void urlShortcutFileToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void urlShortcutFileToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string basePathForNewFolder = _dir.FileView.FullName;
             string basePathName = _dir.FileView.Name;
             string basePathForNewTextDocument = _dir.FileView.FullName;
             string fileFullName = "";
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells)
-            {
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                 FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
-                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0))
-                {
+                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     basePathForNewTextDocument = myFileView.FullName;
                     basePathName = myFileView.Name;
                     basePathForNewFolder = myFileView.FullName;
@@ -8385,8 +7470,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         ReDisplayNewTextDocumentDialog:
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
 
-            if (strButtonPressed == "btnCancel")
-            {
+            if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                 return;
             }
@@ -8397,20 +7481,17 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             string parentScriptPath = myActions.ConvertFullFileNameToPublicPath(basePathForNewTextDocument) + "\\" + basePathName;
             string myNewTextDocumentName = myListControlEntity.Find(x => x.ID == "txtShortcutName").Text;
-            if (!myNewTextDocumentName.EndsWith(".url"))
-            {
+            if (!myNewTextDocumentName.EndsWith(".url")) {
                 myNewTextDocumentName = myNewTextDocumentName + ".url";
             }
             string strNewTextDocumentDir = Path.Combine(basePathForNewTextDocument, myNewTextDocumentName);
 
             myActions.SetValueByKeyForNonCurrentScript("shortcutName", strShortcutName, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
             myActions.SetValueByKeyForNonCurrentScript("shortcutUrl", strShortcutUrl, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
-            if (!File.Exists(strNewTextDocumentDir))
-            {
+            if (!File.Exists(strNewTextDocumentDir)) {
                 string newFolderScriptPath = basePathForNewTextDocument + "\\" + myNewTextDocumentName.Replace(".rtf", "");
                 //   myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Child", newFolderScriptPath);
-                using (StreamWriter writer = new StreamWriter(strNewTextDocumentDir))
-                {
+                using (StreamWriter writer = new StreamWriter(strNewTextDocumentDir)) {
 
                     writer.WriteLine("[InternetShortcut]");
 
@@ -8424,8 +7505,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             RefreshDataGrid();
         }
 
-        private void InitializeComponentWebBrowser()
-        {
+        private void InitializeComponentWebBrowser() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExplorerView));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
@@ -8578,18 +7658,12 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
 
-        private void Popup()
-        {
-            if (_Panel2KeyPress)
-            {
-                Thread th = new Thread(() =>
-                {
-                    try
-                    {
+        private void Popup() {
+            if (_Panel2KeyPress) {
+                Thread th = new Thread(() => {
+                    try {
                         Open();
-                    }
-                    catch (Exception)
-                    {
+                    } catch (Exception) {
 
                     }
                 });
@@ -8599,15 +7673,12 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             }
         }
 
-        private void Open()
-        {
+        private void Open() {
             Saved frm = new Saved();
             frm.ShowDialog();   // frm.Show(); if MDI Parent form            
         }
-        private void _CurrentSplitContainer_MouseLeave(object sender, EventArgs e)
-        {
-            if (_Panel2KeyPress && (_WordPadLoaded || _NotepadppLoaded))
-            {
+        private void _CurrentSplitContainer_MouseLeave(object sender, EventArgs e) {
+            if (_Panel2KeyPress && (_WordPadLoaded || _NotepadppLoaded)) {
                 Methods myActions = new Methods();
                 myActions.TypeText("^(s)", 200);
                 Popup();
@@ -8615,10 +7686,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             }
         }
 
-        private void toolBar_MouseEnter(object sender, EventArgs e)
-        {
-            if (_Panel2KeyPress && (_WordPadLoaded || _NotepadppLoaded))
-            {
+        private void toolBar_MouseEnter(object sender, EventArgs e) {
+            if (_Panel2KeyPress && (_WordPadLoaded || _NotepadppLoaded)) {
                 Methods myActions = new Methods();
                 myActions.TypeText("^(s)", 200);
                 Popup();
@@ -8626,10 +7695,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             }
         }
 
-        private void toolBar_MouseLeave(object sender, EventArgs e)
-        {
-            if (_Panel2KeyPress && (_WordPadLoaded || _NotepadppLoaded))
-            {
+        private void toolBar_MouseLeave(object sender, EventArgs e) {
+            if (_Panel2KeyPress && (_WordPadLoaded || _NotepadppLoaded)) {
                 Methods myActions = new Methods();
                 myActions.TypeText("^(s)", 200);
                 Popup();
@@ -8637,10 +7704,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             }
         }
 
-        private void _CurrentSplitContainer_MouseEnter(object sender, EventArgs e)
-        {
-            if (_Panel2KeyPress && (_WordPadLoaded || _NotepadppLoaded))
-            {
+        private void _CurrentSplitContainer_MouseEnter(object sender, EventArgs e) {
+            if (_Panel2KeyPress && (_WordPadLoaded || _NotepadppLoaded)) {
                 Methods myActions = new Methods();
                 myActions.TypeText("^(s)", 200);
                 Popup();
@@ -8648,8 +7713,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             }
         }
 
-        private void showHideColumnsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void showHideColumnsToolStripMenuItem_Click(object sender, EventArgs e) {
             DataGridViewColumnSelector cs = new DataGridViewColumnSelector(_CurrentDataGridView);
             cs.MaxHeight = 100;
             cs.Width = 110;
@@ -8659,20 +7723,17 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
 
 
-        private void fileShortcutFileToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void fileShortcutFileToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string basePathForNewFolder = _dir.FileView.FullName;
             string basePathName = _dir.FileView.Name;
             string basePathForNewTextDocument = _dir.FileView.FullName;
             string fileFullName = "";
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells)
-            {
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                 FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
-                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0))
-                {
+                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     basePathForNewTextDocument = myFileView.FullName;
                     basePathName = myFileView.Name;
                     basePathForNewFolder = myFileView.FullName;
@@ -8732,8 +7793,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         ReDisplayNewTextDocumentDialog:
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
 
-            if (strButtonPressed == "btnCancel")
-            {
+            if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                 return;
             }
@@ -8744,8 +7804,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             string parentScriptPath = myActions.ConvertFullFileNameToPublicPath(basePathForNewTextDocument) + "\\" + basePathName;
             string myNewTextDocumentName = myListControlEntity.Find(x => x.ID == "txtShortcutName").Text;
-            if (!myNewTextDocumentName.EndsWith(".lnk"))
-            {
+            if (!myNewTextDocumentName.EndsWith(".lnk")) {
                 myNewTextDocumentName = myNewTextDocumentName + ".lnk";
             }
             string strNewTextDocumentDir = Path.Combine(basePathForNewTextDocument, myNewTextDocumentName);
@@ -8753,26 +7812,19 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             myActions.SetValueByKeyForNonCurrentScript("shortcutName", strShortcutName, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
             myActions.SetValueByKeyForNonCurrentScript("shortcutFile", strShortcutFile, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
 
-            if (!File.Exists(strNewTextDocumentDir))
-            {
+            if (!File.Exists(strNewTextDocumentDir)) {
                 Type t = Type.GetTypeFromCLSID(new Guid("72C24DD5-D70A-438B-8A42-98424B88AFB8")); //Windows Script Host Shell Object
                 dynamic shell = Activator.CreateInstance(t);
-                try
-                {
+                try {
                     var lnk = shell.CreateShortcut(strNewTextDocumentDir);
-                    try
-                    {
+                    try {
                         lnk.TargetPath = strShortcutFile;
                         lnk.IconLocation = "shell32.dll, 1";
                         lnk.Save();
-                    }
-                    finally
-                    {
+                    } finally {
                         Marshal.FinalReleaseComObject(lnk);
                     }
-                }
-                finally
-                {
+                } finally {
                     Marshal.FinalReleaseComObject(shell);
 
                 }
@@ -8780,20 +7832,17 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             //  _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
             RefreshDataGrid();
         }
-        private void fileShortcutToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void fileShortcutToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string basePathForNewFolder = _dir.FileView.FullName;
             string basePathName = _dir.FileView.Name;
             string basePathForNewTextDocument = _dir.FileView.FullName;
             string fileFullName = "";
-            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells)
-            {
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
                 FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
-                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0))
-                {
+                if (myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     basePathForNewTextDocument = myFileView.FullName;
                     basePathName = myFileView.Name;
                     basePathForNewFolder = myFileView.FullName;
@@ -8849,8 +7898,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                     string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
 
-                    if (strButtonPressed == "btnCancel")
-                    {
+                    if (strButtonPressed == "btnCancel") {
                         myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                         return;
                     }
@@ -8861,42 +7909,32 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                     string parentScriptPath = myActions.ConvertFullFileNameToPublicPath(basePathForNewTextDocument) + "\\" + basePathName;
                     string myNewTextDocumentName = myListControlEntity.Find(x => x.ID == "txtShortcutName").Text;
-                    if (!myNewTextDocumentName.EndsWith(".lnk"))
-                    {
+                    if (!myNewTextDocumentName.EndsWith(".lnk")) {
                         myNewTextDocumentName = myNewTextDocumentName + ".lnk";
                     }
                     string strNewTextDocumentDir = Path.Combine(basePathForNewTextDocument, myNewTextDocumentName);
 
                     myActions.SetValueByKeyForNonCurrentScript("shortcutName", strShortcutName, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
                     myActions.SetValueByKeyForNonCurrentScript("shortcutFile", strShortcutFile, myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(strNewTextDocumentDir));
-                    if (!File.Exists(strNewTextDocumentDir))
-                    {
+                    if (!File.Exists(strNewTextDocumentDir)) {
                         Type t = Type.GetTypeFromCLSID(new Guid("72C24DD5-D70A-438B-8A42-98424B88AFB8")); //Windows Script Host Shell Object
                         dynamic shell = Activator.CreateInstance(t);
-                        try
-                        {
+                        try {
                             var lnk = shell.CreateShortcut(strNewTextDocumentDir);
-                            try
-                            {
+                            try {
                                 lnk.TargetPath = strShortcutFile;
                                 lnk.IconLocation = "shell32.dll, 1";
                                 lnk.Save();
-                            }
-                            finally
-                            {
+                            } finally {
                                 Marshal.FinalReleaseComObject(lnk);
                             }
-                        }
-                        finally
-                        {
+                        } finally {
                             Marshal.FinalReleaseComObject(shell);
                         }
                     }
                     //  _CurrentSplitContainer.SplitterDistance = (int)(ClientSize.Width * .2);
 
-                }
-                else
-                {
+                } else {
                     myActions.MessageBoxShow("You can not create a shortcut inside a file; first select folder and right click");
                 }
 
@@ -8904,8 +7942,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
 
-        private void findColumnsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void findColumnsToolStripMenuItem_Click(object sender, EventArgs e) {
             //MainWindow mainWindow = new MainWindow();
             //mainWindow.Show();            
             //Switcher.Switch(new FindColumns());
@@ -8921,15 +7958,13 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             //Shadow.Visibility = Visibility.Collapsed;
         }
 
-        private void sqlToGridToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void sqlToGridToolStripMenuItem_Click(object sender, EventArgs e) {
             SQLToGrid dlg = new SQLToGrid();
             ElementHost.EnableModelessKeyboardInterop(dlg);
             dlg.Show();
         }
 
-        private void idealSqlTracerToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void idealSqlTracerToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
             //string strApplicationPath = strApplicationBinDebug.Replace("\\IdealAutomateExplorer\\bin\\Debug", "");
@@ -8937,8 +7972,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             myActions.Run(strIdealSqlTracerExe, "");
         }
 
-        private void sqlLiteToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void sqlLiteToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string sqlLiteSaved = myActions.GetValueByKey("sqlLiteSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", sqlLiteSaved);
@@ -8946,8 +7980,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DialogForGettingExe();
         }
 
-        private void sqlProfilerToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void sqlProfilerToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string sqlProfilerSaved = myActions.GetValueByKey("sqlProfilerSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", sqlProfilerSaved);
@@ -8955,8 +7988,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DialogForGettingExe();
         }
 
-        private void sSMSToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void sSMSToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string sSMSSaved = myActions.GetValueByKey("sSMSSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", sSMSSaved);
@@ -8964,8 +7996,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DialogForGettingExe();
         }
 
-        private void instantCToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void instantCToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string instantCSaved = myActions.GetValueByKey("instantCSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", instantCSaved);
@@ -8973,8 +8004,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DialogForGettingExe();
         }
 
-        private void instantVBToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void instantVBToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string instantVBSaved = myActions.GetValueByKey("instantVBSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", instantVBSaved);
@@ -8982,8 +8012,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DialogForGettingExe();
         }
 
-        private void paintNETToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void paintNETToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string paintNETSaved = myActions.GetValueByKey("paintNETSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", paintNETSaved);
@@ -8991,8 +8020,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DialogForGettingExe();
         }
 
-        private void visualStudio2015ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void visualStudio2015ToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string visualStudio2015Saved = myActions.GetValueByKey("visualStudio2015Saved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", visualStudio2015Saved);
@@ -9000,8 +8028,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DialogForGettingExe();
         }
 
-        private void visualStudio2017ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void visualStudio2017ToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string visualStudio2017Saved = myActions.GetValueByKey("visualStudio2017Saved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", visualStudio2017Saved);
@@ -9009,8 +8036,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DialogForGettingExe();
         }
 
-        private void componentServicesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void componentServicesToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string componentServicesSaved = myActions.GetValueByKey("componentServicesSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", componentServicesSaved);
@@ -9018,8 +8044,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DialogForGettingExe();
         }
 
-        private void eventViewerToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void eventViewerToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string eventViewerSaved = myActions.GetValueByKey("eventViewerSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", eventViewerSaved);
@@ -9027,8 +8052,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DialogForGettingExe();
         }
 
-        private void iISToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void iISToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string iISSaved = myActions.GetValueByKey("iISSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", iISSaved);
@@ -9036,8 +8060,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DialogForGettingExe();
         }
 
-        private void programsAndFeaturesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void programsAndFeaturesToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string programsAndFeaturesSaved = myActions.GetValueByKey("programsAndFeaturesSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", programsAndFeaturesSaved);
@@ -9045,8 +8068,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DialogForGettingExe();
         }
 
-        private void servicesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void servicesToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string servicesSaved = myActions.GetValueByKey("servicesSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", servicesSaved);
@@ -9054,8 +8076,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DialogForGettingExe();
         }
 
-        private void taskManagerToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void taskManagerToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string taskManagerSaved = myActions.GetValueByKey("taskManagerSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", taskManagerSaved);
@@ -9063,8 +8084,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DialogForGettingExe();
         }
 
-        private void fiddlerToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void fiddlerToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string fiddlerSaved = myActions.GetValueByKey("fiddlerSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", fiddlerSaved);
@@ -9072,8 +8092,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DialogForGettingExe();
         }
 
-        private void iISToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
+        private void iISToolStripMenuItem1_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string iISSaved = myActions.GetValueByKey("iISSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", iISSaved);
@@ -9081,8 +8100,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DialogForGettingExe();
         }
 
-        private void iWB2LearnerToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void iWB2LearnerToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string iWB2Saved = myActions.GetValueByKey("iWB2Saved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", iWB2Saved);
@@ -9090,8 +8108,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DialogForGettingExe();
         }
 
-        private void notepadToolStripMenuItem2_Click(object sender, EventArgs e)
-        {
+        private void notepadToolStripMenuItem2_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string notepadSaved = myActions.GetValueByKey("notepadSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", notepadSaved);
@@ -9099,8 +8116,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DialogForGettingExe();
         }
 
-        private void processExplorerToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void processExplorerToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string processExplorerSaved = myActions.GetValueByKey("processExplorerSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", processExplorerSaved);
@@ -9108,8 +8124,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DialogForGettingExe();
         }
 
-        private void taskManagerToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
+        private void taskManagerToolStripMenuItem1_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string taskManagerSaved = myActions.GetValueByKey("taskManagerSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", taskManagerSaved);
@@ -9117,8 +8132,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DialogForGettingExe();
         }
 
-        private void winListerToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void winListerToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string winlisterSaved = myActions.GetValueByKey("winlisterSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", winlisterSaved);
@@ -9126,8 +8140,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DialogForGettingExe();
         }
 
-        private void curlToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void curlToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string curlSaved = myActions.GetValueByKey("curlSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", curlSaved);
@@ -9135,8 +8148,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DialogForGettingExe();
         }
 
-        private void fiddlerToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
+        private void fiddlerToolStripMenuItem1_Click(object sender, EventArgs e) {
 
             Methods myActions = new Methods();
             string fiddlerSaved = myActions.GetValueByKey("fiddlerSaved");
@@ -9147,8 +8159,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         }
 
-        private void postmanToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void postmanToolStripMenuItem_Click(object sender, EventArgs e) {
 
             Methods myActions = new Methods();
             string postmanSaved = myActions.GetValueByKey("postmanSaved");
@@ -9159,8 +8170,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         }
 
-        private void documentationToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void documentationToolStripMenuItem_Click(object sender, EventArgs e) {
             NavWindowAutomater dlg = new NavWindowAutomater();
             ElementHost.EnableModelessKeyboardInterop(dlg);
             dlg.Topmost = true;
@@ -9168,24 +8178,21 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         }
 
-        private void videosToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void videosToolStripMenuItem_Click(object sender, EventArgs e) {
             VideoTutorials dlg = new VideoTutorials();
             ElementHost.EnableModelessKeyboardInterop(dlg);
             dlg.Topmost = true;
             dlg.Show();
         }
 
-        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e) {
             AboutDialog dlg = new AboutDialog();
             ElementHost.EnableModelessKeyboardInterop(dlg);
             dlg.Topmost = true;
             dlg.Show();
         }
 
-        private void DialogForGettingExe()
-        {
+        private void DialogForGettingExe() {
             Methods myActions = new Methods();
             string myExe = "";
         DisplayFindTextInFilesWindow:
@@ -9232,21 +8239,16 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             ComboBox myComboBox = new ComboBox();
 
 
-            if (!File.Exists(settingsPath))
-            {
-                using (StreamWriter objSWFile = File.CreateText(settingsPath))
-                {
+            if (!File.Exists(settingsPath)) {
+                using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
                     objSWFile.Close();
                 }
             }
-            using (StreamReader objSRFile = File.OpenText(settingsPath))
-            {
+            using (StreamReader objSRFile = File.OpenText(settingsPath)) {
                 string strReadLine = "";
-                while ((strReadLine = objSRFile.ReadLine()) != null)
-                {
+                while ((strReadLine = objSRFile.ReadLine()) != null) {
                     string[] keyvalue = strReadLine.Split('^');
-                    if (keyvalue[0] != "--Select Item ---")
-                    {
+                    if (keyvalue[0] != "--Select Item ---") {
                         cbp.Add(new ComboBoxPair(keyvalue[0], keyvalue[1]));
                     }
                 }
@@ -9259,32 +8261,24 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             bool boolNewItem = false;
 
             alHostsNew.Add(myCbp);
-            if (alHostx.Count > 24)
-            {
-                for (int i = alHostx.Count - 1; i > 0; i--)
-                {
-                    if (alHostx[i]._Key.Trim() != "--Select Item ---")
-                    {
+            if (alHostx.Count > 24) {
+                for (int i = alHostx.Count - 1; i > 0; i--) {
+                    if (alHostx[i]._Key.Trim() != "--Select Item ---") {
                         alHostx.RemoveAt(i);
                         break;
                     }
                 }
             }
-            foreach (ComboBoxPair item in alHostx)
-            {
-                if (strNewHostName != item._Key && item._Key != "--Select Item ---")
-                {
+            foreach (ComboBoxPair item in alHostx) {
+                if (strNewHostName != item._Key && item._Key != "--Select Item ---") {
                     boolNewItem = true;
                     alHostsNew.Add(item);
                 }
             }
 
-            using (StreamWriter objSWFile = File.CreateText(settingsPath))
-            {
-                foreach (ComboBoxPair item in alHostsNew)
-                {
-                    if (item._Key != "")
-                    {
+            using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
+                foreach (ComboBoxPair item in alHostsNew) {
+                    if (item._Key != "") {
                         objSWFile.WriteLine(item._Key + '^' + item._Value);
                     }
                 }
@@ -9327,8 +8321,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 300, 1200, 100, 100);
         LineAfterDisplayWindow:
             string strFolder = myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedValue;
-            if (strButtonPressed == "btnCancel")
-            {
+            if (strButtonPressed == "btnCancel") {
                 string whatToolDefaultToSave = myActions.GetValueByKey("whatToolDefaultToSave");
                 myActions.SetValueByKey(whatToolDefaultToSave, strFolder);
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
@@ -9341,8 +8334,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             myActions.SetValueByKey("cbxToolExeSelectedValue", strFolder);
             settingsDirectory = "";
-            if (strButtonPressed == "btnSelectFolder")
-            {
+            if (strButtonPressed == "btnSelectFolder") {
                 FileFolderDialog dialog = new FileFolderDialog();
                 dialog.SelectedPath = myActions.GetValueByKey("LastSearchFolder");
                 string str = "LastSearchFolder";
@@ -9350,8 +8342,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                 System.Windows.Forms.DialogResult result = dialog.ShowDialog();
 
-                if (result == System.Windows.Forms.DialogResult.OK && (Directory.Exists(dialog.SelectedPath) || File.Exists(dialog.SelectedPath)))
-                {
+                if (result == System.Windows.Forms.DialogResult.OK && (Directory.Exists(dialog.SelectedPath) || File.Exists(dialog.SelectedPath))) {
                     myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedValue = dialog.SelectedPath;
                     myListControlEntity.Find(x => x.ID == "cbxFolder").SelectedKey = dialog.SelectedPath;
                     myListControlEntity.Find(x => x.ID == "cbxFolder").Text = dialog.SelectedPath;
@@ -9372,21 +8363,16 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     myComboBox = new ComboBox();
 
 
-                    if (!File.Exists(settingsPath))
-                    {
-                        using (StreamWriter objSWFile = File.CreateText(settingsPath))
-                        {
+                    if (!File.Exists(settingsPath)) {
+                        using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
                             objSWFile.Close();
                         }
                     }
-                    using (StreamReader objSRFile = File.OpenText(settingsPath))
-                    {
+                    using (StreamReader objSRFile = File.OpenText(settingsPath)) {
                         string strReadLine = "";
-                        while ((strReadLine = objSRFile.ReadLine()) != null)
-                        {
+                        while ((strReadLine = objSRFile.ReadLine()) != null) {
                             string[] keyvalue = strReadLine.Split('^');
-                            if (keyvalue[0] != "--Select Item ---")
-                            {
+                            if (keyvalue[0] != "--Select Item ---") {
                                 cbp.Add(new ComboBoxPair(keyvalue[0], keyvalue[1]));
                             }
                         }
@@ -9399,32 +8385,24 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     boolNewItem = false;
 
                     alHostsNew.Add(myCbp);
-                    if (alHostx.Count > 24)
-                    {
-                        for (int i = alHostx.Count - 1; i > 0; i--)
-                        {
-                            if (alHostx[i]._Key.Trim() != "--Select Item ---")
-                            {
+                    if (alHostx.Count > 24) {
+                        for (int i = alHostx.Count - 1; i > 0; i--) {
+                            if (alHostx[i]._Key.Trim() != "--Select Item ---") {
                                 alHostx.RemoveAt(i);
                                 break;
                             }
                         }
                     }
-                    foreach (ComboBoxPair item in alHostx)
-                    {
-                        if (strNewHostName != item._Key && item._Key != "--Select Item ---")
-                        {
+                    foreach (ComboBoxPair item in alHostx) {
+                        if (strNewHostName != item._Key && item._Key != "--Select Item ---") {
                             boolNewItem = true;
                             alHostsNew.Add(item);
                         }
                     }
 
-                    using (StreamWriter objSWFile = File.CreateText(settingsPath))
-                    {
-                        foreach (ComboBoxPair item in alHostsNew)
-                        {
-                            if (item._Key != "")
-                            {
+                    using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
+                        foreach (ComboBoxPair item in alHostsNew) {
+                            if (item._Key != "") {
                                 objSWFile.WriteLine(item._Key + '^' + item._Value);
                             }
                         }
@@ -9434,10 +8412,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 }
             }
             string strFolderToUse = "";
-            if (strButtonPressed == "btnOkay")
-            {
-                if ((strFolder == "--Select Item ---" || strFolder == ""))
-                {
+            if (strButtonPressed == "btnOkay") {
+                if ((strFolder == "--Select Item ---" || strFolder == "")) {
                     myActions.MessageBoxShow("Please enter Folder or select Folder from ComboBox; else press Cancel to Exit");
                     goto DisplayFindTextInFilesWindow;
                 }
@@ -9447,8 +8423,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 string whatToolDefaultToSave = myActions.GetValueByKey("whatToolDefaultToSave");
                 myActions.SetValueByKey(whatToolDefaultToSave, strFolder);
             }
-            if (strButtonPressed == "btnGetExeByClick")
-            {
+            if (strButtonPressed == "btnGetExeByClick") {
                 GetExecutableByClicking();
                 return;
                 //myActions.Sleep(1000);
@@ -9460,8 +8435,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             return;
         }
 
-        private void DialogForAddingUrl()
-        {
+        private void DialogForAddingUrl() {
             Methods myActions = new Methods();
             string myExe = "";
         DisplayFindTextInFilesWindow:
@@ -9506,8 +8480,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 300, 1200, 100, 100);
         LineAfterDisplayWindow:
             string strDefaultUrl = myListControlEntity.Find(x => x.ID == "txtDefaultUrl").Text;
-            if (strButtonPressed == "btnCancel")
-            {
+            if (strButtonPressed == "btnCancel") {
                 string whatToolDefaultToSave = myActions.GetValueByKey("whatToolDefaultToSave");
                 myActions.SetValueByKey(whatToolDefaultToSave, strDefaultUrl);
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
@@ -9515,10 +8488,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             }
 
             string strFolderToUse = "";
-            if (strButtonPressed == "btnOkay")
-            {
-                if ((strDefaultUrl == ""))
-                {
+            if (strButtonPressed == "btnOkay") {
+                if ((strDefaultUrl == "")) {
                     myActions.MessageBoxShow("Please enter url; else press Cancel to Exit");
                     goto DisplayFindTextInFilesWindow;
                 }
@@ -9532,13 +8503,11 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             return;
         }
 
-        private void dispatcherTimer_Tick(object sender, EventArgs e)
-        {
+        private void dispatcherTimer_Tick(object sender, EventArgs e) {
             // code goes here
 
             IntPtr hWnd = GetForegroundWindow();
-            if (hWnd == IntPtr.Zero)
-            {
+            if (hWnd == IntPtr.Zero) {
                 return;
             }
 
@@ -9560,18 +8529,15 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             GetWindowThreadProcessId(hWnd, ref pid);
 
-            if (pid == 0)
-            {
+            if (pid == 0) {
                 return;
             }
             Methods myActions = new Methods();
-            if (myhWnd != hWnd)
-            {
+            if (myhWnd != hWnd) {
                 string myFileName = Keyboard.GetMainModuleFilepath(pid);
                 if (myFileName == null || myFileName.EndsWith("IdealAutomateExplorer.exe") ||
                     myFileName.EndsWith("ApplicationHostFrame.exe") ||
-                    myFileName.EndsWith("Wordpad.exe"))
-                {
+                    myFileName.EndsWith("Wordpad.exe")) {
                     return;
                 }
                 myActions.SetValueByKey("cbxToolExeSelectedValue", myFileName);
@@ -9581,8 +8547,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             }
 
         }
-        public void GetExecutableByClicking()
-        {
+        public void GetExecutableByClicking() {
             Methods myActions = new Methods();
             myActions.SetValueByKey("ClickedExecutable", "");
 
@@ -9607,77 +8572,61 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         //INSTANT C# TODO TASK: Insert the following converted event handler wireups at the end of the 'InitializeComponent' method for forms, 'Page_Init' for web pages, or into a constructor for other classes:
 
 
-        public void MakeNormal(int hwnd)
-        {
+        public void MakeNormal(int hwnd) {
 
 
             SetWindowPos(hwnd, HWND_NOTOPMOST, 0, 0, 0, 0, TOPMOST_FLAGS);
         }
-        public void MakeTopMost(int hwnd)
-        {
+        public void MakeTopMost(int hwnd) {
             SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, TOPMOST_FLAGS);
         }
 
-        private void cbxCurrentPath_MouseDown(object sender, MouseEventArgs e)
-        {
+        private void cbxCurrentPath_MouseDown(object sender, MouseEventArgs e) {
             _newTab = false;
         }
 
-        private void toolStripComboBox2_SelectedIndexChanged(object sender, EventArgs e)
-        {
+        private void toolStripComboBox2_SelectedIndexChanged(object sender, EventArgs e) {
             Methods myActions = new Methods();
-            if (toolStripComboBox2.SelectedIndex == 0)
-            {
+            if (toolStripComboBox2.SelectedIndex == 0) {
                 myActions.SetValueByKey("LaunchMode", "Admin");
-            }
-            else
-            {
+            } else {
                 myActions.SetValueByKey("LaunchMode", "NonAdmin");
             }
         }
 
-        private void courseraToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void courseraToolStripMenuItem_Click(object sender, EventArgs e) {
             Process.Start("IExplore.exe", "https://click.linksynergy.com/fs-bin/click?id=ur0PwtPl4wY&offerid=467035.30&type=3&subid=0");
         }
 
-        private void pluralsightToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void pluralsightToolStripMenuItem_Click(object sender, EventArgs e) {
             Process.Start("IExplore.exe", "http://pluralsight.pxf.io/c/1194222/431393/7490");
         }
 
-        private void udemyToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void udemyToolStripMenuItem_Click(object sender, EventArgs e) {
             Process.Start("IExplore.exe", "https://click.linksynergy.com/fs-bin/click?id=ur0PwtPl4wY&offerid=323058.1626&subid=0&type=4");
         }
 
-        private void videoTrafficBlueprintToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void videoTrafficBlueprintToolStripMenuItem_Click(object sender, EventArgs e) {
             Process.Start("IExplore.exe", "http://www.contentsamurai.com/c/harvey007-the-ultimate-video-traffic-blueprint");
         }
 
-        private void toolStripMenuItem18_Click(object sender, EventArgs e)
-        {
+        private void toolStripMenuItem18_Click(object sender, EventArgs e) {
             Process.Start("IExplore.exe", "http://www.marketsamurai.com/c/harvey007");
         }
 
-        private void googleDriveToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void googleDriveToolStripMenuItem_Click(object sender, EventArgs e) {
             Process.Start("IExplore.exe", "https://drive.google.com/drive/my-drive");
         }
 
-        private void toolStripMenuItem12_Click(object sender, EventArgs e)
-        {
+        private void toolStripMenuItem12_Click(object sender, EventArgs e) {
             Process.Start("IExplore.exe", "https://www.dropbox.com/h");
         }
 
-        private void oneDriveToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void oneDriveToolStripMenuItem_Click(object sender, EventArgs e) {
             Process.Start("IExplore.exe", "https://onedrive.live.com/about/en-IE/");
         }
 
-        private void compareItToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void compareItToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string compareItSaved = myActions.GetValueByKey("compareItSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", compareItSaved);
@@ -9685,8 +8634,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DialogForGettingExe();
         }
 
-        private void synchronizeItToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void synchronizeItToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string synchronizeItSaved = myActions.GetValueByKey("synchronizeItSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", synchronizeItSaved);
@@ -9694,8 +8642,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DialogForGettingExe();
         }
 
-        private void filezillaToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void filezillaToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string filezillaSaved = myActions.GetValueByKey("filezillaSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", filezillaSaved);
@@ -9703,8 +8650,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DialogForGettingExe();
         }
 
-        private void flashbackExpressToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void flashbackExpressToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string flashbackExpressSaved = myActions.GetValueByKey("flashbackExpressSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", flashbackExpressSaved);
@@ -9712,8 +8658,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DialogForGettingExe();
         }
 
-        private void facebookToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void facebookToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string facebookSaved = myActions.GetValueByKey("facebookSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", facebookSaved);
@@ -9721,8 +8666,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DialogForAddingUrl();
         }
 
-        private void instagramToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void instagramToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string instagramSaved = myActions.GetValueByKey("instagramSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", instagramSaved);
@@ -9730,8 +8674,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DialogForAddingUrl();
         }
 
-        private void linkedInPersonalToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void linkedInPersonalToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string linkedInPersonalSaved = myActions.GetValueByKey("linkedInPersonalSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", linkedInPersonalSaved);
@@ -9739,8 +8682,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DialogForAddingUrl();
         }
 
-        private void linkedInCompanyToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void linkedInCompanyToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string linkedInCompanySaved = myActions.GetValueByKey("linkedInCompanySaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", linkedInCompanySaved);
@@ -9748,8 +8690,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DialogForAddingUrl();
         }
 
-        private void stumbleUponToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void stumbleUponToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string stumbleUponSaved = myActions.GetValueByKey("stumbleUponSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", stumbleUponSaved);
@@ -9757,8 +8698,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DialogForAddingUrl();
         }
 
-        private void tumblrToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void tumblrToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string tumblrSaved = myActions.GetValueByKey("tumblrSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", tumblrSaved);
@@ -9766,8 +8706,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DialogForAddingUrl();
         }
 
-        private void twitterToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void twitterToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string twitterSaved = myActions.GetValueByKey("twitterSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", twitterSaved);
@@ -9775,8 +8714,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DialogForAddingUrl();
         }
 
-        private void centralAccessReaderToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void centralAccessReaderToolStripMenuItem_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string centralAccessReaderSaved = myActions.GetValueByKey("centralAccessReaderSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", centralAccessReaderSaved);
@@ -9784,20 +8722,17 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DialogForGettingExe();
         }
 
-        private void speakItToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        private void speakItToolStripMenuItem_Click(object sender, EventArgs e) {
             Process.Start("IExplore.exe", "https://chrome.google.com/webstore/detail/speak-it/fginjphhpgkicbhibgafbpfjeahmjdfc?hl=en");
         }
 
-        private async void snippingToolAutomationToolStripMenuItem_ClickAsync(object sender, EventArgs e)
-        {
+        private async void snippingToolAutomationToolStripMenuItem_ClickAsync(object sender, EventArgs e) {
 
 
 
         }
 
-        private async Task<string> SnippingTask()
-        {
+        private async Task<string> SnippingTask() {
             string myResult = "";
             IdealAutomate.Core.Methods myActions = new Methods();
             string strTitle = "";
@@ -9812,13 +8747,12 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             List<string> myWindowTitles = myActions.GetWindowTitlesByProcessName("soffice.bin");
             myWindowTitles.RemoveAll(item => item == "");
             myWindowTitles.RemoveAll(item => item.Contains("Impress") == false);
-            if (myWindowTitles.Count == 0)
-            {
+            if (myWindowTitles.Count == 0) {
 
                 myActions.MessageBoxShow("You need to have an instance of Open Office Impress running in order to save your snippets into it - aborting");
                 return myResult;
             }
-            
+
         snipDialog:
             bool fixedRatio = false;
             myActions.Sleep(1000);
@@ -9890,34 +8824,28 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
             int intSavedTop = myActions.GetValueByKeyAsIntGlobal("WindowTop");
             int intSavedLeft = myActions.GetValueByKeyAsIntGlobal("WindowLeft");
-            if (intSavedTop > 0)
-            {
+            if (intSavedTop > 0) {
                 intTop = intSavedTop;
             }
-            if (intSavedLeft > 0)
-            {
+            if (intSavedLeft > 0) {
                 intLeft = intSavedLeft;
             }
-            if (slidePopulated)
-            {
+            if (slidePopulated) {
                 myActions.TypeText(" ", 1000); // restart the video
                 slidePopulated = false;
-            } 
+            }
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 250, 200, intTop, intLeft);
-            if (strButtonPressed == "btnCancel")
-            {
+            if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                 return myResult;
             }
-            if (strButtonPressed == "btnExit")
-            {
+            if (strButtonPressed == "btnExit") {
                 // myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                 return myResult;
             }
 
             // ===============
-            if (strButtonPressed == "btnAddText")
-            {
+            if (strButtonPressed == "btnAddText") {
                 intRowCtr = 0;
                 myControlEntity = new ControlEntity();
                 myListControlEntity = new List<ControlEntity>();
@@ -9986,8 +8914,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 myControlEntity.ColumnSpan = 0;
                 myListControlEntity.Add(myControlEntity.CreateControlEntity());
                 strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 450, 800, 0, 0);
-                if (strButtonPressed == "btnCancel")
-                {
+                if (strButtonPressed == "btnCancel") {
                     myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                     return myResult;
                 }
@@ -9998,10 +8925,9 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 strBody = myListControlEntity.Find(x => x.ID == "txtBody").Text;
                 myActions.SetValueByKey("Body", strBody);
                 goto snipDialogWithoutRelaunchingSnippingTool;
-            }       
+            }
 
-            if (strButtonPressed == "btnAddSound")
-            {
+            if (strButtonPressed == "btnAddSound") {
                 intRowCtr = 0;
                 myControlEntity = new ControlEntity();
                 myListControlEntity = new List<ControlEntity>();
@@ -10012,7 +8938,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 myControlEntity.Text = "Add Sound";
                 myControlEntity.RowNumber = intRowCtr;
                 myControlEntity.ColumnNumber = 0;
-                myListControlEntity.Add(myControlEntity.CreateControlEntity());                
+                myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
                 intRowCtr++;
                 myControlEntity.ControlEntitySetDefaults();
@@ -10028,11 +8954,9 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                 strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 200, 200, intTop, intLeft);
 
-                if (strButtonPressed == "btnStartRecording")
-                {
+                if (strButtonPressed == "btnStartRecording") {
 
-                    try
-                    {
+                    try {
                         synchronizationContext = SynchronizationContext.Current;
                         var enumerator = new MMDeviceEnumerator();
                         IEnumerable<MMDevice> CaptureDevices = enumerator.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active).ToArray();
@@ -10049,14 +8973,12 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                         this.RecordedAudioWriter = new WaveFileWriter(outputFilePath, CaptureInstance.WaveFormat);
 
                         // When the capturer receives audio, start writing the buffer into the mentioned file
-                        this.CaptureInstance.DataAvailable += (s, a) =>
-                        {
+                        this.CaptureInstance.DataAvailable += (s, a) => {
                             this.RecordedAudioWriter.Write(a.Buffer, 0, a.BytesRecorded);
                         };
 
                         // When the Capturer Stops
-                        this.CaptureInstance.RecordingStopped += (s, a) =>
-                        {
+                        this.CaptureInstance.RecordingStopped += (s, a) => {
                             this.RecordedAudioWriter.Dispose();
                             this.RecordedAudioWriter = null;
                             CaptureInstance.Dispose();
@@ -10069,9 +8991,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                         // Start recording !
 
                         this.CaptureInstance.StartRecording();
-                    }
-                    catch (Exception ex)
-                    {
+                    } catch (Exception ex) {
 
                         myActions.MessageBoxShow(ex.Message);
                     }
@@ -10097,8 +9017,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     myControlEntity.ColumnNumber = 1;
                     myListControlEntity.Add(myControlEntity.CreateControlEntity());
                     strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 200, 200, intTop, intLeft);
-                    if (strButtonPressed == "btnEndRecording")
-                    {
+                    if (strButtonPressed == "btnEndRecording") {
                         // Stop recording !
                         this.CaptureInstance.StopRecording();
                     }
@@ -10106,8 +9025,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 }
 
 
-                if (strButtonPressed == "btnCancel")
-                {
+                if (strButtonPressed == "btnCancel") {
                     myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                     return myResult;
                 }
@@ -10116,8 +9034,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             // ==============
 
-            if (strButtonPressed == "btnAddImage")
-            {
+            if (strButtonPressed == "btnAddImage") {
                 myActions.TypeText("^({PRTSC})", 1000);
 
                 myActions.SetValueByKey("Mouseup", "false");
@@ -10163,22 +9080,18 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 myListControlEntity.Add(myControlEntity.CreateControlEntity());
                 intSavedTop = myActions.GetValueByKeyAsIntGlobal("WindowTop");
                 intSavedLeft = myActions.GetValueByKeyAsIntGlobal("WindowLeft");
-                if (intSavedTop > 0)
-                {
+                if (intSavedTop > 0) {
                     intTop = intSavedTop;
                 }
-                if (intSavedLeft > 0)
-                {
+                if (intSavedLeft > 0) {
                     intLeft = intSavedLeft;
                 }
                 strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 200, 200, intTop, intLeft);
-                if (strButtonPressed == "btnCancel")
-                {
+                if (strButtonPressed == "btnCancel") {
                     myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                     return myResult;
                 }
-                if (strButtonPressed == "btnExit")
-                {
+                if (strButtonPressed == "btnExit") {
                     // myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
                     return myResult;
                 }
@@ -10188,44 +9101,37 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 myActions.TypeText("^(c)", 500);
                 //mh.MouseMove += new MouseHook.MouseHookCallback(mouseHook_MouseMove);
                 string mouseUp = "false";
-              
+
                 myActions.TypeText("^(c)", 500);
                 myActions.TypeText("%(\" \")n", 1000);
 
 
-                if (Clipboard.ContainsImage())
-                {
+                if (Clipboard.ContainsImage()) {
                     returnImage = Clipboard.GetImage();
                 }
             }
-            if (strButtonPressed == "btnPopulateSlide" || strButtonPressed == "btnDoneSnippingPopulate")
-            {
+            if (strButtonPressed == "btnPopulateSlide" || strButtonPressed == "btnDoneSnippingPopulate") {
                 slidePopulated = true;
                 // activate open office impress
                 myWindowTitles = myActions.GetWindowTitlesByProcessName("soffice.bin");
                 myWindowTitles.RemoveAll(item => item == "");
                 myWindowTitles.RemoveAll(item => item.Contains("Impress") == false);
-                if (myWindowTitles.Count > 0)
-                {
-                    try
-                    {
+                if (myWindowTitles.Count > 0) {
+                    try {
                         Double positionx = .55;
                         Double positiony = .55;
                         Double imageWidth = 9.9;
                         Double imageHeight = 7.4;
                         myActions.ActivateWindowByTitle(myWindowTitles[0]);
                         // if there are comments, write them
-                        if (strTitle == "")
-                        {
+                        if (strTitle == "") {
                             myActions.TypeText("{ESC}", 500);
                             myActions.TypeText("%(v)", 500);
                             myActions.TypeText("o", 500);
                             myActions.TypeText("%(v)", 500);
                             myActions.TypeText("n", 500);
                             myActions.TypeText(" ", 500);
-                        }
-                        else
-                        {
+                        } else {
                             positiony = 2;
                             imageHeight = imageHeight - positiony;
                             myActions.TypeText("{ESC}", 500);
@@ -10238,29 +9144,24 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                         }
                         // move to click to add text section in open office impress
                         myActions.TypeText("^({ENTER})", 500);
-                        if (strBody != "")
-                        {
+                        if (strBody != "") {
                             myActions.TypeText("{BACKSPACE}", 500);
                             string[] lines = strBody.Split(
                                 new[] { "\r\n", "\r", "\n" },
                                 StringSplitOptions.None
                             );
                             positiony = positiony + (lines.Count() * .45); // assuming font 32 for body 
-                            foreach (var line in lines)
-                            {
+                            foreach (var line in lines) {
                                 int linesWrapped = line.Length / 50;
                                 positiony = positiony + (linesWrapped * .45);
-                                if (line.Contains("[[") || line.Contains("<<") || line.Contains("http"))
-                                {
+                                if (line.Contains("[[") || line.Contains("<<") || line.Contains("http")) {
                                     string myHyperlinkUrl = "";
                                     string myHyperlinkText = "";
                                     int intHttpIndexText = line.IndexOf("<<");
-                                    if (intHttpIndexText > -1)
-                                    {
+                                    if (intHttpIndexText > -1) {
                                         // we need to get text
                                         int intHttpIndexTextEnd = line.IndexOf(">>");
-                                        if (intHttpIndexTextEnd > intHttpIndexText)
-                                        {
+                                        if (intHttpIndexTextEnd > intHttpIndexText) {
                                             int intHttpTextLength = (intHttpIndexTextEnd - intHttpIndexText) - 2;
                                             myHyperlinkText = line.Substring(intHttpIndexText + 2, intHttpTextLength);
                                         }
@@ -10268,29 +9169,23 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                                     int intHttpIndexUrl = line.IndexOf("[[");
                                     int intHttpIndexUrlEnd = -1;
-                                    if (intHttpIndexUrl > -1)
-                                    {
+                                    if (intHttpIndexUrl > -1) {
                                         // we need to get Url
                                         intHttpIndexUrlEnd = line.IndexOf("]]");
-                                        if (intHttpIndexUrlEnd > intHttpIndexUrl)
-                                        {
+                                        if (intHttpIndexUrlEnd > intHttpIndexUrl) {
                                             int intHttpUrlLength = (intHttpIndexUrlEnd - intHttpIndexUrl) - 2;
                                             myHyperlinkUrl = line.Substring(intHttpIndexUrl + 2, intHttpUrlLength);
                                         }
-                                    } else
-                                    {
+                                    } else {
                                         // we need to get http thru first space
                                         intHttpIndexUrl = line.IndexOf("http");
-                                        if (intHttpIndexUrl > -1)
-                                        {
+                                        if (intHttpIndexUrl > -1) {
                                             // we need to get Url
                                             intHttpIndexUrlEnd = line.IndexOf(" ");
-                                            if (intHttpIndexUrlEnd == -1)
-                                            {
+                                            if (intHttpIndexUrlEnd == -1) {
                                                 intHttpIndexUrlEnd = line.Length - intHttpIndexUrl;
                                             }
-                                            if (intHttpIndexUrlEnd > intHttpIndexUrl)
-                                            {
+                                            if (intHttpIndexUrlEnd > intHttpIndexUrl) {
                                                 int intHttpUrlLength = (intHttpIndexUrlEnd - intHttpIndexUrl);
                                                 myHyperlinkUrl = line.Substring(intHttpIndexUrl, intHttpUrlLength);
 
@@ -10300,25 +9195,19 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                                     string lineBeforeHttp = "";
                                     string lineAfterHyperlink = "";
-                                    if (myHyperlinkText == "")
-                                    {
+                                    if (myHyperlinkText == "") {
                                         lineBeforeHttp = line.Substring(0, intHttpIndexUrl);
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         lineBeforeHttp = line.Substring(0, intHttpIndexText);
                                     }
-                                    if (myHyperlinkText == "")
-                                    {
+                                    if (myHyperlinkText == "") {
                                         myHyperlinkText = myHyperlinkUrl;
                                     }
-                                    if (line.Length >= intHttpIndexUrlEnd + 2)
-                                    {
+                                    if (line.Length >= intHttpIndexUrlEnd + 2) {
                                         lineAfterHyperlink = line.Substring(intHttpIndexUrlEnd + 2);
                                     }
 
-                                    if (lineBeforeHttp.Length > 0)
-                                    {
+                                    if (lineBeforeHttp.Length > 0) {
                                         myActions.TypeText(lineBeforeHttp, 1000);
                                     }
                                     myActions.TypeText("%(i)", 1000);
@@ -10327,8 +9216,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                                     myActions.TypeText("{TAB 4}", 1000);
                                     if (myHyperlinkText == "") {
                                         myActions.TypeText(myHyperlinkUrl, 1000);
-                                    } else
-                                    {
+                                    } else {
                                         myActions.TypeText(myHyperlinkText, 1000);
                                     }
                                     myActions.TypeText("{TAB 3}", 1000);
@@ -10336,14 +9224,11 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                                     myActions.TypeText("{TAB}", 1000);
                                     myActions.TypeText("{ENTER}", 1000);
                                     myActions.TypeText("{RIGHT}", 1000);
-                                    if (lineAfterHyperlink.Length > 0)
-                                    {
+                                    if (lineAfterHyperlink.Length > 0) {
                                         myActions.TypeText(lineAfterHyperlink, 1000);
                                     }
                                     myActions.TypeText("+({ENTER})", 1000);
-                                }
-                                else
-                                {
+                                } else {
                                     myActions.TypeText(line, 1000);
                                     myActions.TypeText("+({ENTER})", 1000);
                                 }
@@ -10352,8 +9237,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                             imageHeight = 8.5 - positiony;
                         }
                         // check for adding sound
-                        if (outputFilePath != "")
-                        {
+                        if (outputFilePath != "") {
                             myActions.TypeText("%(i)", 500);
                             myActions.TypeText("v", 500);
                             myActions.TypeText("%(d)", 500);
@@ -10385,8 +9269,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                             outputFilePath = "";
                         }
                         // check for adding image
-                        if (returnImage != null)
-                        {
+                        if (returnImage != null) {
                             // write what we took from snipping tool and put in clipboard to open office impress
                             Clipboard.SetImage(returnImage);
                             myActions.TypeText("^(v)", 500);
@@ -10401,8 +9284,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                             myActions.TypeText("{TAB}", 500);
                             // write the contents of positiony
                             myActions.TypeText(positiony.ToString(), 500);
-                            if (fixedRatio)
-                            {
+                            if (fixedRatio) {
                                 myActions.TypeText("{ENTER}", 500);
                                 goto AddNewSlide;
                             }
@@ -10415,8 +9297,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                             myImage.RelativeX = 10;
                             myImage.RelativeY = 10;
                             int[,] myArray = myActions.PutAll(myImage);
-                            if (myArray.Length == 0)
-                            {
+                            if (myArray.Length == 0) {
                                 myActions.TypeText("%(k)", 500);
                             }
                             // tab to width field
@@ -10435,34 +9316,29 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                             Double.TryParse(strTempImageHeight, out dblTempImageHeight);
                             // if the height is too big, we need to write the height to the max that it can be
                             // and that will automatically readjust the width to what it should be.
-                            if (dblTempImageHeight > imageHeight)
-                            {
+                            if (dblTempImageHeight > imageHeight) {
                                 myActions.TypeText(imageHeight.ToString(), 500);
                             }
                             // close the position and size window
                             myActions.TypeText("{ENTER}", 500);
 
                         }
-                    }
-                    catch (Exception ex)
-                    {
+                    } catch (Exception ex) {
 
                         myActions.MessageBoxShow(ex.Message);
                     }
-                   
-                    AddNewSlide:
+
+                AddNewSlide:
                     // insert a new slide
                     myActions.TypeText("%(i)", 500);
                     myActions.TypeText("e", 500);
-                    myActions.TypeText("%(\" \")n", 500);                   
+                    myActions.TypeText("%(\" \")n", 500);
                     strTitle = "";
                     strBody = "";
                     outputFilePath = "";
                     returnImage = null;
                     Clipboard.Clear();
-                }
-                else
-                {
+                } else {
                     myActions.MessageBoxShow("You need to have an instance of Open Office Impress running in order to save your snippets into it - aborting");
                     return myResult;
                 }
@@ -10470,12 +9346,9 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             goto snipDialog;
         }
 
-        private async void snippingAutomationToolToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Thread thread = new Thread(() =>
-                {
+        private async void snippingAutomationToolToolStripMenuItem_Click(object sender, EventArgs e) {
+            try {
+                Thread thread = new Thread(() => {
                     SnippingTask();
 
 
@@ -10488,17 +9361,14 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
 
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 // MessageBox.Show(ex.Message);
 
             }
             Methods myActions = new Methods();
         }
 
-        private void toolStripMenuItemMousePositionShow_Click(object sender, EventArgs e)
-        {
+        private void toolStripMenuItemMousePositionShow_Click(object sender, EventArgs e) {
             Methods myActions = new Methods();
             string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
             //string strApplicationPath = strApplicationBinDebug.Replace("\\IdealAutomateExplorer\\bin\\Debug", "");
@@ -10506,12 +9376,9 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             myActions.Run(strGetCursorPosDemoExe, "");
         }
 
-        private void toolStripMenuItemDebugTrace_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Thread thread = new Thread(() =>
-                {
+        private void toolStripMenuItemDebugTrace_Click(object sender, EventArgs e) {
+            try {
+                Thread thread = new Thread(() => {
                     DebugTraceTask();
 
 
@@ -10524,21 +9391,25 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
 
 
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 // MessageBox.Show(ex.Message);
 
             }
         }
-        private void DebugTraceTask()
-        {
+
+        public static void UnloadModule(string moduleName) {
+            foreach (ProcessModule mod in Process.GetCurrentProcess().Modules) {
+                if (mod.ModuleName == moduleName) {
+                    FreeLibrary(mod.BaseAddress);
+                }
+            }
+        }
+        private void DebugTraceTask() {
             string myResult = "";
             IdealAutomate.Core.Methods myActions = new Methods();
             string settingsDirectory =
 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\";
-            if (!Directory.Exists(settingsDirectory))
-            {
+            if (!Directory.Exists(settingsDirectory)) {
                 Directory.CreateDirectory(settingsDirectory);
             }
             string filePath = Path.Combine(settingsDirectory, "TraceLog.txt");
@@ -10546,8 +9417,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             string strOutFile = filePath;
             string strOutFile2 = filePath2;
             int intCurrentLine = 0;
-            if (File.Exists(strOutFile))
-            {
+            if (File.Exists(strOutFile)) {
                 File.Delete(strOutFile);
             }
 
@@ -10608,8 +9478,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
 
-            if (strButtonPressed == "btnCancel")
-            {
+            if (strButtonPressed == "btnCancel") {
                 return;
             }
             string myVariableOfInterest = myListControlEntity.Find(x => x.ID == "txtVariableOfInterest").Text;
@@ -10628,26 +9497,22 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             string strCurrentFileText = "";
             string strPrevFile = "";
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < 9000; i++)
-            {
+            for (int i = 0; i < 9000; i++) {
                 myActions.TypeText("{F11}", 500);
                 myActions.TypeText("^(c)", 500);
                 strCurrentLine = myActions.PutClipboardInEntity();
                 strCurrentLine = strCurrentFile + " " + intCurrentLine.ToString() + " " + strCurrentLine;
-                if (strCurrentLine == strPrevLine1 && strPrevLine1 == strPrevLine2 && strPrevLine2 == strPrevLine3)
-                {
+                if (strCurrentLine == strPrevLine1 && strPrevLine1 == strPrevLine2 && strPrevLine2 == strPrevLine3) {
                     break;
                 }
                 strPrevLine3 = strPrevLine2;
                 strPrevLine2 = strPrevLine1;
                 strPrevLine1 = strCurrentLine;
 
-                if (strCurrentLine != "")
-                {
+                if (strCurrentLine != "") {
                     WriteALine(strCurrentLine);
                 }
-                if (strCurrentLine.Contains("tmpParamValue= HTMLEncode(Request.Form(strParamName))"))
-                {
+                if (strCurrentLine.Contains("tmpParamValue= HTMLEncode(Request.Form(strParamName))")) {
                     myActions.TypeText("^(d)", 100);
                     myActions.TypeText("^(l)", 100);
                     myActions.TypeText("^(a)", 100);
@@ -10667,11 +9532,9 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             Process.Start(strExecutable, string.Concat("", strContent, ""));
         }
 
-        private void WriteTheFile(string strOutFile2, string strCurrentFileText)
-        {
+        private void WriteTheFile(string strOutFile2, string strCurrentFileText) {
             Methods myActions = new Methods();
-            try
-            {
+            try {
 
                 //Pass the filepath and filename to the StreamWriter Constructor
                 StreamWriter sw = new StreamWriter(strOutFile2);
@@ -10681,15 +9544,12 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                 //Close the file
                 sw.Close();
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 myActions.MessageBoxShow("Exception: " + e.Message);
             }
         }
 
-        private void WriteALine(string strPrevLine3)
-        {
+        private void WriteALine(string strPrevLine3) {
             Methods myActions = new Methods();
             //string directory = AppDomain.CurrentDomain.BaseDirectory;
             //directory = directory.Replace("\\bin\\Debug\\", "");
@@ -10699,16 +9559,14 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             // string strScriptName = System.Reflection.Assembly.GetCallingAssembly().GetName().Name;
             string settingsDirectory =
       Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\";
-            if (!Directory.Exists(settingsDirectory))
-            {
+            if (!Directory.Exists(settingsDirectory)) {
                 Directory.CreateDirectory(settingsDirectory);
             }
             string filePath = Path.Combine(settingsDirectory, "TraceLog.txt");
             //System.Web.HttpContext.Current.Server.MapPath("~//Trace.html")
             StreamWriter sw = null;
 
-            if (File.Exists(filePath) == false)
-            {
+            if (File.Exists(filePath) == false) {
                 // Create a file to write to.
                 sw = File.CreateText(filePath);
 
@@ -10718,21 +9576,18 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 sw.Close();
             }
 
-            try
-            {
+            try {
                 sw = File.AppendText(filePath);
                 sw.WriteLine(strPrevLine3);
                 sw.Flush();
 
                 sw.Close();
+            } catch (Exception Ex) {
             }
-            catch (Exception Ex)
-            {
-            }
+            sw.Dispose();
         }
 
-        private void cbxCurrentPath_MouseHover(object sender, EventArgs e)
-        {
+        private void cbxCurrentPath_MouseHover(object sender, EventArgs e) {
             buttonToolTip.ToolTipTitle = "Current Path";
             buttonToolTip.UseFading = true;
             buttonToolTip.UseAnimation = true;
@@ -10745,8 +9600,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             buttonToolTip.SetToolTip(cbxCurrentPath, "Current path for selected tab\r\nYou can select or type another path to change tab on the fly");
         }
 
-        private void pictureBox1_MouseHover(object sender, EventArgs e)
-        {
+        private void pictureBox1_MouseHover(object sender, EventArgs e) {
 
 
             //  buttonToolTip.SetToolTip(pictureBox1, "Parallel Search is a tool that uses parallel processing to rapidly find text in any file in a folder \r\nParallel processing makes this tool much faster than any other tool I have tested\r\nContext-menu on the search results allows you to quickly go to line of text in Notepad++, Visual Studio, or IdealAutomateExplorer");
@@ -10760,8 +9614,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             interactiveToolTip1.Show(content, pictureBox1, myPoint, StemPosition.BottomLeft, 5000);
         }
 
-        private void categoryToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void categoryToolStripMenuItem_MouseHover(object sender, EventArgs e) {
 
             //  buttonToolTip.SetToolTip(pictureBox1, "Parallel Search is a tool that uses parallel processing to rapidly find text in any file in a folder \r\nParallel processing makes this tool much faster than any other tool I have tested\r\nContext-menu on the search results allows you to quickly go to line of text in Notepad++, Visual Studio, or IdealAutomateExplorer");
             // position the tooltip with its stem towards the right end of the button
@@ -10781,24 +9634,20 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         /// <returns></returns>
 
-        public System.Drawing.Point GetOpenPoint(ToolStripMenuItem myMenuItem, ref int menuItemWidth, ref int menuItemHeight)
-        {
+        public System.Drawing.Point GetOpenPoint(ToolStripMenuItem myMenuItem, ref int menuItemWidth, ref int menuItemHeight) {
 
             if (myMenuItem.Owner == null) return new System.Drawing.Point(5, 5);
             int y = myMenuItem.Owner.Top;
             int x = myMenuItem.Owner.Left;
             bool firstTime = true;
-            foreach (ToolStripItem item in myMenuItem.Owner.Items)
-            {
+            foreach (ToolStripItem item in myMenuItem.Owner.Items) {
 
 
-                if (item.Visible)
-                {
+                if (item.Visible) {
                     y += item.Height;
                 }
 
-                if (item == myMenuItem)
-                {
+                if (item == myMenuItem) {
 
                     menuItemHeight = item.Height;
                     menuItemWidth = item.Width;
@@ -10812,8 +9661,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         }
 
-        private void projectToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void projectToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             //  buttonToolTip.SetToolTip(pictureBox1, "Parallel Search is a tool that uses parallel processing to rapidly find text in any file in a folder \r\nParallel processing makes this tool much faster than any other tool I have tested\r\nContext-menu on the search results allows you to quickly go to line of text in Notepad++, Visual Studio, or IdealAutomateExplorer");
             // position the tooltip with its stem towards the right end of the button
             content.MyContent = "Create a Visual Studio project that includes reference to IdealAutomateCore.  \r\n\r\n";
@@ -10824,8 +9672,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void fileShortcutFileToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void fileShortcutFileToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             //  buttonToolTip.SetToolTip(pictureBox1, "Parallel Search is a tool that uses parallel processing to rapidly find text in any file in a folder \r\nParallel processing makes this tool much faster than any other tool I have tested\r\nContext-menu on the search results allows you to quickly go to line of text in Notepad++, Visual Studio, or IdealAutomateExplorer");
             // position the tooltip with its stem towards the right end of the button
 
@@ -10838,8 +9685,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void synchronizeItToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void synchronizeItToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             //  buttonToolTip.SetToolTip(pictureBox1, "Parallel Search is a tool that uses parallel processing to rapidly find text in any file in a folder \r\nParallel processing makes this tool much faster than any other tool I have tested\r\nContext-menu on the search results allows you to quickly go to line of text in Notepad++, Visual Studio, or IdealAutomateExplorer");
             // position the tooltip with its stem towards the right end of the button
 
@@ -10851,8 +9697,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void toolStripMenuItem3_MouseHover(object sender, EventArgs e)
-        {
+        private void toolStripMenuItem3_MouseHover(object sender, EventArgs e) {
             //  buttonToolTip.SetToolTip(pictureBox1, "Parallel Search is a tool that uses parallel processing to rapidly find text in any file in a folder \r\nParallel processing makes this tool much faster than any other tool I have tested\r\nContext-menu on the search results allows you to quickly go to line of text in Notepad++, Visual Studio, or IdealAutomateExplorer");
             // position the tooltip with its stem towards the right end of the button
 
@@ -10864,8 +9709,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void closeToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void closeToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             //  buttonToolTip.SetToolTip(pictureBox1, "Parallel Search is a tool that uses parallel processing to rapidly find text in any file in a folder \r\nParallel processing makes this tool much faster than any other tool I have tested\r\nContext-menu on the search results allows you to quickly go to line of text in Notepad++, Visual Studio, or IdealAutomateExplorer");
             // position the tooltip with its stem towards the right end of the button
 
@@ -10877,8 +9721,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void subCategoryToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void subCategoryToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Select a category and Subcategories to your folder structures to help organize your files.  \r\n\r\n";
             content.MyContent += "Categories and Subcategories expand and collapse, and their expanded or collapsed state is remembered.\r\n\r\n";
             content.MyContent += "The only difference between a folder and a subcategory is that a subcategorys expanded state is remembered.";
@@ -10887,8 +9730,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void folderToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void folderToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "You can add folders to your file structures in the same way that you do with File Explorer.  \r\n\r\n";
             content.MyContent += "The only difference between a folder and a category is that a categorys expanded state is remembered.";
 
@@ -10897,8 +9739,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void textFileToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void textFileToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "You can add text files to your file structures in the same way that you do with File Explorer.  \r\n\r\n";
             content.MyContent += "One advantage of using IdealAutomateExplorer to add textfiles is that you can associate metadata to the textfile.\r\n\r\n";
             content.MyContent += "In general, wordpad files are more useful than text files because wordpad files allow one to use images.";
@@ -10907,8 +9748,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void urlShortcutFileToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void urlShortcutFileToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Url Shortcut allows you to point directly to website url.  \r\n\r\n";
             content.MyContent += "Url Shortcut creates a file that ends with the .url extension.  \r\n\r\n";
             content.MyContent += "Url Shortcuts allow you to point to website urls and File Shortcuts allow you to point to files and folders on your computer.";
@@ -10918,8 +9758,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void wordPadFileToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void wordPadFileToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "You can add wordpad to your file structures.  \r\n\r\n";
             content.MyContent += "One advantage of using IdealAutomateExplorer to add wordpad is that you can associate metadata to the wordpad file.\r\n\r\n";
             content.MyContent += "In general, wordpad files are more useful than text files because wordpad files allow one to use images.";
@@ -10928,8 +9767,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void toolStripMenuItem12_MouseHover(object sender, EventArgs e)
-        {
+        private void toolStripMenuItem12_MouseHover(object sender, EventArgs e) {
             content.MyContent = "DropBox is not free. It provides you with cloud storage that you can use to share files.  \r\n\r\n";
             content.MyContent += "You can learn more about DropBox by clicking on the following url.";
 
@@ -10937,8 +9775,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void googleDriveToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void googleDriveToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "GoogleDrive starts you with 15 GB of free Google online storage.   \r\n\r\n";
             content.MyContent += "You can learn more about GoogleDrive by clicking on the following url.";
 
@@ -10946,8 +9783,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void oneDriveToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void oneDriveToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Microsoft OneDrive starts you with 5 GB of free online storage.   \r\n\r\n";
             content.MyContent += "You can learn more about OneDrive by clicking on the following url.";
 
@@ -10955,8 +9791,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void instantCToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void instantCToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Instant C# Free Version allows you to convert up to 100 lines of vb.net code at a time to C# code.   \r\n\r\n";
             content.MyContent += "You can download Instant C# by clicking the link below.   \r\n\r\n";
             content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the full filepath for\r\n\r\n the executable file to a saved text field. \r\n\r\n";
@@ -10966,8 +9801,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void instantVBToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void instantVBToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Instant VB Free Version allows you to convert up to 100 lines of C# code at a time to vb.net code.   \r\n\r\n";
             content.MyContent += "You can download Instant VB by clicking the link below.   \r\n\r\n";
             content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the full filepath for \r\n\r\nthe executable file to a saved text field. \r\n\r\n";
@@ -10977,24 +9811,21 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void collapseAllToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void collapseAllToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Collapse All allows you to collapse all categories and subcategories in the left-split panel with a single click.  ";
 
             content.MyLink = "";
             DisplayToolTip(sender);
         }
 
-        private void expandAllToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void expandAllToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Expand All allows you to expand all categories and subcategories in the left-split panel with a single click.  ";
 
             content.MyLink = "";
             DisplayToolTip(sender);
         }
 
-        private void DisplayToolTip(object sender)
-        {
+        private void DisplayToolTip(object sender) {
             PictureBox myWindow = new PictureBox();
             myWindow.Visible = false;
             Rectangle myBounds = categoryToolStripMenuItem.Bounds;
@@ -11010,16 +9841,14 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             interactiveToolTip1.Show(content, myWindow, myPoint, StemPosition.TopLeft, 5000);
         }
 
-        private void refreshToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void refreshToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Refresh allows you to refresh the files and folders in the left-split panel with a single click.  ";
 
             content.MyLink = "";
             DisplayToolTip(sender);
         }
 
-        private void totalSavingsToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void totalSavingsToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Total Savings allows you to see how much time IdealAutomateExplorer is saving you. \r\n\r\n";
             content.MyContent += "When you create a project to automate some process \r\n\r\n";
             content.MyContent += "you can right-click on the project in IdealAutomateExplorer to specify how long it would take you to do the task manually. \r\n\r\n";
@@ -11028,24 +9857,21 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void showHideColumnsToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void showHideColumnsToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Show/hide allows you to select which columns to show/hide in the left-split panel.";
 
             content.MyLink = "";
             DisplayToolTip(sender);
         }
 
-        private void favoritesToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void favoritesToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Favorites allows you to create a list of filepaths that you frequently use. \r\n\r\n";
             content.MyContent = "You can select one of the favorites in order to change the filepath for the currently selected tab. ";
             content.MyLink = "";
             DisplayToolTip(sender);
         }
 
-        private void paintNETToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void paintNETToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Paint.NET is a free tool that is very similar to photoshop.   \r\n\r\n";
             content.MyContent += "You can download Paint.NET by clicking the link below.   \r\n\r\n";
             content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the full filepath for\r\n\r\n the executable file to a saved text field. \r\n\r\n";
@@ -11055,8 +9881,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void visualStudio2015ToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void visualStudio2015ToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Visual Studio 2015 Community Edition is a free Microsoft tool that allows you to write code in C#, VB.NET, etc.   \r\n\r\n";
             content.MyContent += "You can download Visual Studio 2015 by clicking the link below.   \r\n\r\n";
             content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the full filepath for\r\n\r\n the executable file to a saved text field. \r\n\r\n";
@@ -11066,8 +9891,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void visualStudio2017ToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void visualStudio2017ToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Visual Studio 2017 Community Edition is a free Microsoft tool that allows you to write code in C#, VB.NET, etc.   \r\n\r\n";
             content.MyContent += "You can download Visual Studio 2017 by clicking the link below.   \r\n\r\n";
             content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the full filepath for\r\n\r\n the executable file to a saved text field. \r\n\r\n";
@@ -11077,8 +9901,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void compareItToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void compareItToolStripMenuItem_MouseHover(object sender, EventArgs e) {
 
             content.MyContent = "SynchronizeIt is a free tool that allows you to compare all the files in a folder.  \r\n\r\n";
             content.MyContent += "SynchronizeIt works in conjunction with the free compare tool called CompareIt.\r\n\r\n";
@@ -11088,8 +9911,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void toolStripMenuItemDebugTrace_MouseHover(object sender, EventArgs e)
-        {
+        private void toolStripMenuItemDebugTrace_MouseHover(object sender, EventArgs e) {
 
             content.MyContent = "DebugTrace is a free tool that is built into IdealAutomate.  \r\n\r\n";
             content.MyContent += "Step 1: Set a breakpoint in Visual Studio. \r\n\r\n";
@@ -11098,8 +9920,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void fiddlerToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void fiddlerToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Fiddler 4 is a free tool that allows you to look at all the traffic that goes back and forth between the client and the server.  \r\n\r\n";
             content.MyContent += "You can download Fiddler4 by clicking the link below. \r\n\r\n";
             content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the full filepath for\r\n\r\n the executable file to a saved text field. \r\n\r\n";
@@ -11110,16 +9931,14 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
 
 
-        private void iISToolStripMenuItem1_MouseHover(object sender, EventArgs e)
-        {
+        private void iISToolStripMenuItem1_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Internet Information Services (IIS) is a free tool that is built into Windows.  ";
 
             content.MyLink = "";
             DisplayToolTip(sender);
         }
 
-        private void iWB2LearnerToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void iWB2LearnerToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "iWB2 Learner is a free tool that allows you to drag a selection tool over an html element in a web page.  \r\n\r\n";
             content.MyContent += "When the rectangle is over the element, it shows you the element name and id. \r\n\r\n";
             content.MyContent += "It also displays the inner and outer html for the element in a format that can easily be copied to the clipboard. \r\n\r\n";
@@ -11130,16 +9949,14 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void toolStripMenuItemMousePositionShow_MouseHover(object sender, EventArgs e)
-        {
+        private void toolStripMenuItemMousePositionShow_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Mouse Position Show is a free tool that is built into IdealAutomateExplorer. It allows you to get mouse position x,y coordinates.  ";
 
             content.MyLink = "";
             DisplayToolTip(sender);
         }
 
-        private void notepadToolStripMenuItem2_MouseHover(object sender, EventArgs e)
-        {
+        private void notepadToolStripMenuItem2_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Notepad++ is a free tool that is like regular notepad on steriods.  \r\n\r\n";
             content.MyContent += "Notepad++ has a lot of plugin extensions that you can add. \r\n\r\n";
             content.MyContent += "One extension allows you to compare two files. \r\n\r\n";
@@ -11150,8 +9967,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void processExplorerToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void processExplorerToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Process Explorer is a free tool that is like Windows Task Manager on steriods.  \r\n\r\n";
             content.MyContent += "You can download Process Explorer by clicking the link below. \r\n\r\n";
             content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the full filepath for\r\n\r\n the executable file to a saved text field. \r\n\r\n";
@@ -11160,16 +9976,14 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void taskManagerToolStripMenuItem1_MouseHover(object sender, EventArgs e)
-        {
+        private void taskManagerToolStripMenuItem1_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Task Manager is a free tool that comes with the Windows operating system.  \r\n\r\n";
             content.MyContent += "Task Manager allows you to see all the tasks running on your computer and to end any of them.  ";
             content.MyLink = "";
             DisplayToolTip(sender);
         }
 
-        private void winListerToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void winListerToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Winlister is a free tool that is like Windows Task Manager on steriods.  \r\n\r\n";
             content.MyContent += "You can download Winlister by clicking the link below. \r\n\r\n";
             content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the full filepath for \r\n\r\nthe executable file to a saved text field. \r\n\r\n";
@@ -11178,8 +9992,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void filezillaToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void filezillaToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Filezilla is a free FTP tool that allows you to transfer files between your computer and a website.  \r\n\r\n";
             content.MyContent += "You can download Filezilla by clicking the link below. \r\n\r\n";
             content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the full filepath for\r\n\r\n the executable file to a saved text field. \r\n\r\n";
@@ -11188,8 +10001,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void curlToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void curlToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "cURL is a free command line tool that allows you to get or send files using URL syntax.  \r\n\r\n";
             content.MyContent += "You can download cURL by clicking the link below. \r\n\r\n";
             content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the full filepath for\r\n\r\n the executable file to a saved text field. \r\n\r\n";
@@ -11198,8 +10010,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void fiddlerToolStripMenuItem1_MouseHover(object sender, EventArgs e)
-        {
+        private void fiddlerToolStripMenuItem1_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Fiddler 4 is a free tool that allows you to look at all the traffic that goes back and forth between the client and the server.  \r\n\r\n";
             content.MyContent += "You can download Fiddler4 by clicking the link below. \r\n\r\n";
             content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the full filepath for\r\n\r\n the executable file to a saved text field. \r\n\r\n";
@@ -11208,8 +10019,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void postmanToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void postmanToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Postman is a free tool that allows you to look at all the traffic that goes back and forth between the client and the server.  \r\n\r\n";
             content.MyContent += "You can download Postman by clicking the link below. \r\n\r\n";
             content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the full filepath for\r\n\r\n the executable file to a saved text field. \r\n\r\n";
@@ -11218,8 +10028,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void snippingAutomationToolToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void snippingAutomationToolToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Snipping Automation Tool is a free tool that is built into IdealAutomateExplorer.  \r\n\r\n";
             content.MyContent += "Snipping Automation Tool allows you to automate the process of cutting  \r\n\r\n";
             content.MyContent += "and pasting images into the bottom of a wordpad file.  \r\n\r\n";
@@ -11229,32 +10038,28 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void toolStripMenuItem18_MouseHover(object sender, EventArgs e)
-        {
+        private void toolStripMenuItem18_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Market Samurai is a paid keyword analysis tool.   \r\n\r\n";
             content.MyContent += "Market Samurai allows you to see how much traffic each keyword is currently getting. ";
             content.MyLink = "";
             DisplayToolTip(sender);
         }
 
-        private void videoTrafficBlueprintToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void videoTrafficBlueprintToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Video Traffic Blueprint is a paid tool.   \r\n\r\n";
             content.MyContent += "Video Traffic Blueprint provides you with five killer templates for creating content videos to promote products. ";
             content.MyLink = "";
             DisplayToolTip(sender);
         }
 
-        private void toolStripMenuItem9_MouseHover(object sender, EventArgs e)
-        {
+        private void toolStripMenuItem9_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Preferences allows you to select whether you want to start IdealAutomateExplorer in Admin mode or regular mode.   ";
 
             content.MyLink = "";
             DisplayToolTip(sender);
         }
 
-        private void flashbackExpressToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void flashbackExpressToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Flashback Express is a free tool that is similar to Camtasia.\r\n\r\n";
             content.MyContent += "Flashback Express  allows you to create screen recordings that you can share with others.  \r\n\r\n";
             content.MyContent += "You can download Flashback Express by clicking the link below. \r\n\r\n";
@@ -11264,8 +10069,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void findColumnsToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void findColumnsToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Find Columns is a free tool that is built into IdealAutomateExplorer.  \r\n\r\n";
             content.MyContent += "Find Columns allows you to quickly find any column in any database.  \r\n\r\n";
             content.MyContent += "You just supply the connectionstring to the database,  \r\n\r\n";
@@ -11275,8 +10079,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void idealSqlTracerToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void idealSqlTracerToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "IdealSqlTracer is a free tool that is built into IdealAutomateExplorer.  \r\n\r\n";
             content.MyContent += "IdealSqlTracer is similar to sql profiler, .  \r\n\r\n";
             content.MyContent += "but it allows you to easily grab all the sql that is generated  \r\n\r\n";
@@ -11286,8 +10089,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void sqlLiteToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void sqlLiteToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Sql Manager for SQL Server Lite edition is a free tool that is similar to Sql Server Management Studio (SSMS).\r\n\r\n";
             content.MyContent += "SqlLite allows you to use filters to easily find data.  \r\n\r\n";
             content.MyContent += "It also allows you to see your data in a form view,  \r\n\r\n";
@@ -11299,8 +10101,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void sqlProfilerToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void sqlProfilerToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Sql Profiler is a free tool that allows you to view the sql that is generated behind a web page.\r\n\r\n";
             content.MyContent += "You can download Sql Profiler by clicking the link below. \r\n\r\n";
             content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the full filepath for\r\n\r\n the executable file to a saved text field. \r\n\r\n";
@@ -11309,8 +10110,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void centralAccessReaderToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void centralAccessReaderToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Central Access Reader is a free tool that allows you to paste text into the application so that it can be read to you.\r\n\r\n";
             content.MyContent += "You can download Central Access Reader by clicking the link below. \r\n\r\n";
             content.MyContent += "Once it is installed and running, you can click on this menu item to get a dialog that allows you to copy the full filepath for\r\n\r\n the executable file to a saved text field. \r\n\r\n";
@@ -11319,16 +10119,14 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void speakItToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void speakItToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "SpeakIt is a free Google Chrome extension that allows you to highlight text on a webpage so that it can be read to you.\r\n\r\n";
             content.MyContent += "You can download SpeakIt by clicking the link below. ";
             content.MyLink = "https://chrome.google.com/webstore/detail/speakit/pgeolalilifpodheeocdmbhehgnkkbak?hl=en-US";
             DisplayToolTip(sender);
         }
 
-        private void pluralsightToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void pluralsightToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Pluralsight is a paid membership programming video training site with over 6000 online courses.\r\n\r\n";
             content.MyContent = "Pluralsight offers a 10-day free trial. Monthly fee is currently $35 and annual is $299.\r\n\r\n";
             content.MyContent += "You can learn more by clicking this menu item or the following link. ";
@@ -11336,8 +10134,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void udemyToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void udemyToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Udemy is a paid programming video training site with over 65,000 online courses.\r\n\r\n";
             content.MyContent = "Udemy charges on a per course basis and the current rate is $10.99 for one course.\r\n\r\n";
             content.MyContent += "You can learn more by clicking this menu item or the following link. ";
@@ -11345,8 +10142,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        private void courseraToolStripMenuItem_MouseHover(object sender, EventArgs e)
-        {
+        private void courseraToolStripMenuItem_MouseHover(object sender, EventArgs e) {
             content.MyContent = "Coursera is a paid membership programming video training site with online courses from many top universities.\r\n\r\n";
             content.MyContent = "Coursera offers a 7-day free trial. Monthly fee is currently $49.\r\n\r\n";
             content.MyContent += "You can learn more by clicking this menu item or the following link. ";
@@ -11354,13 +10150,11 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
         }
 
-        internal void ExplorerView_Click(object p1, object p2)
-        {
+        internal void ExplorerView_Click(object p1, object p2) {
             interactiveToolTip1.Hide();
         }
 
-        private void txtMetaDescription_MouseHover(object sender, EventArgs e)
-        {
+        private void txtMetaDescription_MouseHover(object sender, EventArgs e) {
             System.Drawing.Point myPoint = new System.Drawing.Point(txtMetaDescription.Width - (txtMetaDescription.Width / 2), 0);
             content.MyContent = "ReadOnly MetaData Description For Selected File.\r\n\r\n";
             content.MyContent += "Right-Click on FileName and select MetaData to add Description.";
@@ -11368,15 +10162,13 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             interactiveToolTip1.Show(content, txtMetaDescription, myPoint, StemPosition.TopLeft, 5000);
         }
 
-        private void txtMetaDescription_MouseLeave(object sender, EventArgs e)
-        {
+        private void txtMetaDescription_MouseLeave(object sender, EventArgs e) {
             interactiveToolTip1.Hide();
         }
     }
 
 }
-internal static class Keyboard
-{
+internal static class Keyboard {
     [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
     public extern static IntPtr GetModuleHandle(string lpModuleName);
     [System.Runtime.InteropServices.DllImport("user32", EntryPoint = "UnhookWindowsHookEx", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Ansi, SetLastError = true)]
@@ -11387,8 +10179,7 @@ internal static class Keyboard
     private static extern int GetAsyncKeyState(int vKey);
     //[System.Runtime.InteropServices.DllImport("user32", EntryPoint="CallNextHookEx", ExactSpelling=true, CharSet=System.Runtime.InteropServices.CharSet.Ansi, SetLastError=true)]
     //private static extern int CallNextHookEx(int hHook, int nCode, int wParam, ref KBDLLHOOKSTRUCT lParam);
-    public struct KBDLLHOOKSTRUCT
-    {
+    public struct KBDLLHOOKSTRUCT {
         public int vkCode;
         public int scanCode;
         public int flags;
@@ -11414,16 +10205,12 @@ internal static class Keyboard
 
 
 
-    public static string GetMainModuleFilepath(int processId)
-    {
+    public static string GetMainModuleFilepath(int processId) {
         string wmiQueryString = "SELECT ProcessId, ExecutablePath FROM Win32_Process WHERE ProcessId = " + processId;
-        using (var searcher = new ManagementObjectSearcher(wmiQueryString))
-        {
-            using (var results = searcher.Get())
-            {
+        using (var searcher = new ManagementObjectSearcher(wmiQueryString)) {
+            using (var results = searcher.Get()) {
                 ManagementObject mo = results.Cast<ManagementObject>().FirstOrDefault();
-                if (mo != null)
-                {
+                if (mo != null) {
                     return (string)mo["ExecutablePath"];
                 }
             }

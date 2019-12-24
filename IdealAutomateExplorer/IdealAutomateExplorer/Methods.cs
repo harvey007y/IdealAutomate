@@ -77,6 +77,7 @@ namespace IdealAutomate.Core {
 
             try {
                 if (File.Exists(filePath)) {
+                    // TODO: Wade - uncomment the following - just commented it out for debugging
                     File.Delete(filePath);
                 }
             } catch (Exception) {

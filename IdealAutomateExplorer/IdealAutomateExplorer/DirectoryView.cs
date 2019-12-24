@@ -11,25 +11,30 @@ using System.Threading;
 using IdealAutomate.Core;
 using System.Collections;
 using Shell32;
+using System.Drawing;
 
 #endregion
 
 namespace System.Windows.Forms.Samples
 {
-    class DirectoryView : SortableBindingList<FileView>
+    class DirectoryView : SortableBindingList<FileView>,IDisposable
     {
         private FileView _directory;
         private bool _suspend = false;
         private int _nestingLevel = 0;
+        private Icon _plusIcon;
+        private Icon _minusIcon;
 
         //public DirectoryView() : this(Environment.GetFolderPath(Environment.SpecialFolder.Personal)) { }
 
         private AsyncOperation _oper = null;
         private ArrayList _myArrayList;
 
-        public DirectoryView(string dir, ArrayList myArrayList)
+        public DirectoryView(string dir, ArrayList myArrayList, Icon plusIcon, Icon minusIcon)
         {
             _myArrayList = myArrayList;
+            _plusIcon = plusIcon;
+            _minusIcon = minusIcon;
             // Setup Async
             _oper = AsyncOperationManager.CreateOperation(null);
 
@@ -86,15 +91,15 @@ namespace System.Windows.Forms.Samples
             DirectoryInfo info = new DirectoryInfo(dir);
 
             // Set the current directory
-            _directory = new FileView(info, _myArrayList);
+            _directory = new FileView(info, _myArrayList, _plusIcon, _minusIcon);
 
             // Load child files and directories
             try {
                 if (fillDir) {
                     foreach (FileSystemInfo di in info.GetDirectories()) {
                       //  if (di.Name != "..IdealAutomate") {
-                            this.Add(new FileView(di, _myArrayList));
-                            FileView myFileView = new FileView(di, _myArrayList);
+                            this.Add(new FileView(di, _myArrayList, _plusIcon, _minusIcon));
+                            FileView myFileView = new FileView(di, _myArrayList, _plusIcon, _minusIcon);
 
                             if (myFileView.CategoryState == "Expanded") {
                                 _nestingLevel++;
@@ -103,8 +108,8 @@ namespace System.Windows.Forms.Samples
                                 foreach (FileSystemInfo di2 in info2.GetDirectories()) {
                                   //  if (di2.Name != "..IdealAutomate") {
                                         string categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToPublicPath(di2.FullName));
-                                        this.Add(new FileView(di2, _myArrayList));
-                                        FileView myFileView2 = new FileView(di2, _myArrayList);
+                                        this.Add(new FileView(di2, _myArrayList, _plusIcon, _minusIcon));
+                                        FileView myFileView2 = new FileView(di2, _myArrayList, _plusIcon, _minusIcon);
                                         if (myFileView2.CategoryState == "Expanded") {
                                             _nestingLevel++;
                                             myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
@@ -112,8 +117,8 @@ namespace System.Windows.Forms.Samples
                                             foreach (FileSystemInfo di3 in info3.GetDirectories()) {
                                                // if (di3.Name != "..IdealAutomate") {
                                                     categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToPublicPath(di3.FullName));
-                                                    this.Add(new FileView(di3, _myArrayList));
-                                                    FileView myFileView3 = new FileView(di3, _myArrayList);
+                                                    this.Add(new FileView(di3, _myArrayList, _plusIcon, _minusIcon));
+                                                    FileView myFileView3 = new FileView(di3, _myArrayList, _plusIcon, _minusIcon);
                                                     if (myFileView3.CategoryState == "Expanded") {
                                                         DirectoryInfo info4 = new DirectoryInfo(di3.FullName);
                                                         _nestingLevel++;
@@ -121,12 +126,12 @@ namespace System.Windows.Forms.Samples
                                                         foreach (FileSystemInfo di4 in info4.GetDirectories()) {
                                                            // if (di4.Name != "..IdealAutomate") {
                                                                 categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToPublicPath(di4.FullName));
-                                                                this.Add(new FileView(di4, _myArrayList));
-                                                                FileView myFileView4 = new FileView(di4, _myArrayList);
+                                                                this.Add(new FileView(di4, _myArrayList, _plusIcon, _minusIcon));
+                                                                FileView myFileView4 = new FileView(di4, _myArrayList, _plusIcon, _minusIcon);
                                                                 if (myFileView4.CategoryState == "Expanded") {
                                                                     DirectoryInfo info5 = new DirectoryInfo(di4.FullName);
                                                                     foreach (FileSystemInfo fi in info5.GetFiles()) {
-                                                                        this.Add(new FileView(fi, _myArrayList));
+                                                                        this.Add(new FileView(fi, _myArrayList, _plusIcon, _minusIcon));
                                                                     }
                                                                     _nestingLevel--;
                                                                     myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
@@ -135,7 +140,7 @@ namespace System.Windows.Forms.Samples
                                                         }
 
                                                         foreach (FileSystemInfo fi in info4.GetFiles()) {
-                                                            this.Add(new FileView(fi, _myArrayList));
+                                                            this.Add(new FileView(fi, _myArrayList, _plusIcon, _minusIcon));
                                                         }
                                                         _nestingLevel--;
                                                         myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
@@ -143,7 +148,7 @@ namespace System.Windows.Forms.Samples
                                               //  }
                                             }
                                             foreach (FileSystemInfo fi in info3.GetFiles()) {
-                                                this.Add(new FileView(fi, _myArrayList));
+                                                this.Add(new FileView(fi, _myArrayList, _plusIcon, _minusIcon));
                                             }
                                             _nestingLevel--;
                                             myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
@@ -152,7 +157,7 @@ namespace System.Windows.Forms.Samples
                                 }
 
                                 foreach (FileSystemInfo fi in info2.GetFiles()) {
-                                    this.Add(new FileView(fi, _myArrayList));
+                                    this.Add(new FileView(fi, _myArrayList, _plusIcon, _minusIcon));
                                 }
                                 _nestingLevel--;
                                 myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
@@ -161,7 +166,7 @@ namespace System.Windows.Forms.Samples
                     }
 
                     foreach (FileSystemInfo fi in info.GetFiles()) {
-                        this.Add(new FileView(fi, _myArrayList));
+                        this.Add(new FileView(fi, _myArrayList, _plusIcon, _minusIcon));
                     }
                 }
             } catch (Exception ex) {
@@ -270,7 +275,7 @@ namespace System.Windows.Forms.Samples
 
         void FileSystem_Created(object sender, FileSystemEventArgs e)
         {
-            this.Add(new FileView(GetFileSystemInfo(e.FullPath), _myArrayList));
+            this.Add(new FileView(GetFileSystemInfo(e.FullPath), _myArrayList, _plusIcon, _minusIcon));
         }
 
         void FileSystem_Deleted(object sender, FileSystemEventArgs e)
@@ -335,6 +340,37 @@ namespace System.Windows.Forms.Samples
             Debug.WriteLine(source + ": " + code + ", background: " + thread.IsBackground.ToString() + ", ThreadPoolThread: " + thread.IsThreadPoolThread.ToString());
 #endif
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing) {
+            if (!disposedValue) {
+                if (disposing) {
+                    // TODO: dispose managed state (managed objects).
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                disposedValue = true;
+            }
+        }
+
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~DirectoryView() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
+        void IDisposable.Dispose() {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
         #endregion
     }
 }
