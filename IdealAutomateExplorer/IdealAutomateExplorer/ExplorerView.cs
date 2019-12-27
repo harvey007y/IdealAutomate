@@ -54,6 +54,7 @@ namespace System.Windows.Forms.Samples {
         private DirectoryView _dir;
         private ToolTipContent content;
         private bool toolTipShowing;
+        private string _textDocument = "Text Document";
         ToolTip buttonToolTip = new ToolTip();
         string strInitialDirectory = "";
         int _CurrentIndex = 0;
@@ -89,9 +90,11 @@ namespace System.Windows.Forms.Samples {
         System.Windows.Threading.DispatcherTimer dispatcherTimer;
         public IntPtr myhWnd;
         static StringBuilder _searchErrors = new StringBuilder();
-        Stopwatch _stopwatch = new Stopwatch();
+        //Stopwatch _stopwatch = new Stopwatch();
         private Icon _plusIcon;
         private Icon _minusIcon;
+        private List<ExtensionIcon> _smallImageList = new List<ExtensionIcon>();
+        Methods myActions = new Methods();
 
         [DllImport("kernel32", SetLastError = true)]
         static extern bool FreeLibrary(IntPtr hModule);
@@ -222,8 +225,8 @@ namespace System.Windows.Forms.Samples {
             InitializeComponent();
             content = new ToolTipContent();
 
-          //  _stopwatch.Start();
-          //  Logging.WriteLogSimple("Constructor for ExplorerView " + _stopwatch.Elapsed.ToString() + " GC.Count " + String.Format("{0:n0}", GC.GetTotalMemory(true)));
+            //_stopwatch.Start();
+            //Logging.WriteLogSimple("Constructor for ExplorerView " + _stopwatch.Elapsed.ToString() + " Total Memory " + String.Format("{0:n0}", GC.GetTotalMemory(true)));
 
             // we want the tooltip's background colour to show through
             content.BackColor = Color.Transparent;
@@ -235,7 +238,7 @@ namespace System.Windows.Forms.Samples {
             };
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExplorerView));
 
-            Methods myActions = new Methods();
+            
 
             for (int i = 0; i < 20; i++) {
                 BindingSource myNewBindingSource = new BindingSource();
@@ -288,7 +291,7 @@ namespace System.Windows.Forms.Samples {
                     }
                 }
             }
-            Methods myActions = new Methods();
+            
             int nextIndex = 0;
             if (removedIndex > -1) {
                 for (int i = removedIndex; i < this.tabControl1.TabPages.Count - 1; i++) {
@@ -484,7 +487,7 @@ namespace System.Windows.Forms.Samples {
                 if (Directory.Exists(strSavedDirectory1)) {
                     strInitialDirectory = strSavedDirectory1;
                 }
-                _dir = new DirectoryView(strInitialDirectory, _myArrayList,_plusIcon,_minusIcon);
+                _dir = new DirectoryView(strInitialDirectory, _myArrayList,_plusIcon,_minusIcon, ref _smallImageList, myActions);
                 this._CurrentFileViewBindingSource.DataSource = _dir;
                 tabControl1.TabPages[tabControl1.SelectedIndex].Text = _dir.FileView.Name;
                 tabControl1.TabPages[tabControl1.SelectedIndex].ToolTipText = _dir.FileView.FullName;
@@ -747,7 +750,8 @@ namespace System.Windows.Forms.Samples {
         private void SetTitle(FileView fv) {
             // Clicked on the Name property, update the title
             this.Text = fv.Name + " - Ideal Automate Explorer";
-            this.Icon = fv.Icon;
+
+            this.Icon =  fv.Icon;
             cbxCurrentPath.Text = fv.FullName;
             cbxCurrentPath.SelectedValue = fv.FullName;
 
@@ -755,7 +759,7 @@ namespace System.Windows.Forms.Samples {
 
             string[] strInitialDirectoryArray = new string[1];
             strInitialDirectoryArray[0] = fv.FullName;
-            Methods myActions = new Methods();
+            
 
             if (tabControl1.TabCount - 1 != tabControl1.SelectedIndex) {
                 tabControl1.TabPages[tabControl1.SelectedIndex].Text = fv.Name;
@@ -814,7 +818,7 @@ namespace System.Windows.Forms.Samples {
             Application.AddMessageFilter(globalClick);
 
             this.Cursor = Cursors.WaitCursor;
-            Methods myActions = new Methods();
+            
             string launchMode = myActions.GetValueByKey("LaunchMode");
             if (launchMode == "Admin") {
                 toolStripComboBox2.SelectedIndex = 0;
@@ -930,7 +934,7 @@ namespace System.Windows.Forms.Samples {
             if (Directory.Exists(strSavedDirectory2)) {
                 strInitialDirectory = strSavedDirectory2;
             }
-            _dir = new DirectoryView(strInitialDirectory, _myArrayList, _plusIcon, _minusIcon);
+            _dir = new DirectoryView(strInitialDirectory, _myArrayList, _plusIcon, _minusIcon, ref _smallImageList, myActions);
             this._CurrentFileViewBindingSource.DataSource = _dir;
             tabControl1.TabPages[tabControl1.SelectedIndex].Text = _dir.FileView.Name;
             _CurrentIndex = tabControl1.SelectedIndex;
@@ -969,7 +973,7 @@ namespace System.Windows.Forms.Samples {
             if (Directory.Exists(strSavedDirectory)) {
                 strInitialDirectory = strSavedDirectory;
             }
-            _dir = new DirectoryView(strInitialDirectory, _myArrayList, _plusIcon, _minusIcon);
+            _dir = new DirectoryView(strInitialDirectory, _myArrayList, _plusIcon, _minusIcon, ref _smallImageList, myActions);
             this._CurrentFileViewBindingSource.DataSource = _dir;
 
             // Set the title
@@ -1119,7 +1123,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             }
             string fileName = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["FullName"].Value.ToString();
             string scriptName = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["NameCol"].Value.ToString();
-            Methods myActions = new Methods();
+            
             string categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToPublicPath(fileName) + "\\" + scriptName.Replace(".txt", "").Replace(".rtf", ""));
             string strNestingLevel = "";
             if (((DataGridViewExt)sender).Rows.Count == 0) {
@@ -1152,7 +1156,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         private void dataGridView1_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e) {
             // Call Active on DirectoryView
             string fileName = ((DataGridViewExt)sender).Rows[e.RowIndex].Cells["FullName"].Value.ToString();
-            Methods myActions = new Methods();
+            
             // fileName = fileName;
             string categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", fileName);
             if (categoryState == "Expanded") {
@@ -1214,7 +1218,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void listMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             if (DoActionRequired(sender)) {
                 _CurrentSplitContainer.Panel2Collapsed = true;
                 myActions.SetValueByKey("DetailsMenuItemChecked", "False");
@@ -1223,7 +1227,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         private void detailsMenuItem_Click(object sender, EventArgs e) {
             this.Cursor = Cursors.WaitCursor;
-            Methods myActions = new Methods();
+            
             if (DoActionRequired(sender)) {
                 _CurrentSplitContainer.Panel2Collapsed = false;
                 myActions.SetValueByKey("DetailsMenuItemChecked", "True");
@@ -1304,7 +1308,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void ev_Build_File(string myFile) {
-            Methods myActions = new Methods();
+            
             try {
                 string strApplicationPath = System.AppDomain.CurrentDomain.BaseDirectory;
                 myActions.RunSync(strApplicationPath + "BuildProjects.bat", myFile);
@@ -1340,7 +1344,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
 
         private void projectToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             List<ControlEntity> myListControlEntity = new List<ControlEntity>();
 
             ControlEntity myControlEntity = new ControlEntity();
@@ -1524,7 +1528,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e) {
             FileView myFileView;
-            Methods myActions = new Methods();
+            
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
@@ -1550,7 +1554,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void AddGlobalHotKeys() {
-            Methods myActions = new Methods();
+            
             _myArrayList = myActions.ReadAppDirectoryKeyToArrayListGlobal("ScriptInfo");
             ArrayList newArrayList = new ArrayList();
             string strHotKey = "";
@@ -1695,7 +1699,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             if (myInputSimulator.InputDeviceState.IsKeyDown(VirtualKeyCode.ESCAPE)) {
                 _CurrentDataGridView.ClearSelection();
                 _selectedRow = 0;
-                Methods myActions = new Methods();
+                
                 myActions.SetValueByKey("InitialDirectory" + _selectedTabIndex.ToString() + "SelectedRow", "0");
                 TryToCloseAllOpenFilesInTab();
                 System.Threading.Thread.Sleep(1000);
@@ -1733,7 +1737,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
 
                         //if (myHotKeyRecord.Executable.Contains("OptionSetupIA") || myHotKeyRecord.Executable.Contains("OpenNotepadLineInVS")) {
-                        //    Methods myActions = new Methods();
+                        //    
                         //    myActions.RunProcessAsAdmin(myHotKeyRecord.Executable, myHotKeyRecord.ExecuteContent ?? "");
                         //    break;
                         //}
@@ -1744,7 +1748,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             }
         }
         private void OpenLineInNotepad() {
-            Methods myActions = new Methods();
+            
             myActions.TypeText("{RIGHT}", 500);
             myActions.TypeText("{HOME}", 500);
             myActions.TypeText("+({END})", 500);
@@ -1868,7 +1872,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
         private void OpenLineInIAExplorer() {
 
-            Methods myActions = new Methods();
+            
             myActions.TypeText("{RIGHT}", 500);
             myActions.TypeText("{HOME}", 500);
             myActions.TypeText("+({END})", 500);
@@ -2019,7 +2023,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void updateGUI() {
-            Methods myActions = new Methods();
+            
             string strFullFileName = _strFullFileName;
             FileInfo fi = new FileInfo(strFullFileName);
             DirectoryInfo di = fi.Directory;
@@ -2045,7 +2049,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             if (Directory.Exists(strSavedDirectory1)) {
                 strInitialDirectory = strSavedDirectory1;
             }
-            _dir = new DirectoryView(strInitialDirectory, _myArrayList,_plusIcon,_minusIcon);
+            _dir = new DirectoryView(strInitialDirectory, _myArrayList,_plusIcon,_minusIcon, ref _smallImageList, myActions);
             this._CurrentFileViewBindingSource.DataSource = _dir;
             tabControl1.TabPages[tabControl1.SelectedIndex].Text = _dir.FileView.Name;
             tabControl1.TabPages[tabControl1.SelectedIndex].ToolTipText = _dir.FileView.FullName;
@@ -2118,7 +2122,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             if (myEntityForContent != null) {
                 strContent = myEntityForContent;
             }
-            Methods myActions = new Methods();
+            
             if (strContent == "") {
                 if (!File.Exists(strExecutable)) {
                     myActions.MessageBoxShow(" File not found: " + strExecutable);
@@ -2145,7 +2149,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void categoryToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             List<ControlEntity> myListControlEntity = new List<ControlEntity>();
 
             ControlEntity myControlEntity = new ControlEntity();
@@ -2187,6 +2191,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 myActions.MessageBoxShow(strNewCategoryDir + "already exists");
                 goto ReDisplayNewCategoryDialog;
             }
+            //Logging.WriteLogSimple("begin create new category " + _stopwatch.Elapsed.ToString() + " GetTotalMemory " + String.Format("{0:n0}", GC.GetTotalMemory(true)));
+
             try {
                 // create the directories
                 Directory.CreateDirectory(strNewCategoryDir);
@@ -2198,7 +2204,11 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                 MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
             }
+            //Logging.WriteLogSimple("begin create new category - directory created before refresh " + _stopwatch.Elapsed.ToString() + " GetTotalMemory " + String.Format("{0:n0}", GC.GetTotalMemory(true)));
+
             RefreshDataGrid();
+            //Logging.WriteLogSimple("after create new category " + _stopwatch.Elapsed.ToString() + " GetTotalMemory " + String.Format("{0:n0}", GC.GetTotalMemory(true)));
+
         }
         public DataTable ConvertToDataTable<T>(IList<T> data) {
             PropertyDescriptorCollection properties =
@@ -2216,15 +2226,15 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         }
         public void RefreshDataGrid() {
+         
 
-
-          //  Logging.WriteLogSimple("refresh before datasource created " + _stopwatch.Elapsed.ToString() + " GC.Count " + String.Format("{0:n0}", GC.GetTotalMemory(true)));
+          //  Logging.WriteLogSimple("refresh before datasource created " + _stopwatch.Elapsed.ToString() + " Total Memory " + String.Format("{0:n0}", GC.GetTotalMemory(true)));
             string fileName = "";
 
             // refresh datagridview
             strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             // Set Initial Directory to My Documents
-            Methods myActions = new Methods();
+            
             int mySplitterDistance = myActions.GetValueByKeyAsInt("_CurrentSplitContainerWidth" + _selectedTabIndex.ToString());
             if (mySplitterDistance > 0) {
                 _CurrentSplitContainer.SplitterDistance = mySplitterDistance;
@@ -2237,8 +2247,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString(), strSavedDirectory);
             }
 
-            _dir = new DirectoryView(strInitialDirectory, _myArrayList, _plusIcon, _minusIcon);
-          //  Logging.WriteLogSimple("refresh after directoryview created " + _stopwatch.Elapsed.ToString() + " GetTotalMemory " + String.Format("{0:n0}", GC.GetTotalMemory(true)));
+            _dir = new DirectoryView(strInitialDirectory, _myArrayList, _plusIcon, _minusIcon, ref _smallImageList, myActions);
+            //Logging.WriteLogSimple("refresh after directoryview created " + _stopwatch.Elapsed.ToString() + " GetTotalMemory " + String.Format("{0:n0}", GC.GetTotalMemory(true)));
 
             this._CurrentFileViewBindingSource.DataSource = _dir;
 
@@ -2484,7 +2494,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             // refresh datagridview
             strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             // Set Initial Directory to My Documents
-            Methods myActions = new Methods();
+            
             int mySplitterDistance = myActions.GetValueByKeyAsInt("_CurrentSplitContainerWidth" + _selectedTabIndex.ToString());
             if (mySplitterDistance > 0) {
                 _CurrentSplitContainer.SplitterDistance = mySplitterDistance;
@@ -2496,7 +2506,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 strInitialDirectory = strSavedDirectory;
                 myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString(), strSavedDirectory);
             }
-            _dir = new DirectoryView(strInitialDirectory, _myArrayList,_plusIcon,_minusIcon);
+            _dir = new DirectoryView(strInitialDirectory, _myArrayList,_plusIcon,_minusIcon,ref _smallImageList, myActions);
             this._CurrentFileViewBindingSource.DataSource = _dir;
 
             // Set the title
@@ -2531,7 +2541,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
 
         private void subCategoryToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             List<ControlEntity> myListControlEntity = new List<ControlEntity>();
 
             ControlEntity myControlEntity = new ControlEntity();
@@ -2595,7 +2605,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         private void dataGridView1_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e) {
             this.Cursor = Cursors.WaitCursor;
-            Methods myActions = new Methods();
+            
             //    DataGridViewCell myCell = _CurrentDataGridView.SelectedCells[0];
             myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow", e.RowIndex.ToString());
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
@@ -2628,7 +2638,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void openStripMenuItem3_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             // Set Initial Directory to My Documents
             string strSavedDirectory = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
@@ -2839,7 +2849,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 //  Console.WriteLine(@"Copying {0}\{1}", target.FullName, fi.Name);
                 fi.CopyTo(Path.Combine(target.FullName, fi.Name), true);
             }
-            Methods myActions = new Methods();
+            
             // Copy each subdirectory using recursion.
             foreach (DirectoryInfo diSourceSubDir in source.GetDirectories()) {
                 DirectoryInfo nextTargetSubDir =
@@ -2868,7 +2878,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void folderToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             List<ControlEntity> myListControlEntity = new List<ControlEntity>();
 
             ControlEntity myControlEntity = new ControlEntity();
@@ -2934,7 +2944,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void notepadToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
@@ -2950,7 +2960,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void dataGridView1_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e) {
-            Methods myActions = new Methods();
+            
             string fileName = "";
             string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
             if (detailsMenuItemChecked == "True") {
@@ -2959,7 +2969,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     if (!c.Selected) {
                         _CurrentDataGridView.ClearSelection();
                         _selectedRow = 0;
-                        // Methods myActions = new Methods();
+                        // 
                         myActions.SetValueByKey("InitialDirectory" + _selectedTabIndex.ToString() + "SelectedRow", "0");
                         c.Selected = true;
                         myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow", e.RowIndex.ToString());
@@ -3336,7 +3346,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void notepadToolStripMenuItem1_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
@@ -3353,7 +3363,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void textDocumentToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string basePathForNewFolder = _dir.FileView.FullName;
             string basePathName = _dir.FileView.Name;
             string basePathForNewTextDocument = _dir.FileView.FullName;
@@ -3629,7 +3639,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void folderToolStripMenuItem1_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             List<ControlEntity> myListControlEntity = new List<ControlEntity>();
 
             ControlEntity myControlEntity = new ControlEntity();
@@ -3695,7 +3705,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void wordPadToolStripMenuItem1_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
@@ -3712,7 +3722,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         private void wordPadToolStripMenuItem_Click(object sender, EventArgs e) {
             this.Cursor = Cursors.WaitCursor;
-            Methods myActions = new Methods();
+            
             string basePathForNewFolder = _dir.FileView.FullName;
             string basePathName = _dir.FileView.Name;
             string basePathForNewTextDocument = _dir.FileView.FullName;
@@ -3940,7 +3950,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void urlShortcutToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string basePathForNewFolder = _dir.FileView.FullName;
             string basePathName = _dir.FileView.Name;
             string basePathForNewTextDocument = _dir.FileView.FullName;
@@ -4047,7 +4057,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         private void DeleteStripMenuItem4_Click(object sender, EventArgs e) {
             FileView myFileView;
-            Methods myActions = new Methods();
+            
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
@@ -4074,7 +4084,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void subCategoryStripMenuItem5_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             List<ControlEntity> myListControlEntity = new List<ControlEntity>();
 
             ControlEntity myControlEntity = new ControlEntity();
@@ -4567,7 +4577,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             // 
             this.textDocumentToolStripMenuItem.Name = "textDocumentToolStripMenuItem";
             this.textDocumentToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
-            this.textDocumentToolStripMenuItem.Text = "Text Document";
+            this.textDocumentToolStripMenuItem.Text = _textDocument;
             this.textDocumentToolStripMenuItem.Click += new System.EventHandler(this.textDocumentToolStripMenuItem_Click);
             // 
             // wordPadToolStripMenuItem
@@ -4729,7 +4739,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             NestingLevel.Name = "NestingLevel";
             NestingLevel.Visible = false;
             ArrayList myArrayList = new ArrayList();
-            Methods myActions = new Methods();
+            
             myArrayList = myActions.ReadAppDirectoryKeyToArrayList("ColumnOrder_" + pstrInitialDirectory.Replace(":", "+").Replace("\\", "-"));
             if (myArrayList.Count > 0) {
                 List<ColumnOrderItem> columnOrder = new List<ColumnOrderItem>();
@@ -4811,7 +4821,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void dataGridView1_Sorted(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             if (_CurrentDataGridView.SortedColumn != null) {
                 myActions.SetValueByKey("SortedColumn_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"), _CurrentDataGridView.SortedColumn.Index.ToString());
                 myActions.SetValueByKey("SortOrder_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"), _CurrentDataGridView.SortOrder.ToString());
@@ -4836,7 +4846,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 //}
 
             }
-            Methods myActions = new Methods();
+            
             if (fullFileName == "") {
                 myActions.MessageBoxShow("Please select a row to copy before selecting File/Copy");
                 return;
@@ -4916,7 +4926,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 //}
 
             }
-            Methods myActions = new Methods();
+            
             if (fullFileName == "") {
                 myActions.MessageBoxShow("Please select a row to copy before selecting File/Copy");
                 return;
@@ -4979,7 +4989,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void dataGridView1_DataError(object sender, DataGridViewDataErrorEventArgs e) {
-            Methods myActions = new Methods();
+            
             strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             // Set Initial Directory to My Documents
             string strSavedDirectory = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
@@ -4988,7 +4998,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             if (Directory.Exists(strSavedDirectory)) {
                 strInitialDirectory = strSavedDirectory;
             }
-            using (_dir = new DirectoryView(strInitialDirectory, _myArrayList, _plusIcon,_minusIcon)) {
+            using (_dir = new DirectoryView(strInitialDirectory, _myArrayList, _plusIcon,_minusIcon,ref _smallImageList, myActions)) {
                 this._CurrentFileViewBindingSource.DataSource = _dir;
             }
 
@@ -5034,7 +5044,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         private void collapseAllToolStripMenuItem_Click(object sender, EventArgs e) {
             this.Cursor = Cursors.WaitCursor;
-            Methods myActions = new Methods();
+            
             myActions.SetValueByKey("ExpandCollapseAll", "Collapse");
             RefreshDataGrid();
             RefreshDataGrid();
@@ -5043,7 +5053,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         private void expandAllToolStripMenuItem_Click(object sender, EventArgs e) {
             this.Cursor = Cursors.WaitCursor;
-            Methods myActions = new Methods();
+            
             myActions.SetValueByKey("ExpandCollapseAll", "Expand");
             RefreshDataGrid();
             this.Cursor = Cursors.Default;
@@ -5139,7 +5149,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 //}
 
             }
-            Methods myActions = new Methods();
+            
             if (fullFileName == "") {
                 myActions.MessageBoxShow("Please select a row to copy before selecting File/Copy");
                 return;
@@ -5324,7 +5334,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         private void addHotKeyToolStripMenuItem_Click_1(object sender, EventArgs e) {
             FileView myFileView;
-            Methods myActions = new Methods();
+            
             List<ControlEntity> myListControlEntity = new List<ControlEntity>();
 
             ControlEntity myControlEntity = new ControlEntity();
@@ -5443,7 +5453,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             if (Directory.Exists(strSavedDirectory)) {
                 strInitialDirectory = strSavedDirectory;
             }
-            _dir = new DirectoryView(strInitialDirectory, _myArrayList,_plusIcon, _minusIcon);
+            _dir = new DirectoryView(strInitialDirectory, _myArrayList,_plusIcon, _minusIcon,ref _smallImageList, myActions);
             this._CurrentFileViewBindingSource.DataSource = _dir;
 
             // Set the title
@@ -5456,7 +5466,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         private void removeHotKeyToolStripMenuItem_Click_1(object sender, EventArgs e) {
             FileView myFileView;
-            Methods myActions = new Methods();
+            
 
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
@@ -5503,7 +5513,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             if (Directory.Exists(strSavedDirectory)) {
                 strInitialDirectory = strSavedDirectory;
             }
-            _dir = new DirectoryView(strInitialDirectory, _myArrayList, _plusIcon, _minusIcon);
+            _dir = new DirectoryView(strInitialDirectory, _myArrayList, _plusIcon, _minusIcon, ref _smallImageList, myActions);
             this._CurrentFileViewBindingSource.DataSource = _dir;
 
             // Set the title
@@ -5516,7 +5526,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         private void manualTimeStripMenuItem_Click(object sender, EventArgs e) {
             FileView myFileView;
-            Methods myActions = new Methods();
+            
             List<ControlEntity> myListControlEntity = new List<ControlEntity>();
 
             ControlEntity myControlEntity = new ControlEntity();
@@ -5581,7 +5591,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             FileView myManualTimeFileView;
             string fileFullName = "";
             string fileManualTimeFullName = "";
-            Methods myActions = new Methods();
+            
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
@@ -5752,7 +5762,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void favoritesToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             strInitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             // Set Initial Directory to My Documents
             string strSavedDirectory = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
@@ -6000,7 +6010,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void cbxCurrentPath_SelectedIndexChanged(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString(), ((ComboBoxPair)(cbxCurrentPath.SelectedItem))._Value);
             if (_newTab == false) {
                 RefreshDataGrid();
@@ -6016,7 +6026,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 return;
             }
             string strNewHostName = ((ComboBox)sender).Text;
-            Methods myActions = new Methods();
+            
             System.Windows.Forms.DialogResult myResult;
             if (!Directory.Exists(strNewHostName)) {
 
@@ -6088,7 +6098,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void WindowsExplorerStripMenuItem2_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
@@ -6126,7 +6136,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                         SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
 
                     }
-                    Methods myActions = new Methods();
+                    
                     myActions.SetValueByKey("_CurrentSplitContainerWidth" + _selectedTabIndex.ToString(), e.X.ToString());
                 }
 
@@ -6143,7 +6153,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             var myForm = new Search();
             myForm.Show();
             //     _searchErrors.Length = 0;
-            //     Methods myActions = new Methods();
+            //     
             //     myActions = new Methods();
             //     string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
 
@@ -6497,7 +6507,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         private async Task<string> Search(string settingsDirectory) {
             string myResult = "";
-            Methods myActions = new Methods();
+            
 
 
             System.Diagnostics.Stopwatch st = new System.Diagnostics.Stopwatch();
@@ -6796,7 +6806,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             }
         }
         protected static bool FindTextInWordPad(string text, string flname) {
-            Methods myActions = new Methods();
+            
             StringBuilder sb = new StringBuilder();
             string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
             if (!File.Exists(strApplicationBinDebug + "\\aodlread\\settings.xml")) {
@@ -6825,6 +6835,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 }
             } catch (Exception ex) {
                 if (ex.InnerException != null) {
+                    Methods myActions = new Methods();
                     myActions.MessageBoxShow(ex.InnerException.ToString() + " - Line 5706 in ExplorerView");
                 } else {
                     //  myActions.MessageBoxShow(ex.Message + " - Line 5708 in ExplorerView");
@@ -6839,7 +6850,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         protected static bool FindTextInWord(string text, string flname) {
-            Methods myActions = new Methods();
+            
             StringBuilder sb = new StringBuilder();
             string docText = null;
             try {
@@ -6866,7 +6877,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void textFileToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string basePathForNewFolder = _dir.FileView.FullName;
             string basePathName = _dir.FileView.Name;
             string basePathForNewTextDocument = _dir.FileView.FullName;
@@ -7139,7 +7150,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         private void wordPadFileToolStripMenuItem_Click(object sender, EventArgs e) {
             this.Cursor = Cursors.WaitCursor;
-            Methods myActions = new Methods();
+            
             string basePathForNewFolder = _dir.FileView.FullName;
             string basePathName = _dir.FileView.Name;
             string basePathForNewTextDocument = _dir.FileView.FullName;
@@ -7377,7 +7388,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             if (e.KeyCode == Keys.Escape) {
                 _CurrentDataGridView.ClearSelection();
                 _selectedRow = 0;
-                Methods myActions = new Methods();
+                
                 myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow", "0");
                 TryToCloseAllOpenFilesInTab();
                 System.Threading.Thread.Sleep(1000);
@@ -7401,7 +7412,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void urlShortcutFileToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string basePathForNewFolder = _dir.FileView.FullName;
             string basePathName = _dir.FileView.Name;
             string basePathForNewTextDocument = _dir.FileView.FullName;
@@ -7679,7 +7690,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
         private void _CurrentSplitContainer_MouseLeave(object sender, EventArgs e) {
             if (_Panel2KeyPress && (_WordPadLoaded || _NotepadppLoaded)) {
-                Methods myActions = new Methods();
+                
                 myActions.TypeText("^(s)", 200);
                 Popup();
                 _Panel2KeyPress = false;
@@ -7688,7 +7699,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         private void toolBar_MouseEnter(object sender, EventArgs e) {
             if (_Panel2KeyPress && (_WordPadLoaded || _NotepadppLoaded)) {
-                Methods myActions = new Methods();
+                
                 myActions.TypeText("^(s)", 200);
                 Popup();
                 _Panel2KeyPress = false;
@@ -7697,7 +7708,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         private void toolBar_MouseLeave(object sender, EventArgs e) {
             if (_Panel2KeyPress && (_WordPadLoaded || _NotepadppLoaded)) {
-                Methods myActions = new Methods();
+                
                 myActions.TypeText("^(s)", 200);
                 Popup();
                 _Panel2KeyPress = false;
@@ -7706,7 +7717,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         private void _CurrentSplitContainer_MouseEnter(object sender, EventArgs e) {
             if (_Panel2KeyPress && (_WordPadLoaded || _NotepadppLoaded)) {
-                Methods myActions = new Methods();
+                
                 myActions.TypeText("^(s)", 200);
                 Popup();
                 _Panel2KeyPress = false;
@@ -7724,7 +7735,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
 
         private void fileShortcutFileToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string basePathForNewFolder = _dir.FileView.FullName;
             string basePathName = _dir.FileView.Name;
             string basePathForNewTextDocument = _dir.FileView.FullName;
@@ -7833,7 +7844,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             RefreshDataGrid();
         }
         private void fileShortcutToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string basePathForNewFolder = _dir.FileView.FullName;
             string basePathName = _dir.FileView.Name;
             string basePathForNewTextDocument = _dir.FileView.FullName;
@@ -7965,7 +7976,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void idealSqlTracerToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
             //string strApplicationPath = strApplicationBinDebug.Replace("\\IdealAutomateExplorer\\bin\\Debug", "");
             string strIdealSqlTracerExe = Path.Combine(strApplicationBinDebug, @"IdealSqlTracer.exe");
@@ -7973,7 +7984,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void sqlLiteToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string sqlLiteSaved = myActions.GetValueByKey("sqlLiteSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", sqlLiteSaved);
             myActions.SetValueByKey("whatToolDefaultToSave", "sqlLiteSaved");
@@ -7981,7 +7992,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void sqlProfilerToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string sqlProfilerSaved = myActions.GetValueByKey("sqlProfilerSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", sqlProfilerSaved);
             myActions.SetValueByKey("whatToolDefaultToSave", "sqlProfilerSaved");
@@ -7989,7 +8000,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void sSMSToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string sSMSSaved = myActions.GetValueByKey("sSMSSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", sSMSSaved);
             myActions.SetValueByKey("whatToolDefaultToSave", "sSMSSaved");
@@ -7997,7 +8008,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void instantCToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string instantCSaved = myActions.GetValueByKey("instantCSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", instantCSaved);
             myActions.SetValueByKey("whatToolDefaultToSave", "instantCSaved");
@@ -8005,7 +8016,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void instantVBToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string instantVBSaved = myActions.GetValueByKey("instantVBSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", instantVBSaved);
             myActions.SetValueByKey("whatToolDefaultToSave", "instantVBSaved");
@@ -8013,7 +8024,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void paintNETToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string paintNETSaved = myActions.GetValueByKey("paintNETSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", paintNETSaved);
             myActions.SetValueByKey("whatToolDefaultToSave", "paintNETSaved");
@@ -8021,7 +8032,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void visualStudio2015ToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string visualStudio2015Saved = myActions.GetValueByKey("visualStudio2015Saved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", visualStudio2015Saved);
             myActions.SetValueByKey("whatToolDefaultToSave", "visualStudio2015Saved");
@@ -8029,7 +8040,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void visualStudio2017ToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string visualStudio2017Saved = myActions.GetValueByKey("visualStudio2017Saved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", visualStudio2017Saved);
             myActions.SetValueByKey("whatToolDefaultToSave", "visualStudio2017Saved");
@@ -8037,7 +8048,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void componentServicesToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string componentServicesSaved = myActions.GetValueByKey("componentServicesSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", componentServicesSaved);
             myActions.SetValueByKey("whatToolDefaultToSave", "componentServicesSaved");
@@ -8045,7 +8056,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void eventViewerToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string eventViewerSaved = myActions.GetValueByKey("eventViewerSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", eventViewerSaved);
             myActions.SetValueByKey("whatToolDefaultToSave", "eventViewerSaved");
@@ -8053,7 +8064,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void iISToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string iISSaved = myActions.GetValueByKey("iISSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", iISSaved);
             myActions.SetValueByKey("whatToolDefaultToSave", "iISSaved");
@@ -8061,7 +8072,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void programsAndFeaturesToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string programsAndFeaturesSaved = myActions.GetValueByKey("programsAndFeaturesSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", programsAndFeaturesSaved);
             myActions.SetValueByKey("whatToolDefaultToSave", "programsAndFeaturesSaved");
@@ -8069,7 +8080,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void servicesToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string servicesSaved = myActions.GetValueByKey("servicesSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", servicesSaved);
             myActions.SetValueByKey("whatToolDefaultToSave", "servicesSaved");
@@ -8077,7 +8088,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void taskManagerToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string taskManagerSaved = myActions.GetValueByKey("taskManagerSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", taskManagerSaved);
             myActions.SetValueByKey("whatToolDefaultToSave", "taskManagerSaved");
@@ -8085,7 +8096,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void fiddlerToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string fiddlerSaved = myActions.GetValueByKey("fiddlerSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", fiddlerSaved);
             myActions.SetValueByKey("whatToolDefaultToSave", "fiddlerSaved");
@@ -8093,7 +8104,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void iISToolStripMenuItem1_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string iISSaved = myActions.GetValueByKey("iISSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", iISSaved);
             myActions.SetValueByKey("whatToolDefaultToSave", "iISSaved");
@@ -8101,7 +8112,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void iWB2LearnerToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string iWB2Saved = myActions.GetValueByKey("iWB2Saved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", iWB2Saved);
             myActions.SetValueByKey("whatToolDefaultToSave", "iWB2Saved");
@@ -8109,7 +8120,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void notepadToolStripMenuItem2_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string notepadSaved = myActions.GetValueByKey("notepadSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", notepadSaved);
             myActions.SetValueByKey("whatToolDefaultToSave", "notepadSaved");
@@ -8117,7 +8128,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void processExplorerToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string processExplorerSaved = myActions.GetValueByKey("processExplorerSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", processExplorerSaved);
             myActions.SetValueByKey("whatToolDefaultToSave", "processExplorerSaved");
@@ -8125,7 +8136,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void taskManagerToolStripMenuItem1_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string taskManagerSaved = myActions.GetValueByKey("taskManagerSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", taskManagerSaved);
             myActions.SetValueByKey("whatToolDefaultToSave", "taskManagerSaved");
@@ -8133,7 +8144,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void winListerToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string winlisterSaved = myActions.GetValueByKey("winlisterSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", winlisterSaved);
             myActions.SetValueByKey("whatToolDefaultToSave", "winlisterSaved");
@@ -8141,7 +8152,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void curlToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string curlSaved = myActions.GetValueByKey("curlSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", curlSaved);
             myActions.SetValueByKey("whatToolDefaultToSave", "curlSaved");
@@ -8150,7 +8161,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         private void fiddlerToolStripMenuItem1_Click(object sender, EventArgs e) {
 
-            Methods myActions = new Methods();
+            
             string fiddlerSaved = myActions.GetValueByKey("fiddlerSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", fiddlerSaved);
             myActions.SetValueByKey("whatToolDefaultToSave", "fiddlerSaved");
@@ -8161,7 +8172,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         private void postmanToolStripMenuItem_Click(object sender, EventArgs e) {
 
-            Methods myActions = new Methods();
+            
             string postmanSaved = myActions.GetValueByKey("postmanSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", postmanSaved);
             myActions.SetValueByKey("whatToolDefaultToSave", "postmanSaved");
@@ -8193,7 +8204,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void DialogForGettingExe() {
-            Methods myActions = new Methods();
+            
             string myExe = "";
         DisplayFindTextInFilesWindow:
             int intRowCtr = 0;
@@ -8436,7 +8447,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void DialogForAddingUrl() {
-            Methods myActions = new Methods();
+            
             string myExe = "";
         DisplayFindTextInFilesWindow:
             int intRowCtr = 0;
@@ -8532,7 +8543,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             if (pid == 0) {
                 return;
             }
-            Methods myActions = new Methods();
+            
             if (myhWnd != hWnd) {
                 string myFileName = Keyboard.GetMainModuleFilepath(pid);
                 if (myFileName == null || myFileName.EndsWith("IdealAutomateExplorer.exe") ||
@@ -8548,7 +8559,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         }
         public void GetExecutableByClicking() {
-            Methods myActions = new Methods();
+            
             myActions.SetValueByKey("ClickedExecutable", "");
 
             // SetWindowPos(myhWnd.ToInt32(), HWND_TOPMOST, this.Left, this.Top, this.Width, this.Height, SWP_NOACTIVATE);
@@ -8586,7 +8597,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void toolStripComboBox2_SelectedIndexChanged(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             if (toolStripComboBox2.SelectedIndex == 0) {
                 myActions.SetValueByKey("LaunchMode", "Admin");
             } else {
@@ -8627,7 +8638,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void compareItToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string compareItSaved = myActions.GetValueByKey("compareItSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", compareItSaved);
             myActions.SetValueByKey("whatToolDefaultToSave", "compareItSaved");
@@ -8635,7 +8646,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void synchronizeItToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string synchronizeItSaved = myActions.GetValueByKey("synchronizeItSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", synchronizeItSaved);
             myActions.SetValueByKey("whatToolDefaultToSave", "synchronizeItSaved");
@@ -8643,7 +8654,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void filezillaToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string filezillaSaved = myActions.GetValueByKey("filezillaSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", filezillaSaved);
             myActions.SetValueByKey("whatToolDefaultToSave", "filezillaSaved");
@@ -8651,7 +8662,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void flashbackExpressToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string flashbackExpressSaved = myActions.GetValueByKey("flashbackExpressSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", flashbackExpressSaved);
             myActions.SetValueByKey("whatToolDefaultToSave", "flashbackExpressSaved");
@@ -8659,7 +8670,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void facebookToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string facebookSaved = myActions.GetValueByKey("facebookSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", facebookSaved);
             myActions.SetValueByKey("whatToolDefaultToSave", "facebookSaved");
@@ -8667,7 +8678,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void instagramToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string instagramSaved = myActions.GetValueByKey("instagramSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", instagramSaved);
             myActions.SetValueByKey("whatToolDefaultToSave", "instagramSaved");
@@ -8675,7 +8686,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void linkedInPersonalToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string linkedInPersonalSaved = myActions.GetValueByKey("linkedInPersonalSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", linkedInPersonalSaved);
             myActions.SetValueByKey("whatToolDefaultToSave", "linkedInPersonalSaved");
@@ -8683,7 +8694,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void linkedInCompanyToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string linkedInCompanySaved = myActions.GetValueByKey("linkedInCompanySaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", linkedInCompanySaved);
             myActions.SetValueByKey("whatToolDefaultToSave", "linkedInCompanySaved");
@@ -8691,7 +8702,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void stumbleUponToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string stumbleUponSaved = myActions.GetValueByKey("stumbleUponSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", stumbleUponSaved);
             myActions.SetValueByKey("whatToolDefaultToSave", "stumbleUponSaved");
@@ -8699,7 +8710,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void tumblrToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string tumblrSaved = myActions.GetValueByKey("tumblrSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", tumblrSaved);
             myActions.SetValueByKey("whatToolDefaultToSave", "tumblrSaved");
@@ -8707,7 +8718,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void twitterToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string twitterSaved = myActions.GetValueByKey("twitterSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", twitterSaved);
             myActions.SetValueByKey("whatToolDefaultToSave", "twitterSaved");
@@ -8715,7 +8726,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void centralAccessReaderToolStripMenuItem_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string centralAccessReaderSaved = myActions.GetValueByKey("centralAccessReaderSaved");
             myActions.SetValueByKey("cbxToolExeSelectedValue", centralAccessReaderSaved);
             myActions.SetValueByKey("whatToolDefaultToSave", "centralAccessReaderSaved");
@@ -8733,8 +8744,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private async Task<string> SnippingTask() {
-            string myResult = "";
-            IdealAutomate.Core.Methods myActions = new Methods();
+            string myResult = "";           
             string strTitle = "";
             string strBody = "";
             System.Drawing.Image returnImage = null;
@@ -9365,11 +9375,11 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 // MessageBox.Show(ex.Message);
 
             }
-            Methods myActions = new Methods();
+            
         }
 
         private void toolStripMenuItemMousePositionShow_Click(object sender, EventArgs e) {
-            Methods myActions = new Methods();
+            
             string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
             //string strApplicationPath = strApplicationBinDebug.Replace("\\IdealAutomateExplorer\\bin\\Debug", "");
             string strGetCursorPosDemoExe = Path.Combine(strApplicationBinDebug, @"GetCursorPosDemo.exe");
@@ -9405,8 +9415,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             }
         }
         private void DebugTraceTask() {
-            string myResult = "";
-            IdealAutomate.Core.Methods myActions = new Methods();
+            string myResult = "";           
             string settingsDirectory =
 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\";
             if (!Directory.Exists(settingsDirectory)) {
@@ -9533,7 +9542,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void WriteTheFile(string strOutFile2, string strCurrentFileText) {
-            Methods myActions = new Methods();
+            
             try {
 
                 //Pass the filepath and filename to the StreamWriter Constructor
@@ -9550,7 +9559,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
 
         private void WriteALine(string strPrevLine3) {
-            Methods myActions = new Methods();
+            
             //string directory = AppDomain.CurrentDomain.BaseDirectory;
             //directory = directory.Replace("\\bin\\Debug\\", "");
             //int intLastSlashIndex = directory.LastIndexOf("\\");

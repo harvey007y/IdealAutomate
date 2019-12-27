@@ -4,6 +4,7 @@ using IdealAutomate.Core;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using System.Security.Principal;
 using System.Windows.Forms;
@@ -42,13 +43,30 @@ namespace System.Windows.Forms.Samples
                     Application.SetCompatibleTextRenderingDefault(false);
                     try { 
                     Application.Run(new ExplorerView());
+                        string settingsDirectory = myActions.GetAppDirectoryForScript();
+                        if (!Directory.Exists(settingsDirectory)) {
+                            Directory.CreateDirectory(settingsDirectory);
+                        }
+                        string filePath = Path.Combine(settingsDirectory, "IdealAutomateLog.txt");
+                        //System.Web.HttpContext.Current.Server.MapPath("~//Trace.html")
+                        StreamWriter sw = null;
+
+                        try {
+                            if (File.Exists(filePath)) {
+                                // TODO: Wade - uncomment the following - just commented it out for debugging
+                                File.Delete(filePath);
+                            }
+                        } catch (Exception) {
+
+
+                        }
                     } catch (Exception ex) {
 
                         MessageBox.Show(ex.Message);
                         MessageBox.Show(ex.StackTrace);
                         MessageBox.Show(ex.InnerException.ToString());
 
-                    }
+                    } 
                 }
 
                 // Shut down the current process

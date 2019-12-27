@@ -24,6 +24,8 @@ namespace System.Windows.Forms.Samples
         static extern bool DestroyIcon(IntPtr hIcon);
         private string _path;
         private string _name;
+        private string _ext;
+        private int _iconIndex;
         private long _size;
         private DateTime _modified;
         private DateTime _created;
@@ -44,14 +46,36 @@ namespace System.Windows.Forms.Samples
         private ArrayList _myArrayList;
         private Icon _plusIcon;
         private Icon _minusIcon;
+        private List<ExtensionIcon> _smallImageList = new List<ExtensionIcon>();
+        #region Win32 declarations
+        private const uint SHGFI_ICON = 0x100;
+        private const uint SHGFI_LARGEICON = 0x0;
+        private const uint SHGFI_SMALLICON = 0x1;
+        Methods myActions;
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct SHFILEINFO {
+            public IntPtr hIcon;
+            public IntPtr iIcon;
+            public uint dwAttributes;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
+            public string szDisplayName;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)]
+            public string szTypeName;
+        };
+
+        [DllImport("shell32.dll")]
+        public static extern IntPtr SHGetFileInfo(string pszPath, uint dwFileAttributes, ref SHFILEINFO psfi, uint cbSizeFileInfo, uint uFlags);
+        #endregion
 
         //public FileView(string path) : this(new FileInfo(path)) {        }
 
-        public FileView(FileSystemInfo fileInfo, ArrayList myArrayList, Icon plusIcon, Icon minusIcon)
-        {
+        public FileView(FileSystemInfo fileInfo, ArrayList myArrayList, Icon plusIcon, Icon minusIcon, ref List<ExtensionIcon> smallImageList, Methods pmyActions) {
             _myArrayList = myArrayList;
             _plusIcon = plusIcon;
             _minusIcon = minusIcon;
+            _smallImageList = smallImageList;
+            myActions = pmyActions;
             SetState(fileInfo);
         }
 
@@ -78,8 +102,9 @@ namespace System.Windows.Forms.Samples
             Methods myActions = new Methods();
             _path = fileInfo.FullName;
             _name = fileInfo.Name;
-      string fileFullName = fileInfo.FullName;
-      _hotkey = "";
+            _ext = fileInfo.Extension;
+            string fileFullName = fileInfo.FullName;
+            _hotkey = "";
             _totalExecutions = myActions.GetValueByKeyAsIntForNonCurrentScript("ScriptTotalExecutions", myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
             _successfulExecutions = myActions.GetValueByKeyAsIntForNonCurrentScript("ScriptSuccessfulExecutions", myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
             if (_totalExecutions == 0) {
@@ -91,7 +116,7 @@ namespace System.Windows.Forms.Samples
             _lastExecuted = myActions.GetValueByKeyAsDateTimeForNonCurrentScript("ScriptStartDateTime", myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
             _avgExecutionTime = myActions.GetValueByKeyAsIntForNonCurrentScript("AvgSuccessfulExecutionTime", myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
             _manualExecutionTime = myActions.GetValueByKeyAsIntForNonCurrentScript("ManualExecutionTime", myActions.ConvertFullFileNameToScriptPathWithoutRemoveLastLevel(fileFullName));
-            _custom = myActions.GetValueByPublicKeyInCurrentFolder("custom",fileFullName);
+            _custom = myActions.GetValueByPublicKeyInCurrentFolder("custom", fileFullName);
             _description = myActions.GetValueByPublicKeyInCurrentFolder("description", fileFullName);
             _status = myActions.GetValueByPublicKeyInCurrentFolder("status", fileFullName);
             if (_manualExecutionTime == 0) {
@@ -99,9 +124,9 @@ namespace System.Windows.Forms.Samples
             } else {
                 _totalSavings = _successfulExecutions * (_manualExecutionTime - _avgExecutionTime);
             }
-            
+
             // TODO: move the populate of arrayList to higher level
-             _myArrayList = myActions.ReadAppDirectoryKeyToArrayListGlobal("ScriptInfo");
+            _myArrayList = myActions.ReadAppDirectoryKeyToArrayListGlobal("ScriptInfo");
             foreach (var item in _myArrayList) {
                 string[] myScriptInfoFields = item.ToString().Split('^');
                 string scriptName = myScriptInfoFields[0];
@@ -134,22 +159,16 @@ namespace System.Windows.Forms.Samples
             }
 
             // Check if not a directory (size is not valid)
-            if (fileInfo is FileInfo)
-            {
+            if (fileInfo is FileInfo) {
                 fileInfo.Refresh();
-                try
-                {
+                try {
                     _size = (fileInfo as FileInfo).Length;
+                } catch (Exception) {
+
+                    // throw;
                 }
-                catch (Exception)
-                {
-                    
-                   // throw;
-                }
-               
-            }
-            else
-            {
+
+            } else {
                 _size = -1;
             }
 
@@ -157,57 +176,57 @@ namespace System.Windows.Forms.Samples
             _created = fileInfo.CreationTime;
 
             // Get Type Name
-            Win32.SHFILEINFO info = Win32.ShellGetFileInfo.GetFileInfo(fileInfo.FullName);
+            using (Win32.SHFILEINFOx info = Win32.ShellGetFileInfo.GetFileInfo(fileInfo.FullName)) {
+                _type = info.szTypeName;
 
-            _type = info.szTypeName;
+                // Get ICON
+                CategoryState = "";
+                NestingLevel = myActions.GetValueByKeyAsInt("NestingLevel");
 
-            // Get ICON
-            CategoryState = "";
-            NestingLevel = myActions.GetValueByKeyAsInt("NestingLevel");
+                try {
+                    
+                    _iconIndex = GetIconIndex(fileInfo.FullName);
+                    _icon = _smallImageList[_iconIndex].Iconx;
+                    //System.Drawing.Icon.FromHandle(info.hIcon).Dispose();
+                    //DestroyIcon(info.hIcon);
+                    string scriptName = myActions.ConvertFullFileNameToPublicPath(fileInfo.FullName) + "\\" + fileInfo.Name;
+                    string categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", scriptName);
+                    string expandCollapseAll = myActions.GetValueByKey("ExpandCollapseAll");
 
-            try
-            {
-                _icon = (Icon)System.Drawing.Icon.FromHandle(info.hIcon).Clone();
-                DestroyIcon(info.hIcon);
-
-                string scriptName = myActions.ConvertFullFileNameToPublicPath(fileInfo.FullName) + "\\" + fileInfo.Name;
-                string categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", scriptName);
-                string expandCollapseAll = myActions.GetValueByKey("ExpandCollapseAll");
-
-                if (categoryState == "Collapsed") {
-                    if (expandCollapseAll == "Expand") {
-                        categoryState = "Expanded";
-                        myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Expanded", scriptName);
+                    if (categoryState == "Collapsed") {
+                        if (expandCollapseAll == "Expand") {
+                            categoryState = "Expanded";
+                            myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Expanded", scriptName);
+                        }
+                        if (expandCollapseAll == "Collapse") {
+                            categoryState = "Collapsed";
+                            myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Collapsed", scriptName);
+                        }
+                        CategoryState = categoryState;
+                        _icon = _plusIcon;
                     }
-                    if (expandCollapseAll == "Collapse") {
-                        categoryState = "Collapsed";
-                        myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Collapsed", scriptName);
+                    if (categoryState == "Expanded") {
+                        if (expandCollapseAll == "Expand") {
+                            categoryState = "Expanded";
+                            myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Expanded", scriptName);
+                        }
+                        if (expandCollapseAll == "Collapse") {
+                            categoryState = "Collapsed";
+                            myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Collapsed", scriptName);
+                        }
+                        CategoryState = categoryState;
+                        _icon = _minusIcon;
                     }
-                    CategoryState = categoryState;
-                    _icon = _plusIcon;
+                    if (categoryState == "Child") {
+                        CategoryState = categoryState;
+                    }
+                } catch (Exception ex) {
+                    string myname = "wade";
+                    //DestroyIcon(info.hIcon);
+                    // I think this error is just occurring during debugging
                 }
-                if (categoryState == "Expanded") {
-                    if (expandCollapseAll == "Expand") {
-                        categoryState = "Expanded";
-                        myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Expanded", scriptName);
-                    }
-                    if (expandCollapseAll == "Collapse") {
-                        categoryState = "Collapsed";
-                        myActions.SetValueByPublicKeyForNonCurrentScript("CategoryState", "Collapsed", scriptName);
-                    }
-                    CategoryState = categoryState;
-                    _icon = _minusIcon;
-                }
-                if (categoryState == "Child") {
-                    CategoryState = categoryState;
-                }
+
             }
-            catch (Exception ex)
-            {
-                
-                // I think this error is just occurring during debugging
-            }
-            
         }
 
         public string Name
@@ -219,7 +238,20 @@ namespace System.Windows.Forms.Samples
             }
         }
 
-       
+        public string Ext {
+            get { return _ext; }
+            set {
+                _ext = value;
+            }
+        }
+
+        public int IconIndex {
+            get { return _iconIndex; }
+            set {
+                _iconIndex = value;
+            }
+        }
+
 
         public string HotKey {
             get {
@@ -335,7 +367,49 @@ namespace System.Windows.Forms.Samples
             // Reset state - name changed
             SetState(fsi);
         }
+        /// <summary>
+        /// Returns index of an icon based on FileName. Note: File should exists!
+        /// </summary>
+        /// <param name="FileName">Name of an existing File or Directory</param>
+        /// <returns>Index of an Icon</returns>
+        public int GetIconIndex(string FileName) {
+            SHFILEINFO shinfo = new SHFILEINFO();
 
+            FileInfo info = new FileInfo(FileName);
+
+            string ext = info.Extension;
+            if (String.IsNullOrEmpty(ext)) {
+                if ((info.Attributes & FileAttributes.Directory) != 0)
+                    ext = "5EEB255733234c4dBECF9A128E896A1E"; // for directories
+                else
+                    ext = "F9EB930C78D2477c80A51945D505E9C4"; // for files without extension
+            } else
+                if (ext.Equals(".exe", StringComparison.InvariantCultureIgnoreCase) ||
+                    ext.Equals(".lnk", StringComparison.InvariantCultureIgnoreCase))
+                ext = info.Name;
+
+            if (_smallImageList.Any(x => x.Ext == ext)) { 
+                return _smallImageList.FindIndex(x => x.Ext == ext);
+            } else {
+                SHGetFileInfo(FileName, 0, ref shinfo, (uint)Marshal.SizeOf(shinfo), SHGFI_ICON | SHGFI_SMALLICON);
+                Icon smallIcon;
+                try {
+                    smallIcon = Icon.FromHandle(shinfo.hIcon);
+                } catch (ArgumentException ex) {
+                    throw new ArgumentException(String.Format("File \"{0}\" doesn not exist!", FileName), ex);
+                }
+                ExtensionIcon extensionIcon = new ExtensionIcon();
+                extensionIcon.Ext = ext;
+                extensionIcon.Iconx = smallIcon;
+                _smallImageList.Add(extensionIcon);
+
+                //SHGetFileInfo(FileName, 0, ref shinfo, (uint)Marshal.SizeOf(shinfo), SHGFI_ICON | SHGFI_LARGEICON);
+                //Icon largeIcon = Icon.FromHandle(shinfo.hIcon);
+                //_largeImageList.Images.Add(ext, largeIcon);
+
+                return _smallImageList.Count - 1;
+            }
+        }
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 
