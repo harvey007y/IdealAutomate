@@ -43,7 +43,7 @@ namespace System.Windows.Forms.Samples
             myActions = pmyActions;
 
             // Fill
-            Fill(dir, true);
+            Fill(dir, true, myActions);
 
             // Setup the FileSystemWatcher
             FileSystemWatcher fsw = new FileSystemWatcher(dir);
@@ -59,13 +59,13 @@ namespace System.Windows.Forms.Samples
             WriteDebugThreadInfo("DirectoryView");
         }
 
-        public DirectoryView(string dir, bool fillDir, ArrayList myArrayList ) {
+        public DirectoryView(string dir, bool fillDir, ArrayList myArrayList, Methods myActions ) {
             _myArrayList = myArrayList;
             // Setup Async
             _oper = AsyncOperationManager.CreateOperation(null);
 
             // Fill
-            Fill(dir, fillDir);
+            Fill(dir, fillDir, myActions);
 
             // Setup the FileSystemWatcher
             FileSystemWatcher fsw = new FileSystemWatcher(dir);
@@ -81,9 +81,9 @@ namespace System.Windows.Forms.Samples
             WriteDebugThreadInfo("DirectoryView");
         }
 
-        private void Fill(string dir,bool fillDir)
+        private void Fill(string dir,bool fillDir, Methods myActions)
         {
-            Methods myActions = new Methods();
+           
             myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
             // Suspend
             _suspend = true;
@@ -195,7 +195,7 @@ namespace System.Windows.Forms.Samples
             if (fv.IsDirectory)
             {
                 // Reload the list
-                Fill(fv.FullName, true);
+                Fill(fv.FullName, true, myActions);
             }
             else
             {
@@ -233,7 +233,7 @@ namespace System.Windows.Forms.Samples
 
             if (null != parent)
             {
-                Fill(parent.FullName, true);
+                Fill(parent.FullName, true, myActions);
             }
         }
 

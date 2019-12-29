@@ -94,6 +94,10 @@ namespace System.Windows.Forms.Samples {
         private Icon _plusIcon;
         private Icon _minusIcon;
         private List<ExtensionIcon> _smallImageList = new List<ExtensionIcon>();
+        private long _memoryPrev = 0;
+        private long _memoryCurr = 0;
+        private long _memoryGain = 0;
+        List<FileView> myListFileView = new List<FileView>();
         Methods myActions = new Methods();
 
         [DllImport("kernel32", SetLastError = true)]
@@ -226,7 +230,9 @@ namespace System.Windows.Forms.Samples {
             content = new ToolTipContent();
 
             //_stopwatch.Start();
-            //Logging.WriteLogSimple("Constructor for ExplorerView " + _stopwatch.Elapsed.ToString() + " Total Memory " + String.Format("{0:n0}", GC.GetTotalMemory(true)));
+            //LogMemory("Constructor for ExplorerView  Total Memory");
+
+          //  Logging.WriteLogSimple("Constructor for ExplorerView " + _stopwatch.Elapsed.ToString() + " Total Memory " + String.Format("{0:n0}", GC.GetTotalMemory(true)));
 
             // we want the tooltip's background colour to show through
             content.BackColor = Color.Transparent;
@@ -909,7 +915,7 @@ namespace System.Windows.Forms.Samples {
 
                 // do not fill the directory because first time through
                 // we are just addding name and tooltip to each tab
-                _dir = new DirectoryView(strInitialDirectory, false, _myArrayList);
+                _dir = new DirectoryView(strInitialDirectory, false, _myArrayList, myActions);
                 this._CurrentFileViewBindingSource.DataSource = _dir;
 
                 tabControl1.TabPages[i].Text = _dir.FileView.Name;
@@ -2191,6 +2197,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 myActions.MessageBoxShow(strNewCategoryDir + "already exists");
                 goto ReDisplayNewCategoryDialog;
             }
+            //LogMemory("begin create new category  GetTotalMemory ");
+           
             //Logging.WriteLogSimple("begin create new category " + _stopwatch.Elapsed.ToString() + " GetTotalMemory " + String.Format("{0:n0}", GC.GetTotalMemory(true)));
 
             try {
@@ -2204,15 +2212,20 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                 MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
             }
+            //LogMemory("begin create new category - directory created before refresh GetTotalMemory");
+           
             //Logging.WriteLogSimple("begin create new category - directory created before refresh " + _stopwatch.Elapsed.ToString() + " GetTotalMemory " + String.Format("{0:n0}", GC.GetTotalMemory(true)));
 
             RefreshDataGrid();
+            //LogMemory("after create new category GetTotalMemory");
             //Logging.WriteLogSimple("after create new category " + _stopwatch.Elapsed.ToString() + " GetTotalMemory " + String.Format("{0:n0}", GC.GetTotalMemory(true)));
 
         }
         public DataTable ConvertToDataTable<T>(IList<T> data) {
+
             PropertyDescriptorCollection properties =
                TypeDescriptor.GetProperties(typeof(T));
+
             DataTable table = new DataTable();
             foreach (PropertyDescriptor prop in properties)
                 table.Columns.Add(prop.Name, Nullable.GetUnderlyingType(prop.PropertyType) ?? prop.PropertyType);
@@ -2222,13 +2235,15 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     row[prop.Name] = prop.GetValue(item) ?? DBNull.Value;
                 table.Rows.Add(row);
             }
-            return table;
+
+                return table;
 
         }
         public void RefreshDataGrid() {
-         
 
-          //  Logging.WriteLogSimple("refresh before datasource created " + _stopwatch.Elapsed.ToString() + " Total Memory " + String.Format("{0:n0}", GC.GetTotalMemory(true)));
+            //LogMemory("refresh before datasource created  Total Memory ");
+            //  Logging.WriteLogSimple("refresh before datasource created " + _stopwatch.Elapsed.ToString() + " Total Memory " + String.Format("{0:n0}", GC.GetTotalMemory(true)));
+
             string fileName = "";
 
             // refresh datagridview
@@ -2240,7 +2255,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 _CurrentSplitContainer.SplitterDistance = mySplitterDistance;
             }
             string strSavedDirectory = myActions.GetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString());
-
+           
 
             if (Directory.Exists(strSavedDirectory)) {
                 strInitialDirectory = strSavedDirectory;
@@ -2248,11 +2263,14 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             }
 
             _dir = new DirectoryView(strInitialDirectory, _myArrayList, _plusIcon, _minusIcon, ref _smallImageList, myActions);
+            //LogMemory("refresh after directoryview created GetTotalMemory");
             //Logging.WriteLogSimple("refresh after directoryview created " + _stopwatch.Elapsed.ToString() + " GetTotalMemory " + String.Format("{0:n0}", GC.GetTotalMemory(true)));
 
             this._CurrentFileViewBindingSource.DataSource = _dir;
-
+            //LogMemory("refresh after datasource created  GetTotalMemory ");
             //Logging.WriteLogSimple("refresh after datasource created " + _stopwatch.Elapsed.ToString() + " GetTotalMemory " + String.Format("{0:n0}", GC.GetTotalMemory(true)));
+
+
             //GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
             //var maxgen = GC.MaxGeneration;
             //GC.Collect(maxgen, GCCollectionMode.Forced, true);
@@ -2261,7 +2279,10 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             // Set the title
             SetTitle(_dir.FileView);
             _CurrentDataGridView.DataSource = null;
-            List<FileView> myListFileView = new List<FileView>();
+            myListFileView.Clear();
+            myListFileView = null;
+            myListFileView = new List<FileView>();
+
             foreach (FileView item in _CurrentFileViewBindingSource.List) {
                 myListFileView.Add(item);
 
@@ -2483,8 +2504,9 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 }
                 txtMetaDescription.Text = myActions.GetValueByPublicKeyInCurrentFolder("description", fileName);
             }
-
+            //LogMemory("end of  refresh  GC.Count ");
             //Logging.WriteLogSimple("refresh " + _stopwatch.Elapsed.ToString() + " GC.Count " + String.Format("{0:n0}", GC.GetTotalMemory(true)));
+
             //GC.Collect();
         }
 
@@ -2512,7 +2534,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             // Set the title
             SetTitle(_dir.FileView);
             _CurrentDataGridView.DataSource = null;
-            List<FileView> myListFileView = new List<FileView>();
+            myListFileView.Clear();
             foreach (FileView item in _CurrentFileViewBindingSource.List) {
                 myListFileView.Add(item);
 
@@ -10174,6 +10196,12 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         private void txtMetaDescription_MouseLeave(object sender, EventArgs e) {
             interactiveToolTip1.Hide();
         }
+        //private void LogMemory(string msg) {
+        //    _memoryCurr = GC.GetTotalMemory(true);
+        //    _memoryGain = _memoryCurr - _memoryPrev;
+        //    Logging.WriteLogSimple(msg + " current = " + String.Format("{0:n0}", _memoryCurr) + " gain = " + String.Format("{0:n0}", _memoryGain));
+        //    _memoryPrev = _memoryCurr;
+        //}
     }
 
 }

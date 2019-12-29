@@ -98,8 +98,7 @@ namespace System.Windows.Forms.Samples
             get { return (_size == -1); }
         }
 
-        private void SetState(FileSystemInfo fileInfo) {
-            Methods myActions = new Methods();
+        private void SetState(FileSystemInfo fileInfo) {            
             _path = fileInfo.FullName;
             _name = fileInfo.Name;
             _ext = fileInfo.Extension;

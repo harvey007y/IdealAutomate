@@ -1190,7 +1190,7 @@ progressBar1.Value = 0;
 
                 // do not fill the directory because first time through
                 // we are just addding name and tooltip to each tab
-                _dir = new DirectoryView(strInitialDirectory, false, _myArrayList);
+                _dir = new DirectoryView(strInitialDirectory, false, _myArrayList, myActions);
                 this._CurrentFileViewBindingSource.DataSource = _dir;
 
                 tabControl1.TabPages[i].Text = _dir.FileView.Name;
@@ -1210,7 +1210,7 @@ progressBar1.Value = 0;
 
             // do not fill the directory because first time through
             // we are just addding name and tooltip to each tab
-            _dir = new DirectoryView(strInitialDirectory, false, _myArrayList);
+            _dir = new DirectoryView(strInitialDirectory, false, _myArrayList, myActions);
             this._CurrentFileViewBindingSource.DataSource = _dir;
 
 
