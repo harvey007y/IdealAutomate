@@ -21,7 +21,7 @@ namespace IdealAutomate.Core {
     /// <summary>
     /// Interaction logic for WindowComboBox.xaml
     /// </summary>
-    public partial class WindowMultipleControls : Window {
+    public partial class WindowMultipleControls : Window, IDisposable {
 
         string _Label;
         bool boolSkipSelectionChanged = false;
@@ -540,7 +540,8 @@ namespace IdealAutomate.Core {
             }
             strButtonClickedName = "btnOkay";
             boolOkayPressed = true;
-            this.Close();
+            this.Close();           
+            
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e) {
@@ -563,6 +564,7 @@ namespace IdealAutomate.Core {
         private void btnCancel_Click(object sender, RoutedEventArgs e) {
             strButtonClickedName = "btnCancel";
             this.Close();
+           
         }
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e) {
 
@@ -585,5 +587,35 @@ namespace IdealAutomate.Core {
             }
             return settingsDirectory;
         }
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing) {
+            if (!disposedValue) {
+                if (disposing) {
+                    // TODO: dispose managed state (managed objects).
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                disposedValue = true;
+            }
+        }
+
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~DirectoryView() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
+        void IDisposable.Dispose() {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }

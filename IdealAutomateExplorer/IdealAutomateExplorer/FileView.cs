@@ -75,6 +75,9 @@ namespace System.Windows.Forms.Samples
             _plusIcon = plusIcon;
             _minusIcon = minusIcon;
             _smallImageList = smallImageList;
+            if (pmyActions == null) {
+                pmyActions = new Methods();
+            }
             myActions = pmyActions;
             SetState(fileInfo);
         }

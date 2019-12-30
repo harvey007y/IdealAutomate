@@ -2184,6 +2184,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
 
         ReDisplayNewCategoryDialog:
+
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
 
             if (strButtonPressed == "btnCancel") {
@@ -2198,7 +2199,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 goto ReDisplayNewCategoryDialog;
             }
             //LogMemory("begin create new category  GetTotalMemory ");
-           
+
             //Logging.WriteLogSimple("begin create new category " + _stopwatch.Elapsed.ToString() + " GetTotalMemory " + String.Format("{0:n0}", GC.GetTotalMemory(true)));
 
             try {
