@@ -1735,13 +1735,17 @@ namespace IdealAutomate.Core {
                 Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "WindowMultipleControls");
             }
             string buttonClickedName = "";
-            using (WindowMultipleControls dlg = new WindowMultipleControls(ref myListControlEntity, intWindowHeight, intWindowWidth, intWindowTop, intWindowLeft, WindowState.Normal)) {
+            WindowMultipleControls dlg = new WindowMultipleControls(ref myListControlEntity, intWindowHeight, intWindowWidth, intWindowTop, intWindowLeft, WindowState.Normal);
                 dlg.ShowDialog();
 
                 buttonClickedName = dlg.strButtonClickedName;
-
+            dlg.Dispose();
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
+            dlg = null;
                 return buttonClickedName;
-            }
+           
             
 
             // dlg.Owner = (Window)Window.GetWindow(this);

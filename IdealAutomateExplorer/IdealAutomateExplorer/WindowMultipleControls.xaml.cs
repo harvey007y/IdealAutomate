@@ -588,34 +588,64 @@ namespace IdealAutomate.Core {
             return settingsDirectory;
         }
         #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
+        private bool disposed; // To detect redundant calls
+
+        // This code added by Visual Basic to correctly implement the disposable pattern.
+        public void Dispose() {
+            // Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
         protected virtual void Dispose(bool disposing) {
-            if (!disposedValue) {
+            if (!this.disposed) {
                 if (disposing) {
-                    // TODO: dispose managed state (managed objects).
+                    //dispose managed state (managed objects).
+                    //this.Loaded -= Window_Loaded;
+                    //txtTitle.PreviewMouseDown -= txtTitle_PreviewMouseDown;
+                    //pbMin.PreviewMouseUp -= pbMin_PreviewMouseUp;
+                    //pbClose.PreviewMouseUp -= pbClose_PreviewMouseUp;
+                    //txtSend.KeyUp -= txtSend_KeyUp;
+                    //btnSend.Click -= btnSend_Click;
+                    //this.Closed -= Window_Closed;
+#line 74 "..\..\WindowMultipleControls.xaml"
+                    this.btnOkay.Click -= this.btnOkay_Click;
+
+#line default
+#line hidden
+
+
+#line 83 "..\..\WindowMultipleControls.xaml"
+                    this.btnCancel.Click -= this.btnCancel_Click;
+
+                    //BindingOperations.ClearBinding(txtTitle, TextBlock.TextProperty);
+
+                    //this.Icon = null;
+                    //ibBackground = null;
+                    //iDeleteBuddy = Nothing
+                    //btnAddBuddy = Nothing
+                    //iBlockUser = Nothing
+                    //pbMin = null;
+                    //pbClose = null;
+                    //MainWindow = null;
+
+                    this.Resources.Clear();
+                    GC.Collect();
+                    GC.WaitForPendingFinalizers();
+                    GC.Collect();
                 }
-
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // TODO: set large fields to null.
-
-                disposedValue = true;
             }
+            this.disposed = true;
         }
 
-        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-        // ~DirectoryView() {
-        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-        //   Dispose(false);
-        // }
-
-        // This code added to correctly implement the disposable pattern.
-        void IDisposable.Dispose() {
-            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-            Dispose(true);
-            // TODO: uncomment the following line if the finalizer is overridden above.
-            // GC.SuppressFinalize(this);
-        }
-        #endregion
+        //INSTANT C# TODO TASK: This method is a destructor, but no class name was found:
+        ~WindowMultipleControls()
+	{
+		// Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
+		Dispose(false);
+        //INSTANT C# NOTE: The base class Finalize method is automatically called from the destructor:
+        //base.Finalize();
     }
+    #endregion
+}
 }
