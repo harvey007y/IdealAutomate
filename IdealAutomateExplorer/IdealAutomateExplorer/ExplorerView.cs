@@ -2218,6 +2218,17 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             //Logging.WriteLogSimple("begin create new category - directory created before refresh " + _stopwatch.Elapsed.ToString() + " GetTotalMemory " + String.Format("{0:n0}", GC.GetTotalMemory(true)));
 
             RefreshDataGrid();
+            int mySelectedRow = -1;
+            for (int i = 0; i < _CurrentDataGridView.Rows.Count; i++) {
+                DataGridViewRow item = _CurrentDataGridView.Rows[i];
+                if (item.Cells["FullName"].Value.ToString() == strNewCategoryDir) {
+                    mySelectedRow = i;
+                    break;
+                }
+            }
+            myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow", mySelectedRow.ToString());
+           
+            _CurrentDataGridView.FirstDisplayedScrollingRowIndex = mySelectedRow;
             //LogMemory("after create new category GetTotalMemory");
             //Logging.WriteLogSimple("after create new category " + _stopwatch.Elapsed.ToString() + " GetTotalMemory " + String.Format("{0:n0}", GC.GetTotalMemory(true)));
 
