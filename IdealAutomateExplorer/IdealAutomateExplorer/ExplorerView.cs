@@ -1383,6 +1383,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                this.Cursor = Cursors.Default;
                 return;
             }
 
@@ -2189,6 +2190,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             
             if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                this.Cursor = Cursors.Default;
                 return;
             }
 
@@ -2734,6 +2736,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         LineAfterDisplayWindow:
             if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                this.Cursor = Cursors.Default;
                 return;
             }
 
@@ -2945,6 +2948,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                this.Cursor = Cursors.Default;
                 return;
             }
             string basePathForNewFolder = _dir.FileView.FullName;
@@ -3551,6 +3555,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                     if (strButtonPressed == "btnCancel") {
                         myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                        this.Cursor = Cursors.Default;
                         return;
                     }
                     //string basePathForNewTextDocument = _dir.FileView.FullName;
@@ -3706,6 +3711,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                this.Cursor = Cursors.Default;
                 return;
             }
             string basePathForNewFolder = _dir.FileView.FullName;
@@ -3896,6 +3902,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                     if (strButtonPressed == "btnCancel") {
                         myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                        this.Cursor = Cursors.Default;
                         return;
                     }
                     string strCustom = myListControlEntity.Find(x => x.ID == "cbxCustom").SelectedValue;
@@ -4051,6 +4058,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                     if (strButtonPressed == "btnCancel") {
                         myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                        this.Cursor = Cursors.Default;
                         return;
                     }
 
@@ -4151,6 +4159,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                this.Cursor = Cursors.Default;
                 return;
             }
 
@@ -5250,6 +5259,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         LineAfterDisplayCopyWindow:
             if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                this.Cursor = Cursors.Default;
                 return;
             }
 
@@ -5412,6 +5422,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                this.Cursor = Cursors.Default;
                 return;
             }
 
@@ -5593,6 +5604,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                this.Cursor = Cursors.Default;
                 return;
             }
 
@@ -5778,6 +5790,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                this.Cursor = Cursors.Default;
                 return;
             }
             string strCustom = myListControlEntity.Find(x => x.ID == "cbxCustom").SelectedValue;
@@ -5866,6 +5879,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         LineAfterDisplayWindow:
             if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                this.Cursor = Cursors.Default;
                 return;
             }
 
@@ -7069,6 +7083,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                this.Cursor = Cursors.Default;
                 return;
             }
 
@@ -7332,6 +7347,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                this.Cursor = Cursors.Default;
                 return;
             }
             string strCustom = myListControlEntity.Find(x => x.ID == "cbxCustom").SelectedValue;
@@ -7517,6 +7533,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                this.Cursor = Cursors.Default;
                 return;
             }
 
@@ -7840,6 +7857,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                this.Cursor = Cursors.Default;
                 return;
             }
 
@@ -7945,6 +7963,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                     if (strButtonPressed == "btnCancel") {
                         myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                        this.Cursor = Cursors.Default;
                         return;
                     }
 
@@ -8370,6 +8389,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 string whatToolDefaultToSave = myActions.GetValueByKey("whatToolDefaultToSave");
                 myActions.SetValueByKey(whatToolDefaultToSave, strFolder);
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                this.Cursor = Cursors.Default;
                 return;
             }
 
@@ -8529,6 +8549,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 string whatToolDefaultToSave = myActions.GetValueByKey("whatToolDefaultToSave");
                 myActions.SetValueByKey(whatToolDefaultToSave, strDefaultUrl);
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                this.Cursor = Cursors.Default;
                 return;
             }
 
@@ -8881,6 +8902,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 250, 200, intTop, intLeft);
             if (strButtonPressed == "btnCancel") {
                 myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                this.Cursor = Cursors.Default;
                 return myResult;
             }
             if (strButtonPressed == "btnExit") {
@@ -8960,6 +8982,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 450, 800, 0, 0);
                 if (strButtonPressed == "btnCancel") {
                     myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                    this.Cursor = Cursors.Default;
                     return myResult;
                 }
 
@@ -9071,6 +9094,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                 if (strButtonPressed == "btnCancel") {
                     myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                    this.Cursor = Cursors.Default;
                     return myResult;
                 }
                 goto snipDialogWithoutRelaunchingSnippingTool;
@@ -9133,6 +9157,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 200, 200, intTop, intLeft);
                 if (strButtonPressed == "btnCancel") {
                     myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                    this.Cursor = Cursors.Default;
                     return myResult;
                 }
                 if (strButtonPressed == "btnExit") {
@@ -9522,6 +9547,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 500, 0, 0);
 
             if (strButtonPressed == "btnCancel") {
+                this.Cursor = Cursors.Default;
                 return;
             }
             string myVariableOfInterest = myListControlEntity.Find(x => x.ID == "txtVariableOfInterest").Text;
