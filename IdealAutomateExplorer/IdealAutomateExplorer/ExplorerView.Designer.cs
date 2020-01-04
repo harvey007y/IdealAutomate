@@ -222,13 +222,13 @@ namespace System.Windows.Forms.Samples
             // selectIdealToolStripMenuItem
             // 
             this.selectIdealToolStripMenuItem.Name = "selectIdealToolStripMenuItem";
-            this.selectIdealToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.selectIdealToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
             this.selectIdealToolStripMenuItem.Text = "Select As Ideal.txt";
             // 
             // selectActualToolStripMenuItem
             // 
             this.selectActualToolStripMenuItem.Name = "selectActualToolStripMenuItem";
-            this.selectActualToolStripMenuItem.Size = new System.Drawing.Size(174, 22);
+            this.selectActualToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
             this.selectActualToolStripMenuItem.Text = "Select As Actual.txt";
             // 
             // toolStripMenuItem4
@@ -342,35 +342,35 @@ namespace System.Windows.Forms.Samples
             // notepadToolStripMenuItem
             // 
             this.notepadToolStripMenuItem.Name = "notepadToolStripMenuItem";
-            this.notepadToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.notepadToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.notepadToolStripMenuItem.Text = "Notepad";
             this.notepadToolStripMenuItem.Click += new System.EventHandler(this.notepadToolStripMenuItem_Click);
             // 
             // notepadToolStripMenuItem1
             // 
             this.notepadToolStripMenuItem1.Name = "notepadToolStripMenuItem1";
-            this.notepadToolStripMenuItem1.Size = new System.Drawing.Size(168, 22);
+            this.notepadToolStripMenuItem1.Size = new System.Drawing.Size(169, 22);
             this.notepadToolStripMenuItem1.Text = "Notepad++";
             this.notepadToolStripMenuItem1.Click += new System.EventHandler(this.notepadToolStripMenuItem1_Click);
             // 
             // visualStudioToolStripMenuItem
             // 
             this.visualStudioToolStripMenuItem.Name = "visualStudioToolStripMenuItem";
-            this.visualStudioToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
+            this.visualStudioToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.visualStudioToolStripMenuItem.Text = "Visual Studio";
             this.visualStudioToolStripMenuItem.Click += new System.EventHandler(this.visualStudioToolStripMenuItem_Click);
             // 
             // WindowsExplorerStripMenuItem2
             // 
             this.WindowsExplorerStripMenuItem2.Name = "WindowsExplorerStripMenuItem2";
-            this.WindowsExplorerStripMenuItem2.Size = new System.Drawing.Size(168, 22);
+            this.WindowsExplorerStripMenuItem2.Size = new System.Drawing.Size(169, 22);
             this.WindowsExplorerStripMenuItem2.Text = "Windows Explorer";
             this.WindowsExplorerStripMenuItem2.Click += new System.EventHandler(this.WindowsExplorerStripMenuItem2_Click);
             // 
             // wordPadToolStripMenuItem1
             // 
             this.wordPadToolStripMenuItem1.Name = "wordPadToolStripMenuItem1";
-            this.wordPadToolStripMenuItem1.Size = new System.Drawing.Size(168, 22);
+            this.wordPadToolStripMenuItem1.Size = new System.Drawing.Size(169, 22);
             this.wordPadToolStripMenuItem1.Text = "WordPad";
             this.wordPadToolStripMenuItem1.Click += new System.EventHandler(this.wordPadToolStripMenuItem1_Click);
             // 
@@ -671,7 +671,7 @@ namespace System.Windows.Forms.Samples
             this.sqlToolStripMenuItem,
             this.textToSpeechToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
             // 
             // toolStripMenuItem11
@@ -989,7 +989,7 @@ namespace System.Windows.Forms.Samples
             // snippingAutomationToolToolStripMenuItem
             // 
             this.snippingAutomationToolToolStripMenuItem.Name = "snippingAutomationToolToolStripMenuItem";
-            this.snippingAutomationToolToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.snippingAutomationToolToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.snippingAutomationToolToolStripMenuItem.Text = "Snipping Automation Tool";
             this.snippingAutomationToolToolStripMenuItem.Click += new System.EventHandler(this.snippingAutomationToolToolStripMenuItem_Click);
             this.snippingAutomationToolToolStripMenuItem.MouseHover += new System.EventHandler(this.snippingAutomationToolToolStripMenuItem_MouseHover);
@@ -1006,7 +1006,7 @@ namespace System.Windows.Forms.Samples
             // toolStripMenuItem18
             // 
             this.toolStripMenuItem18.Name = "toolStripMenuItem18";
-            this.toolStripMenuItem18.Size = new System.Drawing.Size(191, 22);
+            this.toolStripMenuItem18.Size = new System.Drawing.Size(190, 22);
             this.toolStripMenuItem18.Text = "MarketSamurai";
             this.toolStripMenuItem18.Click += new System.EventHandler(this.toolStripMenuItem18_Click);
             this.toolStripMenuItem18.MouseHover += new System.EventHandler(this.toolStripMenuItem18_MouseHover);
@@ -1014,7 +1014,7 @@ namespace System.Windows.Forms.Samples
             // videoTrafficBlueprintToolStripMenuItem
             // 
             this.videoTrafficBlueprintToolStripMenuItem.Name = "videoTrafficBlueprintToolStripMenuItem";
-            this.videoTrafficBlueprintToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
+            this.videoTrafficBlueprintToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
             this.videoTrafficBlueprintToolStripMenuItem.Text = "Video Traffic Blueprint";
             this.videoTrafficBlueprintToolStripMenuItem.Click += new System.EventHandler(this.videoTrafficBlueprintToolStripMenuItem_Click);
             this.videoTrafficBlueprintToolStripMenuItem.MouseHover += new System.EventHandler(this.videoTrafficBlueprintToolStripMenuItem_MouseHover);
@@ -1048,7 +1048,7 @@ namespace System.Windows.Forms.Samples
             // flashbackExpressToolStripMenuItem
             // 
             this.flashbackExpressToolStripMenuItem.Name = "flashbackExpressToolStripMenuItem";
-            this.flashbackExpressToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.flashbackExpressToolStripMenuItem.Size = new System.Drawing.Size(168, 22);
             this.flashbackExpressToolStripMenuItem.Text = "Flashback Express";
             this.flashbackExpressToolStripMenuItem.ToolTipText = resources.GetString("flashbackExpressToolStripMenuItem.ToolTipText");
             this.flashbackExpressToolStripMenuItem.Click += new System.EventHandler(this.flashbackExpressToolStripMenuItem_Click);
@@ -1133,7 +1133,7 @@ namespace System.Windows.Forms.Samples
             // findColumnsToolStripMenuItem
             // 
             this.findColumnsToolStripMenuItem.Name = "findColumnsToolStripMenuItem";
-            this.findColumnsToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.findColumnsToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.findColumnsToolStripMenuItem.Text = "FindColumns";
             this.findColumnsToolStripMenuItem.Click += new System.EventHandler(this.findColumnsToolStripMenuItem_Click);
             this.findColumnsToolStripMenuItem.MouseHover += new System.EventHandler(this.findColumnsToolStripMenuItem_MouseHover);
@@ -1141,7 +1141,7 @@ namespace System.Windows.Forms.Samples
             // idealSqlTracerToolStripMenuItem
             // 
             this.idealSqlTracerToolStripMenuItem.Name = "idealSqlTracerToolStripMenuItem";
-            this.idealSqlTracerToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.idealSqlTracerToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.idealSqlTracerToolStripMenuItem.Text = "IdealSqlTracer";
             this.idealSqlTracerToolStripMenuItem.Click += new System.EventHandler(this.idealSqlTracerToolStripMenuItem_Click);
             this.idealSqlTracerToolStripMenuItem.MouseHover += new System.EventHandler(this.idealSqlTracerToolStripMenuItem_MouseHover);
@@ -1149,7 +1149,7 @@ namespace System.Windows.Forms.Samples
             // sqlLiteToolStripMenuItem
             // 
             this.sqlLiteToolStripMenuItem.Name = "sqlLiteToolStripMenuItem";
-            this.sqlLiteToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.sqlLiteToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.sqlLiteToolStripMenuItem.Text = "SqlLite";
             this.sqlLiteToolStripMenuItem.Click += new System.EventHandler(this.sqlLiteToolStripMenuItem_Click);
             this.sqlLiteToolStripMenuItem.MouseHover += new System.EventHandler(this.sqlLiteToolStripMenuItem_MouseHover);
@@ -1157,7 +1157,7 @@ namespace System.Windows.Forms.Samples
             // sqlProfilerToolStripMenuItem
             // 
             this.sqlProfilerToolStripMenuItem.Name = "sqlProfilerToolStripMenuItem";
-            this.sqlProfilerToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.sqlProfilerToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.sqlProfilerToolStripMenuItem.Text = "SqlProfiler";
             this.sqlProfilerToolStripMenuItem.Click += new System.EventHandler(this.sqlProfilerToolStripMenuItem_Click);
             this.sqlProfilerToolStripMenuItem.MouseHover += new System.EventHandler(this.sqlProfilerToolStripMenuItem_MouseHover);
@@ -1165,14 +1165,14 @@ namespace System.Windows.Forms.Samples
             // sqlToGridToolStripMenuItem
             // 
             this.sqlToGridToolStripMenuItem.Name = "sqlToGridToolStripMenuItem";
-            this.sqlToGridToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.sqlToGridToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.sqlToGridToolStripMenuItem.Text = "SqlToGrid";
             this.sqlToGridToolStripMenuItem.Click += new System.EventHandler(this.sqlToGridToolStripMenuItem_Click);
             // 
             // sSMSToolStripMenuItem
             // 
             this.sSMSToolStripMenuItem.Name = "sSMSToolStripMenuItem";
-            this.sSMSToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.sSMSToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.sSMSToolStripMenuItem.Text = "SSMS";
             this.sSMSToolStripMenuItem.Click += new System.EventHandler(this.sSMSToolStripMenuItem_Click);
             // 
@@ -1208,7 +1208,7 @@ namespace System.Windows.Forms.Samples
             this.pluralsightToolStripMenuItem,
             this.udemyToolStripMenuItem});
             this.toolStripMenuItem10.Name = "toolStripMenuItem10";
-            this.toolStripMenuItem10.Size = new System.Drawing.Size(62, 20);
+            this.toolStripMenuItem10.Size = new System.Drawing.Size(61, 20);
             this.toolStripMenuItem10.Text = "Training";
             // 
             // courseraToolStripMenuItem
@@ -1343,6 +1343,7 @@ namespace System.Windows.Forms.Samples
             this.Name = "ExplorerView";
             this.Text = "[File Name]";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Activated += new System.EventHandler(this.ExplorerView_Activated);
             this.Load += new System.EventHandler(this.ExplorerView_Load);
             this.ClientSizeChanged += new System.EventHandler(this.ExplorerView_ClientSizeChanged);
             this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.ExplorerView_PreviewKeyDown);

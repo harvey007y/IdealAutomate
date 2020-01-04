@@ -46,6 +46,7 @@ using System.Runtime;
 
 
 
+
 #endregion
 
 namespace System.Windows.Forms.Samples {
@@ -99,6 +100,12 @@ namespace System.Windows.Forms.Samples {
         private long _memoryGain = 0;
         List<FileView> myListFileView = new List<FileView>();
         Methods myActions = new Methods();
+
+        [DllImport("user32.dll")]
+        internal static extern IntPtr SetForegroundWindow(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        internal static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
         [DllImport("kernel32", SetLastError = true)]
         static extern bool FreeLibrary(IntPtr hModule);
@@ -265,7 +272,14 @@ namespace System.Windows.Forms.Samples {
             tabControl1.MouseClick += TabControl1_MouseClick;
         }
 
-
+        private void ExplorerView_Activated(object sender, EventArgs e) {
+            Process currentProcess = Process.GetCurrentProcess();
+            IntPtr hWnd = currentProcess.MainWindowHandle;
+            if (hWnd != IntPtr.Zero) {
+                SetForegroundWindow(hWnd);
+                ShowWindow(hWnd, SWP_SHOWWINDOW);
+            }
+        }
 
         public void TabControl1_MouseClick(object sender, MouseEventArgs e) {
             // _CurrentDataGridView.ClearSelection();
@@ -10240,7 +10254,9 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         //    Logging.WriteLogSimple(msg + " current = " + String.Format("{0:n0}", _memoryCurr) + " gain = " + String.Format("{0:n0}", _memoryGain));
         //    _memoryPrev = _memoryCurr;
         //}
+
     }
+
 
 }
 internal static class Keyboard {
