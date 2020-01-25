@@ -12,6 +12,8 @@ using IdealAutomate.Core;
 using System.Collections;
 using Shell32;
 using System.Drawing;
+using System.Threading.Tasks;
+using System.Linq;
 
 #endregion
 
@@ -21,7 +23,7 @@ namespace System.Windows.Forms.Samples
     {
         private FileView _directory;
         private bool _suspend = false;
-        private int _nestingLevel = 0;
+        private static int _nestingLevel = 0;
         private Icon _plusIcon;
         private Icon _minusIcon;
         private List<ExtensionIcon> _smallImageList = new List<ExtensionIcon>();
@@ -54,7 +56,7 @@ namespace System.Windows.Forms.Samples
             fsw.Created += new FileSystemEventHandler(FileSystem_Created);
             fsw.Deleted += new FileSystemEventHandler(FileSystem_Deleted);
             fsw.Renamed += new RenamedEventHandler(FileSystem_Renamed);
-
+            
             // Debug info
             WriteDebugThreadInfo("DirectoryView");
         }
@@ -76,7 +78,7 @@ namespace System.Windows.Forms.Samples
             fsw.Created += new FileSystemEventHandler(FileSystem_Created);
             fsw.Deleted += new FileSystemEventHandler(FileSystem_Deleted);
             fsw.Renamed += new RenamedEventHandler(FileSystem_Renamed);
-
+            
             // Debug info
             WriteDebugThreadInfo("DirectoryView");
         }
@@ -84,93 +86,108 @@ namespace System.Windows.Forms.Samples
         private void Fill(string dir,bool fillDir, Methods myActions)
         {
            
-            myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
+         //   myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
             // Suspend
             _suspend = true;
 
             // Clear
             Clear();
-
+            DirectoryView myDirectoryView = this;
             // Get directory info
             DirectoryInfo info = new DirectoryInfo(dir);
 
             // Set the current directory
-            _directory = new FileView(info, _myArrayList, _plusIcon, _minusIcon, ref _smallImageList, myActions);
+            _directory = new FileView(info, _myArrayList, _plusIcon, _minusIcon, ref _smallImageList, myActions, _nestingLevel);
 
             // Load child files and directories
             try {
                 if (fillDir) {
-                    foreach (FileSystemInfo di in info.GetDirectories()) {
-                      //  if (di.Name != "..IdealAutomate") {
-                            this.Add(new FileView(di, _myArrayList, _plusIcon, _minusIcon, ref _smallImageList, myActions));
-                            FileView myFileView = new FileView(di, _myArrayList, _plusIcon, _minusIcon, ref _smallImageList, myActions);
+                    Parallel.ForEach(info.GetDirectories(), di => {
+                        //  if (di.Name != "..IdealAutomate") {
+                        myDirectoryView.Add(new FileView(di, _myArrayList, _plusIcon, _minusIcon, ref _smallImageList, myActions,0));
+                        FileView myFileView = new FileView(di, _myArrayList, _plusIcon, _minusIcon, ref _smallImageList, myActions, 0);
 
-                            if (myFileView.CategoryState == "Expanded") {
-                                _nestingLevel++;
-                                myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
-                                DirectoryInfo info2 = new DirectoryInfo(di.FullName);
-                                foreach (FileSystemInfo di2 in info2.GetDirectories()) {
-                                  //  if (di2.Name != "..IdealAutomate") {
-                                        string categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToPublicPath(di2.FullName));
-                                        this.Add(new FileView(di2, _myArrayList, _plusIcon, _minusIcon, ref _smallImageList, myActions));
-                                        FileView myFileView2 = new FileView(di2, _myArrayList, _plusIcon, _minusIcon, ref _smallImageList, myActions);
-                                        if (myFileView2.CategoryState == "Expanded") {
+                        if (myFileView.CategoryState == "Expanded") {
+                            _nestingLevel++;
+                     //       myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
+                            DirectoryInfo info2 = new DirectoryInfo(di.FullName);
+                            Parallel.ForEach(info2.GetDirectories(), di2 => {
+                                //  if (di2.Name != "..IdealAutomate") {
+                                string categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToPublicPath(di2.FullName));
+                                myDirectoryView.Add(new FileView(di2, _myArrayList, _plusIcon, _minusIcon, ref _smallImageList, myActions,1));
+                                FileView myFileView2 = new FileView(di2, _myArrayList, _plusIcon, _minusIcon, ref _smallImageList, myActions, 1);
+                                if (myFileView2.CategoryState == "Expanded") {
+                                    _nestingLevel++;
+                                 //   myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
+                                    DirectoryInfo info3 = new DirectoryInfo(di2.FullName);
+                                    Parallel.ForEach(info3.GetDirectories(), di3 => {
+                                        // if (di3.Name != "..IdealAutomate") {
+                                        categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToPublicPath(di3.FullName));
+                                        myDirectoryView.Add(new FileView(di3, _myArrayList, _plusIcon, _minusIcon, ref _smallImageList, myActions, 2));
+                                        FileView myFileView3 = new FileView(di3, _myArrayList, _plusIcon, _minusIcon, ref _smallImageList, myActions, 2);
+                                        if (myFileView3.CategoryState == "Expanded") {
+                                            DirectoryInfo info4 = new DirectoryInfo(di3.FullName);
                                             _nestingLevel++;
-                                            myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
-                                            DirectoryInfo info3 = new DirectoryInfo(di2.FullName);
-                                            foreach (FileSystemInfo di3 in info3.GetDirectories()) {
-                                               // if (di3.Name != "..IdealAutomate") {
-                                                    categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToPublicPath(di3.FullName));
-                                                    this.Add(new FileView(di3, _myArrayList, _plusIcon, _minusIcon, ref _smallImageList, myActions));
-                                                    FileView myFileView3 = new FileView(di3, _myArrayList, _plusIcon, _minusIcon, ref _smallImageList, myActions);
-                                                    if (myFileView3.CategoryState == "Expanded") {
-                                                        DirectoryInfo info4 = new DirectoryInfo(di3.FullName);
-                                                        _nestingLevel++;
-                                                        myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
-                                                        foreach (FileSystemInfo di4 in info4.GetDirectories()) {
-                                                           // if (di4.Name != "..IdealAutomate") {
-                                                                categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToPublicPath(di4.FullName));
-                                                                this.Add(new FileView(di4, _myArrayList, _plusIcon, _minusIcon, ref _smallImageList, myActions));
-                                                                FileView myFileView4 = new FileView(di4, _myArrayList, _plusIcon, _minusIcon, ref _smallImageList, myActions);
-                                                                if (myFileView4.CategoryState == "Expanded") {
-                                                                    DirectoryInfo info5 = new DirectoryInfo(di4.FullName);
-                                                                    foreach (FileSystemInfo fi in info5.GetFiles()) {
-                                                                        this.Add(new FileView(fi, _myArrayList, _plusIcon, _minusIcon, ref _smallImageList, myActions));
-                                                                    }
-                                                                    _nestingLevel--;
-                                                                    myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
-                                                                }
-                                                          //  }
+                                        //    myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
+                                            Parallel.ForEach(info4.GetDirectories(), di4 => {
+                                                // if (di4.Name != "..IdealAutomate") {
+                                                categoryState = myActions.GetValueByPublicKeyForNonCurrentScript("CategoryState", myActions.ConvertFullFileNameToPublicPath(di4.FullName));
+                                                myDirectoryView.Add(new FileView(di4, _myArrayList, _plusIcon, _minusIcon, ref _smallImageList, myActions, 3));
+                                                FileView myFileView4 = new FileView(di4, _myArrayList, _plusIcon, _minusIcon, ref _smallImageList, myActions, 3);
+                                                if (myFileView4.CategoryState == "Expanded") {
+                                                    DirectoryInfo info5 = new DirectoryInfo(di4.FullName);
+                                                    Parallel.ForEach(info5.GetFiles(), fi => {
+                                                        if (fi != null) {
+                                                            myDirectoryView.Add(new FileView(fi, _myArrayList, _plusIcon, _minusIcon, ref _smallImageList, myActions, 4));
                                                         }
+                                                    });
+                                                    _nestingLevel--;
+                                         //           myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
+                                                }
+                                                //  }
+                                            });
 
-                                                        foreach (FileSystemInfo fi in info4.GetFiles()) {
-                                                            this.Add(new FileView(fi, _myArrayList, _plusIcon, _minusIcon, ref _smallImageList, myActions));
-                                                        }
-                                                        _nestingLevel--;
-                                                        myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
-                                                    }
-                                              //  }
-                                            }
-                                            foreach (FileSystemInfo fi in info3.GetFiles()) {
-                                                this.Add(new FileView(fi, _myArrayList, _plusIcon, _minusIcon, ref _smallImageList, myActions));
-                                            }
+                                            Parallel.ForEach(info4.GetFiles(), fi => {
+                                                if (fi != null) {
+                                                    myDirectoryView.Add(new FileView(fi, _myArrayList, _plusIcon, _minusIcon, ref _smallImageList, myActions, 3));
+                                                }
+                                            });
                                             _nestingLevel--;
-                                            myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
+                                     //       myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
                                         }
-                                   // }
+                                        //  }
+                                    });
+                                    Parallel.ForEach(info3.GetFiles(), fi => {
+                                        if (fi != null) {
+                                            myDirectoryView.Add(new FileView(fi, _myArrayList, _plusIcon, _minusIcon, ref _smallImageList, myActions, 2));
+                                        }
+                                    });
+                                    _nestingLevel--;
+                             //       myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
                                 }
+                                // }
+                            });
 
-                                foreach (FileSystemInfo fi in info2.GetFiles()) {
-                                    this.Add(new FileView(fi, _myArrayList, _plusIcon, _minusIcon, ref _smallImageList, myActions));
+                            Parallel.ForEach(info2.GetFiles(), fi => {
+                                if (fi != null) {
+                                    myDirectoryView.Add(new FileView(fi, _myArrayList, _plusIcon, _minusIcon, ref _smallImageList, myActions, 1));
                                 }
-                                _nestingLevel--;
-                                myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
-                            }
-                      //  }
-                    }
+                            });
+                            _nestingLevel--;
+                   //         myActions.SetValueByKey("NestingLevel", _nestingLevel.ToString());
+                        }
+                        //  }
+                    });
 
-                    foreach (FileSystemInfo fi in info.GetFiles()) {
-                        this.Add(new FileView(fi, _myArrayList, _plusIcon, _minusIcon, ref _smallImageList, myActions));
+                    Parallel.ForEach(info.GetFiles(), fi => {
+                        if (fi != null) {
+                            myDirectoryView.Add(new FileView(fi, _myArrayList, _plusIcon, _minusIcon, ref _smallImageList, myActions, 0));
+                        }
+                    });
+                    var mylistsorted = myDirectoryView.Where(x => x != null).OrderBy(x => x.NestingLevel).OrderBy(x => x.FullName).ToList();
+                    this.Clear();
+                    foreach (var item in mylistsorted) {
+                        this.Add(item);
                     }
                 }
             } catch (Exception ex) {
@@ -279,7 +296,7 @@ namespace System.Windows.Forms.Samples
 
         void FileSystem_Created(object sender, FileSystemEventArgs e)
         {
-            this.Add(new FileView(GetFileSystemInfo(e.FullPath), _myArrayList, _plusIcon, _minusIcon, ref _smallImageList, myActions));
+            this.Add(new FileView(GetFileSystemInfo(e.FullPath), _myArrayList, _plusIcon, _minusIcon, ref _smallImageList, myActions, _nestingLevel));
         }
 
         void FileSystem_Deleted(object sender, FileSystemEventArgs e)

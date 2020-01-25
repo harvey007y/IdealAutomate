@@ -2294,7 +2294,9 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             //LogMemory("refresh after directoryview created GetTotalMemory");
             //Logging.WriteLogSimple("refresh after directoryview created " + _stopwatch.Elapsed.ToString() + " GetTotalMemory " + String.Format("{0:n0}", GC.GetTotalMemory(true)));
 
-            this._CurrentFileViewBindingSource.DataSource = _dir;
+                this._CurrentFileViewBindingSource.DataSource = _dir;
+
+            
             //LogMemory("refresh after datasource created  GetTotalMemory ");
             //Logging.WriteLogSimple("refresh after datasource created " + _stopwatch.Elapsed.ToString() + " GetTotalMemory " + String.Format("{0:n0}", GC.GetTotalMemory(true)));
 

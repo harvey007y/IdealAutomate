@@ -70,10 +70,11 @@ namespace System.Windows.Forms.Samples
 
         //public FileView(string path) : this(new FileInfo(path)) {        }
 
-        public FileView(FileSystemInfo fileInfo, ArrayList myArrayList, Icon plusIcon, Icon minusIcon, ref List<ExtensionIcon> smallImageList, Methods pmyActions) {
+        public FileView(FileSystemInfo fileInfo, ArrayList myArrayList, Icon plusIcon, Icon minusIcon, ref List<ExtensionIcon> smallImageList, Methods pmyActions, int nestingLevel) {
             _myArrayList = myArrayList;
             _plusIcon = plusIcon;
             _minusIcon = minusIcon;
+            _nestingLevel = nestingLevel;
             _smallImageList = smallImageList;
             if (pmyActions == null) {
                 pmyActions = new Methods();
@@ -183,7 +184,7 @@ namespace System.Windows.Forms.Samples
 
                 // Get ICON
                 CategoryState = "";
-                NestingLevel = myActions.GetValueByKeyAsInt("NestingLevel");
+
 
                 try {
                     

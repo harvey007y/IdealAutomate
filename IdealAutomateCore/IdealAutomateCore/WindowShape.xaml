@@ -14,7 +14,7 @@
                 <DropShadowEffect BlurRadius="20" Color="White"  ShadowDepth="0" />
             </TextBlock.Effect>
         </TextBlock>
-        <TextBlock Height="125" Margin="10,36,109,0" Name="lblContent" VerticalAlignment="Top" FontWeight="Bold" Foreground="Azure" TextWrapping="Wrap">
+        <TextBlock  Margin="10,36,109,0" Name="lblContent" VerticalAlignment="Top" FontWeight="Bold" Foreground="Azure" TextWrapping="Wrap">
             Here is what you need to do to get started
             <TextBlock.BitmapEffect>
                 <OuterGlowBitmapEffect GlowColor="Azure" GlowSize="30" Noise="1" Opacity="0.4" />

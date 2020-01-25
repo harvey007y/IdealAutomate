@@ -63,10 +63,10 @@
     <ApplicationIcon>Resources\Stopwatch.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>19CD5932A307D006B846C3CF07C0DA9D5F007ECE</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>5AE475126B8B566EBA5391D75D593D9A80616F76</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>IdealAutomateScriptRecorder_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>IdealAutomateScriptRecorder_2_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>false</GenerateManifests>
@@ -117,6 +117,7 @@
     <None Include="HealthyWorkMate_3_TemporaryKey.pfx" />
     <None Include="HealthyWorkMate_TemporaryKey.pfx" />
     <None Include="IdealAutomateScriptRecorder_1_TemporaryKey.pfx" />
+    <None Include="IdealAutomateScriptRecorder_2_TemporaryKey.pfx" />
     <None Include="IdealAutomateScriptRecorder_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
