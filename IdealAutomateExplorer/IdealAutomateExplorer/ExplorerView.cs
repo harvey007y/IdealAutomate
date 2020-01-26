@@ -47,6 +47,7 @@ using System.Runtime;
 
 
 
+
 #endregion
 
 namespace System.Windows.Forms.Samples {
@@ -2338,7 +2339,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             cs.Width = 110;
             _selectedRow = myActions.GetValueByKeyAsInt("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow");
 
-            if (_CurrentDataGridView.Rows.Count > _selectedRow && _CurrentDataGridView.Rows[_selectedRow].Cells.Count > 1) {
+            if (_selectedRow > -1 && _CurrentDataGridView.Rows.Count > _selectedRow && _CurrentDataGridView.Rows[_selectedRow].Cells.Count > 1) {
                 //_CurrentDataGridView.Rows[selectedRow].Cells[1].Selected = true;
                 string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
                 if (detailsMenuItemChecked == "True") {
@@ -10249,6 +10250,31 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         private void txtMetaDescription_MouseLeave(object sender, EventArgs e) {
             interactiveToolTip1.Hide();
+        }
+
+        private void debloatToolStripMenuItem_Click(object sender, EventArgs e) {
+                try {
+                    string strApplicationPath = System.AppDomain.CurrentDomain.BaseDirectory;
+                    string fileName = strApplicationPath + "Debloat.bat";
+                string fileName2 = @"DebloatScript.ps1";
+                    myActions.RunSync(fileName, fileName2);
+                } catch (Exception ex) {
+                    MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
+                }
+            }
+
+
+        private void debloatToolStripMenuItem_MouseHover(object sender, EventArgs e) {
+            //  buttonToolTip.SetToolTip(pictureBox1, "Parallel Search is a tool that uses parallel processing to rapidly find text in any file in a folder \r\nParallel processing makes this tool much faster than any other tool I have tested\r\nContext-menu on the search results allows you to quickly go to line of text in Notepad++, Visual Studio, or IdealAutomateExplorer");
+            // position the tooltip with its stem towards the right end of the button
+            System.Drawing.Point myPoint = new System.Drawing.Point(pictureBox1.Width - (pictureBox1.Width / 2), 0);
+            content.MyContent = "Windows Debloat allows you to speed up your windows 10 computer by using powershell to  \r\n";
+            content.MyContent += "remove unnecessay software. \r\n\r\n";
+            content.MyContent += "The first 5 minutes of the following youtube video explains how to use the tool.\r\n\r\n";
+            content.MyContent += "The video is entitled  Clean Up Windows 10 | 3 Steps For A Faster Computer: ";
+            content.MyLink = "https://youtube.com/watch?v=mWHiP9K8fQ0";
+            DisplayToolTip(sender);
+            // interactiveToolTip1.Show(content, pictureBox1, myPoint, StemPosition.BottomLeft, 10000);
         }
         //private void LogMemory(string msg) {
         //    _memoryCurr = GC.GetTotalMemory(true);

@@ -150,6 +150,8 @@ namespace System.Windows.Forms.Samples
             this.textToSpeechToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.centralAccessReaderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.speakItToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.windowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.debloatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem10 = new System.Windows.Forms.ToolStripMenuItem();
             this.courseraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pluralsightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -669,7 +671,8 @@ namespace System.Windows.Forms.Samples
             this.toolStripMenuItem15,
             this.toolStripMenuItem16,
             this.sqlToolStripMenuItem,
-            this.textToSpeechToolStripMenuItem});
+            this.textToSpeechToolStripMenuItem,
+            this.windowsToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -681,7 +684,7 @@ namespace System.Windows.Forms.Samples
             this.googleDriveToolStripMenuItem,
             this.oneDriveToolStripMenuItem});
             this.toolStripMenuItem11.Name = "toolStripMenuItem11";
-            this.toolStripMenuItem11.Size = new System.Drawing.Size(172, 22);
+            this.toolStripMenuItem11.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem11.Text = "Cloud Storage";
             // 
             // toolStripMenuItem12
@@ -717,7 +720,7 @@ namespace System.Windows.Forms.Samples
             this.visualStudio2015ToolStripMenuItem,
             this.visualStudio2017ToolStripMenuItem});
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(172, 22);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem2.Text = "Coding Tools";
             // 
             // instantCToolStripMenuItem
@@ -766,7 +769,7 @@ namespace System.Windows.Forms.Samples
             this.compareItToolStripMenuItem,
             this.synchronizeItToolStripMenuItem});
             this.toolStripMenuItem13.Name = "toolStripMenuItem13";
-            this.toolStripMenuItem13.Size = new System.Drawing.Size(172, 22);
+            this.toolStripMenuItem13.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem13.Text = "Comparison Tools";
             // 
             // compareItToolStripMenuItem
@@ -795,7 +798,7 @@ namespace System.Windows.Forms.Samples
             this.servicesToolStripMenuItem,
             this.taskManagerToolStripMenuItem});
             this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(172, 22);
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem6.Text = "Control Panel";
             // 
             // componentServicesToolStripMenuItem
@@ -853,7 +856,7 @@ namespace System.Windows.Forms.Samples
             this.taskManagerToolStripMenuItem1,
             this.winListerToolStripMenuItem});
             this.toolStripMenuItem7.Name = "toolStripMenuItem7";
-            this.toolStripMenuItem7.Size = new System.Drawing.Size(172, 22);
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem7.Text = "Debugging Tools";
             // 
             // toolStripMenuItemDebugTrace
@@ -933,7 +936,7 @@ namespace System.Windows.Forms.Samples
             this.toolStripMenuItem14.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.filezillaToolStripMenuItem});
             this.toolStripMenuItem14.Name = "toolStripMenuItem14";
-            this.toolStripMenuItem14.Size = new System.Drawing.Size(172, 22);
+            this.toolStripMenuItem14.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem14.Text = "FTP";
             // 
             // filezillaToolStripMenuItem
@@ -951,7 +954,7 @@ namespace System.Windows.Forms.Samples
             this.fiddlerToolStripMenuItem1,
             this.postmanToolStripMenuItem});
             this.toolStripMenuItem8.Name = "toolStripMenuItem8";
-            this.toolStripMenuItem8.Size = new System.Drawing.Size(172, 22);
+            this.toolStripMenuItem8.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem8.Text = "Http Tools";
             // 
             // curlToolStripMenuItem
@@ -983,7 +986,7 @@ namespace System.Windows.Forms.Samples
             this.toolStripMenuItemImages.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.snippingAutomationToolToolStripMenuItem});
             this.toolStripMenuItemImages.Name = "toolStripMenuItemImages";
-            this.toolStripMenuItemImages.Size = new System.Drawing.Size(172, 22);
+            this.toolStripMenuItemImages.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItemImages.Text = "Image Processing";
             // 
             // snippingAutomationToolToolStripMenuItem
@@ -1000,7 +1003,7 @@ namespace System.Windows.Forms.Samples
             this.toolStripMenuItem18,
             this.videoTrafficBlueprintToolStripMenuItem});
             this.toolStripMenuItem17.Name = "toolStripMenuItem17";
-            this.toolStripMenuItem17.Size = new System.Drawing.Size(172, 22);
+            this.toolStripMenuItem17.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem17.Text = "Internet Marketing";
             // 
             // toolStripMenuItem18
@@ -1024,7 +1027,7 @@ namespace System.Windows.Forms.Samples
             this.toolStripMenuItem9.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripComboBox2});
             this.toolStripMenuItem9.Name = "toolStripMenuItem9";
-            this.toolStripMenuItem9.Size = new System.Drawing.Size(172, 22);
+            this.toolStripMenuItem9.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem9.Text = "Preferences";
             this.toolStripMenuItem9.MouseHover += new System.EventHandler(this.toolStripMenuItem9_MouseHover);
             // 
@@ -1042,7 +1045,7 @@ namespace System.Windows.Forms.Samples
             this.toolStripMenuItem15.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.flashbackExpressToolStripMenuItem});
             this.toolStripMenuItem15.Name = "toolStripMenuItem15";
-            this.toolStripMenuItem15.Size = new System.Drawing.Size(172, 22);
+            this.toolStripMenuItem15.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem15.Text = "Screen Recording";
             // 
             // flashbackExpressToolStripMenuItem
@@ -1065,7 +1068,7 @@ namespace System.Windows.Forms.Samples
             this.tumblrToolStripMenuItem,
             this.twitterToolStripMenuItem});
             this.toolStripMenuItem16.Name = "toolStripMenuItem16";
-            this.toolStripMenuItem16.Size = new System.Drawing.Size(172, 22);
+            this.toolStripMenuItem16.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem16.Text = "Social";
             // 
             // facebookToolStripMenuItem
@@ -1127,7 +1130,7 @@ namespace System.Windows.Forms.Samples
             this.sqlToGridToolStripMenuItem,
             this.sSMSToolStripMenuItem});
             this.sqlToolStripMenuItem.Name = "sqlToolStripMenuItem";
-            this.sqlToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.sqlToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.sqlToolStripMenuItem.Text = "Sql";
             // 
             // findColumnsToolStripMenuItem
@@ -1182,7 +1185,7 @@ namespace System.Windows.Forms.Samples
             this.centralAccessReaderToolStripMenuItem,
             this.speakItToolStripMenuItem});
             this.textToSpeechToolStripMenuItem.Name = "textToSpeechToolStripMenuItem";
-            this.textToSpeechToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.textToSpeechToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.textToSpeechToolStripMenuItem.Text = "TextToSpeech";
             // 
             // centralAccessReaderToolStripMenuItem
@@ -1200,6 +1203,22 @@ namespace System.Windows.Forms.Samples
             this.speakItToolStripMenuItem.Text = "SpeakIt";
             this.speakItToolStripMenuItem.Click += new System.EventHandler(this.speakItToolStripMenuItem_Click);
             this.speakItToolStripMenuItem.MouseHover += new System.EventHandler(this.speakItToolStripMenuItem_MouseHover);
+            // 
+            // windowsToolStripMenuItem
+            // 
+            this.windowsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.debloatToolStripMenuItem});
+            this.windowsToolStripMenuItem.Name = "windowsToolStripMenuItem";
+            this.windowsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.windowsToolStripMenuItem.Text = "Windows";
+            // 
+            // debloatToolStripMenuItem
+            // 
+            this.debloatToolStripMenuItem.Name = "debloatToolStripMenuItem";
+            this.debloatToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.debloatToolStripMenuItem.Text = "Debloat";
+            this.debloatToolStripMenuItem.Click += new System.EventHandler(this.debloatToolStripMenuItem_Click);
+            this.debloatToolStripMenuItem.MouseHover += new System.EventHandler(this.debloatToolStripMenuItem_MouseHover);
             // 
             // toolStripMenuItem10
             // 
@@ -1506,6 +1525,8 @@ namespace System.Windows.Forms.Samples
         private ToolStripMenuItem toolStripMenuItemDebugTrace;
         private Digitalis.GUI.Controls.InteractiveToolTip interactiveToolTip1;
         private TextBox txtMetaDescription;
+        private ToolStripMenuItem windowsToolStripMenuItem;
+        private ToolStripMenuItem debloatToolStripMenuItem;
     }
 }
 
