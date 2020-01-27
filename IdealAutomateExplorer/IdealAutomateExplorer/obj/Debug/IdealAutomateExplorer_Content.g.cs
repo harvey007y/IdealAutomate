@@ -9,6 +9,8 @@
 //------------------------------------------------------------------------------
 
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("buildprojects.bat")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("debloat.bat")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("debloatscript.ps1")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("getcursorposdemo.exe")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("idealsqltracer.exe")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/add.png")]

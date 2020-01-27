@@ -1920,7 +1920,7 @@ namespace IdealAutomate.Core {
                     myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
 
-                    string strButtonPressed = WindowMultipleControls(ref myListControlEntity, 600, 800, 0, 0);
+                    string strButtonPressed = WindowMultipleControls(ref myListControlEntity, 600, 1200, 0, 0);
                     if (strButtonPressed != "btnCancel") {
 
                         myListControlEntity = new List<ControlEntity>();
@@ -2078,7 +2078,7 @@ namespace IdealAutomate.Core {
                     myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
 
-                    string strButtonPressed = WindowMultipleControls(ref myListControlEntity, 600, 800, 0, 0);
+                    string strButtonPressed = WindowMultipleControls(ref myListControlEntity, 600, 1200, 0, 0);
                     if (strButtonPressed != "btnCancel") {
 
                         myListControlEntity = new List<ControlEntity>();

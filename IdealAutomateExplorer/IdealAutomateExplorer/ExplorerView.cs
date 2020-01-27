@@ -10256,7 +10256,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 try {
                     string strApplicationPath = System.AppDomain.CurrentDomain.BaseDirectory;
                     string fileName = strApplicationPath + "Debloat.bat";
-                string fileName2 = @"DebloatScript.ps1";
+                string fileName2 = strApplicationPath + @"DebloatScript.ps1";
                     myActions.RunSync(fileName, fileName2);
                 } catch (Exception ex) {
                     MessageBox.Show("Exception Message: " + ex.Message + " InnerException: " + ex.InnerException);
