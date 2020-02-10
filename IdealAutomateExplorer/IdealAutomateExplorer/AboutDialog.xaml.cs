@@ -19,17 +19,18 @@ namespace Hardcodet.Wpf.Samples
 
             //set version number
             //Version version = typeof(TreeViewBase<object>).Assembly.GetName().Version;
-            //string version = null;
-            //try {
-            //    //// get deployment version
-            //    version = ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString();
-            //} catch (InvalidDeploymentException) {
-            //    //// you cannot read publish version when app isn't installed 
-            //    //// (e.g. during debug)
-            //    version = "not installed";
-            //}
-           // version = "not installed";
-            txtVersion.Text = GetAppVersion();
+            string version = null;
+            try {
+                //// get deployment version
+                var obj = Assembly.GetExecutingAssembly().GetName().Version;
+                 version = string.Format("Application Version {0}.{1}", obj.Build, obj.Revision);
+            } catch (Exception ex) {
+                //// you cannot read publish version when app isn't installed 
+                //// (e.g. during debug)
+                version = "not installed";
+            }
+            // version = "not installed";
+            txtVersion.Text = version;
             txtYear.Text = System.DateTime.Now.Year.ToString();
     }
         public static string GetAppVersion() {
