@@ -585,7 +585,9 @@ Public Class Form1
             sbg.Length = 0
         End If
         myClip = ""
-        myActions.RunSync("C:\Users\harve\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\bin\Debug\ScriptGenerator.exe", "")
+        Dim appPath As String = System.Windows.Forms.Application.StartupPath()
+        Dim scriptGeneratorPath As String = appPath.Replace("IdealAutomateScriptRecorder\bin\Debug", "ScriptGenerator\ScriptGenerator\bin\Debug\ScriptGenerator.exe")
+        myActions.RunSync(scriptGeneratorPath, "")
         myClip = myActions.PutClipboardInEntity()
         If myClip.Length > 0 Then
             listActions.Add(myClip)

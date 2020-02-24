@@ -79,7 +79,6 @@ C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGene
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\bin\Debug\IdealAutomateCore.pdb
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\bin\Debug\IdealAutomateCore.xml
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\bin\Debug\WindowsInput.xml
-C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\obj\x86\Debug\ScriptGenerator.csprojAssemblyReference.cache
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\obj\x86\Debug\MainWindow.baml
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\obj\x86\Debug\MainWindow.g.cs
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\obj\x86\Debug\App.g.cs
@@ -88,7 +87,6 @@ C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGene
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\obj\x86\Debug\ScriptGenerator.g.resources
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\obj\x86\Debug\ScriptGenerator.Properties.Resources.resources
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\obj\x86\Debug\ScriptGenerator.csproj.GenerateResource.cache
-C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\obj\x86\Debug\ScriptGenerator.csproj.CoreCompileInputs.cache
-C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\obj\x86\Debug\ScriptGenerator.csproj.CopyComplete
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\obj\x86\Debug\ScriptGenerator.exe
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\obj\x86\Debug\ScriptGenerator.pdb
+C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\obj\x86\Debug\ScriptGenerator.csprojResolveAssemblyReference.cache
