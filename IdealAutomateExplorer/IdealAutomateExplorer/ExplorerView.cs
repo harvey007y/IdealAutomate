@@ -10276,6 +10276,13 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             DisplayToolTip(sender);
             // interactiveToolTip1.Show(content, pictureBox1, myPoint, StemPosition.BottomLeft, 10000);
         }
+
+        private void stopWatchToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            StopwatchPage dlg = new StopwatchPage();
+            ElementHost.EnableModelessKeyboardInterop(dlg);
+            dlg.Show();
+        }
         //private void LogMemory(string msg) {
         //    _memoryCurr = GC.GetTotalMemory(true);
         //    _memoryGain = _memoryCurr - _memoryPrev;

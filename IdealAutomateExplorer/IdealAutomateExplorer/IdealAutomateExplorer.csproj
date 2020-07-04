@@ -37,7 +37,7 @@
     <InstallUrl>http://idealautomate.com/idealautomateexplorer/</InstallUrl>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>131</ApplicationRevision>
+    <ApplicationRevision>132</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -147,6 +147,7 @@
     <Compile Include="ExtensionIcon.cs" />
     <Compile Include="GlobalMouseHandler.cs" />
     <Compile Include="NativeMethods.cs" />
+    <Compile Include="Pages\Stopwatch.xaml.cs" />
     <Compile Include="SystemIconsImageList.cs" />
     <Compile Include="TextLineInfo.cs" />
     <Compile Include="OpenedFile.cs" />
@@ -1115,6 +1116,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\SQLToGrid.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\StopwatchPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

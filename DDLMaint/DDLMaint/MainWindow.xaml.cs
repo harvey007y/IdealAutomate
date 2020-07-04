@@ -188,7 +188,7 @@ namespace DDLMaint {
                 myControlEntity.ControlType = ControlType.ComboBox;
                 cbp.Clear();
                 cbp.Add(new ComboBoxPair("--Select DDL to Delete ---", "--Select DDL to Delete ---"));
-                SqlConnection con = new SqlConnection("Server=(local)\\SQLEXPRESS;Initial Catalog=IdealAutomateDB;Integrated Security=SSPI");
+                SqlConnection con = new SqlConnection("Server=(local)\\SQLEXPRESS02;Initial Catalog=IdealAutomateDB;Integrated Security=SSPI");
 
                 SqlCommand cmd = new SqlCommand();
 
@@ -232,7 +232,7 @@ namespace DDLMaint {
                 string strDefaultSelectedValue = myListControlEntity.Find(x => x.ID == "txtDefaultSelectedValue").Text;
                 string strddlIds = myListControlEntity.Find(x => x.ID == "cbxddlIds").SelectedValue;
                 if (strButtonPressed == "btnAddDDL") {
-                    SqlConnection thisConnection = new SqlConnection("server=.\\SQLEXPRESS;" + "integrated security=sspi;database=IdealAutomateDB");
+                    SqlConnection thisConnection = new SqlConnection("server=.\\SQLEXPRESS02;" + "integrated security=sspi;database=IdealAutomateDB");
                     //Create Command object        
                     SqlCommand nonqueryCommand = thisConnection.CreateCommand();
                     SqlCommand nonqueryCommand_delete = thisConnection.CreateCommand();
@@ -280,7 +280,7 @@ namespace DDLMaint {
                     goto DisplayMainMenu;
                 }
                 if (strButtonPressed == "btnDeleteDDL") {
-                    SqlConnection thisConnection = new SqlConnection("server=.\\SQLEXPRESS;" + "integrated security=sspi;database=IdealAutomateDB");
+                    SqlConnection thisConnection = new SqlConnection("server=.\\SQLEXPRESS02;" + "integrated security=sspi;database=IdealAutomateDB");
                     //Create Command object        
                     SqlCommand nonqueryCommand = thisConnection.CreateCommand();
                     SqlCommand nonqueryCommand_delete = thisConnection.CreateCommand();
@@ -356,7 +356,7 @@ namespace DDLMaint {
                 myControlEntity.ControlType = ControlType.ComboBox;
                 cbp.Clear();
                 cbp.Add(new ComboBoxPair("--Select Parent DDL to Maintain ---", "-1"));
-                SqlConnection con = new SqlConnection("Server=(local)\\SQLEXPRESS;Initial Catalog=IdealAutomateDB;Integrated Security=SSPI");
+                SqlConnection con = new SqlConnection("Server=(local)\\SQLEXPRESS02;Initial Catalog=IdealAutomateDB;Integrated Security=SSPI");
 
                 SqlCommand cmd = new SqlCommand();
 
@@ -398,7 +398,7 @@ namespace DDLMaint {
                 myControlEntity.ControlType = ControlType.ComboBox;
                 cbp1.Clear();
                 cbp1.Add(new ComboBoxPair("--Select DDL to Maintain ---", "--Select DDL to Maintain ---"));
-                con = new SqlConnection("Server=(local)\\SQLEXPRESS;Initial Catalog=IdealAutomateDB;Integrated Security=SSPI");
+                con = new SqlConnection("Server=(local)\\SQLEXPRESS02;Initial Catalog=IdealAutomateDB;Integrated Security=SSPI");
 
                 cmd = new SqlCommand();
 
@@ -470,7 +470,7 @@ namespace DDLMaint {
                         myControlEntity.ControlType = ControlType.ComboBox;
                         cbp.Clear();
                         cbp.Add(new ComboBoxPair("--Select Optional Parent Item ---", "-1"));
-                        con = new SqlConnection("Server=(local)\\SQLEXPRESS;Initial Catalog=IdealAutomateDB;Integrated Security=SSPI");
+                        con = new SqlConnection("Server=(local)\\SQLEXPRESS02;Initial Catalog=IdealAutomateDB;Integrated Security=SSPI");
 
                         cmd = new SqlCommand();
 
@@ -561,7 +561,7 @@ namespace DDLMaint {
                     // if it does not exist, add it to DDLItems and get the inc
                     // add record to LK table with DDLNameInc and DDLItemInc if it does 
                     // not already exist
-                    SqlConnection thisConnection = new SqlConnection("server=.\\SQLEXPRESS;" + "integrated security=sspi;database=IdealAutomateDB");
+                    SqlConnection thisConnection = new SqlConnection("server=.\\SQLEXPRESS02;" + "integrated security=sspi;database=IdealAutomateDB");
                     //Create Command object        
                     SqlCommand nonqueryCommand = thisConnection.CreateCommand();
                     SqlCommand nonqueryCommand_delete = thisConnection.CreateCommand();
@@ -647,7 +647,7 @@ namespace DDLMaint {
                     myControlEntity.ControlType = ControlType.ComboBox;
                     cbp1.Clear();
                     cbp1.Add(new ComboBoxPair("--Select Item to Delete ---", "--Select Item to Delete ---"));
-                    con = new SqlConnection("Server=(local)\\SQLEXPRESS;Initial Catalog=IdealAutomateDB;Integrated Security=SSPI");
+                    con = new SqlConnection("Server=(local)\\SQLEXPRESS02;Initial Catalog=IdealAutomateDB;Integrated Security=SSPI");
 
                     cmd = new SqlCommand();
 
@@ -697,7 +697,7 @@ namespace DDLMaint {
                     string strddlItems = myListControlEntity.Find(x => x.ID == "cbxddlItems").SelectedValue;
 
 
-                    SqlConnection thisConnection = new SqlConnection("server=.\\SQLEXPRESS;" + "integrated security=sspi;database=IdealAutomateDB");
+                    SqlConnection thisConnection = new SqlConnection("server=.\\SQLEXPRESS02;" + "integrated security=sspi;database=IdealAutomateDB");
                     //Create Command object        
                     SqlCommand nonqueryCommand = thisConnection.CreateCommand();
                     SqlCommand nonqueryCommand_delete = thisConnection.CreateCommand();

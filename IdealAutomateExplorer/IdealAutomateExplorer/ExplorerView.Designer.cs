@@ -150,6 +150,7 @@ namespace System.Windows.Forms.Samples
             this.textToSpeechToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.centralAccessReaderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.speakItToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.stopWatchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.debloatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem10 = new System.Windows.Forms.ToolStripMenuItem();
@@ -169,8 +170,8 @@ namespace System.Windows.Forms.Samples
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.interactiveToolTip1 = new Digitalis.GUI.Controls.InteractiveToolTip(this.components);
             this.txtMetaDescription = new System.Windows.Forms.TextBox();
+            this.interactiveToolTip1 = new Digitalis.GUI.Controls.InteractiveToolTip(this.components);
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource)).BeginInit();
             this.toolBar.SuspendLayout();
@@ -671,6 +672,7 @@ namespace System.Windows.Forms.Samples
             this.toolStripMenuItem15,
             this.toolStripMenuItem16,
             this.sqlToolStripMenuItem,
+            this.stopWatchToolStripMenuItem,
             this.textToSpeechToolStripMenuItem,
             this.windowsToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
@@ -1204,6 +1206,13 @@ namespace System.Windows.Forms.Samples
             this.speakItToolStripMenuItem.Click += new System.EventHandler(this.speakItToolStripMenuItem_Click);
             this.speakItToolStripMenuItem.MouseHover += new System.EventHandler(this.speakItToolStripMenuItem_MouseHover);
             // 
+            // stopWatchToolStripMenuItem
+            // 
+            this.stopWatchToolStripMenuItem.Name = "stopWatchToolStripMenuItem";
+            this.stopWatchToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.stopWatchToolStripMenuItem.Text = "StopWatch";
+            this.stopWatchToolStripMenuItem.Click += new System.EventHandler(this.stopWatchToolStripMenuItem_Click);
+            // 
             // windowsToolStripMenuItem
             // 
             this.windowsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1215,7 +1224,7 @@ namespace System.Windows.Forms.Samples
             // debloatToolStripMenuItem
             // 
             this.debloatToolStripMenuItem.Name = "debloatToolStripMenuItem";
-            this.debloatToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.debloatToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
             this.debloatToolStripMenuItem.Text = "Debloat";
             this.debloatToolStripMenuItem.Click += new System.EventHandler(this.debloatToolStripMenuItem_Click);
             this.debloatToolStripMenuItem.MouseHover += new System.EventHandler(this.debloatToolStripMenuItem_MouseHover);
@@ -1333,11 +1342,6 @@ namespace System.Windows.Forms.Samples
             this.tabPage3.ToolTipText = "Add New Tab";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // interactiveToolTip1
-            // 
-            this.interactiveToolTip1.UseAnimation = true;
-            this.interactiveToolTip1.UseFading = true;
-            // 
             // txtMetaDescription
             // 
             this.txtMetaDescription.Location = new System.Drawing.Point(837, 36);
@@ -1348,6 +1352,11 @@ namespace System.Windows.Forms.Samples
             this.txtMetaDescription.Text = "MetaDescription for Selected File";
             this.txtMetaDescription.MouseLeave += new System.EventHandler(this.txtMetaDescription_MouseLeave);
             this.txtMetaDescription.MouseHover += new System.EventHandler(this.txtMetaDescription_MouseHover);
+            // 
+            // interactiveToolTip1
+            // 
+            this.interactiveToolTip1.UseAnimation = true;
+            this.interactiveToolTip1.UseFading = true;
             // 
             // ExplorerView
             // 
@@ -1527,6 +1536,7 @@ namespace System.Windows.Forms.Samples
         private TextBox txtMetaDescription;
         private ToolStripMenuItem windowsToolStripMenuItem;
         private ToolStripMenuItem debloatToolStripMenuItem;
+        private ToolStripMenuItem stopWatchToolStripMenuItem;
     }
 }
 

@@ -89,4 +89,6 @@ C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGene
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\obj\x86\Debug\ScriptGenerator.csproj.GenerateResource.cache
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\obj\x86\Debug\ScriptGenerator.exe
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\obj\x86\Debug\ScriptGenerator.pdb
-C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\obj\x86\Debug\ScriptGenerator.csprojResolveAssemblyReference.cache
+C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\obj\x86\Debug\ScriptGenerator.csproj.CoreCompileInputs.cache
+C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\obj\x86\Debug\ScriptGenerator.csproj.CopyComplete
+C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\obj\x86\Debug\ScriptGenerator.csprojAssemblyReference.cache

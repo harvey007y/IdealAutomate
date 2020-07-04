@@ -1153,13 +1153,13 @@ fAltTab);
         //Thread thread = new Thread(new ThreadStart(() => {
         try {
 
-          for (int i = 0; i < 45; i++) {
+          for (int i = 0; i < 145; i++) {
             if (Clipboard.GetData(DataFormats.Text) == null) {
               Sleep(100);
             } else {
               break;
             }
-            if (i == 10 || i == 20 || i == 30 || i == 40) {
+            if (i == 10 || i == 20 || i == 30 || i == 40 || i == 50 || i == 60 || i == 70 || i == 80 || i == 90 || i == 100 || i == 110 || i == 120 || i == 130 || i == 140) {
               TypeText("^(c)", 500);
               Sleep(1001);
               // System.Diagnostics.Debugger.Break();
