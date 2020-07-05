@@ -37,7 +37,7 @@ Instead of requiring that you keep all of your information in some third-party s
   <br /><br />
 Here is a screenshot of the Stopwatch that is included under tools menu item:<br /><br />
 <center>
-<a href="https://github.com/harvey007y/EmployeeBenefits/blob/master/EmployeeBenefits.Site/Images/Details.PNG" target="_blank"><img src="https://github.com/harvey007y/EmployeeBenefits/blob/master/EmployeeBenefits.Site/Images/Details.PNG" border="0" alt="Screenshot for Employee Details Page" width="800px"/><br />(click to enlarge)</a>
+<a href="https://github.com/harvey007y/IdealAutomate/blob/master/IdealAutomateExplorer/IdealAutomateExplorer/Images/Stopwatch.PNG" target="_blank"><img src="https://github.com/harvey007y/IdealAutomate/blob/master/IdealAutomateExplorer/IdealAutomateExplorer/Images/Stopwatch.PNG" border="0" alt="Screenshot for Stopwatch" width="800px"/><br />(click to enlarge)</a>
  <br /><br /></center>
 <b>Training Videos:</b>
 <br />
