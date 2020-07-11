@@ -2,7 +2,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobShow", "JobShow\JobShow.csproj", "{31ACA4F6-2E8C-49A2-AB2D-AF702125BBFB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataGridFilterLibrary", "DataGridFilterLibrary\DataGridFilterLibrary.csproj", "{512FD53F-9AD1-46A1-A961-9FABDFAD50C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JobShow", "DataGridFilterTest\JobShow.csproj", "{BA4417D8-3C70-4016-BFCC-56CFDC3A58F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,12 +14,22 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{31ACA4F6-2E8C-49A2-AB2D-AF702125BBFB}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{31ACA4F6-2E8C-49A2-AB2D-AF702125BBFB}.Debug|x86.ActiveCfg = Debug|x86
-		{31ACA4F6-2E8C-49A2-AB2D-AF702125BBFB}.Debug|x86.Build.0 = Debug|x86
-		{31ACA4F6-2E8C-49A2-AB2D-AF702125BBFB}.Release|Any CPU.ActiveCfg = Release|x86
-		{31ACA4F6-2E8C-49A2-AB2D-AF702125BBFB}.Release|x86.ActiveCfg = Release|x86
-		{31ACA4F6-2E8C-49A2-AB2D-AF702125BBFB}.Release|x86.Build.0 = Release|x86
+		{512FD53F-9AD1-46A1-A961-9FABDFAD50C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{512FD53F-9AD1-46A1-A961-9FABDFAD50C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{512FD53F-9AD1-46A1-A961-9FABDFAD50C5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{512FD53F-9AD1-46A1-A961-9FABDFAD50C5}.Debug|x86.Build.0 = Debug|Any CPU
+		{512FD53F-9AD1-46A1-A961-9FABDFAD50C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{512FD53F-9AD1-46A1-A961-9FABDFAD50C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{512FD53F-9AD1-46A1-A961-9FABDFAD50C5}.Release|x86.ActiveCfg = Release|Any CPU
+		{512FD53F-9AD1-46A1-A961-9FABDFAD50C5}.Release|x86.Build.0 = Release|Any CPU
+		{BA4417D8-3C70-4016-BFCC-56CFDC3A58F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA4417D8-3C70-4016-BFCC-56CFDC3A58F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA4417D8-3C70-4016-BFCC-56CFDC3A58F9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BA4417D8-3C70-4016-BFCC-56CFDC3A58F9}.Debug|x86.Build.0 = Debug|Any CPU
+		{BA4417D8-3C70-4016-BFCC-56CFDC3A58F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA4417D8-3C70-4016-BFCC-56CFDC3A58F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA4417D8-3C70-4016-BFCC-56CFDC3A58F9}.Release|x86.ActiveCfg = Release|Any CPU
+		{BA4417D8-3C70-4016-BFCC-56CFDC3A58F9}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

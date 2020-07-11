@@ -1,0 +1,25 @@
+﻿<Application x:Class="DataGridFilterTest.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:DataGridFilterTest" 
+    StartupUri="Window1.xaml">
+    <Application.Resources>
+        <!-- Set up the collections that will be used to bind the ItemsSource 
+        properties to display the list of items in the dropdown lists.
+        -->
+        <x:Array x:Key="ColorListString" Type="local:ComboBoxItemString">
+            <local:ComboBoxItemString ValueString = "Applied"/>
+            <local:ComboBoxItemString ValueString = "Not Applied"/>
+            <local:ComboBoxItemString ValueString = "Not Interested"/>
+            <local:ComboBoxItemString ValueString = "Not Qualified"/>
+            <local:ComboBoxItemString ValueString  = "Not Remote"/>
+            <local:ComboBoxItemString ValueString  = "Closed"/>
+            <local:ComboBoxItemString ValueString  = "Duplicate"/>
+            <local:ComboBoxItemString ValueString  = "Too much travel"/>
+            <local:ComboBoxItemString ValueString  = "Requires Relocation"/>
+            <local:ComboBoxItemString ValueString  = "Wrong location"/>
+            <local:ComboBoxItemString ValueString  = "Broken Link"/>
+        </x:Array>
+        
+    </Application.Resources>
+</Application>
