@@ -88,14 +88,18 @@ namespace JobSearch
             {
 
                 //jobBoard = jobBoardx;
-                //if (jobBoard == _JobBoardName.LinkedIn)
+                if (jobBoardx == _JobBoardName.LinkedIn)
+                {
+                    continue;
+                }
+                //if (jobBoardx == _JobBoardName.Indeed)
                 //{
                 //    continue;
                 //}
-                //if (jobBoard == _JobBoardName.Indeed)
-                //{
-                //    continue;
-                //}
+                if (jobBoardx == _JobBoardName.Dice)
+                {
+                    continue;
+                }
                 foreach (var keyword in keywords)
                 {
                     foreach (var location in locations)
@@ -104,7 +108,7 @@ namespace JobSearch
                         int start = 0;
                         while (processNextPage == true)
                         {
-                            PerformSearch(con, cmd, jobBoard, myActions, keyword, location, ref developermode, ref processNextPage, ref start);
+                            PerformSearch(con, cmd, jobBoardx, myActions, keyword, location, ref developermode, ref processNextPage, ref start);
                             start += 25;
                         }
 

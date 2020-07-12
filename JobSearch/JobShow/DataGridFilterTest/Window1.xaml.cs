@@ -19,6 +19,8 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 using DataGridExtensionsSample;
 using DataGridFilterTest.TestData;
+using DataGridFilterLibrary.Querying;
+using DataGridFilterLibrary;
 
 namespace DataGridFilterTest
 {
@@ -52,9 +54,34 @@ namespace DataGridFilterTest
 
             //this.DataContext = TestData.TestDataGenerator.Instance;
 
-            TestData.TestDataGenerator.Instance.GenerateTestData(null);
+            //TestData.TestDataGenerator.Instance.GenerateTestData(null);
+
+            TestData.TestDataGenerator.Instance.GenerateTestData(args =>
+            {
+                SetDefaultValues();
+            });
 
 
+        }
+
+        private void SetDefaultValues()
+        {
+            QueryController queryController = DataGridExtensions.GetDataGridFilterQueryController(this.SampleGrid);
+
+            var filters = queryController.GetFiltersForColumns();
+
+            //var keywordFilter = filters.FirstOrDefault(w => w.Key == "str_jobapplications_Keyword");
+            //keywordFilter.Value.QueryString = "c";
+
+            var dateAddedFilter = filters.FirstOrDefault(w => w.Key == "dt_jobapplications_DateAdded");
+            dateAddedFilter.Value.QueryString = System.DateTime.Today.AddDays(-2).ToShortDateString();
+            dateAddedFilter.Value.Operator = DataGridFilterLibrary.Support.FilterOperator.GreaterThanOrEqual;
+
+            //var positionAge = filters.FirstOrDefault(w => w.Key == "Position.Age");
+            //positionAge.Value.QueryString = "10";
+            //positionAge.Value.QueryStringTo = "20";
+
+            queryController.SetFiltersForColumns(filters);
         }
 
         private ObjectDataProvider MyObjectDataProvider

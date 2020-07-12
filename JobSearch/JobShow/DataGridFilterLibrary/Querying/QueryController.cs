@@ -91,6 +91,25 @@ namespace DataGridFilterLibrary.Querying
             DoQuery();
         }
 
+        public Dictionary<string, FilterData> GetFiltersForColumns()
+        {
+            return Helper.CloneDictionaryHelper(filtersForColumns);
+        }
+
+        public void SetFiltersForColumns(Dictionary<string, FilterData> filters)
+        {
+            for (var i = 0; i < filtersForColumns.Count; i++)
+            {
+                var currentFilterData = filtersForColumns.ElementAt(i);
+
+                var filterForColumn = filters.First(q => q.Key == currentFilterData.Key);
+
+                currentFilterData.Value.Operator = filterForColumn.Value.Operator;
+                currentFilterData.Value.QueryString = filterForColumn.Value.QueryString;
+                currentFilterData.Value.QueryStringTo = filterForColumn.Value.QueryStringTo;
+            }
+        }
+
         #region Internal
 
         private bool isRefresh

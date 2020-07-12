@@ -135,6 +135,7 @@
     <Compile Include="Support\ComboBoxToQueryStringConverter.cs" />
     <Compile Include="Support\BooleanToHeightConverter.cs" />
     <Compile Include="Support\ClearFilterButtonVisibilityConverter.cs" />
+    <Compile Include="Support\Helper.cs" />
     <Compile Include="Support\MyOppositeBooleanToVisibilityConverter.cs" />
     <Compile Include="Support\VisibilityToWidthConverter.cs" />
     <Compile Include="Support\FontSizeToHeightConverter.cs" />

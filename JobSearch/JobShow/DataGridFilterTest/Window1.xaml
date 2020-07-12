@@ -7,7 +7,8 @@
     xmlns:filter="clr-namespace:DataGridFilterLibrary;assembly=DataGridFilterLibrary"
     xmlns:local="clr-namespace:DataGridFilterTest"     
                 
-    Title="Automatic WPF Toolkit DataGrid Filtering" Name="MainWindow">
+    Title="Automatic WPF Toolkit DataGrid Filtering" Name="MainWindow"
+        WindowState="Maximized">
 
 
     <Window.Resources>
