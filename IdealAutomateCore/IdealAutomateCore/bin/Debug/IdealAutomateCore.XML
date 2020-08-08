@@ -94,7 +94,7 @@
             <returns>an integer array of all of x,y coordinates of where the image was found</returns>
             Category::Image
         </member>
-        <!-- Badly formed XML comment ignored for member "M:IdealAutomate.Core.Methods.PutAllDoNotCheckForAlternative(IdealAutomate.Core.ImageEntity)" -->
+        <!-- Badly formed XML comment ignored for member "M:IdealAutomate.Core.Methods.PutAllFastByStoppingOnPerfectMatch(IdealAutomate.Core.ImageEntity)" -->
         <member name="M:IdealAutomate.Core.Methods.PutCursorPosition">
             <summary>
             <para>PutCursorPosition provides a way to save the cursor position in</para>
@@ -667,7 +667,7 @@
             Not sure if we're just supposed to create our own point class.
             </summary>
         </member>
-        <member name="M:IdealAutomate.Core.Scraper.GetSubPositions(System.Drawing.Bitmap,System.Drawing.Bitmap,System.Boolean,System.Decimal@,System.Int32)">
+        <member name="M:IdealAutomate.Core.Scraper.GetSubPositions(System.Drawing.Bitmap,System.Drawing.Bitmap,System.Boolean,System.Decimal@,System.Int32,System.Collections.Generic.Dictionary{System.String,System.Drawing.Point}@,System.String,System.Boolean)">
             <summary>
             GetSubPositions takes a bitmap of a larger image (usually, the desktop) and a 
             bitmap of a smaller image. It returns a list of subpositions
@@ -701,7 +701,7 @@
             <param name="lstPrelimBackground"></param>
             <param name="lstPrelimForeground"></param>
         </member>
-        <member name="M:IdealAutomate.Core.Scraper.LoopthruEachPixelInBigImageToFindMatchesOnSmallImageBackgroundPattern(System.Drawing.Bitmap,System.Drawing.Bitmap,System.Collections.Generic.List{IdealAutomate.Core.SubPositionInfo},System.Collections.Generic.List{System.Drawing.Rectangle},System.Int32,System.Int32,System.Byte[],System.Int32,System.Int32,System.Byte[],IdealAutomate.Core.Scraper.MostPopularColorSmallImage,System.Boolean[0:,0:],System.Decimal@,System.Int32,System.Collections.Generic.List{System.Drawing.Point},System.Collections.Generic.List{System.Drawing.Point},System.Collections.Generic.Dictionary{IdealAutomate.Core.Scraper.MyColor,IdealAutomate.Core.Scraper.MostPopularColorSmallImage}@,System.Collections.Generic.List{System.Drawing.Point},IdealAutomate.Core.Scraper.MyColor@,System.Collections.Generic.List{System.Drawing.Point}@)">
+        <member name="M:IdealAutomate.Core.Scraper.LoopthruEachPixelInBigImageToFindMatchesOnSmallImageBackgroundPattern(System.Drawing.Bitmap,System.Drawing.Bitmap,System.Collections.Generic.List{IdealAutomate.Core.SubPositionInfo},System.Collections.Generic.List{System.Drawing.Rectangle},System.Int32,System.Int32,System.Byte[],System.Int32,System.Int32,System.Byte[],IdealAutomate.Core.Scraper.MostPopularColorSmallImage,System.Boolean[0:,0:],System.Decimal@,System.Int32,System.Collections.Generic.List{System.Drawing.Point},System.Collections.Generic.List{System.Drawing.Point},System.Collections.Generic.Dictionary{IdealAutomate.Core.Scraper.MyColor,IdealAutomate.Core.Scraper.MostPopularColorSmallImage}@,System.Collections.Generic.List{System.Drawing.Point},IdealAutomate.Core.Scraper.MyColor@,System.Collections.Generic.List{System.Drawing.Point}@,System.Collections.Generic.Dictionary{System.String,System.Drawing.Point}@,System.String,System.Boolean)">
             <summary>
             x4. Get background for big picture.
             x5. Do preliminary check in big picture that tests at least 5 background pixels and 5 foreground pixels and quits when error rate rises above a certain percentage. If there are not 5 background or 5 foreground pixels in small image, just proceed to complete check.

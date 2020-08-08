@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Windows.Input;
 using IdealAutomateCore;
-
+//using System.Windows.Media;
 
 /// <summary>Class for finding the locations of a subimage within the screen</summary>
 /// <remarks>
@@ -63,7 +63,15 @@ namespace IdealAutomate.Core {
     /// <param name="intTolerance"></param>
     /// <returns></returns>
 
-    public static List<SubPositionInfo> GetSubPositions(Bitmap main, Bitmap sub, bool boolUseGrayScale, ref decimal highestPercentCorrect, int intTolerance) {
+    public static List<SubPositionInfo> GetSubPositions(Bitmap main, 
+        Bitmap sub, 
+        bool boolUseGrayScale, 
+        ref decimal highestPercentCorrect, 
+        int intTolerance,
+        ref Dictionary<string, System.Drawing.Point> dictImagesFoundCached,
+        string ImageFile,
+        bool boolStopOnPerfectMatch
+        ) {
 
       List<SubPositionInfo> possiblepos = new List<SubPositionInfo>();
       List<Rectangle> foundRects = new List<Rectangle>();    // The areas of images already found
@@ -124,7 +132,7 @@ namespace IdealAutomate.Core {
 
       if (boolUseGrayScale == false) {
         FindLeastPopularColorInSmallImage(sub, subwidth, subheight, strideSub, dataSub, ref oLeastPopularColor, repeats);
-        LoopthruEachPixelInBigImageToFindMatchesOnSmallImageLeastPopularColor(main, sub, possiblepos, foundRects, mainwidth, mainheight, dataMain, strideMain, strideSub, dataSub, oLeastPopularColor, ref highestPercentCorrect, intTolerance);
+        LoopthruEachPixelInBigImageToFindMatchesOnSmallImageLeastPopularColor(main, sub, possiblepos, foundRects, mainwidth, mainheight, dataMain, strideMain, strideSub, dataSub, oLeastPopularColor, ref highestPercentCorrect, intTolerance, ref dictImagesFoundCached, ImageFile, boolStopOnPerfectMatch);
       } else {
         bool[,] boolArySmallImage = new bool[subwidth, subheight];
         //FindLeastPopularHighContrastPatternInSmallImage(sub, subwidth, subheight, strideSub, dataSub, ref oLeastPopularPattern, ref oLeastPopularPattern2, repeatsPattern, ref boolArySmallImage);
@@ -192,7 +200,11 @@ namespace IdealAutomate.Core {
           ref dictMostPopularColorSmallImage, 
           lstHighContrast,
           ref oDarkestColorSmallImage,
-          ref olstDarkestColorSmallImage);
+          ref olstDarkestColorSmallImage,
+         ref dictImagesFoundCached, 
+         ImageFile,
+         boolStopOnPerfectMatch
+         );
       }
 
       // Here is the boolUseGrayScale stuff I deleted
@@ -685,7 +697,39 @@ namespace IdealAutomate.Core {
         byte[] dataSub,
         LeastPopularColor pLeastPopularColor,
         ref decimal highestPercentCorrect,
-        int intTolerance) {
+        int intTolerance,
+        ref Dictionary<string, Point> dictImageFoundCached,
+        string imageFile,
+        bool boolStopOnPerfectMatch) {
+            if (dictImageFoundCached.ContainsKey(imageFile) && boolStopOnPerfectMatch)
+            {
+                System.Drawing.Point cachedPoint = new System.Drawing.Point(0,0);
+                dictImageFoundCached.TryGetValue(imageFile, out cachedPoint);
+
+                    if (imageThere(dataMain, cachedPoint.X, cachedPoint.Y, dataSub, sub, strideMain, strideSub, ref highestPercentCorrect, intTolerance))
+                    {
+
+                        SubPositionInfo mySubPositionInfo = new SubPositionInfo();
+                        mySubPositionInfo.myPoint = new Point(cachedPoint.X, cachedPoint.Y);
+                        mySubPositionInfo.percentcorrect = highestPercentCorrect;
+                        mySubPositionInfo.strSearchMethod = "UseColorWithLeastPopularColorSearch";
+                    if (mySubPositionInfo.percentcorrect > 99)
+                    {
+                        possiblepos.Add(mySubPositionInfo);
+                        highestPercentCorrect = 0;
+                        foundRects.Add(new Rectangle(cachedPoint.X, cachedPoint.Y, sub.Width, sub.Height));
+                        if (dictImageFoundCached.ContainsKey(imageFile))
+                        {
+                            dictImageFoundCached[imageFile] = mySubPositionInfo.myPoint;
+                        }
+                        else
+                        {
+                            dictImageFoundCached.Add(imageFile, mySubPositionInfo.myPoint);
+                        }
+                        return;
+                    }
+                }
+            }
       // y for big image
       for (int y = 0; y < mainheight; y++) {
         // x for big image
@@ -752,6 +796,11 @@ namespace IdealAutomate.Core {
                 possiblepos.Add(mySubPositionInfo);
                 highestPercentCorrect = 0;
                 foundRects.Add(new Rectangle(x, y, sub.Width, sub.Height));
+                                if (mySubPositionInfo.percentcorrect > 99)
+                                {
+                                    dictImageFoundCached.Add(imageFile, mySubPositionInfo.myPoint);
+                                    break;
+                                }
               }
             }
           }
@@ -800,7 +849,11 @@ namespace IdealAutomate.Core {
       ref Dictionary<MyColor, MostPopularColorSmallImage> dictMostPopularColorSmallImage,
       List<Point> lstHighContrast,
       ref MyColor oDarkestColorSmallImage,
-      ref List<Point> olstDarkestColorSmallImage) {
+      ref List<Point> olstDarkestColorSmallImage,
+      ref Dictionary<string, Point> dictImagesFoundCached,
+      string imageFile,
+      bool boolStopOnPerfectMatch
+        ) {
       int xtemp = -1;
       int ytemp = -1;
       bool boolDoPrelimCheck = true;
@@ -1338,65 +1391,66 @@ namespace IdealAutomate.Core {
           mySubPositionInfo.strSearchMethod = "UsePatternBasedBackgroundForegroundPlusHighContrast";
           foundRects.Add(new Rectangle(x, y, sub.Width, sub.Height));
 
+
         }
 
       }
 
     }
 
-    private static void LoopthruEachPixelInBigImageToFindMatchesOnSmallImageLeastPopularPattern(
-  Bitmap main,
-  Bitmap sub,
+  //  private static void LoopthruEachPixelInBigImageToFindMatchesOnSmallImageLeastPopularPattern(
+  //Bitmap main,
+  //Bitmap sub,
 
-  List<SubPositionInfo> possiblepos,
-  List<Rectangle> foundRects,
-  int mainwidth,
-  int mainheight,
-  byte[] dataMain,
-  int strideMain,
-  int strideSub,
-  byte[] dataSub,
-  LeastPopularPattern pLeastPopularPattern,
-  bool[,] boolArySmallImage,
-  ref decimal highestPercentCorrect,
-  int intTolerance) {
+  //List<SubPositionInfo> possiblepos,
+  //List<Rectangle> foundRects,
+  //int mainwidth,
+  //int mainheight,
+  //byte[] dataMain,
+  //int strideMain,
+  //int strideSub,
+  //byte[] dataSub,
+  //LeastPopularPattern pLeastPopularPattern,
+  //bool[,] boolArySmallImage,
+  //ref decimal highestPercentCorrect,
+  //int intTolerance) {
 
-      for (int y = 0; y < mainheight; y++) {
-        // x for big image
-        for (int x = 0; x < mainwidth; x++) {
-          if (y == 589 && x == 434) {
-            // System.Diagnostics.Debugger.Break();
-            string abc = "abd";
-          }
-          MyPattern _myBigPattern = MyPattern.GetHighContrastPatternInBigImage(x, y, pLeastPopularPattern, sub.Width, sub.Height, strideMain, dataMain, mainwidth, mainheight);
+  //    for (int y = 0; y < mainheight; y++) {
+  //      // x for big image
+  //      for (int x = 0; x < mainwidth; x++) {
+  //        if (y == 589 && x == 434) {
+  //          // System.Diagnostics.Debugger.Break();
+  //          string abc = "abd";
+  //        }
+  //        MyPattern _myBigPattern = MyPattern.GetHighContrastPatternInBigImage(x, y, pLeastPopularPattern, sub.Width, sub.Height, strideMain, dataMain, mainwidth, mainheight);
 
-          // Pixle value from subimage in desktop image
-          if (_myBigPattern.discard == false
-              && pLeastPopularPattern.thePattern.Equals(_myBigPattern)
-              && notFound(x, y, foundRects)) {
-            // this finds where rectangle would start
-            Point loc = pLeastPopularPattern.thePosition;
+  //        // Pixle value from subimage in desktop image
+  //        if (_myBigPattern.discard == false
+  //            && pLeastPopularPattern.thePattern.Equals(_myBigPattern)
+  //            && notFound(x, y, foundRects)) {
+  //          // this finds where rectangle would start
+  //          Point loc = pLeastPopularPattern.thePosition;
 
-            int sx = x - loc.X;
-            int sy = y - loc.Y;
-            // Subimage occurs in desktop image 
-            // sx and sy must both be positive
-            if (sx > -1 && sy > -1) {
-              if (imageTherePattern(sx, sy, boolArySmallImage, sub, strideMain, strideSub, dataMain, mainwidth, mainheight, ref highestPercentCorrect, intTolerance)) {
-                SubPositionInfo mySubPositionInfo = new SubPositionInfo();
-                mySubPositionInfo.myPoint = new Point(x - loc.X, y - loc.Y);
-                mySubPositionInfo.percentcorrect = highestPercentCorrect;
-                mySubPositionInfo.strSearchMethod = "UsePatternBasedOnHighContrast";
-                possiblepos.Add(mySubPositionInfo);
-                highestPercentCorrect = 0;
-                foundRects.Add(new Rectangle(x, y, sub.Width, sub.Height));
-              }
-            }
-          }
-        }
+  //          int sx = x - loc.X;
+  //          int sy = y - loc.Y;
+  //          // Subimage occurs in desktop image 
+  //          // sx and sy must both be positive
+  //          if (sx > -1 && sy > -1) {
+  //            if (imageTherePattern(sx, sy, boolArySmallImage, sub, strideMain, strideSub, dataMain, mainwidth, mainheight, ref highestPercentCorrect, intTolerance)) {
+  //              SubPositionInfo mySubPositionInfo = new SubPositionInfo();
+  //              mySubPositionInfo.myPoint = new Point(x - loc.X, y - loc.Y);
+  //              mySubPositionInfo.percentcorrect = highestPercentCorrect;
+  //              mySubPositionInfo.strSearchMethod = "UsePatternBasedOnHighContrast";
+  //              possiblepos.Add(mySubPositionInfo);
+  //              highestPercentCorrect = 0;
+  //              foundRects.Add(new Rectangle(x, y, sub.Width, sub.Height));
+  //            }
+  //          }
+  //        }
+  //      }
 
-      }
-    }
+  //    }
+  //  }
 
     private static void FindLeastPopularColorInSmallImage(
         Bitmap sub,

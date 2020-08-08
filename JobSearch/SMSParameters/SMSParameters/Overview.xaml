@@ -1,0 +1,28 @@
+﻿
+ <Page x:Class="Hardcodet.Wpf.Samples.Help.Overview"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	Title="Job Application Automation"
+	  >
+
+    <FlowDocumentScrollViewer >
+        <FlowDocument FontSize="20">
+            <Paragraph TextAlignment="Center"
+					   FontSize="16pt">
+                <Bold>Job Application Automation</Bold>
+            </Paragraph>
+            <Paragraph>
+                The purpose of the Job Application Automation Tool is to allow one to automate the process of searching for a job with surgical percision.
+
+            </Paragraph>
+            <Paragraph>
+               Start by setting parameters for your search. Next run the search. Finally, view the results.
+            </Paragraph>
+           
+            
+            
+        </FlowDocument>
+    </FlowDocumentScrollViewer>
+
+</Page>
+

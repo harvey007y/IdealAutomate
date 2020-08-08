@@ -129,7 +129,6 @@ C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeG
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\bin\Debug\IdealAutomateCore.pdb
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\bin\Debug\IdealAutomateCore.xml
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\bin\Debug\WindowsInput.xml
-C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\obj\x86\Debug\CodeGenTemplateParms.csprojAssemblyReference.cache
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\obj\x86\Debug\MainWindow.baml
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\obj\x86\Debug\MainWindow.g.cs
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\obj\x86\Debug\App.g.cs
@@ -138,7 +137,6 @@ C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeG
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\obj\x86\Debug\CodeGenTemplateParms.g.resources
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\obj\x86\Debug\CodeGenTemplateParms.Properties.Resources.resources
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\obj\x86\Debug\CodeGenTemplateParms.csproj.GenerateResource.cache
-C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\obj\x86\Debug\CodeGenTemplateParms.csproj.CoreCompileInputs.cache
-C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\obj\x86\Debug\CodeGenTemplateParms.csproj.CopyComplete
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\obj\x86\Debug\CodeGenTemplateParms.exe
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\obj\x86\Debug\CodeGenTemplateParms.pdb
+C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\obj\x86\Debug\CodeGenTemplateParms.csprojResolveAssemblyReference.cache

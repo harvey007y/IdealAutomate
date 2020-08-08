@@ -74,7 +74,7 @@ namespace DataGridFilterTest
             //keywordFilter.Value.QueryString = "c";
 
             var dateAddedFilter = filters.FirstOrDefault(w => w.Key == "dt_jobapplications_DateAdded");
-            dateAddedFilter.Value.QueryString = System.DateTime.Today.AddDays(-2).ToShortDateString();
+            dateAddedFilter.Value.QueryString = System.DateTime.Today.AddDays(-7).ToShortDateString();
             dateAddedFilter.Value.Operator = DataGridFilterLibrary.Support.FilterOperator.GreaterThanOrEqual;
 
             //var positionAge = filters.FirstOrDefault(w => w.Key == "Position.Age");
@@ -121,7 +121,7 @@ namespace DataGridFilterTest
         {
             var comboBox = sender as ComboBox;
             DataItem selectedItem = (DataItem)this.SampleGrid.CurrentItem;
-            if (selectedItem.str_jobapplications_ApplicationStatus == ((EmployeeStatus)comboBox.SelectedItem).Name)
+            if (comboBox.SelectedItem == null || selectedItem.str_jobapplications_ApplicationStatus == ((EmployeeStatus)comboBox.SelectedItem).Name)
             {
                 return;
             }
@@ -155,6 +155,12 @@ namespace DataGridFilterTest
                 }
                 UpdateCmd.Parameters["@DateLastModified"].Value = System.DateTime.Now;
                 UpdateCmd.ExecuteNonQuery();
+                this.SampleGrid.CommitEdit();
+                this.SampleGrid.CommitEdit();
+                var query = DataGridExtensions.GetDataGridFilterQueryController(SampleGrid);
+
+                query.DoQuery(true);
+             
             }
 
             catch (SqlException ex)

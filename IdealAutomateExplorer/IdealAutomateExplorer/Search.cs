@@ -788,7 +788,7 @@ progressBar1.Value = 0;
                         System.IO.FileInfo fi = new System.IO.FileInfo(file);
                         bool boolFileHasGoodExtension = true;
                         foreach (var item in arrayExclusionPatterns) {
-                            if (fi.FullName.ToLower().Contains(item)) {
+                            if (fi.FullName.ToLower().EndsWith(item)) {
                                 boolFileHasGoodExtension = false;
                             }
                         }

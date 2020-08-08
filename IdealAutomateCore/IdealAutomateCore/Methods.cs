@@ -25,8 +25,8 @@ using Snipping_OCR;
 namespace IdealAutomate.Core {
   public class Methods {
 
-
-    private bool fbDebugMode = true;
+        public Dictionary<string, System.Drawing.Point> dictImagesFoundCached = new Dictionary<string, System.Drawing.Point>();
+        private bool fbDebugMode = true;
     private int intFileCtr = 0;
     bool boolUseGrayScaleDB = false;
     public bool DebugMode {
@@ -154,8 +154,10 @@ fAltTab);
     // Category::Window
     public bool ActivateWindowByTitle(string myTitle) {
 
-      //Find the window, using the CORRECT Window Title, for example, Notepad
-      int hWnd = FindWindow(null, myTitle);
+            //Find the window, using the CORRECT Window Title, for example, Notepad
+            int attempts = 0;
+        TryToFindWindowx:
+            int hWnd = FindWindow(null, myTitle);
       if (hWnd > 0) //If found
       {
         {
@@ -164,7 +166,13 @@ fAltTab);
         SetForegroundWindow(hWnd); //Activate it              
         return true;
       } else {
-        MessageBox.Show("Window Not Found! - ActivateWindowByTitle:" + myTitle + " You can try to manually activate it and then click okay on this popup");
+                attempts++;
+                if (attempts < 5)
+                {
+                    Thread.Sleep(1000);
+                    goto TryToFindWindowx;
+                }
+                MessageBox.Show("Window Not Found! - ActivateWindowByTitle:" + myTitle + " You can try to manually activate it and then click okay on this popup");
         return false;
       }
 
@@ -188,7 +196,9 @@ fAltTab);
         Console.WriteLine(oProcess.ProcessName + "==> " + "ActivateWindowByTitle: myTitle=" + myTitle);
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "ActivateWindowByTitle: myTitle = " + myTitle);
       }
-      //Find the window, using the CORRECT Window Title, for example, Notepad
+            //Find the window, using the CORRECT Window Title, for example, Notepad
+            int attempts = 0;
+            TryToFindWindow:
       int hWnd = FindWindow(null, myTitle);
       Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "ActivateWindowByTitle: hWnd = " + hWnd.ToString());
       if (hWnd > 0) //If found
@@ -199,6 +209,12 @@ fAltTab);
         ForceForegroundWindow1((IntPtr)hWnd, 1, myShowOption); //Activate it 
         return true;
       } else {
+                attempts++;
+                if (attempts < 5)
+                {
+                    Thread.Sleep(1000);
+                    goto TryToFindWindow;
+                }
         MessageBox.Show("Window Not Found! - ActivateWindowByTitle:" + myTitle + " You can try to manually activate it and then click okay on this popup");
         return false;
       }
@@ -517,7 +533,7 @@ fAltTab);
       boolUseGrayScaleDB = myImage.UseGrayScale;
       while (boolImageFound == false && intAttempts < myImage.Attempts) {
         try {
-          ls = Click_PNG(myImage, boolUseGrayScaleDB);
+          ls = Click_PNG(myImage, boolUseGrayScaleDB, false);
         } catch (Exception ex) {
           MessageBox.Show("Here is exception thrown in PutAll method for file " + myImage.ImageFile + ": " + ex.Message + Environment.NewLine + Environment.NewLine + "PutAll image file is probably missing from project. Make sure properties for the image file are: Build Action=> Content;  Copy to Output Directory=> Copy if Newer;");
         }
@@ -719,7 +735,7 @@ fAltTab);
 
     /// Category::Image
 
-    public int[,] PutAllDoNotCheckForAlternative(ImageEntity myImage) {
+    public int[,] PutAllFastByStoppingOnPerfectMatch(ImageEntity myImage) {
 
 
 
@@ -807,7 +823,7 @@ fAltTab);
 
         try {
 
-          ls = Click_PNG(myImage, boolUseGrayScaleDB);
+          ls = Click_PNG(myImage, boolUseGrayScaleDB, true);
 
         } catch (Exception ex) {
 
@@ -1007,7 +1023,7 @@ fAltTab);
       List<SubPositionInfo> ls = new List<SubPositionInfo>();
       while (boolImageFound == false && intAttempts < myImage.Attempts) {
         try {
-          ls = Click_PNG(myImage, boolUseGrayScaleDB);
+          ls = Click_PNG(myImage, boolUseGrayScaleDB, true);
         } catch (Exception ex) {
           MessageBox.Show("Here is an exception thrown in the PutAll method in IdealAutomateCore for file " + myImage.ImageFile + ": " + ex.Message + Environment.NewLine + Environment.NewLine + "PutAll image file is probably missing from project. Make sure properties for the image file are: Build Action=> Content;  Copy to Output Directory=> Copy if Newer;");
         }
@@ -2353,7 +2369,7 @@ fAltTab);
       }
     }
 
-    private List<SubPositionInfo> Click_PNG(ImageEntity myImage, bool boolUseGrayScaleDB) {
+    private List<SubPositionInfo> Click_PNG(ImageEntity myImage, bool boolUseGrayScaleDB, bool boolStopOnPerfectMatch) {
       if (fbDebugMode) {
         Console.WriteLine(oProcess.ProcessName + "==> " + "Click_PNG:");
         Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "Click_PNG:");
@@ -2418,7 +2434,14 @@ fAltTab);
       // bigPictureImageBox.Source = BitmapSourceFromImage(bmx);
       decimal highestPercentCorrect = 0;
 
-      List<SubPositionInfo> ls = Scraper.GetSubPositions(bmx, bm, boolUseGrayScaleDB, ref highestPercentCorrect, myImage.Tolerance);
+      List<SubPositionInfo> ls = Scraper.GetSubPositions(bmx, 
+          bm, 
+          boolUseGrayScaleDB, 
+          ref highestPercentCorrect, 
+          myImage.Tolerance,
+          ref dictImagesFoundCached,
+          myImage.ImageFile,
+          boolStopOnPerfectMatch);
       // List<System.Drawing.Point> ls = null;
       int intLastSlashIndex = myImage.ImageFile.LastIndexOf("\\");
       string strfilename = myImage.ImageFile.Substring(intLastSlashIndex + 1);

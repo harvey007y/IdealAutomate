@@ -86,17 +86,21 @@ namespace JobSearch
             };
             foreach (_JobBoardName jobBoardx in Enum.GetValues(typeof(_JobBoardName)))
             {
-
+               
                 //jobBoard = jobBoardx;
-                if (jobBoardx == _JobBoardName.LinkedIn)
-                {
-                    continue;
-                }
-                //if (jobBoardx == _JobBoardName.Indeed)
+                //if (jobBoardx == _JobBoardName.LinkedIn)
                 //{
                 //    continue;
                 //}
+                if (jobBoardx == _JobBoardName.Indeed)
+                {
+                    continue;
+                }
                 if (jobBoardx == _JobBoardName.Dice)
+                {
+                    continue;
+                }
+                if (jobBoardx == _JobBoardName.Glassdoor)
                 {
                     continue;
                 }

@@ -13,8 +13,9 @@
 
     <Window.Resources>
         <ObjectDataProvider x:Key="EmployeeData"></ObjectDataProvider>
+       
     </Window.Resources>
-
+   
 
     <Grid>
         <Grid.RowDefinitions>
@@ -22,10 +23,16 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
+        <DockPanel Grid.Column="2" Grid.Row="2">
+            <Label Content="Total Rows Selected: "></Label>
+            <Label Margin="0,1,0,0" Content="{Binding ElementName=SampleGrid, Path=Items.Count, UpdateSourceTrigger=PropertyChanged}"></Label>
+        </DockPanel>
+                   
+                
         <DataGrid Name="SampleGrid"       
 
   ItemsSource="{Binding Path=JobApplicationList}"
-                                
+ 
                        filter:DataGridExtensions.UseBackgroundWorkerForFiltering="True"
                         
                        filter:DataGridExtensions.IsClearButtonVisible="True"
@@ -45,68 +52,72 @@
           FrozenColumnCount="1"
           VerticalGridLinesBrush="LightBlue" GridLinesVisibility="Vertical"
           CanUserAddRows="False" CanUserDeleteRows="False">
-            <DataGrid.Columns>
-                <DataGridHyperlinkColumn Binding="{Binding Path=str_jobapplications_JobUrl}" Header="Job Title"
+                <DataGrid.Columns>
+                    <DataGridHyperlinkColumn Binding="{Binding Path=str_jobapplications_JobUrl}" Header="Job Title"
                                          Width="Auto" ContentBinding="{Binding Path=str_jobapplications_JobTitle}"
                     SortMemberPath="str_jobapplications_JobTitle" />
-                <DataGridTextColumn Binding="{Binding Path=str_jobapplications_CompanyTitle }" Header="Company Title" Width="Auto"
+                    <DataGridTextColumn Binding="{Binding Path=str_jobapplications_CompanyTitle }" Header="Company Title" Width="Auto"
                                     Foreground="Blue" FontWeight="Bold"                                     
                                     CanUserReorder="False">
-                    <DataGridTextColumn.HeaderStyle>
-                        <Style TargetType="{x:Type DataGridColumnHeader}" 
+                        <DataGridTextColumn.HeaderStyle>
+                            <Style TargetType="{x:Type DataGridColumnHeader}" 
                                                BasedOn="{StaticResource {ComponentResourceKey TypeInTargetAssembly={x:Type filter:DataGridHeaderFilterControl}, ResourceId=DataGridHeaderFilterControlStyle}}">
-                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                        </Style>
-                    </DataGridTextColumn.HeaderStyle>
-                </DataGridTextColumn>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.HeaderStyle>
+                    </DataGridTextColumn>
 
-                <DataGridTextColumn Binding="{Binding str_jobapplications_Keyword}" Header="Keyword" Width="Auto"
+                    <DataGridTextColumn Binding="{Binding str_jobapplications_Keyword}" Header="Keyword" Width="Auto"
                                     Foreground="Blue" FontWeight="Bold"
                                     CanUserReorder="False"/>
-                <DataGridTextColumn Binding="{Binding str_jobapplications_Location}" Header="Location" Width="Auto"
+                    <DataGridTextColumn Binding="{Binding str_jobapplications_Location}" Header="Location" Width="Auto"
                                     Foreground="Blue" FontWeight="Bold"
                                     CanUserReorder="False"/>
-                <DataGridTextColumn Binding="{Binding str_jobapplications_JobBoard}" Header="JobBoard" Width="Auto"
+                    <DataGridTextColumn Binding="{Binding str_jobapplications_JobBoard}" Header="JobBoard" Width="Auto"
                                     Foreground="Blue" FontWeight="Bold"
                                     CanUserReorder="False"/>
-                <DataGridTextColumn Binding="{Binding dt_jobapplications_DateAdded, StringFormat={}{0:MM/dd/yyyy}}" Header="Date Added" Width="Auto"
+                    <DataGridTextColumn Binding="{Binding dt_jobapplications_DateAdded, StringFormat={}{0:MM/dd/yyyy}}" Header="Date Added" Width="Auto"
                                     Foreground="Blue" FontWeight="Bold"
                                     CanUserReorder="False"/>
-                <DataGridTextColumn Binding="{Binding dt_jobapplications_DateLastModified, StringFormat={}{0:MM/dd/yyyy}}" Header="Date Modified" Width="Auto"
+                    <DataGridTextColumn Binding="{Binding dt_jobapplications_DateLastModified, StringFormat={}{0:MM/dd/yyyy}}" Header="Date Modified" Width="Auto"
                                     Foreground="Blue" FontWeight="Bold"
                                     CanUserReorder="False"/>
-                <DataGridTextColumn Binding="{Binding dt_jobapplications_DateApplied, StringFormat={}{0:MM/dd/yyyy}}" Header="Date Applied" Width="Auto"
+                    <DataGridTextColumn Binding="{Binding dt_jobapplications_DateApplied, StringFormat={}{0:MM/dd/yyyy}}" Header="Date Applied" Width="Auto"
                                     Foreground="Blue" FontWeight="Bold"
                                     CanUserReorder="False"/>
-                <DataGridComboBoxColumn Header="Status"   
+                    <DataGridComboBoxColumn Header="Status"   
                    SelectedValueBinding="{Binding Path=str_jobapplications_ApplicationStatus}"
                     ItemsSource="{Binding Source={StaticResource EmployeeData}, Path=EmployeeStatuses}"
                    SelectedValuePath="Id"
                    DisplayMemberPath="Name"
                     filter:DataGridComboBoxExtensions.UserCanEnterText="True">
+                        <DataGridComboBoxColumn.EditingElementStyle>
+                            <Style TargetType="{x:Type ComboBox}">
+                                <EventSetter Event="SelectionChanged" Handler="ApplicationStatusSelectionChanged" />
+                            </Style>
+                        </DataGridComboBoxColumn.EditingElementStyle>
+                    </DataGridComboBoxColumn>
 
-                </DataGridComboBoxColumn>
-
-                <DataGridTextColumn Binding="{Binding str_jobapplications_Comments}" Header="Comments" Width="Auto"
+                    <DataGridTextColumn Binding="{Binding str_jobapplications_Comments}" Header="Comments" Width="Auto"
                                     Foreground="Blue" FontWeight="Bold"
                                     CanUserReorder="False">
-                    <DataGridTextColumn.EditingElementStyle>
-                        <Style TargetType="{x:Type TextBox}">
-                            <EventSetter Event="LostFocus" Handler="Comments_LostFocus" />
+                        <DataGridTextColumn.EditingElementStyle>
+                            <Style TargetType="{x:Type TextBox}">
+                                <EventSetter Event="LostFocus" Handler="Comments_LostFocus" />
 
-                        </Style>
-                    </DataGridTextColumn.EditingElementStyle>
-                </DataGridTextColumn>
-
-
-            </DataGrid.Columns>
-        </DataGrid>
+                            </Style>
+                        </DataGridTextColumn.EditingElementStyle>
+                    </DataGridTextColumn>
 
 
+                </DataGrid.Columns>
+            </DataGrid>
+
+       
 
     </Grid>
 
-
+    
 
 
 
