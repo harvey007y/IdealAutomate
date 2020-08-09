@@ -130,6 +130,9 @@
     <Content Include="Templates\TemplateFindDelimitedText.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Templates\TemplatePutAllFastByStoppingOnPerfectMatch.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Templates\TemplatePutAll.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -11,6 +11,7 @@ MessageBoxShow^MessageBox
 MessageBoxShowWithYesNo^MessageBox
 PositionCursor^Mouse
 PutAll^Image
+PutAllFastByStoppingOnPerfectMatch^Image
 PutCaretPositionInArray^Caret Position
 PutClipboardInEntity^Clipboard
 PutCursorPosition^Mouse

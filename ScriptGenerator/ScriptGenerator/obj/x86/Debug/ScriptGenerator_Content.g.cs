@@ -18,6 +18,7 @@
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/imgupdatelogok.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/imgupdatelogok_home.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("templates/templatefinddelimitedtext.txt")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("templates/templateputallfastbystoppingonperfectmatch.txt")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("templates/templateputall.txt")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("templates/templateclickimageifexists.txt")]
 

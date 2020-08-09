@@ -259,7 +259,7 @@ namespace IdealAutomate.Core {
                             cbp = new List<ComboBoxPair>();
                             cbp.Clear();
                             cbp.Add(new ComboBoxPair("--Select Item ---", "--Select Item ---"));
-                            SqlConnection con = new SqlConnection("Server=(local)\\SQLEXPRESS0202;Initial Catalog=IdealAutomateDB;Integrated Security=SSPI");
+                            SqlConnection con = new SqlConnection("Server=(local)\\SQLEXPRESS02;Initial Catalog=IdealAutomateDB;Integrated Security=SSPI");
                             SqlCommand cmd = new SqlCommand();
                             cmd.CommandText = "SELECT lk.inc, i.listItemKey, i.ListItemValue FROM LkDDLNamesItems lk " +
                             "join DDLNames n on n.inc = lk.DDLNamesInc " +
@@ -297,7 +297,12 @@ namespace IdealAutomate.Core {
                                         item.SelectedValue = strDefaultValue.ToString();
                                     }
                                 }
-                            } finally {
+                            } 
+                            catch(Exception ex)
+                            {
+                                Console.WriteLine(ex.Message + " " + ex.InnerException);
+                            }
+                            finally {
                                 con.Close();
                             }
 

@@ -5,6 +5,7 @@ GetValueByKey^Database
 SetValueByKey^Database
 ClickImageIfExists^Image
 PutAll^Image
+PutAllFastByStoppingOnPerfectMatch^Image
 IEGoToURL^Internet Explorer
 PutInternetExplorerTabTitleInEntity^Internet Explorer
 PutInternetExplorerTabURLContainingStringInEntity^Internet Explorer

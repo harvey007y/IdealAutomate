@@ -92,3 +92,4 @@ C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGene
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\obj\x86\Debug\ScriptGenerator.csproj.CoreCompileInputs.cache
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\obj\x86\Debug\ScriptGenerator.csproj.CopyComplete
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\obj\x86\Debug\ScriptGenerator.csprojAssemblyReference.cache
+C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\bin\Debug\Templates\TemplatePutAllFastByStoppingOnPerfectMatch.txt
