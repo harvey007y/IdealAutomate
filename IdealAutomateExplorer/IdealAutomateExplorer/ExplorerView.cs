@@ -2323,10 +2323,14 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             new DgvFilterManager(_CurrentDataGridView);
             int sortedColumn = myActions.GetValueByKeyAsInt("SortedColumn_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"));
             string myDirection = myActions.GetValueByKey("SortOrder_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"));
-            if (sortedColumn > -1 && _CurrentDataGridView.ColumnCount >= sortedColumn) {
-                if (myDirection == "Ascending") {
+            if (sortedColumn > -1 && _CurrentDataGridView.ColumnCount >= sortedColumn)
+            {
+                if (myDirection == "Ascending")
+                {
                     _CurrentDataGridView.Sort(_CurrentDataGridView.Columns[sortedColumn], ListSortDirection.Ascending);
-                } else {
+                }
+                else
+                {
                     _CurrentDataGridView.Sort(_CurrentDataGridView.Columns[sortedColumn], ListSortDirection.Descending);
                 }
                 myActions.SetValueByKey("SortedColumn_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"), sortedColumn.ToString());
@@ -5121,6 +5125,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e) {
             this.Cursor = Cursors.WaitCursor;
+            myActions.SetValueByKey("SortedColumn_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"),"-1");
             RefreshDataGrid();
             this.Cursor = Cursors.Default;
         }
