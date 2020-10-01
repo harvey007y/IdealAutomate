@@ -653,6 +653,7 @@ namespace System.Windows.Forms.Samples {
                             try {
                                 ProcessStartInfo psi = new ProcessStartInfo(@"C:\Program Files\Windows NT\Accessories\wordpad.exe", "\"" + fileName + "\"");
                                 psi.WindowStyle = ProcessWindowStyle.Minimized;
+                                psi.UseShellExecute = false;
                                 _proc = Process.Start(psi);
                             } catch (Exception) {
                                 MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -870,6 +871,7 @@ namespace System.Windows.Forms.Samples {
                     } else {
                         ProcessStartInfo psi = new ProcessStartInfo(@"C:\Program Files\Windows NT\Accessories\wordpad.exe");
                         psi.WindowStyle = ProcessWindowStyle.Minimized;
+                        psi.UseShellExecute = false;
                         _proc = Process.Start(psi);
                     }
                 } catch (Exception) {
@@ -1259,6 +1261,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     } else {
                         ProcessStartInfo psi = new ProcessStartInfo(@"C:\Program Files\Windows NT\Accessories\wordpad.exe");
                         psi.WindowStyle = ProcessWindowStyle.Minimized;
+                        psi.UseShellExecute = false;
                         _proc = Process.Start(psi);
                     }
                 } catch (Exception) {
@@ -2445,6 +2448,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                                 } else {
                                     ProcessStartInfo psi = new ProcessStartInfo(@"C:\Program Files\Windows NT\Accessories\wordpad.exe", "\"" + fileName + "\"");
                                     psi.WindowStyle = ProcessWindowStyle.Minimized;
+                                    psi.UseShellExecute = false;
                                     _proc = Process.Start(psi);
                                 }
                             } catch (Exception) {
@@ -2455,9 +2459,22 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
 
                             System.Threading.Thread.Sleep(500);
-                            while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                            try
+                            {
+                                while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle)))
+                                {
+                                    System.Threading.Thread.Sleep(10);
+                                    _proc.Refresh();
+                                }
+                             }
+                            catch (Exception ex)
+                            {
+
+                                MessageBox.Show("Something went wrong trying to start your process: " + ex.Message, "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                this.Cursor = Cursors.Default;
                                 System.Threading.Thread.Sleep(10);
                                 _proc.Refresh();
+
                             }
 
                             _proc.WaitForInputIdle();
@@ -3125,6 +3142,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                                     ProcessStartInfo psi = new ProcessStartInfo(@"C:\Program Files\Windows NT\Accessories\wordpad.exe", "\"" + fileName + "\"");
                                     psi.WindowStyle = ProcessWindowStyle.Minimized;
+                                    psi.UseShellExecute = false;
                                     _proc = Process.Start(psi);
                                 }
                             } catch (Exception ex) {
@@ -3134,10 +3152,23 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                             }
 
 
-                            System.Threading.Thread.Sleep(500);
-                            while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle))) {
+                            System.Threading.Thread.Sleep(2500);
+                            try
+                            {
+                                while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle)))
+                                {
+                                    System.Threading.Thread.Sleep(10);
+                                    _proc.Refresh();
+                                }
+                           }
+                            catch (Exception ex)
+                            {
+
+                                MessageBox.Show("Something went wrong trying to start your process: " + ex.Message, "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                this.Cursor = Cursors.Default;
                                 System.Threading.Thread.Sleep(10);
                                 _proc.Refresh();
+                               
                             }
 
                             _proc.WaitForInputIdle();
@@ -3201,7 +3232,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                                     System.Threading.Thread.Sleep(10);
                                     _proc.Refresh();
                                 }
-
+                              
                                 _proc.WaitForInputIdle();
                                 _appHandle = _proc.MainWindowHandle;
 
@@ -5125,7 +5156,6 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e) {
             this.Cursor = Cursors.WaitCursor;
-            myActions.SetValueByKey("SortedColumn_" + strInitialDirectory.Replace(":", "+").Replace("\\", "-"),"-1");
             RefreshDataGrid();
             this.Cursor = Cursors.Default;
         }

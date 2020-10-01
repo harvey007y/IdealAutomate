@@ -376,9 +376,9 @@ namespace SMSParameters
                         myImage.RelativeX = 10;
                         myImage.RelativeY = 10;
                         myActions.ClickImageIfExists(myImage);
-                        myActions.Sleep(2000);
+                        myActions.Sleep(1000);
                         myImage.Tolerance = 99;
-                        myImage.Attempts = 2;
+                        myImage.Attempts = 4;
                         myImage.ImageFile = "Images\\ExactLocation.PNG";
                         myActions.ClickImageIfExists(myImage);
                         myImage.ImageFile = "Images\\ExactLocationChecked.PNG";
@@ -509,7 +509,8 @@ namespace SMSParameters
                 string myPage = myActions.PutClipboardInEntity();
              //   string myPage = myActions.SelectAllCopyIntoEntity(2500);
                 int indexOfPagination = myPage.IndexOf("pagination");
-                if (indexOfPagination == -1 || jobBoard.Name == "Indeed" || jobBoard.Name == "Dice")
+                if (indexOfPagination == -1 || jobBoard.Name == "Indeed" || jobBoard.Name == "Dice"
+                     || jobBoard.Name == "Glassdoor")
                 {
                     processNextPage = false;
                 }
@@ -806,14 +807,14 @@ namespace SMSParameters
 
 
                 // get company title
-                indexBeginDelim = myPage.IndexOf("jobEmpolyerName");
+                indexBeginDelim = myPage.IndexOf("<span>");
                 if (indexBeginDelim == -1)
                 {
                     eof = true;
                     continue;
                 }
-                myPage = myPage.Substring(indexBeginDelim + 15);
-                indexEndDelim = myPage.IndexOf("</div>");
+                myPage = myPage.Substring(indexBeginDelim + 5);
+                indexEndDelim = myPage.IndexOf("</span>");
 
                 myCompanyTitleFound = myPage.Substring(0, indexEndDelim);
 
@@ -838,7 +839,9 @@ namespace SMSParameters
 
                 myJobTitleFound = myPage.Substring(0, indexEndDelim);
 
-                indexBeginDelim = myJobTitleFound.LastIndexOf("\">") + 2;
+                myJobTitleFound = myJobTitleFound.Replace("<span>","").Replace("</span>", "");
+
+               indexBeginDelim = myJobTitleFound.LastIndexOf("\">") + 2;
                 if (indexBeginDelim == -1)
                 {
                     eof = true;
