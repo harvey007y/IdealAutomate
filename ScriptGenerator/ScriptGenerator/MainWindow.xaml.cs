@@ -68,8 +68,9 @@ namespace ScriptGenerator {
             int intLastSlashIndex = directory.LastIndexOf("\\");
             //string strScriptName = directory.Substring(intLastSlashIndex + 1);
             // string strScriptName = System.Reflection.Assembly.GetCallingAssembly().GetName().Name;
-            ArrayList myArrayList = myActions.ReadPublicKeyToArrayList("Methods", directory);
-
+            // ArrayList myArrayList = myActions.ReadPublicKeyToArrayList("Methods", directory);
+            string[] methods = System.IO.File.ReadAllLines(directory + "\\Methods.txt");
+            ArrayList myArrayList = new ArrayList(methods);
 
             int intCol = 0;
             int intRow = 0;

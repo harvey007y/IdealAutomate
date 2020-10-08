@@ -1,0 +1,34 @@
+PutCaretPositionInArray^Caret Position
+PutClipboardInEntity^Clipboard
+PutEntityInClipboard^Clipboard
+GetValueByKey^Database
+SetValueByKey^Database
+ClickImageIfExists^Image
+PutAll^Image
+PutAllFastByStoppingOnPerfectMatch^Image
+IEGoToURL^Internet Explorer
+PutInternetExplorerTabTitleInEntity^Internet Explorer
+PutInternetExplorerTabURLContainingStringInEntity^Internet Explorer
+MessageBoxShow^MessageBox
+MessageBoxShowWithYesNo^MessageBox
+LeftClick^Mouse
+PositionCursor^Mouse
+PutCursorPosition^Mouse
+RightClick^Mouse
+ShiftClick^Mouse
+KillAllProcessesByProcessName^Processes
+Run^Run
+RunSync^Run
+FindDelimitedText^Search
+RestartService^Service
+StartService^Service
+StopService^Service
+Sleep^Sleep
+TypeText^TypeText
+ActivateWindowByTitle^Window
+GetActiveWindowTitle^Window
+GetWindowTitlesByProcessName^Window
+PutWindowTitleInEntity^Window
+WindowMultipleControls^Window
+WindowMultipleControlsMinimized^Window
+WindowShape^Window

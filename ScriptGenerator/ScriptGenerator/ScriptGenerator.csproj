@@ -127,6 +127,7 @@
     <Content Include="Images\imgUpdateLogOK_Home.PNG">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Methods.txt" />
     <Content Include="Templates\TemplateFindDelimitedText.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
