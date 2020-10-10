@@ -15,14 +15,22 @@ namespace System.Windows.Forms.Samples
 {
     static class Program
     {
+        public static string MyRoamingFolder;
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main()
         {
+            Methods myActions = new Methods();
+            MyRoamingFolder = myActions.GetValueByKeyGlobal("cbxTabsCollectionSelectedValue");
+            if (MyRoamingFolder == "")
+            {
+                myActions.SetValueByKeyGlobal("cbxTabsCollectionSelectedValue", "IdealAutomateExplorer");
+                MyRoamingFolder = "IdealAutomateExplorer";
+            }
             if (!IsRunAsAdministrator()) {
-                Methods myActions = new Methods();
+                
                 string launchMode = myActions.GetValueByKey("LaunchMode");
                 if (launchMode == "Admin") {
                     var processInfo = new ProcessStartInfo(Assembly.GetExecutingAssembly().CodeBase);

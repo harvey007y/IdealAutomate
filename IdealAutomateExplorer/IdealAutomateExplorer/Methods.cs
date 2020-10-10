@@ -21,6 +21,7 @@ using System.ServiceProcess;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Snipping_OCR;
+using System.Windows.Forms.Samples;
 
 namespace IdealAutomate.Core {
     public class Methods: IDisposable {
@@ -2581,7 +2582,7 @@ namespace IdealAutomate.Core {
             //string strScriptName = directory.Substring(intLastSlashIndex + 1);
             // string strScriptName = System.Reflection.Assembly.GetCallingAssembly().GetName().Name;
             string settingsDirectory =
-      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
+      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\" + Program.MyRoamingFolder;
             if (!Directory.Exists(settingsDirectory)) {
                 Directory.CreateDirectory(settingsDirectory);
             }

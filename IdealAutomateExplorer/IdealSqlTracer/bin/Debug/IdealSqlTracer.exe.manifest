@@ -50,7 +50,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>/HdzTYWp6s9Eo84y6RIqKjTA6mEl6pZWpPNXBIsGLOg=</dsig:DigestValue>
+        <dsig:DigestValue>Cry7ROnKnnoBUhkl57N+qIpXn2Fb01UJbl4/G8V27AY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

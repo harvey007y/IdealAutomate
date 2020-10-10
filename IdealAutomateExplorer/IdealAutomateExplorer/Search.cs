@@ -625,7 +625,7 @@ progressBar1.Value = 0;
             }
 
             string settingsDirectory =
-     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
+     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\" + Program.MyRoamingFolder;
             using (FileStream fs = new FileStream(settingsDirectory + @"\MatchInfo.txt", FileMode.Create)) {
                 StreamWriter file = new System.IO.StreamWriter(fs, Encoding.Default);
 
@@ -1005,7 +1005,7 @@ progressBar1.Value = 0;
             string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
 
             string settingsDirectory =
-     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
+     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\" + Program.MyRoamingFolder;
             string fileName = "cbxFindWhat.txt";
             string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
             ArrayList alHosts = new ArrayList();
@@ -1592,7 +1592,7 @@ progressBar1.Value = 0;
                 string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
                 string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
                 string settingsDirectory =
-   Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
+   Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\" + Program.MyRoamingFolder;
                 string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
                 ArrayList alHosts = new ArrayList();
                 List<ComboBoxPair> cbp = new List<ComboBoxPair>();
@@ -2007,7 +2007,7 @@ progressBar1.Value = 0;
             string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
             string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
             string settingsDirectory =
-      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
+      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\" + Program.MyRoamingFolder;
 
             string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
             using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
@@ -2083,7 +2083,7 @@ progressBar1.Value = 0;
             string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
             string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
             string settingsDirectory =
-      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
+      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\" + Program.MyRoamingFolder;
 
             string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
             using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
@@ -2159,7 +2159,7 @@ progressBar1.Value = 0;
             string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
             string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
             string settingsDirectory =
-      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
+      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\" + Program.MyRoamingFolder;
 
             string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
             using (StreamWriter objSWFile = File.CreateText(settingsPath)) {

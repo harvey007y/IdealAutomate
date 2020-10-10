@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using System.IO;
+using System.Windows.Forms.Samples;
 
 namespace IdealAutomateCore {
     public static class Logging {
@@ -16,7 +17,7 @@ namespace IdealAutomateCore {
           //  string strScriptName = directory.Substring(intLastSlashIndex + 1);
             // string strScriptName = System.Reflection.Assembly.GetCallingAssembly().GetName().Name;
             string settingsDirectory =
-      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
+      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\" + Program.MyRoamingFolder;
       if (!Directory.Exists(settingsDirectory)) {
                 Directory.CreateDirectory(settingsDirectory);
             }

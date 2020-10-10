@@ -170,6 +170,7 @@ C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\Idea
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\bin\Debug\IdealSqlTracer.application
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\bin\Debug\IdealSqlTracer.exe
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\bin\Debug\IdealSqlTracer.pdb
+C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\obj\x86\Debug\IdealSqlTracer.csprojAssemblyReference.cache
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\obj\x86\Debug\MainWindow.baml
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\obj\x86\Debug\WindowMultipleControls.baml
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\obj\x86\Debug\WindowShape.baml
@@ -187,4 +188,3 @@ C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\Idea
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\obj\x86\Debug\IdealSqlTracer.application
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\obj\x86\Debug\IdealSqlTracer.exe
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\obj\x86\Debug\IdealSqlTracer.pdb
-C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\obj\x86\Debug\IdealSqlTracer.csprojAssemblyReference.cache

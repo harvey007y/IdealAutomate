@@ -581,7 +581,7 @@ namespace IdealAutomate.Core {
             string directory = AppDomain.CurrentDomain.BaseDirectory;
             directory = directory.Replace("\\bin\\Debug\\", "");
             string settingsDirectory =
-            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\" + System.Windows.Forms.Samples.Program.MyRoamingFolder;
             if (!Directory.Exists(settingsDirectory)) {
                 Directory.CreateDirectory(settingsDirectory);
             }

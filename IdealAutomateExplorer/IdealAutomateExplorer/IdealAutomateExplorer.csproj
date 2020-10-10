@@ -148,6 +148,7 @@
     <Compile Include="GlobalMouseHandler.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="Pages\Stopwatch.xaml.cs" />
+    <Compile Include="RoamingFolderForTabs.cs" />
     <Compile Include="SystemIconsImageList.cs" />
     <Compile Include="TextLineInfo.cs" />
     <Compile Include="OpenedFile.cs" />
@@ -1183,22 +1184,22 @@
   <ItemGroup>
     <PublishFile Include="Windows">
       <Visible>False</Visible>
-      <PublishState>Exclude</PublishState>
-      <IncludeHash>False</IncludeHash>
       <Group>
       </Group>
       <TargetPath>
       </TargetPath>
+      <PublishState>Exclude</PublishState>
+      <IncludeHash>False</IncludeHash>
       <FileType>Assembly</FileType>
     </PublishFile>
     <PublishFile Include="WPFToolkit">
       <Visible>False</Visible>
-      <PublishState>Exclude</PublishState>
-      <IncludeHash>False</IncludeHash>
       <Group>
       </Group>
       <TargetPath>
       </TargetPath>
+      <PublishState>Exclude</PublishState>
+      <IncludeHash>False</IncludeHash>
       <FileType>Assembly</FileType>
     </PublishFile>
   </ItemGroup>

@@ -57,6 +57,7 @@ namespace System.Windows.Forms.Samples {
         private ToolTipContent content;
         private bool toolTipShowing;
         private string _textDocument = "Text Document";
+        string strTabsCollection = "";
         ToolTip buttonToolTip = new ToolTip();
         string strInitialDirectory = "";
         int _CurrentIndex = 0;
@@ -155,8 +156,9 @@ namespace System.Windows.Forms.Samples {
         public static string strPathToSearch = @"C:\SVNIA\trunk";
 
         public static string strSearchPattern = @"*.*";
-
         public static string strSearchExcludePattern = @"*.dll;*.exe;*.png;*.xml;*.cache;*.sln;*.suo;*.pdb;*.csproj;*.deploy";
+
+
 
         public static string strSearchText = @"notepad";
 
@@ -427,7 +429,7 @@ namespace System.Windows.Forms.Samples {
                         string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
 
                         string settingsDirectory =
-      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
+      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\" + Program.MyRoamingFolder;
                         string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName1);
                         ArrayList alHosts = new ArrayList();
                         cbp = new List<ComboBoxPair>();
@@ -835,6 +837,59 @@ namespace System.Windows.Forms.Samples {
 
         #region Event Handlers        
         public void ExplorerView_Load(object sender, EventArgs e) {
+
+            // start tabsCollection
+           
+            List<ComboBoxPair> cbp = new List<ComboBoxPair>();
+            string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
+
+            string settingsDirectory =
+     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate";
+            string fileName = "cbxFindWhat.txt";
+            string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
+            ArrayList alHosts = new ArrayList();
+            cbp = new List<ComboBoxPair>();
+            cbp.Clear();
+            fileName = "cbxTabsCollection.txt";
+            settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
+            alHosts = new ArrayList();
+            cbp = new List<ComboBoxPair>();
+            cbp.Clear();
+            cbp.Add(new ComboBoxPair("--Select Item ---", "--Select Item ---"));
+            cbp.Add(new ComboBoxPair("IdealAutomateExplorer","IdealAutomateExplorer"));
+            ComboBox myComboBox = new ComboBox();
+            if (!File.Exists(settingsPath))
+            {
+                using (StreamWriter objSWFile = File.CreateText(settingsPath))
+                {
+                    objSWFile.Close();
+                }
+            }
+            using (StreamReader objSRFile = File.OpenText(settingsPath))
+            {
+                string strReadLine = "";
+                while ((strReadLine = objSRFile.ReadLine()) != null)
+                {
+                    string[] keyvalue = strReadLine.Split('^');
+                    if (keyvalue[0] != "--Select Item ---" && keyvalue[0] != "" && keyvalue[0] != "IdealAutomateExplorer")
+                    {
+                        cbp.Add(new ComboBoxPair(keyvalue[0], keyvalue[1]));
+
+                    }
+                }
+                objSRFile.Close();
+            }
+
+            foreach (var item in cbp)
+            {
+                cbxTabsCollection.Items.Add(item);
+            }
+            cbxTabsCollection.DisplayMember = "_Value";
+            cbxTabsCollection.SelectedValue = myActions.GetValueByKeyGlobal("cbxTabsCollectionSelectedValue");
+            cbxTabsCollection.Text = myActions.GetValueByKeyGlobal("cbxTabsCollectionSelectedValue");
+            System.Windows.Forms.ToolTip ToolTip1 = new System.Windows.Forms.ToolTip();
+            ToolTip1.SetToolTip(cbxTabsCollection, "Tabs collection allows you to start the app with different tab collections.\r\n\r\nAfter entering name for tab collection, tab out of combobox to save. \r\n\r\n Restart app.");
+            // end tabsCollection
             DeleteOpenFiles();
             GlobalMouseHandler globalClick = new GlobalMouseHandler();
             Application.AddMessageFilter(globalClick);
@@ -1002,19 +1057,11 @@ namespace System.Windows.Forms.Samples {
             // Set the title
             SetTitle(_dir.FileView);
         skipSecondLoad:
-            string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
-            string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
-            string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
-            string settingsDirectory =
-       Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
-            string fileName = cbxCurrentPath.Name + ".txt";
-            string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
-            ArrayList alHosts = new ArrayList();
-            List<ComboBoxPair> cbp = new List<ComboBoxPair>();
+
             cbp.Clear();
             //  cbxCurrentPath.Items.Clear();
             //  cbp.Add(new ComboBoxPair("--Select Item ---", "--Select Item ---"));
-            ComboBox myComboBox = new ComboBox();
+             myComboBox = new ComboBox();
 
             if (!File.Exists(settingsPath)) {
                 using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
@@ -1564,7 +1611,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                     ev_Delete_Directory(myFileView.FullName.ToString());
                     string settingsDirectory =
-      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
+      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\" + Program.MyRoamingFolder;
 
                     if (Directory.Exists(settingsDirectory)) {
                         Directory.Delete(settingsDirectory, true);
@@ -2272,6 +2319,19 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         }
         public void RefreshDataGrid() {
+            // tabscollection
+            string strTabsCollection = cbxTabsCollection.Text;
+            myActions.SetValueByKeyGlobal("cbxTabsCollectionSelectedValue", strTabsCollection);
+            string strTabsCollectionToUse = "";
+            if ((strTabsCollection == "--Select Item ---" || strTabsCollection == ""))
+            {
+                myActions.MessageBoxShow("Please enter TabsCollection or select TabsCollection from ComboBox");
+                return;
+            }
+            strTabsCollectionToUse = strTabsCollection;           
+            myActions.SetValueByKeyGlobal("TabsCollectionToUse", strTabsCollectionToUse);
+
+
 
             //LogMemory("refresh before datasource created  Total Memory ");
             //  Logging.WriteLogSimple("refresh before datasource created " + _stopwatch.Elapsed.ToString() + " Total Memory " + String.Format("{0:n0}", GC.GetTotalMemory(true)));
@@ -2804,7 +2864,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
 
                     string settingsDirectory =
-      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
+      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\" + Program.MyRoamingFolder;
                     string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
                     ArrayList alHosts = new ArrayList();
                     cbp = new List<ComboBoxPair>();
@@ -2885,7 +2945,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         }
         public string GetAppDirectoryForScript(string strScriptName) {
             string settingsDirectory =
-      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
+      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\" + Program.MyRoamingFolder;
             if (!Directory.Exists(settingsDirectory)) {
                 Directory.CreateDirectory(settingsDirectory);
             }
@@ -2932,7 +2992,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
 
                 string settingsDirectory =
-      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
+      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\" + Program.MyRoamingFolder;
                 string fromRoamingDirectory = Path.Combine(settingsDirectory, diSourceSubDir.FullName);
 
 
@@ -4163,7 +4223,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     ev_Delete_Directory(myFileView.FullName.ToString());
                     string scriptPath = myActions.ConvertFullFileNameToPublicPath(myFileView.FullName) + "\\" + myFileView.Name;
                     string settingsDirectory =
-      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
+      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\" + Program.MyRoamingFolder;
                     settingsDirectory = Path.Combine(settingsDirectory, scriptPath);
                     if (Directory.Exists(settingsDirectory)) {
                         Directory.Delete(settingsDirectory, true);
@@ -5342,7 +5402,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
 
                     string settingsDirectory =
-       Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
+       Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\" + Program.MyRoamingFolder;
                     string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
                     ArrayList alHosts = new ArrayList();
                     cbp = new List<ComboBoxPair>();
@@ -5950,7 +6010,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
 
                 string settingsDirectory =
-       Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
+       Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\" + Program.MyRoamingFolder;
                 string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
                 ArrayList alHosts = new ArrayList();
                 cbp = new List<ComboBoxPair>();
@@ -6029,7 +6089,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
 
                     string settingsDirectory =
-      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
+      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\" + Program.MyRoamingFolder;
                     string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
                     ArrayList alHosts = new ArrayList();
                     cbp = new List<ComboBoxPair>();
@@ -6169,7 +6229,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
             string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
             string settingsDirectory =
-      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
+      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\" + Program.MyRoamingFolder;
 
             string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
             using (StreamWriter objSWFile = File.CreateText(settingsPath)) {
@@ -6606,9 +6666,10 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             //     }
         }
 
-        private async Task<string> Search(string settingsDirectory) {
+        private async Task<string> Search(string settingsDirectory)
+        {
             string myResult = "";
-            
+
 
 
             System.Diagnostics.Stopwatch st = new System.Diagnostics.Stopwatch();
@@ -6616,11 +6677,14 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             intHits = 0;
             int intLineCtr;
             List<FileInfo> myFileList = new List<FileInfo>();
-            if (File.Exists(strPathToSearch)) {
+            if (File.Exists(strPathToSearch))
+            {
                 System.IO.FileInfo fi = new System.IO.FileInfo(strPathToSearch);
                 myFileList.Add(fi);
 
-            } else {
+            }
+            else
+            {
                 myFileList = TraverseTree(strSearchPattern, strPathToSearch);
             }
             int intFiles = 0;
@@ -6630,7 +6694,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 intLineCtr = 0;
                 boolStringFoundInFile = false;
                 ReadFileToString(myFileInfo.FullName, intLineCtr, matchInfoList);
-                if (boolStringFoundInFile) {
+                if (boolStringFoundInFile)
+                {
                     intFiles++;
                 }
 
@@ -6647,7 +6712,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             });
             matchInfoList = matchInfoList.Where(mi => mi != null).OrderBy(mi => mi.FullName).ThenBy(mi => mi.LineNumber).ToList();
             List<string> lines = new List<string>();
-            foreach (var item in matchInfoList) {
+            foreach (var item in matchInfoList)
+            {
                 lines.Add("\"" + item.FullName + "\"(" + item.LineNumber + "," + item.LinePosition + "): " + item.LineText.Length.ToString() + " " + item.LineText.Substring(0, item.LineText.Length > 5000 ? 5000 : item.LineText.Length));
 
 
@@ -6661,11 +6727,13 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             settingsDirectory =
      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
-            using (FileStream fs = new FileStream(settingsDirectory + @"\MatchInfo.txt", FileMode.Create)) {
+            using (FileStream fs = new FileStream(settingsDirectory + @"\MatchInfo.txt", FileMode.Create))
+            {
                 StreamWriter file = new System.IO.StreamWriter(fs, Encoding.Default);
 
                 file.WriteLine(@"-- " + strSearchText + " in " + strPathToSearch + " from " + strSearchPattern + " excl  " + strSearchExcludePattern + " --");
-                foreach (var item in matchInfoList) {
+                foreach (var item in matchInfoList)
+                {
                     file.WriteLine("\"" + item.FullName + "\"(" + item.LineNumber + "," + item.LinePosition + "): " + item.LineText.Substring(0, item.LineText.Length > 5000 ? 5000 : item.LineText.Length));
                 }
                 int intUniqueFiles = matchInfoList.Select(x => x.FullName).Distinct().Count();
@@ -6699,7 +6767,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 string strContent = settingsDirectory + @"\MatchInfo.txt";
                 myActions.Run(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
                 myResult = "RunTime: " + elapsedTime + "\n\r\n\rHits: " + intHits.ToString() + "\n\r\n\rFiles with hits: " + intUniqueFiles.ToString() + "\n\r\n\rPut Cursor on line and\n\r press Ctrl+Alt+N\n\rto view detail page. ";
-                if (_searchErrors.Length > 0) {
+                if (_searchErrors.Length > 0)
+                {
                     myResult += "\n\r\n\rErrors: " + _searchErrors.ToString();
                 }
             }
@@ -6707,9 +6776,11 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             return myResult;
         }
-        public static List<FileInfo> TraverseTree(string filterPattern, string root) {
+        public static List<FileInfo> TraverseTree(string filterPattern, string root)
+        {
             string[] arrayExclusionPatterns = strSearchExcludePattern.Split(';');
-            for (int i = 0; i < arrayExclusionPatterns.Length; i++) {
+            for (int i = 0; i < arrayExclusionPatterns.Length; i++)
+            {
                 arrayExclusionPatterns[i] = arrayExclusionPatterns[i].ToLower().ToString().Replace("*", "");
             }
             List<FileInfo> myFileList = new List<FileInfo>();
@@ -6717,17 +6788,20 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             // examined for files.
             Stack<string> dirs = new Stack<string>(20);
 
-            if (!System.IO.Directory.Exists(root)) {
+            if (!System.IO.Directory.Exists(root))
+            {
                 MessageBox.Show(root + " - folder did not exist");
             }
 
 
             dirs.Push(root);
 
-            while (dirs.Count > 0) {
+            while (dirs.Count > 0)
+            {
                 string currentDir = dirs.Pop();
                 string[] subDirs;
-                try {
+                try
+                {
                     subDirs = System.IO.Directory.GetDirectories(currentDir);
                 }
                 // An UnauthorizedAccessException exception will be thrown if we do not have
@@ -6739,52 +6813,73 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 // choice of which exceptions to catch depends entirely on the specific task 
                 // you are intending to perform and also on how much you know with certainty 
                 // about the systems on which this code will run.
-                catch (UnauthorizedAccessException e) {
+                catch (UnauthorizedAccessException e)
+                {
                     Console.WriteLine(e.Message);
                     continue;
-                } catch (System.IO.DirectoryNotFoundException e) {
+                }
+                catch (System.IO.DirectoryNotFoundException e)
+                {
                     Console.WriteLine(e.Message);
                     continue;
-                } catch (System.ArgumentException e) {
+                }
+                catch (System.ArgumentException e)
+                {
                     //      MessageBox.Show(e.Message + " CurrentDir = " + currentDir);
                     continue;
                 }
 
                 string[] files = null;
-                try {
+                try
+                {
                     files = System.IO.Directory.GetFiles(currentDir, filterPattern);
-                } catch (UnauthorizedAccessException e) {
+                }
+                catch (UnauthorizedAccessException e)
+                {
 
                     Console.WriteLine(e.Message);
                     continue;
-                } catch (System.IO.DirectoryNotFoundException e) {
+                }
+                catch (System.IO.DirectoryNotFoundException e)
+                {
                     Console.WriteLine(e.Message);
                     continue;
-                } catch (System.IO.PathTooLongException e) {
+                }
+                catch (System.IO.PathTooLongException e)
+                {
                     Console.WriteLine(e.Message);
                     continue;
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     Console.WriteLine(e.Message);
                     continue;
                 }
 
                 // Perform the required action on each file here.
                 // Modify this block to perform your required task.
-                foreach (string file in files) {
-                    try {
+                foreach (string file in files)
+                {
+                    try
+                    {
                         // Perform whatever action is required in your scenario.
                         System.IO.FileInfo fi = new System.IO.FileInfo(file);
                         bool boolFileHasGoodExtension = true;
-                        foreach (var item in arrayExclusionPatterns) {
-                            if (fi.FullName.ToLower().Contains(item)) {
+                        foreach (var item in arrayExclusionPatterns)
+                        {
+                            if (fi.FullName.ToLower().Contains(item))
+                            {
                                 boolFileHasGoodExtension = false;
                             }
                         }
-                        if (boolFileHasGoodExtension) {
+                        if (boolFileHasGoodExtension)
+                        {
                             myFileList.Add(fi);
                         }
                         //    Console.WriteLine("{0}: {1}, {2}", fi.Name, fi.Length, fi.CreationTime);
-                    } catch (System.IO.FileNotFoundException e) {
+                    }
+                    catch (System.IO.FileNotFoundException e)
+                    {
                         // If file was deleted by a separate application
                         //  or thread since the call to TraverseTree()
                         // then just continue.
@@ -7410,7 +7505,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
 
 
-
+            
             string parentScriptPath = myActions.ConvertFullFileNameToPublicPath(basePathForNewTextDocument) + "\\" + basePathName;
             string myNewTextDocumentName = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
             if (!myNewTextDocumentName.EndsWith(".rtf")) {
@@ -8347,7 +8442,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
             string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
             string settingsDirectory =
-       Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
+       Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\" + Program.MyRoamingFolder;
             string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
             ArrayList alHosts = new ArrayList();
             cbp = new List<ComboBoxPair>();
@@ -8472,7 +8567,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
                     myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
                     settingsDirectory =
-     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\IdealAutomateExplorer";
+     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate\\" + Program.MyRoamingFolder;
                     settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
                     alHosts = new ArrayList();
                     cbp = new List<ComboBoxPair>();
@@ -10318,6 +10413,91 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             StopwatchPage dlg = new StopwatchPage();
             ElementHost.EnableModelessKeyboardInterop(dlg);
             dlg.Show();
+        }
+
+        private void cbxTabsCollection_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Methods myActions = new Methods();
+            myActions.SetValueByKeyGlobal("cbxTabsCollectionSelectedValue", ((ComboBoxPair)(cbxTabsCollection.SelectedItem))._Value);
+        }
+
+        private void cbxTabsCollection_Leave(object sender, EventArgs e)
+        {
+            string strNewHostName = ((ComboBox)sender).Text;
+            Methods myActions = new Methods();
+            System.Windows.Forms.DialogResult myResult;
+            //if (!Directory.Exists(strNewHostName)) {
+
+            //    myResult = myActions.MessageBoxShowWithYesNo("I could not find folder " + strNewHostName + ". Do you want me to create it ? ");
+            //    if (myResult == System.Windows.Forms.DialogResult.Yes) {
+            //        Directory.CreateDirectory(strNewHostName);
+            //    } else {
+            //        return;
+            //    }
+
+            //}
+            List<ComboBoxPair> alHosts = ((ComboBox)sender).Items.Cast<ComboBoxPair>().ToList();
+            List<ComboBoxPair> alHostsNew = new List<ComboBoxPair>();
+
+            ComboBoxPair myCbp = new ComboBoxPair(strNewHostName, strNewHostName);
+            bool boolNewItem = false;
+
+            alHostsNew.Add(myCbp);
+
+            foreach (ComboBoxPair item in alHosts)
+            {
+                if (strNewHostName.ToLower() != item._Key.ToLower())
+                {
+                    boolNewItem = true;
+                    alHostsNew.Add(item);
+                }
+            }
+            if (alHostsNew.Count > 24)
+            {
+                for (int i = alHostsNew.Count - 1; i > 0; i--)
+                {
+                    if (alHostsNew[i]._Key.Trim() != "--Select Item ---" || alHostsNew[i]._Key.Trim() != "IdealAutomateExplorer")
+                    {
+                        alHostsNew.RemoveAt(i);                        
+                    }
+                }
+            }
+
+            string fileName = ((ComboBox)sender).Name + ".txt";
+
+
+            string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
+            string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
+            string myNewProjectSourcePath = strApplicationBinDebug.Replace("\\bin\\Debug", "");
+            string settingsDirectory =
+      Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealAutomate";
+
+            string settingsPath = System.IO.Path.Combine(settingsDirectory, fileName);
+            using (StreamWriter objSWFile = File.CreateText(settingsPath))
+            {
+                foreach (ComboBoxPair item in alHostsNew)
+                {
+                    if (item._Key != "")
+                    {
+                        objSWFile.WriteLine(item._Key + '^' + item._Value);
+                    }
+                }
+                objSWFile.Close();
+            }
+
+            //  alHosts = alHostsNew;
+            if (boolNewItem)
+            {
+                ((ComboBox)sender).Items.Clear();
+                foreach (var item in alHostsNew)
+                {
+                    ((ComboBox)sender).Items.Add(item);
+                }
+            }
+            strTabsCollection = ((ComboBox)(sender)).Text;
+
+
+            myActions.SetValueByKeyGlobal("cbxTabsCollectionSelectedValue", strTabsCollection);
         }
         //private void LogMemory(string msg) {
         //    _memoryCurr = GC.GetTotalMemory(true);
