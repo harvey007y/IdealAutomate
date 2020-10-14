@@ -914,8 +914,15 @@ namespace System.Windows.Forms.Samples {
             } else {
                 _CurrentSplitContainer.Width = Screen.FromControl(this).Bounds.Width;
             }
+            // make default view be the details view because when you create
+            // new tab collection, it can be confusing as to why you are not seeing
+            // what is in wordpad items when list view is the default
+            if (detailsMenuItemChecked == "")
+            {
+                myActions.SetValueByKey("DetailsMenuItemChecked", "True");
+            }
 
-            if (detailsMenuItemChecked == "True") {
+            if (detailsMenuItemChecked == "True" || detailsMenuItemChecked == "") {
                 _CurrentSplitContainer.Panel2Collapsed = false;
                 this.detailsMenuItem.Checked = true;
                 this.listMenuItem.Checked = false;
