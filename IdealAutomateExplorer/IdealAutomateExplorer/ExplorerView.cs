@@ -5274,6 +5274,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
         private void visualStudioToolStripMenuItem_Click(object sender, EventArgs e) {
             FileView myFileView;
+            bool solutionFileFound = false;
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
@@ -5285,12 +5286,18 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                        myFileView.Name + ".sln",
                         SearchOption.AllDirectories)) {
                         // Display file path.
+                        solutionFileFound = true;
                         ev_Process_File(file);
                     }
 
                 } else {
+                    solutionFileFound = true;
                     ev_Process_File(myFileView.FullName.ToString());
                 }
+            }
+            if (solutionFileFound == false)
+            {
+                myActions.MessageBoxShow(".sln file not found - folder must contain .sln file to start visual studio");
             }
         }
 
