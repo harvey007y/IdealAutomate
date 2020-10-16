@@ -53,6 +53,7 @@ using System.Runtime;
 namespace System.Windows.Forms.Samples {
     partial class ExplorerView : Form {
         public static ExplorerView staticVar = null;
+        bool boolFirstTime = true;
         private DirectoryView _dir;
         private ToolTipContent content;
         private bool toolTipShowing;
@@ -10432,7 +10433,15 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         private void cbxTabsCollection_SelectedIndexChanged(object sender, EventArgs e)
         {
             Methods myActions = new Methods();
+            string oldTabsCollection = myActions.GetValueByKeyGlobal("cbxTabsCollectionSelectedValue");
             myActions.SetValueByKeyGlobal("cbxTabsCollectionSelectedValue", ((ComboBoxPair)(cbxTabsCollection.SelectedItem))._Value);
+            if (oldTabsCollection != strTabsCollection && boolFirstTime == false)
+            {
+                // CAUTION: if you are running in the debugger, this is going to restart application without debugger
+                Application.Restart();
+                Environment.Exit(0);
+            }
+            boolFirstTime = false;
         }
 
         private void cbxTabsCollection_Leave(object sender, EventArgs e)
@@ -10510,8 +10519,14 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             }
             strTabsCollection = ((ComboBox)(sender)).Text;
 
-
+            string oldTabsCollection = myActions.GetValueByKeyGlobal("cbxTabsCollectionSelectedValue");
             myActions.SetValueByKeyGlobal("cbxTabsCollectionSelectedValue", strTabsCollection);
+            if (oldTabsCollection != strTabsCollection)
+            {
+                // CAUTION: if you are running in the debugger, this is going to restart application without debugger
+                Application.Restart();
+                Environment.Exit(0);
+            }
         }
         //private void LogMemory(string msg) {
         //    _memoryCurr = GC.GetTotalMemory(true);

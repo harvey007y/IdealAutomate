@@ -4,7 +4,7 @@
   <description asmv2:iconFile="Resources\folder.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="IdealAutomateExplorer" version="1.0.7593.13541" language="neutral" processorArchitecture="amd64" />
+    <assemblyIdentity name="IdealAutomateExplorer" version="1.0.7594.25307" language="neutral" processorArchitecture="amd64" />
     <commandLine file="IdealAutomateExplorer.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -62,7 +62,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>kdhYECUzwRqlcu5zEjjxy1JC829moGxwB0HGE7AFWdA=</dsig:DigestValue>
+        <dsig:DigestValue>sgbxTQCc1tVUgKdCY7/nLatG9ixSWr/WKS9HJg3Js4c=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -91,14 +91,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IdealAutomateExplorer.exe" size="1323536">
-      <assemblyIdentity name="IdealAutomateExplorer" version="1.0.7593.13541" language="neutral" processorArchitecture="amd64" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IdealAutomateExplorer.exe" size="1324048">
+      <assemblyIdentity name="IdealAutomateExplorer" version="1.0.7594.25307" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>2u4Oijtj/irxIScsQj+wH8oFtjQYicdVU/kJHqn4hB4=</dsig:DigestValue>
+        <dsig:DigestValue>2kWapj2//5DD2ywK19pO3+dxBcIgH64Xm2kskL6O320=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -110,7 +110,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>UMMZtXHc0khNc2wxtZKyuFwsIB0H2dD+/lAsALOth5w=</dsig:DigestValue>
+        <dsig:DigestValue>cg0raclhsiTqjf7VbOQVJGUqm5ThXKW3tzX2vPKxblg=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

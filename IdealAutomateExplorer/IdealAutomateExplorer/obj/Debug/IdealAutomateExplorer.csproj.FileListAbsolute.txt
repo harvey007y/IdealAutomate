@@ -341,9 +341,6 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomat
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\IdealAutomateExplorer.csproj.CopyComplete
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\IdealAutomateExplorer.exe
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\IdealAutomateExplorer.pdb
-C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\DocumentFormat.OpenXml.dll
-C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\DocumentFormat.OpenXml.xml
-C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\IdealAutomateExplorer.csproj.CopyComplete
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\BuildProjects.bat
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\debloat.bat
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\DebloatScript.ps1
@@ -476,6 +473,7 @@ C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\Idea
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\IdealAutomateExplorer.pdb
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\AODL.dll
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\DgvFilterPopup.dll
+C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\DocumentFormat.OpenXml.dll
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\ICSharpCode.SharpZipLib.dll
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\InteractiveToolTip.dll
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\NAudio.dll
@@ -484,6 +482,7 @@ C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\Idea
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\DgvFilterPopup.pdb
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\DgvFilterPopup.xml
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\InteractiveToolTip.pdb
+C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\DocumentFormat.OpenXml.xml
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\NAudio.xml
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\WindowsInput.xml
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\IdealAutomateExplorer.csprojAssemblyReference.cache
@@ -637,5 +636,6 @@ C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\Idea
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\IdealAutomateExplorer.TrustInfo.xml
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\IdealAutomateExplorer.exe.manifest
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\IdealAutomateExplorer.application
+C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\IdealAutomateExplorer.csproj.CopyComplete
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\IdealAutomateExplorer.exe
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\obj\Debug\IdealAutomateExplorer.pdb
