@@ -104,7 +104,6 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateCore\IdealAutomateCor
 C:\Users\harve_nk54qew\AppData\Roaming\IdealAutomate\IdealAutomateCore.dll
 C:\Users\harve_nk54qew\AppData\Roaming\IdealAutomate\IdealAutomateCore.pdb
 C:\Users\harve_nk54qew\AppData\Roaming\IdealAutomate\IdealAutomateCore.XML
-C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore.csprojAssemblyReference.cache
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowMultipleControls.baml
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowShape.baml
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowMultipleControls.g.cs
@@ -117,3 +116,6 @@ C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateCore\IdealAut
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore.csproj.CopyComplete
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore.dll
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore.pdb
+C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore.csprojAssemblyReference.cache
+C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowBalloonMultipleControls.baml
+C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowBalloonMultipleControls.g.cs

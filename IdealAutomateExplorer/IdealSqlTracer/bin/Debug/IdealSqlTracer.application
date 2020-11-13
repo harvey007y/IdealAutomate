@@ -7,14 +7,14 @@
     <framework targetVersion="4.5" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="IdealSqlTracer.exe.manifest" size="8084">
+    <dependentAssembly dependencyType="install" codebase="IdealSqlTracer.exe.manifest" size="8152">
       <assemblyIdentity name="IdealSqlTracer.exe" version="1.0.0.8" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="amd64" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>7VhsJg9pNka09Ofz2onV/+l+I+13q/14HfK8wvydZ5w=</dsig:DigestValue>
+        <dsig:DigestValue>omfEJgDwWRvo+m+fcPCDLoWXee/fdDuaHNRKlMMslto=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

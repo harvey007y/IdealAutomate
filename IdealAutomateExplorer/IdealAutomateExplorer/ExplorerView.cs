@@ -256,12 +256,12 @@ namespace System.Windows.Forms.Samples {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExplorerView));
 
             
-
-            for (int i = 0; i < 20; i++) {
+            // allow for max of 50 tabs
+            for (int i = 0; i < 50; i++) {
                 BindingSource myNewBindingSource = new BindingSource();
                 listBindingSource.Add(myNewBindingSource);
             }
-            for (int i = 0; i < 20; i++) {
+            for (int i = 0; i < 50; i++) {
                 SplitContainer myNewSplitContainer = new SplitContainer();
                 listSplitContainer.Add(myNewSplitContainer);
             }
@@ -5554,7 +5554,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 return;
             }
 
-            string myHotKey = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
+            string myHotKey = myListControlEntity.Find(x => x.ID == "myTextBox").Text;           
             foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells) {
                 string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
                 int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
@@ -5608,6 +5608,9 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                                        );
                             }
                             myActions.WriteArrayListToAppDirectoryKeyGlobal("ScriptInfo", newArrayList);
+                        } else
+                        {
+                            myActions.MessageBoxShow(@"executable not found in bin\debug folder");
                         }
                     }
 

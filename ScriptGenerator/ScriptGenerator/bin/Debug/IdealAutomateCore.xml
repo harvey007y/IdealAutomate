@@ -320,6 +320,19 @@
             <param name="intLeft">integer indicating number of pixels from left of screen to display window</param>
             Category::Window
         </member>
+        <member name="M:IdealAutomate.Core.Methods.WindowShape(System.String,System.String,System.String,System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            <para>WindowShape allows you to display info to the user and to position that </para>
+            <para>the window on the screen</para>
+            </summary>
+            <param name="myShape">string "Box" or "Arrow"</param>
+            <param name="myOrientation">string "Left","Right","Up","Down",""</param>
+            <param name="myTitle">string title for window</param>
+            <param name="myContent">string content for window</param>
+            <param name="intTop">integer indicating number of pixels from top of screen to display window</param>
+            <param name="intLeft">integer indicating number of pixels from left of screen to display window</param>
+            Category::Window
+        </member>
         <member name="M:IdealAutomate.Core.Methods.MessageBoxShow(System.String)">
             <summary>
             MessageBoxShow receives an input string and displays it in a messagebox

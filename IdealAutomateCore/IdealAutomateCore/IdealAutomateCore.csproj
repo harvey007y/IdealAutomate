@@ -72,6 +72,10 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="SnippingTool.designer.cs" />
+    <Compile Include="WindowBalloonMultipleControls.xaml.cs">
+      <DependentUpon>WindowBalloonMultipleControls.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BalloonArrowDirectionEnum.cs" />
     <Compile Include="WindowShowEnum.cs" />
     <Compile Include="ControlType.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -101,6 +105,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="WindowBalloonMultipleControls.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="WindowMultipleControls.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -126,6 +134,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\RedArrowLeftUp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RedArrowLeftUp.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

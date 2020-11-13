@@ -956,7 +956,7 @@ namespace IdealAutomate.Core
 
         }
 
-        private static BitmapSource BitmapSourceFromImage(System.Drawing.Image img)
+        public static BitmapSource BitmapSourceFromImage(System.Drawing.Image img)
         {
             MemoryStream memStream = new MemoryStream();
 
@@ -968,7 +968,7 @@ namespace IdealAutomate.Core
 
             return decoder.Frames[0];
         }
-        private static System.Drawing.Bitmap BytesToBitmap(byte[] byteArray)
+        public  static System.Drawing.Bitmap BytesToBitmap(byte[] byteArray)
         {
 
 
@@ -1991,6 +1991,44 @@ namespace IdealAutomate.Core
 
 
         }
+
+
+        /// <summary>
+        /// <para>WindowBalloonMultipleControls takes a list of ControlEntity objects</para>
+        /// <para>and positions them in a window. When the user presses the </para>
+        /// <para>okay button on the screen, the list of ControlEntity objects</para>
+        /// <para>are updated with the values the user entered.  This provides</para>
+        /// <para>an easy way to receive multiple values from the user</para>
+        /// <para>A string is returned with the name of the button that was pressed</para>
+        /// <para>Here is an example of setting background color for a button:</para>
+        /// <para>myControlEntity.BackgroundColor = System.Windows.Media.Color.FromRgb(System.Drawing.Color.Red.R, System.Drawing.Color.Red.G, System.Drawing.Color.Red.B);</para>
+        /// </summary>
+        /// <param name="myListControlEntity">list of ControlEntity objects</param>
+        /// <param name="intWindowHeight">integer indicating height of window</param>
+        /// <param name="intWindowWidth">integer indicating width of window</param>
+        /// <param name="intWindowTop">integer indicating number of pixels from top of screen to display window</param>
+        /// <param name="intWindowLeft">integer indicating number of pixels from left side of screen to display window</param>
+        /// <param name="balloonArrowDirection">string indicating balloon arrow direction</param>
+        /// <returns>System.Windows.Forms.DialogResult to indicate if okay button was pressed</returns>
+        /// Category::Window
+        public string WindowBalloonMultipleControls(ref List<ControlEntity> myListControlEntity, int intWindowHeight, int intWindowWidth, int intWindowTop, int intWindowLeft, string balloonArrowDirection)
+        {
+            if (fbDebugMode)
+            {
+                Console.WriteLine(oProcess.ProcessName + "==> " + "WindowBalloonMultipleControls");
+                Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "WindowBalloonMultipleControls");
+            }
+            WindowBalloonMultipleControls dlg = new WindowBalloonMultipleControls(ref myListControlEntity, intWindowHeight, intWindowWidth, intWindowTop, intWindowLeft, WindowState.Normal, balloonArrowDirection);
+
+            // dlg.Owner = (Window)Window.GetWindow(this);
+            // Shadow.Visibility = Visibility.Visible;
+            dlg.ShowDialog();
+
+            return dlg.strButtonClickedName;
+
+
+
+        }
         /// <summary>
         /// <para>WindowMultipleControls takes a list of ControlEntity objects</para>
         /// <para>and positions them in a window. When the user presses the </para>
@@ -2037,6 +2075,7 @@ namespace IdealAutomate.Core
         /// <returns>Selected ComboBoxPair</returns>
 
 
+
         /// <summary>
         /// <para>WindowShape allows you to display info to the user and to position that </para>
         /// <para>the window on the screen</para>
@@ -2056,6 +2095,32 @@ namespace IdealAutomate.Core
                 Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "WindowShape: myEntity=" + myTitle);
             }
             WindowShape dlg = new WindowShape(myShape, myOrientation, myTitle, myContent, intTop, intLeft);
+
+            // dlg.Owner = (Window)Window.GetWindow(this);
+            // Shadow.Visibility = Visibility.Visible;
+            dlg.ShowDialog();
+            return;
+        }
+
+        /// <summary>
+        /// <para>WindowShape allows you to display info to the user and to position that </para>
+        /// <para>the window on the screen</para>
+        /// </summary>
+        /// <param name="myShape">string "Box" or "Arrow"</param>
+        /// <param name="myOrientation">string "Left","Right","Up","Down",""</param>
+        /// <param name="myTitle">string title for window</param>
+        /// <param name="myContent">string content for window</param>
+        /// <param name="intTop">integer indicating number of pixels from top of screen to display window</param>
+        /// <param name="intLeft">integer indicating number of pixels from left of screen to display window</param>
+        /// Category::Window
+        public void WindowShape(string myShape, string myOrientation, string myTitle, string myContent, string myCopyableText, int intTop, int intLeft)
+        {
+            if (fbDebugMode)
+            {
+                Console.WriteLine(oProcess.ProcessName + "==> " + "WindowShape: myEntity=" + myTitle);
+                Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "WindowShape: myEntity=" + myTitle);
+            }
+            WindowShape dlg = new WindowShape(myShape, myOrientation, myTitle, myContent, myCopyableText, intTop, intLeft);
 
             // dlg.Owner = (Window)Window.GetWindow(this);
             // Shadow.Visibility = Visibility.Visible;

@@ -1,0 +1,30 @@
+﻿			
+			intRowCtr++;
+			myControlEntity&&SUFFIX.ControlEntitySetDefaults();
+			myControlEntity&&SUFFIX.ControlType = ControlType.Label;
+			myControlEntity&&SUFFIX.ID = "lbl&&ID";
+			myControlEntity&&SUFFIX.Text = "&&SPACEDOUTID";
+			myControlEntity&&SUFFIX.RowNumber = intRowCtr;			
+			myControlEntity&&SUFFIX.ColumnNumber = 0;
+			myControlEntity&&SUFFIX.ColumnSpan = 1;
+			myListControlEntity.Add(myControlEntity&&SUFFIX.CreateControlEntity());
+			
+			myControlEntity&&SUFFIX.ControlEntitySetDefaults();
+			myControlEntity&&SUFFIX.ControlType = ControlType.ComboBox;
+			cbp&&SUFFIX.Clear();
+			cbp&&SUFFIX.Add(new ComboBoxPair("&&KEY1", "&&VALUE1"));
+			cbp&&SUFFIX.Add(new ComboBoxPair("&&KEY2", "&&VALUE2"));
+			cbp&&SUFFIX.Add(new ComboBoxPair("&&KEY3", "&&VALUE3"));
+			cbp&&SUFFIX.Add(new ComboBoxPair("&&KEY4", "&&VALUE4"));
+			cbp&&SUFFIX.Add(new ComboBoxPair("&&KEY5", "&&VALUE5"));
+			myControlEntity&&SUFFIX.ListOfKeyValuePairs = cbp&&SUFFIX;	
+			myControlEntity&&SUFFIX.SelectedValue = "&&SELECTEDVALUE";		
+			myControlEntity&&SUFFIX.ID = "cbx&&ID";			
+			myControlEntity&&SUFFIX.RowNumber = intRowCtr;
+			myControlEntity&&SUFFIX.Width = &&WIDTH;	
+			myControlEntity&&SUFFIX.ToolTipx = "&&TOOLTIP";
+			myControlEntity&&SUFFIX.DDLName = "&&DDLNAME";
+			myControlEntity&&SUFFIX.ColumnNumber = 1;
+			myControlEntity&&SUFFIX.ColumnSpan = &&COLUMNSPAN;
+			myListControlEntity&&SUFFIX.Add(myControlEntity&&SUFFIX.CreateControlEntity());
+
