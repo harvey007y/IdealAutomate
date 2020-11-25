@@ -956,7 +956,7 @@ namespace IdealAutomate.Core
 
         }
 
-        public static BitmapSource BitmapSourceFromImage(System.Drawing.Image img)
+        private static BitmapSource BitmapSourceFromImage(System.Drawing.Image img)
         {
             MemoryStream memStream = new MemoryStream();
 
@@ -968,7 +968,7 @@ namespace IdealAutomate.Core
 
             return decoder.Frames[0];
         }
-        public  static System.Drawing.Bitmap BytesToBitmap(byte[] byteArray)
+        private  static System.Drawing.Bitmap BytesToBitmap(byte[] byteArray)
         {
 
 
@@ -2021,7 +2021,7 @@ namespace IdealAutomate.Core
             WindowBalloonMultipleControls dlg = new WindowBalloonMultipleControls(ref myListControlEntity, intWindowHeight, intWindowWidth, intWindowTop, intWindowLeft, WindowState.Normal, balloonArrowDirection);
 
             // dlg.Owner = (Window)Window.GetWindow(this);
-            // Shadow.Visibility = Visibility.Visible;
+            // Shadow.Visibility = Visibility.Visible;...........
             dlg.ShowDialog();
 
             return dlg.strButtonClickedName;

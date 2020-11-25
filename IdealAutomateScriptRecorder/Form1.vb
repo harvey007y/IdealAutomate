@@ -423,6 +423,13 @@ Public Class Form1
         myControlEntity.Text = "Image Not Found"
         myListControlEntity.Add(myControlEntity.CreateControlEntity())
 
+        'Dim intLastSlashIndex As Integer = myImage.ImageFile.LastIndexOf("\")
+        'Dim strAltFileName As String = myImage.ImageFile.Substring(intLastSlashIndex + 1)
+        'Dim settingsDirectory As String = GetAppDirectoryForScript()
+        'strFullFileName = Path.Combine(settingsDirectory, strAltFileName)
+        'If File.Exists(strFullFileName) Then
+        '    myImage.ImageFile = strFullFileName
+        'End If
 
         myControlEntity.ControlEntitySetDefaults()
         myControlEntity.ControlType = ControlType.Label
@@ -449,7 +456,7 @@ Public Class Form1
         myControlEntity.ColumnNumber = 0
         myListControlEntity.Add(myControlEntity.CreateControlEntity())
 
-        'myControlEntity.ControlEntitySetDefaults()
+        myControlEntity.ControlEntitySetDefaults()
         'If myImage.ImageFile.Contains(":") Then
         '    Dim mybytearray() As Byte = File.ReadAllBytes(myImage.ImageFile)
         '    Dim bm As System.Drawing.Bitmap = BytesToBitmap(mybytearray)
@@ -464,12 +471,12 @@ Public Class Form1
         '    myControlEntity.Source = BitmapSourceFromImage(bm)
         'End If
 
-        'myControlEntity.ControlType = ControlType.Image
-        'myControlEntity.ID = "myImage"
-        'myControlEntity.RowNumber = 4
-        'myControlEntity.ColumnNumber = 0
+        myControlEntity.ControlType = ControlType.Image
+        myControlEntity.ID = "myImage"
+        myControlEntity.RowNumber = 4
+        myControlEntity.ColumnNumber = 0
 
-        'myListControlEntity.Add(myControlEntity.CreateControlEntity())
+        myListControlEntity.Add(myControlEntity.CreateControlEntity())
 
         myControlEntity.ControlEntitySetDefaults()
         myControlEntity.ControlType = ControlType.Label
@@ -495,6 +502,10 @@ Public Class Form1
         If strButtonPressed <> "btnCancel" Then
             SnippingTool.Snip()
             If SnippingTool.Image IsNot Nothing Then
+                Dim dblWinHeight As Double = 300
+                Dim dblWinWidth As Double = 0
+
+                Dim intRowCtr As Int32 = 1
                 Clipboard.SetImage(BitmapSourceFromImage(SnippingTool.Image))
                 myListControlEntity = New List(Of ControlEntity)()
 
@@ -507,26 +518,129 @@ Public Class Form1
 
 
 
+                intRowCtr = 0
+
+                intRowCtr += 1
+
                 myControlEntity.ControlEntitySetDefaults()
                 myControlEntity.ControlType = ControlType.Image
                 myControlEntity.ID = "myImage"
-                myControlEntity.RowNumber = 1
+                myControlEntity.RowNumber = intRowCtr
                 myControlEntity.ColumnNumber = 0
                 myControlEntity.ColumnSpan = 2
-                myImage.ImageFile = strFullFileName
+                myImage.ImageFile = "xyz" ' strFullFileName;
                 SaveClipboardImageToFile(myImage.ImageFile)
                 Dim mybytearray() As Byte = File.ReadAllBytes(myImage.ImageFile)
                 Dim bm As System.Drawing.Bitmap = BytesToBitmap(mybytearray)
                 myControlEntity.Width = bm.Width
                 myControlEntity.Height = bm.Height
-
-
+                dblWinHeight += bm.Height
+                dblWinWidth += bm.Width
                 myControlEntity.Source = BitmapSourceFromImage(bm)
                 myListControlEntity.Add(myControlEntity.CreateControlEntity())
 
-                WindowMultipleControls(myListControlEntity, 600, 500, 0, 0)
+
+                intRowCtr += 1
+                myControlEntity.ControlEntitySetDefaults()
+                myControlEntity.ControlType = ControlType.Label
+                myControlEntity.ID = "lblFullFileName"
+                myControlEntity.Text = "FullFileName"
+                myControlEntity.RowNumber = intRowCtr
+                myControlEntity.ColumnNumber = 0
+                myListControlEntity.Add(myControlEntity.CreateControlEntity())
+
+                myControlEntity.ControlEntitySetDefaults()
+                myControlEntity.ControlType = ControlType.TextBox
+                myControlEntity.ID = "txtFullFileName"
+                Dim myActions As Methods = New Methods()
+                myControlEntity.Text = myActions.GetValueByKey("FullFileName")
+                myControlEntity.ToolTipx = "Enter full file name to use to save the image. Example, C:\Data\Images\MyImage.png"
+                myControlEntity.RowNumber = intRowCtr
+                myControlEntity.ColumnNumber = 1
+                myControlEntity.ColumnSpan = 0
+                myListControlEntity.Add(myControlEntity.CreateControlEntity())
+
+                intRowCtr += 1
+                myControlEntity.ControlEntitySetDefaults()
+                myControlEntity.ControlType = ControlType.Label
+                myControlEntity.ID = "lblTop"
+                myControlEntity.Text = "Top Offset"
+                myControlEntity.RowNumber = intRowCtr
+                myControlEntity.ColumnNumber = 0
+                myListControlEntity.Add(myControlEntity.CreateControlEntity())
+
+                myControlEntity.ControlEntitySetDefaults()
+                myControlEntity.ControlType = ControlType.TextBox
+                myControlEntity.ID = "txtTop"
+                myControlEntity.Text = myActions.GetValueByKey("Top")
+
+                myControlEntity.ToolTipx = "Top offset"
+                myControlEntity.RowNumber = intRowCtr
+                myControlEntity.ColumnNumber = 1
+                myControlEntity.ColumnSpan = 0
+                myListControlEntity.Add(myControlEntity.CreateControlEntity())
+
+                intRowCtr += 1
+                myControlEntity.ControlEntitySetDefaults()
+                myControlEntity.ControlType = ControlType.Label
+                myControlEntity.ID = "lblLeft"
+                myControlEntity.Text = "Left Offset"
+                myControlEntity.RowNumber = intRowCtr
+                myControlEntity.ColumnNumber = 0
+                myListControlEntity.Add(myControlEntity.CreateControlEntity())
+
+                myControlEntity.ControlEntitySetDefaults()
+                myControlEntity.ControlType = ControlType.TextBox
+                myControlEntity.ID = "txtLeft"
+                myControlEntity.Text = myActions.GetValueByKey("Left")
+
+                myControlEntity.ToolTipx = "Left offset"
+                myControlEntity.RowNumber = intRowCtr
+                myControlEntity.ColumnNumber = 1
+                myControlEntity.ColumnSpan = 0
+                myListControlEntity.Add(myControlEntity.CreateControlEntity())
+                If dblWinHeight > 750 Then
+                    dblWinHeight = 750
+                End If
+                If dblWinWidth > 1000 Then
+                    dblWinWidth = 1000
+                End If
+                If dblWinWidth < 500 Then
+                    dblWinWidth = 500
+                End If
+                strButtonPressed = myActions.WindowMultipleControls(myListControlEntity, CInt(Math.Truncate(dblWinHeight)), CInt(Math.Truncate(dblWinWidth)), 0, 0)
+                If strButtonPressed = "btnCancel" Then
+                    myActions.MessageBoxShow("Okay button not pressed - going to previous menu")
+                    Return
+                End If
+
+                strFullFileName = myListControlEntity.Find(Function(x) x.ID = "txtFullFileName").Text
+                myActions.SetValueByKey("FullFileName", strFullFileName)
+                Dim strTop As String = myListControlEntity.Find(Function(x) x.ID = "txtTop").Text
+                myActions.SetValueByKey("Top", strTop)
+                Dim strLeft As String = myListControlEntity.Find(Function(x) x.ID = "txtLeft").Text
+                myActions.SetValueByKey("Left", strLeft)
+                SaveClipboardImageToFile(strFullFileName)
+                '_PositionType = "Relative"
+                '_RelativeFullFileName = strFullFileName
+                '_RelativeLeft = strLeft
+                '_RelativeTop = strTop
+
 
                 '     GoTo PutAllBegin
+
+                listActions.Add("//")
+                listActions.Add("// === Start - Click on Image ===========")
+                listActions.Add("//")
+                listActions.Add("ImageEntity myImage = new ImageEntity();")
+                listActions.Add("myImage.ImageFile = @""" & strFullFileName & """;")
+                listActions.Add("myImage.RelativeX = " & strLeft & ";")
+                listActions.Add("myImage.RelativeY = " & strTop & ";")
+                listActions.Add("myActions.ClickImageIfExists(myImage);")
+                listActions.Add("//")
+                listActions.Add("// === End - Click on Image ===========")
+                listActions.Add("//")
+
             End If
         End If
     End Sub
@@ -1332,6 +1446,28 @@ Module Keyboard
         End If
     End Sub
 
+    ''' <summary>
+    ''' <para>GetAppDirectoryForScript gets the application </para>
+    ''' <para>data folder and adds \IdealAutomate\yourscriptname to it.</para>
+    ''' <para>The AppDirectory allows you to store personal settings and</para>
+    ''' <para>information that you want to keep private (like passwords) in a location</para>
+    ''' <para>outside of your script on in the application directory</para>
+    ''' </summary>
+    ''' <returns>string that is the app_data/roaming directory path for the script</returns>
+    ''' Category::Directory
+    Public Function GetAppDirectoryForScript() As String
+
+        Dim directory As String = AppDomain.CurrentDomain.BaseDirectory
+        directory = directory.Replace("\bin\Debug\", "")
+        Dim intLastSlashIndex As Integer = directory.LastIndexOf("\")
+        'string strScriptName = directory.Substring(intLastSlashIndex + 1);
+        ' string strScriptName = System.Reflection.Assembly.GetCallingAssembly().GetName().Name;
+        Dim settingsDirectory As String = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) & "\IdealAutomate\IdealAutomateScriptRecorder"
+        If Not System.IO.Directory.Exists(settingsDirectory) Then
+            System.IO.Directory.CreateDirectory(settingsDirectory)
+        End If
+        Return settingsDirectory
+    End Function
 
 
     Public Function GetMainModuleFilepath(ByVal processId As Integer) As String

@@ -73,9 +73,9 @@ namespace DataGridFilterTest
             //var keywordFilter = filters.FirstOrDefault(w => w.Key == "str_jobapplications_Keyword");
             //keywordFilter.Value.QueryString = "c";
 
-            var dateAddedFilter = filters.FirstOrDefault(w => w.Key == "dt_jobapplications_DateAdded");
-            dateAddedFilter.Value.QueryString = System.DateTime.Today.AddDays(-7).ToShortDateString();
-            dateAddedFilter.Value.Operator = DataGridFilterLibrary.Support.FilterOperator.GreaterThanOrEqual;
+            var dateLastModifiedFilter = filters.FirstOrDefault(w => w.Key == "dt_jobapplications_DateLastModified");
+            dateLastModifiedFilter.Value.QueryString = System.DateTime.Today.AddDays(-7).ToShortDateString();
+            dateLastModifiedFilter.Value.Operator = DataGridFilterLibrary.Support.FilterOperator.GreaterThanOrEqual;
 
             //var positionAge = filters.FirstOrDefault(w => w.Key == "Position.Age");
             //positionAge.Value.QueryString = "10";

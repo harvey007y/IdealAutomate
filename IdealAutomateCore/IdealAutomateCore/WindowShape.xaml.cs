@@ -88,8 +88,8 @@ namespace IdealAutomate.Core {
           uri = new Uri("/IdealAutomateCore;component/Resources/RedBox.png", UriKind.Relative);
           mySource = new BitmapImage(uri);
           imgBackground.Source = mySource;
-          lblTitle.Margin = new System.Windows.Thickness(10, 102, 139, 0);
-          lblContent.Margin = new System.Windows.Thickness(10, 133, 20, 0);
+          lblTitle.Margin = new System.Windows.Thickness(10, 183, 139, 0);
+          lblContent.Margin = new System.Windows.Thickness(10, 10, 20, 0);
           lblContent.Height = 94;
           btnLogin.Margin = new System.Windows.Thickness(10, 0, 0, 10);
           break;
@@ -188,7 +188,7 @@ namespace IdealAutomate.Core {
                     uri = new Uri("/IdealAutomateCore;component/Resources/RedBox.png", UriKind.Relative);
                     mySource = new BitmapImage(uri);
                     imgBackground.Source = mySource;
-                    lblTitle.Margin = new System.Windows.Thickness(10, 102, 139, 0);
+                    lblTitle.Margin = new System.Windows.Thickness(10, 10, 139, 0);
                     lblContent.Margin = new System.Windows.Thickness(10, 133, 20, 0);
                     txtCopyableText.Margin = new System.Windows.Thickness(10, 133, 20, 0);
                     // lblContent.Height = 94;
