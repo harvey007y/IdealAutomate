@@ -2305,6 +2305,9 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             if (mySelectedRow > -1)
             {
                 _CurrentDataGridView.FirstDisplayedScrollingRowIndex = mySelectedRow;
+            } else
+            {
+                _CurrentDataGridView.FirstDisplayedScrollingRowIndex = 0;
             }
             //LogMemory("after create new category GetTotalMemory");
             //Logging.WriteLogSimple("after create new category " + _stopwatch.Elapsed.ToString() + " GetTotalMemory " + String.Format("{0:n0}", GC.GetTotalMemory(true)));
@@ -7595,9 +7598,12 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             }
             myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow", mySelectedRow.ToString());
             RefreshDataGrid();
-            if (_CurrentDataGridView.Rows[_selectedRow].Cells.Count > 1)
+            if (_CurrentDataGridView.Rows[_selectedRow].Cells.Count > -1)
             {
                 _CurrentDataGridView.FirstDisplayedScrollingRowIndex = mySelectedRow;
+            } else
+            {
+                _CurrentDataGridView.FirstDisplayedScrollingRowIndex = 0;
             }
             this.Cursor = Cursors.Default;
         }
