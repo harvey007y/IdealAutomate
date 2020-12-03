@@ -7,6 +7,7 @@ using System.IO;
 
 namespace IdealAutomateCore {
     public static class Logging {
+        static int lineCtr = 0;
         public static void WriteLogSimple(string pMsg) {
 
             string directory = AppDomain.CurrentDomain.BaseDirectory;
@@ -20,8 +21,15 @@ namespace IdealAutomateCore {
       if (!Directory.Exists(settingsDirectory)) {
                 Directory.CreateDirectory(settingsDirectory);
             }
+            lineCtr++;
+
             string filePath = Path.Combine(settingsDirectory, "IdealAutomateLog.txt");
             //System.Web.HttpContext.Current.Server.MapPath("~//Trace.html")
+            if (lineCtr > 1000)
+            {
+                lineCtr = 0;
+                File.Delete(filePath);
+            }
             StreamWriter sw = null;
 
             if (File.Exists(filePath) == false) {
@@ -36,6 +44,10 @@ namespace IdealAutomateCore {
 
             try {
                 sw = File.AppendText(filePath);
+                if (pMsg.Length > 100)
+                {
+                    pMsg = pMsg.Substring(0, 100) + " - Msg truncated to 100";
+                }
                 sw.WriteLine(System.DateTime.Now + " " + pMsg);
                 sw.Flush();
 

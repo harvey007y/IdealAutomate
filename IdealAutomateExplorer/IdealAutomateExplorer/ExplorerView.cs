@@ -2302,8 +2302,10 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 }
             }
             myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow", mySelectedRow.ToString());
-           
-            _CurrentDataGridView.FirstDisplayedScrollingRowIndex = mySelectedRow;
+            if (mySelectedRow > -1)
+            {
+                _CurrentDataGridView.FirstDisplayedScrollingRowIndex = mySelectedRow;
+            }
             //LogMemory("after create new category GetTotalMemory");
             //Logging.WriteLogSimple("after create new category " + _stopwatch.Elapsed.ToString() + " GetTotalMemory " + String.Format("{0:n0}", GC.GetTotalMemory(true)));
 
@@ -4101,7 +4103,10 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     }
                     myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow", mySelectedRow.ToString());
                     RefreshDataGrid();
-                    _CurrentDataGridView.FirstDisplayedScrollingRowIndex = mySelectedRow;
+                    if (_CurrentDataGridView.Rows[_selectedRow].Cells.Count > 1)
+                    {
+                        _CurrentDataGridView.FirstDisplayedScrollingRowIndex = mySelectedRow;
+                    }
                 } else {
                     myActions.MessageBoxShow("You can not create a text document inside a file; first select folder and right click");
                 }
@@ -7590,7 +7595,10 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             }
             myActions.SetValueByKey("InitialDirectory" + tabControl1.SelectedIndex.ToString() + "SelectedRow", mySelectedRow.ToString());
             RefreshDataGrid();
-            _CurrentDataGridView.FirstDisplayedScrollingRowIndex = mySelectedRow;
+            if (_CurrentDataGridView.Rows[_selectedRow].Cells.Count > 1)
+            {
+                _CurrentDataGridView.FirstDisplayedScrollingRowIndex = mySelectedRow;
+            }
             this.Cursor = Cursors.Default;
         }
 

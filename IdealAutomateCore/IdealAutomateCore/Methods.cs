@@ -2819,7 +2819,7 @@ namespace IdealAutomate.Core
 
             bmx = Scraper.getDesktopBitmap(boolUseGrayScaleDB); //forcing both images to be the same Scraper.getDesktopBitmap(boolUseGrayScaleDB); // BytesToBitmap(myEntityForPicture.ImageFile); //forcing both images to be the same
 
-
+   
             // bigPictureImageBox.Source = BitmapSourceFromImage(bmx);
             decimal highestPercentCorrect = 0;
 
@@ -2833,7 +2833,7 @@ namespace IdealAutomate.Core
                 boolStopOnPerfectMatch);
             // List<System.Drawing.Point> ls = null;
             int intLastSlashIndex = myImage.ImageFile.LastIndexOf("\\");
-            string strfilename = myImage.ImageFile.Substring(intLastSlashIndex + 1);
+            string strfilename = myImage.ImageFile.Substring(intLastSlashIndex + 1);            
             if (ls.Count > 0)
             {
 
