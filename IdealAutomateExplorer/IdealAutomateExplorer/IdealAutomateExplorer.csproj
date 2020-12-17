@@ -63,7 +63,8 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\folder.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
@@ -73,10 +74,10 @@
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup>
-    <ManifestCertificateThumbprint>ED5B5099724AA3A33C484C0BCD9C84BC2D7CA105</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>D36BF7EDA74D64AE8FA53FFBE0E9170512CB6F08</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>IdealAutomateExplorer_5_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>IdealAutomateExplorer_7_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>true</SignManifests>
@@ -89,7 +90,7 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>IdealAutomateExplorer_5_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>IdealAutomateExplorer_6_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -531,6 +532,8 @@
     <None Include="IdealAutomateExplorer_1_TemporaryKey.pfx" />
     <None Include="IdealAutomateExplorer_4_TemporaryKey.pfx" />
     <None Include="IdealAutomateExplorer_5_TemporaryKey.pfx" />
+    <None Include="IdealAutomateExplorer_6_TemporaryKey.pfx" />
+    <None Include="IdealAutomateExplorer_7_TemporaryKey.pfx" />
     <None Include="IdealAutomateExplorer_TemporaryKey.pfx" />
     <None Include="IdealAutomateExplorer_TemporaryKey1.pfx" />
     <None Include="Images\minus.png">

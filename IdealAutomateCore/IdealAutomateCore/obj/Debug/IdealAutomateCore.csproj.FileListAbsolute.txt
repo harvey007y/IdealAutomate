@@ -34,7 +34,6 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateCore\IdealAutomateCor
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateCore\IdealAutomateCore\bin\Debug\IdealAutomateCore.pdb
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateCore\IdealAutomateCore\bin\Debug\WindowsInput.dll
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateCore\IdealAutomateCore\bin\Debug\WindowsInput.xml
-C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore.csprojResolveAssemblyReference.cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowMultipleControls.baml
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowShape.baml
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowMultipleControls.g.cs
@@ -119,3 +118,6 @@ C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateCore\IdealAut
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore.csprojAssemblyReference.cache
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowBalloonMultipleControls.baml
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowBalloonMultipleControls.g.cs
+C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateCore\IdealAutomateCore\obj\Debug\IdealAutomateCore.csprojAssemblyReference.cache
+C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowBalloonMultipleControls.baml
+C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateCore\IdealAutomateCore\obj\Debug\WindowBalloonMultipleControls.g.cs

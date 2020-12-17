@@ -10545,6 +10545,14 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 Environment.Exit(0);
             }
         }
+
+        private void toolStripMenuItem19_Click(object sender, EventArgs e)
+        {
+            string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
+            strApplicationBinDebug = strApplicationBinDebug.Replace("\\IdealAutomateExplorer\\bin\\Debug", "\\SMSParameters\\bin\\Debug");
+            string strSMSParametersExe = Path.Combine(strApplicationBinDebug, @"SMSParameters.exe");
+            myActions.Run(strSMSParametersExe, "");
+        }
         //private void LogMemory(string msg) {
         //    _memoryCurr = GC.GetTotalMemory(true);
         //    _memoryGain = _memoryCurr - _memoryPrev;
