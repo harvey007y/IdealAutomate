@@ -2530,8 +2530,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                                 return;
                             }
 
-
-                            System.Threading.Thread.Sleep(500);
+                            // increased delay from 500 to 1500 because wordpad was not getting set within parent window.
+                            System.Threading.Thread.Sleep(1500);
                             try
                             {
                                 while ((_proc.MainWindowHandle == IntPtr.Zero || !IsWindowVisible(_proc.MainWindowHandle)))

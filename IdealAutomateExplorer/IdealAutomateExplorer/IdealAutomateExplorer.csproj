@@ -9,7 +9,7 @@
     <RootNamespace>System.Windows.Forms.Samples</RootNamespace>
     <AssemblyName>IdealAutomateExplorer</AssemblyName>
     <WarningLevel>4</WarningLevel>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -35,9 +35,13 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <InstallUrl>http://idealautomate.com/idealautomateexplorer/</InstallUrl>
+    <SupportUrl>http://http://idealautomate.com/demo/harvey007/CG/Contact.aspx</SupportUrl>
+    <ErrorReportUrl>http://http://idealautomate.com/demo/harvey007/CG/Contact.aspx</ErrorReportUrl>
+    <ProductName>IdealAutomateExplorer</ProductName>
+    <PublisherName>IdealAutomate</PublisherName>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>144</ApplicationRevision>
+    <ApplicationRevision>145</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>

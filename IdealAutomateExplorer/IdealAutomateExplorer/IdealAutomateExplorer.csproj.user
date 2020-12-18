@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <ProjectView>ShowAllFiles</ProjectView>
+    <ProjectView>ProjectFiles</ProjectView>
     <PublishUrlHistory>ftp://ftp.idealautomate.com/idealautomateexplorer/|ftp://ftp.idealautomate.com/idealautomate/|C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\publish\|publish\</PublishUrlHistory>
     <InstallUrlHistory>http://idealautomate.com/idealautomateexplorer/|http://idealautomate.com/idealautomateexplorer/publish.htm/|http://idealautomate.com/idealautomate/publish.htm/</InstallUrlHistory>
-    <SupportUrlHistory />
+    <SupportUrlHistory>http://http://idealautomate.com/demo/harvey007/CG/Contact.aspx</SupportUrlHistory>
     <UpdateUrlHistory />
     <BootstrapperUrlHistory />
-    <ErrorReportUrlHistory />
+    <ErrorReportUrlHistory>http://http://idealautomate.com/demo/harvey007/CG/Contact.aspx</ErrorReportUrlHistory>
     <FallbackCulture>en-US</FallbackCulture>
     <VerifyUploadedFiles>false</VerifyUploadedFiles>
   </PropertyGroup>
