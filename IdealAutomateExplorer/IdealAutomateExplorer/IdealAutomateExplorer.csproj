@@ -9,7 +9,7 @@
     <RootNamespace>System.Windows.Forms.Samples</RootNamespace>
     <AssemblyName>IdealAutomateExplorer</AssemblyName>
     <WarningLevel>4</WarningLevel>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -37,7 +37,7 @@
     <InstallUrl>http://idealautomate.com/idealautomateexplorer/</InstallUrl>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>140</ApplicationRevision>
+    <ApplicationRevision>142</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -148,12 +148,32 @@
       <DependentUpon>BaseForm1.cs</DependentUpon>
     </Compile>
     <Compile Include="ClipboardNative.cs" />
+    <Compile Include="ConnectionString1.cs" />
+    <Compile Include="DataItem.cs" />
     <Compile Include="ExtensionIcon.cs" />
     <Compile Include="GlobalMouseHandler.cs" />
+    <Compile Include="ItemRecord.cs" />
+    <Compile Include="JobApplicationJobBoards.cs" />
+    <Compile Include="JobApplicationLocations.cs" />
+    <Compile Include="JobBoardManager.cs" />
+    <Compile Include="JobBoardsPage.xaml.cs" />
+    <Compile Include="JobSearchPage.xaml.cs" />
+    <Compile Include="KeywordManager.cs" />
+    <Compile Include="Keywords.cs" />
+    <Compile Include="KeywordsPage.xaml.cs" />
+    <Compile Include="LocationManager.cs" />
+    <Compile Include="LocationsPage.xaml.cs" />
+    <Compile Include="MainWindowJobs.xaml.cs" />
+    <Compile Include="ModifyConnectionsPage.xaml.cs" />
     <Compile Include="NativeMethods.cs" />
+    <Compile Include="OverviewJobs.xaml.cs" />
     <Compile Include="Pages\Stopwatch.xaml.cs" />
     <Compile Include="RoamingFolderForTabs.cs" />
+    <Compile Include="ShowApplicationsPage.xaml.cs" />
+    <Compile Include="SMSPage.xaml.cs" />
     <Compile Include="SystemIconsImageList.cs" />
+    <Compile Include="TestData\Employee.cs" />
+    <Compile Include="TestData\TestDataGenerator.cs" />
     <Compile Include="TextLineInfo.cs" />
     <Compile Include="OpenedFile.cs" />
     <Compile Include="ComboBoxPair.cs" />
@@ -874,6 +894,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="bin\Debug\" />
     <Folder Include="MyNewProject\MyNewProject\bin\Debug\" />
     <Folder Include="MyNewProject\MyNewProject\obj\x86\Debug\TempPE\" />
     <Folder Include="Properties\DataSources\" />
@@ -1115,7 +1136,35 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="JobBoardsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="JobSearchPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="KeywordsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="LocationsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MainWindowJobs.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ModifyConnectionsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="OverviewJobs.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1128,6 +1177,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Pages\StopwatchPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ShowApplicationsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SMSPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1211,6 +1268,10 @@
     </PublishFile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DataGridFilterLibrary\DataGridFilterLibrary.csproj">
+      <Project>{512fd53f-9ad1-46a1-a961-9fabdfad50c5}</Project>
+      <Name>DataGridFilterLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DgvFilterPopup\DgvFilterPopup.csproj">
       <Project>{4b9be5fd-303e-4270-9c4d-fa3bde6c34eb}</Project>
       <Name>DgvFilterPopup</Name>

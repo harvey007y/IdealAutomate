@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
-  <asmv1:assemblyIdentity name="IdealAutomateExplorer.exe" version="1.0.0.140" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="amd64" type="win32" />
+  <asmv1:assemblyIdentity name="IdealAutomateExplorer.exe" version="1.0.0.142" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="amd64" type="win32" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="IdealAutomateExplorer" version="1.0.7656.22289" language="neutral" processorArchitecture="amd64" />
+    <assemblyIdentity name="IdealAutomateExplorer" version="1.0.7656.42004" language="neutral" processorArchitecture="amd64" />
     <commandLine file="IdealAutomateExplorer.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -54,6 +54,18 @@
     </dependentAssembly>
   </dependency>
   <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="DataGridFilterLibrary.dll" size="108032">
+      <assemblyIdentity name="DataGridFilterLibrary" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>/hOKwyLgw7qQucQ9SykUEx90L0819+9DIXlFZ6T89ZE=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="DgvFilterPopup.dll" size="47104">
       <assemblyIdentity name="DgvFilterPopup" version="1.1.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
@@ -61,7 +73,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>YKd2+AG4UEHpkPkfiOYE7WuodHrvYdnrItcSJsTkRmM=</dsig:DigestValue>
+        <dsig:DigestValue>u3TEooCtHEZJ7MQZQYjRYRhjd0yjxwtlo8LbfOhE5Bc=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -90,14 +102,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IdealAutomateExplorer.exe" size="1254368">
-      <assemblyIdentity name="IdealAutomateExplorer" version="1.0.7656.22289" language="neutral" processorArchitecture="amd64" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IdealAutomateExplorer.exe" size="1398752">
+      <assemblyIdentity name="IdealAutomateExplorer" version="1.0.7656.42004" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>fhdTNFwl6VeCXdOmk7Zkk3Y8xilv2U+KE+rjTV7jmI8=</dsig:DigestValue>
+        <dsig:DigestValue>LrPotkx4P2LmfxuguGQnfoMtpmyBOBdDiqenLBlf3fI=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -109,7 +121,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>KQk7ZZFsBUSoaci8xjaO1FBKwX8/gsDPiwb/KyTI5ys=</dsig:DigestValue>
+        <dsig:DigestValue>NstbCFNP8/p5DcmxUg7ls/qJK4bFtr478cHzS91Toww=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -188,7 +200,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>CMHx63E3pYJq0rQkCcMRD/YWuNJIMnv1VvgFlA+g4b0=</dsig:DigestValue>
+      <dsig:DigestValue>nhSdvCsZlzSKzLier3H6SlX0qJNsH8inRFpPA/v4Ow0=</dsig:DigestValue>
     </hash>
   </file>
   <file name="IdealSqlTracer.exe" size="1005056">

@@ -26,7 +26,7 @@ using System.Windows.Forms.Samples;
 namespace IdealAutomate.Core {
     public class Methods: IDisposable {
 
-
+        public Dictionary<string, System.Drawing.Point> dictImagesFoundCached = new Dictionary<string, System.Drawing.Point>();
         private bool fbDebugMode = true;
         private int intFileCtr = 0;
         bool boolUseGrayScaleDB = false;
@@ -844,6 +844,165 @@ namespace IdealAutomate.Core {
                 int[] NewSizes = new int[] { intRowIndex + 1, 2 };
 
                 if (myRow.percentcorrect < myImage.Tolerance) {
+
+                    break;
+
+                }
+
+                myArray = (int[,])myArray.ResizeArray(NewSizes);
+
+                myArray[intRowIndex, 0] = myRow.myPoint.X;
+
+                myArray[intRowIndex, 1] = myRow.myPoint.Y;
+
+                //myListObject[2] = myRow.percentcorrect;
+
+                //   myListListObject.Add(myListObject);
+
+                intRowIndex++;
+
+
+
+            }
+
+            return myArray;
+
+        }
+
+        public int[,] PutAllFastByStoppingOnPerfectMatch(ImageEntity myImage)
+        {
+
+
+
+        PutAllBegin:
+
+            if (fbDebugMode)
+            {
+
+                Console.WriteLine(oProcess.ProcessName + "==> " + "PutAll:");
+
+                Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "PutAll:");
+
+                foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(myImage))
+                {
+
+                    string name = descriptor.Name;
+
+                    object value = descriptor.GetValue(myImage);
+
+                    Console.WriteLine("{0}={1}", name, value);
+
+                    Logging.WriteLogSimple(String.Format("{0}={1}", name, value));
+
+                }
+
+            }
+
+            // move cursor off screen so it will not interfer with finding image
+
+            int[,] intArray = new int[,] { { 0, 2000 } };
+
+
+
+            PositionCursor(intArray);
+
+            string directory = AppDomain.CurrentDomain.BaseDirectory;
+
+
+
+            // if alt image exists, use it
+
+            int intLastSlashIndex = myImage.ImageFile.LastIndexOf("\\");
+
+            string strAltFileName = myImage.ImageFile.Substring(intLastSlashIndex + 1);
+
+            string settingsDirectory = GetAppDirectoryForScript();
+
+            string strFullFileName = Path.Combine(settingsDirectory, strAltFileName);
+
+            if (File.Exists(strFullFileName))
+            {
+
+                myImage.ImageFile = strFullFileName;
+
+            }
+
+
+
+
+
+
+
+            // If ParentImage != null, we need to get the parent image and 
+
+            // do everything that we normally to for an image 
+
+            // to the parent image. If the parent image is found,
+
+            // we need to continue on to get the child image.
+
+            // If the child image is found, we have to adjust the
+
+            // coordinates by adding the coordinates for the parent
+
+            // to the child.
+
+
+
+            bool boolImageFound = false;
+
+            int intAttempts = 0;
+
+            List<SubPositionInfo> ls = new List<SubPositionInfo>();
+
+            boolUseGrayScaleDB = myImage.UseGrayScale;
+
+            while (boolImageFound == false && intAttempts < myImage.Attempts)
+            {
+
+                try
+                {
+
+                    ls = Click_PNG(myImage, boolUseGrayScaleDB, true);
+
+                }
+                catch (Exception ex)
+                {
+
+                    MessageBox.Show("Here is exception thrown in PutAll method for file " + myImage.ImageFile + ": " + ex.Message + Environment.NewLine + Environment.NewLine + "PutAll image file is probably missing from project. Make sure properties for the image file are: Build Action=> Content;  Copy to Output Directory=> Copy if Newer;");
+
+                }
+
+
+
+                if (ls.Count > 0)
+                {
+
+                    boolImageFound = true;
+
+                }
+
+                intAttempts += 1;
+
+                // boolUseGrayScaleDB = false; //!boolUseGrayScaleDB;
+
+            }
+
+
+
+            int intRowIndex = 0;
+
+            int[,] myArray = new int[0, 0];
+
+            List<SubPositionInfo> SortedList = ls.OrderByDescending(o => o.percentcorrect).ToList();
+
+            foreach (var myRow in SortedList)
+            {
+
+                int[] NewSizes = new int[] { intRowIndex + 1, 2 };
+
+                if (myRow.percentcorrect < myImage.Tolerance)
+                {
 
                     break;
 
@@ -2495,6 +2654,148 @@ namespace IdealAutomate.Core {
         /// <summary>
         /// Evaluates Cursor Position with respect to client screen.
         /// </summary>
+        /// 
+
+        private List<SubPositionInfo> Click_PNG(ImageEntity myImage, bool boolUseGrayScaleDB, bool boolStopOnPerfectMatch)
+        {
+            if (fbDebugMode)
+            {
+                Console.WriteLine(oProcess.ProcessName + "==> " + "Click_PNG:");
+                Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "Click_PNG:");
+                foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(myImage))
+                {
+                    string name = descriptor.Name;
+                    object value = descriptor.GetValue(myImage);
+                    Console.WriteLine("{0}={1}", name, value);
+                    Logging.WriteLogSimple(String.Format("{0}={1}", name, value));
+                }
+            }
+            System.Threading.Thread.Sleep(100);
+
+
+            //Bitmap bm = BytesToBitmap(myEntityForPicture.ImageFile);
+            string directory = AppDomain.CurrentDomain.BaseDirectory;
+            Bitmap bm;
+            if (myImage.ImageFile.Contains(":"))
+            {
+                bm = new Bitmap(myImage.ImageFile);
+            }
+            else
+            {
+                bm = new Bitmap(directory + myImage.ImageFile);
+            }
+            // Bitmap bm = new Bitmap(directory + pPNG_File_Name);
+            //  Bitmap bm = BytesToBitmap(scriptStep.SubImage);
+            // Bitmap bm = null;
+            //     bm.MakeTransparent(Color.White);
+
+
+            // previewImageBox.Source = BitmapSourceFromImage(bm);
+            //bm;
+            // find the least popular color in sub image and find the relative position in
+            // subimage
+            if (boolUseGrayScaleDB)
+            {
+                intFileCtr += 1;
+                string myfile = "temp" + intFileCtr + ".bmp";
+                System.IO.File.Delete(directory + myfile);
+                bm.Save(directory + myfile, System.Drawing.Imaging.ImageFormat.Bmp);
+                System.Drawing.Image myImageD = System.Drawing.Image.FromFile(directory + myfile);
+                // myImage = System.Drawing.Image.FromFile(@"C:\TFS\WadeHome\Applications\TreeView\Sample Application\Images\Small.png");
+
+                myImageD = Scraper.ConvertToGrayscale(myImageD);
+                bm = new Bitmap(myImageD);
+                intFileCtr += 1;
+                myfile = "temp" + intFileCtr + ".bmp";
+                System.IO.File.Delete(directory + myfile);
+                bm.Save(directory + myfile, System.Drawing.Imaging.ImageFormat.Bmp);
+
+                myImageD.Dispose();
+            }
+            Hashtable pixels = new Hashtable(); // looks like this is no longer used and can be deleted
+
+            //resultsTextBox.Text += "Searching..." + scriptStep.Seq1.ToString() + Environment.NewLine;
+            Console.WriteLine(oProcess.ProcessName + "==> " + "Searching..." + myImage.ImageFile + Environment.NewLine);
+            Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "Searching..." + myImage.ImageFile + Environment.NewLine);
+
+
+            // Find subimages
+            Bitmap bmx;
+
+            bmx = Scraper.getDesktopBitmap(boolUseGrayScaleDB); //forcing both images to be the same Scraper.getDesktopBitmap(boolUseGrayScaleDB); // BytesToBitmap(myEntityForPicture.ImageFile); //forcing both images to be the same
+
+
+            // bigPictureImageBox.Source = BitmapSourceFromImage(bmx);
+            decimal highestPercentCorrect = 0;
+
+            List<SubPositionInfo> ls = Scraper.GetSubPositions(bmx,
+                bm,
+                boolUseGrayScaleDB,
+                ref highestPercentCorrect,
+                myImage.Tolerance,
+                ref dictImagesFoundCached,
+                myImage.ImageFile,
+                boolStopOnPerfectMatch);
+            // List<System.Drawing.Point> ls = null;
+            int intLastSlashIndex = myImage.ImageFile.LastIndexOf("\\");
+            string strfilename = myImage.ImageFile.Substring(intLastSlashIndex + 1);
+            if (ls.Count > 0)
+            {
+
+
+
+                for (int i = 0; i < ls.Count; i++)
+                {
+                    System.Drawing.Point p = ls[i].myPoint;
+
+                    string myfile = "tempsmall" + strfilename + i.ToString() + ".bmp";
+
+                    System.IO.File.Delete(directory + myfile);
+                    bm.Save(directory + myfile, System.Drawing.Imaging.ImageFormat.Bmp);
+                    myfile = "tempbig" + strfilename + i.ToString() + ".bmp";
+                    System.IO.File.Delete(directory + myfile);
+                    bmx.Save(directory + myfile, System.Drawing.Imaging.ImageFormat.Bmp);
+
+                    Console.WriteLine(oProcess.ProcessName + "==> " + "Image found at: " + p.ToString() + strfilename + i.ToString() + " highestPercentCorrect=" + ls[i].percentcorrect.ToString() + ";Search Method: " + ls[i].strSearchMethod + Environment.NewLine);
+                    Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "Image found at: " + p.ToString() + strfilename + i.ToString() + " highestPercentCorrect=" + ls[i].percentcorrect.ToString() + ";Search Method: " + ls[i].strSearchMethod + Environment.NewLine);
+                    int intOffX = p.X + myImage.RelativeX;
+                    int intOffY = p.Y + myImage.RelativeY;
+
+
+                    p.X = intOffX;
+                    p.Y = intOffY;
+                    ls[i].myPoint = p;
+                    //Position_Cursor.MoveMouse(intOffX, intOffY);
+                    //UInt32 myX = Convert.ToUInt32(intOffX);
+                    //UInt32 myY = Convert.ToUInt32(intOffY);
+                    //Position_Cursor.DoMouseClick(myX, myY);
+                    //System.Threading.Thread.Sleep(1000);
+                    // System.Windows.Forms.SendKeys.SendWait("Wade is a nut");
+
+                }
+
+                return ls;
+            }
+            else
+            {
+
+                string myfile = "tempsmall" + strfilename + ".bmp";
+
+                System.IO.File.Delete(directory + myfile);
+                bm.Save(directory + myfile, System.Drawing.Imaging.ImageFormat.Bmp);
+                myfile = "tempbig" + strfilename + ".bmp";
+                System.IO.File.Delete(directory + myfile);
+                bmx.Save(directory + myfile, System.Drawing.Imaging.ImageFormat.Bmp);
+
+                myfile = "tempbig" + strfilename + ".bmp";
+
+                Console.WriteLine(oProcess.ProcessName + "==> " + "Image not found" + strfilename + " highestPercentCorrect=" + highestPercentCorrect.ToString() + Environment.NewLine);
+                Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "Image not found" + strfilename + " highestPercentCorrect=" + highestPercentCorrect.ToString() + Environment.NewLine);
+                return ls;
+            }
+        }
+
+
         private void EvaluateCaretPosition() {
 
             caretPosition = new System.Drawing.Point();

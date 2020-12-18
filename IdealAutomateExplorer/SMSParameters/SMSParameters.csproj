@@ -43,10 +43,27 @@
   <PropertyGroup>
     <ApplicationIcon>Images\iconfinder_letter_J_red_1553101.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>SMSParameters.App</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>19EEF072BB2392895CC8282C6ABCE46D4A79420B</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>SMSParameters_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>SMSParameters_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="IdealAutomateCore, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\AppData\Roaming\IdealAutomate\IdealAutomateCore.dll</HintPath>
+    <Reference Include="IdealAutomateCore">
+      <HintPath>..\..\..\..\..\AppData\Roaming\IdealAutomate\IdealAutomateCore.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -123,8 +140,8 @@
     <Compile Include="SMSPage.xaml.cs">
       <DependentUpon>SMSPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
+    <Compile Include="MainWindowJobs.xaml.cs">
+      <DependentUpon>MainWindowJobs.xaml</DependentUpon>
     </Compile>
     <Compile Include="Overview.xaml.cs">
       <DependentUpon>Overview.xaml</DependentUpon>
@@ -160,7 +177,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="MainWindow.xaml">
+    <Page Include="MainWindowJobs.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -192,6 +209,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="bin\Debug\SMSParameters.exe.config" />
     <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -199,8 +217,17 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="SMSParameters_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bin\Debug\DataGridFilterLibrary.dll" />
+    <Content Include="bin\Debug\DataGridFilterLibrary.pdb" />
+    <Content Include="bin\Debug\SMSParameters.exe" />
+    <Content Include="bin\Debug\SMSParameters.pdb" />
+    <Content Include="bin\Debug\System.Windows.Controls.Input.Toolkit.dll" />
+    <Content Include="bin\Debug\System.Windows.Controls.Layout.Toolkit.dll" />
+    <Content Include="bin\Debug\WindowsInput.dll" />
+    <Content Include="bin\Debug\WindowsInput.xml" />
     <Content Include="Images\112_UpArrowShort_Green.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

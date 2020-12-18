@@ -1,0 +1,40 @@
+﻿<Page x:Class="SMSParameters.ModifyConnectionsPage"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:dg="http://schemas.microsoft.com/wpf/2008/toolkit"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"        
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+	    Loaded="OnLoad"
+        Background="LightGray"    >
+    
+    <StackPanel>
+       
+        <Grid>
+            <Label Name="Label1" Height="28" Width="151" FontSize="12" FontFamily="Microsoft Sans Serif" TabIndex="0" Margin="0,8,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" >New ConnectionString:</Label>
+            <TextBox Name="txtConnectionString" Height="22" Width="496" TabIndex="1" Margin="168,8,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap" ></TextBox>
+            <Button Name="btnAdd" Height="23" Width="75" TabIndex="2" Margin="0,7,78,0" HorizontalAlignment="Right" VerticalAlignment="Top" d:LayoutOverrides="HorizontalAlignment" Content="Add" Click="btnAdd_Click"/>
+            <Label Name="Label2" Height="28" Width="183" FontSize="12" FontFamily="Microsoft Sans Serif" TabIndex="3" Margin="0,40,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" >Existing Connection Strings:</Label>
+            <ComboBox Name="cbConnectionStrings" Height="24" Width="496" TabIndex="4" Margin="168,40,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"  SelectionChanged="cbConnectionStrings_SelectionChanged"/>
+            <Button Name="Button3" Height="28" Width="97" TabIndex="6" Margin="0,37.093,56,0" HorizontalAlignment="Right" VerticalAlignment="Top" d:LayoutOverrides="HorizontalAlignment" Content="Delete Selected" Click="Button3_Click" />
+
+            <Label Name="Label3" Height="28" Width="151" FontSize="12" FontFamily="Microsoft Sans Serif" TabIndex="0" Margin="0,80,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" >Example ConnectionString:</Label>
+            <TextBox Name="txtExampleConnectionString" Height="22" Width="496" TabIndex="1" Margin="168,80,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap" >Data Source=.\SQLEXPRESS;Initial Catalog=IdealAutomateDB;Integrated Security=SSPI</TextBox>
+
+            <Button Click="ShowHelpDialog"
+            Margin="777,3,0,0"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top">
+                <Button.Template>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Image Source="/Images/help.png"
+                 Width="50"
+                 Height="50"
+                 ToolTip="Click for Info"
+                 Cursor="Hand"
+                 Opacity="0.8" />
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            
+        </Grid>
+    </StackPanel>
+</Page>

@@ -17,13 +17,16 @@ using System.Windows.Shapes;
 /// <summary>
 /// Interaction logic for NavigationWindow.xaml
 /// </summary>
-public partial class MainWindow
+public partial class MainWindowJobs
 {
-    public MainWindow()
+    public MainWindowJobs()
     {
+        MessageBox.Show("Hi0");
         InitializeComponent();
         Methods myActions = new Methods();
+        MessageBox.Show("Hi1");
         ConnectionString1.GetConnectionString(myActions);
+        MessageBox.Show("Hi2");
         if (String.IsNullOrEmpty(myActions.GetValueByKey("JobsConnectionString")))
         {
             frame.Source = new Uri("ModifyConnectionsPage.xaml", UriKind.RelativeOrAbsolute);
