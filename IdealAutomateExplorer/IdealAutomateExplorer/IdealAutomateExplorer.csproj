@@ -37,7 +37,7 @@
     <InstallUrl>http://idealautomate.com/idealautomateexplorer/</InstallUrl>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>143</ApplicationRevision>
+    <ApplicationRevision>144</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -147,32 +147,32 @@
       <DependentUpon>BaseForm1.cs</DependentUpon>
     </Compile>
     <Compile Include="ClipboardNative.cs" />
-    <Compile Include="ConnectionString1.cs" />
-    <Compile Include="DataItem.cs" />
+    <Compile Include="Jobs\ConnectionString1.cs" />
+    <Compile Include="Jobs\DataItem.cs" />
     <Compile Include="ExtensionIcon.cs" />
     <Compile Include="GlobalMouseHandler.cs" />
-    <Compile Include="ItemRecord.cs" />
-    <Compile Include="JobApplicationJobBoards.cs" />
-    <Compile Include="JobApplicationLocations.cs" />
-    <Compile Include="JobBoardManager.cs" />
-    <Compile Include="JobBoardsPage.xaml.cs" />
-    <Compile Include="JobSearchPage.xaml.cs" />
-    <Compile Include="KeywordManager.cs" />
-    <Compile Include="Keywords.cs" />
-    <Compile Include="KeywordsPage.xaml.cs" />
-    <Compile Include="LocationManager.cs" />
-    <Compile Include="LocationsPage.xaml.cs" />
-    <Compile Include="MainWindowJobs.xaml.cs" />
-    <Compile Include="ModifyConnectionsPage.xaml.cs" />
+    <Compile Include="Jobs\ItemRecord.cs" />
+    <Compile Include="Jobs\JobApplicationJobBoards.cs" />
+    <Compile Include="Jobs\JobApplicationLocations.cs" />
+    <Compile Include="Jobs\JobBoardManager.cs" />
+    <Compile Include="Jobs\JobBoardsPage.xaml.cs" />
+    <Compile Include="Jobs\JobSearchPage.xaml.cs" />
+    <Compile Include="Jobs\KeywordManager.cs" />
+    <Compile Include="Jobs\Keywords.cs" />
+    <Compile Include="Jobs\KeywordsPage.xaml.cs" />
+    <Compile Include="Jobs\LocationManager.cs" />
+    <Compile Include="Jobs\LocationsPage.xaml.cs" />
+    <Compile Include="Jobs\MainWindowJobs.xaml.cs" />
+    <Compile Include="Jobs\ModifyConnectionsPage.xaml.cs" />
     <Compile Include="NativeMethods.cs" />
-    <Compile Include="OverviewJobs.xaml.cs" />
+    <Compile Include="Jobs\OverviewJobs.xaml.cs" />
     <Compile Include="Pages\Stopwatch.xaml.cs" />
     <Compile Include="RoamingFolderForTabs.cs" />
-    <Compile Include="ShowApplicationsPage.xaml.cs" />
-    <Compile Include="SMSPage.xaml.cs" />
+    <Compile Include="Jobs\ShowApplicationsPage.xaml.cs" />
+    <Compile Include="Jobs\SMSPage.xaml.cs" />
     <Compile Include="SystemIconsImageList.cs" />
-    <Compile Include="TestData\Employee.cs" />
-    <Compile Include="TestData\TestDataGenerator.cs" />
+    <Compile Include="Jobs\TestData\Employee.cs" />
+    <Compile Include="Jobs\TestData\TestDataGenerator.cs" />
     <Compile Include="TextLineInfo.cs" />
     <Compile Include="OpenedFile.cs" />
     <Compile Include="ComboBoxPair.cs" />
@@ -270,6 +270,9 @@
     <Content Include="IdealSqlTracer.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\112_UpArrowShort_Green.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\Add.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -294,6 +297,9 @@
     <Content Include="Images\Book.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\CareerBuilderLoaded.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\CategoriesSubCategories.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -306,10 +312,27 @@
     <Content Include="Images\Description.PNG">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\DevToolsElements.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\DevToolsModeOn.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\DiceLoaded.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\ExactLocation.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\ExactLocationChecked.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\Expressions.PNG">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\favicon.ico" />
+    <Content Include="Images\favicon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\favicon_minus.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -319,7 +342,9 @@
     <Content Include="Images\folder-146940_960_720.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\folder2.jpg" />
+    <Content Include="Images\folder2.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\FolderClosed.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -332,7 +357,13 @@
     <Content Include="Images\FolderSelected.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\GlassDoorLoaded.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\GreenCheck.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Handdrawngoods-Busy-Newspaper-jobs.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\help.png">
@@ -351,6 +382,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\icon38.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\iconfinder_letter_J_red_1553101.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\iconfinder_office4_36601.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\iconfinder_resolutions-23_897229.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\icon_minus.bmp">
@@ -380,13 +420,46 @@
     <Content Include="Images\ImagesPutCursorPosition.PNG">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\imgPatch16.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\imgPatch17.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\imgPatch2015_08.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\imgPatch2015_08_Home.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\imgSVNUpdate.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\imgSVNUpdate_Home.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\imgUpdateLogOK.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\imgUpdateLogOK_Home.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\IncludeScript.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\IndeedLoaded.PNG">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Info.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\imgKeepRatio.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Jobs.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Location.PNG">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Logic.PNG">
@@ -432,6 +505,27 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\NewProject.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\NoJobsCareerBuilder.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\NoJobsDice.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\NoJobsFoundWithinIndeed.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\NoJobsGlassDoor.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\NoMatchingJobsLinkedIn.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Output1.PNG">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Output2.PNG">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Preview.png">
@@ -486,6 +580,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Search.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\SearchJobs.PNG">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\small.png">
@@ -571,7 +668,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\112_Minus_Grey.ico" />
-    <Content Include="Images\112_Plus_Grey.ico" />
+    <Content Include="Images\112_Plus_Grey.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="MyNewProject\MyNewProject\App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1135,19 +1234,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="JobBoardsPage.xaml">
+    <Page Include="Jobs\JobBoardsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="JobSearchPage.xaml">
+    <Page Include="Jobs\JobSearchPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="KeywordsPage.xaml">
+    <Page Include="Jobs\KeywordsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="LocationsPage.xaml">
+    <Page Include="Jobs\LocationsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1155,15 +1254,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="MainWindowJobs.xaml">
+    <Page Include="Jobs\MainWindowJobs.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ModifyConnectionsPage.xaml">
+    <Page Include="Jobs\ModifyConnectionsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="OverviewJobs.xaml">
+    <Page Include="Jobs\OverviewJobs.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1179,11 +1278,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ShowApplicationsPage.xaml">
+    <Page Include="Jobs\ShowApplicationsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="SMSPage.xaml">
+    <Page Include="Jobs\SMSPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

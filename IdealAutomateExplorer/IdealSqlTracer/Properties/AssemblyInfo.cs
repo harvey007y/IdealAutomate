@@ -12,7 +12,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Ideal Automate")]
 [assembly: AssemblyProduct("IdealSqlTracer")]
-[assembly: AssemblyCopyright("Copyright © IdealAutomate  2015")]
+[assembly: AssemblyCopyright("Copyright © IdealAutomate  2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -9,11 +9,11 @@ using System.Runtime.CompilerServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("IdealAutomateExplorer")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("IdealAutomateExplorer")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyCompany("Ideal Automate")]
 [assembly: AssemblyProduct("IdealAutomateExplorer")]
-[assembly: AssemblyCopyright("Copyright @ Microsoft 2004")]
+[assembly: AssemblyCopyright("Copyright @ Ideal Automate 2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

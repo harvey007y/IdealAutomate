@@ -9,6 +9,8 @@ using System.Windows.Controls;
 using System.Net.Mail;
 using System.Linq;
 using System.Configuration;
+using System.Threading;
+using System.Diagnostics;
 
 namespace SMSParameters
 {
@@ -28,12 +30,14 @@ namespace SMSParameters
         JobBoardManager jobBoardManager = new JobBoardManager();
         KeywordManager keywordManager = new KeywordManager();
         LocationManager LocationManager = new LocationManager();
-
+        [System.Runtime.InteropServices.DllImport("user32", EntryPoint = "GetAsyncKeyState", ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Ansi, SetLastError = true)]
+        private static extern int GetAsyncKeyState(uint vkey);
         public JobSearchPage()
         {
             bool boolRunningFromHome = false;
 
             IdealAutomate.Core.Methods myActions = new Methods();
+            BreakOnPauseKeyPress();
             myActions.ScriptStartedUpdateStats();
 
             InitializeComponent();
@@ -373,7 +377,7 @@ namespace SMSParameters
                     {
                         myImage.RelativeX = -100;
                         myImage.RelativeY = 20;
-                        myImage.ImageFile = "Images\\Search.PNG";
+                        myImage.ImageFile = "Images\\SearchJobs.PNG";
                         myActions.ClickImageIfExists(myImage);
                         myActions.TypeText("^(a)", 500);
                         myActions.TypeText(location.LocationName + ", IL", 500);
@@ -381,7 +385,7 @@ namespace SMSParameters
                         myActions.TypeText("+({TAB})", 500);
                         myActions.TypeText("^(a)", 500);
                         myActions.TypeText(keyword.Keyword.Replace("c%23", "c#"), 500);
-                        myImage.ImageFile = "Images\\Search.PNG";
+                        myImage.ImageFile = "Images\\SearchJobs.PNG";
                         myImage.RelativeX = 10;
                         myImage.RelativeY = 10;
                         myActions.ClickImageIfExists(myImage);
@@ -1419,6 +1423,96 @@ namespace SMSParameters
   "END; " +
         "END; ";
             cmd.ExecuteNonQuery();
+        }
+        private void BreakOnPauseKeyPress()
+        {
+            // Create a timer and set a two millisecond interval.
+            System.Timers.Timer aTimer = new System.Timers.Timer();
+            aTimer.Interval = 2;
+
+            // Alternate method: create a Timer with an interval argument to the constructor. 
+            //aTimer = new System.Timers.Timer(2000); 
+
+            // Create a timer with a two millisecond interval.
+            aTimer = new System.Timers.Timer(2);
+
+            // Hook up the Elapsed event for the timer. 
+           // aTimer.Elapsed -= OnTimedEvent;
+            aTimer.Elapsed += OnTimedEvent;
+
+            // Have the timer fire repeated events (true is the default)
+            aTimer.AutoReset = true;
+
+            // Start the timer
+            aTimer.Enabled = true;
+        }
+        private void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
+        {
+            uint VK_PAUSE = 0x13;
+            int intPauseKeyState = GetAsyncKeyState(VK_PAUSE);
+            int intNumberOfKilledProcesses = 0;
+            if (intPauseKeyState != 0)
+            {
+                string FileDes = "IdealAutomateExplorer"; //FileDescription
+                var myCurrentProcess = Process.GetCurrentProcess();
+                foreach (Process x in Process.GetProcesses())
+                {
+                    try
+                    {
+                        if (FileDes == x.MainModule.FileVersionInfo.Comments && x.ProcessName != myCurrentProcess.ProcessName)
+                        {
+                            //  System.Diagnostics.Debugger.Break();
+                            x.Kill();
+                            intNumberOfKilledProcesses++;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        continue;
+                    }
+
+                }
+                if (intNumberOfKilledProcesses > 0)
+                {
+                    try
+                    {
+                        Thread thread = new Thread(new ThreadStart(() => {
+                            var window = new Window() //make sure the window is invisible
+                            {
+                                Width = 300,
+                                Height = 300,
+                                Title = "Application Cancelled",
+                                Content = "Application Cancelled",
+                                WindowStyle = WindowStyle.ToolWindow,
+                                Visibility = System.Windows.Visibility.Visible,
+                                Topmost = true,
+                                FontSize = 24,
+                                ShowInTaskbar = true,
+                                ShowActivated = true,
+                            };
+                            window.Show();
+                            Sleep(5000);
+                        }));
+
+                        thread.SetApartmentState(ApartmentState.STA);
+
+                        thread.Start();
+                        thread.Join();
+                    }
+                    catch (Exception ex)
+                    {
+                        // MessageBox.Show(ex.Message);
+                    }
+                }
+                Sleep(500);
+                // Environment.Exit(0);
+                //Here is the code that runs when the hotkey is pressed'
+            }
+        }
+        private void Sleep(int intSleep)
+        {
+
+            System.Threading.Thread.Sleep(intSleep);
         }
     }
 }

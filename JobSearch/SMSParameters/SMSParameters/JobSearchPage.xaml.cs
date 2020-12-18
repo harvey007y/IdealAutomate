@@ -373,7 +373,7 @@ namespace SMSParameters
                     {
                         myImage.RelativeX = -100;
                         myImage.RelativeY = 20;
-                        myImage.ImageFile = "Images\\Search.PNG";
+                        myImage.ImageFile = "Images\\SearchJobs.PNG";
                         myActions.ClickImageIfExists(myImage);
                         myActions.TypeText("^(a)", 500);
                         myActions.TypeText(location.LocationName + ", IL", 500);
@@ -381,7 +381,7 @@ namespace SMSParameters
                         myActions.TypeText("+({TAB})", 500);
                         myActions.TypeText("^(a)", 500);
                         myActions.TypeText(keyword.Keyword.Replace("c%23", "c#"), 500);
-                        myImage.ImageFile = "Images\\Search.PNG";
+                        myImage.ImageFile = "Images\\SearchJobs.PNG";
                         myImage.RelativeX = 10;
                         myImage.RelativeY = 10;
                         myActions.ClickImageIfExists(myImage);

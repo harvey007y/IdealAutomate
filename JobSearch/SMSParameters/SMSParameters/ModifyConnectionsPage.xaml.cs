@@ -426,10 +426,10 @@ namespace SMSParameters {
 
         private void ShowHelpDialog(object sender, RoutedEventArgs e)
         {
-          //  NavWindowFindColumns dlg = new NavWindowFindColumns();
-         //   dlg.Owner = (Window)this.Parent;
+            //NavWindowFindColumns dlg = new NavWindowFindColumns();
+            //dlg.Owner = (Window)this.Parent;
             //Shadow.Visibility = Visibility.Visible;
-         //  dlg.Show();
+            //dlg.Show();
             //Shadow.Visibility = Visibility.Collapsed;
         }
     }

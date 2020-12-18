@@ -294,7 +294,7 @@
     <Content Include="Images\Output2.PNG">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Search.PNG">
+    <Content Include="Images\SearchJobs.PNG">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

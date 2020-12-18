@@ -19,22 +19,6 @@
             <Label Name="Label3" Height="28" Width="151" FontSize="12" FontFamily="Microsoft Sans Serif" TabIndex="0" Margin="0,80,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" >Example ConnectionString:</Label>
             <TextBox Name="txtExampleConnectionString" Height="22" Width="496" TabIndex="1" Margin="168,80,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap" >Data Source=.\SQLEXPRESS;Initial Catalog=IdealAutomateDB;Integrated Security=SSPI</TextBox>
 
-            <Button Click="ShowHelpDialog"
-            Margin="777,3,0,0"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top">
-                <Button.Template>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Image Source="/Images/help.png"
-                 Width="50"
-                 Height="50"
-                 ToolTip="Click for Info"
-                 Cursor="Hand"
-                 Opacity="0.8" />
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
-            
         </Grid>
     </StackPanel>
 </Page>
