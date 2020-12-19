@@ -1,0 +1,17 @@
+﻿			
+			intRowCtr++;
+			myControlEntity&&SUFFIX.ControlEntitySetDefaults();
+			myControlEntity&&SUFFIX.ControlType = ControlType.Image;
+			myControlEntity&&SUFFIX.ID = "img&&ID";
+			
+			myControlEntity&&SUFFIX.ToolTipx = "&&TOOLTIP";
+			myControlEntity&&SUFFIX.RowNumber = intRowCtr;
+			myControlEntity&&SUFFIX.ColumnNumber = 0;
+			myControlEntity&&SUFFIX.ColumnSpan = &&COLUMNSPAN;
+
+            mybytearray = System.IO.File.ReadAllBytes(@"&&FULLFILENAME");
+            bm = BytesToBitmap(mybytearray);
+			myControlEntity&&SUFFIX.Width = &&WIDTH;
+			myControlEntity&&SUFFIX.Height = &&HEIGHT;
+            myControlEntity&&SUFFIX.Source = BitmapSourceFromImage(bm);
+            myListControlEntity&&SUFFIX.Add(myControlEntity.CreateControlEntity());

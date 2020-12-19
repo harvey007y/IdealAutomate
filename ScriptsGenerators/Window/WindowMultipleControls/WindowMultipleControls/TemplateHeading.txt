@@ -1,0 +1,8 @@
+﻿			myControlEntity&&SUFFIX.ControlEntitySetDefaults();
+			myControlEntity&&SUFFIX.ControlType = ControlType.Heading;
+			myControlEntity&&SUFFIX.ID = "lbl&&ID";
+			myControlEntity&&SUFFIX.Text = "&&TEXT";
+			myControlEntity&&SUFFIX.RowNumber = intRowCtr;
+			myControlEntity&&SUFFIX.Width = &&WIDTH;
+			myControlEntity&&SUFFIX.ColumnNumber = 0;
+			myListControlEntity&&SUFFIX.Add(myControlEntity&&SUFFIX.CreateControlEntity());

@@ -1,0 +1,15 @@
+﻿			
+			intRowCtr++;
+			myControlEntity&&SUFFIX.ControlEntitySetDefaults();
+			myControlEntity&&SUFFIX.ControlType = ControlType.Label;
+			myControlEntity&&SUFFIX.ID = "lbl&&ID";
+			myControlEntity&&SUFFIX.Text = "&&TEXT";
+			myControlEntity&&SUFFIX.ToolTipx = "&&TOOLTIP";
+			myControlEntity&&SUFFIX.FontSize = &&FONTSIZE;
+			myControlEntity&&SUFFIX.RowNumber = intRowCtr;
+			myControlEntity&&SUFFIX.Width = &&WIDTH;
+			myControlEntity&&SUFFIX.Height = &&HEIGHT;
+			myControlEntity&&SUFFIX.ColumnNumber = 0;
+			myControlEntity&&SUFFIX.ColumnSpan = &&COLUMNSPAN;
+		    myControlEntity&&SUFFIX.Multiline = true;
+			myListControlEntity&&SUFFIX.Add(myControlEntity&&SUFFIX.CreateControlEntity());
