@@ -713,10 +713,10 @@ namespace System.Windows.Forms.Samples {
                                 //tries to start the process 
                                 try {
                                     myActions.KillAllProcessesByProcessName("notepad++");
-                                    if (!File.Exists(@"C:\Program Files (x86)\Notepad++\notepad++.exe")) {
-                                        myActions.MessageBoxShow(" You need to download notepad++ to use this feature.\n\r\n\rFile not found: " + @"C:\Program Files (x86)\Notepad++\notepad++.exe");
+                                    if (!File.Exists(@"C:\Program Files\Notepad++\notepad++.exe")) {
+                                        myActions.MessageBoxShow(" You need to download notepad++ to use this feature.\n\r\n\rFile not found: " + @"C:\Program Files\Notepad++\notepad++.exe");
                                     } else {
-                                        _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", fileName);
+                                        _proc = Process.Start(@"C:\Program Files\Notepad++\notepad++.exe", fileName);
                                     }
                                 } catch (Exception) {
                                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -1874,7 +1874,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     strExecutable = @"C:\Program Files\Windows NT\Accessories\wordpad.exe";
                 } else {
                     myActions.KillAllProcessesByProcessName("notepad++");
-                    strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
+                    strExecutable = @"C:\Program Files\Notepad++\notepad++.exe";
                 }
             }
             string strContent = strFullFileName;
@@ -1905,7 +1905,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             //SetParent(_appHandle, _CurrentSplitContainer.Panel2.Handle);
             //SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
             _NotepadppLoaded = true;
-            myActions.Run(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
+            myActions.Run(@"C:\Program Files\Notepad++\notepad++.exe", "\"" + strContent + "\"");
             if (strFullFileName.EndsWith(".doc") || strFullFileName.EndsWith(".docx") || strFullFileName.EndsWith(".odt")) {
             } else {
                 myActions.TypeText("^(g)", 2000);
@@ -2002,7 +2002,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                     strExecutable = @"C:\Program Files\Windows NT\Accessories\wordpad.exe";
                 } else {
                     myActions.KillAllProcessesByProcessName("notepad++");
-                    strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
+                    strExecutable = @"C:\Program Files\Notepad++\notepad++.exe";
                 }
             }
 
@@ -2595,10 +2595,10 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                                 //tries to start the process 
                                 try {
                                     myActions.KillAllProcessesByProcessName("notepad++");
-                                    if (!File.Exists(@"C:\Program Files (x86)\Notepad++\notepad++.exe")) {
-                                        myActions.MessageBoxShow(" You need to download notepad++ to use this feature.\n\r\n\rFile not found: " + @"C:\Program Files (x86)\Notepad++\notepad++.exe");
+                                    if (!File.Exists(@"C:\Program Files\Notepad++\notepad++.exe")) {
+                                        myActions.MessageBoxShow(" You need to download notepad++ to use this feature.\n\r\n\rFile not found: " + @"C:\Program Files\Notepad++\notepad++.exe");
                                     } else {
-                                        _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", fileName);
+                                        _proc = Process.Start(@"C:\Program Files\Notepad++\notepad++.exe", fileName);
                                     }
                                 } catch (Exception) {
                                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -3100,7 +3100,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 FileView myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
                 if (!myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     _NotepadppLoaded = true;
-                    string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
+                    string strExecutable = @"C:\Program Files\Notepad++\notepad++.exe";
                     myActions.Run(strExecutable, "\"" + myFileView.FullName + "\"");
                 } else {
                     myActions.MessageBoxShow("You cannot open folders with Notepad");
@@ -3288,10 +3288,10 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                                 //tries to start the process 
                                 try {
                                     myActions.KillAllProcessesByProcessName("notepad++");
-                                    if (!File.Exists(@"C:\Program Files (x86)\Notepad++\notepad++.exe")) {
-                                        myActions.MessageBoxShow(" You need to download notepad++ to use this feature.\n\r\n\rFile not found: " + @"C:\Program Files (x86)\Notepad++\notepad++.exe");
+                                    if (!File.Exists(@"C:\Program Files\Notepad++\notepad++.exe")) {
+                                        myActions.MessageBoxShow(" You need to download notepad++ to use this feature.\n\r\n\rFile not found: " + @"C:\Program Files\Notepad++\notepad++.exe");
                                     } else {
-                                        _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", fileName);
+                                        _proc = Process.Start(@"C:\Program Files\Notepad++\notepad++.exe", fileName);
                                     }
                                 } catch (Exception) {
                                     MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -3517,7 +3517,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 if (!myFileView.IsDirectory && !(myCell.ColumnIndex == 0 && myCell.RowIndex == 0)) {
                     myActions.KillAllProcessesByProcessName("notepad++");
                     _NotepadppLoaded = true;
-                    string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
+                    string strExecutable = @"C:\Program Files\Notepad++\notepad++.exe";
                     myActions.Run(strExecutable, "\"" + myFileView.FullName + "\"");
                 } else {
                     myActions.MessageBoxShow("You can not open folders with Notepad++");
@@ -3715,7 +3715,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
                     }
                     _NotepadppLoaded = true;
-                    string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
+                    string strExecutable = @"C:\Program Files\Notepad++\notepad++.exe";
 
                     string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
                     if (detailsMenuItemChecked == "False") {
@@ -5043,7 +5043,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 _appHandle = IntPtr.Zero;
             }
             myActions.KillAllProcessesByProcessName("notepad++");
-            string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
+            string strExecutable = @"C:\Program Files\Notepad++\notepad++.exe";
             string strContent = @"C:\Data\ideal.txt";
             //Close the running process
             if (_appHandle != IntPtr.Zero) {
@@ -5053,10 +5053,10 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             }
             //tries to start the process 
             try {
-                if (!File.Exists(@"C:\Program Files (x86)\Notepad++\notepad++.exe")) {
-                    myActions.MessageBoxShow(" You need to download notepad++ to use this feature.\n\r\n\rFile not found: " + @"C:\Program Files (x86)\Notepad++\notepad++.exe");
+                if (!File.Exists(@"C:\Program Files\Notepad++\notepad++.exe")) {
+                    myActions.MessageBoxShow(" You need to download notepad++ to use this feature.\n\r\n\rFile not found: " + @"C:\Program Files\Notepad++\notepad++.exe");
                 } else {
-                    _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
+                    _proc = Process.Start(@"C:\Program Files\Notepad++\notepad++.exe", "\"" + strContent + "\"");
                 }
             } catch (Exception) {
                 MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -5123,7 +5123,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 _appHandle = IntPtr.Zero;
             }
             myActions.KillAllProcessesByProcessName("notepad++");
-            string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
+            string strExecutable = @"C:\Program Files\Notepad++\notepad++.exe";
             string strContent = @"C:\Data\Actual.txt";
             //Close the running process
             if (_appHandle != IntPtr.Zero) {
@@ -5133,10 +5133,10 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             }
             //tries to start the process 
             try {
-                if (!File.Exists(@"C:\Program Files (x86)\Notepad++\notepad++.exe")) {
-                    myActions.MessageBoxShow(" You need to download notepad++ to use this feature.\n\r\n\rFile not found: " + @"C:\Program Files (x86)\Notepad++\notepad++.exe");
+                if (!File.Exists(@"C:\Program Files\Notepad++\notepad++.exe")) {
+                    myActions.MessageBoxShow(" You need to download notepad++ to use this feature.\n\r\n\rFile not found: " + @"C:\Program Files\Notepad++\notepad++.exe");
                 } else {
-                    _proc = Process.Start(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
+                    _proc = Process.Start(@"C:\Program Files\Notepad++\notepad++.exe", "\"" + strContent + "\"");
                 }
             } catch (Exception) {
                 MessageBox.Show("Something went wrong trying to start your process", "App Hoster", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -6789,9 +6789,9 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 Console.WriteLine(intUniqueFiles.ToString() + " files with hits");
                 Console.ReadLine();
                 //  myActions.KillAllProcessesByProcessName("notepad++");
-                string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
+                string strExecutable = @"C:\Program Files\Notepad++\notepad++.exe";
                 string strContent = settingsDirectory + @"\MatchInfo.txt";
-                myActions.Run(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
+                myActions.Run(@"C:\Program Files\Notepad++\notepad++.exe", "\"" + strContent + "\"");
                 myResult = "RunTime: " + elapsedTime + "\n\r\n\rHits: " + intHits.ToString() + "\n\r\n\rFiles with hits: " + intUniqueFiles.ToString() + "\n\r\n\rPut Cursor on line and\n\r press Ctrl+Alt+N\n\rto view detail page. ";
                 if (_searchErrors.Length > 0)
                 {
@@ -7286,7 +7286,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             }
             _NotepadppLoaded = true;
-            string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
+            string strExecutable = @"C:\Program Files\Notepad++\notepad++.exe";
 
             string detailsMenuItemChecked = myActions.GetValueByKey("DetailsMenuItemChecked");
             if (detailsMenuItemChecked == "False") {

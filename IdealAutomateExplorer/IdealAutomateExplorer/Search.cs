@@ -660,9 +660,9 @@ progressBar1.Value = 0;
                 Console.WriteLine(intUniqueFiles.ToString() + " files with hits");
                 Console.ReadLine();
                 //  myActions.KillAllProcessesByProcessName("notepad++");
-                string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
+                string strExecutable = @"C:\Program Files\Notepad++\notepad++.exe";
                 string strContent = settingsDirectory + @"\MatchInfo.txt";
-                // myActions.Run(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
+                // myActions.Run(@"C:\Program Files\Notepad++\notepad++.exe", "\"" + strContent + "\"");
                 myResult = "RunTime: " + elapsedTime + "\n\rHits: " + intHits.ToString() + "\n\rFiles with hits: " + intUniqueFiles.ToString();
                 if (_searchErrors.Length > 0) {
                     myResult += "\n\rErrors: " + _searchErrors.ToString();
@@ -1697,7 +1697,7 @@ progressBar1.Value = 0;
                     strExecutable = @"C:\Program Files\Windows NT\Accessories\wordpad.exe";
                 } else {
                     myActions.KillAllProcessesByProcessName("notepad++");
-                    strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
+                    strExecutable = @"C:\Program Files\Notepad++\notepad++.exe";
                 }
             }
             string strContent = strFullFileName;
@@ -1707,7 +1707,7 @@ progressBar1.Value = 0;
                 intLineNumber--;
             }
             _NotepadppLoaded = true;
-            myActions.Run(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
+            myActions.Run(@"C:\Program Files\Notepad++\notepad++.exe", "\"" + strContent + "\"");
             if (strFullFileName.EndsWith(".doc") || strFullFileName.EndsWith(".docx") || strFullFileName.EndsWith(".odt")) {
             } else {
                 myActions.TypeText("^(g)", 2000);

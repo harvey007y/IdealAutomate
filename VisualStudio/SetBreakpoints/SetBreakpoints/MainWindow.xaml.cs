@@ -713,10 +713,10 @@ namespace SetBreakpoints {
                 Console.WriteLine(intUniqueFiles.ToString() + " files with hits");
                 Console.ReadLine();
                 //  myActions.KillAllProcessesByProcessName("notepad++");
-                string strExecutable = @"C:\Program Files (x86)\Notepad++\notepad++.exe";
+                string strExecutable = @"C:\Program Files\Notepad++\notepad++.exe";
                 string strContent = settingsDirectory + @"\MatchInfo.txt";
              
-                myActions.Run(@"C:\Program Files (x86)\Notepad++\notepad++.exe", "\"" + strContent + "\"");
+                myActions.Run(@"C:\Program Files\Notepad++\notepad++.exe", "\"" + strContent + "\"");
                 myActions.MessageBoxShow("RunTime: " + elapsedTime + "\n\r\n\rHits: " + intHits.ToString() + "\n\r\n\rFiles with hits: " + intUniqueFiles.ToString() + "\n\r\n\rPut Cursor on line and\n\r press Ctrl+Alt+N\n\rto view detail page. ");
                 System.Windows.Forms.DialogResult myResult = myActions.MessageBoxShowWithYesNo("MatchInfo.txt contains the lines where breakpoints will be set.\n\r\n\r If you want to make changes, edit matchinfo.txt and save.\n\r\n\rTo go ahead and set breakpoints, click yes, otherwise, click no to cancel");
                 if (myResult == System.Windows.Forms.DialogResult.Yes) {

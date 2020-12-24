@@ -286,6 +286,15 @@ namespace MultipleBalloonWindowControls
             myControlEntity.ColumnNumber = 1;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.CheckBox;
+            myControlEntity.ID = "btnDisplay";
+            myControlEntity.Text = "Display Prototype";
+            myControlEntity.Width = 150;
+            myControlEntity.RowNumber = 15;
+            myControlEntity.ColumnNumber = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
             strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 500, 500, intWindowTop, intWindowLeft);
             strSuffix = myListControlEntity.Find(x => x.ID == "txtSuffix").Text;
             strStartingRow = myListControlEntity.Find(x => x.ID == "txtStartingRow").Text;
