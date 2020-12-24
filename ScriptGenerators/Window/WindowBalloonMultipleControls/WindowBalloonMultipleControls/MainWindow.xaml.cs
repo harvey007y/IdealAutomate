@@ -81,11 +81,31 @@ namespace MultipleBalloonWindowControls
             string strStartingRow = "";
             string strApplicationPath = System.AppDomain.CurrentDomain.BaseDirectory;
             int intRowCtr = -1;
-            string strOutFile = @"C:\Data\BlogPost.txt";
+            string strOutCode1UsingsFile = @"C:\Data\Code1Usings.txt";
+            string strOutCode2NamespaceClassFile = @"C:\Data\Code2NamespaceClass.txt";
+            string strOutCode3GlobalsFile = @"C:\Data\Code3Globals.txt";
+            string strOutCode4MainFile = @"C:\Data\Code4Main.txt";
+            string strOutCode5FunctionsFile = @"C:\Data\Code5Functions.txt";
+            string strOutCodeBodyFile = @"C:\Data\CodeBody.txt";
+            string strOutCodeEndFile = @"C:\Data\CodeEnd.txt";
+            string strOutCodeBigFile = @"C:\Data\CodeBig.txt";
+
+
             StringBuilder sb = new StringBuilder(); // this is for creating the controls in the window
             StringBuilder sb2 = new StringBuilder(); // this is for retrieving stuff from window
             StringBuilder sb3 = new StringBuilder(); // this is for defining the template
             StringBuilder sb4 = new StringBuilder(); // this is for doing replacements to template
+            StringBuilder sbFunctions = new StringBuilder(); // this is for one time functions we will need
+
+            // if sb is empty, initialize it with fields we will need
+            string strInFilex = strApplicationPath + "TemplateCode5Functions.txt";
+            // private string strInFile = @"C:\Data\LanguageXMLInput3.txt";
+
+            string[] lineszzz = System.IO.File.ReadAllLines(strInFilex);
+            foreach (var line in lineszzz)
+            {
+                sbFunctions.AppendLine(line);
+            }
 
         // add controls to window that will allow user to specify what controls should be in balloon
         AddControl:
@@ -280,35 +300,8 @@ namespace MultipleBalloonWindowControls
                 intRowCtr = intStartingRow;
             }
 
-            // if sb is empty, initialize it with fields we will need
-            if (sb.Length == 0)
-            {
-                sb.AppendLine("private static BitmapSource BitmapSourceFromImage(System.Drawing.Image img)");
-                sb.AppendLine("{");
-                sb.AppendLine("MemoryStream memStream = new MemoryStream();");
-                sb.AppendLine("// save the image to memStream as a png");
-                sb.AppendLine("img.Save(memStream, System.Drawing.Imaging.ImageFormat.Png);");
-                sb.AppendLine("// gets a decoder from this stream");
-                sb.AppendLine("System.Windows.Media.Imaging.PngBitmapDecoder decoder = new System.Windows.Media.Imaging.PngBitmapDecoder(memStream, System.Windows.Media.Imaging.BitmapCreateOptions.PreservePixelFormat, System.Windows.Media.Imaging.BitmapCacheOption.Default);");
-                sb.AppendLine("return decoder.Frames[0];");
-                sb.AppendLine("}");
-                sb.AppendLine("private static System.Drawing.Bitmap BytesToBitmap(byte[] byteArray)");
-                sb.AppendLine("{");
-                sb.AppendLine("using (MemoryStream ms = new MemoryStream(byteArray))");
-                sb.AppendLine("{");
-                sb.AppendLine("System.Drawing.Bitmap img = (System.Drawing.Bitmap)System.Drawing.Image.FromStream(ms);");
-                sb.AppendLine("return img;");
-                sb.AppendLine("}");
-                sb.AppendLine("}");
-                sb.AppendLine(" ");
-                sb.AppendLine(" ");
-                sb.AppendLine("byte[] mybytearray;");
-                sb.AppendLine("ImageEntity myImage = new ImageEntity();");
-                sb.AppendLine("System.Drawing.Bitmap bm;");
-                sb.AppendLine("List<ControlEntity> myListControlEntity" + strSuffix + " = new List<ControlEntity>();");
-                sb.AppendLine("List<ComboBoxPair> cbp" + strSuffix + " = new List<ComboBoxPair>();");
-            }
 
+            #region AddControlsWindow
             // if remove all controls, set sb to length 0
             if (strButtonPressed == "btnRemoveAllControls")
             {
@@ -581,6 +574,7 @@ namespace MultipleBalloonWindowControls
                     line = line.Replace("&&TEXT", strText.Trim());
                     line = line.Replace("&&TOOLTIP", strToolTip.Trim());
                     line = line.Replace("&&ROW", intRowCtr.ToString());
+                    line = line.Replace("&&FONTSIZE", "12");
                     int intColumnSpan = 1;
                     Int32.TryParse(strColumnSpan, out intColumnSpan);
                     line = line.Replace("&&COLUMNSPAN", intColumnSpan.ToString());
@@ -831,6 +825,7 @@ namespace MultipleBalloonWindowControls
                     line = line.Replace("&&COLUMNSPAN", intColumnSpan.ToString());
                     line = line.Replace("&&TOOLTIP", strToolTip.Trim());
                     line = line.Replace("&&ROW", intRowCtr.ToString());
+                    line = line.Replace("&&FONTSIZE", strFontSize.Trim());
                     if (strWidth != "")
                     {
                         line = line.Replace("&&WIDTH", strWidth);
@@ -2242,9 +2237,9 @@ namespace MultipleBalloonWindowControls
     "      myImage.RelativeX = 0;   \r\n" +
     "      myImage.RelativeY = 0;   \r\n" +
     "  \r\n" +
-    "      int[,] resultArray = myActions.PutAllFastByStoppingOnPerfectMatch(myImage);  \r\n" +
-    "            int newTop = 0;  \r\n" +
-    "            int newLeft = 0;  \r\n" +
+    "      resultArray = myActions.PutAllFastByStoppingOnPerfectMatch(myImage);  \r\n" +
+    "            newTop = 0;  \r\n" +
+    "            newLeft = 0;  \r\n" +
     "      if (resultArray.Length == 0) {  \r\n" +
     "     List<ControlEntity> myListControlEntityBackup = myListControlEntity; \r\n" +
                 "     myListControlEntity = new List<ControlEntity>(); \r\n" +
@@ -2303,119 +2298,58 @@ namespace MultipleBalloonWindowControls
     "            newLeft += intRelativeLeft;   \r\n" +
     "      }     \r\n";
 
+                // relative means you need code to find image on screen, which is in relativeCodeSnippet
+                StringBuilder sbCode = new StringBuilder();
+                string strInFile = strApplicationPath + "TemplateCode1Usings.txt";
+                string[] lineszz = System.IO.File.ReadAllLines(strInFile);
+                foreach (var line in lineszz)
+                {
+                    sbCode.AppendLine(line);
+                }
+
+                strInFile = strApplicationPath + "TemplateCode2NamespaceClass.txt";
+                lineszz = System.IO.File.ReadAllLines(strInFile);
+                foreach (var line in lineszz)
+                {
+                    sbCode.AppendLine(line);
+                }
+
+                strInFile = strApplicationPath + "TemplateCode3Globals.txt";
+                lineszz = System.IO.File.ReadAllLines(strInFile);
+                foreach (var line in lineszz)
+                {
+                    sbCode.AppendLine(line);
+                }
+
+                strInFile = strApplicationPath + "TemplateCode4Main.txt";
+                lineszz = System.IO.File.ReadAllLines(strInFile);
+                foreach (var line in lineszz)
+                {
+                    sbCode.AppendLine(line);
+                }
                 if (_PositionType == "Relative")
                 {
-                    code = @"
-    using System.Windows;
-    using IdealAutomate.Core;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Diagnostics;
-    using System.Text;
-    using System;
-    using System.Drawing;
-    using System.IO;
-    using System.Windows.Media.Imaging;
-    using System.Reflection;
-
-    namespace First
-    {
-        public class Program : Window 
-        {
-            private static BitmapSource BitmapSourceFromImage(System.Drawing.Image img)
-		    {
-			    MemoryStream memStream = new MemoryStream();
-
-			    // save the image to memStream as a png
-			    img.Save(memStream, System.Drawing.Imaging.ImageFormat.Png);
-
-			    // gets a decoder from this stream
-			    System.Windows.Media.Imaging.PngBitmapDecoder decoder = new System.Windows.Media.Imaging.PngBitmapDecoder(memStream, System.Windows.Media.Imaging.BitmapCreateOptions.PreservePixelFormat, System.Windows.Media.Imaging.BitmapCacheOption.Default);
-
-			    return decoder.Frames[0];
-		    }
-		    private static System.Drawing.Bitmap BytesToBitmap(byte[] byteArray)
-		    {
-
-
-			    using (MemoryStream ms = new MemoryStream(byteArray))
-			    {
-
-
-				    System.Drawing.Bitmap img = (System.Drawing.Bitmap)System.Drawing.Image.FromStream(ms);
-
-
-				    return img;
-
-
-			    }
-		    }
-            public static void Main()
-            {
- var window = new Window() //make sure the window is invisible
-            {
-                Width = 0,
-                Height = 0,
-                Left = -2000,
-                WindowStyle = WindowStyle.None,
-                ShowInTaskbar = false,
-                ShowActivated = false,
-            };
-            window.Show();
-            " +
-                   "IdealAutomate.Core.Methods myActions = new Methods();" +
-                   "string strButtonPressed = \"\";" +
-                   "int intRowCtr = 0;" +
-                    " ControlEntity myControlEntity" + strSuffix + " = new ControlEntity();" +
-                                  sb.ToString() +
+                    code = sbCode.ToString() +
+                    sb.ToString() +
+                    " myControlEntity" + strSuffix + " = new ControlEntity();" +
                                   relativeCodeSnippet + " strButtonPressed = myActions.WindowBalloonMultipleControls" + strMinimized + "(ref myListControlEntity" + strSuffix + " , " + intWindowHeight + ", " + windowWidthTemp + ", newTop,  newLeft, \"" + strBalloonArrowDirection + "\");" + sb2.ToString() +
                    "Console.WriteLine(\"Hello, world!\");"
                    + @"
-            }
+            }"
+                    + sbFunctions.ToString() + @"
         }
     }
 ";
                 }
                 else
                 {
-                    code = @"
-   using System.Windows;
-using IdealAutomate.Core;
-using System.Collections.Generic;
-using System.Linq;
-using System.Diagnostics;
-using System.Text;
-using System;
-using System.Drawing;
-
-
-using System.Reflection;
-
-    namespace First
-    {
-        public class Program : Window 
-        {
-            public static void Main()
-            {
- var window = new Window() //make sure the window is invisible
-            {
-                Width = 0,
-                Height = 0,
-                Left = -2000,
-                WindowStyle = WindowStyle.None,
-                ShowInTaskbar = false,
-                ShowActivated = false,
-            };
-            window.Show();
-            " +
-"IdealAutomate.Core.Methods myActions = new Methods();" +
-"string strButtonPressed = \"\";" +
-"int intRowCtr = 0;" +
-" ControlEntity myControlEntity" + strSuffix + " = new ControlEntity();" +
-              sb.ToString() + " strButtonPressed = myActions.WindowBalloonMultipleControls" + strMinimized + "(ref myListControlEntity" + strSuffix + " , " + intWindowHeight + ", " + windowWidthTemp + "," + startPointYTemp + ", " + startPointXTemp + ", \"" + strBalloonArrowDirection + "\");" + sb2.ToString() +
-"Console.WriteLine(\"Hello, world!\");"
-+ @"
-            }
+                    code = sbCode.ToString() +
+ sb.ToString() +
+              " strButtonPressed = myActions.WindowBalloonMultipleControls" + strMinimized + "(ref myListControlEntity" + strSuffix + " , " + intWindowHeight + ", " + windowWidthTemp + "," + startPointYTemp + ", " + startPointXTemp + ", \"" + strBalloonArrowDirection + "\");" + sb2.ToString() +
+ "Console.WriteLine(\"Hello, world!\");"
+                   + @"
+            }"
+                    + sbFunctions.ToString() + @"
         }
     }
 ";
@@ -2479,19 +2413,105 @@ using System.Reflection;
             {
                 goto myExit;
             }
+            #endregion AddControlsWindow
             // Done --------------------
             if (intWindowHeight > 700)
             {
                 intWindowHeight = 700;
             }
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutFile))
+            StringBuilder sbCodeBig = new StringBuilder();
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutCode1UsingsFile))
             {
-                file.WriteLine("int intRowCtr = 0;");
-                file.WriteLine("ControlEntity myControlEntity" + strSuffix + " = new ControlEntity();");
+                StringBuilder sbCode = new StringBuilder();
+
+                string strInFile = strApplicationPath + "TemplateCode1Usings.txt";
+                string[] lineszz = System.IO.File.ReadAllLines(strInFile);
+                foreach (var line in lineszz)
+                {
+                    sbCode.AppendLine(line);
+                    sbCodeBig.AppendLine(line);
+                }
+
+
+                file.Write(sbCode.ToString());
+
+            }
+
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutCode2NamespaceClassFile))
+            {
+                StringBuilder sbCode = new StringBuilder();
+
+                string strInFile = strApplicationPath + "TemplateCode2NamespaceClass.txt";
+                string[] lineszz = System.IO.File.ReadAllLines(strInFile);
+                foreach (var line in lineszz)
+                {
+                    sbCode.AppendLine(line);
+                    sbCodeBig.AppendLine(line);
+                }
+
+
+                file.Write(sbCode.ToString());
+
+            }
+
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutCode3GlobalsFile))
+            {
+                StringBuilder sbCode = new StringBuilder();
+
+                string strInFile = strApplicationPath + "TemplateCode3Globals.txt";
+                string[] lineszz = System.IO.File.ReadAllLines(strInFile);
+                foreach (var line in lineszz)
+                {
+                    sbCode.AppendLine(line);
+                    sbCodeBig.AppendLine(line);
+                }
+
+
+                file.Write(sbCode.ToString());
+
+            }
+
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutCode4MainFile))
+            {
+                StringBuilder sbCode = new StringBuilder();
+
+                string strInFile = strApplicationPath + "TemplateCode4Main.txt";
+                string[] lineszz = System.IO.File.ReadAllLines(strInFile);
+                foreach (var line in lineszz)
+                {
+                    sbCode.AppendLine(line);
+                    sbCodeBig.AppendLine(line);
+                }
+
+
+                file.Write(sbCode.ToString());
+
+            }
+
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutCode5FunctionsFile))
+            {
+                StringBuilder sbCode = new StringBuilder();
+
+                string strInFile = strApplicationPath + "TemplateCode5Functions.txt";
+                string[] lineszz = System.IO.File.ReadAllLines(strInFile);
+                foreach (var line in lineszz)
+                {
+                    sbCode.AppendLine(line);
+                   
+                }
+
+
+                file.Write(sbCode.ToString());
+
+            }
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutCodeBodyFile))
+            {
                 file.Write(sb.ToString());
+                sbCodeBig.Append(sb.ToString());
                 if (_PositionType == "Relative")
                 {
                     file.Write(relativeCodeSnippet);
+                    sbCodeBig.Append(relativeCodeSnippet);
                 }
 
                 double windowWidthTemp = windowWidth * 2;
@@ -2501,24 +2521,56 @@ using System.Reflection;
                 { windowWidthTemp = 500; }
                 if (_PositionType == "Relative")
                 {
-                    file.WriteLine("string strButtonPressed = myActions.WindowBalloonMultipleControls" + strMinimized + "(ref myListControlEntity" + strSuffix + ", " + intWindowHeight + ", " + windowWidthTemp + ", newTop, newLeft, \"" + strBalloonArrowDirection + "\");");
+                    file.WriteLine("strButtonPressed = myActions.WindowBalloonMultipleControls" + strMinimized + "(ref myListControlEntity" + strSuffix + ", " + intWindowHeight + ", " + windowWidthTemp + ", newTop, newLeft, \"" + strBalloonArrowDirection + "\");");
+                    sbCodeBig.AppendLine("strButtonPressed = myActions.WindowBalloonMultipleControls" + strMinimized + "(ref myListControlEntity" + strSuffix + ", " + intWindowHeight + ", " + windowWidthTemp + ", newTop, newLeft, \"" + strBalloonArrowDirection + "\");");
                 }
                 else
                 {
-                    file.WriteLine("string strButtonPressed = myActions.WindowBalloonMultipleControls" + strMinimized + "(ref myListControlEntity" + strSuffix + ", " + intWindowHeight + ", " + windowWidthTemp + "," + startPoint.Y + ", " + startPoint.X + ", \"" + strBalloonArrowDirection + "\"); ");
+                    file.WriteLine("strButtonPressed = myActions.WindowBalloonMultipleControls" + strMinimized + "(ref myListControlEntity" + strSuffix + ", " + intWindowHeight + ", " + windowWidthTemp + "," + startPoint.Y + ", " + startPoint.X + ", \"" + strBalloonArrowDirection + "\"); ");
+                    sbCodeBig.AppendLine("strButtonPressed = myActions.WindowBalloonMultipleControls" + strMinimized + "(ref myListControlEntity" + strSuffix + ", " + intWindowHeight + ", " + windowWidthTemp + "," + startPoint.Y + ", " + startPoint.X + ", \"" + strBalloonArrowDirection + "\"); ");
                 }
                 file.WriteLine("if (strButtonPressed == \"btnCancel\") {");
                 file.WriteLine("  myActions.MessageBoxShow(\"Okay button not pressed - Script Cancelled\");");
                 file.WriteLine("  goto myExit;");
                 file.WriteLine("}");
-                file.WriteLine("");
+
+                sbCodeBig.AppendLine("if (strButtonPressed == \"btnCancel\") {");
+                sbCodeBig.AppendLine("  myActions.MessageBoxShow(\"Okay button not pressed - Script Cancelled\");");
+                sbCodeBig.AppendLine("  goto myExit;");
+                sbCodeBig.AppendLine("}");
+
+
 
                 file.Write(sb2.ToString());
-
-
+                sbCodeBig.Append(sb2.ToString());
             }
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutCodeEndFile))
+            {
+               
+                file.WriteLine("myExit:");
+                file.WriteLine("Console.WriteLine(\"Script Ended\");");
+                file.WriteLine("}");
+                file.Write(sbFunctions.ToString());
+                file.WriteLine("}");
+                file.WriteLine("}");
+
+               
+                sbCodeBig.AppendLine("myExit:");
+                sbCodeBig.AppendLine("Console.WriteLine(\"Script Ended\");");
+                sbCodeBig.AppendLine("}");
+                sbCodeBig.Append(sbFunctions.ToString());
+                sbCodeBig.AppendLine("}");
+                sbCodeBig.AppendLine("}");
+            }
+
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutCodeBigFile))
+            {
+                file.Write(sbCodeBig.ToString());
+            }
+
+
             string strExecutable = @"C:\Windows\system32\notepad.exe";
-            string strContent = strOutFile;
+            string strContent = strOutCodeBigFile;
             Process.Start(strExecutable, string.Concat("", strContent, ""));
 
             //bool boolUseNewTab = myListControlEntity.Find(x => x.ID == "myCheckBox").Checked;

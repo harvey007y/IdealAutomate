@@ -1,0 +1,13 @@
+﻿		static IdealAutomate.Core.Methods myActions = new Methods();
+
+		static byte[] mybytearray;
+		static ImageEntity myImage = new ImageEntity();
+		static System.Drawing.Bitmap bm;
+		static List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+		static List<ComboBoxPair> cbp = new List<ComboBoxPair>();
+		static int intRowCtr = 0;
+		static ControlEntity myControlEntity = new ControlEntity();
+		static string strButtonPressed = "";
+		static int[,] resultArray = new int[100, 100];
+		static int newTop = 0;
+		static int newLeft = 0;

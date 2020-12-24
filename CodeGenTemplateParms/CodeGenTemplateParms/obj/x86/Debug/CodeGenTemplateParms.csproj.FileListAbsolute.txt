@@ -57,7 +57,6 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTempla
 C:\Users\harve\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\bin\Debug\IdealAutomateCore.pdb
 C:\Users\harve\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\bin\Debug\IdealAutomateCore.xml
 C:\Users\harve\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\bin\Debug\WindowsInput.xml
-C:\Users\harve\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\obj\x86\Debug\CodeGenTemplateParms.csprojResolveAssemblyReference.cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\obj\x86\Debug\MainWindow.baml
 C:\Users\harve\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\obj\x86\Debug\MainWindow.g.cs
 C:\Users\harve\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\obj\x86\Debug\App.g.cs
@@ -140,3 +139,4 @@ C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeG
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\obj\x86\Debug\CodeGenTemplateParms.exe
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\obj\x86\Debug\CodeGenTemplateParms.pdb
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\obj\x86\Debug\CodeGenTemplateParms.csprojResolveAssemblyReference.cache
+C:\Users\harve\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\obj\x86\Debug\CodeGenTemplateParms.csprojAssemblyReference.cache

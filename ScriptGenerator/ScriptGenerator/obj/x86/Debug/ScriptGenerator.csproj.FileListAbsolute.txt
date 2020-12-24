@@ -28,7 +28,6 @@ C:\SVNIA\trunk\ScriptGenerator\ScriptGenerator\obj\x86\Debug\ScriptGenerator.pdb
 C:\SVNIA\trunk\ScriptGenerator\ScriptGenerator\bin\Debug\Templates\TemplateClickImageIfExists.txt
 C:\SVNIA\trunk\ScriptGenerator\ScriptGenerator\bin\Debug\Templates\TemplatePutAll.txt
 C:\SVNIA\trunk\ScriptGenerator\ScriptGenerator\bin\Debug\Templates\TemplateFindDelimitedText.txt
-C:\Users\harve\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\obj\x86\Debug\ScriptGenerator.csprojResolveAssemblyReference.cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\obj\x86\Debug\MainWindow.baml
 C:\Users\harve\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\obj\x86\Debug\MainWindow.g.cs
 C:\Users\harve\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\obj\x86\Debug\App.g.cs
@@ -93,3 +92,5 @@ C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGene
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\obj\x86\Debug\ScriptGenerator.csproj.CopyComplete
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\obj\x86\Debug\ScriptGenerator.csprojAssemblyReference.cache
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\bin\Debug\Templates\TemplatePutAllFastByStoppingOnPerfectMatch.txt
+C:\Users\harve\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\bin\Debug\Templates\TemplatePutAllFastByStoppingOnPerfectMatch.txt
+C:\Users\harve\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\obj\x86\Debug\ScriptGenerator.csprojAssemblyReference.cache
