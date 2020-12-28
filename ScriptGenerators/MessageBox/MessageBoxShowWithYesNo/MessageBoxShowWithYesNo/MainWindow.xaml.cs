@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Media;
 using System.Collections;
+using System.Diagnostics;
+using System.IO;
 
 namespace MessageBoxShowWithYesNo
 {
@@ -187,6 +189,8 @@ namespace MessageBoxShowWithYesNo
             myControlEntity1.ColumnNumber = 1;
             myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
+            string strAppendCodeToExistingFile = myActions.CheckboxForAppendCode(intRowCtr, myControlEntity1, myListControlEntity1);
+
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 650, 700, intWindowTop, intWindowLeft);
 
             string strMessage = myListControlEntity1.Find(x => x.ID == "txtMessage").Text;
@@ -196,6 +200,8 @@ namespace MessageBoxShowWithYesNo
             myActions.SetValueByKey("ScriptGeneratorMessageBoxShowWithYesNoMessage", strMessage);
             myActions.SetValueByKey("ScriptGeneratorMessageBoxShowWithYesNoResultYesNo", strResultYesNo);
             //   myActions.SetValueByKey("ScriptGeneratorShowOption", strShowOption);
+
+            strAppendCodeToExistingFile = myActions.GetAndUpdateValueForCheckBoxAppendCode(myListControlEntity1);
 
             if (strButtonPressed == "btnOkay")
             {
@@ -212,7 +218,38 @@ namespace MessageBoxShowWithYesNo
 
                 string strGeneratedLinex = "";
 
-                strGeneratedLinex = strResultYesNoToUse + " = myActions.GetValueByKey(" + strMessageToUse + ");";
+                strGeneratedLinex = strResultYesNoToUse + " = myActions.MessageBoxShowWithYesNo(" + strMessageToUse + ");";
+
+                // ============
+
+                myActions.Write1UsingsTemplateToExternalFile(strApplicationPath, strAppendCodeToExistingFile);
+
+                myActions.Write2NameSpaceClassTemplateToExternalFile(strApplicationPath);
+
+                string strOutFile = strApplicationPath + "TemplateCode3GlobalsNew.txt";
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutFile))
+                {
+                    file.WriteLine("static System.Windows.Forms.DialogResult " + strResultYesNoToUse + ";");
+                }
+
+                myActions.Write3GlobalsToExternalFile(strApplicationPath, strAppendCodeToExistingFile);
+
+                myActions.Write4MainTemplateToExternalFile(strApplicationPath);
+
+                string strOutCodeBodyFile = @"C:\Data\CodeBody.txt";
+                WriteCodeBodyToExternalFile(strAppendCodeToExistingFile, strOutCodeBodyFile, strMessageToUse, strResultYesNoToUse);
+
+                myActions.Write5FunctionsTemplateToExternalFile(strApplicationPath);
+
+                myActions.WriteCodeEndToExternalFile();
+
+                string strOutCodeBigFile = myActions.WriteCodeBigExternalFile(strOutCodeBodyFile);
+
+                string strExecutable = @"C:\Windows\system32\notepad.exe";
+                string strContent = strOutCodeBigFile;
+                Process.Start(strExecutable, string.Concat("", strContent, ""));
+
+                //============
 
                 myActions.PutEntityInClipboard(strGeneratedLinex);
                 myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard");
@@ -221,5 +258,36 @@ namespace MessageBoxShowWithYesNo
             myActions.ScriptEndedSuccessfullyUpdateStats();
             Application.Current.Shutdown();
         }
+        private void WriteCodeBodyToExternalFile(string strAppendCodeToExistingFile, string strOutCodeBodyFile, string strMessageToUse, string strResultYesNoToUse)
+        {
+            string strOutCodeBodyFileBackup = @"C:\Data\CodeBodyBackup.txt";
+            File.Copy(strOutCodeBodyFile, strOutCodeBodyFileBackup, true);
+            if (strAppendCodeToExistingFile.ToLower() == "true")
+            {
+                using (System.IO.StreamWriter file = System.IO.File.AppendText(strOutCodeBodyFile))
+                {
+                    file.WriteLine(strResultYesNoToUse + " = myActions.MessageBoxShowWithYesNo(" + strMessageToUse + ");");
+                    file.WriteLine("        if (" + strResultYesNoToUse + " == System.Windows.Forms.DialogResult.Yes) { ");
+                    file.WriteLine("        //  goto TryAgain;");
+                    file.WriteLine("        } else {");
+                    file.WriteLine("          goto myExit; ");
+                    file.WriteLine("        } ");
+                }
+            }
+            else
+            {
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutCodeBodyFile))
+                {
+                    file.WriteLine(strResultYesNoToUse + " = myActions.MessageBoxShowWithYesNo(" + strMessageToUse + ");");
+                    file.WriteLine("        if (" + strResultYesNoToUse + " == System.Windows.Forms.DialogResult.Yes) { ");
+                    file.WriteLine("        //  goto TryAgain;");
+                    file.WriteLine("        } else {");
+                    file.WriteLine("          goto myExit; ");
+                    file.WriteLine("        } ");
+
+                }
+            }
+        }
+
     }
 }

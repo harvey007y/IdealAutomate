@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Media;
 using System.Collections;
+using System.Diagnostics;
+using System.IO;
 
 namespace ShiftClick
 {
@@ -64,6 +66,7 @@ namespace ShiftClick
             string directory = AppDomain.CurrentDomain.BaseDirectory;
             directory = directory.Replace("\\bin\\Debug\\", "");
             int intLastSlashIndex = directory.LastIndexOf("\\");
+
 
         DisplayShiftClick:
             myControlEntity1 = new ControlEntity();
@@ -167,12 +170,20 @@ namespace ShiftClick
             myControlEntity1.ColumnNumber = 1;
             myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
+            string strAppendCodeToExistingFile = myActions.CheckboxForAppendCode(intRowCtr, myControlEntity1, myListControlEntity1);
+
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 650, 700, intWindowTop, intWindowLeft);
 
             string strmyArray = myListControlEntity1.Find(x => x.ID == "txtmyArray").Text;
 
             myActions.SetValueByKey("ScriptGeneratorShiftClickmyArray", strmyArray);
 
+            strAppendCodeToExistingFile = myActions.GetAndUpdateValueForCheckBoxAppendCode(myListControlEntity1);
+
+            if (strButtonPressed == "btnDDLRefresh")
+            {
+                goto DisplayShiftClick;
+            }
 
             if (strButtonPressed == "btnOkay")
             {
@@ -184,7 +195,36 @@ namespace ShiftClick
                 string strGeneratedLinex = "";
 
                 strGeneratedLinex = "myActions.ShiftClick(" + strmyArrayToUse + ");";
+                // ============
 
+                myActions.Write1UsingsTemplateToExternalFile(strApplicationPath, strAppendCodeToExistingFile);
+
+                myActions.Write2NameSpaceClassTemplateToExternalFile(strApplicationPath);
+
+                string strOutFile = strApplicationPath + "TemplateCode3GlobalsNew.txt";
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutFile))
+                {
+                    file.WriteLine("static int[,] " + strmyArrayToUse + " = new int[1,1];");
+                }
+
+                myActions.Write3GlobalsToExternalFile(strApplicationPath, strAppendCodeToExistingFile);
+
+                myActions.Write4MainTemplateToExternalFile(strApplicationPath);
+
+                string strOutCodeBodyFile = @"C:\Data\CodeBody.txt";
+                WriteCodeBodyToExternalFile(strAppendCodeToExistingFile, strOutCodeBodyFile, strmyArrayToUse);
+
+                myActions.Write5FunctionsTemplateToExternalFile(strApplicationPath);
+
+                myActions.WriteCodeEndToExternalFile();
+
+                string strOutCodeBigFile = myActions.WriteCodeBigExternalFile(strOutCodeBodyFile);
+
+                string strExecutable = @"C:\Windows\system32\notepad.exe";
+                string strContent = strOutCodeBigFile;
+                Process.Start(strExecutable, string.Concat("", strContent, ""));
+
+                //============
                 myActions.PutEntityInClipboard(strGeneratedLinex);
                 myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard");
             }
@@ -192,5 +232,27 @@ namespace ShiftClick
             myActions.ScriptEndedSuccessfullyUpdateStats();
             Application.Current.Shutdown();
         }
+        private void WriteCodeBodyToExternalFile(string strAppendCodeToExistingFile, string strOutCodeBodyFile, string strmyArrayToUse)
+        {
+            string strOutCodeBodyFileBackup = @"C:\Data\CodeBodyBackup.txt";
+            File.Copy(strOutCodeBodyFile, strOutCodeBodyFileBackup, true);
+            if (strAppendCodeToExistingFile.ToLower() == "true")
+            {
+                using (System.IO.StreamWriter file = System.IO.File.AppendText(strOutCodeBodyFile))
+                {
+                    file.WriteLine("myActions.ShiftClick(" + strmyArrayToUse + ");");
+
+                }
+            }
+            else
+            {
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutCodeBodyFile))
+                {
+                    file.WriteLine("myActions.ShiftClick(" + strmyArrayToUse + ");");
+
+                }
+            }
+        }
+
     }
 }

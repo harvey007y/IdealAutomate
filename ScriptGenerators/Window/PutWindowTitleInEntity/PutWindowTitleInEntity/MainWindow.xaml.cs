@@ -7,35 +7,41 @@ using System.Linq;
 using System.Text;
 using System.Windows.Media;
 using System.Collections;
+using System.Diagnostics;
+using System.IO;
 
-namespace PutWindowTitleInEntity {
-  /// <summary>
-  /// Interaction logic for MainWindow.xaml
-  /// </summary>
-  public partial class MainWindow : Window {
-    public MainWindow() {
-      bool boolRunningFromHome = false;
-      var window = new Window() //make sure the window is invisible
+namespace PutWindowTitleInEntity
 {
-        Width = 0,
-        Height = 0,
-        Left = -2000,
-        WindowStyle = WindowStyle.None,
-        ShowInTaskbar = false,
-        ShowActivated = false,
-      };
-      window.Show();
-      IdealAutomate.Core.Methods myActions = new Methods();
-      myActions.ScriptStartedUpdateStats();
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+        public MainWindow()
+        {
+            bool boolRunningFromHome = false;
+            var window = new Window() //make sure the window is invisible
+            {
+                Width = 0,
+                Height = 0,
+                Left = -2000,
+                WindowStyle = WindowStyle.None,
+                ShowInTaskbar = false,
+                ShowActivated = false,
+            };
+            window.Show();
+            IdealAutomate.Core.Methods myActions = new Methods();
+            myActions.ScriptStartedUpdateStats();
 
-      InitializeComponent();
-      this.Hide();
+            InitializeComponent();
+            this.Hide();
 
-      string strWindowTitle = myActions.PutWindowTitleInEntity();
-      if (strWindowTitle.StartsWith("PutWindowTitleInEntity")) {
-        myActions.TypeText("%(\" \"n)", 1000); // minimize visual studio
-      }
-      myActions.Sleep(1000);
+            string strWindowTitle = myActions.PutWindowTitleInEntity();
+            if (strWindowTitle.StartsWith("PutWindowTitleInEntity"))
+            {
+                myActions.TypeText("%(\" \"n)", 1000); // minimize visual studio
+            }
+            myActions.Sleep(1000);
             int intWindowTop = 0;
             int intWindowLeft = 0;
             int intRowCtr = 0;
@@ -118,33 +124,84 @@ namespace PutWindowTitleInEntity {
             myControlEntity1.ColumnNumber = 1;
             myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
+            string strAppendCodeToExistingFile = myActions.CheckboxForAppendCode(intRowCtr, myControlEntity1, myListControlEntity1);
+
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 400, 700, intWindowTop, intWindowLeft);
 
             string strResultValue = myListControlEntity1.Find(x => x.ID == "txtResultValue").Text;
             // string strShowOption = myListControlEntity1.Find(x => x.ID == "cbxShowOption").SelectedValue;
-
             myActions.SetValueByKey("ScriptGeneratorPutWindowTitleInEntityResultValue", strResultValue);
             //   myActions.SetValueByKey("ScriptGeneratorShowOption", strShowOption);
 
- 
+            strAppendCodeToExistingFile = myActions.GetAndUpdateValueForCheckBoxAppendCode(myListControlEntity1);
+
             if (strButtonPressed == "btnOkay")
             {
-  
-
                 string strResultValueToUse = "";
-
-                    strResultValueToUse = strResultValue.Trim();
-
+                strResultValueToUse = strResultValue.Trim();
                 string strGeneratedLinex = "";
-
                 strGeneratedLinex = strResultValueToUse + " = myActions.PutWindowTitleInEntity();";
+
+                // ============
+
+                myActions.Write1UsingsTemplateToExternalFile(strApplicationPath, strAppendCodeToExistingFile);
+
+                myActions.Write2NameSpaceClassTemplateToExternalFile(strApplicationPath);
+
+                string strOutFile = strApplicationPath + "TemplateCode3GlobalsNew.txt";
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutFile))
+                {
+                    file.WriteLine("static string " + strResultValueToUse + " = \"\";");
+                }
+
+                myActions.Write3GlobalsToExternalFile(strApplicationPath, strAppendCodeToExistingFile);
+
+                myActions.Write4MainTemplateToExternalFile(strApplicationPath);
+
+                string strOutCodeBodyFile = @"C:\Data\CodeBody.txt";
+                WriteCodeBodyToExternalFile(strAppendCodeToExistingFile, strOutCodeBodyFile, strGeneratedLinex);
+
+                myActions.Write5FunctionsTemplateToExternalFile(strApplicationPath);
+
+                myActions.WriteCodeEndToExternalFile();
+
+                string strOutCodeBigFile = myActions.WriteCodeBigExternalFile(strOutCodeBodyFile);
+
+                string strExecutable = @"C:\Windows\system32\notepad.exe";
+                string strContent = strOutCodeBigFile;
+                Process.Start(strExecutable, string.Concat("", strContent, ""));
+
+                //============
 
                 myActions.PutEntityInClipboard(strGeneratedLinex);
                 myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard");
             }
         myExit:
-      myActions.ScriptEndedSuccessfullyUpdateStats();
-      Application.Current.Shutdown();
+            myActions.ScriptEndedSuccessfullyUpdateStats();
+            Application.Current.Shutdown();
+        }
+
+        private void WriteCodeBodyToExternalFile(string strAppendCodeToExistingFile, string strOutCodeBodyFile, string strGeneratedLinex)
+        {
+            string strOutCodeBodyFileBackup = @"C:\Data\CodeBodyBackup.txt";
+            File.Copy(strOutCodeBodyFile, strOutCodeBodyFileBackup, true);
+            if (strAppendCodeToExistingFile.ToLower() == "true")
+            {
+                using (System.IO.StreamWriter file = System.IO.File.AppendText(strOutCodeBodyFile))
+                {
+                    file.WriteLine(strGeneratedLinex);
+
+                }
+            }
+            else
+            {
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutCodeBodyFile))
+                {
+                    file.WriteLine(strGeneratedLinex);
+
+                }
+            }
+        }
+
     }
-  }
 }

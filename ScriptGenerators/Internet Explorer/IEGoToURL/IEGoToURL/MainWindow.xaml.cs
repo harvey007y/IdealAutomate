@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Text;
 using System;
 using System.Windows.Media;
+using System.Diagnostics;
+using System.IO;
 
 namespace IEGoToURL
 {
@@ -164,6 +166,8 @@ namespace IEGoToURL
             myControlEntity1.RowNumber = intRowCtr;
             myControlEntity1.ColumnNumber = 2;
             myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+            string strAppendCodeToExistingFile = myActions.CheckboxForAppendCode(intRowCtr, myControlEntity1, myListControlEntity1);
             // Display input dialog
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 400, 700, intWindowTop, intWindowLeft);
             // Get Values from input dialog and save to roaming
@@ -174,7 +178,7 @@ namespace IEGoToURL
             myActions.SetValueByKey("ScriptGeneratorWebsiteURLx", strWebsiteURLx);
             myActions.SetValueByKey("ScriptGeneratorUseNewTab", strUseNewTab);
 
-
+            strAppendCodeToExistingFile = myActions.GetAndUpdateValueForCheckBoxAppendCode(myListControlEntity1);
 
             // if okay button pressed, validate inputs; place inputs into syntax; put generated 
             // code into clipboard and display generated code
@@ -184,8 +188,39 @@ namespace IEGoToURL
                 string strWebsiteURLToUse = "";
 
                 strWebsiteURLToUse = "\"" + strWebsiteURLx.Trim() + "\"";
+                if (strUseNewTab == "")
+                {
+                    strUseNewTab = "false";
+                }
 
                 string strGeneratedLinex = "";
+
+                // ============
+
+                myActions.Write1UsingsTemplateToExternalFile(strApplicationPath, strAppendCodeToExistingFile);
+
+                myActions.Write2NameSpaceClassTemplateToExternalFile(strApplicationPath);
+
+
+
+                myActions.Write3GlobalsToExternalFile(strApplicationPath, strAppendCodeToExistingFile);
+
+                myActions.Write4MainTemplateToExternalFile(strApplicationPath);
+
+                string strOutCodeBodyFile = @"C:\Data\CodeBody.txt";
+                WriteCodeBodyToExternalFile(strAppendCodeToExistingFile, strOutCodeBodyFile, strWebsiteURLToUse, strUseNewTab);
+
+                myActions.Write5FunctionsTemplateToExternalFile(strApplicationPath);
+
+                myActions.WriteCodeEndToExternalFile();
+
+                string strOutCodeBigFile = myActions.WriteCodeBigExternalFile(strOutCodeBodyFile);
+
+                string strExecutable = @"C:\Windows\system32\notepad.exe";
+                string strContent = strOutCodeBigFile;
+                Process.Start(strExecutable, string.Concat("", strContent, ""));
+
+                //============
 
                 strGeneratedLinex = "myActions.IEGoToURL(myActions, " + strWebsiteURLToUse + ", " + strUseNewTab + ");";
 
@@ -196,5 +231,27 @@ namespace IEGoToURL
             myActions.ScriptEndedSuccessfullyUpdateStats();
             Application.Current.Shutdown();
         }
+        private void WriteCodeBodyToExternalFile(string strAppendCodeToExistingFile, string strOutCodeBodyFile, string strWebsiteURLToUse, string strUseNewTab)
+        {
+            string strOutCodeBodyFileBackup = @"C:\Data\CodeBodyBackup.txt";
+            File.Copy(strOutCodeBodyFile, strOutCodeBodyFileBackup, true);
+            if (strAppendCodeToExistingFile.ToLower() == "true")
+            {
+                using (System.IO.StreamWriter file = System.IO.File.AppendText(strOutCodeBodyFile))
+                {
+                    file.WriteLine("myActions.IEGoToURL(myActions, " + strWebsiteURLToUse + ", " + strUseNewTab + ");");
+
+                }
+            }
+            else
+            {
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutCodeBodyFile))
+                {
+                    file.WriteLine("myActions.IEGoToURL(myActions, " + strWebsiteURLToUse + ", " + strUseNewTab + ");");
+
+                }
+            }
+        }
+
     }
 }

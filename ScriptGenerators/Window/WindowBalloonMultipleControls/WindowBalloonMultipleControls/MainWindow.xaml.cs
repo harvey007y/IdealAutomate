@@ -81,14 +81,7 @@ namespace MultipleBalloonWindowControls
             string strStartingRow = "";
             string strApplicationPath = System.AppDomain.CurrentDomain.BaseDirectory;
             int intRowCtr = -1;
-            string strOutCode1UsingsFile = @"C:\Data\Code1Usings.txt";
-            string strOutCode2NamespaceClassFile = @"C:\Data\Code2NamespaceClass.txt";
-            string strOutCode3GlobalsFile = @"C:\Data\Code3Globals.txt";
-            string strOutCode4MainFile = @"C:\Data\Code4Main.txt";
-            string strOutCode5FunctionsFile = @"C:\Data\Code5Functions.txt";
-            string strOutCodeBodyFile = @"C:\Data\CodeBody.txt";
-            string strOutCodeEndFile = @"C:\Data\CodeEnd.txt";
-            string strOutCodeBigFile = @"C:\Data\CodeBig.txt";
+
 
 
             StringBuilder sb = new StringBuilder(); // this is for creating the controls in the window
@@ -286,18 +279,14 @@ namespace MultipleBalloonWindowControls
             myControlEntity.ColumnNumber = 1;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
-            myControlEntity.ControlEntitySetDefaults();
-            myControlEntity.ControlType = ControlType.CheckBox;
-            myControlEntity.ID = "btnDisplay";
-            myControlEntity.Text = "Display Prototype";
-            myControlEntity.Width = 150;
-            myControlEntity.RowNumber = 15;
-            myControlEntity.ColumnNumber = 1;
-            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+            intRowCtr = 15;
+
+            string strAppendCodeToExistingFile = myActions.CheckboxForAppendCode(intRowCtr, myControlEntity, myListControlEntity);
 
             strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 500, 500, intWindowTop, intWindowLeft);
             strSuffix = myListControlEntity.Find(x => x.ID == "txtSuffix").Text;
             strStartingRow = myListControlEntity.Find(x => x.ID == "txtStartingRow").Text;
+            strAppendCodeToExistingFile = myActions.GetAndUpdateValueForCheckBoxAppendCode(myListControlEntity);
 
             GetSavedWindowPosition(myActions, out intWindowTop, out intWindowLeft, out strWindowTop, out strWindowLeft);
             intBalloonWindowTop = intWindowTop + 350;
@@ -315,7 +304,12 @@ namespace MultipleBalloonWindowControls
             if (strButtonPressed == "btnRemoveAllControls")
             {
                 sb.Length = 0;
+
                 goto AddControl;
+            }
+            if (sb.Length == 0)
+            {
+                sb.AppendLine("myListControlEntity = new List<ControlEntity>();");
             }
 
             //string mySearchTerm = myListControlEntity.Find(x => x.ID == "myTextBox").Text;
@@ -2428,189 +2422,33 @@ namespace MultipleBalloonWindowControls
             {
                 intWindowHeight = 700;
             }
-            StringBuilder sbCodeBig = new StringBuilder();
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutCode1UsingsFile))
-            {
-                StringBuilder sbCode = new StringBuilder();
 
-                string strInFile = strApplicationPath + "TemplateCode1Usings.txt";
-                string[] lineszz = System.IO.File.ReadAllLines(strInFile);
-                foreach (var line in lineszz)
-                {
-                    sbCode.AppendLine(line);
-                    sbCodeBig.AppendLine(line);
-                }
+           
 
+            // ============
 
-                file.Write(sbCode.ToString());
+            myActions.Write1UsingsTemplateToExternalFile(strApplicationPath, strAppendCodeToExistingFile);
 
-            }
+            myActions.Write2NameSpaceClassTemplateToExternalFile(strApplicationPath);
 
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutCode2NamespaceClassFile))
-            {
-                StringBuilder sbCode = new StringBuilder();
+            myActions.Write3GlobalsToExternalFile(strApplicationPath, strAppendCodeToExistingFile);
 
-                string strInFile = strApplicationPath + "TemplateCode2NamespaceClass.txt";
-                string[] lineszz = System.IO.File.ReadAllLines(strInFile);
-                foreach (var line in lineszz)
-                {
-                    sbCode.AppendLine(line);
-                    sbCodeBig.AppendLine(line);
-                }
+            myActions.Write4MainTemplateToExternalFile(strApplicationPath);
 
+            string strOutCodeBodyFile = @"C:\Data\CodeBody.txt";
+            WriteCodeBodyToExternalFile(strMinimized, _PositionType, relativeCodeSnippet, strSuffix, sb, sb2, strAppendCodeToExistingFile, strOutCodeBodyFile);
 
-                file.Write(sbCode.ToString());
+            myActions.Write5FunctionsTemplateToExternalFile(strApplicationPath);
 
-            }
+            myActions.WriteCodeEndToExternalFile();
+         
+            string strOutCodeBigFile = myActions.WriteCodeBigExternalFile(strOutCodeBodyFile);
 
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutCode3GlobalsFile))
-            {
-                StringBuilder sbCode = new StringBuilder();
-
-                string strInFile = strApplicationPath + "TemplateCode3Globals.txt";
-                string[] lineszz = System.IO.File.ReadAllLines(strInFile);
-                foreach (var line in lineszz)
-                {
-                    sbCode.AppendLine(line);
-                    sbCodeBig.AppendLine(line);
-                }
-
-
-                file.Write(sbCode.ToString());
-
-            }
-
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutCode4MainFile))
-            {
-                StringBuilder sbCode = new StringBuilder();
-
-                string strInFile = strApplicationPath + "TemplateCode4Main.txt";
-                string[] lineszz = System.IO.File.ReadAllLines(strInFile);
-                foreach (var line in lineszz)
-                {
-                    sbCode.AppendLine(line);
-                    sbCodeBig.AppendLine(line);
-                }
-
-
-                file.Write(sbCode.ToString());
-
-            }
-
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutCode5FunctionsFile))
-            {
-                StringBuilder sbCode = new StringBuilder();
-
-                string strInFile = strApplicationPath + "TemplateCode5Functions.txt";
-                string[] lineszz = System.IO.File.ReadAllLines(strInFile);
-                foreach (var line in lineszz)
-                {
-                    sbCode.AppendLine(line);
-                   
-                }
-
-
-                file.Write(sbCode.ToString());
-
-            }
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutCodeBodyFile))
-            {
-                file.Write(sb.ToString());
-                sbCodeBig.Append(sb.ToString());
-                if (_PositionType == "Relative")
-                {
-                    file.Write(relativeCodeSnippet);
-                    sbCodeBig.Append(relativeCodeSnippet);
-                }
-
-                double windowWidthTemp = windowWidth * 2;
-                if (windowWidthTemp > 1000)
-                { windowWidthTemp = 1000; }
-                if (windowWidthTemp < 500)
-                { windowWidthTemp = 500; }
-                if (_PositionType == "Relative")
-                {
-                    file.WriteLine("strButtonPressed = myActions.WindowBalloonMultipleControls" + strMinimized + "(ref myListControlEntity" + strSuffix + ", " + intWindowHeight + ", " + windowWidthTemp + ", newTop, newLeft, \"" + strBalloonArrowDirection + "\");");
-                    sbCodeBig.AppendLine("strButtonPressed = myActions.WindowBalloonMultipleControls" + strMinimized + "(ref myListControlEntity" + strSuffix + ", " + intWindowHeight + ", " + windowWidthTemp + ", newTop, newLeft, \"" + strBalloonArrowDirection + "\");");
-                }
-                else
-                {
-                    file.WriteLine("strButtonPressed = myActions.WindowBalloonMultipleControls" + strMinimized + "(ref myListControlEntity" + strSuffix + ", " + intWindowHeight + ", " + windowWidthTemp + "," + startPoint.Y + ", " + startPoint.X + ", \"" + strBalloonArrowDirection + "\"); ");
-                    sbCodeBig.AppendLine("strButtonPressed = myActions.WindowBalloonMultipleControls" + strMinimized + "(ref myListControlEntity" + strSuffix + ", " + intWindowHeight + ", " + windowWidthTemp + "," + startPoint.Y + ", " + startPoint.X + ", \"" + strBalloonArrowDirection + "\"); ");
-                }
-                file.WriteLine("if (strButtonPressed == \"btnCancel\") {");
-                file.WriteLine("  myActions.MessageBoxShow(\"Okay button not pressed - Script Cancelled\");");
-                file.WriteLine("  goto myExit;");
-                file.WriteLine("}");
-
-                sbCodeBig.AppendLine("if (strButtonPressed == \"btnCancel\") {");
-                sbCodeBig.AppendLine("  myActions.MessageBoxShow(\"Okay button not pressed - Script Cancelled\");");
-                sbCodeBig.AppendLine("  goto myExit;");
-                sbCodeBig.AppendLine("}");
-
-
-
-                file.Write(sb2.ToString());
-                sbCodeBig.Append(sb2.ToString());
-            }
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutCodeEndFile))
-            {
-               
-                file.WriteLine("myExit:");
-                file.WriteLine("Console.WriteLine(\"Script Ended\");");
-                file.WriteLine("}");
-                file.Write(sbFunctions.ToString());
-                file.WriteLine("}");
-                file.WriteLine("}");
-
-               
-                sbCodeBig.AppendLine("myExit:");
-                sbCodeBig.AppendLine("Console.WriteLine(\"Script Ended\");");
-                sbCodeBig.AppendLine("}");
-                sbCodeBig.Append(sbFunctions.ToString());
-                sbCodeBig.AppendLine("}");
-                sbCodeBig.AppendLine("}");
-            }
-
-            using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutCodeBigFile))
-            {
-                file.Write(sbCodeBig.ToString());
-            }
-
+            //============
 
             string strExecutable = @"C:\Windows\system32\notepad.exe";
             string strContent = strOutCodeBigFile;
-            Process.Start(strExecutable, string.Concat("", strContent, ""));
-
-            //bool boolUseNewTab = myListControlEntity.Find(x => x.ID == "myCheckBox").Checked;
-            //if (boolUseNewTab == true)
-            //{
-            //    List<string> myWindowTitles = myActions.GetWindowTitlesByProcessName("iexplore");
-            //    myWindowTitles.RemoveAll(item => item == "");
-            //    if (myWindowTitles.Count > 0)
-            //    {
-            //        myActions.ActivateWindowByTitle(myWindowTitles[0], (int)WindowShowEnum.SW_SHOWMAXIMIZED);
-            //        myActions.TypeText("%(d)", 1500); // select address bar
-            //        myActions.TypeText("{ESC}", 1500);
-            //        myActions.TypeText("%({ENTER})", 1500); // Alt enter while in address bar opens new tab
-            //        myActions.TypeText("%(d)", 1500);
-            //        myActions.TypeText(myWebSite, 1500);
-            //        myActions.TypeText("{ENTER}", 1500);
-            //        myActions.TypeText("{ESC}", 1500);
-
-            //    }
-            //    else {
-            //        myActions.Run("iexplore", myWebSite);
-
-            //    }
-            //}
-            //else {
-            //    myActions.Run("iexplore", myWebSite);
-            //}
-
-            //myActions.Sleep(1000);
-            //myActions.TypeText(mySearchTerm, 500);
-            //myActions.TypeText("{ENTER}", 500);
+            Process.Start(strExecutable, string.Concat("", strContent, ""));        
 
 
             goto myExit;
@@ -2618,6 +2456,77 @@ namespace MultipleBalloonWindowControls
             myActions.ScriptEndedSuccessfullyUpdateStats();
             Application.Current.Shutdown();
         }
+
+        private void WriteCodeBodyToExternalFile(string strMinimized, string _PositionType, string relativeCodeSnippet, string strSuffix, StringBuilder sb, StringBuilder sb2, string strAppendCodeToExistingFile, string strOutCodeBodyFile)
+        {
+            string strOutCodeBodyFileBackup = @"C:\Data\CodeBodyBackup.txt";
+            File.Copy(strOutCodeBodyFile, strOutCodeBodyFileBackup, true);
+            if (strAppendCodeToExistingFile.ToLower() == "true")
+            {
+                using (System.IO.StreamWriter file = System.IO.File.AppendText(strOutCodeBodyFile))
+                {
+                    file.Write(sb.ToString());
+                    if (_PositionType == "Relative")
+                    {
+                        file.Write(relativeCodeSnippet);
+                    }
+
+                    double windowWidthTemp = windowWidth * 2;
+                    if (windowWidthTemp > 1000)
+                    { windowWidthTemp = 1000; }
+                    if (windowWidthTemp < 500)
+                    { windowWidthTemp = 500; }
+                    if (_PositionType == "Relative")
+                    {
+                        file.WriteLine("strButtonPressed = myActions.WindowBalloonMultipleControls" + strMinimized + "(ref myListControlEntity" + strSuffix + ", " + intWindowHeight + ", " + windowWidthTemp + ", newTop, newLeft, \"" + strBalloonArrowDirection + "\");");
+                    }
+                    else
+                    {
+                        file.WriteLine("strButtonPressed = myActions.WindowBalloonMultipleControls" + strMinimized + "(ref myListControlEntity" + strSuffix + ", " + intWindowHeight + ", " + windowWidthTemp + "," + startPoint.Y + ", " + startPoint.X + ", \"" + strBalloonArrowDirection + "\"); ");
+                    }
+                    file.WriteLine("if (strButtonPressed == \"btnCancel\") {");
+                    file.WriteLine("  myActions.MessageBoxShow(\"Okay button not pressed - Script Cancelled\");");
+                    file.WriteLine("  goto myExit;");
+                    file.WriteLine("}");
+                    file.Write(sb2.ToString());
+                }
+            }
+            else
+            {
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutCodeBodyFile))
+                {
+                    file.Write(sb.ToString());
+                    if (_PositionType == "Relative")
+                    {
+                        file.Write(relativeCodeSnippet);
+                    }
+
+                    double windowWidthTemp = windowWidth * 2;
+                    if (windowWidthTemp > 1000)
+                    { windowWidthTemp = 1000; }
+                    if (windowWidthTemp < 500)
+                    { windowWidthTemp = 500; }
+                    if (_PositionType == "Relative")
+                    {
+                        file.WriteLine("strButtonPressed = myActions.WindowBalloonMultipleControls" + strMinimized + "(ref myListControlEntity" + strSuffix + ", " + intWindowHeight + ", " + windowWidthTemp + ", newTop, newLeft, \"" + strBalloonArrowDirection + "\");");
+                    }
+                    else
+                    {
+                        file.WriteLine("strButtonPressed = myActions.WindowBalloonMultipleControls" + strMinimized + "(ref myListControlEntity" + strSuffix + ", " + intWindowHeight + ", " + windowWidthTemp + "," + startPoint.Y + ", " + startPoint.X + ", \"" + strBalloonArrowDirection + "\"); ");
+                    }
+                    file.WriteLine("if (strButtonPressed == \"btnCancel\") {");
+                    file.WriteLine("  myActions.MessageBoxShow(\"Okay button not pressed - Script Cancelled\");");
+                    file.WriteLine("  goto myExit;");
+                    file.WriteLine("}");
+
+                    file.Write(sb2.ToString());
+                }
+            }
+        }
+
+
+
+
 
 
 

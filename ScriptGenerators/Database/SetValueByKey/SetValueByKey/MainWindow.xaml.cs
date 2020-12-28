@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Media;
 using System.Collections;
+using System.Diagnostics;
+using System.IO;
 
 namespace SetValueByKey
 {
@@ -145,6 +147,8 @@ namespace SetValueByKey
             myControlEntity1.ColumnNumber = 1;
             myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
+            string strAppendCodeToExistingFile = myActions.CheckboxForAppendCode(intRowCtr, myControlEntity1, myListControlEntity1);
+
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 400, 700, intWindowTop, intWindowLeft);
 
             string strKey = myListControlEntity1.Find(x => x.ID == "txtKey").Text;
@@ -152,6 +156,8 @@ namespace SetValueByKey
 
             myActions.SetValueByKey("ScriptGeneratorSetValueByKeyKey", strKey);
             myActions.SetValueByKey("ScriptGeneratorSetValueByKeyValue", strValue);
+
+            strAppendCodeToExistingFile = myActions.GetAndUpdateValueForCheckBoxAppendCode(myListControlEntity1);
 
             if (strButtonPressed == "btnOkay")
             {
@@ -168,6 +174,37 @@ namespace SetValueByKey
 
                 strGeneratedLinex = "myActions.SetValueByKey(" + strKeyToUse + ", " + strValueToUse + ");";
 
+                // ============
+
+                myActions.Write1UsingsTemplateToExternalFile(strApplicationPath, strAppendCodeToExistingFile);
+
+                myActions.Write2NameSpaceClassTemplateToExternalFile(strApplicationPath);
+
+                //string strOutFile = strApplicationPath + "TemplateCode3GlobalsNew.txt";
+                //using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutFile))
+                //{
+                //    file.WriteLine("static string " + strValueToUse + " = \"\";");
+                //}
+
+                myActions.Write3GlobalsToExternalFile(strApplicationPath, strAppendCodeToExistingFile);
+
+                myActions.Write4MainTemplateToExternalFile(strApplicationPath);
+
+                string strOutCodeBodyFile = @"C:\Data\CodeBody.txt";
+                WriteCodeBodyToExternalFile(strAppendCodeToExistingFile, strOutCodeBodyFile, strValueToUse, strKeyToUse);
+
+                myActions.Write5FunctionsTemplateToExternalFile(strApplicationPath);
+
+                myActions.WriteCodeEndToExternalFile();
+
+                string strOutCodeBigFile = myActions.WriteCodeBigExternalFile(strOutCodeBodyFile);
+
+                string strExecutable = @"C:\Windows\system32\notepad.exe";
+                string strContent = strOutCodeBigFile;
+                Process.Start(strExecutable, string.Concat("", strContent, ""));
+
+                //============
+
                 myActions.PutEntityInClipboard(strGeneratedLinex);
                 myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard");
             }
@@ -175,5 +212,28 @@ namespace SetValueByKey
             myActions.ScriptEndedSuccessfullyUpdateStats();
             Application.Current.Shutdown();
         }
+
+        private void WriteCodeBodyToExternalFile(string strAppendCodeToExistingFile, string strOutCodeBodyFile, string strValueToUse, string strKeyToUse)
+        {
+            string strOutCodeBodyFileBackup = @"C:\Data\CodeBodyBackup.txt";
+            File.Copy(strOutCodeBodyFile, strOutCodeBodyFileBackup, true);
+            if (strAppendCodeToExistingFile.ToLower() == "true")
+            {
+                using (System.IO.StreamWriter file = System.IO.File.AppendText(strOutCodeBodyFile))
+                {
+                    file.WriteLine("myActions.SetValueByKey(" + strKeyToUse + ", " + strValueToUse + ");");
+
+                }
+            }
+            else
+            {
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutCodeBodyFile))
+                {
+                    file.WriteLine("myActions.SetValueByKey(" + strKeyToUse + ", " + strValueToUse + ");");
+
+                }
+            }
+        }
+
     }
 }

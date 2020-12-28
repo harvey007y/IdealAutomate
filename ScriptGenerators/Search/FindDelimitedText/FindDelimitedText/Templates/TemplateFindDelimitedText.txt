@@ -1,19 +1,19 @@
 ﻿     // Here is an example of looking for what is between two quotes 
       // in a single line of text in order to find path and file name
-      List<string> &&ListBeginDelim = new List<string>();
-      List<string> &&ListEndDelim = new List<string>();
+      &&ListBeginDelim = new List<string>();
+      &&ListEndDelim = new List<string>();
       // myBeginDelim.Add("\"");
       // myEndDelim.Add("\"");
       FindDelimitedTextParms delimParms = new FindDelimitedTextParms(&&ListBeginDelim, &&ListEndDelim);
 	  // inputs
 	  delimParms.lines = &&lines;
-	  delimParms.intStartingColumn = &&intStartingColumn;
+	  delimParms.intStartingCol = &&intStartingColumn;
 	  delimParms.intLineCtr = &&intLineCtr;
       myActions.FindDelimitedText(delimParms);
       // outputs
-	  string &&strDelimitedTextFound = delimParms.strDelimitedTextFound;
-	  int &&intDelimFound = delimParms.intDelimFound;
-	  string &&strResultTypeFound = delimParms.strResultTypeFound;
-	  int &&intEndDelimColPosFound = delimParms.intEndDelimColPosFound;
-	  int intLineCtr = delimParms.intLineCtr
+	  &&strDelimitedTextFound = delimParms.strDelimitedTextFound;
+	  &&intDelimFound = delimParms.intDelimFound;
+	  &&strResultTypeFound = delimParms.strResultTypeFound;
+	  &&intEndDelimColPosFound = delimParms.intEndDelimColPosFound;
+	  &&intLineCtr = delimParms.intLineCtr;
       

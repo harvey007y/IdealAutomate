@@ -1,0 +1,15 @@
+﻿
+            public static void Main()
+            {
+            var window = new Window() //make sure the window is invisible
+                {
+                    Width = 0,
+                    Height = 0,
+                    Left = -2000,
+                    WindowStyle = WindowStyle.None,
+                    ShowInTaskbar = false,
+                    ShowActivated = false,
+                };
+            window.Show();
+         
+           

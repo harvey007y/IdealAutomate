@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Text;
 using System;
 using System.Windows.Media;
+using System.Diagnostics;
+using System.IO;
 
 namespace StopService
 {
@@ -69,7 +71,7 @@ namespace StopService
             myControlEntity1.ControlEntitySetDefaults();
             myControlEntity1.ControlType = ControlType.Heading;
             myControlEntity1.ID = "lblStopService";
-            myControlEntity1.Text = "Stop Service";
+            myControlEntity1.Text = "Restart Service";
             myControlEntity1.Width = 300;
             myControlEntity1.RowNumber = 0;
             myControlEntity1.ColumnNumber = 0;
@@ -141,10 +143,9 @@ namespace StopService
             myControlEntity1.ColumnNumber = 1;
             myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
-
+            string strAppendCodeToExistingFile = myActions.CheckboxForAppendCode(intRowCtr, myControlEntity1, myListControlEntity1);
 
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 400, 700, intWindowTop, intWindowLeft);
-
 
             string strServiceNamex = myListControlEntity1.Find(x => x.ID == "txtServiceName").Text;
             string strTimeoutMilliseconds = myListControlEntity1.Find(x => x.ID == "txtTimeoutMilliseconds").Text;
@@ -152,7 +153,7 @@ namespace StopService
             myActions.SetValueByKey("ScriptGeneratorServiceNamex", strServiceNamex);
             myActions.SetValueByKey("ScriptGeneratorTimeoutMilliseconds", strTimeoutMilliseconds);
 
-
+            strAppendCodeToExistingFile = myActions.GetAndUpdateValueForCheckBoxAppendCode(myListControlEntity1);
 
             if (strButtonPressed == "btnOkay")
             {
@@ -165,6 +166,33 @@ namespace StopService
 
                 strGeneratedLinex = "myActions.StopService(" + strServiceNameToUse + "," + strTimeoutMilliseconds + ");";
 
+                // ============
+
+                myActions.Write1UsingsTemplateToExternalFile(strApplicationPath, strAppendCodeToExistingFile);
+
+                myActions.Write2NameSpaceClassTemplateToExternalFile(strApplicationPath);
+
+
+
+                myActions.Write3GlobalsToExternalFile(strApplicationPath, strAppendCodeToExistingFile);
+
+                myActions.Write4MainTemplateToExternalFile(strApplicationPath);
+
+                string strOutCodeBodyFile = @"C:\Data\CodeBody.txt";
+                WriteCodeBodyToExternalFile(strAppendCodeToExistingFile, strOutCodeBodyFile, strServiceNameToUse, strTimeoutMilliseconds);
+
+                myActions.Write5FunctionsTemplateToExternalFile(strApplicationPath);
+
+                myActions.WriteCodeEndToExternalFile();
+
+                string strOutCodeBigFile = myActions.WriteCodeBigExternalFile(strOutCodeBodyFile);
+
+                string strExecutable = @"C:\Windows\system32\notepad.exe";
+                string strContent = strOutCodeBigFile;
+                Process.Start(strExecutable, string.Concat("", strContent, ""));
+
+                //============
+
                 myActions.PutEntityInClipboard(strGeneratedLinex);
                 myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard");
             }
@@ -172,5 +200,28 @@ namespace StopService
             myActions.ScriptEndedSuccessfullyUpdateStats();
             Application.Current.Shutdown();
         }
+
+        private void WriteCodeBodyToExternalFile(string strAppendCodeToExistingFile, string strOutCodeBodyFile, string strServiceNameToUse, string strTimeoutMilliseconds)
+        {
+            string strOutCodeBodyFileBackup = @"C:\Data\CodeBodyBackup.txt";
+            File.Copy(strOutCodeBodyFile, strOutCodeBodyFileBackup, true);
+            if (strAppendCodeToExistingFile.ToLower() == "true")
+            {
+                using (System.IO.StreamWriter file = System.IO.File.AppendText(strOutCodeBodyFile))
+                {
+                    file.WriteLine("myActions.StopService(" + strServiceNameToUse + "," + strTimeoutMilliseconds + ");");
+
+                }
+            }
+            else
+            {
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutCodeBodyFile))
+                {
+                    file.WriteLine("myActions.StopService(" + strServiceNameToUse + "," + strTimeoutMilliseconds + ");");
+
+                }
+            }
+        }
+
     }
 }

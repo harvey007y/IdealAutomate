@@ -4003,5 +4003,266 @@ namespace IdealAutomate.Core
             return directory;
         }
 
+        public string GetAndUpdateValueForCheckBoxAppendCode(List<ControlEntity> myListControlEntity)
+        {
+            string strAppendCodeToExistingFile;
+            bool boolAppendCodeToExistingFile = myListControlEntity.Find(x => x.ID == "chkAppendCodeToExistingFile").Checked;
+            SetValueByKeyGlobal("chkAppendCodeToExistingFile", boolAppendCodeToExistingFile.ToString());
+            strAppendCodeToExistingFile = boolAppendCodeToExistingFile.ToString();
+            return strAppendCodeToExistingFile;
+        }
+
+        public string CheckboxForAppendCode(int intRowCtr, ControlEntity myControlEntity, List<ControlEntity> myListControlEntity)
+        {
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.CheckBox;
+            myControlEntity.ID = "chkAppendCodeToExistingFile";
+            myControlEntity.Text = "Append Code";
+            myControlEntity.ToolTipx = "Append Code to Existing File";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 0;
+            string strAppendCodeToExistingFile = GetValueByKeyGlobal("chkAppendCodeToExistingFile");
+
+            if (strAppendCodeToExistingFile.ToLower() == "true")
+            {
+                myControlEntity.Checked = true;
+            }
+            else
+            {
+                myControlEntity.Checked = false;
+            }
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+            return strAppendCodeToExistingFile;
+        }
+
+        public void Write1UsingsTemplateToExternalFile(string strApplicationPath, string strAppendCodeToExistingFile)
+        {
+            string strOutCode1UsingsFile = @"C:\Data\Code1Usings.txt";
+
+            string strInFile = strApplicationPath + "TemplateCode1Usings.txt";
+            string strInFileNew = strApplicationPath + "TemplateCode1UsingsNew.txt";
+            string[] lineszza = System.IO.File.ReadAllLines(strInFile);
+            for (int i = 0; i < lineszza.Length; i++)
+            {
+                lineszza[i] = lineszza[i].Trim();
+            }
+
+            string[] lineszzb = System.IO.File.ReadAllLines(strInFileNew);
+            for (int i = 0; i < lineszzb.Length; i++)
+            {
+                lineszzb[i] = lineszzb[i].Trim();
+            }
+            var lineszz = lineszza.Union(lineszzb); // combine template and new usings
+            if (strAppendCodeToExistingFile.ToLower() == "true")
+            {
+               
+
+                string[] lineszzc = System.IO.File.ReadAllLines(strOutCode1UsingsFile);
+                for (int i = 0; i < lineszzc.Length; i++)
+                {
+                    lineszzc[i] = lineszzc[i].Trim();
+                }
+                var linesall = lineszz.Union(lineszzc); // combine orig data with what we have combined so far
+                var sortedlines = linesall.OrderBy(s => s);
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutCode1UsingsFile))
+                {                    
+                    foreach (var line in sortedlines)
+                    {
+                        file.WriteLine(line);
+                    }                   
+                }
+            }
+            else
+            {
+                var sortedlines = lineszz.OrderBy(s => s);
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutCode1UsingsFile))
+                {                    
+                    foreach (var line in sortedlines)                    
+                    {
+                        file.WriteLine(line);
+                    }
+                    
+                }
+            }
+        }
+        public void Write2NameSpaceClassTemplateToExternalFile(string strApplicationPath)
+        {
+            string strOutCode2NamespaceClassFile = @"C:\Data\Code2NamespaceClass.txt";
+
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutCode2NamespaceClassFile))
+            {
+                StringBuilder sbCode = new StringBuilder();
+
+                string strInFile = strApplicationPath + "TemplateCode2NamespaceClass.txt";
+                string[] lineszz = System.IO.File.ReadAllLines(strInFile);
+                foreach (var line in lineszz)
+                {
+                    sbCode.AppendLine(line);
+                }
+                file.Write(sbCode.ToString());
+
+            }
+        }
+
+        public void Write3GlobalsToExternalFile(string strApplicationPath, string strAppendCodeToExistingFile)
+        {
+            string strOutCode3GlobalsFile = @"C:\Data\Code3Globals.txt";
+
+            string strInFile = strApplicationPath + "TemplateCode3Globals.txt";
+            string strInFileNew = strApplicationPath + "TemplateCode3GlobalsNew.txt";
+            string[] lineszza = System.IO.File.ReadAllLines(strInFile);
+            for (int i = 0; i < lineszza.Length; i++)
+            {
+                lineszza[i] = lineszza[i].Trim();
+            }
+
+            string[] lineszzb = System.IO.File.ReadAllLines(strInFileNew);
+            for (int i = 0; i < lineszzb.Length; i++)
+            {
+                lineszzb[i] = lineszzb[i].Trim();
+            }
+            var lineszz = lineszza.Union(lineszzb); // combine template and new usings
+            if (strAppendCodeToExistingFile.ToLower() == "true")
+            {
+                
+
+                string[] lineszzc = System.IO.File.ReadAllLines(strOutCode3GlobalsFile);
+                for (int i = 0; i < lineszzc.Length; i++)
+                {
+                    lineszzc[i] = lineszzc[i].Trim();
+                }
+                var linesall = lineszz.Union(lineszzc); // combine orig data with what we have combined so far
+                var sortedlines = linesall.OrderBy(s => s);
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutCode3GlobalsFile))
+                {
+                    foreach (var line in sortedlines)
+                    {
+                        file.WriteLine(line);
+                    }
+                    
+                }
+            }
+            else
+            {
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutCode3GlobalsFile))
+                {
+                    var sortedlines = lineszz.OrderBy(s => s);
+                    foreach (var line in sortedlines)
+                    {
+                        file.WriteLine(line);
+                    }                    
+                }
+            }
+        }
+
+        public  void Write4MainTemplateToExternalFile(string strApplicationPath)
+        {
+            string strOutCode4MainFile = @"C:\Data\Code4Main.txt";
+
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutCode4MainFile))
+            {
+                StringBuilder sbCode = new StringBuilder();
+
+                string strInFile = strApplicationPath + "TemplateCode4Main.txt";
+                string[] lineszz = System.IO.File.ReadAllLines(strInFile);
+                foreach (var line in lineszz)
+                {
+                    sbCode.AppendLine(line);
+                }
+
+
+                file.Write(sbCode.ToString());
+
+            }
+        }
+
+        public void Write5FunctionsTemplateToExternalFile(string strApplicationPath)
+        {
+            string strOutCode5FunctionsFile = @"C:\Data\Code5Functions.txt";
+
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutCode5FunctionsFile))
+            {
+                StringBuilder sbCode = new StringBuilder();
+
+                string strInFile = strApplicationPath + "TemplateCode5Functions.txt";
+                string[] lineszz = System.IO.File.ReadAllLines(strInFile);
+                foreach (var line in lineszz)
+                {
+                    sbCode.AppendLine(line);
+
+                }
+
+
+                file.Write(sbCode.ToString());
+
+            }
+        }
+
+        public void WriteCodeEndToExternalFile()
+        {
+            string strOutCodeEndFile = @"C:\Data\CodeEnd.txt";
+
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutCodeEndFile))
+            {
+
+                file.WriteLine("myExit:");
+                file.WriteLine("Console.WriteLine(\"Script Ended\");");
+                file.WriteLine("}");
+                string strInFilex =  @"C:\Data\Code5Functions.txt";
+                // private string strInFile = @"C:\Data\LanguageXMLInput3.txt";
+
+                string[] lineszzz = System.IO.File.ReadAllLines(strInFilex);
+                foreach (var line in lineszzz)
+                {
+                    file.WriteLine(line);
+                }
+                
+                file.WriteLine("}");
+                file.WriteLine("}");
+
+            }
+        }
+        public string WriteCodeBigExternalFile(string strOutCodeBodyFile)
+        {
+            string strOutCode1UsingsFile = @"C:\Data\Code1Usings.txt";
+            string strOutCode2NamespaceClassFile = @"C:\Data\Code2NamespaceClass.txt";
+            string strOutCode3GlobalsFile = @"C:\Data\Code3Globals.txt";
+            string strOutCode4MainFile = @"C:\Data\Code4Main.txt";
+           
+            string strOutCodeEndFile = @"C:\Data\CodeEnd.txt";
+            string strOutCodeBigFile = @"C:\Data\CodeBig.txt";
+            string strOutCodeBigFileBackup = @"C:\Data\CodeBigBackup.txt";    
+
+            List<string> listOfFiles = new List<string>();
+            listOfFiles.Add(strOutCode1UsingsFile);
+            listOfFiles.Add(strOutCode2NamespaceClassFile);
+            listOfFiles.Add(strOutCode3GlobalsFile);
+            listOfFiles.Add(strOutCode4MainFile);
+            listOfFiles.Add(strOutCodeBodyFile);
+            listOfFiles.Add(strOutCodeEndFile);
+
+
+            File.Copy(strOutCodeBigFile, strOutCodeBigFileBackup, true);
+            using (TextWriter tw = new StreamWriter(strOutCodeBigFile))
+            {
+                foreach (string filePath in listOfFiles)
+                {
+                    using (TextReader tr = new StreamReader(filePath))
+                    {
+                        tw.WriteLine(tr.ReadToEnd());
+                        tr.Close();
+                        tr.Dispose();
+                    }
+                    Console.WriteLine("File Processed : " + filePath);
+                }
+
+                tw.Close();
+                tw.Dispose();
+            }
+
+            return strOutCodeBigFile;
+        }
+
     }
 }

@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Media;
 using System.Collections;
+using System.Diagnostics;
+using System.IO;
 
 namespace TypeText
 {
@@ -498,8 +500,14 @@ namespace TypeText
             myControlEntity1.ColumnNumber = 2;
             myControlEntity1.ColumnSpan = 2;
             myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
+
+            intRowCtr = 23;
+
+            string strAppendCodeToExistingFile = myActions.CheckboxForAppendCode(intRowCtr, myControlEntity1, myListControlEntity1);
+
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 750, 900, intWindowTop, intWindowLeft);
 
+ 
             if (strButtonPressed == "btnCancel")
             {
                
@@ -735,6 +743,9 @@ namespace TypeText
             myActions.SetValueByKey("ScriptGeneratorCtrlKey", boolCtrlKey.ToString());
             myActions.SetValueByKey("ScriptGeneratorAltKey", boolAltKey.ToString());
             myActions.SetValueByKey("ScriptGeneratorShiftKey", boolShiftKey.ToString());
+
+            strAppendCodeToExistingFile = myActions.GetAndUpdateValueForCheckBoxAppendCode(myListControlEntity1);
+
             if (strAppendComment.Length > 0)
             {
                 strAppendComment = " // " + strAppendComment;
@@ -812,6 +823,8 @@ namespace TypeText
             if (boolShiftKey && !boolVariable)
             {
                 strGeneratedLine = "myActions.TypeText(\"+(" + strTextToType + ")\"," + strMillisecondsToWait + ");" + strAppendComment;
+
+               
                 myActions.PutEntityInClipboard(strGeneratedLine);
                 myActions.MessageBoxShow(strGeneratedLine);
             }
@@ -819,9 +832,59 @@ namespace TypeText
             {
                 myActions.MessageBoxShow("Shift Key and Variable is not valid");
             }
+
+            if (strGeneratedLine != "")
+            {
+                // ============
+
+                myActions.Write1UsingsTemplateToExternalFile(strApplicationPath, strAppendCodeToExistingFile);
+
+                myActions.Write2NameSpaceClassTemplateToExternalFile(strApplicationPath);
+
+                myActions.Write3GlobalsToExternalFile(strApplicationPath, strAppendCodeToExistingFile);
+
+                myActions.Write4MainTemplateToExternalFile(strApplicationPath);
+
+                string strOutCodeBodyFile = @"C:\Data\CodeBody.txt";
+                WriteCodeBodyToExternalFile(strAppendCodeToExistingFile, strOutCodeBodyFile, strGeneratedLine);
+
+                myActions.Write5FunctionsTemplateToExternalFile(strApplicationPath);
+
+                myActions.WriteCodeEndToExternalFile();
+
+                string strOutCodeBigFile = myActions.WriteCodeBigExternalFile(strOutCodeBodyFile);
+
+                string strExecutable = @"C:\Windows\system32\notepad.exe";
+                string strContent = strOutCodeBigFile;
+                Process.Start(strExecutable, string.Concat("", strContent, ""));
+
+                //============
+            }
         myExit:
             myActions.ScriptEndedSuccessfullyUpdateStats();
             Application.Current.Shutdown();
         }
+        private void WriteCodeBodyToExternalFile(string strAppendCodeToExistingFile, string strOutCodeBodyFile, string strGeneratedLine)
+        {
+            string strOutCodeBodyFileBackup = @"C:\Data\CodeBodyBackup.txt";
+            File.Copy(strOutCodeBodyFile, strOutCodeBodyFileBackup, true);
+            if (strAppendCodeToExistingFile.ToLower() == "true")
+            {
+                using (System.IO.StreamWriter file = System.IO.File.AppendText(strOutCodeBodyFile))
+                {
+                    file.WriteLine(strGeneratedLine);
+
+                }
+            }
+            else
+            {
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutCodeBodyFile))
+                {
+                    file.WriteLine(strGeneratedLine);
+
+                }
+            }
+        }
+
     }
 }

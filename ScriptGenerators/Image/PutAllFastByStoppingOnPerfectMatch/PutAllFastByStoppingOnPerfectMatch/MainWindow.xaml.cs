@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Media;
 using System.Collections;
+using System.Diagnostics;
+using System.IO;
 
 namespace PutAllFastByStoppingOnPerfectMatch
 {
@@ -92,9 +94,9 @@ namespace PutAllFastByStoppingOnPerfectMatch
             myControlEntity1.Text = "      myImage = new ImageEntity();\r\n " +
 " \r\n " +
 "      if (boolRunningFromHome) { \r\n " +
-"        myImage.ImageFile = \"Images\\\\\" + \"[[homeimage]]\";  \r\n " +
+"        myImage.ImageFile = @\"[[homeimage]]\";  \r\n " +
 "      } else { \r\n " +
-"        myImage.ImageFile = \"Images\\\\\" + \"[[workimage]]\"; \r\n " +
+"        myImage.ImageFile = @\"[[workimage]]\"; \r\n " +
 "      } \r\n " +
 "      myImage.Sleep = [[Sleep]];  \r\n " +
 "      myImage.Attempts = [[Attempts]];  \r\n " +
@@ -102,7 +104,7 @@ namespace PutAllFastByStoppingOnPerfectMatch
 "      myImage.RelativeY = [[RelativeY]]; \r\n " +
 " \r\n " +
 "      int[,] [[ResultMyArray]] = myActions.PutAllFastByStoppingOnPerfectMatch(myImage); \r\n" +
-"      if (myArray.Length == 0) { \r\n" +
+"      if ([[ResultMyArray]].Length == 0) { \r\n" +
 "        myActions.MessageBoxShow(\"I could not find image of SVN Update\"); \r\n" +
 "      } \r\n" +
 "      // We found output completed and now want to copy the results \r\n" +
@@ -310,6 +312,8 @@ namespace PutAllFastByStoppingOnPerfectMatch
             myControlEntity1.ColumnNumber = 1;
             myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
+            string strAppendCodeToExistingFile = myActions.CheckboxForAppendCode(intRowCtr, myControlEntity1, myListControlEntity1);
+
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 700, 700, intWindowTop, intWindowLeft);
             string strHomeImage = myListControlEntity1.Find(x => x.ID == "txtHomeImage").Text;
             string strWorkImage = myListControlEntity1.Find(x => x.ID == "txtWorkImage").Text;
@@ -335,14 +339,12 @@ namespace PutAllFastByStoppingOnPerfectMatch
             myActions.SetValueByKey("ScriptGeneratorPutAllFastByStoppingOnPerfectMatchResultMyArray", strResultMyArray);
             //   myActions.SetValueByKey("ScriptGeneratorShowOption", strShowOption);
 
+            strAppendCodeToExistingFile = myActions.GetAndUpdateValueForCheckBoxAppendCode(myListControlEntity1);
+
             string strResultMyArrayToUse = "";
             if (strButtonPressed == "btnOkay")
             {
-
-
                 strResultMyArrayToUse = strResultMyArray.Trim();
-
-
             }
             string strInFile = strApplicationPath + "Templates\\TemplatePutAllFastByStoppingOnPerfectMatch.txt";
             // private string strInFile = @"C:\Data\LanguageXMLInput3.txt";
@@ -385,7 +387,11 @@ namespace PutAllFastByStoppingOnPerfectMatch
                 {
                     line = line.Replace("&&Tolerance", strTolerance);
                 }
-                if (strUseGrayScale != "False")
+                if (strUseGrayScale == "")
+                {
+                    strUseGrayScale = "false";
+                }
+                if (strUseGrayScale.ToLower() != "false")
                 {
                     line = line.Replace("&&UseGrayScale", strUseGrayScale);
                 }
@@ -398,7 +404,38 @@ namespace PutAllFastByStoppingOnPerfectMatch
             if (strButtonPressed == "btnOkay")
             {
 
+                // ============
 
+                myActions.Write1UsingsTemplateToExternalFile(strApplicationPath, strAppendCodeToExistingFile);
+
+                myActions.Write2NameSpaceClassTemplateToExternalFile(strApplicationPath);
+
+                string strOutFile = strApplicationPath + "TemplateCode3GlobalsNew.txt";
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutFile))
+                {
+                    file.WriteLine("static int[,] " + strResultMyArrayToUse.Trim() + " = new int[100,100];");
+                    file.WriteLine("static ImageEntity myImage = new ImageEntity();");
+                    file.WriteLine("static bool boolRunningFromHome = true;");
+                }
+
+                myActions.Write3GlobalsToExternalFile(strApplicationPath, strAppendCodeToExistingFile);
+
+                myActions.Write4MainTemplateToExternalFile(strApplicationPath);
+
+                string strOutCodeBodyFile = @"C:\Data\CodeBody.txt";
+                WriteCodeBodyToExternalFile(strAppendCodeToExistingFile, strOutCodeBodyFile, sb.ToString());
+
+                myActions.Write5FunctionsTemplateToExternalFile(strApplicationPath);
+
+                myActions.WriteCodeEndToExternalFile();
+
+                string strOutCodeBigFile = myActions.WriteCodeBigExternalFile(strOutCodeBodyFile);
+
+                string strExecutable = @"C:\Windows\system32\notepad.exe";
+                string strContent = strOutCodeBigFile;
+                Process.Start(strExecutable, string.Concat("", strContent, ""));
+
+                //============
                 myActions.PutEntityInClipboard(sb.ToString());
                 myActions.MessageBoxShow(sb.ToString());
             }
@@ -406,5 +443,27 @@ namespace PutAllFastByStoppingOnPerfectMatch
             myActions.ScriptEndedSuccessfullyUpdateStats();
             Application.Current.Shutdown();
         }
+        private void WriteCodeBodyToExternalFile(string strAppendCodeToExistingFile, string strOutCodeBodyFile, string strCodeBody)
+        {
+            string strOutCodeBodyFileBackup = @"C:\Data\CodeBodyBackup.txt";
+            File.Copy(strOutCodeBodyFile, strOutCodeBodyFileBackup, true);
+            if (strAppendCodeToExistingFile.ToLower() == "true")
+            {
+                using (System.IO.StreamWriter file = System.IO.File.AppendText(strOutCodeBodyFile))
+                {
+                    file.Write(strCodeBody);
+
+                }
+            }
+            else
+            {
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutCodeBodyFile))
+                {
+                    file.Write(strCodeBody);
+
+                }
+            }
+        }
+
     }
 }

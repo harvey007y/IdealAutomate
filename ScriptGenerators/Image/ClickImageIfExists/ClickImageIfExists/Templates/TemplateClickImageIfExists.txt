@@ -1,9 +1,9 @@
 ﻿      myImage = new ImageEntity();
 
       if (boolRunningFromHome) {
-        myImage.ImageFile = "Images\\" + "&&HomeImage"; 
+        myImage.ImageFile = @"&&HomeImage"; 
       } else {
-        myImage.ImageFile = "Images\\" + "&&WorkImage"; 
+        myImage.ImageFile = @"&&WorkImage"; 
       }
       myImage.Sleep = &&Sleep; 
       myImage.Attempts = &&Attempts; 

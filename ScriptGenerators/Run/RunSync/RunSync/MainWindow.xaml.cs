@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Text;
 using System;
 using System.Windows.Media;
+using System.Diagnostics;
+using System.IO;
 
 namespace RunSync
 {
@@ -14,7 +16,7 @@ namespace RunSync
     {
         public MainWindow()
         {
-            bool boolRunningFromHome = false;
+            bool boolRunSyncningFromHome = false;
             var window = new Window() //make sure the window is invisible
             {
                 Width = 0,
@@ -139,14 +141,17 @@ namespace RunSync
             myControlEntity1.ColumnNumber = 1;
             myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
-            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 400, 700, intWindowTop, intWindowLeft);
+            string strAppendCodeToExistingFile = myActions.CheckboxForAppendCode(intRowCtr, myControlEntity1, myListControlEntity1);
 
+            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 400, 700, intWindowTop, intWindowLeft);
             string strExecutable = myListControlEntity1.Find(x => x.ID == "txtExecutable").Text;
             string strContent = myListControlEntity1.Find(x => x.ID == "txtContent").Text;
 
             myActions.SetValueByKey("ScriptGeneratorRunSyncExecutable", strExecutable);
             myActions.SetValueByKey("ScriptGeneratorRunSyncContent", strContent);
             //   myActions.SetValueByKey("ScriptGeneratorShowOption", strShowOption);
+
+            strAppendCodeToExistingFile = myActions.GetAndUpdateValueForCheckBoxAppendCode(myListControlEntity1);
 
             if (strButtonPressed == "btnDDLRefresh")
             {
@@ -168,7 +173,31 @@ namespace RunSync
                 string strGeneratedLinex = "";
 
                 strGeneratedLinex = "myActions.RunSync(" + strExecutableToUse + ", " + strContentToUse + ");";
+                // ============
 
+                myActions.Write1UsingsTemplateToExternalFile(strApplicationPath, strAppendCodeToExistingFile);
+
+                myActions.Write2NameSpaceClassTemplateToExternalFile(strApplicationPath);
+
+
+                myActions.Write3GlobalsToExternalFile(strApplicationPath, strAppendCodeToExistingFile);
+
+                myActions.Write4MainTemplateToExternalFile(strApplicationPath);
+
+                string strOutCodeBodyFile = @"C:\Data\CodeBody.txt";
+                WriteCodeBodyToExternalFile(strAppendCodeToExistingFile, strOutCodeBodyFile, strExecutableToUse, strContentToUse);
+
+                myActions.Write5FunctionsTemplateToExternalFile(strApplicationPath);
+
+                myActions.WriteCodeEndToExternalFile();
+
+                string strOutCodeBigFile = myActions.WriteCodeBigExternalFile(strOutCodeBodyFile);
+
+                string strExecutablex = @"C:\Windows\system32\notepad.exe";
+                string strContentx = strOutCodeBigFile;
+                Process.Start(strExecutablex, string.Concat("", strContentx, ""));
+
+                //============
                 myActions.PutEntityInClipboard(strGeneratedLinex);
                 myActions.MessageBoxShow(strGeneratedLinex + Environment.NewLine + Environment.NewLine + "The generated text has been put into your clipboard");
             }
@@ -176,5 +205,27 @@ namespace RunSync
             myActions.ScriptEndedSuccessfullyUpdateStats();
             Application.Current.Shutdown();
         }
+        private void WriteCodeBodyToExternalFile(string strAppendCodeToExistingFile, string strOutCodeBodyFile, string strExecutableToUse, string strContentToUse)
+        {
+            string strOutCodeBodyFileBackup = @"C:\Data\CodeBodyBackup.txt";
+            File.Copy(strOutCodeBodyFile, strOutCodeBodyFileBackup, true);
+            if (strAppendCodeToExistingFile.ToLower() == "true")
+            {
+                using (System.IO.StreamWriter file = System.IO.File.AppendText(strOutCodeBodyFile))
+                {
+                    file.WriteLine("myActions.RunSync(" + strExecutableToUse + ", " + strContentToUse + ");");
+
+                }
+            }
+            else
+            {
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutCodeBodyFile))
+                {
+                    file.WriteLine("myActions.RunSync(" + strExecutableToUse + ", " + strContentToUse + ");");
+
+                }
+            }
+        }
+
     }
 }

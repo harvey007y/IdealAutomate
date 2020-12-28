@@ -1,0 +1,20 @@
+﻿            private static BitmapSource BitmapSourceFromImage(System.Drawing.Image img)
+		    {
+			    MemoryStream memStream = new MemoryStream();
+
+			    // save the image to memStream as a png
+			    img.Save(memStream, System.Drawing.Imaging.ImageFormat.Png);
+
+			    // gets a decoder from this stream
+			    System.Windows.Media.Imaging.PngBitmapDecoder decoder = new System.Windows.Media.Imaging.PngBitmapDecoder(memStream, System.Windows.Media.Imaging.BitmapCreateOptions.PreservePixelFormat, System.Windows.Media.Imaging.BitmapCacheOption.Default);
+
+			    return decoder.Frames[0];
+		    }
+		    private static System.Drawing.Bitmap BytesToBitmap(byte[] byteArray)
+		    {
+			    using (MemoryStream ms = new MemoryStream(byteArray))
+			    {
+				    System.Drawing.Bitmap img = (System.Drawing.Bitmap)System.Drawing.Image.FromStream(ms);
+				    return img;
+			    }
+		    }

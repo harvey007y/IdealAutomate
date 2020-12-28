@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Text;
 using System;
 using System.Linq;
+using System.IO;
+using System.Diagnostics;
 
 namespace FindDelimitedText {
   /// <summary>
@@ -333,6 +335,8 @@ namespace FindDelimitedText {
             myControlEntity1.ColumnNumber = 1;
             myListControlEntity1.Add(myControlEntity1.CreateControlEntity());
 
+            string strAppendCodeToExistingFile = myActions.CheckboxForAppendCode(intRowCtr, myControlEntity1, myListControlEntity1);
+
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity1, 750, 800, intWindowTop, intWindowLeft);
             string strlines = myListControlEntity1.Find(x => x.ID == "txtlines").Text;
             myActions.SetValueByKey("ScriptGeneratorlines", strlines);
@@ -354,6 +358,8 @@ namespace FindDelimitedText {
             myActions.SetValueByKey("ScriptGeneratorintEndDelimColPosFound", strintEndDelimColPosFound);
             string strInFile = strApplicationPath + "Templates\\TemplateFindDelimitedText.txt";
             // private string strInFile = @"C:\Data\LanguageXMLInput3.txt";
+
+            strAppendCodeToExistingFile = myActions.GetAndUpdateValueForCheckBoxAppendCode(myListControlEntity1);
 
             List<string> listOfSolvedProblems = new List<string>();
             List<string> listofRecs = new List<string>();
@@ -403,7 +409,47 @@ namespace FindDelimitedText {
             if (strButtonPressed == "btnOkay")
             {
 
+                // ============
 
+                myActions.Write1UsingsTemplateToExternalFile(strApplicationPath, strAppendCodeToExistingFile);
+
+                myActions.Write2NameSpaceClassTemplateToExternalFile(strApplicationPath);
+
+                string strOutFile = strApplicationPath + "TemplateCode3GlobalsNew.txt";
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutFile))
+                {
+
+                    file.WriteLine("static List<string> " + strListBeginDelim.Trim() + " = new List<string>();");
+                    file.WriteLine("static List<string> " + strListEndDelim.Trim() + " = new List<string>();");
+                   
+                    file.WriteLine("static FindDelimitedTextParms delimParms;");
+                    file.WriteLine("static string[] " + strlines.Trim() + " = new string[5000];");
+                    file.WriteLine("static string " + strstrDelimitedTextFound + " = \"\";");
+                    file.WriteLine("static int " + strStartingColumn + " = -1;");
+                    file.WriteLine("static int " + strintDelimFound + " = -1;");
+                    file.WriteLine("static string " + strstrResultTypeFound + " = \"\";");
+                    file.WriteLine("static int " + strintEndDelimColPosFound + " = -1;");
+                    file.WriteLine("static int " + strLineCtr + " = -1;");
+                }
+
+                myActions.Write3GlobalsToExternalFile(strApplicationPath, strAppendCodeToExistingFile);
+
+                myActions.Write4MainTemplateToExternalFile(strApplicationPath);
+
+                string strOutCodeBodyFile = @"C:\Data\CodeBody.txt";
+                WriteCodeBodyToExternalFile(strAppendCodeToExistingFile, strOutCodeBodyFile, sb.ToString());
+
+                myActions.Write5FunctionsTemplateToExternalFile(strApplicationPath);
+
+                myActions.WriteCodeEndToExternalFile();
+
+                string strOutCodeBigFile = myActions.WriteCodeBigExternalFile(strOutCodeBodyFile);
+
+                string strExecutable = @"C:\Windows\system32\notepad.exe";
+                string strContent = strOutCodeBigFile;
+                Process.Start(strExecutable, string.Concat("", strContent, ""));
+
+                //============
                 myActions.PutEntityInClipboard(sb.ToString());
                 myActions.MessageBoxShow(sb.ToString());
             }
@@ -411,5 +457,27 @@ namespace FindDelimitedText {
       myActions.ScriptEndedSuccessfullyUpdateStats();
       Application.Current.Shutdown();
     }
-  }
+        private void WriteCodeBodyToExternalFile(string strAppendCodeToExistingFile, string strOutCodeBodyFile, string strCodeBody)
+        {
+            string strOutCodeBodyFileBackup = @"C:\Data\CodeBodyBackup.txt";
+            File.Copy(strOutCodeBodyFile, strOutCodeBodyFileBackup, true);
+            if (strAppendCodeToExistingFile.ToLower() == "true")
+            {
+                using (System.IO.StreamWriter file = System.IO.File.AppendText(strOutCodeBodyFile))
+                {
+                    file.Write(strCodeBody);
+
+                }
+            }
+            else
+            {
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutCodeBodyFile))
+                {
+                    file.Write(strCodeBody);
+
+                }
+            }
+        }
+
+    }
 }
