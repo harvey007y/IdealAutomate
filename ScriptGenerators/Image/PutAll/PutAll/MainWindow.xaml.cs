@@ -90,9 +90,9 @@ namespace PutAll {
             myControlEntity1.Text = "      myImage = new ImageEntity();\r\n " +
 " \r\n " +
 "      if (boolRunningFromHome) { \r\n " +
-"        myImage.ImageFile = @\"[[homeimage]]\";  \r\n " +
+"        myImage.ImageFile = myActions.ConvertWebImageToLocalFile(@\"[[homeimage]]\");  \r\n " +
 "      } else { \r\n " +
-"        myImage.ImageFile = @\"[[workimage]]\"; \r\n " +
+"        myImage.ImageFile = myActions.ConvertWebImageToLocalFile(@\"[[workimage]]\"); \r\n " +
 "      } \r\n " +
 "      myImage.Sleep = [[Sleep]];  \r\n " +
 "      myImage.Attempts = [[Attempts]];  \r\n " +

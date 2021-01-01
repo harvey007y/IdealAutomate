@@ -14,7 +14,6 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\WrapTextInQuotesForCS\WrapTextInQu
 C:\Users\harve\Documents\GitHub\IdealAutomate\WrapTextInQuotesForCS\WrapTextInQuotesForCS\bin\Debug\IdealAutomateCore.pdb
 C:\Users\harve\Documents\GitHub\IdealAutomate\WrapTextInQuotesForCS\WrapTextInQuotesForCS\bin\Debug\IdealAutomateCore.xml
 C:\Users\harve\Documents\GitHub\IdealAutomate\WrapTextInQuotesForCS\WrapTextInQuotesForCS\bin\Debug\WindowsInput.xml
-C:\Users\harve\Documents\GitHub\IdealAutomate\WrapTextInQuotesForCS\WrapTextInQuotesForCS\obj\x86\Debug\WrapTextInQuotesForCS.csprojResolveAssemblyReference.cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\WrapTextInQuotesForCS\WrapTextInQuotesForCS\obj\x86\Debug\MainWindow.baml
 C:\Users\harve\Documents\GitHub\IdealAutomate\WrapTextInQuotesForCS\WrapTextInQuotesForCS\obj\x86\Debug\MainWindow.g.cs
 C:\Users\harve\Documents\GitHub\IdealAutomate\WrapTextInQuotesForCS\WrapTextInQuotesForCS\obj\x86\Debug\App.g.cs
@@ -54,3 +53,9 @@ C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\WrapTextInQuotesForCS\Wrap
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\WrapTextInQuotesForCS\WrapTextInQuotesForCS\obj\x86\Debug\WrapTextInQuotesForCS.csproj.CopyComplete
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\WrapTextInQuotesForCS\WrapTextInQuotesForCS\obj\x86\Debug\WrapTextInQuotesForCS.exe
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\WrapTextInQuotesForCS\WrapTextInQuotesForCS\obj\x86\Debug\WrapTextInQuotesForCS.pdb
+C:\Users\harve\Documents\GitHub\IdealAutomate\WrapTextInQuotesForCS\WrapTextInQuotesForCS\bin\Debug\WrapTextInQuotesForCS.exe.config
+C:\Users\harve\Documents\GitHub\IdealAutomate\WrapTextInQuotesForCS\WrapTextInQuotesForCS\bin\Debug\Octokit.dll
+C:\Users\harve\Documents\GitHub\IdealAutomate\WrapTextInQuotesForCS\WrapTextInQuotesForCS\bin\Debug\Octokit.xml
+C:\Users\harve\Documents\GitHub\IdealAutomate\WrapTextInQuotesForCS\WrapTextInQuotesForCS\obj\x86\Debug\WrapTextInQuotesForCS.csprojAssemblyReference.cache
+C:\Users\harve\Documents\GitHub\IdealAutomate\WrapTextInQuotesForCS\WrapTextInQuotesForCS\obj\x86\Debug\WrapTextInQuotesForCS.csproj.CoreCompileInputs.cache
+C:\Users\harve\Documents\GitHub\IdealAutomate\WrapTextInQuotesForCS\WrapTextInQuotesForCS\obj\x86\Debug\WrapTextInQuotesForCS.csproj.CopyComplete

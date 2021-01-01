@@ -41,7 +41,6 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\RemoveFormattingClipboard\RemoveFo
 C:\Users\harve\Documents\GitHub\IdealAutomate\RemoveFormattingClipboard\RemoveFormattingClipboard\bin\Debug\IdealAutomateCore.pdb
 C:\Users\harve\Documents\GitHub\IdealAutomate\RemoveFormattingClipboard\RemoveFormattingClipboard\bin\Debug\IdealAutomateCore.xml
 C:\Users\harve\Documents\GitHub\IdealAutomate\RemoveFormattingClipboard\RemoveFormattingClipboard\bin\Debug\WindowsInput.xml
-C:\Users\harve\Documents\GitHub\IdealAutomate\RemoveFormattingClipboard\RemoveFormattingClipboard\obj\x86\Debug\RemoveFormattingClipboard.csprojResolveAssemblyReference.cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\RemoveFormattingClipboard\RemoveFormattingClipboard\obj\x86\Debug\MainWindow.baml
 C:\Users\harve\Documents\GitHub\IdealAutomate\RemoveFormattingClipboard\RemoveFormattingClipboard\obj\x86\Debug\MainWindow.g.cs
 C:\Users\harve\Documents\GitHub\IdealAutomate\RemoveFormattingClipboard\RemoveFormattingClipboard\obj\x86\Debug\App.g.cs
@@ -53,3 +52,8 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\RemoveFormattingClipboard\RemoveFo
 C:\Users\harve\Documents\GitHub\IdealAutomate\RemoveFormattingClipboard\RemoveFormattingClipboard\obj\x86\Debug\RemoveFormattingClipboard.exe
 C:\Users\harve\Documents\GitHub\IdealAutomate\RemoveFormattingClipboard\RemoveFormattingClipboard\obj\x86\Debug\RemoveFormattingClipboard.pdb
 C:\Users\harve\Documents\GitHub\IdealAutomate\RemoveFormattingClipboard\RemoveFormattingClipboard\obj\x86\Debug\RemoveFormattingClipboard.csproj.CoreCompileInputs.cache
+C:\Users\harve\Documents\GitHub\IdealAutomate\RemoveFormattingClipboard\RemoveFormattingClipboard\bin\Debug\RemoveFormattingClipboard.exe.config
+C:\Users\harve\Documents\GitHub\IdealAutomate\RemoveFormattingClipboard\RemoveFormattingClipboard\bin\Debug\Octokit.dll
+C:\Users\harve\Documents\GitHub\IdealAutomate\RemoveFormattingClipboard\RemoveFormattingClipboard\bin\Debug\Octokit.xml
+C:\Users\harve\Documents\GitHub\IdealAutomate\RemoveFormattingClipboard\RemoveFormattingClipboard\obj\x86\Debug\RemoveFormattingClipboard.csprojAssemblyReference.cache
+C:\Users\harve\Documents\GitHub\IdealAutomate\RemoveFormattingClipboard\RemoveFormattingClipboard\obj\x86\Debug\RemoveFormattingClipboard.csproj.CopyComplete

@@ -31,7 +31,6 @@ C:\SVN\ReleaseIndependent\Developers\Wade\VisualStudio\OpenNotepadLineInVS\OpenN
 C:\Users\harve\Documents\GitHub\IdealAutomate\VisualStudio\OpenNotepadLineInVS\OpenNotepadLineInVS\bin\Debug\IdealAutomateCore.pdb
 C:\Users\harve\Documents\GitHub\IdealAutomate\VisualStudio\OpenNotepadLineInVS\OpenNotepadLineInVS\bin\Debug\IdealAutomateCore.xml
 C:\Users\harve\Documents\GitHub\IdealAutomate\VisualStudio\OpenNotepadLineInVS\OpenNotepadLineInVS\bin\Debug\WindowsInput.xml
-C:\Users\harve\Documents\GitHub\IdealAutomate\VisualStudio\OpenNotepadLineInVS\OpenNotepadLineInVS\obj\x86\Debug\OpenNotepadLineInVS.csprojResolveAssemblyReference.cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\VisualStudio\OpenNotepadLineInVS\OpenNotepadLineInVS\obj\x86\Debug\MainWindow.baml
 C:\Users\harve\Documents\GitHub\IdealAutomate\VisualStudio\OpenNotepadLineInVS\OpenNotepadLineInVS\obj\x86\Debug\MainWindow.g.cs
 C:\Users\harve\Documents\GitHub\IdealAutomate\VisualStudio\OpenNotepadLineInVS\OpenNotepadLineInVS\obj\x86\Debug\App.g.cs
@@ -54,3 +53,7 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\VisualStudio\OpenNotepadLineInVS\O
 C:\Users\harve\Documents\GitHub\IdealAutomate\VisualStudio\OpenNotepadLineInVS\OpenNotepadLineInVS\bin\Debug\Images\imgUpdateLogOK_Home.PNG
 C:\Users\harve\Documents\GitHub\IdealAutomate\VisualStudio\OpenNotepadLineInVS\OpenNotepadLineInVS\bin\Debug\OpenNotepadLineInVS.pdb
 C:\Users\harve\Documents\GitHub\IdealAutomate\VisualStudio\OpenNotepadLineInVS\OpenNotepadLineInVS\obj\x86\Debug\OpenNotepadLineInVS.csproj.CopyComplete
+C:\Users\harve\Documents\GitHub\IdealAutomate\VisualStudio\OpenNotepadLineInVS\OpenNotepadLineInVS\bin\Debug\OpenNotepadLineInVS.exe.config
+C:\Users\harve\Documents\GitHub\IdealAutomate\VisualStudio\OpenNotepadLineInVS\OpenNotepadLineInVS\bin\Debug\Octokit.dll
+C:\Users\harve\Documents\GitHub\IdealAutomate\VisualStudio\OpenNotepadLineInVS\OpenNotepadLineInVS\bin\Debug\Octokit.xml
+C:\Users\harve\Documents\GitHub\IdealAutomate\VisualStudio\OpenNotepadLineInVS\OpenNotepadLineInVS\obj\x86\Debug\OpenNotepadLineInVS.csprojAssemblyReference.cache

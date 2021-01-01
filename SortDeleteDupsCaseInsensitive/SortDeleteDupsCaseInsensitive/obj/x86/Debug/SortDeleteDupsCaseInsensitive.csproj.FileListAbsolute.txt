@@ -43,7 +43,6 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\SortDeleteDupsCaseInsensitive\Sort
 C:\Users\harve\Documents\GitHub\IdealAutomate\SortDeleteDupsCaseInsensitive\SortDeleteDupsCaseInsensitive\bin\Debug\IdealAutomateCore.pdb
 C:\Users\harve\Documents\GitHub\IdealAutomate\SortDeleteDupsCaseInsensitive\SortDeleteDupsCaseInsensitive\bin\Debug\IdealAutomateCore.xml
 C:\Users\harve\Documents\GitHub\IdealAutomate\SortDeleteDupsCaseInsensitive\SortDeleteDupsCaseInsensitive\bin\Debug\WindowsInput.xml
-C:\Users\harve\Documents\GitHub\IdealAutomate\SortDeleteDupsCaseInsensitive\SortDeleteDupsCaseInsensitive\obj\x86\Debug\SortDeleteDupsCaseInsensitive.csprojResolveAssemblyReference.cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\SortDeleteDupsCaseInsensitive\SortDeleteDupsCaseInsensitive\obj\x86\Debug\MainWindow.baml
 C:\Users\harve\Documents\GitHub\IdealAutomate\SortDeleteDupsCaseInsensitive\SortDeleteDupsCaseInsensitive\obj\x86\Debug\MainWindow.g.cs
 C:\Users\harve\Documents\GitHub\IdealAutomate\SortDeleteDupsCaseInsensitive\SortDeleteDupsCaseInsensitive\obj\x86\Debug\App.g.cs
@@ -54,3 +53,9 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\SortDeleteDupsCaseInsensitive\Sort
 C:\Users\harve\Documents\GitHub\IdealAutomate\SortDeleteDupsCaseInsensitive\SortDeleteDupsCaseInsensitive\obj\x86\Debug\SortDeleteDupsCaseInsensitive.csproj.GenerateResource.Cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\SortDeleteDupsCaseInsensitive\SortDeleteDupsCaseInsensitive\obj\x86\Debug\SortDeleteDupsCaseInsensitive.exe
 C:\Users\harve\Documents\GitHub\IdealAutomate\SortDeleteDupsCaseInsensitive\SortDeleteDupsCaseInsensitive\obj\x86\Debug\SortDeleteDupsCaseInsensitive.pdb
+C:\Users\harve\Documents\GitHub\IdealAutomate\SortDeleteDupsCaseInsensitive\SortDeleteDupsCaseInsensitive\bin\Debug\SortDeleteDupsCaseInsensitive.exe.config
+C:\Users\harve\Documents\GitHub\IdealAutomate\SortDeleteDupsCaseInsensitive\SortDeleteDupsCaseInsensitive\bin\Debug\Octokit.dll
+C:\Users\harve\Documents\GitHub\IdealAutomate\SortDeleteDupsCaseInsensitive\SortDeleteDupsCaseInsensitive\bin\Debug\Octokit.xml
+C:\Users\harve\Documents\GitHub\IdealAutomate\SortDeleteDupsCaseInsensitive\SortDeleteDupsCaseInsensitive\obj\x86\Debug\SortDeleteDupsCaseInsensitive.csprojAssemblyReference.cache
+C:\Users\harve\Documents\GitHub\IdealAutomate\SortDeleteDupsCaseInsensitive\SortDeleteDupsCaseInsensitive\obj\x86\Debug\SortDeleteDupsCaseInsensitive.csproj.CoreCompileInputs.cache
+C:\Users\harve\Documents\GitHub\IdealAutomate\SortDeleteDupsCaseInsensitive\SortDeleteDupsCaseInsensitive\obj\x86\Debug\SortDeleteDupsCaseInsensitive.csproj.CopyComplete

@@ -41,7 +41,6 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\HelloWorldExample\HelloWorldExampl
 C:\Users\harve\Documents\GitHub\IdealAutomate\HelloWorldExample\HelloWorldExample\bin\Debug\IdealAutomateCore.pdb
 C:\Users\harve\Documents\GitHub\IdealAutomate\HelloWorldExample\HelloWorldExample\bin\Debug\IdealAutomateCore.xml
 C:\Users\harve\Documents\GitHub\IdealAutomate\HelloWorldExample\HelloWorldExample\bin\Debug\WindowsInput.xml
-C:\Users\harve\Documents\GitHub\IdealAutomate\HelloWorldExample\HelloWorldExample\obj\x86\Debug\HelloWorldExample.csprojResolveAssemblyReference.cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\HelloWorldExample\HelloWorldExample\obj\x86\Debug\MainWindow.baml
 C:\Users\harve\Documents\GitHub\IdealAutomate\HelloWorldExample\HelloWorldExample\obj\x86\Debug\MainWindow.g.cs
 C:\Users\harve\Documents\GitHub\IdealAutomate\HelloWorldExample\HelloWorldExample\obj\x86\Debug\App.g.cs
@@ -53,3 +52,8 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\HelloWorldExample\HelloWorldExampl
 C:\Users\harve\Documents\GitHub\IdealAutomate\HelloWorldExample\HelloWorldExample\obj\x86\Debug\HelloWorldExample.exe
 C:\Users\harve\Documents\GitHub\IdealAutomate\HelloWorldExample\HelloWorldExample\obj\x86\Debug\HelloWorldExample.pdb
 C:\Users\harve\Documents\GitHub\IdealAutomate\HelloWorldExample\HelloWorldExample\obj\x86\Debug\HelloWorldExample.csproj.CoreCompileInputs.cache
+C:\Users\harve\Documents\GitHub\IdealAutomate\HelloWorldExample\HelloWorldExample\bin\Debug\HelloWorldExample.exe.config
+C:\Users\harve\Documents\GitHub\IdealAutomate\HelloWorldExample\HelloWorldExample\bin\Debug\Octokit.dll
+C:\Users\harve\Documents\GitHub\IdealAutomate\HelloWorldExample\HelloWorldExample\bin\Debug\Octokit.xml
+C:\Users\harve\Documents\GitHub\IdealAutomate\HelloWorldExample\HelloWorldExample\obj\x86\Debug\HelloWorldExample.csprojAssemblyReference.cache
+C:\Users\harve\Documents\GitHub\IdealAutomate\HelloWorldExample\HelloWorldExample\obj\x86\Debug\HelloWorldExample.csproj.CopyComplete

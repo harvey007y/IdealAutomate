@@ -94,3 +94,6 @@ C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGene
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\bin\Debug\Templates\TemplatePutAllFastByStoppingOnPerfectMatch.txt
 C:\Users\harve\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\bin\Debug\Templates\TemplatePutAllFastByStoppingOnPerfectMatch.txt
 C:\Users\harve\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\obj\x86\Debug\ScriptGenerator.csprojAssemblyReference.cache
+C:\Users\harve\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\bin\Debug\ScriptGenerator.exe.config
+C:\Users\harve\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\bin\Debug\Octokit.dll
+C:\Users\harve\Documents\GitHub\IdealAutomate\ScriptGenerator\ScriptGenerator\bin\Debug\Octokit.xml

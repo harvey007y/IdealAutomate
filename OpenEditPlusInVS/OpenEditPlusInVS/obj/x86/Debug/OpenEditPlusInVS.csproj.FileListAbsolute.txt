@@ -14,7 +14,6 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\OpenEditPlusInVS\OpenEditPlusInVS\
 C:\Users\harve\Documents\GitHub\IdealAutomate\OpenEditPlusInVS\OpenEditPlusInVS\bin\Debug\IdealAutomateCore.pdb
 C:\Users\harve\Documents\GitHub\IdealAutomate\OpenEditPlusInVS\OpenEditPlusInVS\bin\Debug\IdealAutomateCore.xml
 C:\Users\harve\Documents\GitHub\IdealAutomate\OpenEditPlusInVS\OpenEditPlusInVS\bin\Debug\WindowsInput.xml
-C:\Users\harve\Documents\GitHub\IdealAutomate\OpenEditPlusInVS\OpenEditPlusInVS\obj\x86\Debug\OpenEditPlusInVS.csprojResolveAssemblyReference.cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\OpenEditPlusInVS\OpenEditPlusInVS\obj\x86\Debug\MainWindow.baml
 C:\Users\harve\Documents\GitHub\IdealAutomate\OpenEditPlusInVS\OpenEditPlusInVS\obj\x86\Debug\MainWindow.g.cs
 C:\Users\harve\Documents\GitHub\IdealAutomate\OpenEditPlusInVS\OpenEditPlusInVS\obj\x86\Debug\App.g.cs
@@ -26,3 +25,8 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\OpenEditPlusInVS\OpenEditPlusInVS\
 C:\Users\harve\Documents\GitHub\IdealAutomate\OpenEditPlusInVS\OpenEditPlusInVS\obj\x86\Debug\OpenEditPlusInVS.exe
 C:\Users\harve\Documents\GitHub\IdealAutomate\OpenEditPlusInVS\OpenEditPlusInVS\obj\x86\Debug\OpenEditPlusInVS.pdb
 C:\Users\harve\Documents\GitHub\IdealAutomate\OpenEditPlusInVS\OpenEditPlusInVS\obj\x86\Debug\OpenEditPlusInVS.csproj.CoreCompileInputs.cache
+C:\Users\harve\Documents\GitHub\IdealAutomate\OpenEditPlusInVS\OpenEditPlusInVS\bin\Debug\OpenEditPlusInVS.exe.config
+C:\Users\harve\Documents\GitHub\IdealAutomate\OpenEditPlusInVS\OpenEditPlusInVS\bin\Debug\Octokit.dll
+C:\Users\harve\Documents\GitHub\IdealAutomate\OpenEditPlusInVS\OpenEditPlusInVS\bin\Debug\Octokit.xml
+C:\Users\harve\Documents\GitHub\IdealAutomate\OpenEditPlusInVS\OpenEditPlusInVS\obj\x86\Debug\OpenEditPlusInVS.csprojAssemblyReference.cache
+C:\Users\harve\Documents\GitHub\IdealAutomate\OpenEditPlusInVS\OpenEditPlusInVS\obj\x86\Debug\OpenEditPlusInVS.csproj.CopyComplete

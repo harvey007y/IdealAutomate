@@ -41,7 +41,6 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\CreateOPFrom3Fields\CreateOPFrom3F
 C:\Users\harve\Documents\GitHub\IdealAutomate\CreateOPFrom3Fields\CreateOPFrom3Fields\bin\Debug\IdealAutomateCore.pdb
 C:\Users\harve\Documents\GitHub\IdealAutomate\CreateOPFrom3Fields\CreateOPFrom3Fields\bin\Debug\IdealAutomateCore.xml
 C:\Users\harve\Documents\GitHub\IdealAutomate\CreateOPFrom3Fields\CreateOPFrom3Fields\bin\Debug\WindowsInput.xml
-C:\Users\harve\Documents\GitHub\IdealAutomate\CreateOPFrom3Fields\CreateOPFrom3Fields\obj\x86\Debug\CreateOPFrom3Fields.csprojResolveAssemblyReference.cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\CreateOPFrom3Fields\CreateOPFrom3Fields\obj\x86\Debug\MainWindow.baml
 C:\Users\harve\Documents\GitHub\IdealAutomate\CreateOPFrom3Fields\CreateOPFrom3Fields\obj\x86\Debug\MainWindow.g.cs
 C:\Users\harve\Documents\GitHub\IdealAutomate\CreateOPFrom3Fields\CreateOPFrom3Fields\obj\x86\Debug\App.g.cs
@@ -52,3 +51,9 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\CreateOPFrom3Fields\CreateOPFrom3F
 C:\Users\harve\Documents\GitHub\IdealAutomate\CreateOPFrom3Fields\CreateOPFrom3Fields\obj\x86\Debug\CreateOPFrom3Fields.csproj.GenerateResource.Cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\CreateOPFrom3Fields\CreateOPFrom3Fields\obj\x86\Debug\CreateOPFrom3Fields.exe
 C:\Users\harve\Documents\GitHub\IdealAutomate\CreateOPFrom3Fields\CreateOPFrom3Fields\obj\x86\Debug\CreateOPFrom3Fields.pdb
+C:\Users\harve\Documents\GitHub\IdealAutomate\CreateOPFrom3Fields\CreateOPFrom3Fields\bin\Debug\CreateOPFrom3Fields.exe.config
+C:\Users\harve\Documents\GitHub\IdealAutomate\CreateOPFrom3Fields\CreateOPFrom3Fields\bin\Debug\Octokit.dll
+C:\Users\harve\Documents\GitHub\IdealAutomate\CreateOPFrom3Fields\CreateOPFrom3Fields\bin\Debug\Octokit.xml
+C:\Users\harve\Documents\GitHub\IdealAutomate\CreateOPFrom3Fields\CreateOPFrom3Fields\obj\x86\Debug\CreateOPFrom3Fields.csprojAssemblyReference.cache
+C:\Users\harve\Documents\GitHub\IdealAutomate\CreateOPFrom3Fields\CreateOPFrom3Fields\obj\x86\Debug\CreateOPFrom3Fields.csproj.CoreCompileInputs.cache
+C:\Users\harve\Documents\GitHub\IdealAutomate\CreateOPFrom3Fields\CreateOPFrom3Fields\obj\x86\Debug\CreateOPFrom3Fields.csproj.CopyComplete

@@ -1,14 +1,15 @@
-﻿using System.Windows;
+﻿
 using IdealAutomate.Core;
 using System.Collections.Generic;
-using System.Linq;
 using System.Diagnostics;
-using System.Text;
-using System;
 using System.Drawing;
 using System.IO;
-using System.Windows.Media.Imaging;
+using System.Linq;
 using System.Reflection;
+using System.Text;
+using System.Windows.Media.Imaging;
+using System.Windows;
+using System;
 
 
 
@@ -17,20 +18,24 @@ namespace First
     public class Program : Window
     {
 
-        static IdealAutomate.Core.Methods myActions = new Methods();
 
+
+        static bool boolRunningFromHome = true;
         static byte[] mybytearray;
-        static ImageEntity myImage = new ImageEntity();
-        static System.Drawing.Bitmap bm;
-        static List<ControlEntity> myListControlEntity = new List<ControlEntity>();
-        static List<ComboBoxPair> cbp = new List<ComboBoxPair>();
-        static int intRowCtr = 0;
         static ControlEntity myControlEntity = new ControlEntity();
-        static string strButtonPressed = "";
-        static int[,] resultArray = new int[100, 100];
-        static int newTop = 0;
+        static IdealAutomate.Core.Methods myActions = new Methods();
+        static ImageEntity myImage = new ImageEntity();
+        static int intRowCtr = 0;
         static int newLeft = 0;
+        static int newTop = 0;
+        static int[,] myResultArrayPutAllFast = new int[100, 100];
+        static int[,] resultArray = new int[100, 100];
+        static List<ComboBoxPair> cbp = new List<ComboBoxPair>();
+        static List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+        static string strButtonPressed = "";
+        static System.Drawing.Bitmap bm;
 
+        [STAThread]
         public static void Main()
         {
             var window = new Window() //make sure the window is invisible
@@ -45,12 +50,32 @@ namespace First
             window.Show();
 
 
-            strButtonPressed = myActions.WindowBalloonMultipleControls(ref myListControlEntity, 140, 500, 0, 0, "NONE");
-            if (strButtonPressed == "btnCancel")
+
+            myImage = new ImageEntity();
+
+            if (boolRunningFromHome)
             {
-                myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
-                goto myExit;
+                myImage.ImageFile = myActions.ConvertWebImageToLocalFile(@"https://raw.githubusercontent.com/harvey007y/IdealAutomatex-harvey007y/main/testfolder/Admin.png");
             }
+            else
+            {
+                myImage.ImageFile = myActions.ConvertWebImageToLocalFile(@"");
+            }
+            myImage.Sleep = 1000;
+            myImage.Attempts = 1;
+            myImage.RelativeX = 5;
+            myImage.RelativeY = 5;
+
+            myResultArrayPutAllFast = myActions.PutAllFastByStoppingOnPerfectMatch(myImage);
+            if (myResultArrayPutAllFast.Length == 0)
+            {
+                myActions.MessageBoxShow("I could not find image of " + myImage.ImageFile);
+            }
+            // We found the image
+
+            myActions.Sleep(1000);
+            myActions.LeftClick(myResultArrayPutAllFast);
+
         myExit:
             Console.WriteLine("Script Ended");
         }
@@ -76,3 +101,4 @@ namespace First
         }
     }
 }
+

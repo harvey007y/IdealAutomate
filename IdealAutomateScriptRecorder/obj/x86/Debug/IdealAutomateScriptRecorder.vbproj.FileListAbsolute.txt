@@ -12,7 +12,6 @@ C:\SVNIA\trunk\IdealAutomateScriptRecorder\obj\x86\Debug\IdealAutomateScriptReco
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateScriptRecorder\bin\Debug\IdealAutomateScriptRecorder.exe.config
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateScriptRecorder\bin\Debug\IdealAutomateScriptRecorder.exe
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateScriptRecorder\bin\Debug\IdealAutomateScriptRecorder.pdb
-C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateScriptRecorder\obj\x86\Debug\IdealAutomateScriptRecorder.vbprojResolveAssemblyReference.cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateScriptRecorder\obj\x86\Debug\IdealAutomateScriptRecorder.Form1.resources
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateScriptRecorder\obj\x86\Debug\IdealAutomateScriptRecorder.frmTestGetText.resources
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateScriptRecorder\obj\x86\Debug\IdealAutomateScriptRecorder.TestMove.resources
@@ -41,3 +40,8 @@ C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateScriptRecorde
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateScriptRecorder\obj\x86\Debug\IdealAutomateScriptRecorder.vbproj.CoreCompileInputs.cache
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateScriptRecorder\obj\x86\Debug\IdealAutomateScriptRecorder.vbproj.CopyComplete
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateScriptRecorder\obj\x86\Debug\IdealAutomateScriptRecorder.pdb
+C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateScriptRecorder\bin\Debug\Octokit.dll
+C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateScriptRecorder\bin\Debug\Octokit.xml
+C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateScriptRecorder\obj\x86\Debug\IdealAutomateScriptRecorder.vbprojAssemblyReference.cache
+C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateScriptRecorder\obj\x86\Debug\IdealAutomateScriptRecorder.vbproj.CoreCompileInputs.cache
+C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateScriptRecorder\obj\x86\Debug\IdealAutomateScriptRecorder.vbproj.CopyComplete

@@ -62,3 +62,6 @@ C:\SVN\ReleaseIndependent\Developers\Wade\VisualStudio\SetBreakpoints\SetBreakpo
 C:\Users\harve\Documents\GitHub\IdealAutomate\VisualStudio\SetBreakpoints\SetBreakpoints\obj\x86\Debug\SetBreakpoints.csprojAssemblyReference.cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\VisualStudio\SetBreakpoints\SetBreakpoints\obj\x86\Debug\SetBreakpoints.csproj.CoreCompileInputs.cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\VisualStudio\SetBreakpoints\SetBreakpoints\obj\x86\Debug\SetBreakpoints.csproj.CopyComplete
+C:\Users\harve\Documents\GitHub\IdealAutomate\VisualStudio\SetBreakpoints\SetBreakpoints\bin\Debug\SetBreakpoints.exe.config
+C:\Users\harve\Documents\GitHub\IdealAutomate\VisualStudio\SetBreakpoints\SetBreakpoints\bin\Debug\Octokit.dll
+C:\Users\harve\Documents\GitHub\IdealAutomate\VisualStudio\SetBreakpoints\SetBreakpoints\bin\Debug\Octokit.xml

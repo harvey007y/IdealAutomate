@@ -34,7 +34,7 @@ namespace VisualStudioHotKeys {
             XmlDocument doc = new XmlDocument();
 
             //load from file
-            doc.Load()
+            doc.Load();
             doc.LoadXml(System.Text.Encoding.Default.GetString(fileParms.paramFileContent));
 
             XmlNode root = doc.DocumentElement;

@@ -24,7 +24,6 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\TutorialExample\TutorialExample\ob
 C:\Users\harve\Documents\GitHub\IdealAutomate\TutorialExample\TutorialExample\obj\x86\Debug\TutorialExample.csproj.GenerateResource.Cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\TutorialExample\TutorialExample\obj\x86\Debug\TutorialExample.exe
 C:\Users\harve\Documents\GitHub\IdealAutomate\TutorialExample\TutorialExample\obj\x86\Debug\TutorialExample.pdb
-C:\Users\harve\Documents\GitHub\IdealAutomate\TutorialExample\TutorialExample\obj\x86\Debug\TutorialExample.csprojResolveAssemblyReference.cache
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\TutorialExample\TutorialExample\bin\Debug\Images\112_UpArrowShort_Green.ico
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\TutorialExample\TutorialExample\bin\Debug\Images\imgPatch16.PNG
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\TutorialExample\TutorialExample\bin\Debug\Images\imgPatch17.PNG
@@ -55,3 +54,9 @@ C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\TutorialExample\TutorialEx
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\TutorialExample\TutorialExample\obj\x86\Debug\TutorialExample.exe
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\TutorialExample\TutorialExample\obj\x86\Debug\TutorialExample.pdb
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\TutorialExample\TutorialExample\bin\Debug\TutorialExample.exe.config
+C:\Users\harve\Documents\GitHub\IdealAutomate\TutorialExample\TutorialExample\bin\Debug\TutorialExample.exe.config
+C:\Users\harve\Documents\GitHub\IdealAutomate\TutorialExample\TutorialExample\bin\Debug\Octokit.dll
+C:\Users\harve\Documents\GitHub\IdealAutomate\TutorialExample\TutorialExample\bin\Debug\Octokit.xml
+C:\Users\harve\Documents\GitHub\IdealAutomate\TutorialExample\TutorialExample\obj\x86\Debug\TutorialExample.csprojAssemblyReference.cache
+C:\Users\harve\Documents\GitHub\IdealAutomate\TutorialExample\TutorialExample\obj\x86\Debug\TutorialExample.csproj.CoreCompileInputs.cache
+C:\Users\harve\Documents\GitHub\IdealAutomate\TutorialExample\TutorialExample\obj\x86\Debug\TutorialExample.csproj.CopyComplete

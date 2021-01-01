@@ -43,7 +43,6 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\WindowsExplorerGetFileNameOnly\Win
 C:\Users\harve\Documents\GitHub\IdealAutomate\WindowsExplorerGetFileNameOnly\WindowsExplorerGetFileNameOnly\bin\Debug\IdealAutomateCore.pdb
 C:\Users\harve\Documents\GitHub\IdealAutomate\WindowsExplorerGetFileNameOnly\WindowsExplorerGetFileNameOnly\bin\Debug\IdealAutomateCore.xml
 C:\Users\harve\Documents\GitHub\IdealAutomate\WindowsExplorerGetFileNameOnly\WindowsExplorerGetFileNameOnly\bin\Debug\WindowsInput.xml
-C:\Users\harve\Documents\GitHub\IdealAutomate\WindowsExplorerGetFileNameOnly\WindowsExplorerGetFileNameOnly\obj\x86\Debug\WindowsExplorerGetFileNameOnly.csprojResolveAssemblyReference.cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\WindowsExplorerGetFileNameOnly\WindowsExplorerGetFileNameOnly\obj\x86\Debug\MainWindow.baml
 C:\Users\harve\Documents\GitHub\IdealAutomate\WindowsExplorerGetFileNameOnly\WindowsExplorerGetFileNameOnly\obj\x86\Debug\MainWindow.g.cs
 C:\Users\harve\Documents\GitHub\IdealAutomate\WindowsExplorerGetFileNameOnly\WindowsExplorerGetFileNameOnly\obj\x86\Debug\App.g.cs
@@ -54,3 +53,9 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\WindowsExplorerGetFileNameOnly\Win
 C:\Users\harve\Documents\GitHub\IdealAutomate\WindowsExplorerGetFileNameOnly\WindowsExplorerGetFileNameOnly\obj\x86\Debug\WindowsExplorerGetFileNameOnly.csproj.GenerateResource.Cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\WindowsExplorerGetFileNameOnly\WindowsExplorerGetFileNameOnly\obj\x86\Debug\WindowsExplorerGetFileNameOnly.exe
 C:\Users\harve\Documents\GitHub\IdealAutomate\WindowsExplorerGetFileNameOnly\WindowsExplorerGetFileNameOnly\obj\x86\Debug\WindowsExplorerGetFileNameOnly.pdb
+C:\Users\harve\Documents\GitHub\IdealAutomate\WindowsExplorerGetFileNameOnly\WindowsExplorerGetFileNameOnly\bin\Debug\WindowsExplorerGetFileNameOnly.exe.config
+C:\Users\harve\Documents\GitHub\IdealAutomate\WindowsExplorerGetFileNameOnly\WindowsExplorerGetFileNameOnly\bin\Debug\Octokit.dll
+C:\Users\harve\Documents\GitHub\IdealAutomate\WindowsExplorerGetFileNameOnly\WindowsExplorerGetFileNameOnly\bin\Debug\Octokit.xml
+C:\Users\harve\Documents\GitHub\IdealAutomate\WindowsExplorerGetFileNameOnly\WindowsExplorerGetFileNameOnly\obj\x86\Debug\WindowsExplorerGetFileNameOnly.csprojAssemblyReference.cache
+C:\Users\harve\Documents\GitHub\IdealAutomate\WindowsExplorerGetFileNameOnly\WindowsExplorerGetFileNameOnly\obj\x86\Debug\WindowsExplorerGetFileNameOnly.csproj.CoreCompileInputs.cache
+C:\Users\harve\Documents\GitHub\IdealAutomate\WindowsExplorerGetFileNameOnly\WindowsExplorerGetFileNameOnly\obj\x86\Debug\WindowsExplorerGetFileNameOnly.csproj.CopyComplete

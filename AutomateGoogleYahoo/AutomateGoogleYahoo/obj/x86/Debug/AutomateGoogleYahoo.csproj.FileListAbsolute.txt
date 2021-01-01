@@ -41,7 +41,6 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\AutomateGoogleYahoo\AutomateGoogle
 C:\Users\harve\Documents\GitHub\IdealAutomate\AutomateGoogleYahoo\AutomateGoogleYahoo\bin\Debug\IdealAutomateCore.pdb
 C:\Users\harve\Documents\GitHub\IdealAutomate\AutomateGoogleYahoo\AutomateGoogleYahoo\bin\Debug\IdealAutomateCore.xml
 C:\Users\harve\Documents\GitHub\IdealAutomate\AutomateGoogleYahoo\AutomateGoogleYahoo\bin\Debug\WindowsInput.xml
-C:\Users\harve\Documents\GitHub\IdealAutomate\AutomateGoogleYahoo\AutomateGoogleYahoo\obj\x86\Debug\AutomateGoogleYahoo.csprojResolveAssemblyReference.cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\AutomateGoogleYahoo\AutomateGoogleYahoo\obj\x86\Debug\MainWindow.baml
 C:\Users\harve\Documents\GitHub\IdealAutomate\AutomateGoogleYahoo\AutomateGoogleYahoo\obj\x86\Debug\MainWindow.g.cs
 C:\Users\harve\Documents\GitHub\IdealAutomate\AutomateGoogleYahoo\AutomateGoogleYahoo\obj\x86\Debug\App.g.cs
@@ -53,3 +52,6 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\AutomateGoogleYahoo\AutomateGoogle
 C:\Users\harve\Documents\GitHub\IdealAutomate\AutomateGoogleYahoo\AutomateGoogleYahoo\obj\x86\Debug\AutomateGoogleYahoo.exe
 C:\Users\harve\Documents\GitHub\IdealAutomate\AutomateGoogleYahoo\AutomateGoogleYahoo\obj\x86\Debug\AutomateGoogleYahoo.pdb
 C:\Users\harve\Documents\GitHub\IdealAutomate\AutomateGoogleYahoo\AutomateGoogleYahoo\obj\x86\Debug\AutomateGoogleYahoo.csproj.CoreCompileInputs.cache
+C:\Users\harve\Documents\GitHub\IdealAutomate\AutomateGoogleYahoo\AutomateGoogleYahoo\bin\Debug\AutomateGoogleYahoo.exe.config
+C:\Users\harve\Documents\GitHub\IdealAutomate\AutomateGoogleYahoo\AutomateGoogleYahoo\obj\x86\Debug\AutomateGoogleYahoo.csprojAssemblyReference.cache
+C:\Users\harve\Documents\GitHub\IdealAutomate\AutomateGoogleYahoo\AutomateGoogleYahoo\obj\x86\Debug\AutomateGoogleYahoo.csproj.CopyComplete

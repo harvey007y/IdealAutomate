@@ -21,6 +21,9 @@ using System.ServiceProcess;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Snipping_OCR;
+using System.Net;
+using System.Threading.Tasks;
+using Octokit;
 
 namespace IdealAutomate.Core
 {
@@ -997,7 +1000,7 @@ namespace IdealAutomate.Core
             }
             else
             {
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                using (var fileStream = new FileStream(filePath, System.IO.FileMode.Create))
                 {
                     BitmapEncoder encoder = new PngBitmapEncoder();
                     encoder.Frames.Add(BitmapFrame.Create(image));
@@ -4264,5 +4267,85 @@ namespace IdealAutomate.Core
             return strOutCodeBigFile;
         }
 
+        public string ConvertWebImageToLocalFile(string ImageURL)
+        {
+            if (ImageURL.StartsWith("http"))
+            {
+                using (var webClient = new WebClient())
+                {
+                    byte[] imageBytes = webClient.DownloadData(ImageURL);
+                    using (var ms = new MemoryStream(imageBytes))
+                    {
+                        using (var fs = new FileStream(@"c:\data\images\temp.png", System.IO.FileMode.Create))
+                        {
+                            ms.WriteTo(fs);
+                        }
+                    }
+                    return @"c:\data\images\temp.png";
+                }
+            }
+            else
+            {
+
+                return ImageURL;
+            }
+        }
+        public void CreateUpdateImageGithub(string owner, string repo, string branch, string targetFile, string localPathForImage, string githubPersonalAccessToken)
+        {
+            Task.Run(async () =>
+            {
+                var github = new GitHubClient(new ProductHeaderValue("Octokit-Test"));
+                github.Credentials = new Credentials(githubPersonalAccessToken);
+
+
+
+                try
+                {
+                    // try to get the file (and with the file the last commit sha)
+                    var existingFile = await github.Repository.Content.GetAllContentsByRef(owner, repo, targetFile, branch);
+
+
+                    // delete file
+                    await github.Repository.Content.DeleteFile(
+                                                    owner,
+                                                    repo,
+                                                    targetFile,
+                                                    new DeleteFileRequest("File deletion",
+                                                                          existingFile.First().Sha,
+                                                                          branch));                  
+                }
+                catch (Octokit.NotFoundException)
+                {
+                  // swallow not found exception 
+                }
+                finally
+                {
+                    var headMasterRef = "heads/" + branch;
+                    // Get reference of master branch
+                    var masterReference = await github.Git.Reference.Get(owner, repo, headMasterRef);
+                    // Get the laster commit of this branch
+                    var latestCommit = await github.Git.Commit.Get(owner, repo, masterReference.Object.Sha);
+                    // For image, get image content and convert it to base64
+                    var imgBase64 = Convert.ToBase64String(System.IO.File.ReadAllBytes(localPathForImage));
+                    // Create image blob
+                    var imgBlob = new NewBlob { Encoding = EncodingType.Base64, Content = (imgBase64) };
+                    var imgBlobRef = await github.Git.Blob.Create(owner, repo, imgBlob);
+                    // Create new Tree
+                    var nt = new NewTree { BaseTree = latestCommit.Tree.Sha };
+                    // Add items based on blobs
+                    nt.Tree.Add(new NewTreeItem { Path = targetFile, Mode = "100644", Type = TreeType.Blob, Sha = imgBlobRef.Sha });
+                    var newTree = await github.Git.Tree.Create(owner, repo, nt);
+                    // Create Commit
+                    var newCommit = new NewCommit("Commit test with several files", newTree.Sha, masterReference.Object.Sha);
+                    var commit = await github.Git.Commit.Create(owner, repo, newCommit);
+                    headMasterRef = "heads/" + branch;
+                    // Update HEAD with the commit
+                    await github.Git.Reference.Update(owner, repo, headMasterRef, new ReferenceUpdate(commit.Sha));
+                }
+
+
+
+            }).Wait();
+        }
     }
 }

@@ -140,3 +140,6 @@ C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeG
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\obj\x86\Debug\CodeGenTemplateParms.pdb
 C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\obj\x86\Debug\CodeGenTemplateParms.csprojResolveAssemblyReference.cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\obj\x86\Debug\CodeGenTemplateParms.csprojAssemblyReference.cache
+C:\Users\harve\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\bin\Debug\CodeGenTemplateParms.exe.config
+C:\Users\harve\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\bin\Debug\Octokit.dll
+C:\Users\harve\Documents\GitHub\IdealAutomate\CodeGenTemplateParms\CodeGenTemplateParms\bin\Debug\Octokit.xml

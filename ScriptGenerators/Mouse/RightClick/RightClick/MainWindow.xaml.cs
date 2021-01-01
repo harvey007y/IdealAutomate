@@ -145,9 +145,9 @@ namespace RightClick
             myControlEntity1.Text = "      ImageEntity myImage = new ImageEntity(); \r\n" +
 " \r\n" +
 "      if (boolRunningFromHome) { \r\n" +
-"        myImage.ImageFile = \"Images\\\\imgSVNUpdate_Home.PNG\"; \r\n" +
-"      } else { \r\n" +
-"        myImage.ImageFile = \"Images\\\\imgSVNUpdate.PNG\"; \r\n" +
+"        myImage.ImageFile = myActions.ConvertWebImageToLocalFile(@\"[[homeimage]]\");  \r\n " +
+"      } else { \r\n " +
+"        myImage.ImageFile = myActions.ConvertWebImageToLocalFile(@\"[[workimage]]\"); \r\n " +
 "      } \r\n" +
 "      myImage.Sleep = 200; \r\n" +
 "      myImage.Attempts = 5; \r\n" +

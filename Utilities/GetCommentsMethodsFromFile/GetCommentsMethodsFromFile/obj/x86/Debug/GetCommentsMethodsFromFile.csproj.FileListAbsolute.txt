@@ -1,4 +1,3 @@
-C:\Users\harve\Documents\GitHub\IdealAutomate\Utilities\GetCommentsMethodsFromFile\GetCommentsMethodsFromFile\obj\x86\Debug\GetCommentsMethodsFromFile.csprojResolveAssemblyReference.cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\Utilities\GetCommentsMethodsFromFile\GetCommentsMethodsFromFile\obj\x86\Debug\MainWindow.baml
 C:\Users\harve\Documents\GitHub\IdealAutomate\Utilities\GetCommentsMethodsFromFile\GetCommentsMethodsFromFile\obj\x86\Debug\MainWindow.g.cs
 C:\Users\harve\Documents\GitHub\IdealAutomate\Utilities\GetCommentsMethodsFromFile\GetCommentsMethodsFromFile\obj\x86\Debug\App.g.cs
@@ -27,3 +26,9 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\Utilities\GetCommentsMethodsFromFi
 C:\Users\harve\Documents\GitHub\IdealAutomate\Utilities\GetCommentsMethodsFromFile\GetCommentsMethodsFromFile\bin\Debug\WindowsInput.xml
 C:\Users\harve\Documents\GitHub\IdealAutomate\Utilities\GetCommentsMethodsFromFile\GetCommentsMethodsFromFile\obj\x86\Debug\GetCommentsMethodsFromFile.exe
 C:\Users\harve\Documents\GitHub\IdealAutomate\Utilities\GetCommentsMethodsFromFile\GetCommentsMethodsFromFile\obj\x86\Debug\GetCommentsMethodsFromFile.pdb
+C:\Users\harve\Documents\GitHub\IdealAutomate\Utilities\GetCommentsMethodsFromFile\GetCommentsMethodsFromFile\bin\Debug\GetCommentsMethodsFromFile.exe.config
+C:\Users\harve\Documents\GitHub\IdealAutomate\Utilities\GetCommentsMethodsFromFile\GetCommentsMethodsFromFile\bin\Debug\Octokit.dll
+C:\Users\harve\Documents\GitHub\IdealAutomate\Utilities\GetCommentsMethodsFromFile\GetCommentsMethodsFromFile\bin\Debug\Octokit.xml
+C:\Users\harve\Documents\GitHub\IdealAutomate\Utilities\GetCommentsMethodsFromFile\GetCommentsMethodsFromFile\obj\x86\Debug\GetCommentsMethodsFromFile.csprojAssemblyReference.cache
+C:\Users\harve\Documents\GitHub\IdealAutomate\Utilities\GetCommentsMethodsFromFile\GetCommentsMethodsFromFile\obj\x86\Debug\GetCommentsMethodsFromFile.csproj.CoreCompileInputs.cache
+C:\Users\harve\Documents\GitHub\IdealAutomate\Utilities\GetCommentsMethodsFromFile\GetCommentsMethodsFromFile\obj\x86\Debug\GetCommentsMethodsFromFile.csproj.CopyComplete

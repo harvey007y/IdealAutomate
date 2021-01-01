@@ -55,6 +55,10 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\WrapSQLInQuotesForCS\WrapSQLInQuot
 C:\Users\harve\Documents\GitHub\IdealAutomate\WrapSQLInQuotesForCS\WrapSQLInQuotesForCS\bin\Debug\IdealAutomateCore.pdb
 C:\Users\harve\Documents\GitHub\IdealAutomate\WrapSQLInQuotesForCS\WrapSQLInQuotesForCS\bin\Debug\IdealAutomateCore.xml
 C:\Users\harve\Documents\GitHub\IdealAutomate\WrapSQLInQuotesForCS\WrapSQLInQuotesForCS\bin\Debug\WindowsInput.xml
-C:\Users\harve\Documents\GitHub\IdealAutomate\WrapSQLInQuotesForCS\WrapSQLInQuotesForCS\obj\x86\Debug\WrapSQLInQuotesForCS.csprojResolveAssemblyReference.cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\WrapSQLInQuotesForCS\WrapSQLInQuotesForCS\obj\x86\Debug\WrapSQLInQuotesForCS.exe
 C:\Users\harve\Documents\GitHub\IdealAutomate\WrapSQLInQuotesForCS\WrapSQLInQuotesForCS\obj\x86\Debug\WrapSQLInQuotesForCS.pdb
+C:\Users\harve\Documents\GitHub\IdealAutomate\WrapSQLInQuotesForCS\WrapSQLInQuotesForCS\bin\Debug\Octokit.dll
+C:\Users\harve\Documents\GitHub\IdealAutomate\WrapSQLInQuotesForCS\WrapSQLInQuotesForCS\bin\Debug\Octokit.xml
+C:\Users\harve\Documents\GitHub\IdealAutomate\WrapSQLInQuotesForCS\WrapSQLInQuotesForCS\obj\x86\Debug\WrapSQLInQuotesForCS.csprojAssemblyReference.cache
+C:\Users\harve\Documents\GitHub\IdealAutomate\WrapSQLInQuotesForCS\WrapSQLInQuotesForCS\obj\x86\Debug\WrapSQLInQuotesForCS.csproj.CoreCompileInputs.cache
+C:\Users\harve\Documents\GitHub\IdealAutomate\WrapSQLInQuotesForCS\WrapSQLInQuotesForCS\obj\x86\Debug\WrapSQLInQuotesForCS.csproj.CopyComplete

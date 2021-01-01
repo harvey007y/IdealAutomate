@@ -13,6 +13,8 @@ using System.Text.RegularExpressions;
 using Snipping_OCR;
 using System.Windows.Media.Imaging;
 using System.Drawing;
+using System.Threading.Tasks;
+using Octokit;
 
 namespace MultipleBalloonWindowControls
 {
@@ -1346,192 +1348,503 @@ namespace MultipleBalloonWindowControls
                 // At the beginning of putall, we will check to see if there is an alternate image to use from the table
 
                 string directory = AppDomain.CurrentDomain.BaseDirectory;
+                double dblWinHeight = 300;
+                double dblWinWidth = 0;
                 SnippingTool.Snip();
                 startPoint = SnippingTool._pointStart;
                 if (SnippingTool.Image != null)
                 {
-                    double dblWinHeight = 300;
-                    double dblWinWidth = 0;
-                    Clipboard.SetImage(BitmapSourceFromImage(SnippingTool.Image));
-                    myListControlEntity = new List<ControlEntity>();
 
-                    myControlEntity = new ControlEntity();
+                    Clipboard.SetImage(BitmapSourceFromImage(SnippingTool.Image));
+
+                    myListControlEntity = new List<ControlEntity>();
                     myControlEntity.ControlEntitySetDefaults();
                     myControlEntity.ControlType = ControlType.Heading;
-                    myControlEntity.Text = "Add Image";
-                    myListControlEntity.Add(myControlEntity.CreateControlEntity());
-                    intRowCtr = 0;
-
-                    intRowCtr++;
-
-                    myControlEntity.ControlEntitySetDefaults();
-                    myControlEntity.ControlType = ControlType.Image;
-                    myControlEntity.ID = "myImage";
+                    myControlEntity.ID = "lblHead";
+                    myControlEntity.Text = "Save Location";
                     myControlEntity.RowNumber = intRowCtr;
                     myControlEntity.ColumnNumber = 0;
-                    myControlEntity.ColumnSpan = 2;
-
-                    myImage.ImageFile = "xyz";// strFullFileName;
-                    SaveClipboardImageToFile(myImage.ImageFile);
-                    byte[] mybytearray = File.ReadAllBytes(myImage.ImageFile);
-
-                    int imageHeight = 0;
-                    int imageWidth = 0;
-                    using (System.Drawing.Bitmap bm = BytesToBitmap(mybytearray))
-                    {
-                        imageHeight = bm.Height;
-                        imageWidth = bm.Width;
-                        myControlEntity.Width = bm.Width;
-                        myControlEntity.Height = bm.Height;
-                        dblWinHeight += bm.Height;
-                        dblWinWidth += bm.Width;
-                        myControlEntity.Source = BitmapSourceFromImage(bm);
-                    }
-
                     myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
 
                     intRowCtr++;
                     myControlEntity.ControlEntitySetDefaults();
                     myControlEntity.ControlType = ControlType.Label;
-                    myControlEntity.ID = "lblFullFileName";
-                    myControlEntity.Text = "FullFileName";
+                    myControlEntity.ID = "lblLocation";
+                    myControlEntity.Text = "Location";
                     myControlEntity.RowNumber = intRowCtr;
                     myControlEntity.ColumnNumber = 0;
+                    myControlEntity.ColumnSpan = 1;
                     myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
                     myControlEntity.ControlEntitySetDefaults();
-                    myControlEntity.ControlType = ControlType.TextBox;
-                    myControlEntity.ID = "txtFullFileName";
-                    myControlEntity.Text = myActions.GetValueByKey("FullFileName");
-                    myControlEntity.ToolTipx = @"Enter full file name to use to save the image. Example, C:\Data\Images\MyImage.png";
+                    myControlEntity.ControlType = ControlType.ComboBox;
+                    cbp.Clear();
+                    cbp.Add(new ComboBoxPair("Github", "Github"));
+                    cbp.Add(new ComboBoxPair("Local Computer", "Local Computer"));
+                    myControlEntity.ListOfKeyValuePairs = cbp;
+                    myControlEntity.SelectedValue = "Github";
+                    myControlEntity.ID = "cbxLocation";
                     myControlEntity.RowNumber = intRowCtr;
+                    myControlEntity.ToolTipx = "Select whether to save file to github or local computer.";
+                    myControlEntity.DDLName = "";
                     myControlEntity.ColumnNumber = 1;
                     myControlEntity.ColumnSpan = 0;
                     myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
-                    intRowCtr++;
-                    myControlEntity.ControlEntitySetDefaults();
-                    myControlEntity.ControlType = ControlType.Label;
-                    myControlEntity.ID = "lblID";
-                    myControlEntity.Text = "ID";
-                    myControlEntity.RowNumber = intRowCtr;
-                    myControlEntity.ColumnNumber = 0;
-                    myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-                    myControlEntity.ControlEntitySetDefaults();
-                    myControlEntity.ControlType = ControlType.TextBox;
-                    myControlEntity.ID = "txtID";
-                    myControlEntity.Text = "";
-                    myControlEntity.RowNumber = intRowCtr;
-                    myControlEntity.ColumnNumber = 1;
-                    myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-                    intRowCtr++;
-                    myControlEntity.ControlEntitySetDefaults();
-                    myControlEntity.ControlType = ControlType.Label;
-                    myControlEntity.ID = "lblToolTip";
-                    myControlEntity.Text = "ToolTip";
-                    myControlEntity.RowNumber = intRowCtr;
-                    myControlEntity.ColumnNumber = 0;
-                    myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-                    myControlEntity.ControlEntitySetDefaults();
-                    myControlEntity.ControlType = ControlType.TextBox;
-                    myControlEntity.ID = "txtToolTip";
-                    myControlEntity.Text = myActions.GetValueByKey("ScriptGeneratorButtonToolTip"); ;
-                    myControlEntity.RowNumber = intRowCtr;
-                    myControlEntity.Height = 100;
-                    myControlEntity.Multiline = true;
-                    myControlEntity.ColumnNumber = 1;
-                    myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-                    intRowCtr++;
-                    myControlEntity.ControlEntitySetDefaults();
-                    myControlEntity.ControlType = ControlType.Label;
-                    myControlEntity.ID = "lblColumnSpan";
-                    myControlEntity.Text = "ColumnSpan:";
-                    myControlEntity.RowNumber = intRowCtr;
-                    myControlEntity.ColumnNumber = 0;
-                    myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-                    myControlEntity.ControlEntitySetDefaults();
-                    myControlEntity.ControlType = ControlType.TextBox;
-                    myControlEntity.ID = "txtColumnSpan";
-                    myControlEntity.Text = myActions.GetValueByKey("ScriptGeneratorButtonColumnSpan"); ;
-                    myControlEntity.RowNumber = intRowCtr;
-                    myControlEntity.ColumnNumber = 1;
-                    myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-
-
-
-                    if (dblWinHeight > 750)
-                    {
-                        dblWinHeight = 750;
-                    }
-                    if (dblWinWidth > 1000)
-                    {
-                        dblWinWidth = 1000;
-                    }
-                    if (dblWinWidth < 500)
-                    {
-                        dblWinWidth = 500;
-                    }
-                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, (int)dblWinHeight, (int)dblWinWidth, 0, 0);
-
-
-
-                    string strID = myListControlEntity.Find(x => x.ID == "txtID").Text;
-
-                    string strToolTip = myListControlEntity.Find(x => x.ID == "txtToolTip").Text;
-                    string strColumnSpan = myListControlEntity.Find(x => x.ID == "txtColumnSpan").Text;
-                    myActions.SetValueByKey("ScriptGeneratorButtonColumnSpan", strColumnSpan);
-                    myActions.SetValueByKey("ScriptGeneratorButtonToolTip", strToolTip);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 160, 500, 0, 0);
                     if (strButtonPressed == "btnCancel")
                     {
-                        myActions.MessageBoxShow("Okay button not pressed - going to previous menu");
-                        goto AddControl;
+                        myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                        goto myExit;
                     }
-
-                    string strFullFileName = myListControlEntity.Find(x => x.ID == "txtFullFileName").Text;
-                    myActions.SetValueByKey("FullFileName", strFullFileName);
-                    SaveClipboardImageToFile(strFullFileName);
-                    string strInFile = strApplicationPath + "TemplateImage.txt";
-                    List<string> listOfSolvedProblems = new List<string>();
-                    List<string> listofRecs = new List<string>();
-                    string[] lineszz = System.IO.File.ReadAllLines(strInFile);
-                    intWindowHeight += imageHeight;
-                    int windowWidthx = imageWidth;
-                    if (windowWidthx > windowWidth)
+                    string strLocation = myListControlEntity.Find(x => x.ID == "cbxLocation").SelectedValue;
+                    if (strLocation == "Local Computer")
                     {
-                        windowWidth = windowWidthx;
+
+                        myListControlEntity = new List<ControlEntity>();
+
+                        myControlEntity = new ControlEntity();
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.Heading;
+                        myControlEntity.Text = "Add Image";
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+                        intRowCtr = 0;
+
+                        intRowCtr++;
+
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.Image;
+                        myControlEntity.ID = "myImage";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 0;
+                        myControlEntity.ColumnSpan = 2;
+
+                        myImage.ImageFile = "xyz";// strFullFileName;
+                        SaveClipboardImageToFile(myImage.ImageFile);
+                        byte[] mybytearray = File.ReadAllBytes(myImage.ImageFile);
+
+                        int imageHeight = 0;
+                        int imageWidth = 0;
+                        using (System.Drawing.Bitmap bm = BytesToBitmap(mybytearray))
+                        {
+                            imageHeight = bm.Height;
+                            imageWidth = bm.Width;
+                            myControlEntity.Width = bm.Width;
+                            myControlEntity.Height = bm.Height;
+                            dblWinHeight += bm.Height;
+                            dblWinWidth += bm.Width;
+                            myControlEntity.Source = BitmapSourceFromImage(bm);
+                        }
+
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+                        intRowCtr++;
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.Label;
+                        myControlEntity.ID = "lblFullFileName";
+                        myControlEntity.Text = "FullFileName";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.TextBox;
+                        myControlEntity.ID = "txtFullFileName";
+                        myControlEntity.Text = myActions.GetValueByKey("FullFileName");
+                        myControlEntity.ToolTipx = @"Enter full file name to use to save the image. Example, C:\Data\Images\MyImage.png";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 1;
+                        myControlEntity.ColumnSpan = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        intRowCtr++;
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.Label;
+                        myControlEntity.ID = "lblID";
+                        myControlEntity.Text = "ID";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.TextBox;
+                        myControlEntity.ID = "txtID";
+                        myControlEntity.Text = "";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 1;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        intRowCtr++;
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.Label;
+                        myControlEntity.ID = "lblToolTip";
+                        myControlEntity.Text = "ToolTip";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.TextBox;
+                        myControlEntity.ID = "txtToolTip";
+                        myControlEntity.Text = myActions.GetValueByKey("ScriptGeneratorButtonToolTip"); ;
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.Height = 100;
+                        myControlEntity.Multiline = true;
+                        myControlEntity.ColumnNumber = 1;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        intRowCtr++;
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.Label;
+                        myControlEntity.ID = "lblColumnSpan";
+                        myControlEntity.Text = "ColumnSpan:";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.TextBox;
+                        myControlEntity.ID = "txtColumnSpan";
+                        myControlEntity.Text = myActions.GetValueByKey("ScriptGeneratorButtonColumnSpan"); ;
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 1;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+
+
+                        if (dblWinHeight > 750)
+                        {
+                            dblWinHeight = 750;
+                        }
+                        if (dblWinWidth > 1000)
+                        {
+                            dblWinWidth = 1000;
+                        }
+                        if (dblWinWidth < 500)
+                        {
+                            dblWinWidth = 500;
+                        }
+                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, (int)dblWinHeight, (int)dblWinWidth, 0, 0);
+
+
+
+                        string strID = myListControlEntity.Find(x => x.ID == "txtID").Text;
+
+                        string strToolTip = myListControlEntity.Find(x => x.ID == "txtToolTip").Text;
+                        string strColumnSpan = myListControlEntity.Find(x => x.ID == "txtColumnSpan").Text;
+                        myActions.SetValueByKey("ScriptGeneratorButtonColumnSpan", strColumnSpan);
+                        myActions.SetValueByKey("ScriptGeneratorButtonToolTip", strToolTip);
+                        if (strButtonPressed == "btnCancel")
+                        {
+                            myActions.MessageBoxShow("Okay button not pressed - going to previous menu");
+                            goto AddControl;
+                        }
+
+                        string strFullFileName = myListControlEntity.Find(x => x.ID == "txtFullFileName").Text;
+                        myActions.SetValueByKey("FullFileName", strFullFileName);
+
+                        // ======
+
+                        SaveClipboardImageToFile(strFullFileName);
+                        string strInFile = strApplicationPath + "TemplateImage.txt";
+                        List<string> listOfSolvedProblems = new List<string>();
+                        List<string> listofRecs = new List<string>();
+                        string[] lineszz = System.IO.File.ReadAllLines(strInFile);
+                        intWindowHeight += imageHeight;
+                        int windowWidthx = imageWidth;
+                        if (windowWidthx > windowWidth)
+                        {
+                            windowWidth = windowWidthx;
+                        }
+
+
+                        int intLineCount = lineszz.Count();
+                        int intCtr = 0;
+                        for (int i = 0; i < intLineCount; i++)
+                        {
+                            string line = lineszz[i];
+                            line = line.Replace("&&ID", strID.Trim().Replace(" ", ""));
+                            line = line.Replace("&&SUFFIX", strSuffix.Trim());
+                            line = line.Replace("&&FULLFILENAME", strFullFileName.Trim());
+                            int intColumnSpan = 1;
+                            Int32.TryParse(strColumnSpan, out intColumnSpan);
+                            line = line.Replace("&&COLUMNSPAN", intColumnSpan.ToString());
+                            line = line.Replace("&&TOOLTIP", strToolTip.Trim());
+                            line = line.Replace("&&ROW", intRowCtr.ToString());
+                            line = line.Replace("&&HEIGHT", imageHeight.ToString());
+                            line = line.Replace("&&WIDTH", imageWidth.ToString());
+                            sb.AppendLine(line);
+
+                        }
+
+
                     }
+                    else
 
 
-                    int intLineCount = lineszz.Count();
-                    int intCtr = 0;
-                    for (int i = 0; i < intLineCount; i++)
                     {
-                        string line = lineszz[i];
-                        line = line.Replace("&&ID", strID.Trim().Replace(" ", ""));
-                        line = line.Replace("&&SUFFIX", strSuffix.Trim());
-                        line = line.Replace("&&FULLFILENAME", strFullFileName.Trim());
-                        int intColumnSpan = 1;
-                        Int32.TryParse(strColumnSpan, out intColumnSpan);
-                        line = line.Replace("&&COLUMNSPAN", intColumnSpan.ToString());
-                        line = line.Replace("&&TOOLTIP", strToolTip.Trim());
-                        line = line.Replace("&&ROW", intRowCtr.ToString());
-                        line = line.Replace("&&HEIGHT", imageHeight.ToString());
-                        line = line.Replace("&&WIDTH", imageWidth.ToString());
-                        sb.AppendLine(line);
+                        //github stuff goes here
+                        myListControlEntity = new List<ControlEntity>();
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.Heading;
+                        myControlEntity.ID = "lblHead";
+                        myControlEntity.Text = "Github Info for Saving Image";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
+                        intRowCtr++;
+
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.Image;
+                        myControlEntity.ID = "myImage";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 0;
+                        myControlEntity.ColumnSpan = 2;
+
+                        myImage.ImageFile = "xyz";// strFullFileName;
+                        SaveClipboardImageToFile(myImage.ImageFile);
+                        byte[] mybytearray = File.ReadAllBytes(myImage.ImageFile);
+
+                        int imageHeight = 0;
+                        int imageWidth = 0;
+                        using (System.Drawing.Bitmap bm = BytesToBitmap(mybytearray))
+                        {
+                            imageHeight = bm.Height;
+                            imageWidth = bm.Width;
+                            myControlEntity.Width = bm.Width;
+                            myControlEntity.Height = bm.Height;
+                            dblWinHeight += bm.Height;
+                            dblWinWidth += bm.Width;
+                            myControlEntity.Source = BitmapSourceFromImage(bm);
+                        }
+
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        intRowCtr++;
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.Label;
+                        myControlEntity.ID = "lblRepoOwner";
+                        myControlEntity.Text = "Repo Owner";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.TextBox;
+                        myControlEntity.ID = "txtRepoOwner";
+                        myControlEntity.Text = myActions.GetValueByKeyGlobal("RepoOwner"); ;
+                        myControlEntity.ToolTipx = "Repository owner - for example, harvey007y";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.Height = 30;
+                        myControlEntity.ColumnNumber = 1;
+                        myControlEntity.ColumnSpan = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        intRowCtr++;
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.Label;
+                        myControlEntity.ID = "lblRepoName";
+                        myControlEntity.Text = "Repo Name";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.TextBox;
+                        myControlEntity.ID = "txtRepoName";
+                        myControlEntity.Text = myActions.GetValueByKeyGlobal("RepoName"); ;
+                        myControlEntity.ToolTipx = "Repository Name - for example, IdealAutomatex-harvey007y.";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.Height = 30;
+                        myControlEntity.ColumnNumber = 1;
+                        myControlEntity.ColumnSpan = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        intRowCtr++;
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.Label;
+                        myControlEntity.ID = "lblRepoBranch";
+                        myControlEntity.Text = "Repo Branch";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.TextBox;
+                        myControlEntity.ID = "txtRepoBranch";
+                        myControlEntity.Text = myActions.GetValueByKeyGlobal("RepoBranch"); ;
+                        myControlEntity.ToolTipx = "Repository Branch - usually Master or Main";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.Height = 30;
+                        myControlEntity.ColumnNumber = 1;
+                        myControlEntity.ColumnSpan = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        intRowCtr++;
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.Label;
+                        myControlEntity.ID = "lblPath";
+                        myControlEntity.Text = "Path";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.TextBox;
+                        myControlEntity.ID = "txtPath";
+                        myControlEntity.Text = myActions.GetValueByKeyGlobal("Path"); ;
+                        myControlEntity.ToolTipx = "Path is file name or folder plus file name in Repo";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.Height = 30;
+                        myControlEntity.ColumnNumber = 1;
+                        myControlEntity.ColumnSpan = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        intRowCtr++;
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.Label;
+                        myControlEntity.ID = "lblGithubPersonalAccessToken";
+                        myControlEntity.Text = "Github Personal Access Token";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.TextBox;
+                        myControlEntity.ID = "txtGithubPersonalAccessToken";
+                        myControlEntity.Text = myActions.GetValueByKeyGlobal("GithubPersonalAccessToken");
+                        myControlEntity.ToolTipx = "Personal Access Token is created in github by going to profile/settings/Developer Settings/Personal Access Token";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.Height = 30;
+                        myControlEntity.ColumnNumber = 1;
+                        myControlEntity.ColumnSpan = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        intRowCtr++;
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.Label;
+                        myControlEntity.ID = "lblID";
+                        myControlEntity.Text = "ID";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.TextBox;
+                        myControlEntity.ID = "txtID";
+                        myControlEntity.Text = myActions.GetValueByKey("ScriptGeneratorButtonID"); ;
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 1;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        intRowCtr++;
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.Label;
+                        myControlEntity.ID = "lblToolTip";
+                        myControlEntity.Text = "ToolTip";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.TextBox;
+                        myControlEntity.ID = "txtToolTip";
+                        myControlEntity.Text = myActions.GetValueByKey("ScriptGeneratorButtonToolTip"); ;
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.Height = 100;
+                        myControlEntity.Multiline = true;
+                        myControlEntity.ColumnNumber = 1;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        intRowCtr++;
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.Label;
+                        myControlEntity.ID = "lblColumnSpan";
+                        myControlEntity.Text = "ColumnSpan:";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.TextBox;
+                        myControlEntity.ID = "txtColumnSpan";
+                        myControlEntity.Text = myActions.GetValueByKey("ScriptGeneratorButtonColumnSpan"); ;
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 1;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 510, 500, 0, 0);
+                        if (strButtonPressed == "btnCancel")
+                        {
+                            myActions.MessageBoxShow("Okay button not pressed - going to previous menu");
+                            goto AddControl;
+                        }
+                        string strRepoOwner = myListControlEntity.Find(x => x.ID == "txtRepoOwner").Text;
+                        myActions.SetValueByKeyGlobal("RepoOwner", strRepoOwner);
+                        string strRepoName = myListControlEntity.Find(x => x.ID == "txtRepoName").Text;
+                        myActions.SetValueByKeyGlobal("RepoName", strRepoName);
+                        string strRepoBranch = myListControlEntity.Find(x => x.ID == "txtRepoBranch").Text;
+                        myActions.SetValueByKeyGlobal("RepoBranch", strRepoBranch);
+                        string strPath = myListControlEntity.Find(x => x.ID == "txtPath").Text;
+                        myActions.SetValueByKeyGlobal("Path", strPath);
+                        string strGithubPersonalAccessToken = myListControlEntity.Find(x => x.ID == "txtGithubPersonalAccessToken").Text;
+                        myActions.SetValueByKeyGlobal("GithubPersonalAccessToken", strGithubPersonalAccessToken);
+                        string strID = myListControlEntity.Find(x => x.ID == "txtID").Text;
+                        myActions.SetValueByKey("ScriptGeneratorButtonID",strID); ;
+                        string strToolTip = myListControlEntity.Find(x => x.ID == "txtToolTip").Text;
+                        string strColumnSpan = myListControlEntity.Find(x => x.ID == "txtColumnSpan").Text;
+                        myActions.SetValueByKey("ScriptGeneratorButtonColumnSpan", strColumnSpan);
+                        myActions.SetValueByKey("ScriptGeneratorButtonToolTip", strToolTip);
+
+                        // github variables
+                        var owner = strRepoOwner;
+                        var repo = strRepoName;
+                        var branch = strRepoBranch;
+
+                        var targetFile = strPath;
+                        var localPathForImage = @"c:/Data/images/tempclipboard.png";
+                        SaveClipboardImageToFile(localPathForImage);
+                        var githubPersonalAccessToken = strGithubPersonalAccessToken;                      
+                        myActions.CreateUpdateImageGithub(owner, repo, branch, targetFile, localPathForImage, githubPersonalAccessToken);
+                        string strFullFileName = @"https://raw.githubusercontent.com/" + owner + "/" + repo + "/" + branch + "/" + targetFile;
+                        // ======
+
+                        
+                        string strInFile = strApplicationPath + "TemplateImage.txt";
+                        List<string> listOfSolvedProblems = new List<string>();
+                        List<string> listofRecs = new List<string>();
+                        string[] lineszz = System.IO.File.ReadAllLines(strInFile);
+                        intWindowHeight += imageHeight;
+                        int windowWidthx = imageWidth;
+                        if (windowWidthx > windowWidth)
+                        {
+                            windowWidth = windowWidthx;
+                        }
+
+
+                        int intLineCount = lineszz.Count();
+                        int intCtr = 0;
+                        for (int i = 0; i < intLineCount; i++)
+                        {
+                            string line = lineszz[i];
+                            line = line.Replace("&&ID", strID.Trim().Replace(" ", ""));
+                            line = line.Replace("&&SUFFIX", strSuffix.Trim());
+                            line = line.Replace("&&FULLFILENAME", strFullFileName.Trim());
+                            int intColumnSpan = 1;
+                            Int32.TryParse(strColumnSpan, out intColumnSpan);
+                            line = line.Replace("&&COLUMNSPAN", intColumnSpan.ToString());
+                            line = line.Replace("&&TOOLTIP", strToolTip.Trim());
+                            line = line.Replace("&&ROW", intRowCtr.ToString());
+                            line = line.Replace("&&HEIGHT", imageHeight.ToString());
+                            line = line.Replace("&&WIDTH", imageWidth.ToString());
+                            sb.AppendLine(line);
+
+                        }
                     }
-
-
                 }
-
-
 
                 goto AddControl;
             }
@@ -2082,120 +2395,436 @@ namespace MultipleBalloonWindowControls
                     double dblWinWidth = 0;
                     Clipboard.SetImage(BitmapSourceFromImage(SnippingTool.Image));
                     myListControlEntity = new List<ControlEntity>();
-
-                    myControlEntity = new ControlEntity();
                     myControlEntity.ControlEntitySetDefaults();
                     myControlEntity.ControlType = ControlType.Heading;
-                    myControlEntity.Text = "Position Popup Relative to Image";
-                    myListControlEntity.Add(myControlEntity.CreateControlEntity());
-                    intRowCtr = 0;
-
-                    intRowCtr++;
-
-                    myControlEntity.ControlEntitySetDefaults();
-                    myControlEntity.ControlType = ControlType.Image;
-                    myControlEntity.ID = "myImage";
+                    myControlEntity.ID = "lblHead";
+                    myControlEntity.Text = "Save Location";
                     myControlEntity.RowNumber = intRowCtr;
                     myControlEntity.ColumnNumber = 0;
-                    myControlEntity.ColumnSpan = 2;
-                    myImage.ImageFile = "xyz";// strFullFileName;
-                    SaveClipboardImageToFile(myImage.ImageFile);
-                    byte[] mybytearray = File.ReadAllBytes(myImage.ImageFile);
-                    System.Drawing.Bitmap bm = BytesToBitmap(mybytearray);
-                    myControlEntity.Width = bm.Width;
-                    myControlEntity.Height = bm.Height;
-                    dblWinHeight += bm.Height;
-                    dblWinWidth += bm.Width;
-                    myControlEntity.Source = BitmapSourceFromImage(bm);
-                    myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-
-                    intRowCtr++;
-                    myControlEntity.ControlEntitySetDefaults();
-                    myControlEntity.ControlType = ControlType.Label;
-                    myControlEntity.ID = "lblFullFileName";
-                    myControlEntity.Text = "FullFileName";
-                    myControlEntity.RowNumber = intRowCtr;
-                    myControlEntity.ColumnNumber = 0;
-                    myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-                    myControlEntity.ControlEntitySetDefaults();
-                    myControlEntity.ControlType = ControlType.TextBox;
-                    myControlEntity.ID = "txtFullFileName";
-                    myControlEntity.Text = myActions.GetValueByKey("FullFileName");
-                    myControlEntity.ToolTipx = @"Enter full file name to use to save the image. Example, C:\Data\Images\MyImage.png";
-                    myControlEntity.RowNumber = intRowCtr;
-                    myControlEntity.ColumnNumber = 1;
-                    myControlEntity.ColumnSpan = 0;
                     myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
                     intRowCtr++;
                     myControlEntity.ControlEntitySetDefaults();
                     myControlEntity.ControlType = ControlType.Label;
-                    myControlEntity.ID = "lblTop";
-                    myControlEntity.Text = "Top Offset";
+                    myControlEntity.ID = "lblLocation";
+                    myControlEntity.Text = "Location";
                     myControlEntity.RowNumber = intRowCtr;
                     myControlEntity.ColumnNumber = 0;
+                    myControlEntity.ColumnSpan = 1;
                     myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
                     myControlEntity.ControlEntitySetDefaults();
-                    myControlEntity.ControlType = ControlType.TextBox;
-                    myControlEntity.ID = "txtTop";
-                    myControlEntity.Text = myActions.GetValueByKey("Top"); ;
-                    myControlEntity.ToolTipx = "Top offset";
+                    myControlEntity.ControlType = ControlType.ComboBox;
+                    cbp.Clear();
+                    cbp.Add(new ComboBoxPair("Github", "Github"));
+                    cbp.Add(new ComboBoxPair("Local Computer", "Local Computer"));
+                    myControlEntity.ListOfKeyValuePairs = cbp;
+                    myControlEntity.SelectedValue = "Github";
+                    myControlEntity.ID = "cbxLocation";
                     myControlEntity.RowNumber = intRowCtr;
+                    myControlEntity.ToolTipx = "Select whether to save file to github or local computer.";
+                    myControlEntity.DDLName = "";
                     myControlEntity.ColumnNumber = 1;
                     myControlEntity.ColumnSpan = 0;
                     myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
-                    intRowCtr++;
-                    myControlEntity.ControlEntitySetDefaults();
-                    myControlEntity.ControlType = ControlType.Label;
-                    myControlEntity.ID = "lblLeft";
-                    myControlEntity.Text = "Left Offset";
-                    myControlEntity.RowNumber = intRowCtr;
-                    myControlEntity.ColumnNumber = 0;
-                    myListControlEntity.Add(myControlEntity.CreateControlEntity());
-
-                    myControlEntity.ControlEntitySetDefaults();
-                    myControlEntity.ControlType = ControlType.TextBox;
-                    myControlEntity.ID = "txtLeft";
-                    myControlEntity.Text = myActions.GetValueByKey("Left"); ;
-                    myControlEntity.ToolTipx = "Left offset";
-                    myControlEntity.RowNumber = intRowCtr;
-                    myControlEntity.ColumnNumber = 1;
-                    myControlEntity.ColumnSpan = 0;
-                    myListControlEntity.Add(myControlEntity.CreateControlEntity());
-                    if (dblWinHeight > 750)
-                    {
-                        dblWinHeight = 750;
-                    }
-                    if (dblWinWidth > 1000)
-                    {
-                        dblWinWidth = 1000;
-                    }
-                    if (dblWinWidth < 500)
-                    {
-                        dblWinWidth = 500;
-                    }
-                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, (int)dblWinHeight, (int)dblWinWidth, 0, 0);
+                    strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 160, 500, 0, 0);
                     if (strButtonPressed == "btnCancel")
                     {
-                        myActions.MessageBoxShow("Okay button not pressed - going to previous menu");
-                        goto AddControl;
+                        myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                        goto myExit;
                     }
+                    string strLocation = myListControlEntity.Find(x => x.ID == "cbxLocation").SelectedValue;
+                    if (strLocation == "Local Computer")
+                    {
+                        myListControlEntity = new List<ControlEntity>();
 
-                    string strFullFileName = myListControlEntity.Find(x => x.ID == "txtFullFileName").Text;
-                    myActions.SetValueByKey("FullFileName", strFullFileName);
-                    string strTop = myListControlEntity.Find(x => x.ID == "txtTop").Text;
-                    myActions.SetValueByKey("Top", strTop);
-                    string strLeft = myListControlEntity.Find(x => x.ID == "txtLeft").Text;
-                    myActions.SetValueByKey("Left", strLeft);
-                    SaveClipboardImageToFile(strFullFileName);
-                    _PositionType = "Relative";
-                    _RelativeFullFileName = strFullFileName;
-                    _RelativeLeft = strLeft;
-                    _RelativeTop = strTop;
+                        myControlEntity = new ControlEntity();
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.Heading;
+                        myControlEntity.Text = "Position Popup Relative to Image";
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+                        intRowCtr = 0;
+
+                        intRowCtr++;
+
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.Image;
+                        myControlEntity.ID = "myImage";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 0;
+                        myControlEntity.ColumnSpan = 2;
+                        myImage.ImageFile = "xyz";// strFullFileName;
+                        SaveClipboardImageToFile(myImage.ImageFile);
+                        byte[] mybytearray = File.ReadAllBytes(myImage.ImageFile);
+                        System.Drawing.Bitmap bm = BytesToBitmap(mybytearray);
+                        myControlEntity.Width = bm.Width;
+                        myControlEntity.Height = bm.Height;
+                        dblWinHeight += bm.Height;
+                        dblWinWidth += bm.Width;
+                        myControlEntity.Source = BitmapSourceFromImage(bm);
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+                        intRowCtr++;
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.Label;
+                        myControlEntity.ID = "lblFullFileName";
+                        myControlEntity.Text = "FullFileName";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.TextBox;
+                        myControlEntity.ID = "txtFullFileName";
+                        myControlEntity.Text = myActions.GetValueByKey("FullFileName");
+                        myControlEntity.ToolTipx = @"Enter full file name to use to save the image. Example, C:\Data\Images\MyImage.png";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 1;
+                        myControlEntity.ColumnSpan = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        intRowCtr++;
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.Label;
+                        myControlEntity.ID = "lblTop";
+                        myControlEntity.Text = "Top Offset";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.TextBox;
+                        myControlEntity.ID = "txtTop";
+                        myControlEntity.Text = myActions.GetValueByKey("Top"); ;
+                        myControlEntity.ToolTipx = "Top offset";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 1;
+                        myControlEntity.ColumnSpan = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        intRowCtr++;
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.Label;
+                        myControlEntity.ID = "lblLeft";
+                        myControlEntity.Text = "Left Offset";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.TextBox;
+                        myControlEntity.ID = "txtLeft";
+                        myControlEntity.Text = myActions.GetValueByKey("Left"); ;
+                        myControlEntity.ToolTipx = "Left offset";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 1;
+                        myControlEntity.ColumnSpan = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+                        if (dblWinHeight > 750)
+                        {
+                            dblWinHeight = 750;
+                        }
+                        if (dblWinWidth > 1000)
+                        {
+                            dblWinWidth = 1000;
+                        }
+                        if (dblWinWidth < 500)
+                        {
+                            dblWinWidth = 500;
+                        }
+                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, (int)dblWinHeight, (int)dblWinWidth, 0, 0);
+                        if (strButtonPressed == "btnCancel")
+                        {
+                            myActions.MessageBoxShow("Okay button not pressed - going to previous menu");
+                            goto AddControl;
+                        }
+
+                        string strFullFileName = myListControlEntity.Find(x => x.ID == "txtFullFileName").Text;
+                        myActions.SetValueByKey("FullFileName", strFullFileName);
+                        string strTop = myListControlEntity.Find(x => x.ID == "txtTop").Text;
+                        myActions.SetValueByKey("Top", strTop);
+                        string strLeft = myListControlEntity.Find(x => x.ID == "txtLeft").Text;
+                        myActions.SetValueByKey("Left", strLeft);
+                        SaveClipboardImageToFile(strFullFileName);
+                        _PositionType = "Relative";
+                        _RelativeFullFileName = strFullFileName;
+                        _RelativeLeft = strLeft;
+                        _RelativeTop = strTop;
+                    } else
+                    {
+                        // github code
+                        myListControlEntity = new List<ControlEntity>();
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.Heading;
+                        myControlEntity.ID = "lblHead";
+                        myControlEntity.Text = "Github Info for Saving Image";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        intRowCtr++;
+
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.Image;
+                        myControlEntity.ID = "myImage";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 0;
+                        myControlEntity.ColumnSpan = 2;
+
+                        myImage.ImageFile = "xyz";// strFullFileName;
+                        SaveClipboardImageToFile(myImage.ImageFile);
+                        byte[] mybytearray = File.ReadAllBytes(myImage.ImageFile);
+
+                        int imageHeight = 0;
+                        int imageWidth = 0;
+                        using (System.Drawing.Bitmap bmx = BytesToBitmap(mybytearray))
+                        {
+                            imageHeight = bmx.Height;
+                            imageWidth = bmx.Width;
+                            myControlEntity.Width = bmx.Width;
+                            myControlEntity.Height = bmx.Height;
+                            dblWinHeight += bmx.Height;
+                            dblWinWidth += bmx.Width;
+                            myControlEntity.Source = BitmapSourceFromImage(bmx);
+                        }
+
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        intRowCtr++;
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.Label;
+                        myControlEntity.ID = "lblRepoOwner";
+                        myControlEntity.Text = "Repo Owner";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.TextBox;
+                        myControlEntity.ID = "txtRepoOwner";
+                        myControlEntity.Text = myActions.GetValueByKeyGlobal("RepoOwner"); ;
+                        myControlEntity.ToolTipx = "Repository owner - for example, harvey007y";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.Height = 30;
+                        myControlEntity.ColumnNumber = 1;
+                        myControlEntity.ColumnSpan = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        intRowCtr++;
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.Label;
+                        myControlEntity.ID = "lblRepoName";
+                        myControlEntity.Text = "Repo Name";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.TextBox;
+                        myControlEntity.ID = "txtRepoName";
+                        myControlEntity.Text = myActions.GetValueByKeyGlobal("RepoName"); ;
+                        myControlEntity.ToolTipx = "Repository Name - for example, IdealAutomatex-harvey007y.";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.Height = 30;
+                        myControlEntity.ColumnNumber = 1;
+                        myControlEntity.ColumnSpan = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        intRowCtr++;
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.Label;
+                        myControlEntity.ID = "lblRepoBranch";
+                        myControlEntity.Text = "Repo Branch";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.TextBox;
+                        myControlEntity.ID = "txtRepoBranch";
+                        myControlEntity.Text = myActions.GetValueByKeyGlobal("RepoBranch"); ;
+                        myControlEntity.ToolTipx = "Repository Branch - usually Master or Main";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.Height = 30;
+                        myControlEntity.ColumnNumber = 1;
+                        myControlEntity.ColumnSpan = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        intRowCtr++;
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.Label;
+                        myControlEntity.ID = "lblPath";
+                        myControlEntity.Text = "Path";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.TextBox;
+                        myControlEntity.ID = "txtPath";
+                        myControlEntity.Text = myActions.GetValueByKeyGlobal("Path"); ;
+                        myControlEntity.ToolTipx = "Path is file name or folder plus file name in Repo";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.Height = 30;
+                        myControlEntity.ColumnNumber = 1;
+                        myControlEntity.ColumnSpan = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        intRowCtr++;
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.Label;
+                        myControlEntity.ID = "lblGithubPersonalAccessToken";
+                        myControlEntity.Text = "Github Personal Access Token";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.TextBox;
+                        myControlEntity.ID = "txtGithubPersonalAccessToken";
+                        myControlEntity.Text = myActions.GetValueByKeyGlobal("GithubPersonalAccessToken");
+                        myControlEntity.ToolTipx = "Personal Access Token is created in github by going to profile/settings/Developer Settings/Personal Access Token";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.Height = 30;
+                        myControlEntity.ColumnNumber = 1;
+                        myControlEntity.ColumnSpan = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        
+
+
+
+                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 510, 500, 0, 0);
+                        if (strButtonPressed == "btnCancel")
+                        {
+                            myActions.MessageBoxShow("Okay button not pressed - going to previous menu");
+                            goto AddControl;
+                        }
+                        string strRepoOwner = myListControlEntity.Find(x => x.ID == "txtRepoOwner").Text;
+                        myActions.SetValueByKeyGlobal("RepoOwner", strRepoOwner);
+                        string strRepoName = myListControlEntity.Find(x => x.ID == "txtRepoName").Text;
+                        myActions.SetValueByKeyGlobal("RepoName", strRepoName);
+                        string strRepoBranch = myListControlEntity.Find(x => x.ID == "txtRepoBranch").Text;
+                        myActions.SetValueByKeyGlobal("RepoBranch", strRepoBranch);
+                        string strPath = myListControlEntity.Find(x => x.ID == "txtPath").Text;
+                        myActions.SetValueByKeyGlobal("Path", strPath);
+                        string strGithubPersonalAccessToken = myListControlEntity.Find(x => x.ID == "txtGithubPersonalAccessToken").Text;
+                        myActions.SetValueByKeyGlobal("GithubPersonalAccessToken", strGithubPersonalAccessToken);
+                        
+
+                        // github variables
+                        var owner = strRepoOwner;
+                        var repo = strRepoName;
+                        var branch = strRepoBranch;
+
+                        var targetFile = strPath;
+                        var localPathForImage = @"c:/Data/images/tempclipboard.png";
+                        SaveClipboardImageToFile(localPathForImage);
+                        var githubPersonalAccessToken = strGithubPersonalAccessToken;                       
+                        myActions.CreateUpdateImageGithub(owner, repo, branch, targetFile, localPathForImage, githubPersonalAccessToken);
+                        string strFullFileName = @"https://raw.githubusercontent.com/" + owner + "/" + repo + "/" + branch + "/" + targetFile;
+                        // ======
+                        myListControlEntity = new List<ControlEntity>();
+
+                        myControlEntity = new ControlEntity();
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.Heading;
+                        myControlEntity.Text = "Position Popup Relative to Image";
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+                        intRowCtr = 0;
+
+                        intRowCtr++;
+
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.Image;
+                        myControlEntity.ID = "myImage";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 0;
+                        myControlEntity.ColumnSpan = 2;
+                        myImage.ImageFile = "xyz";// strFullFileName;
+                        SaveClipboardImageToFile(myImage.ImageFile);
+                        mybytearray = File.ReadAllBytes(myImage.ImageFile);
+                        System.Drawing.Bitmap bm = BytesToBitmap(mybytearray);
+                        myControlEntity.Width = bm.Width;
+                        myControlEntity.Height = bm.Height;
+                        dblWinHeight += bm.Height;
+                        dblWinWidth += bm.Width;
+                        myControlEntity.Source = BitmapSourceFromImage(bm);
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+                        
+
+                        intRowCtr++;
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.Label;
+                        myControlEntity.ID = "lblTop";
+                        myControlEntity.Text = "Top Offset";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.TextBox;
+                        myControlEntity.ID = "txtTop";
+                        myControlEntity.Text = myActions.GetValueByKey("Top"); ;
+                        myControlEntity.ToolTipx = "Top offset";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 1;
+                        myControlEntity.ColumnSpan = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        intRowCtr++;
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.Label;
+                        myControlEntity.ID = "lblLeft";
+                        myControlEntity.Text = "Left Offset";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+                        myControlEntity.ControlEntitySetDefaults();
+                        myControlEntity.ControlType = ControlType.TextBox;
+                        myControlEntity.ID = "txtLeft";
+                        myControlEntity.Text = myActions.GetValueByKey("Left"); ;
+                        myControlEntity.ToolTipx = "Left offset";
+                        myControlEntity.RowNumber = intRowCtr;
+                        myControlEntity.ColumnNumber = 1;
+                        myControlEntity.ColumnSpan = 0;
+                        myListControlEntity.Add(myControlEntity.CreateControlEntity());
+                        if (dblWinHeight > 750)
+                        {
+                            dblWinHeight = 750;
+                        }
+                        if (dblWinWidth > 1000)
+                        {
+                            dblWinWidth = 1000;
+                        }
+                        if (dblWinWidth < 500)
+                        {
+                            dblWinWidth = 500;
+                        }
+                        strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, (int)dblWinHeight, (int)dblWinWidth, 0, 0);
+                        if (strButtonPressed == "btnCancel")
+                        {
+                            myActions.MessageBoxShow("Okay button not pressed - going to previous menu");
+                            goto AddControl;
+                        }
+
+                        
+                        myActions.SetValueByKey("FullFileName", strFullFileName);
+                        string strTop = myListControlEntity.Find(x => x.ID == "txtTop").Text;
+                        myActions.SetValueByKey("Top", strTop);
+                        string strLeft = myListControlEntity.Find(x => x.ID == "txtLeft").Text;
+                        myActions.SetValueByKey("Left", strLeft);
+                        SaveClipboardImageToFile(myActions.ConvertWebImageToLocalFile(strFullFileName));
+                        _PositionType = "Relative";
+                        _RelativeFullFileName = strFullFileName;
+                        _RelativeLeft = strLeft;
+                        _RelativeTop = strTop;
+                    }
                 }
 
                 //    AbsolutePosition(ref myControlEntity, ref myListControlEntity);
@@ -2233,7 +2862,7 @@ namespace MultipleBalloonWindowControls
                 relativeCodeSnippet = "     myImage = new ImageEntity(); \r\n" +
     " \r\n" +
     "    \r\n" +
-    "        myImage.ImageFile = @\"" + _RelativeFullFileName + "\"; \r\n" +
+    "        myImage.ImageFile = myActions.ConvertWebImageToLocalFile(@\"" + _RelativeFullFileName + "\"); \r\n" +
     "      " +
     "      myImage.Sleep = 1000;  \r\n" +
     "      myImage.Attempts = 1;  \r\n" +
@@ -2272,7 +2901,7 @@ namespace MultipleBalloonWindowControls
 " \r\n" +
 "                myControlEntity.ControlEntitySetDefaults(); \r\n" +
 " \r\n" +
-"                mybytearray = System.IO.File.ReadAllBytes(myImage.ImageFile); \r\n" +
+"                mybytearray = System.IO.File.ReadAllBytes(myActions.ConvertWebImageToLocalFile(myImage.ImageFile)); \r\n" +
 "                bm = BytesToBitmap(mybytearray); \r\n" +
 "                myControlEntity.Width = bm.Width; \r\n" +
 "                myControlEntity.Height = bm.Height; \r\n" +
@@ -2454,7 +3083,7 @@ namespace MultipleBalloonWindowControls
             goto myExit;
         myExit:
             myActions.ScriptEndedSuccessfullyUpdateStats();
-            Application.Current.Shutdown();
+            System.Windows.Application.Current.Shutdown();
         }
 
         private void WriteCodeBodyToExternalFile(string strMinimized, string _PositionType, string relativeCodeSnippet, string strSuffix, StringBuilder sb, StringBuilder sb2, string strAppendCodeToExistingFile, string strOutCodeBodyFile)
@@ -2642,7 +3271,7 @@ namespace MultipleBalloonWindowControls
             {
                 try
                 {
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    using (var fileStream = new FileStream(filePath, System.IO.FileMode.Create))
                     {
                         BitmapEncoder encoder = new PngBitmapEncoder();
                         encoder.Frames.Add(BitmapFrame.Create(image));
@@ -2658,5 +3287,6 @@ namespace MultipleBalloonWindowControls
                 }
             }
         }
+  
     }
 }

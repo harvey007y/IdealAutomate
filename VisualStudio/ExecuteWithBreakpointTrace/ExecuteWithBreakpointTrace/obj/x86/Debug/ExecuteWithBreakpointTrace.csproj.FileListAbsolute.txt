@@ -55,3 +55,4 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\VisualStudio\ExecuteWithBreakpoint
 C:\Users\harve\Documents\GitHub\IdealAutomate\VisualStudio\ExecuteWithBreakpointTrace\ExecuteWithBreakpointTrace\obj\x86\Debug\ExecuteWithBreakpointTrace.csproj.CoreCompileInputs.cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\VisualStudio\ExecuteWithBreakpointTrace\ExecuteWithBreakpointTrace\obj\x86\Debug\ExecuteWithBreakpointTrace.exe
 C:\Users\harve\Documents\GitHub\IdealAutomate\VisualStudio\ExecuteWithBreakpointTrace\ExecuteWithBreakpointTrace\obj\x86\Debug\ExecuteWithBreakpointTrace.pdb
+C:\Users\harve\Documents\GitHub\IdealAutomate\VisualStudio\ExecuteWithBreakpointTrace\ExecuteWithBreakpointTrace\obj\x86\Debug\ExecuteWithBreakpointTrace.csprojAssemblyReference.cache
