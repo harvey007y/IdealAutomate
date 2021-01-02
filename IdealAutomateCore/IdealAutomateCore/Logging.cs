@@ -25,11 +25,11 @@ namespace IdealAutomateCore {
 
             string filePath = Path.Combine(settingsDirectory, "IdealAutomateLog.txt");
             //System.Web.HttpContext.Current.Server.MapPath("~//Trace.html")
-            if (lineCtr > 1000)
-            {
-                lineCtr = 0;
-                File.Delete(filePath);
-            }
+            //if (lineCtr > 1000)
+            //{
+            //    lineCtr = 0;
+            //    File.Delete(filePath);
+            //}
             StreamWriter sw = null;
 
             if (File.Exists(filePath) == false) {

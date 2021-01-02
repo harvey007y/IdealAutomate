@@ -87,6 +87,8 @@ namespace System.Windows.Forms.Samples
             this.showHideColumnsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.favoritesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem20 = new System.Windows.Forms.ToolStripMenuItem();
+            this.githubSearchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem11 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem12 = new System.Windows.Forms.ToolStripMenuItem();
             this.googleDriveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -128,6 +130,7 @@ namespace System.Windows.Forms.Samples
             this.toolStripMenuItem17 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem18 = new System.Windows.Forms.ToolStripMenuItem();
             this.videoTrafficBlueprintToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem19 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripComboBox2 = new System.Windows.Forms.ToolStripComboBox();
             this.toolStripMenuItem15 = new System.Windows.Forms.ToolStripMenuItem();
@@ -174,7 +177,7 @@ namespace System.Windows.Forms.Samples
             this.interactiveToolTip1 = new Digitalis.GUI.Controls.InteractiveToolTip(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.cbxTabsCollection = new System.Windows.Forms.ComboBox();
-            this.toolStripMenuItem19 = new System.Windows.Forms.ToolStripMenuItem();
+            this.scriptExecToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource)).BeginInit();
             this.toolBar.SuspendLayout();
@@ -662,6 +665,7 @@ namespace System.Windows.Forms.Samples
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem20,
             this.toolStripMenuItem11,
             this.toolStripMenuItem2,
             this.toolStripMenuItem13,
@@ -682,6 +686,22 @@ namespace System.Windows.Forms.Samples
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
+            // 
+            // toolStripMenuItem20
+            // 
+            this.toolStripMenuItem20.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.githubSearchToolStripMenuItem,
+            this.scriptExecToolStripMenuItem});
+            this.toolStripMenuItem20.Name = "toolStripMenuItem20";
+            this.toolStripMenuItem20.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem20.Text = "Automation";
+            // 
+            // githubSearchToolStripMenuItem
+            // 
+            this.githubSearchToolStripMenuItem.Name = "githubSearchToolStripMenuItem";
+            this.githubSearchToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.githubSearchToolStripMenuItem.Text = "Github Search";
+            this.githubSearchToolStripMenuItem.Click += new System.EventHandler(this.githubSearchToolStripMenuItem_Click);
             // 
             // toolStripMenuItem11
             // 
@@ -1027,6 +1047,13 @@ namespace System.Windows.Forms.Samples
             this.videoTrafficBlueprintToolStripMenuItem.Text = "Video Traffic Blueprint";
             this.videoTrafficBlueprintToolStripMenuItem.Click += new System.EventHandler(this.videoTrafficBlueprintToolStripMenuItem_Click);
             this.videoTrafficBlueprintToolStripMenuItem.MouseHover += new System.EventHandler(this.videoTrafficBlueprintToolStripMenuItem_MouseHover);
+            // 
+            // toolStripMenuItem19
+            // 
+            this.toolStripMenuItem19.Name = "toolStripMenuItem19";
+            this.toolStripMenuItem19.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem19.Text = "Jobs";
+            this.toolStripMenuItem19.Click += new System.EventHandler(this.toolStripMenuItem19_Click);
             // 
             // toolStripMenuItem9
             // 
@@ -1381,12 +1408,12 @@ namespace System.Windows.Forms.Samples
             this.cbxTabsCollection.SelectedIndexChanged += new System.EventHandler(this.cbxTabsCollection_SelectedIndexChanged);
             this.cbxTabsCollection.Leave += new System.EventHandler(this.cbxTabsCollection_Leave);
             // 
-            // toolStripMenuItem19
+            // scriptExecToolStripMenuItem
             // 
-            this.toolStripMenuItem19.Name = "toolStripMenuItem19";
-            this.toolStripMenuItem19.Size = new System.Drawing.Size(180, 22);
-            this.toolStripMenuItem19.Text = "Jobs";
-            this.toolStripMenuItem19.Click += new System.EventHandler(this.toolStripMenuItem19_Click);
+            this.scriptExecToolStripMenuItem.Name = "scriptExecToolStripMenuItem";
+            this.scriptExecToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.scriptExecToolStripMenuItem.Text = "ScriptExec";
+            this.scriptExecToolStripMenuItem.Click += new System.EventHandler(this.scriptExecToolStripMenuItem_Click);
             // 
             // ExplorerView
             // 
@@ -1572,6 +1599,9 @@ namespace System.Windows.Forms.Samples
         private Label label1;
         private ComboBox cbxTabsCollection;
         private ToolStripMenuItem toolStripMenuItem19;
+        private ToolStripMenuItem toolStripMenuItem20;
+        private ToolStripMenuItem githubSearchToolStripMenuItem;
+        private ToolStripMenuItem scriptExecToolStripMenuItem;
     }
 }
 

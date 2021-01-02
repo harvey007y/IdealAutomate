@@ -4271,18 +4271,39 @@ namespace IdealAutomate.Core
         {
             if (ImageURL.StartsWith("http"))
             {
-                using (var webClient = new WebClient())
+                int tryCtr = 0;
+                tryAgain:
+                try
                 {
-                    byte[] imageBytes = webClient.DownloadData(ImageURL);
-                    using (var ms = new MemoryStream(imageBytes))
+                   
+                    using (var webClient = new WebClient())
                     {
-                        using (var fs = new FileStream(@"c:\data\images\temp.png", System.IO.FileMode.Create))
+                        byte[] imageBytes = webClient.DownloadData(ImageURL);
+                        using (var ms = new MemoryStream(imageBytes))
                         {
-                            ms.WriteTo(fs);
+                            using (var fs = new FileStream(@"c:\data\images\temp.png", System.IO.FileMode.Create))
+                            {
+                                ms.WriteTo(fs);
+                            }
                         }
                     }
-                    return @"c:\data\images\temp.png";
                 }
+                catch (Exception ex)
+                {
+                    tryCtr++;
+                    if (tryCtr > 5) {
+                        tryCtr = 0;
+                        MessageBoxShow(oProcess.ProcessName + "==> " + "ConvertWebImageToLocalFile: error =" + ex.Message + " " + ex.StackTrace);
+                        goto tryAgain;
+                    }
+                    GC.Collect();
+                    Console.WriteLine(oProcess.ProcessName + "==> " + "ConvertWebImageToLocalFile: error =" + ex.Message + " " + ex.StackTrace);
+                    Logging.WriteLogSimple(oProcess.ProcessName + "==> " + "ConvertWebImageToLocalFile: error = " + ex.Message + " " + ex.StackTrace);
+                   
+                    Sleep(1000);
+                    goto tryAgain;
+                }
+                return @"c:\data\images\temp.png";
             }
             else
             {

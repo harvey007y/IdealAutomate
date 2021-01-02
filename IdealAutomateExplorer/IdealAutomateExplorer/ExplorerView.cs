@@ -10564,6 +10564,22 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 throw;
             }
         }
+
+        private void githubSearchToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
+            //string strApplicationPath = strApplicationBinDebug.Replace("\\IdealAutomateExplorer\\bin\\Debug", "");
+            string strGitHubApiDemoExe = Path.Combine(strApplicationBinDebug, @"GitHubApiDemo.exe");
+            myActions.Run(strGitHubApiDemoExe, "");
+        }
+
+        private void scriptExecToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
+            //string strApplicationPath = strApplicationBinDebug.Replace("\\IdealAutomateExplorer\\bin\\Debug", "");
+            string strScriptExecExe = Path.Combine(strApplicationBinDebug, @"ScriptExec.exe");
+            myActions.Run(strScriptExecExe, "");
+        }
         //private void LogMemory(string msg) {
         //    _memoryCurr = GC.GetTotalMemory(true);
         //    _memoryGain = _memoryCurr - _memoryPrev;
