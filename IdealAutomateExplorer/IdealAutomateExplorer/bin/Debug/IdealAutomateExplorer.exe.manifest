@@ -216,13 +216,13 @@
       <dsig:DigestValue>fU0odOJLlRObWw9MilJSD/nxLhe1R7McfDC7aBvH2Ys=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="IdealAutomateCore.dll" size="212992">
+  <file name="IdealAutomateCore.dll" size="213504">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>oZSmuUhUK3AztQil7CuLns4Su+ExbkosgxVVPf8yrDg=</dsig:DigestValue>
+      <dsig:DigestValue>G+KexvpVYPdeQpkiVj1LNosEUIHdMXUVLDUuUGZOrmc=</dsig:DigestValue>
     </hash>
   </file>
   <file name="IdealAutomateExplorer.exe.config" size="507">
