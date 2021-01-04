@@ -15,6 +15,10 @@ using System.IO;
 using System.Collections.ObjectModel;
 using IdealAutomate.Core;
 using System.Windows.Forms.Samples;
+using System.Net.Http;
+
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace GitHubApiDemo
 {
@@ -549,7 +553,7 @@ namespace GitHubApiDemo
 			//using (var dialog = new SearchCriteriaForm { SelectedObject = broker })
 			//	if (dialog.ShowDialog(this) == DialogResult.OK)
 			
-			broker.Term = "IdealAutomatex";
+			broker.Term = "IdealAutomatex";			
 			searchResult = await CreateSearcher(broker).SearchAsync();
 			//searchResult = searcher.Search();
             foreach (var item in ((SearchResult<Octokit.Repository>)(searchResult)).Items)
@@ -685,7 +689,7 @@ namespace GitHubApiDemo
 		}
         #endregion // Private enums
 
-        private void downloadToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void downloadToolStripMenuItem_ClickAsync(object sender, EventArgs e)
         {
 			IdealAutomate.Core.Methods myActions = new Methods();
 			FileFolderDialog dialog = new FileFolderDialog();
@@ -717,7 +721,38 @@ namespace GitHubApiDemo
 			DataGridViewSelectedRowCollection rows = mainDataGridView.SelectedRows;
 			object item = rows.Count > 0 ? rows[0].DataBoundItem : null;
 
-            string url = @"https://raw.githubusercontent.com/harvey007y/IdealAutomatex-harvey007y/main/" + ((Octokit.SearchCode)(item)).Path;
+			var httpClient = new HttpClient();
+			httpClient.DefaultRequestHeaders.UserAgent.Add(
+				 new System.Net.Http.Headers.ProductInfoHeaderValue("MyApplication", "1"));
+			var repo = ((Octokit.SearchCode)(item)).Repository.Owner.Login + "/" + ((Octokit.SearchCode)(item)).Repository.Name;
+			var contentsUrl = $"https://api.github.com/repos/{repo}/contents/" + ((Octokit.SearchCode)(item)).Path;
+			var contentsJson =  await httpClient.GetStringAsync(contentsUrl);			
+			var contents = (JObject)JsonConvert.DeserializeObject(contentsJson);
+			
+			string url = (string)contents["download_url"];
+			//foreach (var file in contents)
+			//{
+			//	var fileType = (string)file["type"];
+			//	var filePath = (string)file["path"];
+			//	if (fileType == "dir")
+			//	{
+			//		var directoryContentsUrl = (string)file["url"];
+			//		// use this URL to list the contents of the folder
+			//		Console.WriteLine($"DIR: {directoryContentsUrl}");
+			//	}
+			//	else if (fileType == "file")
+			//	{
+			//		if (filePath == ((Octokit.SearchCode)(item)).Path)
+			//		{
+			//			var downloadUrl = (string)file["download_url"];
+			//			url = downloadUrl;
+			//			// use this URL to download the contents of the file
+			//			Console.WriteLine($"DOWNLOAD: {downloadUrl}");
+			//		}
+			//	}
+			//}
+
+			//string url = @"https://raw.githubusercontent.com/harvey007y/IdealAutomatex-harvey007y/main/" + ((Octokit.SearchCode)(item)).Path;
             // Create an instance of WebClient
             WebClient client = new WebClient();
             // Hookup DownloadFileCompleted Event
@@ -743,7 +778,7 @@ namespace GitHubApiDemo
 			Run();
 		}
 
-		private void downloadAndRunToolStripMenuItem_Click(object sender, EventArgs e)
+		private async void downloadAndRunToolStripMenuItem_Click(object sender, EventArgs e)
         {
 			IdealAutomate.Core.Methods myActions = new Methods();
 			FileFolderDialog dialog = new FileFolderDialog();
@@ -774,8 +809,15 @@ namespace GitHubApiDemo
 			}
 			DataGridViewSelectedRowCollection rows = mainDataGridView.SelectedRows;
 			object item = rows.Count > 0 ? rows[0].DataBoundItem : null;
+			var httpClient = new HttpClient();
+			httpClient.DefaultRequestHeaders.UserAgent.Add(
+				 new System.Net.Http.Headers.ProductInfoHeaderValue("MyApplication", "1"));
+			var repo = ((Octokit.SearchCode)(item)).Repository.Owner.Login + "/" + ((Octokit.SearchCode)(item)).Repository.Name;
+			var contentsUrl = $"https://api.github.com/repos/{repo}/contents/" + ((Octokit.SearchCode)(item)).Path;
+			var contentsJson = await httpClient.GetStringAsync(contentsUrl);
+			var contents = (JObject)JsonConvert.DeserializeObject(contentsJson);
 
-			string url = @"https://raw.githubusercontent.com/harvey007y/IdealAutomatex-harvey007y/main/" + ((Octokit.SearchCode)(item)).Path;
+			string url = (string)contents["download_url"];
 			// Create an instance of WebClient
 			WebClient client = new WebClient();
 			// Hookup DownloadFileCompleted Event
@@ -920,7 +962,7 @@ namespace GitHubApiDemo
 			main.Invoke(null, null);
 
 
-
+			System.Windows.Forms.Application.Exit();
 
 			// Done --------------------
 			//if (intWindowHeight > 700)
@@ -929,7 +971,7 @@ namespace GitHubApiDemo
 			//}
 
 
-			
+
 
 		}
 
