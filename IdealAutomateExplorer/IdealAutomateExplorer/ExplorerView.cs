@@ -10580,6 +10580,22 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             string strScriptExecExe = Path.Combine(strApplicationBinDebug, @"ScriptExec.exe");
             myActions.Run(strScriptExecExe, "");
         }
+
+        private void renameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string strApplicationBinDebug = System.Windows.Forms.Application.StartupPath;
+            //string strApplicationPath = strApplicationBinDebug.Replace("\\IdealAutomateExplorer\\bin\\Debug", "");
+            string strhowto_rename_files_with_regex_exe = Path.Combine(strApplicationBinDebug, @"howto_rename_files_with_regex.exe");
+            myActions.Run(strhowto_rename_files_with_regex_exe, "");
+        }
+
+        private void renameToolStripMenuItem_MouseHover(object sender, EventArgs e)
+        {
+            System.Drawing.Point myPoint = new System.Drawing.Point(pictureBox1.Width - (pictureBox1.Width / 2), 0);
+            content.MyContent = "Here is the link to learn more about how to use this utility:  \r\n";
+            content.MyLink = "http://csharphelper.com/blog/2014/09/use-regular-expressions-to-rename-files-that-match-a-pattern-in-c/";
+            DisplayToolTip(sender);
+        }
         //private void LogMemory(string msg) {
         //    _memoryCurr = GC.GetTotalMemory(true);
         //    _memoryGain = _memoryCurr - _memoryPrev;

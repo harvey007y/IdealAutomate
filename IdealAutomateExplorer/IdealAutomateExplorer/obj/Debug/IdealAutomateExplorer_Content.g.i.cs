@@ -13,6 +13,7 @@
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("debloatscript.ps1")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("getcursorposdemo.exe")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("githubapidemo.exe")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("howto_rename_files_with_regex.exe")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("idealautomatecore.dll")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("idealsqltracer.exe")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("images/112_uparrowshort_green.ico")]

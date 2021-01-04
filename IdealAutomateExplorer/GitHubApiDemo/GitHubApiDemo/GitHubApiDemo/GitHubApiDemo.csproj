@@ -38,7 +38,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="IdealAutomateCore">
-      <HintPath>..\..\..\..\AppData\Roaming\IdealAutomate\IdealAutomateCore.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\AppData\Roaming\IdealAutomate\IdealAutomateCore.dll</HintPath>
     </Reference>
     <Reference Include="Octokit, Version=0.32.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Octokit.0.32.0\lib\net45\Octokit.dll</HintPath>
@@ -104,6 +104,9 @@
     </Compile>
     <Compile Include="EnumListTypeConverter.cs" />
     <Compile Include="EnumListUITypeEditor.cs" />
+    <Compile Include="FileFolderDialog.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="IListExtensions.cs" />
     <Compile Include="Int32RangeConverter.cs" />
     <Compile Include="DateRangeConverter.cs" />

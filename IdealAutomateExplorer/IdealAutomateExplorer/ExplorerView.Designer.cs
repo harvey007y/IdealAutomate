@@ -89,6 +89,7 @@ namespace System.Windows.Forms.Samples
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem20 = new System.Windows.Forms.ToolStripMenuItem();
             this.githubSearchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.scriptExecToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem11 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem12 = new System.Windows.Forms.ToolStripMenuItem();
             this.googleDriveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -156,6 +157,7 @@ namespace System.Windows.Forms.Samples
             this.speakItToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.debloatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.renameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem10 = new System.Windows.Forms.ToolStripMenuItem();
             this.courseraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pluralsightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -177,7 +179,6 @@ namespace System.Windows.Forms.Samples
             this.interactiveToolTip1 = new Digitalis.GUI.Controls.InteractiveToolTip(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.cbxTabsCollection = new System.Windows.Forms.ComboBox();
-            this.scriptExecToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FileViewBindingSource)).BeginInit();
             this.toolBar.SuspendLayout();
@@ -699,9 +700,16 @@ namespace System.Windows.Forms.Samples
             // githubSearchToolStripMenuItem
             // 
             this.githubSearchToolStripMenuItem.Name = "githubSearchToolStripMenuItem";
-            this.githubSearchToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.githubSearchToolStripMenuItem.Text = "Github Search";
+            this.githubSearchToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.githubSearchToolStripMenuItem.Text = "Remote Github Search";
             this.githubSearchToolStripMenuItem.Click += new System.EventHandler(this.githubSearchToolStripMenuItem_Click);
+            // 
+            // scriptExecToolStripMenuItem
+            // 
+            this.scriptExecToolStripMenuItem.Name = "scriptExecToolStripMenuItem";
+            this.scriptExecToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.scriptExecToolStripMenuItem.Text = "Local ScriptExec";
+            this.scriptExecToolStripMenuItem.Click += new System.EventHandler(this.scriptExecToolStripMenuItem_Click);
             // 
             // toolStripMenuItem11
             // 
@@ -1247,7 +1255,8 @@ namespace System.Windows.Forms.Samples
             // windowsToolStripMenuItem
             // 
             this.windowsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.debloatToolStripMenuItem});
+            this.debloatToolStripMenuItem,
+            this.renameToolStripMenuItem});
             this.windowsToolStripMenuItem.Name = "windowsToolStripMenuItem";
             this.windowsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.windowsToolStripMenuItem.Text = "Windows";
@@ -1255,10 +1264,18 @@ namespace System.Windows.Forms.Samples
             // debloatToolStripMenuItem
             // 
             this.debloatToolStripMenuItem.Name = "debloatToolStripMenuItem";
-            this.debloatToolStripMenuItem.Size = new System.Drawing.Size(115, 22);
+            this.debloatToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.debloatToolStripMenuItem.Text = "Debloat";
             this.debloatToolStripMenuItem.Click += new System.EventHandler(this.debloatToolStripMenuItem_Click);
             this.debloatToolStripMenuItem.MouseHover += new System.EventHandler(this.debloatToolStripMenuItem_MouseHover);
+            // 
+            // renameToolStripMenuItem
+            // 
+            this.renameToolStripMenuItem.Name = "renameToolStripMenuItem";
+            this.renameToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.renameToolStripMenuItem.Text = "Rename Files w regex";
+            this.renameToolStripMenuItem.Click += new System.EventHandler(this.renameToolStripMenuItem_Click);
+            this.renameToolStripMenuItem.MouseHover += new System.EventHandler(this.renameToolStripMenuItem_MouseHover);
             // 
             // toolStripMenuItem10
             // 
@@ -1407,13 +1424,6 @@ namespace System.Windows.Forms.Samples
             this.cbxTabsCollection.TabIndex = 16;
             this.cbxTabsCollection.SelectedIndexChanged += new System.EventHandler(this.cbxTabsCollection_SelectedIndexChanged);
             this.cbxTabsCollection.Leave += new System.EventHandler(this.cbxTabsCollection_Leave);
-            // 
-            // scriptExecToolStripMenuItem
-            // 
-            this.scriptExecToolStripMenuItem.Name = "scriptExecToolStripMenuItem";
-            this.scriptExecToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.scriptExecToolStripMenuItem.Text = "ScriptExec";
-            this.scriptExecToolStripMenuItem.Click += new System.EventHandler(this.scriptExecToolStripMenuItem_Click);
             // 
             // ExplorerView
             // 
@@ -1602,6 +1612,7 @@ namespace System.Windows.Forms.Samples
         private ToolStripMenuItem toolStripMenuItem20;
         private ToolStripMenuItem githubSearchToolStripMenuItem;
         private ToolStripMenuItem scriptExecToolStripMenuItem;
+        private ToolStripMenuItem renameToolStripMenuItem;
     }
 }
 

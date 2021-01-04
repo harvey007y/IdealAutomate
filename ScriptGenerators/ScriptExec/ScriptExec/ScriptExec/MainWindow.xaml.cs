@@ -67,7 +67,7 @@ namespace ScriptExec
                 myActions.TypeText("%(\" \"n)", 1000); // minimize visual studio
             }
             myActions.Sleep(1000);
-
+            tryAgain:
             FileFolderDialog dialog = new FileFolderDialog();
             //   dialog.ShowDialog();
             dialog.SelectedPath = myActions.GetValueByKey("LastSearchFolder");
@@ -86,7 +86,7 @@ namespace ScriptExec
             }
 
 
-                using (StreamReader reader = File.OpenText(dialog.SelectedPath))
+            using (StreamReader reader = File.OpenText(dialog.SelectedPath))
             {
                 sb.Clear();
                 while (!reader.EndOfStream)
@@ -122,94 +122,102 @@ namespace ScriptExec
 
 
 
-//            code = @"
-//   using System.Windows;
-//using IdealAutomate.Core;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Diagnostics;
-//using System.Text;
-//using System;
-//using System.Drawing;
-//using System.Windows.Media.Imaging;
-//using System.IO;
+            //            code = @"
+            //   using System.Windows;
+            //using IdealAutomate.Core;
+            //using System.Collections.Generic;
+            //using System.Linq;
+            //using System.Diagnostics;
+            //using System.Text;
+            //using System;
+            //using System.Drawing;
+            //using System.Windows.Media.Imaging;
+            //using System.IO;
 
 
-//using System.Reflection;
+            //using System.Reflection;
 
-//    namespace First
-//    {
-//        public class Program : Window 
-//        {
-//            public static void Main()
-//            {
-// var window = new Window() //make sure the window is invisible
-//            {
-//                Width = 0,
-//                Height = 0,
-//                Left = -2000,
-//                WindowStyle = WindowStyle.None,
-//                ShowInTaskbar = false,
-//                ShowActivated = false,
-//            };
-//            window.Show();
-//            " +
-//"\r\n IdealAutomate.Core.Methods myActions = new Methods();" +
-//      sb.ToString()
-//+ @"
-//            }
+            //    namespace First
+            //    {
+            //        public class Program : Window 
+            //        {
+            //            public static void Main()
+            //            {
+            // var window = new Window() //make sure the window is invisible
+            //            {
+            //                Width = 0,
+            //                Height = 0,
+            //                Left = -2000,
+            //                WindowStyle = WindowStyle.None,
+            //                ShowInTaskbar = false,
+            //                ShowActivated = false,
+            //            };
+            //            window.Show();
+            //            " +
+            //"\r\n IdealAutomate.Core.Methods myActions = new Methods();" +
+            //      sb.ToString()
+            //+ @"
+            //            }
 
-//";
-        
-
-                CSharpCodeProvider provider = new CSharpCodeProvider();
-                CompilerParameters parameters = new CompilerParameters();
-                // Reference to System.Drawing library
-                parameters.ReferencedAssemblies.Add("System.Drawing.dll");
-                parameters.ReferencedAssemblies.Add(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"IdealAutomate\IdealAutomateCore.dll"));
-                parameters.ReferencedAssemblies.Add(@"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\PresentationFramework.dll");
-                parameters.ReferencedAssemblies.Add(@"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\PresentationCore.dll");
-                parameters.ReferencedAssemblies.Add("System.dll");
-                parameters.ReferencedAssemblies.Add("System.Core.dll");
-                parameters.ReferencedAssemblies.Add("System.Data.dll");
-                parameters.ReferencedAssemblies.Add("System.Data.DataSetExtensions.dll");
-                parameters.ReferencedAssemblies.Add("System.Xml.Linq.dll");
-                parameters.ReferencedAssemblies.Add("System.Windows.Forms.dll");
-                parameters.ReferencedAssemblies.Add("System.Xaml.dll");
-                parameters.ReferencedAssemblies.Add("System.Xml.dll");
-                parameters.ReferencedAssemblies.Add(@"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\WindowsBase.dll");
+            //";
 
 
-                // True - memory generation, false - external file generation
-                parameters.GenerateInMemory = true;
-                // True - exe file generation, false - dll file generation
-                parameters.GenerateExecutable = true;
-                CompilerResults results = provider.CompileAssemblyFromSource(parameters, code);
-                if (results.Errors.HasErrors)
+            CSharpCodeProvider provider = new CSharpCodeProvider();
+            CompilerParameters parameters = new CompilerParameters();
+            // Reference to System.Drawing library
+            parameters.ReferencedAssemblies.Add("System.Drawing.dll");
+            parameters.ReferencedAssemblies.Add(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"IdealAutomate\IdealAutomateCore.dll"));
+            parameters.ReferencedAssemblies.Add(@"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\PresentationFramework.dll");
+            parameters.ReferencedAssemblies.Add(@"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\PresentationCore.dll");
+            parameters.ReferencedAssemblies.Add("System.dll");
+            parameters.ReferencedAssemblies.Add("System.Core.dll");
+            parameters.ReferencedAssemblies.Add("System.Data.dll");
+            parameters.ReferencedAssemblies.Add("System.Data.DataSetExtensions.dll");
+            parameters.ReferencedAssemblies.Add("System.Xml.Linq.dll");
+            parameters.ReferencedAssemblies.Add("System.Windows.Forms.dll");
+            parameters.ReferencedAssemblies.Add("System.Xaml.dll");
+            parameters.ReferencedAssemblies.Add("System.Xml.dll");
+            parameters.ReferencedAssemblies.Add(@"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Profile\Client\WindowsBase.dll");
+
+
+            // True - memory generation, false - external file generation
+            parameters.GenerateInMemory = true;
+            // True - exe file generation, false - dll file generation
+            parameters.GenerateExecutable = true;
+            CompilerResults results = provider.CompileAssemblyFromSource(parameters, code);
+            if (results.Errors.HasErrors)
+            {
+                StringBuilder sb5 = new StringBuilder();
+
+                foreach (CompilerError error in results.Errors)
                 {
-                    StringBuilder sb5 = new StringBuilder();
-
-                    foreach (CompilerError error in results.Errors)
-                    {
-                        sb5.AppendLine(String.Format("Error ({0}): {1} Line: {2}", error.ErrorNumber, error.ErrorText, error.Line));
-                    }
-
-                    myActions.MessageBoxShow(sb5.ToString());
+                    sb5.AppendLine(String.Format("Error ({0}): {1} Line: {2}", error.ErrorNumber, error.ErrorText, error.Line));
                 }
-                Assembly assembly = results.CompiledAssembly;
-                Type program = assembly.GetType("First.Program");
-                MethodInfo main = program.GetMethod("Main");
-                main.Invoke(null, null);
-              
-              
 
-           
+                myActions.Run(@"C:\Program Files\Notepad++\notepad++.exe", "\"" + dialog.SelectedPath + "\"");
+                System.Windows.Forms.DialogResult myResult = myActions.MessageBoxShowWithYesNo (sb5.ToString() + "\n\r Do you want to try again");
+                if (myResult == System.Windows.Forms.DialogResult.Yes)
+                {
+                    goto tryAgain;
+                } else
+                {
+                    goto myExit;
+                }
+            }
+            Assembly assembly = results.CompiledAssembly;
+            Type program = assembly.GetType("First.Program");
+            MethodInfo main = program.GetMethod("Main");
+            main.Invoke(null, null);
+
+
+
+
             // Done --------------------
             if (intWindowHeight > 700)
             {
                 intWindowHeight = 700;
             }
-          
+
 
             //bool boolUseNewTab = myListControlEntity.Find(x => x.ID == "myCheckBox").Checked;
             //if (boolUseNewTab == true)

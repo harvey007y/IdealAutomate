@@ -67,7 +67,7 @@ namespace ScriptExec
                 myActions.TypeText("%(\" \"n)", 1000); // minimize visual studio
             }
             myActions.Sleep(1000);
-
+            tryAgain:
             FileFolderDialog dialog = new FileFolderDialog();
             //   dialog.ShowDialog();
             dialog.SelectedPath = myActions.GetValueByKey("LastSearchFolder");
@@ -194,8 +194,17 @@ namespace ScriptExec
                         sb5.AppendLine(String.Format("Error ({0}): {1} Line: {2}", error.ErrorNumber, error.ErrorText, error.Line));
                     }
 
-                    myActions.MessageBoxShow(sb5.ToString());
+                myActions.Run(@"C:\Program Files\Notepad++\notepad++.exe", "\"" + dialog.SelectedPath + "\"");
+                System.Windows.Forms.DialogResult myResult = myActions.MessageBoxShowWithYesNo(sb5.ToString() + "\n\r Do you want to try again");
+                if (myResult == System.Windows.Forms.DialogResult.Yes)
+                {
+                    goto tryAgain;
                 }
+                else
+                {
+                    goto myExit;
+                }
+            }
                 Assembly assembly = results.CompiledAssembly;
                 Type program = assembly.GetType("First.Program");
                 MethodInfo main = program.GetMethod("Main");

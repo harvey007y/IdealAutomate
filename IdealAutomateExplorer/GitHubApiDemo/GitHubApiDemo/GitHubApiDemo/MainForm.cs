@@ -13,6 +13,8 @@ using System.Text;
 using Microsoft.CSharp;
 using System.IO;
 using System.Collections.ObjectModel;
+using IdealAutomate.Core;
+using System.Windows.Forms.Samples;
 
 namespace GitHubApiDemo
 {
@@ -62,6 +64,7 @@ namespace GitHubApiDemo
 		private bool isExitPending;
 		private List<string> repos = new List<string>();
 		private List<SearchCode> paths = new List<SearchCode>();
+		private string downloadFileName = "";
 		#endregion // Private data
 
 #pragma warning disable IDE1006 // Naming Styles
@@ -684,6 +687,33 @@ namespace GitHubApiDemo
 
         private void downloadToolStripMenuItem_Click(object sender, EventArgs e)
         {
+			IdealAutomate.Core.Methods myActions = new Methods();
+			FileFolderDialog dialog = new FileFolderDialog();
+			//   dialog.ShowDialog();
+			dialog.SelectedPath = myActions.GetValueByKey("LastSearchFolder");
+			string str = "LastSearchFolder";
+			
+			System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+			FileAttributes attr = File.GetAttributes(dialog.SelectedPath);
+			string downloadFileType = "";
+			//detect whether its a directory or file
+			if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
+			{
+				downloadFileType = "directory";
+			}
+			else
+			{
+				downloadFileType = "file";
+			}
+
+			if (result == System.Windows.Forms.DialogResult.OK && (Directory.Exists(dialog.SelectedPath) || File.Exists(dialog.SelectedPath)))
+			{
+				//cbxFolder.SelectedValue = dialog.SelectedPath;
+				//cbxFolder.Text = dialog.SelectedPath;
+				myActions.SetValueByKey("LastSearchFolder", dialog.SelectedPath);
+				string strFolder = dialog.SelectedPath;
+				myActions.SetValueByKey("cbxFolderSelectedValue", strFolder);
+			}
 			DataGridViewSelectedRowCollection rows = mainDataGridView.SelectedRows;
 			object item = rows.Count > 0 ? rows[0].DataBoundItem : null;
 
@@ -692,22 +722,56 @@ namespace GitHubApiDemo
             WebClient client = new WebClient();
             // Hookup DownloadFileCompleted Event
             client.DownloadFileCompleted += new AsyncCompletedEventHandler(client_DownloadFileCompleted);
-
-            // Start the download and copy the file to c:\temp
-            client.DownloadFileAsync(new Uri(url), @"c:\data\atestdownload.txt");
+			
+			if (downloadFileType == "directory") {
+				downloadFileName = dialog.SelectedPath + "\\" + ((Octokit.SearchCode)(item)).Name; 
+			} else {
+				downloadFileName = dialog.SelectedPath;
+			}
+            // Start the download 
+            client.DownloadFileAsync(new Uri(url), downloadFileName);
         }
 		void client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
 		{
-			MessageBox.Show("File downloaded");
+			
+			MessageBox.Show("File downloaded to " + downloadFileName + " lines = " + File.ReadLines(downloadFileName).Count());
 		}
 
 		void client_DownloadFileCompleted2(object sender, AsyncCompletedEventArgs e)
 		{
+			MessageBox.Show("File downloaded to " + downloadFileName + " lines = " + File.ReadLines(downloadFileName).Count());
 			Run();
 		}
 
 		private void downloadAndRunToolStripMenuItem_Click(object sender, EventArgs e)
         {
+			IdealAutomate.Core.Methods myActions = new Methods();
+			FileFolderDialog dialog = new FileFolderDialog();
+			//   dialog.ShowDialog();
+			dialog.SelectedPath = myActions.GetValueByKey("LastSearchFolder");
+			string str = "LastSearchFolder";
+
+			System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+			FileAttributes attr = File.GetAttributes(dialog.SelectedPath);
+			string downloadFileType = "";
+			//detect whether its a directory or file
+			if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
+			{
+				downloadFileType = "directory";
+			}
+			else
+			{
+				downloadFileType = "file";
+			}
+
+			if (result == System.Windows.Forms.DialogResult.OK && (Directory.Exists(dialog.SelectedPath) || File.Exists(dialog.SelectedPath)))
+			{
+				//cbxFolder.SelectedValue = dialog.SelectedPath;
+				//cbxFolder.Text = dialog.SelectedPath;
+				myActions.SetValueByKey("LastSearchFolder", dialog.SelectedPath);
+				string strFolder = dialog.SelectedPath;
+				myActions.SetValueByKey("cbxFolderSelectedValue", strFolder);
+			}
 			DataGridViewSelectedRowCollection rows = mainDataGridView.SelectedRows;
 			object item = rows.Count > 0 ? rows[0].DataBoundItem : null;
 
@@ -717,12 +781,21 @@ namespace GitHubApiDemo
 			// Hookup DownloadFileCompleted Event
 			client.DownloadFileCompleted += new AsyncCompletedEventHandler(client_DownloadFileCompleted2);
 
-			// Start the download and copy the file to c:\temp
-			client.DownloadFileAsync(new Uri(url), @"c:\data\atestdownload.txt");
+			if (downloadFileType == "directory")
+			{
+				downloadFileName = dialog.SelectedPath + "\\" + ((Octokit.SearchCode)(item)).Name;
+			}
+			else
+			{
+				downloadFileName = dialog.SelectedPath;
+			}
+			// Start the download 
+			client.DownloadFileAsync(new Uri(url), downloadFileName);
 		}
 
 		private void Run()
         {
+			tryAgain:
 			int intWindowHeight = 110;
 			int _maxLineChars = 0;
 			string strBalloonArrowDirection = "NONE";
@@ -762,7 +835,7 @@ namespace GitHubApiDemo
 			//myActions.Sleep(1000);
 
 
-			using (StreamReader reader = File.OpenText(@"C:\Data\atestdownload.txt"))
+			using (StreamReader reader = File.OpenText(downloadFileName))
 			{
 				sb.Clear();
 				while (!reader.EndOfStream)
@@ -821,6 +894,7 @@ namespace GitHubApiDemo
 			// True - exe file generation, false - dll file generation
 			parameters.GenerateExecutable = true;
 			CompilerResults results = provider.CompileAssemblyFromSource(parameters, code);
+			Methods myActions = new Methods();
 			if (results.Errors.HasErrors)
 			{
 				StringBuilder sb5 = new StringBuilder();
@@ -829,8 +903,16 @@ namespace GitHubApiDemo
 				{
 					sb5.AppendLine(String.Format("Error ({0}): {1} Line: {2}", error.ErrorNumber, error.ErrorText, error.Line));
 				}
-
-				MessageBox.Show(sb5.ToString());
+				myActions.Run(@"C:\Program Files\Notepad++\notepad++.exe", "\"" + downloadFileName + "\"");
+				System.Windows.Forms.DialogResult myResult = myActions.MessageBoxShowWithYesNo(sb5.ToString() + "\n\r Do you want to try again");
+				if (myResult == System.Windows.Forms.DialogResult.Yes)
+				{
+					goto tryAgain;
+				}
+				else
+				{
+					return;
+				}
 			}
 			Assembly assembly = results.CompiledAssembly;
 			Type program = assembly.GetType("First.Program");

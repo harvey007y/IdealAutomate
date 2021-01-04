@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
-  <asmv1:assemblyIdentity name="IdealAutomateExplorer.exe" version="1.0.0.152" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="amd64" type="win32" />
+  <asmv1:assemblyIdentity name="IdealAutomateExplorer.exe" version="1.0.0.154" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="amd64" type="win32" />
   <description asmv2:iconFile="Resources\folder.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="IdealAutomateExplorer" version="1.0.7671.26677" language="neutral" processorArchitecture="amd64" />
+    <assemblyIdentity name="IdealAutomateExplorer" version="1.0.7673.35046" language="neutral" processorArchitecture="amd64" />
     <commandLine file="IdealAutomateExplorer.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -62,7 +62,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>3nS7+jwK6HMiqj2Icz2ohqjwPm+8h2d7JrUHCFNsQ28=</dsig:DigestValue>
+        <dsig:DigestValue>o8p1XbzJYDRdSnwCZGxQubd4SJ1Xq27e2MCaFSUtA7s=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -74,7 +74,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>0WFWrKzYQOyEFulKnAOG0Bg8HM/lD3s7Y7LpwkedDOM=</dsig:DigestValue>
+        <dsig:DigestValue>Q3uB+aTY2l51qWR6RdVFptcsfbGm/EQsKNq5UgVl/Us=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -103,14 +103,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IdealAutomateExplorer.exe" size="1471456">
-      <assemblyIdentity name="IdealAutomateExplorer" version="1.0.7671.26677" language="neutral" processorArchitecture="amd64" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IdealAutomateExplorer.exe" size="1472480">
+      <assemblyIdentity name="IdealAutomateExplorer" version="1.0.7673.35046" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>XZ+WyCmkFURD/3410UAmrxhtM0NX3ZC5YrN5h8gCfjc=</dsig:DigestValue>
+        <dsig:DigestValue>6ytBU+XzyMoaFdcVFXFtbfv92RZDBmLPvJuLArnrv5c=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -122,7 +122,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>YH1/Kgn0OdsTZ/4QRXDWrEQdh8gJFMFr8Gffoz2wfcg=</dsig:DigestValue>
+        <dsig:DigestValue>3OQ0W0HCdHfKLwlJqbCAF69GD8Qbsbyr1Eu6AESYyCk=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -207,13 +207,22 @@
       <dsig:DigestValue>MTBQyFJ62gpoHoX2NtumWJy0pxbm6qfr/go+JZzgKoQ=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="GitHubApiDemo.exe" size="172544">
+  <file name="GitHubApiDemo.exe" size="175104">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>fU0odOJLlRObWw9MilJSD/nxLhe1R7McfDC7aBvH2Ys=</dsig:DigestValue>
+      <dsig:DigestValue>sw1xT1LhTBbTbRUr4Vr1oN0szZaolKccIeWlh+yUJ5I=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="howto_rename_files_with_regex.exe" size="14336">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>YDYqFGq5TzsZzgXkps7BMGvkJiSkmEcXX/Fk9voemYU=</dsig:DigestValue>
     </hash>
   </file>
   <file name="IdealAutomateCore.dll" size="213504">
@@ -1617,7 +1626,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>Pb+s4Xrv/8dBfVHXjZld1IbxQBVdm8kFKysfcFZMQ3c=</dsig:DigestValue>
+      <dsig:DigestValue>REySxCv8x/bVseJKFtjAAgbvnZFYp5TSCq6ou4xdKkQ=</dsig:DigestValue>
     </hash>
   </file>
   <file name="SqlFormatter.exe" size="206336">
