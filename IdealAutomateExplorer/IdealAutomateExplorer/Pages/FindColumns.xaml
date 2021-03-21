@@ -41,10 +41,10 @@
             </dg:DataGrid>
 
             <Label Name="Label3" Height="28" Width="43" FontSize="12" FontFamily="Microsoft Sans Serif" TabIndex="8" Margin="108,106,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" >Filter:</Label>
-            <TextBox Name="txtName" Height="22" Width="189" TabIndex="9" Margin="168,106,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap" TextChanged="txtName_TextChanged" ></TextBox>
-            <TextBox Name="txtXtype" Height="22" Width="90" TabIndex="10" Margin="373,106,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap" TextChanged="txtXtype_TextChanged"></TextBox>
-            <TextBox Name="txtColumnName" Height="22" Width="93" TabIndex="11" Margin="469,106,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap" TextChanged="txtColumnName_TextChanged"></TextBox>
-            <TextBox Name="txtDataType" Height="22" Width="89" TabIndex="12" Margin="575,106,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap" TextChanged="txtDataType_TextChanged"></TextBox>
+            <TextBox Name="txtName" Height="22" Width="189" TabIndex="9" Margin="168,106,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap" ></TextBox>
+            <TextBox Name="txtXtype" Height="22" Width="90" TabIndex="10" Margin="373,106,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap" ></TextBox>
+            <TextBox Name="txtColumnName" Height="22" Width="93" TabIndex="11" Margin="469,106,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap" ></TextBox>
+            <TextBox Name="txtDataType" Height="22" Width="89" TabIndex="12" Margin="575,106,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap" ></TextBox>
             <Label Content="Use % for Wildcard" Height="28" HorizontalAlignment="Left" Margin="8,76,0,0" Name="label4" VerticalAlignment="Top" Foreground="Red" FontStyle="Italic" FontWeight="Bold" />
             <Label Content="Table Name:" Height="28" HorizontalAlignment="Left" Margin="168,76,0,0" Name="label5" VerticalAlignment="Top" />
             <Label Content="Type:" Height="28" HorizontalAlignment="Left" Margin="373,76,0,0" Name="label6" VerticalAlignment="Top" />
@@ -65,6 +65,7 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>
+            <Button x:Name="btnFilter" Content="Filter" HorizontalAlignment="Left" Margin="675,108,0,0" VerticalAlignment="Top" Width="75" Click="FilterButton"/>
         </Grid>
     </StackPanel>
 </Window>
