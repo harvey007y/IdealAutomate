@@ -91,6 +91,7 @@ namespace System.Windows.Forms.Samples
         private const int WM_SYSCOMMAND = 274;
         private bool _Panel2KeyPress = false;
         private bool _WordPadLoaded = false;
+        private string _CurrentTabTitle = "";
         private bool _WebBrowserLoaded = false;
         private bool _NotepadppLoaded = false;
         ArrayList _myArrayList;
@@ -292,7 +293,7 @@ namespace System.Windows.Forms.Samples
 
             tabControl1.DrawItem += TabControl1_DrawItem;
             tabControl1.Padding = new System.Drawing.Point(20, 3);
-            tabControl1.MouseClick += TabControl1_MouseClick;
+            tabControl1.MouseClick += TabControl1_MouseClick;           
         }
 
         private void ExplorerView_Activated(object sender, EventArgs e)
@@ -303,7 +304,7 @@ namespace System.Windows.Forms.Samples
             {
                 SetForegroundWindow(hWnd);
                 ShowWindow(hWnd, SWP_SHOWWINDOW);
-            }
+            }           
         }
 
         public void TabControl1_MouseClick(object sender, MouseEventArgs e)
@@ -763,7 +764,7 @@ namespace System.Windows.Forms.Samples
                                 MoveWindow(_appHandle, 0, 0, _CurrentSplitContainer.Panel2.Width - _monitorSizeAdjustment, _CurrentSplitContainer.Panel2.Height, true);
                             }
                             //  SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
-                            //  SetTitle(_dir.FileView);
+                            //  SetTitle(_dir.FileView);                           
                         }
                         else
                         {
@@ -844,7 +845,7 @@ namespace System.Windows.Forms.Samples
             }
             txtMetaDescription.Text = myActions.GetValueByPublicKeyInCurrentFolder("description", fileName);
             _newTab = true;
-            this.Cursor = Cursors.Default;
+            this.Cursor = Cursors.Default;            
         }
 
         private void TabControl1_DrawItem(object sender, System.Windows.Forms.DrawItemEventArgs e)
@@ -873,6 +874,7 @@ namespace System.Windows.Forms.Samples
         {
             // Clicked on the Name property, update the title
             this.Text = fv.Name + " - Ideal Automate Explorer";
+            _CurrentTabTitle = this.Text;
 
             this.Icon = fv.Icon;
             cbxCurrentPath.Text = fv.FullName;
@@ -2960,7 +2962,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                                 MoveWindow(_appHandle, 0, 0, _CurrentSplitContainer.Panel2.Width - _monitorSizeAdjustment, _CurrentSplitContainer.Panel2.Height, true);
                             }
                             //  SendMessage(_appHandle, WM_SYSCOMMAND, SC_MAXIMIZE, 0);
-                            //  SetTitle(_dir.FileView);
+                            //  SetTitle(_dir.FileView);                           
                         }
                         else
                         {
@@ -3045,7 +3047,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             //LogMemory("end of  refresh  GC.Count ");
             //Logging.WriteLogSimple("refresh " + _stopwatch.Elapsed.ToString() + " GC.Count " + String.Format("{0:n0}", GC.GetTotalMemory(true)));
 
-            //GC.Collect();
+            //GC.Collect();          
         }
 
         public void RefreshDataGridWithoutOpeningSelectedRow()
@@ -3763,7 +3765,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                                     _monitorSizeAdjustment = Screen.AllScreens[0].WorkingArea.Width + 5 - Screen.AllScreens[1].WorkingArea.Width;
                                 }
                                 MoveWindow(_appHandle, 0, 0, _CurrentSplitContainer.Panel2.Width - _monitorSizeAdjustment, _CurrentSplitContainer.Panel2.Height, true);
-                            }
+                            }                           
                         }
                         else
                         {
@@ -4481,7 +4483,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 {
                     string strExecutable = @"C:\Program Files\Windows NT\Accessories\wordpad.exe";
                     _WordPadLoaded = true;
-                    myActions.Run(strExecutable, "\"" + myFileView.FullName + "\"");
+                    myActions.Run(strExecutable, "\"" + myFileView.FullName + "\"");                   
                 }
                 else
                 {
@@ -8891,7 +8893,10 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         {
             if (_Panel2KeyPress && (_WordPadLoaded || _NotepadppLoaded))
             {
-
+                if (_WordPadLoaded)
+                {
+                    myActions.ActivateWindowByTitle(_CurrentTabTitle,5);
+                }
                 myActions.TypeText("^(s)", 200);
                 Popup();
                 _Panel2KeyPress = false;
@@ -8902,7 +8907,10 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         {
             if (_Panel2KeyPress && (_WordPadLoaded || _NotepadppLoaded))
             {
-
+                if (_WordPadLoaded)
+                {
+                    myActions.ActivateWindowByTitle(_CurrentTabTitle,5);
+                }
                 myActions.TypeText("^(s)", 200);
                 Popup();
                 _Panel2KeyPress = false;
@@ -8913,7 +8921,10 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         {
             if (_Panel2KeyPress && (_WordPadLoaded || _NotepadppLoaded))
             {
-
+                if (_WordPadLoaded)
+                {
+                    myActions.ActivateWindowByTitle(_CurrentTabTitle,5);
+                }
                 myActions.TypeText("^(s)", 200);
                 Popup();
                 _Panel2KeyPress = false;
@@ -8924,7 +8935,10 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         {
             if (_Panel2KeyPress && (_WordPadLoaded || _NotepadppLoaded))
             {
-
+                if (_WordPadLoaded)
+                {
+                    myActions.ActivateWindowByTitle(_CurrentTabTitle,5);
+                }
                 myActions.TypeText("^(s)", 200);
                 Popup();
                 _Panel2KeyPress = false;
