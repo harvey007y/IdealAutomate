@@ -77,10 +77,10 @@
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup>
-    <ManifestCertificateThumbprint>D36BF7EDA74D64AE8FA53FFBE0E9170512CB6F08</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>464035C17CAF56555835AAE914A34429295F0EF5</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>IdealAutomateExplorer_7_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>IdealAutomateExplorer_9_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>true</SignManifests>
@@ -90,10 +90,10 @@
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>IdealAutomateExplorer_6_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>IdealAutomateExplorer_9_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -674,6 +674,7 @@
     <None Include="IdealAutomateExplorer_5_TemporaryKey.pfx" />
     <None Include="IdealAutomateExplorer_6_TemporaryKey.pfx" />
     <None Include="IdealAutomateExplorer_7_TemporaryKey.pfx" />
+    <None Include="IdealAutomateExplorer_9_TemporaryKey.pfx" />
     <None Include="IdealAutomateExplorer_TemporaryKey.pfx" />
     <None Include="IdealAutomateExplorer_TemporaryKey1.pfx" />
     <None Include="Images\minus.png">

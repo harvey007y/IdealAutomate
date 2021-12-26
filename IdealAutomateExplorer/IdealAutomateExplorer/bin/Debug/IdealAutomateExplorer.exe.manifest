@@ -4,7 +4,7 @@
   <description asmv2:iconFile="Resources\folder.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="IdealAutomateExplorer" version="1.0.7674.16238" language="neutral" processorArchitecture="amd64" />
+    <assemblyIdentity name="IdealAutomateExplorer" version="1.0.8030.19217" publicKeyToken="ECC7404AD63AD623" language="neutral" processorArchitecture="amd64" />
     <commandLine file="IdealAutomateExplorer.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -55,14 +55,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="DataGridFilterLibrary.dll" size="108032">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="DataGridFilterLibrary.dll" size="109056">
       <assemblyIdentity name="DataGridFilterLibrary" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>o8p1XbzJYDRdSnwCZGxQubd4SJ1Xq27e2MCaFSUtA7s=</dsig:DigestValue>
+        <dsig:DigestValue>DPBcMQC3ua3ohFYi1f8Va48WYSeNQ4WcpBCVkoJXkgw=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -74,7 +74,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>Q3uB+aTY2l51qWR6RdVFptcsfbGm/EQsKNq5UgVl/Us=</dsig:DigestValue>
+        <dsig:DigestValue>UrNF5nRivTIWuoDKZsCoRrEEyJay6Jc00SN6/CHtGPM=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -103,14 +103,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IdealAutomateExplorer.exe" size="1472480">
-      <assemblyIdentity name="IdealAutomateExplorer" version="1.0.7674.16238" language="neutral" processorArchitecture="amd64" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IdealAutomateExplorer.exe" size="1470992">
+      <assemblyIdentity name="IdealAutomateExplorer" version="1.0.8030.19217" publicKeyToken="ECC7404AD63AD623" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>nU3h21aQ8L37spM1lCQDfDzwXfWe6hOuQYMQsEghrAc=</dsig:DigestValue>
+        <dsig:DigestValue>qmfKDZ87nxcLgWVGcXKMX2abPXEBTy98lV2tDxSVeyk=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -122,7 +122,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>3OQ0W0HCdHfKLwlJqbCAF69GD8Qbsbyr1Eu6AESYyCk=</dsig:DigestValue>
+        <dsig:DigestValue>5GhAJoEK3uQDQUCXC3nWKq0OTMpt6TBOPUVXUXrrZHQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -183,13 +183,13 @@
       <dsig:DigestValue>1/YwBTAD+VLgov+802BgshYxmvQxYkgoOXLVzzmtbgc=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="BuildProjects.bat" size="447">
+  <file name="BuildProjects.bat" size="662">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>K2hrDDyWimT8Q45i5zjmXzbhKePyAEebDZBbwGrlLTM=</dsig:DigestValue>
+      <dsig:DigestValue>WrYbLDMaP/hm07IyX59/V2X9wQixRovp1wWkrrDYm0w=</dsig:DigestValue>
     </hash>
   </file>
   <file name="debloat.bat" size="166">
