@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Collections;
+using System.Data;
 
 namespace IdealAutomate.Core {
     public class ControlEntity {
@@ -32,6 +36,8 @@ namespace IdealAutomate.Core {
         public System.Windows.Media.Color? ForegroundColor { get; set; }
         public int ParentLkDDLNamesItemsInc { get; set; }        
         public ImageSource Source { get; set; }
+        public DataTable  SourceDataTable { get; set; }
+
         public bool ComboBoxIsEditable { get; set; }
         /// <summary>
         /// DDLName is used when you want to use the same dropdownlist on the
@@ -86,6 +92,7 @@ namespace IdealAutomate.Core {
             FontStretchx = FontStretches.Normal;
             FontStyle = System.Windows.FontStyles.Normal;
             FontWeight = FontWeights.Normal;
+            SourceDataTable = new DataTable();
         }
         public void ControlEntitySetDefaults() {
             ControlType = ControlType.Label;
@@ -118,6 +125,7 @@ namespace IdealAutomate.Core {
             FontStretchx = FontStretches.Normal;
             FontStyle = System.Windows.FontStyles.Normal;
             FontWeight = FontWeights.Normal;
+            SourceDataTable = new DataTable();
         }
         public ControlEntity CreateControlEntity() {
             ControlEntity myControlEntity = new ControlEntity();
@@ -151,6 +159,7 @@ namespace IdealAutomate.Core {
             myControlEntity.FontStretchx = FontStretchx;
             myControlEntity.FontWeight = FontWeight;
             myControlEntity.Source = Source;
+            myControlEntity.SourceDataTable = SourceDataTable;
 
             return myControlEntity;
         }

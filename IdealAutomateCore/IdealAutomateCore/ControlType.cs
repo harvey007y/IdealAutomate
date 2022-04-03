@@ -13,5 +13,6 @@ namespace IdealAutomate.Core {
     Button,
     Image,
     PasswordBox,
+    DataGrid
   }
 }

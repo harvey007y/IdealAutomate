@@ -217,6 +217,30 @@ namespace IdealAutomate.Core {
                         Grid.SetColumnSpan(myPasswordBox, item.ColumnSpan);
                         myGrid.Children.Add(myPasswordBox);
                         break;
+                    case ControlType.DataGrid:
+                        DataGrid myDataGrid = new DataGrid();                        
+                        myDataGrid.Name = item.ID;
+                        myDataGrid.ItemsSource = ((DataTable)item.SourceDataTable).AsDataView();
+                        if (item.Width > 0)
+                        {
+                            myDataGrid.Width = item.Width;
+                        }
+
+                        if (item.Height > 0)
+                        {
+                            myDataGrid.Height = item.Height;
+                        }
+                        Grid.SetRow(myDataGrid, item.RowNumber);
+                        Grid.SetColumn(myDataGrid, item.ColumnNumber);
+                        if (item.ColumnSpan < 1)
+                        {
+                            item.ColumnSpan = 1;
+                        }
+                        myDataGrid.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
+                        myDataGrid.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+                        Grid.SetColumnSpan(myDataGrid, item.ColumnSpan);
+                        myGrid.Children.Add(myDataGrid);
+                        break;
                     case ControlType.ComboBox:
                         string strScriptName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
                         string settingsDirectory = GetAppDirectoryForScript();
