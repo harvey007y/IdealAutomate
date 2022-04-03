@@ -220,3 +220,4 @@ C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTrac
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\obj\x86\Debug\IdealSqlTracer.application
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\obj\x86\Debug\IdealSqlTracer.exe
 C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\obj\x86\Debug\IdealSqlTracer.pdb
+C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealSqlTracer\obj\x86\Debug\IdealSqlTracer.csproj.AssemblyReference.cache
