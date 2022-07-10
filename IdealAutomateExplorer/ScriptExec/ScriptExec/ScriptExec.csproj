@@ -41,7 +41,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>ScriptExec.App</StartupObject>
+    <StartupObject>First.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="IdealAutomateCore">

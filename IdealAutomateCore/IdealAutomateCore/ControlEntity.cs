@@ -38,6 +38,7 @@ namespace IdealAutomate.Core {
         public ImageSource Source { get; set; }
         public DataTable  SourceDataTable { get; set; }
 
+        public bool ComboBoxIsSorted { get; set; }
         public bool ComboBoxIsEditable { get; set; }
         /// <summary>
         /// DDLName is used when you want to use the same dropdownlist on the
@@ -83,6 +84,7 @@ namespace IdealAutomate.Core {
             ForegroundColor = null;
             Amount = 0;
             ParentLkDDLNamesItemsInc = -1;
+            ComboBoxIsSorted = false;
             ComboBoxIsEditable = false;
             DDLName = "";
             ToolTipx = "";
@@ -116,6 +118,7 @@ namespace IdealAutomate.Core {
             ForegroundColor = null;
             Amount = 0;
             ParentLkDDLNamesItemsInc = -1;
+            ComboBoxIsSorted = false;
             ComboBoxIsEditable = false;
             DDLName = "";
             ToolTipx = "";
@@ -152,6 +155,7 @@ namespace IdealAutomate.Core {
             myControlEntity.ParentLkDDLNamesItemsInc = ParentLkDDLNamesItemsInc;
             myControlEntity.ToolTipx = ToolTipx;
             myControlEntity.ComboBoxIsEditable = ComboBoxIsEditable;
+            myControlEntity.ComboBoxIsSorted = ComboBoxIsSorted;
             myControlEntity.DDLName = DDLName;
             myControlEntity.ColumnSpan = ColumnSpan;
             myControlEntity.FontFamilyx = FontFamilyx;

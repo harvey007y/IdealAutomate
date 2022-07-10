@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
-  <asmv1:assemblyIdentity name="IdealAutomateExplorer.exe" version="1.0.0.155" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="amd64" type="win32" />
+  <asmv1:assemblyIdentity name="IdealAutomateExplorer.exe" version="1.0.0.158" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="amd64" type="win32" />
   <description asmv2:iconFile="Resources\folder.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="IdealAutomateExplorer" version="1.0.8030.19217" publicKeyToken="ECC7404AD63AD623" language="neutral" processorArchitecture="amd64" />
+    <assemblyIdentity name="IdealAutomateExplorer" version="1.0.7771.26298" language="neutral" processorArchitecture="amd64" />
     <commandLine file="IdealAutomateExplorer.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -55,14 +55,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="DataGridFilterLibrary.dll" size="109056">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="DataGridFilterLibrary.dll" size="108032">
       <assemblyIdentity name="DataGridFilterLibrary" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>DPBcMQC3ua3ohFYi1f8Va48WYSeNQ4WcpBCVkoJXkgw=</dsig:DigestValue>
+        <dsig:DigestValue>MZQuYwV0rp+FL2vqmdWm+9rBI7XfeAFpRoyNQ+ypJGE=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -74,7 +74,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>UrNF5nRivTIWuoDKZsCoRrEEyJay6Jc00SN6/CHtGPM=</dsig:DigestValue>
+        <dsig:DigestValue>LPgzamWrQt6u84ZpB8RJwo4Fuflq6bVf0s/uDX4f2vQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -103,14 +103,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IdealAutomateExplorer.exe" size="1470992">
-      <assemblyIdentity name="IdealAutomateExplorer" version="1.0.8030.19217" publicKeyToken="ECC7404AD63AD623" language="neutral" processorArchitecture="amd64" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IdealAutomateExplorer.exe" size="1470432">
+      <assemblyIdentity name="IdealAutomateExplorer" version="1.0.7771.26298" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>qmfKDZ87nxcLgWVGcXKMX2abPXEBTy98lV2tDxSVeyk=</dsig:DigestValue>
+        <dsig:DigestValue>KuruqFFEgHFbt7r5wui52O6zWynJGWp9f9a9YpUraf8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -122,7 +122,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>5GhAJoEK3uQDQUCXC3nWKq0OTMpt6TBOPUVXUXrrZHQ=</dsig:DigestValue>
+        <dsig:DigestValue>S5NWMqHleA5b3FrZdO6FeGqfdqgWLejMFdIOMWRWuDM=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -183,13 +183,13 @@
       <dsig:DigestValue>1/YwBTAD+VLgov+802BgshYxmvQxYkgoOXLVzzmtbgc=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="BuildProjects.bat" size="662">
+  <file name="BuildProjects.bat" size="447">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>WrYbLDMaP/hm07IyX59/V2X9wQixRovp1wWkrrDYm0w=</dsig:DigestValue>
+      <dsig:DigestValue>K2hrDDyWimT8Q45i5zjmXzbhKePyAEebDZBbwGrlLTM=</dsig:DigestValue>
     </hash>
   </file>
   <file name="debloat.bat" size="166">

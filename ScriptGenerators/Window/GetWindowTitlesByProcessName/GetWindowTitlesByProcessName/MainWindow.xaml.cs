@@ -189,7 +189,7 @@ namespace GetWindowTitlesByProcessName
                 string strKeyToUse = "";
                 strKeyToUse = "\"" + strKey.Trim() + "\"";
                 string strValueToUse = "";
-                strValueToUse = "List<string> " + strValue.Trim();
+                strValueToUse = strValue.Trim();
                 string strGeneratedLinex = "";
                 strGeneratedLinex = strValueToUse + " = myActions.GetWindowTitlesByProcessName(" + strKeyToUse + ");";
 
@@ -202,7 +202,7 @@ namespace GetWindowTitlesByProcessName
                 string strOutFile = strApplicationPath + "TemplateCode3GlobalsNew.txt";
                 using (System.IO.StreamWriter file = new System.IO.StreamWriter(strOutFile))
                 {
-                    file.WriteLine("static List<string> " + strValueToUse + " = \"\";");
+                    file.WriteLine("static List<string> " + strValueToUse + " = new List<string>();");
                 }
 
                 myActions.Write3GlobalsToExternalFile(strApplicationPath, strAppendCodeToExistingFile);
