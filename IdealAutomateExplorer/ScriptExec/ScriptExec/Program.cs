@@ -20,7 +20,6 @@ namespace First
 
 
 
-        static bool boolRunningFromHome = true;
         static byte[] mybytearray;
         static ControlEntity myControlEntity = new ControlEntity();
         static IdealAutomate.Core.Methods myActions = new Methods();
@@ -28,10 +27,10 @@ namespace First
         static int intRowCtr = 0;
         static int newLeft = 0;
         static int newTop = 0;
-        static int[,] myResultArrayPutAllFast = new int[100, 100];
         static int[,] resultArray = new int[100, 100];
         static List<ComboBoxPair> cbp = new List<ComboBoxPair>();
         static List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+        static List<string> myWindowTitles = new List<string>();
         static string strButtonPressed = "";
         static System.Drawing.Bitmap bm;
 
@@ -51,30 +50,7 @@ namespace First
 
 
 
-            myImage = new ImageEntity();
-
-            if (boolRunningFromHome)
-            {
-                myImage.ImageFile = myActions.ConvertWebImageToLocalFile(@"https://raw.githubusercontent.com/harvey007y/IdealAutomatex-harvey007y/main/testfolder/Admin.png");
-            }
-            else
-            {
-                myImage.ImageFile = myActions.ConvertWebImageToLocalFile(@"");
-            }
-            myImage.Sleep = 1000;
-            myImage.Attempts = 1;
-            myImage.RelativeX = 5;
-            myImage.RelativeY = 5;
-
-            myResultArrayPutAllFast = myActions.PutAllFastByStoppingOnPerfectMatch(myImage);
-            if (myResultArrayPutAllFast.Length == 0)
-            {
-                myActions.MessageBoxShow("I could not find image of " + myImage.ImageFile);
-            }
-            // We found the image
-
-            myActions.Sleep(1000);
-            myActions.LeftClick(myResultArrayPutAllFast);
+            myWindowTitles = myActions.GetWindowTitlesByProcessName("IdealAutomateExplorer");
 
         myExit:
             Console.WriteLine("Script Ended");

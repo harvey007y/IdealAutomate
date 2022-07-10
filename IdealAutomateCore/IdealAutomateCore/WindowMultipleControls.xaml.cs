@@ -278,7 +278,7 @@ namespace IdealAutomate.Core {
                         if (item.ToolTipx != null && item.ToolTipx.ToString().Trim() != "") {
                             myComboBox.ToolTip = item.ToolTipx;
                         }
-                        myComboBox.Name = item.ID;
+                        myComboBox.Name = item.ID;                        
                         if (item.ListOfKeyValuePairs.Count == 0) {
                             cbp = new List<ComboBoxPair>();
                             cbp.Clear();
@@ -288,11 +288,15 @@ namespace IdealAutomate.Core {
                             cmd.CommandText = "SELECT lk.inc, i.listItemKey, i.ListItemValue FROM LkDDLNamesItems lk " +
                             "join DDLNames n on n.inc = lk.DDLNamesInc " +
                             "join DDLItems i on i.inc = lk.ddlItemsInc " +
-                            "where n.ID = @ID ";
+                            "where n.ID = @ID ";                            
                             if (item.ParentLkDDLNamesItemsInc > -1) {
                                 cmd.CommandText += " and lk.ParentLkDDLNamesItemsInc = @ParentLkDDLNamesItemsInc";
                                 cmd.Parameters.Add("@ParentLkDDLNamesItemsInc", SqlDbType.VarChar, -1);
                                 cmd.Parameters["@ParentLkDDLNamesItemsInc"].Value = item.ParentLkDDLNamesItemsInc;
+                            }
+                            if (item.ComboBoxIsSorted == true)
+                            {
+                                cmd.CommandText += " order by i.listItemKey ";
                             }
                             cmd.Parameters.Add("@ID", SqlDbType.VarChar, -1);
                             cmd.Parameters["@ID"].Value = item.ID;
