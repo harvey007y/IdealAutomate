@@ -4,7 +4,7 @@
   <description asmv2:iconFile="Oxygen-Icons.org-Oxygen-Places-server-database.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="IdealSqlTracer" version="1.0.0.0" publicKeyToken="AB08D150C2CCFBFA" language="neutral" processorArchitecture="amd64" />
+    <assemblyIdentity name="IdealSqlTracer" version="1.0.0.0" publicKeyToken="773EA60F88D8D931" language="neutral" processorArchitecture="amd64" />
     <commandLine file="IdealSqlTracer.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IdealSqlTracer.exe" size="1012752">
-      <assemblyIdentity name="IdealSqlTracer" version="1.0.0.0" publicKeyToken="AB08D150C2CCFBFA" language="neutral" processorArchitecture="amd64" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IdealSqlTracer.exe" size="1012672">
+      <assemblyIdentity name="IdealSqlTracer" version="1.0.0.0" publicKeyToken="773EA60F88D8D931" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>M+0SopV23dXWGldREqc46w3G6KRBk+cYD0HJ1lqjZ/8=</dsig:DigestValue>
+        <dsig:DigestValue>dGvnqoOQ3cKw/fYrTQ71vQlNwvC1ZCtaRDSlFlFtapE=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

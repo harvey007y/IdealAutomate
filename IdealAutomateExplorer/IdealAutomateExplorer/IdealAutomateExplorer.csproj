@@ -77,10 +77,10 @@
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup>
-    <ManifestCertificateThumbprint>464035C17CAF56555835AAE914A34429295F0EF5</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>38BFBB6EAA101DD2EEE49FD25353FF62BED0601F</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>IdealAutomateExplorer_9_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>IdealAutomateExplorer_2_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>true</SignManifests>
@@ -93,7 +93,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>IdealAutomateExplorer_9_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>IdealAutomateExplorer_2_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -670,6 +670,7 @@
       <DependentUpon>ToolTipContent.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="IdealAutomateExplorer_1_TemporaryKey.pfx" />
+    <None Include="IdealAutomateExplorer_2_TemporaryKey.pfx" />
     <None Include="IdealAutomateExplorer_4_TemporaryKey.pfx" />
     <None Include="IdealAutomateExplorer_5_TemporaryKey.pfx" />
     <None Include="IdealAutomateExplorer_6_TemporaryKey.pfx" />
