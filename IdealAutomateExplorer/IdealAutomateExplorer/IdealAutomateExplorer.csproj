@@ -77,10 +77,10 @@
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup>
-    <ManifestCertificateThumbprint>9BF05A077115C1FF8788F4D14E53D9808373A4B2</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>38BFBB6EAA101DD2EEE49FD25353FF62BED0601F</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>IdealAutomateExplorer_14_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>IdealAutomateExplorer_2_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>true</SignManifests>
@@ -93,7 +93,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>IdealAutomateExplorer_14_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>IdealAutomateExplorer_2_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -110,8 +110,8 @@
       <HintPath>..\packages\AODL.1.2.0.1\lib\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="NAudio">
-      <HintPath>..\NAudio\bin\Debug\NAudio.dll</HintPath>
+    <Reference Include="NAudio, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NAudio.1.10.0\lib\net35\NAudio.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -669,8 +669,8 @@
     <EmbeddedResource Include="ToolTipContent.resx">
       <DependentUpon>ToolTipContent.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="IdealAutomateExplorer_14_TemporaryKey.pfx" />
     <None Include="IdealAutomateExplorer_1_TemporaryKey.pfx" />
+    <None Include="IdealAutomateExplorer_2_TemporaryKey.pfx" />
     <None Include="IdealAutomateExplorer_4_TemporaryKey.pfx" />
     <None Include="IdealAutomateExplorer_5_TemporaryKey.pfx" />
     <None Include="IdealAutomateExplorer_6_TemporaryKey.pfx" />
