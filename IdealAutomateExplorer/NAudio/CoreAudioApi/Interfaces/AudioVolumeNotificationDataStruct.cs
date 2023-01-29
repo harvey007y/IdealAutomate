@@ -32,5 +32,14 @@ namespace NAudio.CoreAudioApi.Interfaces
         public float fMasterVolume;
         public uint nChannels;
         public float ChannelVolume;
+
+        public AudioVolumeNotificationDataStruct(Guid guidEventContext, bool bMuted, float fMasterVolume, uint nChannels, float channelVolume)
+        {
+            this.guidEventContext = guidEventContext;
+            this.bMuted = bMuted;
+            this.fMasterVolume = fMasterVolume;
+            this.nChannels = nChannels;
+            ChannelVolume = channelVolume;
+        }
     }
 }
