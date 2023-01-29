@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
-  <asmv1:assemblyIdentity name="IdealAutomateExplorer.exe" version="1.0.0.155" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="amd64" type="win32" />
+  <asmv1:assemblyIdentity name="IdealAutomateExplorer.exe" version="1.0.0.159" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="amd64" type="win32" />
   <description asmv2:iconFile="Resources\folder.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="IdealAutomateExplorer" version="1.0.8030.20121" publicKeyToken="82591BABCFD8D1D2" language="neutral" processorArchitecture="amd64" />
+    <assemblyIdentity name="IdealAutomateExplorer" version="1.0.8429.17954" publicKeyToken="71276CCE006C0BAA" language="neutral" processorArchitecture="amd64" />
     <commandLine file="IdealAutomateExplorer.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -55,26 +55,26 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="DataGridFilterLibrary.dll" size="109056">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="DataGridFilterLibrary.dll" size="108032">
       <assemblyIdentity name="DataGridFilterLibrary" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>WMWeMYjgYto5tywHOw9MYxDtT/fWB3AZUU068lGU2zY=</dsig:DigestValue>
+        <dsig:DigestValue>agQi/Mi9/GQ+8wmTajla3v0HbmfxmZa5YNSRNxSKGyE=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="DgvFilterPopup.dll" size="47104">
-      <assemblyIdentity name="DgvFilterPopup" version="1.1.0.0" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="DgvFilterPopup.dll" size="47616">
+      <assemblyIdentity name="DgvFilterPopup" version="1.1.0.0" publicKeyToken="71276CCE006C0BAA" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>nsVxfDc96Y3RA3NbVXaFJXAiwunOkj/p0RLI5lGw7Bo=</dsig:DigestValue>
+        <dsig:DigestValue>NDCoaJcm6WdkHhE4UnEC1b2TDOaIZzsPmsPuB715cX0=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -103,38 +103,38 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IdealAutomateExplorer.exe" size="1470912">
-      <assemblyIdentity name="IdealAutomateExplorer" version="1.0.8030.20121" publicKeyToken="82591BABCFD8D1D2" language="neutral" processorArchitecture="amd64" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IdealAutomateExplorer.exe" size="1470944">
+      <assemblyIdentity name="IdealAutomateExplorer" version="1.0.8429.17954" publicKeyToken="71276CCE006C0BAA" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>jUTbANNcSqu4+YmSrf208s1VBQACyxHN1aBdVh/B69Q=</dsig:DigestValue>
+        <dsig:DigestValue>fqvPLUdu0wcmzKxrQOBpFH+HgofOTSrGM2K7dtK14TI=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="InteractiveToolTip.dll" size="15872">
-      <assemblyIdentity name="InteractiveToolTip" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <assemblyIdentity name="InteractiveToolTip" version="1.0.0.0" publicKeyToken="3B218CD4D2089E83" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>AT5Aq9NJE4nsxH5VaOC+TUjyfJtU/8kSSDdCaAQ8tKg=</dsig:DigestValue>
+        <dsig:DigestValue>v/u50dNyHJkwOcbmtywIpbyGm8m7x2wpZxujyvM+LGI=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="NAudio.dll" size="513536">
-      <assemblyIdentity name="NAudio" version="1.10.0.0" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="NAudio.dll" size="522240">
+      <assemblyIdentity name="NAudio" version="1.8.5.0" publicKeyToken="3B218CD4D2089E83" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>vEusw7iyjYmPFnG3nyFsykOfletgzTLT4+yvvsrEJ4A=</dsig:DigestValue>
+        <dsig:DigestValue>GKojJMubYCIPPKzaMJIX6ezLMAdyA+NwLPX48RrGdvE=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
