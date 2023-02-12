@@ -4,7 +4,7 @@
   <description asmv2:iconFile="Resources\folder.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="IdealAutomateExplorer" version="1.0.8429.18904" publicKeyToken="4C1EBCA26E31F934" language="neutral" processorArchitecture="amd64" />
+    <assemblyIdentity name="IdealAutomateExplorer" version="1.0.8442.20103" publicKeyToken="4C1EBCA26E31F934" language="neutral" processorArchitecture="amd64" />
     <commandLine file="IdealAutomateExplorer.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -62,7 +62,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>Mcsp7athb/rYEyofoQ/9E+jlX0cvxSuTT3oqmHoG9sw=</dsig:DigestValue>
+        <dsig:DigestValue>q5WBZIjxgNXrNinPPBI0FJW3Yep4E6Ooacu46IB1v0E=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -74,7 +74,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>A1hFrTRVfhRb9zPnvimI/oZswxRx9YFZwIEAyPEYOqs=</dsig:DigestValue>
+        <dsig:DigestValue>EzL2KQOyV/iXG6CU/yQ+x9y3xPaoAMv5uU8t1z/+djs=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -103,14 +103,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IdealAutomateExplorer.exe" size="1470944">
-      <assemblyIdentity name="IdealAutomateExplorer" version="1.0.8429.18904" publicKeyToken="4C1EBCA26E31F934" language="neutral" processorArchitecture="amd64" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IdealAutomateExplorer.exe" size="1503712">
+      <assemblyIdentity name="IdealAutomateExplorer" version="1.0.8442.20103" publicKeyToken="4C1EBCA26E31F934" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>ess9hK2KPoYZ0SxP1cKxkVDnGmJ6Wd8MZBSXBToyadw=</dsig:DigestValue>
+        <dsig:DigestValue>fHuBaesWo2uR3tVso8Q47vp09eOiZu28wyQjRtfgjm0=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -122,7 +122,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>Ueel208makqMhgmlvRh+jm3OZYhYNhwgLeDU7qwM0hU=</dsig:DigestValue>
+        <dsig:DigestValue>FKA4PoWlo7+NL47Mvoagac2VD8N9qtYns4SX21DAW3I=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -134,7 +134,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>yruZQnFpRgYgI6OMtIF8XF9KVbJ3XC1CG5lBp5OGQ9Y=</dsig:DigestValue>
+        <dsig:DigestValue>JmUIi49Mv2V6x8ERHPrXdjeAZa6CpLQ0IRZOol/mTjI=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

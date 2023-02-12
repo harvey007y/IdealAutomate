@@ -110,8 +110,8 @@
       <HintPath>..\packages\AODL.1.2.0.1\lib\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="NAudio, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NAudio.1.10.0\lib\net35\NAudio.dll</HintPath>
+    <Reference Include="NAudio">
+      <HintPath>..\NAudio\bin\Debug\NAudio.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -182,6 +182,12 @@
     <Compile Include="Jobs\MainWindowJobs.xaml.cs" />
     <Compile Include="Jobs\ModifyConnectionsPage.xaml.cs" />
     <Compile Include="Methods.cs" />
+    <Compile Include="MoveTo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MoveTo.Designer.cs">
+      <DependentUpon>MoveTo.cs</DependentUpon>
+    </Compile>
     <Compile Include="NativeMethods.cs" />
     <Compile Include="Jobs\OverviewJobs.xaml.cs" />
     <Compile Include="Pages\Stopwatch.xaml.cs" />
@@ -653,6 +659,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="WPFToolkit.dll" />
+    <EmbeddedResource Include="MoveTo.resx">
+      <DependentUpon>MoveTo.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Peek.resx">
       <DependentUpon>Peek.cs</DependentUpon>
     </EmbeddedResource>

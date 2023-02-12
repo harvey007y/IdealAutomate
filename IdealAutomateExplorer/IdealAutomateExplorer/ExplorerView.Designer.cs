@@ -55,6 +55,7 @@ namespace System.Windows.Forms.Samples
             this.WindowsExplorerStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.wordPadToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.runToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.moveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.FileViewBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.toolBar = new System.Windows.Forms.ToolStrip();
             this.backSplitButton = new System.Windows.Forms.ToolStripDropDownButton();
@@ -202,7 +203,8 @@ namespace System.Windows.Forms.Samples
             this.metadataStripMenuItem,
             this.newToolStripMenuItem1,
             this.openWithToolStripMenuItem,
-            this.runToolStripMenuItem});
+            this.runToolStripMenuItem,
+            this.moveToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(132, 180);
             // 
@@ -390,6 +392,13 @@ namespace System.Windows.Forms.Samples
             this.runToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
             this.runToolStripMenuItem.Text = "Run";
             this.runToolStripMenuItem.Click += new System.EventHandler(this.runToolStripMenuItem_Click);
+            // 
+            // moveToolStripMenuItem
+            // 
+            this.moveToolStripMenuItem.Name = "moveToolStripMenuItem";
+            this.moveToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
+            this.moveToolStripMenuItem.Text = "move";
+            this.moveToolStripMenuItem.Click += new System.EventHandler(this.moveToolStripMenuItem_Click);
             // 
             // toolBar
             // 
@@ -1508,6 +1517,7 @@ namespace System.Windows.Forms.Samples
         private ToolStripMenuItem totalSavingsToolStripMenuItem;
         private ToolStripMenuItem visualStudioToolStripMenuItem;
         private ToolStripMenuItem runToolStripMenuItem;
+        private ToolStripMenuItem moveToolStripMenuItem;
         private ToolStripMenuItem copyStripMenuItem;
         private ComboBox cbxCurrentPath;
         private ToolStripMenuItem WindowsExplorerStripMenuItem2;

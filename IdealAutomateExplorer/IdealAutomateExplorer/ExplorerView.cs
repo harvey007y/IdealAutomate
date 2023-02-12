@@ -40,6 +40,7 @@ using NAudio.CoreAudioApi;
 using IdealAutomateCore;
 using System.Runtime;
 using Snipping_OCR;
+using System.Windows.Forms.Samples;
 
 
 
@@ -3602,7 +3603,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             if (detailsMenuItemChecked == "True")
             {
                 if (e.ColumnIndex != -1 && e.RowIndex != -1 && e.Button == System.Windows.Forms.MouseButtons.Left)
-                {
+                {                    
                     DataGridViewCell c = (sender as DataGridView)[e.ColumnIndex, e.RowIndex];
                     if (!c.Selected)
                     {
@@ -5001,6 +5002,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.buildStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.runToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.moveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.descriptionStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.openWithToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -5216,7 +5218,8 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             this.metadataStripMenuItem,
             this.newToolStripMenuItem1,
             this.openWithToolStripMenuItem,
-            this.runToolStripMenuItem 
+            this.runToolStripMenuItem,
+            this.moveToolStripMenuItem
         //    this.statusStripMenuItem
             });
             this.contextMenuStrip1.Name = "contextMenuStrip1";
@@ -5239,6 +5242,13 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             this.runToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.runToolStripMenuItem.Text = "Run";
             this.runToolStripMenuItem.Click += new System.EventHandler(this.runToolStripMenuItem_Click);
+            // 
+            // moveToolStripMenuItem
+            // 
+            this.moveToolStripMenuItem.Name = "moveToolStripMenuItem";
+            this.moveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.moveToolStripMenuItem.Text = "Move";
+            this.moveToolStripMenuItem.Click += new System.EventHandler(this.moveToolStripMenuItem_Click);
             // 
             // copyStripMenuItem
             // 
@@ -5987,6 +5997,41 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 else
                 {
                     ev_Process_File(myFileView.FullName.ToString());
+                }
+
+            }
+        }
+
+        private void moveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FileView myFileView;
+            foreach (DataGridViewCell myCell in _CurrentDataGridView.SelectedCells)
+            {
+                string fileName = (_CurrentDataGridView).Rows[myCell.RowIndex].Cells["FullName"].Value.ToString();
+                int myIndex = GetIndexForCurrentFileViewBindingSourceForFullName(fileName);
+                myFileView = (FileView)this._CurrentFileViewBindingSource[myIndex];
+                //MessageBox.Show(myFileView.FullName.ToString());
+                if (myFileView.IsDirectory)
+                {
+                    // Call EnumerateFiles in a foreach-loop.
+                    foreach (string file in Directory.EnumerateFiles(myFileView.FullName.ToString(),
+                       myFileView.Name + ".exe",
+                        SearchOption.AllDirectories))
+                    {
+                        // Display file path.
+                        if (file.Contains("bin\\Debug"))
+                        {
+                            ev_Process_File(file);
+                        }
+                    }
+
+                }
+                else
+                {
+                    staticVar = this;
+                    myActions.SetValueByKey("MoveFromVar", myFileView.FullName.ToString());
+                    var myForm = new MoveTo();
+                    myForm.Show();
                 }
 
             }
