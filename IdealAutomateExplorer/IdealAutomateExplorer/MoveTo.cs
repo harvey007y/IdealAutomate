@@ -272,11 +272,7 @@ namespace System.Windows.Forms.Samples {
             //string strExclude = cbxExclude.Text;
             string strFolder = cbxFolder.Text;
 
-            myActions.SetValueByKey("chkMatchCase", boolMatchCase.ToString());
-            myActions.SetValueByKey("chkUseRegularExpression", boolUseRegularExpression.ToString());
-            myActions.SetValueByKey("cbxFindWhatSelectedValue", strFindWhat);
-            myActions.SetValueByKey("cbxFileTypeSelectedValue", strFileType);
-            myActions.SetValueByKey("cbxExcludeSelectedValue", strExclude);
+
             myActions.SetValueByKey("cbxFolderSelectedValue", strFolder);
 
 
@@ -309,9 +305,7 @@ namespace System.Windows.Forms.Samples {
             strMoveToText = strFindWhatToUse;
 
             strLowerCaseMoveToText = strFindWhatToUse.ToLower();
-            myActions.SetValueByKey("FindWhatToUse", strFindWhatToUse);
-            myActions.SetValueByKey("FileTypeToUse", strFileTypeToUse);
-            myActions.SetValueByKey("ExcludeToUse", strExcludeToUse);
+
             myActions.SetValueByKey("FolderToUse", strFolderToUse);
             try {
  //               var damageResult = await Task.Run(() => MoveToTask());
@@ -410,11 +404,7 @@ namespace System.Windows.Forms.Samples {
             //string strExclude = cbxExclude.Text;
             string strFolder = cbxFolder.Text;
 
-            myActions.SetValueByKey("chkMatchCase", boolMatchCase.ToString());
-            myActions.SetValueByKey("chkUseRegularExpression", boolUseRegularExpression.ToString());
-            myActions.SetValueByKey("cbxFindWhatSelectedValue", strFindWhat);
-            myActions.SetValueByKey("cbxFileTypeSelectedValue", strFileType);
-            myActions.SetValueByKey("cbxExcludeSelectedValue", strExclude);
+
             myActions.SetValueByKey("cbxFolderSelectedValue", strFolder);
 
 
@@ -447,9 +437,7 @@ namespace System.Windows.Forms.Samples {
             strMoveToText = strFindWhatToUse;
 
             strLowerCaseMoveToText = strFindWhatToUse.ToLower();
-            myActions.SetValueByKey("FindWhatToUse", strFindWhatToUse);
-            myActions.SetValueByKey("FileTypeToUse", strFileTypeToUse);
-            myActions.SetValueByKey("ExcludeToUse", strExcludeToUse);
+
             myActions.SetValueByKey("FolderToUse", strFolderToUse);
             strPathToMoveTo = tabControl1.TabPages[_CurrentIndex].ToolTipText.Replace("Click on this tab to MoveTo in ", "");
             //Write the code to do the move here
@@ -461,8 +449,31 @@ namespace System.Windows.Forms.Samples {
                 return;
             }
             string strFileNameOnly =  strFullFileName.Substring(intLastSlash + 1);
-            File.Move(strFullFileName, strPathToMoveTo + "\\" + strFileNameOnly);
+            File.Move(strFullFileName, strPathToMoveTo + "\\" + strFileNameOnly);           
+           
+         
+            this.Hide();
             myActions.MessageBoxShow("File successfully moved from " + strFullFileName + " to " + strPathToMoveTo + "\\" + strFileNameOnly);
+            for (int index = Application.OpenForms.Count - 1; index >= 0; index--)
+            {
+                if (Application.OpenForms[index].Name == "ExplorerView")
+                {
+                    ExplorerView myExplorerView = (ExplorerView)Application.OpenForms[index];
+                    myExplorerView.Show();
+                    myExplorerView.BringToFront();
+
+                    myExplorerView.RefreshDataGrid();
+
+
+
+
+
+                    //myDataGridView.FirstDisplayedScrollingRowIndex = 18;
+                    //myDataGridView.CurrentCell = myDataGridView.Rows[18].Cells[1];
+                    //myDataGridView.Rows[18].Selected = true;
+                    //myDataGridView.Refresh();
+                }
+            }
         }
 
         private void cancelBtn_Click(object sender, EventArgs e) {

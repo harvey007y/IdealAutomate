@@ -105,7 +105,6 @@
             this.tabControl1.ShowToolTips = true;
             this.tabControl1.Size = new System.Drawing.Size(1166, 295);
             this.tabControl1.TabIndex = 19;
-            this.tabControl1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.TabControl1_MouseClick);
             // 
             // tabPage1
             // 
