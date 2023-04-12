@@ -250,7 +250,7 @@ namespace IdealAutomate.Core {
                         List<ComboBoxPair> cbp = new List<ComboBoxPair>();
                         cbp.Clear();
                         cbp.Add(new ComboBoxPair("--Select Item ---", "--Select Item ---"));
-                        ComboBox myComboBox = new ComboBox();   
+                        ComboBox myComboBox = new ComboBox();                                      
                         if (item.ComboBoxIsEditable) {
                             myComboBox.IsEditable = true;
                             myComboBox.DropDownOpened += comboBoxDropDownOpened;
@@ -348,6 +348,14 @@ namespace IdealAutomate.Core {
                         if (item.Width > 0) {
                             myComboBox.Width = item.Width;
                         }
+
+                        // if combobox is parent we need to refresh the selection options
+                        // for the other comboboxes when selection is changed for parent
+
+                        if (item.ComboBoxIsParent)
+                        {
+                            myComboBox.SelectionChanged += comboBoxSelectionChangedParent;
+                        }
                         myGrid.Children.Add(myComboBox);
                         break;
                     case ControlType.CheckBox:
@@ -407,6 +415,62 @@ namespace IdealAutomate.Core {
             if (boolSkipSelectionChanged == false) {
                 string strHostName = ((ComboBox)sender).Text;
                 funcUpdateCombobox1(strHostName, sender);
+            }
+
+        }
+
+        private void comboBoxSelectionChangedParent(object sender, SelectionChangedEventArgs e)
+        {
+            if (boolSkipSelectionChanged == false)
+            {
+                strButtonClickedName = "btnDDLRefresh";
+                // identify which button was clicked and perform necessary actions
+                foreach (ControlEntity item in _ListControlEntity)
+                {
+                    switch (item.ControlType)
+                    {
+                        case ControlType.Button:
+                            if (item.ID == strButtonClickedName)
+                            {
+                                item.ButtonPressed = true;
+                            }
+                            else
+                            {
+                                item.ButtonPressed = false;
+                            }
+                            break;
+                        case ControlType.TextBox:
+                            TextBox myTextBox = new TextBox();
+                            myTextBox = (TextBox)LogicalTreeHelper.FindLogicalNode(this, item.ID);
+                            item.Text = myTextBox.Text;
+                            break;
+                        case ControlType.PasswordBox:
+                            PasswordBox myPasswordBox = new PasswordBox();
+                            myPasswordBox = (PasswordBox)LogicalTreeHelper.FindLogicalNode(this, item.ID);
+                            item.Text = myPasswordBox.Password;
+                            break;
+                        case ControlType.ComboBox:
+                            ComboBox myComboBox = new ComboBox();
+                            myComboBox = (ComboBox)LogicalTreeHelper.FindLogicalNode(this, item.ID);
+                            if (myComboBox.SelectedIndex > -1)
+                            {
+                                item.SelectedValue = myComboBox.SelectedValue.ToString();
+                                ComboBoxPair mySelectedPair = (ComboBoxPair)(myComboBox.SelectedItem);
+                                item.SelectedKey = mySelectedPair._Key;
+                            }
+                            break;
+                        case ControlType.CheckBox:
+                            CheckBox myCheckBox = new CheckBox();
+                            myCheckBox = (CheckBox)LogicalTreeHelper.FindLogicalNode(this, item.ID);
+                            item.Checked = myCheckBox.IsChecked ?? false;
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+
+                this.Close();
             }
 
         }

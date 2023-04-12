@@ -40,6 +40,7 @@ namespace IdealAutomate.Core {
 
         public bool ComboBoxIsSorted { get; set; }
         public bool ComboBoxIsEditable { get; set; }
+        public bool ComboBoxIsParent { get; set; }
         /// <summary>
         /// DDLName is used when you want to use the same dropdownlist on the
         /// same screen more than once. In that case, you make the ID unique
@@ -86,6 +87,7 @@ namespace IdealAutomate.Core {
             ParentLkDDLNamesItemsInc = -1;
             ComboBoxIsSorted = false;
             ComboBoxIsEditable = false;
+            ComboBoxIsParent = false;
             DDLName = "";
             ToolTipx = "";
             ColumnSpan = 1;
@@ -120,6 +122,7 @@ namespace IdealAutomate.Core {
             ParentLkDDLNamesItemsInc = -1;
             ComboBoxIsSorted = false;
             ComboBoxIsEditable = false;
+            ComboBoxIsParent = false;
             DDLName = "";
             ToolTipx = "";
             ColumnSpan = 1;
@@ -156,6 +159,7 @@ namespace IdealAutomate.Core {
             myControlEntity.ToolTipx = ToolTipx;
             myControlEntity.ComboBoxIsEditable = ComboBoxIsEditable;
             myControlEntity.ComboBoxIsSorted = ComboBoxIsSorted;
+            myControlEntity.ComboBoxIsParent = ComboBoxIsParent;
             myControlEntity.DDLName = DDLName;
             myControlEntity.ColumnSpan = ColumnSpan;
             myControlEntity.FontFamilyx = FontFamilyx;
