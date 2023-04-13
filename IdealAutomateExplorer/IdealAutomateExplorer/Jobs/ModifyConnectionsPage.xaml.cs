@@ -110,7 +110,7 @@ namespace SMSParameters {
                 else
                 {
                     thisConnection = new SqlConnection(ConnectionString1.SqlConnString);
-                    string sql = "SELECT * From ConnectionStrings";
+                    string sql = "SELECT * From ConnectionStrings order by connectionstring";
                     SqlDataAdapter da = new SqlDataAdapter(sql, thisConnection);
                     DataSet ds = new DataSet();
                     da.Fill(ds, "ConnectionStrings");
