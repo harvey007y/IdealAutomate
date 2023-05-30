@@ -159,6 +159,8 @@ namespace System.Windows.Forms.Samples
             this.windowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.debloatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.renameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addWindowsExplorerOptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeWindowsExplorerOptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem10 = new System.Windows.Forms.ToolStripMenuItem();
             this.courseraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pluralsightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -206,7 +208,7 @@ namespace System.Windows.Forms.Samples
             this.runToolStripMenuItem,
             this.moveToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(132, 180);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(132, 202);
             // 
             // buildStripMenuItem4
             // 
@@ -1265,7 +1267,9 @@ namespace System.Windows.Forms.Samples
             // 
             this.windowsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.debloatToolStripMenuItem,
-            this.renameToolStripMenuItem});
+            this.renameToolStripMenuItem,
+            this.addWindowsExplorerOptionToolStripMenuItem,
+            this.removeWindowsExplorerOptionToolStripMenuItem});
             this.windowsToolStripMenuItem.Name = "windowsToolStripMenuItem";
             this.windowsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.windowsToolStripMenuItem.Text = "Windows";
@@ -1273,7 +1277,7 @@ namespace System.Windows.Forms.Samples
             // debloatToolStripMenuItem
             // 
             this.debloatToolStripMenuItem.Name = "debloatToolStripMenuItem";
-            this.debloatToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.debloatToolStripMenuItem.Size = new System.Drawing.Size(252, 22);
             this.debloatToolStripMenuItem.Text = "Debloat";
             this.debloatToolStripMenuItem.Click += new System.EventHandler(this.debloatToolStripMenuItem_Click);
             this.debloatToolStripMenuItem.MouseHover += new System.EventHandler(this.debloatToolStripMenuItem_MouseHover);
@@ -1281,10 +1285,26 @@ namespace System.Windows.Forms.Samples
             // renameToolStripMenuItem
             // 
             this.renameToolStripMenuItem.Name = "renameToolStripMenuItem";
-            this.renameToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.renameToolStripMenuItem.Size = new System.Drawing.Size(252, 22);
             this.renameToolStripMenuItem.Text = "Rename Files w regex";
             this.renameToolStripMenuItem.Click += new System.EventHandler(this.renameToolStripMenuItem_Click);
             this.renameToolStripMenuItem.MouseHover += new System.EventHandler(this.renameToolStripMenuItem_MouseHover);
+            // 
+            // addWindowsExplorerOptionToolStripMenuItem
+            // 
+            this.addWindowsExplorerOptionToolStripMenuItem.Name = "addWindowsExplorerOptionToolStripMenuItem";
+            this.addWindowsExplorerOptionToolStripMenuItem.Size = new System.Drawing.Size(252, 22);
+            this.addWindowsExplorerOptionToolStripMenuItem.Text = "Add WindowsExplorer Option";
+            this.addWindowsExplorerOptionToolStripMenuItem.Click += new System.EventHandler(this.AddWindowsExplorerOptionClick);
+            this.addWindowsExplorerOptionToolStripMenuItem.MouseHover += new System.EventHandler(this.addWindowsExplorerOptionToolStripMenuItem_MouseHover);
+            // 
+            // removeWindowsExplorerOptionToolStripMenuItem
+            // 
+            this.removeWindowsExplorerOptionToolStripMenuItem.Name = "removeWindowsExplorerOptionToolStripMenuItem";
+            this.removeWindowsExplorerOptionToolStripMenuItem.Size = new System.Drawing.Size(252, 22);
+            this.removeWindowsExplorerOptionToolStripMenuItem.Text = "Remove WindowsExplorer Option";
+            this.removeWindowsExplorerOptionToolStripMenuItem.Click += new System.EventHandler(this.RemoveWindowsExplorerOptionClick);
+            this.removeWindowsExplorerOptionToolStripMenuItem.MouseHover += new System.EventHandler(this.removeWindowsExplorerOptionToolStripMenuItem_MouseHover);
             // 
             // toolStripMenuItem10
             // 
@@ -1623,6 +1643,8 @@ namespace System.Windows.Forms.Samples
         private ToolStripMenuItem githubSearchToolStripMenuItem;
         private ToolStripMenuItem scriptExecToolStripMenuItem;
         private ToolStripMenuItem renameToolStripMenuItem;
+        private ToolStripMenuItem addWindowsExplorerOptionToolStripMenuItem;
+        private ToolStripMenuItem removeWindowsExplorerOptionToolStripMenuItem;
     }
 }
 

@@ -4,11 +4,7 @@
   <description asmv2:iconFile="Oxygen-Icons.org-Oxygen-Places-server-database.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-<<<<<<< HEAD
     <assemblyIdentity name="IdealSqlTracer" version="1.0.0.0" publicKeyToken="8167F3C05EF4122E" language="neutral" processorArchitecture="amd64" />
-=======
-    <assemblyIdentity name="IdealSqlTracer" version="1.0.0.0" publicKeyToken="773EA60F88D8D931" language="neutral" processorArchitecture="amd64" />
->>>>>>> fd957b24e4e715622c8f3fb66338f79aee78f905
     <commandLine file="IdealSqlTracer.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -47,23 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-<<<<<<< HEAD
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IdealSqlTracer.exe" size="1012704">
       <assemblyIdentity name="IdealSqlTracer" version="1.0.0.0" publicKeyToken="8167F3C05EF4122E" language="neutral" processorArchitecture="amd64" />
-=======
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="IdealSqlTracer.exe" size="1012672">
-      <assemblyIdentity name="IdealSqlTracer" version="1.0.0.0" publicKeyToken="773EA60F88D8D931" language="neutral" processorArchitecture="amd64" />
->>>>>>> fd957b24e4e715622c8f3fb66338f79aee78f905
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-<<<<<<< HEAD
-        <dsig:DigestValue>B6Wokpn8yG9k1E2g+KHifQFTKErWqEeHlQBz1elvxX8=</dsig:DigestValue>
-=======
-        <dsig:DigestValue>dGvnqoOQ3cKw/fYrTQ71vQlNwvC1ZCtaRDSlFlFtapE=</dsig:DigestValue>
->>>>>>> fd957b24e4e715622c8f3fb66338f79aee78f905
+        <dsig:DigestValue>eNTBd9Jp447T8NA6DGpBo/WCxaPKnEF2ITEePatw6D8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

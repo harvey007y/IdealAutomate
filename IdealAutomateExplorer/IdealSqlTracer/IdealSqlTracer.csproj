@@ -58,17 +58,10 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup>
-<<<<<<< HEAD
     <ManifestCertificateThumbprint>4797EBDA5524EFD301305E7E7A8DAF88A21190B9</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>IdealSqlTracer_13_TemporaryKey.pfx</ManifestKeyFile>
-=======
-    <ManifestCertificateThumbprint>5520F1AE36B1AD182DB481176682C2441B40A23C</ManifestCertificateThumbprint>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ManifestKeyFile>IdealSqlTracer_3_TemporaryKey.pfx</ManifestKeyFile>
->>>>>>> fd957b24e4e715622c8f3fb66338f79aee78f905
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -86,11 +79,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-<<<<<<< HEAD
     <AssemblyOriginatorKeyFile>IdealSqlTracer_13_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
-=======
-    <AssemblyOriginatorKeyFile>IdealSqlTracer_3_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
->>>>>>> fd957b24e4e715622c8f3fb66338f79aee78f905
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

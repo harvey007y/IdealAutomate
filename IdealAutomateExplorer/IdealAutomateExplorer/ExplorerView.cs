@@ -41,6 +41,7 @@ using IdealAutomateCore;
 using System.Runtime;
 using Snipping_OCR;
 using System.Windows.Forms.Samples;
+using Microsoft.Win32;
 
 
 
@@ -240,7 +241,9 @@ namespace System.Windows.Forms.Samples
         private string outputFilePath = "";
         private int _monitorSizeAdjustment = 5;
         private bool isPrimaryPrev = true;
-
+        string MenuName = "*\\shell\\NewMenuOption";
+        string Command = "*\\shell\\NewMenuOption\\command";
+        string IconPath = "*\\shell\\NewMenuOption\\Icon";
         public ExplorerView()
         {
             _plusIcon = new Icon(Properties.Resources._112_Plus_Grey, 16, 16);
@@ -250,7 +253,7 @@ namespace System.Windows.Forms.Samples
             content = new ToolTipContent();
 
             this.Resize += delegate (Object sender, EventArgs e)
-            {                
+            {
                 if (WindowState == FormWindowState.Maximized && isPrimaryPrev != Screen.FromControl(this).Primary)
                 {
                     isPrimaryPrev = Screen.FromControl(this).Primary;
@@ -294,7 +297,7 @@ namespace System.Windows.Forms.Samples
 
             tabControl1.DrawItem += TabControl1_DrawItem;
             tabControl1.Padding = new System.Drawing.Point(20, 3);
-            tabControl1.MouseClick += TabControl1_MouseClick;           
+            tabControl1.MouseClick += TabControl1_MouseClick;
         }
 
         private void ExplorerView_Activated(object sender, EventArgs e)
@@ -305,7 +308,7 @@ namespace System.Windows.Forms.Samples
             {
                 SetForegroundWindow(hWnd);
                 ShowWindow(hWnd, SWP_SHOWWINDOW);
-            }           
+            }
         }
 
         public void TabControl1_MouseClick(object sender, MouseEventArgs e)
@@ -846,7 +849,7 @@ namespace System.Windows.Forms.Samples
             }
             txtMetaDescription.Text = myActions.GetValueByPublicKeyInCurrentFolder("description", fileName);
             _newTab = true;
-            this.Cursor = Cursors.Default;            
+            this.Cursor = Cursors.Default;
         }
 
         private void TabControl1_DrawItem(object sender, System.Windows.Forms.DrawItemEventArgs e)
@@ -3603,7 +3606,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             if (detailsMenuItemChecked == "True")
             {
                 if (e.ColumnIndex != -1 && e.RowIndex != -1 && e.Button == System.Windows.Forms.MouseButtons.Left)
-                {                    
+                {
                     DataGridViewCell c = (sender as DataGridView)[e.ColumnIndex, e.RowIndex];
                     if (!c.Selected)
                     {
@@ -3766,7 +3769,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                                     _monitorSizeAdjustment = Screen.AllScreens[0].WorkingArea.Width + 5 - Screen.AllScreens[1].WorkingArea.Width;
                                 }
                                 MoveWindow(_appHandle, 0, 0, _CurrentSplitContainer.Panel2.Width - _monitorSizeAdjustment, _CurrentSplitContainer.Panel2.Height, true);
-                            }                           
+                            }
                         }
                         else
                         {
@@ -4484,7 +4487,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 {
                     string strExecutable = @"C:\Program Files\Windows NT\Accessories\wordpad.exe";
                     _WordPadLoaded = true;
-                    myActions.Run(strExecutable, "\"" + myFileView.FullName + "\"");                   
+                    myActions.Run(strExecutable, "\"" + myFileView.FullName + "\"");
                 }
                 else
                 {
@@ -8940,7 +8943,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             {
                 if (_WordPadLoaded)
                 {
-                    myActions.ActivateWindowByTitle(_CurrentTabTitle,5);
+                    myActions.ActivateWindowByTitle(_CurrentTabTitle, 5);
                 }
                 myActions.TypeText("^(s)", 200);
                 Popup();
@@ -8954,7 +8957,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             {
                 if (_WordPadLoaded)
                 {
-                    myActions.ActivateWindowByTitle(_CurrentTabTitle,5);
+                    myActions.ActivateWindowByTitle(_CurrentTabTitle, 5);
                 }
                 myActions.TypeText("^(s)", 200);
                 Popup();
@@ -8968,7 +8971,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             {
                 if (_WordPadLoaded)
                 {
-                    myActions.ActivateWindowByTitle(_CurrentTabTitle,5);
+                    myActions.ActivateWindowByTitle(_CurrentTabTitle, 5);
                 }
                 myActions.TypeText("^(s)", 200);
                 Popup();
@@ -8982,7 +8985,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             {
                 if (_WordPadLoaded)
                 {
-                    myActions.ActivateWindowByTitle(_CurrentTabTitle,5);
+                    myActions.ActivateWindowByTitle(_CurrentTabTitle, 5);
                 }
                 myActions.TypeText("^(s)", 200);
                 Popup();
@@ -11922,6 +11925,223 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             content.MyContent = "Here is the link to learn more about how to use this utility:  \r\n";
             content.MyLink = "http://csharphelper.com/blog/2014/09/use-regular-expressions-to-rename-files-that-match-a-pattern-in-c/";
             DisplayToolTip(sender);
+        }
+
+        private void AddWindowsExplorerOptionClick(object sender, EventArgs e)
+        {
+            List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+
+            ControlEntity myControlEntity = new ControlEntity();
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Heading;
+            myControlEntity.Text = "Create New Windows Explorer Context Menu Option";
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+            int intRowCtr = 0;
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "myLabel";
+            myControlEntity.Text = "Enter Text for Windows Explorer Option";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "txtContextMenuOptionName";
+            myControlEntity.Text = "";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "lblContextMenuOptionFile";
+            myControlEntity.Text = "Exec Path";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.Width = 150;
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "txtContextMenuOptionFile";
+            myControlEntity.Text = "";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+       
+            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 800, 0, 0);
+
+            if (strButtonPressed == "btnCancel")
+            {
+                myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                this.Cursor = Cursors.Default;
+                return;
+            }
+
+            string strContextMenuOptionName = myListControlEntity.Find(x => x.ID == "txtContextMenuOptionName").Text;
+            string strContextMenuOptionFile = myListControlEntity.Find(x => x.ID == "txtContextMenuOptionFile").Text;
+
+
+            AddToWindowsExplorerContextMenu(strContextMenuOptionName, strContextMenuOptionFile);
+        }
+
+        private void RemoveWindowsExplorerOptionClick(object sender, EventArgs e)
+        {
+            List<ControlEntity> myListControlEntity = new List<ControlEntity>();
+
+            ControlEntity myControlEntity = new ControlEntity();
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Heading;
+            myControlEntity.Text = "Remove Windows Explorer Context Menu Option";
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+            int intRowCtr = 0;
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "myLabel";
+            myControlEntity.Text = "Enter Text for Windows Explorer Option";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 0;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "txtContextMenuOptionName";
+            myControlEntity.Text = "";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+           
+
+
+
+            string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 800, 0, 0);
+
+            if (strButtonPressed == "btnCancel")
+            {
+                myActions.MessageBoxShow("Okay button not pressed - Script Cancelled");
+                this.Cursor = Cursors.Default;
+                return;
+            }
+
+            string strContextMenuOptionName = myListControlEntity.Find(x => x.ID == "txtContextMenuOptionName").Text;
+           
+            RemoveFromWindowsExplorerContextMenu(strContextMenuOptionName);
+        }
+
+        // This function will add your current exe to directory context menu.
+        // You can pass args to the program using args param.
+        // If you want to run another program when clicked to the context menu option;
+        // modify the "currentExePath" variable, maybe make it param, and pass the
+        // target exe's file path.
+        public void AddToWindowsExplorerContextMenu(string displayText, string displayExecPath)
+        {
+            RegistryKey regmenu = null;
+            RegistryKey regcmd = null;
+            RegistryKey regicon = null;
+            //displayText = "WadesOption";
+            //displayExecPath = @"C:\Users\harve\Documents\GitHub\IdealAutomate\WrapSQLInQuotesForCS\WrapSQLInQuotesForCS\bin\Debug\WrapSQLInQuotesForCS.exe";
+            try
+            {
+                regmenu = Registry.ClassesRoot.CreateSubKey(MenuName.Replace("NewMenuOption", displayText));
+                if (regmenu != null)
+                {
+                    regmenu.SetValue("", displayText);
+                    regmenu.SetValue("Icon", @"C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\Images\favicon.ico", RegistryValueKind.String);
+                }
+                regcmd = Registry.ClassesRoot.CreateSubKey(Command.Replace("NewMenuOption", displayText));
+                
+                if (regcmd != null)
+                regcmd.SetValue("", displayExecPath + " \"%1\"");
+                regicon = Registry.ClassesRoot.CreateSubKey(IconPath.Replace("NewMenuOption", displayText));
+                if (regicon != null)
+                    regicon.SetValue("", @"C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\Images\favicon.ico");
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.ToString());
+            }
+            finally
+            {
+                if (regmenu != null)
+                    regmenu.Close();
+                if (regcmd != null)
+                    regcmd.Close();
+                if (regicon != null)
+                    regicon.Close();
+            }
+        }
+        public void RemoveFromWindowsExplorerContextMenu(string displayText)
+        {
+            //displayText = "WadesOption";
+           
+            try
+            {
+                RegistryKey reg = Registry.ClassesRoot.OpenSubKey(MenuName.Replace("NewMenuOption", displayText));
+                if (reg != null)
+                {
+                    reg.Close();
+                    Registry.ClassesRoot.DeleteSubKey(Command.Replace("NewMenuOption", displayText));
+                }
+                reg = Registry.ClassesRoot.OpenSubKey(MenuName.Replace("NewMenuOption", displayText));
+                if (reg != null)
+                {
+                    reg.Close();
+                    Registry.ClassesRoot.DeleteSubKey(IconPath.Replace("NewMenuOption", displayText));
+                }
+                reg = Registry.ClassesRoot.OpenSubKey(MenuName.Replace("NewMenuOption", displayText));
+               
+                if (reg != null)
+                {
+                    reg.Close();
+                    Registry.ClassesRoot.DeleteSubKey(MenuName.Replace("NewMenuOption", displayText));
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.ToString());
+            }
+            finally
+            {
+            }
+
+        }
+
+        private void addWindowsExplorerOptionToolStripMenuItem_MouseHover(object sender, EventArgs e)
+        {
+            //  buttonToolTip.SetToolTip(pictureBox1, "Parallel Search is a tool that uses parallel processing to rapidly find text in any file in a folder \r\nParallel processing makes this tool much faster than any other tool I have tested\r\nContext-menu on the search results allows you to quickly go to line of text in Notepad++, Visual Studio, or IdealAutomateExplorer");
+            // position the tooltip with its stem towards the right end of the button
+            // System.Drawing.Point myPoint = new System.Drawing.Point(pictureBox1.Width - (pictureBox1.Width / 2), 0);
+            content.MyContent = "This will add info to windows registry so you need to run idealautomateexplorer in   \r\n";
+            content.MyContent += "admin mode for this option to work. \r\n\r\n";
+            
+            DisplayToolTip(sender);
+            // interactiveToolTip1.Show(content, pictureBox1, myPoint, StemPosition.BottomLeft, 10000);
+        }
+
+        private void removeWindowsExplorerOptionToolStripMenuItem_MouseHover(object sender, EventArgs e)
+        {
+            //  buttonToolTip.SetToolTip(pictureBox1, "Parallel Search is a tool that uses parallel processing to rapidly find text in any file in a folder \r\nParallel processing makes this tool much faster than any other tool I have tested\r\nContext-menu on the search results allows you to quickly go to line of text in Notepad++, Visual Studio, or IdealAutomateExplorer");
+            // position the tooltip with its stem towards the right end of the button
+            //System.Drawing.Point myPoint = new System.Drawing.Point(pictureBox1.Width - (pictureBox1.Width / 2), 0);
+            content.MyContent = "This will remove info from windows registry so you need to run idealautomateexplorer in   \r\n";
+            content.MyContent += "admin mode for this option to work. \r\n\r\n";
+
+            DisplayToolTip(sender);
+            // interactiveToolTip1.Show(content, pictureBox1, myPoint, StemPosition.BottomLeft, 10000);
         }
         //private void LogMemory(string msg) {
         //    _memoryCurr = GC.GetTotalMemory(true);
