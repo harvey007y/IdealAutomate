@@ -11976,8 +11976,29 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             myControlEntity.ColumnNumber = 1;
             myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
+            intRowCtr++;
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.Label;
+            myControlEntity.ID = "lblContextMenuOptionIcon";
+            myControlEntity.Text = "Icon Path (Optional)";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.Width = 150;
+            myControlEntity.ColumnNumber = 0;
+            myControlEntity.ColumnSpan = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
 
-       
+
+
+            myControlEntity.ControlEntitySetDefaults();
+            myControlEntity.ControlType = ControlType.TextBox;
+            myControlEntity.ID = "txtContextMenuOptionIcon";
+            myControlEntity.Text = "";
+            myControlEntity.RowNumber = intRowCtr;
+            myControlEntity.ColumnNumber = 1;
+            myListControlEntity.Add(myControlEntity.CreateControlEntity());
+
+
+
             string strButtonPressed = myActions.WindowMultipleControls(ref myListControlEntity, 400, 800, 0, 0);
 
             if (strButtonPressed == "btnCancel")
@@ -11989,9 +12010,10 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
 
             string strContextMenuOptionName = myListControlEntity.Find(x => x.ID == "txtContextMenuOptionName").Text;
             string strContextMenuOptionFile = myListControlEntity.Find(x => x.ID == "txtContextMenuOptionFile").Text;
+            string strContextMenuOptionIcon = myListControlEntity.Find(x => x.ID == "txtContextMenuOptionIcon").Text;
 
 
-            AddToWindowsExplorerContextMenu(strContextMenuOptionName, strContextMenuOptionFile);
+            AddToWindowsExplorerContextMenu(strContextMenuOptionName, strContextMenuOptionFile, strContextMenuOptionIcon);
         }
 
         private void RemoveWindowsExplorerOptionClick(object sender, EventArgs e)
@@ -12045,7 +12067,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
         // If you want to run another program when clicked to the context menu option;
         // modify the "currentExePath" variable, maybe make it param, and pass the
         // target exe's file path.
-        public void AddToWindowsExplorerContextMenu(string displayText, string displayExecPath)
+        public void AddToWindowsExplorerContextMenu(string displayText, string displayExecPath, string displayIconPath)
         {
             RegistryKey regmenu = null;
             RegistryKey regcmd = null;
@@ -12065,8 +12087,9 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 if (regcmd != null)
                 regcmd.SetValue("", displayExecPath + " \"%1\"");
                 regicon = Registry.ClassesRoot.CreateSubKey(IconPath.Replace("NewMenuOption", displayText));
-                if (regicon != null)
-                    regicon.SetValue("", @"C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\Images\favicon.ico");
+                if (regicon != null && displayIconPath != "" && displayIconPath != null)
+                    regicon.SetValue("", displayIconPath);
+                //  regicon.SetValue("", @"C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\Images\favicon.ico");
 
             }
             catch (Exception ex)
@@ -12125,9 +12148,16 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             //  buttonToolTip.SetToolTip(pictureBox1, "Parallel Search is a tool that uses parallel processing to rapidly find text in any file in a folder \r\nParallel processing makes this tool much faster than any other tool I have tested\r\nContext-menu on the search results allows you to quickly go to line of text in Notepad++, Visual Studio, or IdealAutomateExplorer");
             // position the tooltip with its stem towards the right end of the button
             // System.Drawing.Point myPoint = new System.Drawing.Point(pictureBox1.Width - (pictureBox1.Width / 2), 0);
-            content.MyContent = "This will add info to windows registry so you need to run idealautomateexplorer in   \r\n";
-            content.MyContent += "admin mode for this option to work. \r\n\r\n";
-            
+            content.MyContent = "This allows you to modify windows explorer context menu so that you can run   \r\n";
+            content.MyContent += "any program you want when you right-click on a file in windows explorer    \r\n ";
+            content.MyContent += "and choose see more options. The file you right-click on must be a file   \r\n ";
+            content.MyContent += "and not a folder. The custom program that you specify in the exec path    \r\n ";
+            content.MyContent += "will receive the full file name as a parameter.   \r\n ";
+            content.MyContent += "   \r\n ";
+            content.MyContent += "This will add info to windows registry so you need to run idealautomateexplorer in   \r\n";
+            content.MyContent += "admin mode for this option to work. You can set to launch in admin mode under \r\n";
+            content.MyContent += "Tools>Preferences or you can right-click on idealautomateexplorer launch icon. \r\n\r\n";
+            content.MyLink = "";
             DisplayToolTip(sender);
             // interactiveToolTip1.Show(content, pictureBox1, myPoint, StemPosition.BottomLeft, 10000);
         }
@@ -12138,8 +12168,9 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
             // position the tooltip with its stem towards the right end of the button
             //System.Drawing.Point myPoint = new System.Drawing.Point(pictureBox1.Width - (pictureBox1.Width / 2), 0);
             content.MyContent = "This will remove info from windows registry so you need to run idealautomateexplorer in   \r\n";
-            content.MyContent += "admin mode for this option to work. \r\n\r\n";
-
+             content.MyContent += "admin mode for this option to work. You can set to launch in admin mode under \r\n";
+            content.MyContent += "Tools>Preferences or you can right-click on idealautomateexplorer launch icon. \r\n\r\n";
+            content.MyLink = "";
             DisplayToolTip(sender);
             // interactiveToolTip1.Show(content, pictureBox1, myPoint, StemPosition.BottomLeft, 10000);
         }
