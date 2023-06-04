@@ -41,7 +41,7 @@
     <PublisherName>IdealAutomate</PublisherName>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>165</ApplicationRevision>
+    <ApplicationRevision>167</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -162,6 +162,7 @@
     <Compile Include="ComboBoxPair.cs" />
     <Compile Include="ControlEntity.cs" />
     <Compile Include="ControlType.cs" />
+    <Compile Include="CurrentUser.cs" />
     <Compile Include="FindDelimitedTextParms.cs" />
     <Compile Include="ImageEntity.cs" />
     <Compile Include="Jobs\ConnectionString1.cs" />

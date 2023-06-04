@@ -42,6 +42,8 @@ using System.Runtime;
 using Snipping_OCR;
 using System.Windows.Forms.Samples;
 using Microsoft.Win32;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 
 
@@ -12105,11 +12107,14 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 if (regicon != null)
                     regicon.Close();
             }
-        }
+        }    
         public void RemoveFromWindowsExplorerContextMenu(string displayText)
-        {
-            //displayText = "WadesOption";
-           
+        {       
+            if (displayText == "")
+            {
+                MessageBox.Show(this, "Please enter option to remove");
+                return;
+            }           
             try
             {
                 RegistryKey reg = Registry.ClassesRoot.OpenSubKey(MenuName.Replace("NewMenuOption", displayText));
