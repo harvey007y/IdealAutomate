@@ -12082,7 +12082,7 @@ Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\IdealA
                 if (regmenu != null)
                 {
                     regmenu.SetValue("", displayText);
-                    regmenu.SetValue("Icon", @"C:\Users\harve\Documents\GitHub\IdealAutomate\IdealAutomateExplorer\IdealAutomateExplorer\bin\Debug\Images\favicon.ico", RegistryValueKind.String);
+                    regmenu.SetValue("Icon", displayIconPath, RegistryValueKind.String);
                 }
                 regcmd = Registry.ClassesRoot.CreateSubKey(Command.Replace("NewMenuOption", displayText));
                 
