@@ -159,7 +159,7 @@ namespace DataGridFilterTest.TestData
                        "";
                     // Define Connection String
                     string strConnectionString = null;
-                    strConnectionString = @"Data Source=.\SQLEXPRESS02;Initial Catalog=IdealAutomateDB;Integrated Security=SSPI";
+                    strConnectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=IdealAutomateDB;Integrated Security=SSPI";
                     // Define .net fields to hold each column selected in query
                     String str_jobapplications_JobUrl;
                     String str_jobapplications_JobBoard;

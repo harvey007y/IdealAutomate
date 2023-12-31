@@ -83,7 +83,6 @@ C:\Users\harve_nk54qew\Documents\GitHub\IdealAutomate\DDLMaint\DDLMaint\obj\x86\
 C:\Users\harve\Documents\GitHub\IdealAutomate\DDLMaint\DDLMaint\bin\Debug\DDLMaint.exe.config
 C:\Users\harve\Documents\GitHub\IdealAutomate\DDLMaint\DDLMaint\bin\Debug\Octokit.dll
 C:\Users\harve\Documents\GitHub\IdealAutomate\DDLMaint\DDLMaint\bin\Debug\Octokit.xml
-C:\Users\harve\Documents\GitHub\IdealAutomate\DDLMaint\DDLMaint\obj\x86\Debug\DDLMaint.csprojAssemblyReference.cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\DDLMaint\DDLMaint\obj\x86\Debug\DDLMaint.csproj.CoreCompileInputs.cache
 C:\Users\harve\Documents\GitHub\IdealAutomate\DDLMaint\DDLMaint\obj\x86\Debug\DDLMaint.csproj.CopyComplete
 C:\Users\WadeH\source\repos\IdealAutomate\DDLMaint\DDLMaint\bin\Debug\Images\112_UpArrowShort_Green.ico
@@ -119,3 +118,5 @@ C:\Users\WadeH\source\repos\IdealAutomate\DDLMaint\DDLMaint\obj\x86\Debug\DDLMai
 C:\Users\WadeH\source\repos\IdealAutomate\DDLMaint\DDLMaint\obj\x86\Debug\DDLMaint.csproj.CopyComplete
 C:\Users\WadeH\source\repos\IdealAutomate\DDLMaint\DDLMaint\obj\x86\Debug\DDLMaint.exe
 C:\Users\WadeH\source\repos\IdealAutomate\DDLMaint\DDLMaint\obj\x86\Debug\DDLMaint.pdb
+C:\Users\harve\Documents\GitHub\IdealAutomate\DDLMaint\DDLMaint\obj\x86\Debug\DDLMaint.csproj.AssemblyReference.cache
+C:\Users\harve\Documents\GitHub\IdealAutomate\DDLMaint\DDLMaint\obj\x86\Debug\DDLMaint.csproj.SuggestedBindingRedirects.cache

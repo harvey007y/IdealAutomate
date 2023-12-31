@@ -126,7 +126,7 @@ namespace DataGridFilterTest
                 return;
             }
             //Create Connection
-            SqlConnection thisConnection = new SqlConnection(@"Data Source=.\SQLEXPRESS02;Initial Catalog=IdealAutomateDB;Integrated Security=SSPI");
+            SqlConnection thisConnection = new SqlConnection(@"Data Source=.\SQLEXPRESS;Initial Catalog=IdealAutomateDB;Integrated Security=SSPI");
             OpenConnection(thisConnection);
             try
             {
@@ -195,7 +195,7 @@ namespace DataGridFilterTest
 
 
 
-            SqlConnection thisConnection = new SqlConnection(@"Data Source=.\SQLEXPRESS02;Initial Catalog=IdealAutomateDB;Integrated Security=SSPI");
+            SqlConnection thisConnection = new SqlConnection(@"Data Source=.\SQLEXPRESS;Initial Catalog=IdealAutomateDB;Integrated Security=SSPI");
             OpenConnection(thisConnection);
             try
             {

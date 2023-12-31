@@ -47,7 +47,7 @@ namespace JobSearch
                 myActions.TypeText("%(\" \"n)", 1000); // minimize visual studio
             }
             myActions.Sleep(1000);
-            SqlConnection con = new SqlConnection("Server=(local)\\SQLEXPRESS02;Initial Catalog=IdealAutomateDB;Integrated Security=SSPI");
+            SqlConnection con = new SqlConnection("Server=(local)\\SQLEXPRESS;Initial Catalog=IdealAutomateDB;Integrated Security=SSPI");
             SqlCommand cmd = new SqlCommand();
             bool developermode = false;
 
@@ -80,8 +80,8 @@ namespace JobSearch
 {
                 "c%23",
 "WPF",
-"Machine Learning",
-"OutSystems"
+//"Machine Learning",
+//"OutSystems"
 
             };
             foreach (_JobBoardName jobBoardx in Enum.GetValues(typeof(_JobBoardName)))
@@ -197,7 +197,7 @@ namespace JobSearch
             if (!myWindowTitles4[0].Contains(jobBoard.ToString()))
             {
                 // You may need to manually add content parameter as second parameter for run???
-                myActions.Run(@"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe", myUrlTarget);
+                myActions.Run(@"C:\Program Files\Google\Chrome\Application\chrome.exe", myUrlTarget);
                 myActions.Sleep(1000);
             }
             if (myWindowTitles4.Count > 0)
@@ -518,7 +518,7 @@ namespace JobSearch
                 }
 
                 // get company name
-                indexBeginDelim = myPage.IndexOf("company_link");
+                indexBeginDelim = myPage.IndexOf("job-card-container__primary-description");
                 if (indexBeginDelim == -1)
                 {
                     eof = true;
