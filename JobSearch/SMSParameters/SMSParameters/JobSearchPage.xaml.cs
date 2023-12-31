@@ -615,7 +615,7 @@ namespace SMSParameters
                 }
 
                 // get company name
-                indexBeginDelim = myPage.IndexOf("company_link");
+                indexBeginDelim = myPage.IndexOf("job-card-container__primary-description");
                 if (indexBeginDelim == -1)
                 {
                     eof = true;
